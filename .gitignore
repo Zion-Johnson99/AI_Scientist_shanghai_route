@@ -1,0 +1,57 @@
+# Project-specific ignored materials
+/赛题/
+/上海路线规划项目方案/ppt/
+/上海路线规划项目方案/相关论文/
+/上海路线规划项目方案/pm25.md
+
+# Secrets and local environment files
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.token
+secrets/
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Data and generated outputs
+/tmp/
+/data_raw/
+/data_processed/
+/outputs/
+/output/
+*.sqlite
+*.db
+
+# LaTeX and generated document artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.bak
+*.tmp
+~$*
