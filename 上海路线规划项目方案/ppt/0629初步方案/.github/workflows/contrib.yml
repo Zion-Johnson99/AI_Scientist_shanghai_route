@@ -1,0 +1,105 @@
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'contrib/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+    types:
+      - 'review_requested'
+    paths:
+      - 'contrib/**'
+
+name: Contrib
+
+jobs:
+  build-contrib:
+    runs-on: ubuntu-latest
+    # permission to the environment will 
+    # need to be approved by one of the collaborators
+    environment: IMGUR
+    steps: 
+      - uses: actions/checkout@v6
+        name: checkout code
+        with:
+          fetch-depth: 0
+      - name: get newly contributed package (pull request)
+        if: github.event_name == 'pull_request'
+        run: |
+          git diff origin/main --name-only | grep -e 'contrib\/[^/]*\/sjtubeamertheme[^/]*\.ltx' | grep -o -e '\/[^/]*\/' | sed -e "s|\/||g" > contrib.txt
+      - name: get newly contributed packages (push)
+        if: github.event_name == 'push'
+        run: |
+          git diff HEAD^ --name-only | grep -e 'contrib\/[^/]*\/sjtubeamertheme[^/]*\.ltx' | grep -o -e '\/[^/]*\/' | sed -e "s|\/||g" > contrib.txt
+      - name: read contrib package name
+        id: contrib_name
+        uses: juliangruber/read-file-action@v1.0.0
+        with:
+          path: ./contrib.txt
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          scheme: full
+          run: |
+            apk add ghostscript imagemagick gnupg font-noto-cjk
+            sed -i "s|<policy domain=\"coder\" rights=\"none\" pattern=\"PDF\" />|<policy domain=\"coder\" rights=\"read\|write\" pattern=\"PDF\" />|g" /etc/ImageMagick-*/policy.xml
+            .github/ci/build_contrib.sh -halt-on-error -time -xelatex
+        name: build contrib doc with XeLaTeX
+      - uses: actions/upload-artifact@v7
+        with:
+          path: |
+            build/contrib.*.pdf
+        name: upload contrib artifacts
+      - uses: devicons/public-upload-to-imgur@v2.2.2
+        id: contrib_png
+        with:
+          path: ./build/contrib.*.png
+          client_id: ${{secrets.IMGUR_CLIENT_ID}}
+        name: upload contrib img to imgur
+      - uses: jungwinter/comment@v1
+        if: github.event_name == 'pull_request'
+        env:
+          MESSAGE: |
+            Thank you for contributing to SJTUBeamer! The name of your contribution is: {0}
+
+            Here is the preview of your contribution documentation.
+
+            {1}
+        with:
+          type: create
+          issue_number: ${{ github.event.number }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: >
+            ${{ 
+              format(
+                env.MESSAGE,
+                steps.contrib_name.outputs.content,
+                join(fromJSON(steps.contrib_png.outputs.markdown_urls), '  ')
+              )
+            }}
+        name: comment (review requested)
+      - uses: jungwinter/comment@v1
+        if: github.event_name == 'push'
+        env:
+          MESSAGE: |
+            ### {0}
+            
+            @{1}
+            
+            {2}
+        with:
+          type: create
+          issue_number: '81'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: >
+            ${{
+              format(
+                env.MESSAGE,
+                steps.contrib_name.outputs.content,
+                github.actor,
+                join(fromJSON(steps.contrib_png.outputs.markdown_urls), '  ')
+              )
+            }}
+        name: comment (push)

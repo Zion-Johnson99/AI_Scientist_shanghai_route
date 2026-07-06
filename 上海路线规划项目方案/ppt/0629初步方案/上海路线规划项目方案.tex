@@ -1,0 +1,442 @@
+% !TeX program = xelatex
+% !TeX encoding = UTF-8
+
+\documentclass[xcolor=table,dvipsnames,svgnames,aspectratio=169]{ctexbeamer}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+
+\usetheme[maxplus]{sjtubeamer}
+
+\hypersetup{
+  unicode            = true,
+  psdextra           = true,
+  pdfdisplaydoctitle = true
+}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\kw}[1]{\textbf{\color{cprimary}#1}}
+\newcommand{\smallitem}{\setlength{\itemsep}{0.25em}}
+
+\author{项目组}
+\institute{上海交通大学}
+\date{2026 年 6 月}
+\subject{XH-202619 参赛方案汇报}
+\keywords{AI Scientist, Qwen, 环境暴露, 路线决策, 多智能体}
+
+\title[环境暴露感知与健康路线决策 AI Scientist]
+{\textbf{面向上海城市户外运动的\\多源环境暴露感知与健康路线决策 AI Scientist}}
+
+\subtitle{基于国产开源大模型的科学假设生成与真实案例验证}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{汇报主线}
+  \begin{enumerate}
+    \smallitem
+    \item \kw{项目定位}：把户外运动路线选择、导航规划和环境评分转化为可验证科学问题
+    \item \kw{科学假设}：多源环境暴露评分能支撑更健康的路线决策
+    \item \kw{相关依据}：健康路径、PM2.5 暴露、低污染路线研究支撑
+    \item \kw{技术实现}：Qwen 多智能体驱动数据、模型、路线和解释闭环
+    \item \kw{阶段推进}：徐汇区单区 MVP、可复现脚本、分工协作
+  \end{enumerate}
+\end{frame}
+
+\section{项目定位与交付目标}
+
+\begin{frame}{项目定位}
+  \begin{block}{项目题目}
+    面向上海城市户外运动的多源环境暴露感知与健康路线决策 AI Scientist
+  \end{block}
+
+  \vspace{0.4em}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{block}{真实问题}
+      用户选择跑步、步行和散步路线时，常关注距离、用时、风景和交通便利，对路线段空气污染、花粉、噪声、绿地、水体、补给条件和出发接驳成本掌握较少。
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{block}{方案抓手}
+      以 Qwen 系列模型为基础，将自然语言运动需求转成数据查询、科学假设、实验计划、路线选择、导航规划、环境评分和解释输出。
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\section{科学假设、创新点与技术难点}
+
+\begin{frame}{核心科学假设}
+  \begin{block}{主假设}
+    融合小时级空气质量、城市生态空间、噪声环境、花粉风险、道路结构、生活 POI 和接驳成本的多源环境暴露评分，能够在可接受的距离和时间增加范围内，为徐汇区户外运动用户推荐暴露风险更低、生态舒适度更高、场景匹配度更强的运动路线与出发导航方案。
+  \end{block}
+
+  \vspace{0.4em}
+  \begin{columns}[T]
+    \column{0.32\textwidth}
+    \begin{exampleblock}{暴露降低}
+      推荐路线相较最短路线，在 PM2.5、噪声或综合风险上更低。
+    \end{exampleblock}
+    \column{0.32\textwidth}
+    \begin{exampleblock}{舒适提升}
+      推荐路线具有更高的绿地、水体、滨水或公园步道覆盖。
+    \end{exampleblock}
+    \column{0.32\textwidth}
+    \begin{exampleblock}{需求匹配}
+      推荐路线符合当前位置、固定出发点、距离、运动方式、补给点、年龄和敏感人群偏好。
+    \end{exampleblock}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{创新点与关键难点}
+  \small
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{block}{创新点}
+      \begin{itemize}
+        \smallitem
+        \item Qwen Agent 组织问题、证据、假设、实验和解释
+        \item PM2.5、花粉、噪声、绿量、水体、道路和 POI 多源融合
+        \item 徐汇区单区 MVP 覆盖路线选择、路线导航规划和环境评分
+        \item 输出推荐理由、风险来源、接驳成本和用户偏好匹配说明
+      \end{itemize}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{alertblock}{关键难点}
+      \begin{itemize}
+        \smallitem
+        \item 监测站和格网空气质量需要映射到道路段和目标时段
+        \item 花粉缺少稳定官方入口，早期依赖季节、天气和植被代理
+        \item 噪声、绿视率、交通强度空间精度不同，需要统一到路线级
+        \item 自然语言需求需转为出发点、区域、距离、时段、补给、敏感标签和评分权重
+        \item 路线导航规划需要合并接驳段和运动段的分段评分
+      \end{itemize}
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+\section{参考工作与差异化}
+
+\begin{frame}{已有研究覆盖边界}
+  \scriptsize
+  \begin{tabularx}{\textwidth}{p{0.18\textwidth}p{0.33\textwidth}Y}
+    \toprule
+    代表工作 & 已解决内容 & 留下的研究缺口 \\
+    \midrule
+    UAHNS & PM2.5 预测、空间插值、道路段赋权、低暴露路径搜索 & 空气污染单目标；花粉、噪声、绿地水体、POI 与运动偏好未联合建模 \\
+    北京慢跑暴露研究 & GPS 轨迹、小时级 PM2.5、慢跑暴露剂量与行为差异 & 既有轨迹评估；未来路线生成、推荐闭环和用户约束较弱 \\
+    三城骑行研究 & 低成本传感器、土地利用特征、低 PM2.5 骑行路线识别 & 骑行通勤场景；多运动方式、补给需求和画像约束覆盖较少 \\
+    Green Paths 与健康路径系统 & 空气、噪声、绿化等多环境因子进入步行或骑行路线规划 & 应用系统为主；科学假设、证据审查和可复现实验组织较弱 \\
+    Keep、高德、AQICN 等产品 & 运动记录、导航、POI、天气或空气质量查询 & 功能分散，路线推荐依据与实验验证链路较弱 \\
+    \bottomrule
+  \end{tabularx}
+\end{frame}
+
+\begin{frame}{研究问题与验证目标}
+  \small
+  \begin{block}{研究问题界定}
+    户外运动路线决策拆解为环境暴露估计、舒适度收益、接驳成本、用户约束和证据审查五类可验证任务，由 Qwen Agent 组织假设、实验和解释。
+  \end{block}
+
+  \vspace{0.35em}
+  \scriptsize
+  \begin{tabularx}{\textwidth}{p{0.14\textwidth}Y p{0.34\textwidth}}
+    \toprule
+    研究问题 & 验证目标 & 方法支撑 \\
+    \midrule
+    RQ1 & 综合路线相较最短路线的暴露风险下降幅度与距离时间代价 & PM2.5、噪声、花粉、绿地水体联合评分 \\
+    RQ2 & 非稳定环境数据进入路线评分的可追踪口径 & 代理变量、置信度和后续实测校准路径 \\
+    RQ3 & 自然语言运动需求到可计算约束的转换精度 & 出发点、年龄、距离、时段、区域、补给点、敏感标签解析 \\
+    RQ4 & 路线选择与导航规划场景的识别和分段评分能力 & 运动路线评分、接驳成本、入口可达性和分段总成本 \\
+    RQ5 & AI Scientist 假设和解释的证据约束强度 & 文献证据、数据源、基线结果和审查 Agent 联合校验 \\
+    \bottomrule
+  \end{tabularx}
+\end{frame}
+
+\begin{frame}{相对已有研究的差异化贡献}
+  \small
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{block}{从单点方法到研究闭环}
+      \begin{itemize}
+        \smallitem
+        \item 文献证据生成研究问题
+        \item 数据可得性约束实验设计
+        \item 基线对比验证推荐效果
+        \item 审查 Agent 控制引用和表述边界
+      \end{itemize}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{block}{从低污染路径到运动决策}
+      \begin{itemize}
+        \smallitem
+        \item 评分对象扩展到跑步、步行、散步和出发接驳
+        \item 环境因子扩展到空气、花粉、噪声、绿地水体
+        \item 用户约束加入年龄、时段、距离和补给偏好
+        \item 输出路线理由、风险来源、接驳成本和替代方案
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\section{研究流程与技术实现}
+
+\begin{frame}{研究范围与路线库}
+  \scriptsize
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{block}{第一阶段区域}
+      \begin{itemize}
+        \smallitem
+        \item \kw{徐汇区单区 MVP}：城市密度高，滨江资源和商业 POI 丰富
+        \item 覆盖徐汇滨江、上海植物园周边、漕河泾、徐家汇、龙华、康健等场景
+        \item 临港新城放入后续扩展
+      \end{itemize}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{block}{功能主线}
+      \begin{itemize}
+        \smallitem
+        \item \kw{路线选择}：用户已在户外，寻找附近可直接开始的运动路线
+        \item \kw{路线导航规划}：用户从当前位置、家、学校或公司前往运动入口
+        \item \kw{环境评分}：对运动段和接驳段进行分段评分与综合排序
+      \end{itemize}
+    \end{block}
+  \end{columns}
+
+  \vspace{0.15em}
+  \begin{tabularx}{\textwidth}{p{0.18\textwidth}p{0.18\textwidth}Y}
+    \toprule
+    类型 & 建议数量 & 场景说明 \\
+    \midrule
+    滨江跑步 & 35 & 3--10 km，徐汇滨江、龙腾大道、滨水步道 \\
+    公园与绿道 & 35 & 1--8 km，上海植物园、康健园、社区绿地和绿道 \\
+    社区环线 & 30 & 1--5 km，居民区周边晨跑、夜跑和散步 \\
+    补给主题 & 25 & 早餐、便利店、厕所、地铁站等 POI \\
+    低暴露主题 & 25 & 低空气风险、低噪声、少主干道、绿地水体优先 \\
+    接驳导航样例 & 30--50 & 当前位置、家、学校、公司、地铁站到路线入口 \\
+    \bottomrule
+  \end{tabularx}
+\end{frame}
+
+\begin{frame}{数据体系：来源与获取处理}
+  \scriptsize
+  \renewcommand{\arraystretch}{0.82}
+  \begin{tabularx}{\textwidth}{p{0.14\textwidth}p{0.27\textwidth}p{0.28\textwidth}Y}
+    \toprule
+    数据类型 & 主要来源 & 获取与初步处理 & 进入模块 \\
+    \midrule
+    空气质量 & 上海生态环境局、CNEMC、AQICN & 抓取站点、分区、小时观测，统一时间、单位和缺测标记 & 当前风险、短时预测、空气评分 \\
+    历史与格网污染 & TAP、ScienceDB、Zenodo & 下载格网或历史文件，裁剪到徐汇区 & PM2.5 背景场、空间校准 \\
+    气象 & 中国气象数据网、高德天气、和风天气 & 查询目标时段温度、湿度、风速、风向、降水 & 空气预测、花粉代理、热舒适度 \\
+    花粉 & Google Pollen、IQAir、季节植被代理 & 外部预报优先，缺口由月份、天气、植被类型估计 & 过敏风险、置信度提示 \\
+    噪声 & 上海生态环境局、道路等级、高架和商业 POI & 整理声环境资料，叠加主干道、高架距离和商业密度 & 低噪声路线评分 \\
+    绿地水体 & OSM、ESA WorldCover、上海绿道资料 & 提取公园、草地、林地、水体和滨水空间 & 生态舒适度、花粉和空气修正 \\
+    路网与 POI & 高德路径规划、POI 搜索、OSM & 生成路线，查询早餐店、便利店、厕所、地铁站 & 候选路线、场景标签、补给匹配 \\
+    用户与文献 & 模拟画像、问卷、PubMed、ScienceDirect & 抽取区域、距离、时段、过敏标签，整理论文卡片 & 权重调整、假设生成、引用审查 \\
+    \bottomrule
+  \end{tabularx}
+\end{frame}
+
+\begin{frame}{PM2.5 数据处理流程}
+  \scriptsize
+  \begin{block}{主链路}
+    站点小时观测 $\rightarrow$ 目标时段预测 $\rightarrow$ 区域背景场 $\rightarrow$ 道路段赋值 $\rightarrow$ 路线空气风险。
+  \end{block}
+
+  \vspace{0.1em}
+  \begin{enumerate}
+    \smallitem
+    \item \kw{站点表与小时表}：保存站点名称、经纬度、所属区域、PM2.5、AQI、PM10、O3、NO2、数据来源和采集时间，统一单位、时间格式和缺测标记。
+    \item \kw{目标时段预测}：当前出行读取最近 1 小时有效观测；未来出行构造 1 小时、3 小时、24 小时均值、变化率、同小时历史均值和气象特征，训练 XGBoost 或 LightGBM 预测目标小时 PM2.5。
+    \item \kw{区域背景场}：格网数据先裁剪到徐汇区，再用站点预测值校正格网偏差；格网缺口场景下，使用站点预测值做 IDW 或 Kriging 插值。
+    \item \kw{道路段映射}：把步行、跑步和散步路网切成 50 m 或 100 m 路段，用中心点或缓冲区叠加 PM2.5 背景场，得到路段基础暴露估计。
+    \item \kw{道路侧修正与校验}：主干路、高架、路口密度和商业密度上调空气风险，公园和滨水步道下调空气风险；站点预测看 R2、RMSE、MAE，空间映射做留一站点验证。
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{候选路线与接驳导航生成}
+  \scriptsize
+  \begin{block}{生成逻辑}
+    候选路线采用“徐汇区边界 + 运动入口 + 途经 POI + 地图路径 + 路线过滤”的流程，第一阶段生成约 150 条运动路线和 30--50 组接驳导航样例。
+  \end{block}
+
+  \vspace{0.1em}
+  \begin{itemize}
+    \smallitem
+    \item \kw{空间底图}：裁剪徐汇区边界内的路网、绿地、水体和 POI，建立跑步、步行和散步可用路网。
+    \item \kw{运动入口池}：地铁站出口、公园入口、滨江步道入口、社区中心、学校和办公区作为可达入口。
+    \item \kw{运动路线生成}：环线跑采用入口、途经点、入口结构，目的地跑采用入口到目的地结构，附近路线采用当前位置、最近入口、运动环线组合。
+    \item \kw{接驳导航生成}：从当前位置、家、学校、公司、地铁站到运动入口、公园入口、滨江入口或指定目的地生成接驳路径。
+    \item \kw{质量过滤与标注}：按目标距离、重复率、绕行率、入口可达性、接驳成本和场景贴合度筛选，并补充推荐时段、适合人群和场景标签。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{环境暴露与舒适度评分}
+  \scriptsize
+  \begin{block}{评分主链路}
+    路段环境特征 $\rightarrow$ 运动路线评分 $\rightarrow$ 接驳导航评分 $\rightarrow$ 用户画像权重修正 $\rightarrow$ 综合排序与解释。
+  \end{block}
+
+  \vspace{0.1em}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{block}{风险项}
+      \begin{itemize}
+        \smallitem
+        \item \kw{空气风险}：由 PM2.5 暴露估计、AQI 和道路侧修正组成，输出相较最短路线的空气风险下降幅度。
+        \item \kw{花粉风险}：由外部预报、季节天气代理和植被暴露组成，过敏用户提高权重，并附带置信度标签。
+        \item \kw{噪声风险}：由道路等级、高架距离、路口密度和商业密度组成，老人、亲子和散步场景提高权重。
+        \item \kw{接驳风险}：由出发点到路线入口的距离、时间、主干道比例和步行安全代理组成。
+      \end{itemize}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{block}{收益项与约束项}
+      \begin{itemize}
+        \smallitem
+        \item \kw{绿地水体}：由绿地覆盖率、水体邻近和公园距离生成生态舒适度收益。
+        \item \kw{距离与连续性}：由目标距离偏差、预计时间、绕行率、路口密度和重合率控制路线可用性。
+        \item \kw{POI 匹配}：由早餐店、便利店、厕所、地铁站沿线命中生成补给分，并进入推荐理由。
+        \item \kw{入口可达性}：由当前位置或固定出发点到入口的距离和时间生成导航规划适配度。
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Qwen 多智能体架构：工具与产出}
+  \scriptsize
+  \begin{tabularx}{\textwidth}{p{0.16\textwidth}p{0.28\textwidth}p{0.25\textwidth}Y}
+    \toprule
+    Agent & 主要工具 & 处理任务 & 可复现产出 \\
+    \midrule
+    文献 Agent & PDF 解析、论文检索、引用表 & 提取方法、指标、局限 & 论文卡片、证据表 \\
+    数据 Agent & API 抓取、字段探测、许可记录 & 判断可得性、频率、空间粒度 & 数据源清单、字段字典 \\
+    假设 Agent & Qwen 推理、证据约束提示词 & 生成 RQ 和可验证假设 & 假设表、验证路径 \\
+    方法 Agent & Python 评分脚本、基线模板 & 设计模型和对比实验 & 方法流程、指标配置 \\
+    路线 Agent & 高德 API、OSM 路网、评分模型 & 生成运动路线、接驳路径并排序 & 路线库、接驳样例、排序结果 \\
+    审查 Agent & 引用核查、数据口径核查、日志 & 检查夸大表述和复现缺口 & 审查报告、修改建议 \\
+    结果 Agent & 报告模板、案例生成器 & 汇总路线、证据和解释 & 案例输出、阶段报告 \\
+    \bottomrule
+  \end{tabularx}
+
+  \vspace{0.35em}
+  \begin{block}{闭环链路}
+    用户目标输入 $\rightarrow$ 场景识别 $\rightarrow$ 文献证据与数据边界 $\rightarrow$ 路线选择或导航规划 $\rightarrow$ 分段评分和基线对比 $\rightarrow$ 审查与案例输出。
+  \end{block}
+\end{frame}
+
+\begin{frame}{典型用户案例}
+  \begin{block}{输入示例}
+    场景 1：25 岁，现在人在徐汇滨江附近，想就近跑 5 km，空气风险低一点，最好靠近水边，途中经过早餐店或便利店。
+
+    \vspace{0.35em}
+    场景 2：25 岁，今晚从家出发，想去附近公园或滨江完成 5 km 跑步，结束后方便坐地铁回家。
+  \end{block}
+
+  \vspace{0.4em}
+  \small
+  \begin{enumerate}
+    \smallitem
+    \item \kw{场景识别}：判断用户需要附近路线选择，或从固定出发点开始的路线导航规划
+    \item \kw{数据查询}：读取空气、气象、花粉、POI、绿地水体、候选运动路线和接驳路径
+    \item \kw{分段评分}：计算运动段空气风险、花粉风险、噪声风险、绿地水体、POI 匹配和接驳成本
+    \item \kw{解释输出}：给出 1--3 条推荐方案，说明路线入口、接驳时间、运动距离、风险来源和替代方案
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{实验设计与评估指标}
+  \scriptsize
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{block}{基线方案}
+      \begin{itemize}
+        \smallitem
+        \item 最短路线
+        \item 绿地优先路线
+        \item 空气优先路线
+        \item 综合模型路线
+        \item 接驳最短方案
+        \item 分段综合方案
+      \end{itemize}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{block}{评估指标}
+      \begin{itemize}
+        \smallitem
+        \item 暴露风险降低率
+        \item 距离增加率
+        \item 绿地水体覆盖率
+        \item POI 命中率
+        \item 路线多样性
+        \item 入口可达性
+        \item 分段总成本
+        \item 场景识别准确率
+        \item 可解释性与可复现性
+      \end{itemize}
+    \end{block}
+  \end{columns}
+
+  \vspace{0.2em}
+  {\color{cprimary}\textbf{核心展示：}}徐汇区单区 MVP 的路线选择、路线导航规划、环境评分、基线实验结果和 Qwen Agent 审查后的案例解释。
+\end{frame}
+
+\section{分工与交付}
+
+\begin{frame}{五人小组分工}
+  \scriptsize
+  \begin{tabularx}{\textwidth}{p{0.16\textwidth}p{0.25\textwidth}Y}
+    \toprule
+    角色 & 主要任务 & 阶段交付 \\
+    \midrule
+    文献与数据源 & 核心论文、同类工作、空气、气象、花粉、噪声、绿地水体数据源 & 论文卡片、数据源表、引用清单 \\
+    GIS 与路线生成 & 徐汇区边界、路网、POI、约 150 条运动路线和接驳导航样例 & 路线库、入口池、接驳路径、路线过滤脚本 \\
+    环境暴露模型 & PM2.5、花粉、噪声、绿地水体、道路等级、POI 和接驳成本评分 & 路段评分脚本、权重表、评分结果 \\
+    Qwen Agent & 多智能体流程、提示词、上下文工程和工具调用 & Agent 工作流、提示词模板、中间结果样例 \\
+    实验与整合 & 路线选择和导航规划基线对比、评估指标、典型用户案例、工程目录 & 实验脚本、对比表、案例输出、项目规范 \\
+    \bottomrule
+  \end{tabularx}
+\end{frame}
+
+\begin{frame}{阶段交付清单}
+  \scriptsize
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{block}{数据与模型}
+      \begin{itemize}
+        \smallitem
+        \item 徐汇区边界、路网、POI
+        \item 约 150 条运动路线及环境特征
+        \item 30--50 组接驳导航样例与分段评分
+        \item 环境暴露评分脚本和参数说明
+      \end{itemize}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{block}{Agent 与案例}
+      \begin{itemize}
+        \smallitem
+        \item Qwen AI Scientist 提示词和工具调用流程
+        \item 路线选择、导航规划案例输出
+        \item 基线对比结果、引用论文与数据源清单
+      \end{itemize}
+    \end{block}
+  \end{columns}
+
+  \vspace{0.3em}
+  \begin{exampleblock}{阶段成果}
+    Qwen 多智能体组织文献证据、城市数据、科学假设、路线选择、导航规划、环境评分和案例解释，形成可复现 AI Scientist 原型。
+  \end{exampleblock}
+\end{frame}
+
+\makebottom
+
+\end{document}

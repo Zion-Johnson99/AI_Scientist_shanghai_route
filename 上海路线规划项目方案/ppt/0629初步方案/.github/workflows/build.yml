@@ -1,0 +1,115 @@
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - '**'
+      - '!contrib/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - '**'
+      - '!contrib/**'
+
+name: Build
+
+jobs:
+  build-xelatex:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v6
+        name: checkout code
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          scheme: full
+          run: .github/ci/build_test_variants.sh -halt-on-error -time -quiet -xelatex
+        name: build test variants with XeLaTeX
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          scheme: full
+          run: |
+            apk add font-noto-cjk
+            .github/ci/gen_cover.sh -halt-on-error -time -xelatex
+        name: build cover with XeLaTeX
+      - run: cat build/build-*.log
+        name: display build log
+        if: ${{ failure() || success() }}
+      - uses: actions/upload-artifact@v7
+        with:
+          path: |
+            build/build-*.pdf
+            build/cover.pdf
+          name: build-xelatex
+        name: upload build artifacts
+  build-lualatex:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v6
+        name: checkout code
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          scheme: full
+          run: .github/ci/build_test_variants.sh -halt-on-error -time -quiet -lualatex
+        name: build test variants with LuaLaTeX
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          scheme: full
+          run: |
+            apk add font-noto-cjk
+            .github/ci/gen_cover.sh -halt-on-error -time -quiet -lualatex
+        name: build cover with LuaLaTeX
+      - run: cat build/*.log
+        name: display build log
+        if: ${{ failure() || success() }}
+      - uses: actions/upload-artifact@v7
+        with:
+          path: |
+            build/build-*.pdf
+            build/cover.pdf
+          name: build-lualatex
+        name: upload build artifacts
+  build-package:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v6
+        name: checkout code
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          scheme: full
+          run: |
+            export diffexe="diff -U 3"
+            apk add zip diffutils
+            tlmgr update --self
+            tlmgr update l3build
+            make build-dev
+        name: build package with l3build
+      - name: check if generated files are of latest version
+        run: |
+          git diff --exit-code
+      - uses: actions/upload-artifact@v7
+        with:
+          path: |
+            src/build/distrib/tds/doc
+            src/build/distrib/tds/source
+            src/build/distrib/tds/tex
+            src/build/distrib/tds/sjtubeamer-online.zip
+          name: sjtubeamer.tds
+        name: upload build artifacts
+  check-format:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v6
+        name: checkout code
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          scheme: full
+          run: |
+            apk add diffutils findutils git make
+            git config --global --add safe.directory /home/runner/work/SJTUBeamer/SJTUBeamer
+            make format-dev
+      - name: check if generated files are of latest version
+        run: |
+          git diff --exit-code
