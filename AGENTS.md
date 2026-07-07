@@ -12,6 +12,8 @@
 
 项目技能优先服务本项目，个人电脑里的全局技能只作为补充。组员提问时直接说任务目标，Codex 会根据技能描述自动选择；遇到关键任务，也可显式点名技能，例如 paper-lookup、geopandas、pptx、humanizer-zh。
 
+当前 `.agents/skills` 已放入 90 个项目技能，覆盖科研 Agent、文献检索、数据接入、空间分析、统计建模、图表、Office 交付、前端原型和协作流程。新增或同步技能后，先检查 `SKILL.md` 的 `name`、`description` 和触发场景，再把高频技能补进下表。
+
 ## 技能触发条件
 
 | 任务类型 | 优先技能 | 触发场景 |
@@ -27,41 +29,64 @@
 | 原型与界面 | `frontend-design`、`playwright`、`browser-use` | Web 原型、交互验证、页面截图、浏览器自动测试 |
 | 编码流程 | `karpathy-guidelines`、`test-driven-development`、`systematic-debugging`、`verification-before-completion`、`using-git-worktrees` | 写代码、修 bug、验证结果、准备合并 |
 | 团队开发方法 | `using-superpowers`、`writing-plans`、`executing-plans`、`requesting-code-review`、`receiving-code-review`、`finishing-a-development-branch` | 任务拆解、多人协作、评审、收尾和分支整理 |
+| AI4S 全链路 | `ai4s-agent`、`experiment-suite`、`research-manager`、`compiler`、`loopy` | 科研任务从方向、假设、实验、验证到交付物的全流程组织 |
+| 数据库与资源查找 | `database-lookup`、`get-available-resources`、`paperzilla`、`research-explorer` | 查公共科学数据库、检索可用资源、梳理研究方向和代表论文 |
+| 严谨性审查 | `integrity-auditor`、`rigor-reviewer`、`counterargument`、`validation` | 审查引用、数据口径、论证漏洞、验证协议和夸大表述 |
+| 高级空间与示意 | `geomaster`、`figure`、`mindmap-render`、`using-opentikz`、`research-visualizer` | 空间科学分析、论文图、思维导图、TikZ 图和研究过程可视化 |
+| 技能维护 | `writing-skills` | 新增、修改和检查项目技能 |
 
 ## 项目分工
 
-五人协作按“Agent 架构、路线规划、数据接入、评分体系、队长整合”推进。每个任务都要产出一个可检查物：文档段落、数据表、脚本、图表、PPT 页面、实验结果或 PR 链接。
+五人协作按“路线规划、数据接入、评分体系、Agent 架构、队长整合”推进。每个任务都要产出一个可检查物：文档段落、数据表、脚本、图表、PPT 页面、实验结果或 PR 链接。
 
 | 成员 | 角色 | 主要任务 | 个人分支 |
 | --- | --- | --- | --- |
-| ZJX | 队长与总架构 | 维护项目目标、总方案、Agent 总链路、阶段审查、combine 到 main 的最终合并 | `agent/zjx-orchestration` |
-| WN | Agent 架构 | 训练和整理文献 Agent、数据 Agent、假设 Agent、实验 Agent、路线 Agent、审查 Agent 的工作流与提示词 | `agent/wn-workflow` |
-| WJX | 路线与规划 | 构建徐汇 150 条候选路线、点位建议、路线选择、路线导航规划和自动规划功能 | `route/wjx-xuhui-150` |
-| LYW | 数据查找与接入 | 查找并核实空气质量、气象、花粉、噪声、绿地、水体、路网、POI、行政边界等数据源 | `data/lyw-source-ingest` |
-| TYC | 评分体系 | 构建环境暴露评分、指标权重、代理变量、置信度、边缘情况和对比实验 | `score/tyc-rating-model` |
+| ZJX | 队长、路线选择与路线规划导航 | 维护项目目标和总方案，推进徐汇区路线选择、入口池、候选路线、接驳导航和阶段审查 | `agent/zjx-orchestration` |
+| WN | 数据搜集与接入 | 按方案要求核实空气质量、PM2.5、AQI、气象、花粉和空气质量备用来源，整理字段、时间粒度、空间粒度和接入方式 | `agent/wn-workflow` |
+| TYC | 数据搜集、代理变量与评分准备 | 按方案要求核实噪声、绿地、水体、路网、POI、行政边界和数据代理变量，整理可用性、限制和评分接口字段 | `score/tyc-rating-model` |
+| WJX | 暂无本周主动任务 | 本周先关注组内同步，后续接手路线库扩展、自动规划脚本或前端展示任务 | `route/wjx-xuhui-150` |
+| LYW | 暂无本周主动任务 | 本周先关注组内同步，后续接手数据源补充、数据清洗或图表整理任务 | `data/lyw-source-ingest` |
 
-WN 和 ZJX 的 Agent 架构工作保持接口一致：Agent 输出要能被路线、数据、评分三个模块读取，例如数据源表、路线候选表、评分指标表、实验结果表和解释文本。
+WN、TYC 和 ZJX 的接口保持一致：数据源表、路线候选表、评分指标表、接驳导航样例和解释文本都使用可追踪字段，便于后续 Agent、路线、数据和评分模块读取。
+
+## 本周工作安排 2026-07-06 至 2026-07-12
+
+本周目标是先把徐汇区路线规划闭环和数据接入底表搭起来，交付物以 Markdown 表、CSV 样表、脚本草案和可复查来源链接为主。
+
+| 成员 | 本周主线 | 具体任务 | 周末交付 |
+| --- | --- | --- | --- |
+| ZJX | 徐汇区路线选择与路线规划导航 | 根据方案中的路线选择和路线导航规划两类场景，确定徐汇滨江、上海植物园、康健园、徐家汇、龙华、衡复风貌区、漕河泾等重点区域；整理运动入口池，包括地铁站出口、公园入口、滨江步道入口、学校、办公区和社区节点；设计 3 km、5 km、8 km、10 km 跑步路线与 1 km、2 km、3 km 步行路线的候选生成口径；整理 10-15 组接驳导航样例，覆盖家、学校、公司、当前位置、地铁站到运动入口 | `docs/routes/xuhui_route_plan_2026-07-12.md`、入口池样表、候选路线样表、接驳导航样例表 |
+| WN | 空气质量、气象和花粉数据接入 | 按方案 4.2.1 的 PM2.5 处理链路，核实上海市生态环境局空气质量实时发布、站点页、分区页、站点 24 小时接口、历史日均接口、过去 30 天趋势接口；补充 AQICN、IQAir、中国环境监测总站、TAP / ChinaHighPM2.5、ScienceDB、Zenodo 等备用来源；整理气象入口，包括中国气象数据网、高德天气、和风天气；整理花粉数据入口和季节、天气、植被类型代理字段 | `docs/data/air_weather_pollen_sources_2026-07-12.md`、数据源字段表、接口可用性记录、最小接入字段清单 |
+| TYC | 噪声、绿地水体、路网、POI 和评分字段 | 按方案 4.2、4.3、4.4 的路段特征需求，核实上海市噪声公开资料、上海公共数据开放平台、OSM、Overpass、Geofabrik、高德 POI、高德路径规划、上海绿道建设、ESA WorldCover、中国土地覆盖数据等来源；整理道路等级、高架距离、主干道距离、绿地覆盖率、水体邻近、POI 密度、路口密度、入口可达性和接驳成本字段；给每个字段标注来源、计算方式、置信度和评分方向 | `docs/data/geo_poi_noise_sources_2026-07-12.md`、路段特征字段表、评分变量草案、数据限制说明 |
+| WJX | 暂无主动任务 | 关注 ZJX 的路线样表结构，记录后续可接手的路线生成、去重和自动规划任务 | 同步记录或评审意见 |
+| LYW | 暂无主动任务 | 关注 WN、TYC 的数据源表结构，记录后续可接手的数据清洗、补充核实和图表任务 | 同步记录或评审意见 |
+
+本周检查点：
+
+1. 7 月 8 日前完成数据源清单初稿和路线入口池初稿。
+2. 7 月 10 日前完成候选路线样表、接驳导航样表和评分字段表。
+3. 7 月 12 日前完成三份周交付文档，并在 PR 中写清来源、字段、验证方式和剩余风险。
 
 ## Git 新手协作流程
 
-项目采用三层分支：`main` 保存最终稳定版，`combine` 保存队长审查后的团队整合版，个人分支保存成员正在完成的任务。
+项目采用三层分支：`main` 保存最终稳定版，`develop` 保存队长审查后的团队整合版，个人分支保存成员正在完成的任务。
 
-主链路为：个人分支 -> PR 到 `combine` -> 队长审查 `combine` -> 阶段完成后合入 `main`。
+主链路为：个人分支 -> PR 到 `develop` -> 队长审查 `develop` -> 阶段完成后合入 `main`。
 
 首次拉取项目：
 
 ```powershell
 git clone https://github.com/Zion-Johnson99/AI_Scientist_shanghai_route.git
 cd AI_Scientist_shanghai_route
-git checkout combine
-git pull origin combine
+git checkout develop
+git pull origin develop
 ```
 
-成员开始新任务前，先从最新 `combine` 创建个人分支：
+成员开始新任务前，先从最新 `develop` 创建个人分支：
 
 ```powershell
-git checkout combine
-git pull origin combine
+git checkout develop
+git pull origin develop
 git checkout -b agent/wn-workflow
 git status
 ```
@@ -83,43 +108,53 @@ git commit -m "docs: 补充徐汇区路线方案"
 git push -u origin agent/wn-workflow
 ```
 
-推送后在 GitHub 创建 Pull Request，目标分支选 `combine`，来源分支选自己的个人分支。PR 合并前保留个人分支，后续任务仍在这个分支或新建更细的任务分支上继续。
+推送后在 GitHub 创建 Pull Request，目标分支选 `develop`，来源分支选自己的个人分支。PR 合并前保留个人分支，后续任务仍在这个分支或新建更细的任务分支上继续。
 
 成员同步团队最新进度：
 
 ```powershell
-git checkout combine
-git pull origin combine
+git checkout develop
+git pull origin develop
 git checkout agent/wn-workflow
-git merge combine
+git merge develop
 ```
 
 如果出现冲突，先运行 `git status` 看冲突文件，再找队长一起决定保留哪一版。处理完冲突后：
 
 ```powershell
 git add 冲突已处理的文件
-git commit -m "chore: 同步 combine 最新进度"
+git commit -m "chore: 同步 develop 最新进度"
 git push
 ```
 
-队长把 `combine` 汇入 `main`：
+队长把 `develop` 汇入 `main`：
 
 ```powershell
 git checkout main
 git pull origin main
-git merge origin/combine
+git merge origin/develop
 git push origin main
 ```
 
 阶段结束后，所有成员再同步最新主线：
 
 ```powershell
-git checkout combine
-git pull origin combine
+git checkout develop
+git pull origin develop
 git merge origin/main
-git push origin combine
+git push origin develop
 git checkout 自己的个人分支
-git merge combine
+git merge develop
+```
+
+旧本地 `combine` 分支迁移到 `develop`：
+
+```powershell
+git fetch origin
+git checkout combine
+git branch -m develop
+git branch --set-upstream-to=origin/develop develop
+git status
 ```
 
 提交信息前缀：
