@@ -69,9 +69,19 @@ WN、TYC 和 ZJX 的接口保持一致：数据源表、路线候选表、评分
 
 ## Git 新手协作流程
 
-项目采用三层分支：`main` 保存最终稳定版，`develop` 保存队长审查后的团队整合版，个人分支保存成员正在完成的任务。
+项目采用三层分支：`main` 保存最终稳定版，`develop` 保存队长审查后的团队整合版，个人分支保存成员正在完成的任务。日常修改放在个人分支，`develop` 和 `main` 只接收经过检查后的合并结果。
 
-主链路为：个人分支 -> PR 到 `develop` -> 队长审查 `develop` -> 阶段完成后合入 `main`。
+主链路为：GitHub 仓库 -> 本地 `develop` -> 个人分支 -> PR 到 `develop` -> 队长审查 `develop` -> 阶段完成后合入 `main`。
+
+常用概念：
+
+| 概念 | 含义 | 使用场景 |
+| --- | --- | --- |
+| `origin` | 本地仓库给 GitHub 远程仓库起的默认名字 | `git pull origin develop`、`git push origin main` |
+| `develop` | 团队日常整合分支 | 组员从这里拉最新进度，PR 也合到这里 |
+| `main` | 最终稳定分支 | 阶段成果稳定后由队长从 `develop` 合入 |
+| 个人分支 | 每个人写任务的工作分支 | 例如 `agent/wn-workflow`、`score/tyc-rating-model` |
+| PR | Pull Request，合并请求 | 组员请求把个人分支的改动合进 `develop`，供队长和组员审查 |
 
 首次拉取项目：
 
@@ -99,25 +109,41 @@ git status
 - LYW：`data/lyw-source-ingest`
 - TYC：`score/tyc-rating-model`
 
-完成一小段任务后提交并推送：
+每天开工先同步团队最新进度：
+
+```powershell
+git checkout develop
+git pull origin develop
+git checkout 自己的个人分支
+git merge develop
+git status
+```
+
+平时开发只在自己的个人分支上改文件。每完成一小段可检查任务，先本地提交一次：
 
 ```powershell
 git status
 git add 需要提交的文件
 git commit -m "docs: 补充徐汇区路线方案"
-git push -u origin agent/wn-workflow
 ```
 
-推送后在 GitHub 创建 Pull Request，目标分支选 `develop`，来源分支选自己的个人分支。PR 合并前保留个人分支，后续任务仍在这个分支或新建更细的任务分支上继续。
-
-成员同步团队最新进度：
+准备推送或开 PR 前，再同步一次 `develop`，降低冲突风险：
 
 ```powershell
 git checkout develop
 git pull origin develop
-git checkout agent/wn-workflow
+git checkout 自己的个人分支
 git merge develop
+git status
 ```
+
+同步后运行本任务相关验证，例如文档检查、脚本核心路径、测试、formatter、linter 或类型检查。验证通过后再推送个人分支：
+
+```powershell
+git push -u origin 自己的个人分支
+```
+
+推送后在 GitHub 创建 Pull Request，目标分支选 `develop`，来源分支选自己的个人分支。PR 页面写清本次目标、改动文件、验证方式和需要重点看的地方。PR 合并前保留个人分支，后续任务仍在这个分支或新建更细的任务分支上继续。
 
 如果出现冲突，先运行 `git status` 看冲突文件，再找队长一起决定保留哪一版。处理完冲突后：
 
@@ -126,6 +152,13 @@ git add 冲突已处理的文件
 git commit -m "chore: 同步 develop 最新进度"
 git push
 ```
+
+推荐同步频率：
+
+- 每天开工同步一次 `develop`
+- 准备开 PR 前同步一次 `develop`
+- 同一批文件多人高频修改时，中午或晚上额外同步一次
+- 看到 GitHub 上 `develop` 有新合并时，尽快同步到自己的个人分支
 
 队长把 `develop` 汇入 `main`：
 
