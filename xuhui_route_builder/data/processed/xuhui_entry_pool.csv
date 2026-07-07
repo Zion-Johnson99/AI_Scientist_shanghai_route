@@ -1,0 +1,7 @@
+﻿entry_id,entry_name,entry_type,region_zone,lng_gcj02,lat_gcj02,lng_wgs84,lat_wgs84,source_url,confidence,poi_id,address,parent_poi,navi_poiid,entr_location,nearest_metro,source_api
+XH_ENT_0001,龙耀路地铁站滨江入口,metro_exit,徐汇滨江,121.4598,31.1592,121.455241,31.161142,https://www.meet-in-shanghai.net/tc/news/sports-paradise-beautiful-riverside-artistic-shoreline-come-and-run-along-the-xuhui-riverside-514030/,4,,,,,,,manual_seed
+XH_ENT_0002,上海植物园1号门,park_gate,上海植物园,121.4382,31.1493,121.43359,31.151204,https://www.shbg.org/,4,,,,,,,manual_seed
+XH_ENT_0003,衡山路8号入口,scenic_node,衡复风貌区,121.446,31.205,121.441401,31.206889,https://www.xuhui.gov.cn/xwzx_zwxx/20250211/551975.html,4,,,,,,,manual_seed
+XH_ENT_0004,龙华烈士陵园一号门,scenic_node,龙华,121.4529,31.1764,121.448321,31.178317,https://www.jfdaily.com/sgh/detail?id=4010125,4,,,,,,,manual_seed
+XH_ENT_0005,徐家汇公园入口,park_gate,徐家汇,121.4418,31.1984,121.437193,31.200285,https://www.xujiahuiorigin.com/zouJin/jingQuXunLiInner?id=1f12b109c4aa7037b47d5f800d6c5c2d,4,,,,,,,manual_seed
+XH_ENT_0006,桂江路中环绿廊入口,community_node,康健园,121.4205,31.1508,121.415864,31.152682,https://www.thepaper.cn/newsDetail_forward_23437827,4,,,,,,,manual_seed

@@ -1,0 +1,135 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "route_id": "XH_SAMPLE_0001",
+        "route_name": "徐汇滨江舒心跑",
+        "route_mode": "run",
+        "target_distance_m": 3000,
+        "actual_distance_m": 3000,
+        "duration_s": 1500,
+        "start_entry_id": "XH_ENT_0001",
+        "end_entry_id": "XH_ENT_0001",
+        "region_zone": "徐汇滨江",
+        "tags": [
+          "滨江",
+          "夜跑"
+        ],
+        "source_method": "manual_sample",
+        "road_names": [],
+        "turn_count": 0,
+        "route_inside_ratio": null,
+        "future_score": null,
+        "score_note": "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。",
+        "raw_response_path": null
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            121.4598,
+            31.1592
+          ],
+          [
+            121.4565,
+            31.164
+          ],
+          [
+            121.452,
+            31.17
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "route_id": "XH_SAMPLE_0002",
+        "route_name": "衡复音乐街区 Citywalk",
+        "route_mode": "walk",
+        "target_distance_m": 2600,
+        "actual_distance_m": 2600,
+        "duration_s": 1300,
+        "start_entry_id": "XH_ENT_0002",
+        "end_entry_id": "XH_ENT_0002",
+        "region_zone": "衡复风貌区",
+        "tags": [
+          "历史建筑",
+          "梧桐"
+        ],
+        "source_method": "manual_sample",
+        "road_names": [],
+        "turn_count": 0,
+        "route_inside_ratio": null,
+        "future_score": null,
+        "score_note": "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。",
+        "raw_response_path": null
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            121.446,
+            31.205
+          ],
+          [
+            121.442,
+            31.2068
+          ],
+          [
+            121.439,
+            31.208
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "route_id": "XH_SAMPLE_0003",
+        "route_name": "上海植物园南区花园环线",
+        "route_mode": "walk",
+        "target_distance_m": 3000,
+        "actual_distance_m": 3000,
+        "duration_s": 1500,
+        "start_entry_id": "XH_ENT_0003",
+        "end_entry_id": "XH_ENT_0003",
+        "region_zone": "上海植物园",
+        "tags": [
+          "绿地",
+          "花粉提示"
+        ],
+        "source_method": "manual_sample",
+        "road_names": [],
+        "turn_count": 0,
+        "route_inside_ratio": null,
+        "future_score": null,
+        "score_note": "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。",
+        "raw_response_path": null
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            121.4382,
+            31.1493
+          ],
+          [
+            121.435,
+            31.1515
+          ],
+          [
+            121.433,
+            31.148
+          ],
+          [
+            121.4382,
+            31.1493
+          ]
+        ]
+      }
+    }
+  ]
+}

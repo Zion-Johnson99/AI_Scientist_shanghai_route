@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>徐汇路线构建器</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%23256f74'/%3E%3Cpath d='M4 9h8M8 4v8' stroke='white' stroke-width='2'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar">
+        <header class="panel-header">
+          <p class="eyebrow">Xuhui Route Builder</p>
+          <h1>徐汇运动路线库</h1>
+        </header>
+        <section class="controls" aria-label="路线筛选">
+          <label>
+            路线类型
+            <select id="modeFilter">
+              <option value="all">全部</option>
+              <option value="run">跑步</option>
+              <option value="walk">步行</option>
+              <option value="bike">骑行</option>
+            </select>
+          </label>
+        </section>
+        <section>
+          <h2>路线列表</h2>
+          <div id="routeList" class="route-list"></div>
+        </section>
+        <section id="routeDetail" class="detail" aria-live="polite"></section>
+      </aside>
+      <section class="map-wrap" aria-label="徐汇路线地图">
+        <div id="map"></div>
+      </section>
+    </main>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

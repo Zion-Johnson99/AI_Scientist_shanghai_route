@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "district_name": "徐汇区",
+        "adcode": "310104",
+        "source_api": "manual_sample"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [121.3900, 31.1300],
+            [121.4850, 31.1300],
+            [121.4850, 31.2250],
+            [121.3900, 31.2250],
+            [121.3900, 31.1300]
+          ]
+        ]
+      }
+    }
+  ]
+}

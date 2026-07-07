@@ -1,0 +1,56 @@
+[
+  {
+    "route_id": "XH_SAMPLE_0001",
+    "route_name": "徐汇滨江舒心跑",
+    "route_mode": "run",
+    "distance_level": "3km",
+    "target_distance_m": 3000,
+    "distance_m": 3000,
+    "duration_min": 25.0,
+    "start_entry_id": "XH_ENT_0001",
+    "end_entry_id": "XH_ENT_0001",
+    "region_zone": "徐汇滨江",
+    "tags": [
+      "滨江",
+      "夜跑"
+    ],
+    "future_score": null,
+    "score_note": "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。"
+  },
+  {
+    "route_id": "XH_SAMPLE_0002",
+    "route_name": "衡复音乐街区 Citywalk",
+    "route_mode": "walk",
+    "distance_level": "2.6km",
+    "target_distance_m": 2600,
+    "distance_m": 2600,
+    "duration_min": 21.7,
+    "start_entry_id": "XH_ENT_0002",
+    "end_entry_id": "XH_ENT_0002",
+    "region_zone": "衡复风貌区",
+    "tags": [
+      "历史建筑",
+      "梧桐"
+    ],
+    "future_score": null,
+    "score_note": "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。"
+  },
+  {
+    "route_id": "XH_SAMPLE_0003",
+    "route_name": "上海植物园南区花园环线",
+    "route_mode": "walk",
+    "distance_level": "3km",
+    "target_distance_m": 3000,
+    "distance_m": 3000,
+    "duration_min": 25.0,
+    "start_entry_id": "XH_ENT_0003",
+    "end_entry_id": "XH_ENT_0003",
+    "region_zone": "上海植物园",
+    "tags": [
+      "绿地",
+      "花粉提示"
+    ],
+    "future_score": null,
+    "score_note": "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。"
+  }
+]

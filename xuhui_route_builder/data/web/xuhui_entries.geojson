@@ -1,0 +1,179 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "XH_ENT_0001",
+        "entry_name": "龙耀路地铁站滨江入口",
+        "entry_type": "metro_exit",
+        "region_zone": "徐汇滨江",
+        "lng_gcj02": 121.4598,
+        "lat_gcj02": 31.1592,
+        "lng_wgs84": 121.455241,
+        "lat_wgs84": 31.161142,
+        "source_url": "https://www.meet-in-shanghai.net/tc/news/sports-paradise-beautiful-riverside-artistic-shoreline-come-and-run-along-the-xuhui-riverside-514030/",
+        "confidence": 4,
+        "poi_id": null,
+        "address": null,
+        "parent_poi": null,
+        "navi_poiid": null,
+        "entr_location": null,
+        "nearest_metro": null,
+        "source_api": "manual_seed"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4598,
+          31.1592
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "XH_ENT_0002",
+        "entry_name": "上海植物园1号门",
+        "entry_type": "park_gate",
+        "region_zone": "上海植物园",
+        "lng_gcj02": 121.4382,
+        "lat_gcj02": 31.1493,
+        "lng_wgs84": 121.43359,
+        "lat_wgs84": 31.151204,
+        "source_url": "https://www.shbg.org/",
+        "confidence": 4,
+        "poi_id": null,
+        "address": null,
+        "parent_poi": null,
+        "navi_poiid": null,
+        "entr_location": null,
+        "nearest_metro": null,
+        "source_api": "manual_seed"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4382,
+          31.1493
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "XH_ENT_0003",
+        "entry_name": "衡山路8号入口",
+        "entry_type": "scenic_node",
+        "region_zone": "衡复风貌区",
+        "lng_gcj02": 121.446,
+        "lat_gcj02": 31.205,
+        "lng_wgs84": 121.441401,
+        "lat_wgs84": 31.206889,
+        "source_url": "https://www.xuhui.gov.cn/xwzx_zwxx/20250211/551975.html",
+        "confidence": 4,
+        "poi_id": null,
+        "address": null,
+        "parent_poi": null,
+        "navi_poiid": null,
+        "entr_location": null,
+        "nearest_metro": null,
+        "source_api": "manual_seed"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.446,
+          31.205
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "XH_ENT_0004",
+        "entry_name": "龙华烈士陵园一号门",
+        "entry_type": "scenic_node",
+        "region_zone": "龙华",
+        "lng_gcj02": 121.4529,
+        "lat_gcj02": 31.1764,
+        "lng_wgs84": 121.448321,
+        "lat_wgs84": 31.178317,
+        "source_url": "https://www.jfdaily.com/sgh/detail?id=4010125",
+        "confidence": 4,
+        "poi_id": null,
+        "address": null,
+        "parent_poi": null,
+        "navi_poiid": null,
+        "entr_location": null,
+        "nearest_metro": null,
+        "source_api": "manual_seed"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4529,
+          31.1764
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "XH_ENT_0005",
+        "entry_name": "徐家汇公园入口",
+        "entry_type": "park_gate",
+        "region_zone": "徐家汇",
+        "lng_gcj02": 121.4418,
+        "lat_gcj02": 31.1984,
+        "lng_wgs84": 121.437193,
+        "lat_wgs84": 31.200285,
+        "source_url": "https://www.xujiahuiorigin.com/zouJin/jingQuXunLiInner?id=1f12b109c4aa7037b47d5f800d6c5c2d",
+        "confidence": 4,
+        "poi_id": null,
+        "address": null,
+        "parent_poi": null,
+        "navi_poiid": null,
+        "entr_location": null,
+        "nearest_metro": null,
+        "source_api": "manual_seed"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4418,
+          31.1984
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "XH_ENT_0006",
+        "entry_name": "桂江路中环绿廊入口",
+        "entry_type": "community_node",
+        "region_zone": "康健园",
+        "lng_gcj02": 121.4205,
+        "lat_gcj02": 31.1508,
+        "lng_wgs84": 121.415864,
+        "lat_wgs84": 31.152682,
+        "source_url": "https://www.thepaper.cn/newsDetail_forward_23437827",
+        "confidence": 4,
+        "poi_id": null,
+        "address": null,
+        "parent_poi": null,
+        "navi_poiid": null,
+        "entr_location": null,
+        "nearest_metro": null,
+        "source_api": "manual_seed"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4205,
+          31.1508
+        ]
+      }
+    }
+  ]
+}
