@@ -1,0 +1,81 @@
+﻿{
+    "value":  {
+                  "title":  "GreenPaths",
+                  "location":  "https://green-paths.web.app/?map=streets\u0026od=t",
+                  "text":  "© Mapbox\n© OpenStreetMap\nImprove this map\nCould not connect to green path service, please try again later.\nGreenPaths\nFI\n闪记\n保存到文件夹\n✓ 已复制",
+                  "scripts":  [
+                                  "https://www.googletagmanager.com/gtag/js?id=G-88GC8V3BT2\u0026cx=c\u0026gtm=4e6711",
+                                  "https://www.googletagmanager.com/gtag/js?id=G-JJJM7NNCXK",
+                                  "https://green-paths.web.app/static/js/2.81bdf12b.chunk.js",
+                                  "https://green-paths.web.app/static/js/main.a4fb40d9.chunk.js"
+                              ],
+                  "links":  [
+                                "https://green-paths.web.app/favicon.ico",
+                                "https://green-paths.web.app/apple-touch-icon.png",
+                                "https://green-paths.web.app/favicon-32x32.png",
+                                "https://green-paths.web.app/favicon-16x16.png",
+                                "https://green-paths.web.app/site.webmanifest",
+                                "https://green-paths.web.app/safari-pinned-tab.svg",
+                                "https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css",
+                                "https://green-paths.web.app/static/css/main.14e4ba98.chunk.css"
+                            ],
+                  "buttons":  [
+                                  {
+                                      "i":  0,
+                                      "tag":  "INPUT",
+                                      "text":  "",
+                                      "cls":  "sc-giIncl gHUUHu",
+                                      "id":  ""
+                                  },
+                                  {
+                                      "i":  1,
+                                      "tag":  "INPUT",
+                                      "text":  "",
+                                      "cls":  "sc-gWHgXt ikxKmn",
+                                      "id":  ""
+                                  },
+                                  {
+                                      "i":  2,
+                                      "tag":  "BUTTON",
+                                      "text":  "\n            \n                \n                \n            \n        ",
+                                      "cls":  "ait-panel-modal-close",
+                                      "id":  ""
+                                  },
+                                  {
+                                      "i":  3,
+                                      "tag":  "SELECT",
+                                      "text":  "",
+                                      "cls":  "ait-panel-modal-language-select",
+                                      "id":  ""
+                                  },
+                                  {
+                                      "i":  4,
+                                      "tag":  "BUTTON",
+                                      "text":  "\n            \n                \n                \n                \n                \n                \n            \n        ",
+                                      "cls":  "ait-panel-modal-share",
+                                      "id":  ""
+                                  },
+                                  {
+                                      "i":  5,
+                                      "tag":  "BUTTON",
+                                      "text":  "全部笔记",
+                                      "cls":  "ait-notepad-list-btn",
+                                      "id":  ""
+                                  },
+                                  {
+                                      "i":  6,
+                                      "tag":  "BUTTON",
+                                      "text":  "新建笔记",
+                                      "cls":  "ait-notepad-add-btn",
+                                      "id":  ""
+                                  },
+                                  {
+                                      "i":  7,
+                                      "tag":  "BUTTON",
+                                      "text":  "关闭",
+                                      "cls":  "ait-notepad-close-btn",
+                                      "id":  ""
+                                  }
+                              ]
+              }
+}

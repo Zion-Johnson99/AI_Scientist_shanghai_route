@@ -1,0 +1,910 @@
+﻿{
+    "value":  {
+                  "title":  "Healthier routes planning: A new method and online implementation for minimizing air pollution exposure risk - ScienceDirect",
+                  "url":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248",
+                  "contentType":  "text/html",
+                  "text":  "Loading [MathJax]/jax/output/SVG/fonts/TeX/Size4/Regular/Main.js\nSkip to main content\nSkip to article\nBrought to you by:Shanghai Jiao Tong University\nLeapSpace\nJournals \u0026 Books\nHelp\nSearch\nJunxiong Zhong\nShanghai Jiao Tong University\nReading Assistant\nComputers, Environment and Urban Systems\nDate: March 2020\nArticle: 101456\nVolume: Volume 80\nPublished by\nResearch article\nFull text access\nGet rights and content\nHealthier routes planning: A new method and online implementation for minimizing air pollution exposure risk\nBin Zou a\n, \nShenxin Li a\n, \nZhong Zheng b\n, \nBenjamin F. Zhan c\n, \nZhonglin Yang a\n, Neng Wan d\nShow more\nView PDF\nDownload full issue\nCite\nAdd to Mendeley\nShare\n10.1016/j.compenvurbsys.2019.101456\nArticle\nCited by (37)\nMetrics\nOutline\nHighlights\nAbstract\nKeywords\n1. Introduction\n2. HRP method and online implementation service\n3. Case study\n4. Discussion\n5. Conclusion\nAcknowledgements\nReferences\nShow full outline\nFigures (8)\nShow 2 more figures\nTables (4)\nTable 1. Exposure-response parameters of air pollutants for adverse health effect assessment.\nTable 2. Details of initialized predictors for each type of data.\nTable 3. Quantitative comparison of the mean APE risk from HRP and traditional methods for route search.\nTable 4. Performance test results of HRP online APP.\nHighlights\n•\nA near real-time health route search method was proposed and validated.\n•\nDynamic risk update mechanism is needed for near real-time health route search.\n•\nAccurate exposure risk estimation depends on fine scale air pollution mapping.\n•\nPersonal air pollution exposure can be minimized through the planned health routes.\nAbstract\nAir pollution exposure during daily traveling is growing as an increasingly serious factor affecting public health with rapid incensement of travel distance in urban sprawl. Finding a healthier route with least exposure risk might be an alternative way to mitigate adverse health outcomes under the truth that worldwide air pollution in urban area cannot be eliminated within a short period of time. Integrating techniques of fine scale mapping of air pollutant concentration, risk weight estimation of road segment exposure to air pollutants, and dynamic Dijkstra algorithm capable of updating route, this study for the first time proposes a healthier route planning (HRP) method to minimize personal travel exposure risk to air pollution. Effectiveness of HRP in mitigating exposure risk was systematically tested based on hundred pairs of origins and destinations located in Beijing-Tianjin-Hebei (BTH) of China with necessarily dense air quality observations. Results show that the spatiotemporal variations of air pollutant concentrations were significant and these differences indeed occurred with time at hourly scale. Meanwhile, the grid-based estimation of exposure risk is time dependent with risk ranging from 5 to 109, which echoes the necessity of healthier route planning. Compared to routes with the shortest distance and least travel time, healthier route has the least exposure risk. And this risk mitigation effect is more significant in areas with wide exposure risk variations than those in areas without obvious risk difference over space (e.g., 21.38% vs. 0.86%). Results suggest that HRP method is promising to minimize personal exposure risk during daily travel based on the accurate exposure risk estimation of road segment at high spatiotemporal resolution. This role could be more important in areas with longer travel distance and greater heterogeneous distribution of air pollution in great metropolis.\nKeywords\nAir pollution mapping; Route planning; Exposure risk assessment; Land use regression\nPrevious article in this issue\nNext article in this issue\n1. Introduction\nPersonal travel is intimately bound up with the progress of human society and its behavior choice is always faced in daily life (Fu \u0026 Lam, 2014). In the traditional process of route choosing, the shorter distance route (Choi, Kang, \u0026 Bahk, 2014), the less travel time (George \u0026 Kim, 2013), the better road condition (Paul, 2013; Ramezani \u0026 Geroliminis, 2012), and the cheaper money cost (Rahmani \u0026 Koutsopoulos, 2013) generally are primary considerations. However, these considerations are not sufficient since air pollution, one of the most serious environment problems nowadays, affects public health during traveling time (Scott et al., 2011). In terms of possibility in mitigating adverse health effect during personal traveling time, there is an urgent need to lower the air pollution exposure (APE) risk for a person through detecting the best route to travel (Schepers, Fishman, Beelen, et al., 2015).\nSpecifically, a growing number of people are concerned about the adverse health effect in recent years with the rapid economy development and the improvement of living standards (Zheng and Kahn, 2013, Zou et al., 2019). Moreover, these concerns are particularly significant for susceptible population due to the increasing daily travel time with ",
+                  "links":  [
+                                {
+                                    "i":  0,
+                                    "text":  "Skip to main content",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#main",
+                                    "cls":  "anchor skip text-s anchor-primary"
+                                },
+                                {
+                                    "i":  1,
+                                    "text":  "Skip to article",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#article",
+                                    "cls":  "anchor skip text-s anchor-primary"
+                                },
+                                {
+                                    "i":  2,
+                                    "text":  "ScienceDirect home page",
+                                    "href":  "https://www.sciencedirect.com/",
+                                    "cls":  "u-flex-center-ver"
+                                },
+                                {
+                                    "i":  3,
+                                    "text":  "LeapSpace",
+                                    "href":  "https://www.sciencedirect.com/leapspace?DGCID=rai_sd_header_ls_link",
+                                    "cls":  "anchor gh-nav-action text-s anchor-secondary gh-nav-item u-hide-from-print anchor-medium anchor-icon-left anchor-with-icon"
+                                },
+                                {
+                                    "i":  4,
+                                    "text":  "Journals \u0026 Books",
+                                    "href":  "https://www.sciencedirect.com/browse/journals-and-books",
+                                    "cls":  "anchor gh-nav-action text-s anchor-secondary anchor-medium"
+                                },
+                                {
+                                    "i":  5,
+                                    "text":  "Help",
+                                    "href":  "",
+                                    "cls":  "button-link button-link-secondary gh-icon-btn button-link-medium button-link-icon-left"
+                                },
+                                {
+                                    "i":  6,
+                                    "text":  "Search",
+                                    "href":  "https://www.sciencedirect.com/search",
+                                    "cls":  "anchor button-link-secondary anchor-secondary u-margin-l-left gh-nav-action gh-icon-btn anchor-medium anchor-icon-left anchor-with-icon"
+                                },
+                                {
+                                    "i":  7,
+                                    "text":  "Junxiong Zhong",
+                                    "href":  "",
+                                    "cls":  "button-link gh-icon-btn gh-user-icon u-margin-l-left gh-truncate text-s button-link-secondary button-link-medium button-link-icon-left"
+                                },
+                                {
+                                    "i":  8,
+                                    "text":  "Shanghai Jiao Tong University",
+                                    "href":  "",
+                                    "cls":  "button-link gh-icon-btn gh-has-institution gh-truncate text-s button-link-secondary u-margin-l-left button-link-medium button-link-icon-left"
+                                },
+                                {
+                                    "i":  9,
+                                    "text":  "Toggle mobile menu",
+                                    "href":  "",
+                                    "cls":  "button-link u-flex-center-ver button-link-primary button-link-icon-left"
+                                },
+                                {
+                                    "i":  10,
+                                    "text":  "Reading assistant options menu",
+                                    "href":  "",
+                                    "cls":  "sc-ivKqQM kWdvtX"
+                                },
+                                {
+                                    "i":  11,
+                                    "text":  "Expand Reading Assistant",
+                                    "href":  "",
+                                    "cls":  "sc-gILgRS hfmjdm"
+                                },
+                                {
+                                    "i":  12,
+                                    "text":  "Submit query",
+                                    "href":  "",
+                                    "cls":  "sc-eCQgVK dHzYZk"
+                                },
+                                {
+                                    "i":  13,
+                                    "text":  "Homepage for Computers, Environment and Urban Systems",
+                                    "href":  "https://www.sciencedirect.com/journal/computers-environment-and-urban-systems/vol/80/suppl/C",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  14,
+                                    "text":  "Computers, Environment and Urban Systems",
+                                    "href":  "https://www.sciencedirect.com/journal/computers-environment-and-urban-systems",
+                                    "cls":  "anchor anchor-secondary"
+                                },
+                                {
+                                    "i":  15,
+                                    "text":  "Volume 80",
+                                    "href":  "https://www.sciencedirect.com/journal/computers-environment-and-urban-systems/vol/80/suppl/C",
+                                    "cls":  "anchor anchor-secondary anchor-underline"
+                                },
+                                {
+                                    "i":  16,
+                                    "text":  "Go to Computers, Environment and Urban Systems on ScienceDirect",
+                                    "href":  "https://www.sciencedirect.com/journal/computers-environment-and-urban-systems",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  17,
+                                    "text":  "Show more",
+                                    "href":  "",
+                                    "cls":  "button-link u-display-flex arp-display-none-from-lg button-link-secondary publication-button button-link-icon-right button-link-underline"
+                                },
+                                {
+                                    "i":  18,
+                                    "text":  "Get rights and content",
+                                    "href":  "https://s100.copyright.com/AppDispatchServlet?publisherName=ELS\u0026contentID=S0198971519302248\u0026orderBeanReset=true",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  19,
+                                    "text":  "Bin Zou a",
+                                    "href":  "https://www.sciencedirect.com/author/55684453700/bin-zou",
+                                    "cls":  "anchor anchor-secondary anchor-underline"
+                                },
+                                {
+                                    "i":  21,
+                                    "text":  "Shenxin Li a",
+                                    "href":  "",
+                                    "cls":  "button-link button-link-secondary button-link-underline"
+                                },
+                                {
+                                    "i":  22,
+                                    "text":  "Zhong Zheng b",
+                                    "href":  "",
+                                    "cls":  "button-link button-link-secondary button-link-underline"
+                                },
+                                {
+                                    "i":  23,
+                                    "text":  "Benjamin F. Zhan c",
+                                    "href":  "",
+                                    "cls":  "button-link button-link-secondary button-link-underline"
+                                },
+                                {
+                                    "i":  24,
+                                    "text":  "Zhonglin Yang a",
+                                    "href":  "",
+                                    "cls":  "button-link button-link-secondary button-link-underline"
+                                },
+                                {
+                                    "i":  25,
+                                    "text":  "Neng Wan d",
+                                    "href":  "https://www.sciencedirect.com/author/56114181000/neng-wan",
+                                    "cls":  "anchor anchor-secondary anchor-underline"
+                                },
+                                {
+                                    "i":  26,
+                                    "text":  "Show more",
+                                    "href":  "",
+                                    "cls":  "button-link button-link-primary button-link-icon-right button-link-underline"
+                                },
+                                {
+                                    "i":  27,
+                                    "text":  "in-page navigation",
+                                    "href":  "",
+                                    "cls":  "button button-secondary content-actions-outline-link button-icon-only"
+                                },
+                                {
+                                    "i":  28,
+                                    "text":  "View PDF",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248/pdfft?md5=1ef369f63f7e9f3887cb97ed050bab95\u0026pid=1-s2.0-S0198971519302248-main.pdf",
+                                    "cls":  "link-button accessbar-utility-component accessbar-utility-link link-button-primary link-button-icon-left"
+                                },
+                                {
+                                    "i":  29,
+                                    "text":  "Download full issue",
+                                    "href":  "",
+                                    "cls":  "button-link accessbar-utility-component button-link-primary button-link-icon-left"
+                                },
+                                {
+                                    "i":  30,
+                                    "text":  "Cite",
+                                    "href":  "",
+                                    "cls":  "button-link button-link-primary button-link-icon-left"
+                                },
+                                {
+                                    "i":  31,
+                                    "text":  "Add to Mendeley",
+                                    "href":  "",
+                                    "cls":  "button-link arp-display-flex-from-md button-link-primary button-link-icon-left"
+                                },
+                                {
+                                    "i":  32,
+                                    "text":  "Share",
+                                    "href":  "",
+                                    "cls":  "button-link button-link-primary button-link-icon-left"
+                                },
+                                {
+                                    "i":  33,
+                                    "text":  "10.1016/j.compenvurbsys.2019.101456",
+                                    "href":  "https://doi.org/10.1016/j.compenvurbsys.2019.101456",
+                                    "cls":  "anchor anchor-secondary"
+                                },
+                                {
+                                    "i":  34,
+                                    "text":  "More actions",
+                                    "href":  "",
+                                    "cls":  "button-link u-display-flex arp-display-none-from-md button-link-primary button-link-icon-left"
+                                },
+                                {
+                                    "i":  35,
+                                    "text":  "Article",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#article",
+                                    "cls":  "navigation-link"
+                                },
+                                {
+                                    "i":  36,
+                                    "text":  "Cited by (37)",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#cited-by",
+                                    "cls":  "navigation-link"
+                                },
+                                {
+                                    "i":  37,
+                                    "text":  "Metrics",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#metrics",
+                                    "cls":  "navigation-link"
+                                },
+                                {
+                                    "i":  38,
+                                    "text":  "Highlights",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#ab0010",
+                                    "cls":  "anchor anchor-secondary content-outline-list-item-anchor"
+                                },
+                                {
+                                    "i":  39,
+                                    "text":  "Abstract",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#ab0005",
+                                    "cls":  "anchor anchor-secondary content-outline-list-item-anchor"
+                                },
+                                {
+                                    "i":  40,
+                                    "text":  "Keywords",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#ks0005",
+                                    "cls":  "anchor anchor-secondary content-outline-list-item-anchor"
+                                },
+                                {
+                                    "i":  41,
+                                    "text":  "1. Introduction",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#s0005",
+                                    "cls":  "anchor anchor-secondary content-outline-list-item-anchor"
+                                },
+                                {
+                                    "i":  42,
+                                    "text":  "2. HRP method and online implementation service",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#s0010",
+                                    "cls":  "anchor anchor-secondary content-outline-list-item-anchor"
+                                },
+                                {
+                                    "i":  43,
+                                    "text":  "3. Case study",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#s0035",
+                                    "cls":  "anchor anchor-secondary content-outline-list-item-anchor"
+                                },
+                                {
+                                    "i":  44,
+                                    "text":  "4. Discussion",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#s0100",
+                                    "cls":  "anchor anchor-secondary content-outline-list-item-anchor"
+                                },
+                                {
+                                    "i":  45,
+                                    "text":  "5. Conclusion",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#s0105",
+                                    "cls":  "anchor anchor-secondary content-outline-list-item-anchor"
+                                },
+                                {
+                                    "i":  46,
+                                    "text":  "Acknowledgements",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#ac0005",
+                                    "cls":  "anchor anchor-secondary content-outline-list-item-anchor"
+                                },
+                                {
+                                    "i":  47,
+                                    "text":  "References",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bi0005",
+                                    "cls":  "anchor anchor-secondary content-outline-list-item-anchor"
+                                },
+                                {
+                                    "i":  48,
+                                    "text":  "Show full outline",
+                                    "href":  "",
+                                    "cls":  "button-link content-outline-toggle-button button-link-secondary button-link-icon-right button-link-underline"
+                                },
+                                {
+                                    "i":  49,
+                                    "text":  "",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0005",
+                                    "cls":  "anchor figures-grid-anchor anchor-primary anchor-icon-only anchor-with-icon"
+                                },
+                                {
+                                    "i":  50,
+                                    "text":  "",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0010",
+                                    "cls":  "anchor figures-grid-anchor anchor-primary anchor-icon-only anchor-with-icon"
+                                },
+                                {
+                                    "i":  51,
+                                    "text":  "",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0015",
+                                    "cls":  "anchor figures-grid-anchor anchor-primary anchor-icon-only anchor-with-icon"
+                                },
+                                {
+                                    "i":  52,
+                                    "text":  "",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0020",
+                                    "cls":  "anchor figures-grid-anchor anchor-primary anchor-icon-only anchor-with-icon"
+                                },
+                                {
+                                    "i":  53,
+                                    "text":  "",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0025",
+                                    "cls":  "anchor figures-grid-anchor anchor-primary anchor-icon-only anchor-with-icon"
+                                },
+                                {
+                                    "i":  54,
+                                    "text":  "",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0030",
+                                    "cls":  "anchor figures-grid-anchor anchor-primary anchor-icon-only anchor-with-icon"
+                                },
+                                {
+                                    "i":  55,
+                                    "text":  "Show 2 more figures",
+                                    "href":  "",
+                                    "cls":  "button-link content-outline-toggle-button button-link-secondary button-link-icon-right button-link-underline"
+                                },
+                                {
+                                    "i":  56,
+                                    "text":  "Table 1. Exposure-response parameters of air pollutants for adverse health effect assessment.",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#t0005",
+                                    "cls":  "anchor content-outline-list-item-anchor anchor-secondary anchor-icon-left anchor-with-icon"
+                                },
+                                {
+                                    "i":  57,
+                                    "text":  "Table 2. Details of initialized predictors for each type of data.",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#t0010",
+                                    "cls":  "anchor content-outline-list-item-anchor anchor-secondary anchor-icon-left anchor-with-icon"
+                                },
+                                {
+                                    "i":  58,
+                                    "text":  "Table 3. Quantitative comparison of the mean APE risk from HRP and traditional methods for route search.",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#t0015",
+                                    "cls":  "anchor content-outline-list-item-anchor anchor-secondary anchor-icon-left anchor-with-icon"
+                                },
+                                {
+                                    "i":  59,
+                                    "text":  "Table 4. Performance test results of HRP online APP.",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#t0020",
+                                    "cls":  "anchor content-outline-list-item-anchor anchor-secondary anchor-icon-left anchor-with-icon"
+                                },
+                                {
+                                    "i":  60,
+                                    "text":  "urban sprawl",
+                                    "href":  "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/urban-sprawl",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  61,
+                                    "text":  "pollutant concentration",
+                                    "href":  "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/pollutant-concentration",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  62,
+                                    "text":  "air quality",
+                                    "href":  "https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/air-quality",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  63,
+                                    "text":  "air pollutant",
+                                    "href":  "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/air-pollutant",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  64,
+                                    "text":  "Previous article in this issue",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S019897151930153X",
+                                    "cls":  "anchor anchor-primary anchor-icon-left anchor-with-icon"
+                                },
+                                {
+                                    "i":  65,
+                                    "text":  "Next article in this issue",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302170",
+                                    "cls":  "anchor anchor-primary anchor-icon-right anchor-with-icon"
+                                },
+                                {
+                                    "i":  66,
+                                    "text":  "Fu \u0026 Lam, 2014",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0090",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  67,
+                                    "text":  "Choi, Kang, \u0026 Bahk, 2014",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0050",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  68,
+                                    "text":  "George \u0026 Kim, 2013",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0095",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  69,
+                                    "text":  "Paul, 2013",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0190",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  70,
+                                    "text":  "Ramezani \u0026 Geroliminis, 2012",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0215",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  71,
+                                    "text":  "Rahmani \u0026 Koutsopoulos, 2013",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0210",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  72,
+                                    "text":  "Scott et al., 2011",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0230",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  73,
+                                    "text":  "Schepers, Fishman, Beelen, et al., 2015",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0225",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  74,
+                                    "text":  "Zheng and Kahn, 2013",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0280",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  75,
+                                    "text":  "Zou et al., 2019",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0305",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  76,
+                                    "text":  "Hynes, 2013",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0125",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  77,
+                                    "text":  "Guarnieri \u0026 Balmes, 2014",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0100",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  78,
+                                    "text":  "pollutant emissions",
+                                    "href":  "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/pollutant-emission",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  79,
+                                    "text":  "Alexiou \u0026 Katsavounis, 2015",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0010",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  80,
+                                    "text":  "Bigazzi \u0026 Figliozzi, 2015",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0025",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  81,
+                                    "text":  "Mölter \u0026 Lindley, 2015",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0175",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  82,
+                                    "text":  "Sharker \u0026 Karimi, 2014",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0240",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  83,
+                                    "text":  "air quality",
+                                    "href":  "https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/air-quality",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  84,
+                                    "text":  "Dijkstra (1959)",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0060",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  85,
+                                    "text":  "air pollutant",
+                                    "href":  "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/air-pollutant",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  86,
+                                    "text":  "Zou, Zheng, Wan, et al., 2016",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0310",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  87,
+                                    "text":  "pollutant concentration",
+                                    "href":  "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/pollutant-concentration",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  88,
+                                    "text":  "Ezzati \u0026 Kammen, 2001",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0070",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  89,
+                                    "text":  "Lelieveld, Evans, Fnais, et al., 2015",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0150",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  90,
+                                    "text":  "Shang, Sun, Cao, et al., 2013",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0235",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  91,
+                                    "text":  "Jerrett, Arain, Kanaroglou, et al., 2005",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0130",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  92,
+                                    "text":  "Zou, Luo, Wan, et al., 2015",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0290",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  93,
+                                    "text":  "Airnow Website, 2015",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0005",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  94,
+                                    "text":  "U.S.",
+                                    "href":  "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/united-states-of-america",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  95,
+                                    "text":  "Pope, Burnett, Krewski, et al., 2009",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0200",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  96,
+                                    "text":  "Franklin, Zeka, \u0026 Schwartz, 2007",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0085",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  97,
+                                    "text":  "Pope et al., 2009",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0200",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  98,
+                                    "text":  "Zou, Pu, Bilal, et al., 2016",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0295",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  99,
+                                    "text":  "meteorological factors",
+                                    "href":  "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/meteorological-factors",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  100,
+                                    "text":  "Zou et al., 2015",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0290",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  101,
+                                    "text":  "Hoek, Beelen, Hoogh, et al., 2008",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0110",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  102,
+                                    "text":  "Xu, Zou, Lin, et al., 2019",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0260",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  103,
+                                    "text":  "Lelieveld et al., 2015",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0150",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  104,
+                                    "text":  "Shang et al., 2013",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0235",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  105,
+                                    "text":  "Choi et al., 2014",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0050",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  106,
+                                    "text":  "Qian \u0026 Zhang, 2013",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0205",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  107,
+                                    "text":  "Pillac, Gendreau, Guéret, et al., 2013",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0195",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  108,
+                                    "text":  "Mainali, Mabu, Yu, et al., 2011",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0170",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  109,
+                                    "text":  "case study",
+                                    "href":  "https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/case-study",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  110,
+                                    "text":  "Fig. 1",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0005",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  111,
+                                    "text":  "pollutant concentration",
+                                    "href":  "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/pollutant-concentration",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  112,
+                                    "text":  "Download: Download high-res image (805KB)",
+                                    "href":  "https://ars.els-cdn.com/content/image/1-s2.0-S0198971519302248-gr1_lrg.jpg",
+                                    "cls":  "anchor download-link u-font-sans anchor-primary"
+                                },
+                                {
+                                    "i":  113,
+                                    "text":  "Download: Download full-size image",
+                                    "href":  "https://ars.els-cdn.com/content/image/1-s2.0-S0198971519302248-gr1.jpg",
+                                    "cls":  "anchor download-link u-font-sans anchor-primary"
+                                },
+                                {
+                                    "i":  114,
+                                    "text":  "Fig. 1",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0005",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  115,
+                                    "text":  "Jerrett, Arain, Kanaroglou, et al., 2007",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0135",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  116,
+                                    "text":  "Olvera et al., 2012",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0185",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  117,
+                                    "text":  "air quality",
+                                    "href":  "https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/air-quality",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  118,
+                                    "text":  "meteorological data",
+                                    "href":  "https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/meteorological-data",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  119,
+                                    "text":  "regression coefficients",
+                                    "href":  "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/regression-coefficient",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  120,
+                                    "text":  "Johnson, Isakov, Touma, et al., 2010",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0140",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  121,
+                                    "text":  "Stutzer \u0026 Frey, 2008",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0245",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  122,
+                                    "text":  "Hajat, Armstrong, Wilkinson, et al., 2007",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0105",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  123,
+                                    "text":  "Ritz, Wilhelm, \u0026 Zhao, 2006",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0220",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  124,
+                                    "text":  "pregnant women",
+                                    "href":  "https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/pregnant-woman",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  125,
+                                    "text":  "Faiz, Rhoads, Demissie, et al., 2012",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0075",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  126,
+                                    "text":  "Defranco, Hall, Hossain, et al., 2015",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0055",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  127,
+                                    "text":  "formula (3)",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#fo0020",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  128,
+                                    "text":  "mortality rate",
+                                    "href":  "https://www.sciencedirect.com/topics/pharmacology-toxicology-and-pharmaceutical-science/mortality-rate",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  129,
+                                    "text":  "Table 1",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#t0005",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  130,
+                                    "text":  "a",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#tf0005",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  131,
+                                    "text":  "b",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#tf0010",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  132,
+                                    "text":  "Lai, Tsang, \u0026 Wong, 2013",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0145",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  133,
+                                    "text":  "Lu, Xu, Cheng, et al., 2015",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0160",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  134,
+                                    "text":  "Wang, Wang, \u0026 Bai, 2012",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0250",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  135,
+                                    "text":  "formula (4)",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#fo0025",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  136,
+                                    "text":  "formula (5)",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#fo0030",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  137,
+                                    "text":  "Fig. 2",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0010",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  138,
+                                    "text":  "Fig. 2",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0010",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  139,
+                                    "text":  "base",
+                                    "href":  "https://www.sciencedirect.com/topics/pharmacology-toxicology-and-pharmaceutical-science/base",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  140,
+                                    "text":  "Download: Download high-res image (328KB)",
+                                    "href":  "https://ars.els-cdn.com/content/image/1-s2.0-S0198971519302248-gr2_lrg.jpg",
+                                    "cls":  "anchor download-link u-font-sans anchor-primary"
+                                },
+                                {
+                                    "i":  141,
+                                    "text":  "Download: Download full-size image",
+                                    "href":  "https://ars.els-cdn.com/content/image/1-s2.0-S0198971519302248-gr2.jpg",
+                                    "cls":  "anchor download-link u-font-sans anchor-primary"
+                                },
+                                {
+                                    "i":  142,
+                                    "text":  "Fig. 3",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0015",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  143,
+                                    "text":  "Download: Download high-res image (540KB)",
+                                    "href":  "https://ars.els-cdn.com/content/image/1-s2.0-S0198971519302248-gr3_lrg.jpg",
+                                    "cls":  "anchor download-link u-font-sans anchor-primary"
+                                },
+                                {
+                                    "i":  144,
+                                    "text":  "Download: Download full-size image",
+                                    "href":  "https://ars.els-cdn.com/content/image/1-s2.0-S0198971519302248-gr3.jpg",
+                                    "cls":  "anchor download-link u-font-sans anchor-primary"
+                                },
+                                {
+                                    "i":  145,
+                                    "text":  "performance test",
+                                    "href":  "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/performance-test",
+                                    "cls":  "topic-link"
+                                },
+                                {
+                                    "i":  146,
+                                    "text":  "Fig. 4",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0020",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  147,
+                                    "text":  "Download: Download high-res image (1MB)",
+                                    "href":  "https://ars.els-cdn.com/content/image/1-s2.0-S0198971519302248-gr4_lrg.jpg",
+                                    "cls":  "anchor download-link u-font-sans anchor-primary"
+                                },
+                                {
+                                    "i":  148,
+                                    "text":  "Download: Download full-size image",
+                                    "href":  "https://ars.els-cdn.com/content/image/1-s2.0-S0198971519302248-gr4.jpg",
+                                    "cls":  "anchor download-link u-font-sans anchor-primary"
+                                },
+                                {
+                                    "i":  149,
+                                    "text":  "Fig. 4",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#f0020",
+                                    "cls":  "anchor anchor-primary"
+                                },
+                                {
+                                    "i":  150,
+                                    "text":  "China Meteorological Data Service System, 2013",
+                                    "href":  "https://www.sciencedirect.com/science/article/pii/S0198971519302248#bb0045",
+                                    "cls":  "anchor anchor-primary"
+                                }
+                            ]
+              }
+}

@@ -1,0 +1,294 @@
+﻿[
+    {
+        "input":  "https://old.lib.sjtu.edu.cn/f/database/database_detail.shtml?id=33",
+        "result":  {
+                       "value":  {
+                                     "title":  "数据库详情",
+                                     "url":  "https://old.lib.sjtu.edu.cn/f/database/database_detail.shtml?id=33",
+                                     "text":  "概况\n资源\n服务\n阅读\n互动\n中文\nENG\n校友\n|\n国际学生\n|\n新生\n 1029528\n 1503\n 619 / 2613\n首页 \u003e 资源 \u003e 数据库列表 \u003e正文\nElsevier ScienceDirect 电子书刊数据库（含期刊回溯库及Woodhead电子书）\n数据库别名/简称: Science Direct, SD\t出版商： Elsevier\n数据库语种: 外文\n学科: 船海工程与科学\n学科主题: 哲学 / 经济学 / 法学 / 教育学 / 文学 / 历史学 / 理学 / 工学 / 农学 / 医学 / 军事学 / 管理学 / 艺术学\n资源内容类型: 全文\n文献收录类型: 图书 / 期刊\n\n数据库链接\n数据库首页\n\n荷兰Elsevier公司的Science Direct 数据库是世界著名的科学文献全文数据库之一，2010年8月，Elsevier公司将ScienceDirect、Scopus以及Scirus整合在一个集成性的检索平台即SciVerse上，SciVerse ScienceDirect平台上的资源分为四大学科领域：自然科学与工程、生命科学、健康科学、社会科学与人文科学，涵盖了24个学科。\n\n2021年以前，我校读者可访问Science Direct平台上1995年至今的2000余种期刊（部分期刊我校未购买其全文阅览权限，只能看到题录和文摘），以及所有电子图书及电子参考工具书。具体订购列表，可在校园网范围内，通过Science Direct平台上的浏览功能，筛选“access_type”为“Subscribed（已订购）”或“Complimentary（免费）”的期刊或图书列表。\n\n为进一步支撑师生对经典文献资源的获取，支撑高质量原创和溯源性科研，2021年，在学校经费支持下，经过谈判协商，我校图书馆与医学院图书馆共建订购ScienceDirect期刊回溯库，该库包含爱思唯尔出版的近1,600种期刊1995年前的全文卷期，最早回溯至1823年。自增订期刊回溯库之后，我校师生可访问ScienceDirect数据库全文文献在原有基础上增加近400万篇。包括The Lancet（柳叶刀，1823-至今）、Cell(细胞，1974-至今）、Acta Metallurgica(金属学报，1953-至今)、Tetrahedron(四面体，1957-至今)、Automatica(自动化，1963-至今)等顶级期刊的相关卷期。SD回溯库全面记载了人类19世纪以来的重要科研成果，是极其宝贵和不可或缺的学术资源。\n\n目前，师生可通过ScienceDirect数据库平台同时访问ScienceDirect现刊、回溯期刊、电子图书及电子参考工具书，为师生提供良好的使用体验，提升科研效率。\n\n\n\n相关参照\n思源微课Elsevier ScienceDirect\nCARSI访问入口\n\n\n附件下载\nScience Direct访问说明提示\n\n\n责任馆员\n陈荔瑶\n\n版权所有@上海交通大学图书馆 沪交ICP备05015\n\n闪记\n保存到文件夹\n✓ 已复制",
+                                     "links":  [
+                                                   {
+                                                       "text":  "概况",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "资源",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "服务",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "阅读",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "互动",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/"
+                                                   },
+                                                   {
+                                                       "text":  "校友",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/content/detail.shtml?id=5938"
+                                                   },
+                                                   {
+                                                       "text":  "国际学生",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/main/index.shtml?lang=en-us"
+                                                   },
+                                                   {
+                                                       "text":  "新生",
+                                                       "href":  "http://old.lib.sjtu.edu.cn/fresh/"
+                                                   },
+                                                   {
+                                                       "text":  "1029528",
+                                                       "href":  "http://www.ir.lib.sjtu.edu.cn/"
+                                                   },
+                                                   {
+                                                       "text":  "1503",
+                                                       "href":  "https://zgrs.lib.sjtu.edu.cn/"
+                                                   },
+                                                   {
+                                                       "text":  "619 / 2613",
+                                                       "href":  "https://libseat.sjtu.edu.cn/"
+                                                   },
+                                                   {
+                                                       "text":  "首页",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/main/index.shtml?lang=zh-cn"
+                                                   },
+                                                   {
+                                                       "text":  "资源",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/content/list.shtml?Lid=24\u0026lang=zh-cn"
+                                                   },
+                                                   {
+                                                       "text":  "数据库列表",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/database/database.shtml"
+                                                   },
+                                                   {
+                                                       "text":  "数据库首页",
+                                                       "href":  "http://www.sciencedirect.com/"
+                                                   },
+                                                   {
+                                                       "text":  "思源微课Elsevier ScienceDirect",
+                                                       "href":  "http://weike.lib.sjtu.edu.cn/sywk/smc23.asp"
+                                                   },
+                                                   {
+                                                       "text":  "CARSI访问入口",
+                                                       "href":  "https://auth.elsevier.com/ShibAuth/institutionLogin?entityID=https%3A%2F%2Fjaccount.sjtu.edu.cn%2Fidp%2Fshibboleth\u0026appReturnURL=https%3A%2F%2Fwww.sciencedirect.com%2Fuser%2Frouter%2Fshib%3FtargetURL%3Dhttps%253A%252F%252Fwww.sciencedirect.com%252F"
+                                                   },
+                                                   {
+                                                       "text":  "Science Direct访问说明提示",
+                                                       "href":  "https://www.lib.sjtu.edu.cn/sjtu/upload/ueditor/file/20260507/1778121437036041166.pdf"
+                                                   },
+                                                   {
+                                                       "text":  "陈荔瑶",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/guanyuan/detail/56.shtml?lang=zh-cn"
+                                                   },
+                                                   {
+                                                       "text":  "",
+                                                       "href":  "javascript:void(0);"
+                                                   },
+                                                   {
+                                                       "text":  "",
+                                                       "href":  "javascript:void(0);"
+                                                   }
+                                               ]
+                                 }
+                   }
+    },
+    {
+        "input":  "https://old.lib.sjtu.edu.cn/f/database/database_detail.shtml?id=42",
+        "result":  {
+                       "value":  {
+                                     "title":  "数据库详情",
+                                     "url":  "https://old.lib.sjtu.edu.cn/f/database/database_detail.shtml?id=42",
+                                     "text":  "概况\n资源\n服务\n阅读\n互动\n中文\nENG\n校友\n|\n国际学生\n|\n新生\n 1029528\n 1503\n 619 / 2613\n首页 \u003e 资源 \u003e 数据库列表 \u003e正文\nIEEE/IET Electronic Library期刊、会议录、标准数据库\nCARSI访问\n出版商： IEEE/IET\n数据库语种: 外文\n学科主题: 工学\n资源内容类型: 全文\n文献收录类型: 会议文献 / 标准 / 期刊\n\n数据库链接\n数据库链接\n\nIEEE/IET Electronic Library (IEL)数据库，原名IEEE/IEE Electronic Library，2006年3月，原英国电气工程师学会（IEE）与英国企业工程师学会（IIE）合并组成英国工程技术学会（IET），该数据库因此更名。\n\n该数据库覆盖了电气电子、航空航天、计算机、通信工程、生物医学工程、机器人自动化、半导体、纳米技术、电力等各种技术领域的内容，提供IEEE（电气电子工程师学会）和IET（国际工程和技术学会）出版的：\n 180余种IEEE、30余种IET期刊与杂志，总数接近500种（包括过刊及更名刊）；\n 每年1700多种IEEE会议录和25多种IET会议录，总量超过19000卷；\n 20多种VDE会议录，超过8800篇；\n 3800+IEEE标准文档（包括现行标准和存档标准，标准草案暂未订购）；\n 超过400万篇全文文档，提供1988年以后的全文文献，部分历史文献回溯到1872年；\n注：\n\n\n1、如果登陆平台15分钟内，没有任何操作。系统会自动退出。需要重新刷新进行登陆。\n2、下载全文时如果遇到没有下载权限的情况，请尝试以下IP测试的网址：http://ieeexplore.ieee.org/servlet/SnoopServlet，页面中Remote Addr后对应的IP地址就是被测电脑的IP地址。\n3、为了方便订购IEEE产品的用户在非授权的IP范围内，依然可以使用已订购的资源，IEEE现推出远程访问功能。远程访问功能可支持的设备：笔记本电脑、平板电脑、手机，远程访问功能账号的有效期90天。远程访问功能设置的步骤如下：\n\n1）选择需要远程接入IEEE Xplore的移动设备。\n\n2）设置远程访问时，必须在校园网范围内进行设置。\n\n3）打开IEEE Xplore网站，可以看到首页显示上海交通大学的机构名称，这表示设备已经处于校园网IP范围内。\n\n4）点击右上角的personal account，创建一个IEEE个人账户并登录此账户。之后你可以同时看到机构名称和个人账户名称。\n\n5）进入My Settings，选择Remote Access。\n\n6）点击\"Establish Remote Access\"按钮。\n\n7）你已在浏览器中成功创建一个远程访问标记， 90天内可以通过该设备在授权IP外访问IEEE Xplore。注意必须采用同一配对设备和浏览器登录个人账户。\n超过90天后需按照以上步骤重新设置。\n \n\n相关参照\nCARSI访问入口\n\n\n责任馆员\n朱红艳\n\n版权所有@上海交通大学图书馆 沪交ICP备05015\n\n闪记\n保存到文件夹\n✓ 已复制",
+                                     "links":  [
+                                                   {
+                                                       "text":  "概况",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "资源",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "服务",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "阅读",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "互动",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/"
+                                                   },
+                                                   {
+                                                       "text":  "校友",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/content/detail.shtml?id=5938"
+                                                   },
+                                                   {
+                                                       "text":  "国际学生",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/main/index.shtml?lang=en-us"
+                                                   },
+                                                   {
+                                                       "text":  "新生",
+                                                       "href":  "http://old.lib.sjtu.edu.cn/fresh/"
+                                                   },
+                                                   {
+                                                       "text":  "1029528",
+                                                       "href":  "http://www.ir.lib.sjtu.edu.cn/"
+                                                   },
+                                                   {
+                                                       "text":  "1503",
+                                                       "href":  "https://zgrs.lib.sjtu.edu.cn/"
+                                                   },
+                                                   {
+                                                       "text":  "619 / 2613",
+                                                       "href":  "https://libseat.sjtu.edu.cn/"
+                                                   },
+                                                   {
+                                                       "text":  "首页",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/main/index.shtml?lang=zh-cn"
+                                                   },
+                                                   {
+                                                       "text":  "资源",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/content/list.shtml?Lid=24\u0026lang=zh-cn"
+                                                   },
+                                                   {
+                                                       "text":  "数据库列表",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/database/database.shtml"
+                                                   },
+                                                   {
+                                                       "text":  "数据库链接",
+                                                       "href":  "https://ieeexplore.ieee.org/"
+                                                   },
+                                                   {
+                                                       "text":  "http://ieeexplore.ieee.org/servlet/SnoopServlet",
+                                                       "href":  "http://ieeexplore.ieee.org/servlet/SnoopServlet"
+                                                   },
+                                                   {
+                                                       "text":  "CARSI访问入口",
+                                                       "href":  "https://ieeexplore.ieee.org/servlet/wayf.jsp?entityId=https://jaccount.sjtu.edu.cn/idp/shibboleth\u0026url=https%3A%2F%2Fieeexplore.ieee.org"
+                                                   },
+                                                   {
+                                                       "text":  "朱红艳",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/guanyuan/detail/12.shtml?lang=zh-cn"
+                                                   },
+                                                   {
+                                                       "text":  "http://ieeexplore.ieee.org/servlet/SnoopServlet",
+                                                       "href":  "http://ieeexplore.ieee.org/servlet/SnoopServlet"
+                                                   },
+                                                   {
+                                                       "text":  "",
+                                                       "href":  "javascript:void(0);"
+                                                   },
+                                                   {
+                                                       "text":  "",
+                                                       "href":  "javascript:void(0);"
+                                                   }
+                                               ]
+                                 }
+                   }
+    },
+    {
+        "input":  "https://old.lib.sjtu.edu.cn/f/database/database_detail.shtml?id=97",
+        "result":  {
+                       "value":  {
+                                     "title":  "数据库详情",
+                                     "url":  "https://old.lib.sjtu.edu.cn/f/database/database_detail.shtml?id=97",
+                                     "text":  "概况\n资源\n服务\n阅读\n互动\n中文\nENG\n校友\n|\n国际学生\n|\n新生\n 1029528\n 1503\n 619 / 2613\n首页 \u003e 资源 \u003e 数据库列表 \u003e正文\nTaylor \u0026 Francis 电子期刊\nCARSI访问\n出版商： Taylor \u0026 Francis\n数据库语种: 外文\n学科主题: 文学 / 历史学 / 理学 / 工学 / 管理学 / 教育学 / 法学 / 经济学 / 哲学\n资源内容类型: 全文\n文献收录类型: 期刊\n\n数据库链接\n数据库首页\n\nTaylor \u0026 Francis 集团拥有200多年丰富的出版经验，近20年来迅速发展，已成为世界上最大的学术出版集团之一。旗下诸多出版品牌久负盛名，如：CRC Press、Routledge、Psychology Press、Focal Press等，享有良好的声誉。\n\n该库提供超过370万篇经专家评审的高质量期刊论文。其中，科学与技术类期刊中超过78%的期刊被SCI收录，社会科学与人文科学类期刊包括来自Routledge出版社以及Psychology Press的期刊。\n\n我校订购的范围为1997年及以后的全文。\n\n\n\n\n相关参照\nCARSI访问入口\n\n\n责任馆员\n林晓欣\n\n版权所有@上海交通大学图书馆 沪交ICP备05015\n\n闪记\n保存到文件夹\n✓ 已复制",
+                                     "links":  [
+                                                   {
+                                                       "text":  "概况",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "资源",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "服务",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "阅读",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "互动",
+                                                       "href":  "javascript:void(0)"
+                                                   },
+                                                   {
+                                                       "text":  "",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/"
+                                                   },
+                                                   {
+                                                       "text":  "校友",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/content/detail.shtml?id=5938"
+                                                   },
+                                                   {
+                                                       "text":  "国际学生",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/main/index.shtml?lang=en-us"
+                                                   },
+                                                   {
+                                                       "text":  "新生",
+                                                       "href":  "http://old.lib.sjtu.edu.cn/fresh/"
+                                                   },
+                                                   {
+                                                       "text":  "1029528",
+                                                       "href":  "http://www.ir.lib.sjtu.edu.cn/"
+                                                   },
+                                                   {
+                                                       "text":  "1503",
+                                                       "href":  "https://zgrs.lib.sjtu.edu.cn/"
+                                                   },
+                                                   {
+                                                       "text":  "619 / 2613",
+                                                       "href":  "https://libseat.sjtu.edu.cn/"
+                                                   },
+                                                   {
+                                                       "text":  "首页",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/main/index.shtml?lang=zh-cn"
+                                                   },
+                                                   {
+                                                       "text":  "资源",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/content/list.shtml?Lid=24\u0026lang=zh-cn"
+                                                   },
+                                                   {
+                                                       "text":  "数据库列表",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/database/database.shtml"
+                                                   },
+                                                   {
+                                                       "text":  "数据库首页",
+                                                       "href":  "https://www.tandfonline.com/"
+                                                   },
+                                                   {
+                                                       "text":  "CARSI访问入口",
+                                                       "href":  "https://www.tandfonline.com/action/ssostart?idp=https%3A%2F%2Fjaccount.sjtu.edu.cn%2Fidp%2Fshibboleth\u0026redirectUri=%2F%3FinstName%3DUniversity%2Bof%2BScience%2Band%2BTechnology%2Bof%2BChina%26instName%3DUniversity%2Bof%2BScience%2Band%2BTechnology%2Bof%2BChina"
+                                                   },
+                                                   {
+                                                       "text":  "林晓欣",
+                                                       "href":  "https://old.lib.sjtu.edu.cn/f/guanyuan/detail/185.shtml?lang=zh-cn"
+                                                   },
+                                                   {
+                                                       "text":  "",
+                                                       "href":  "javascript:void(0);"
+                                                   },
+                                                   {
+                                                       "text":  "",
+                                                       "href":  "javascript:void(0);"
+                                                   }
+                                               ]
+                                 }
+                   }
+    }
+]

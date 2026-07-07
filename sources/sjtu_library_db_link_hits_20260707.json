@@ -1,0 +1,58 @@
+﻿{
+    "value":  {
+                  "url":  "https://old.lib.sjtu.edu.cn/f/main/index.shtml",
+                  "title":  "上海交通大学图书馆",
+                  "hits":  [
+                               {
+                                   "text":  "IEEE",
+                                   "href":  "https://old.lib.sjtu.edu.cn/f/database/database_detail.shtml?id=42"
+                               },
+                               {
+                                   "text":  "ScienceDirect",
+                                   "href":  "https://old.lib.sjtu.edu.cn/f/database/database_detail.shtml?id=33"
+                               },
+                               {
+                                   "text":  "Springer",
+                                   "href":  "https://old.lib.sjtu.edu.cn/f/database/database_detail.shtml?id=96"
+                               },
+                               {
+                                   "text":  "Taylor \u0026 Francis",
+                                   "href":  "https://old.lib.sjtu.edu.cn/f/database/database_detail.shtml?id=97"
+                               },
+                               {
+                                   "text":  "Wiley",
+                                   "href":  "https://old.lib.sjtu.edu.cn/f/database/database_detail.shtml?id=102"
+                               }
+                           ],
+                  "textHits":  [
+                                   {
+                                       "k":  "ScienceDirect",
+                                       "idx":  -1
+                                   },
+                                   {
+                                       "k":  "ACM",
+                                       "idx":  -1
+                                   },
+                                   {
+                                       "k":  "Taylor",
+                                       "idx":  -1
+                                   },
+                                   {
+                                       "k":  "IEEE",
+                                       "idx":  -1
+                                   },
+                                   {
+                                       "k":  "Elsevier",
+                                       "idx":  -1
+                                   },
+                                   {
+                                       "k":  "Wiley",
+                                       "idx":  -1
+                                   },
+                                   {
+                                       "k":  "Springer",
+                                       "idx":  -1
+                                   }
+                               ]
+              }
+}

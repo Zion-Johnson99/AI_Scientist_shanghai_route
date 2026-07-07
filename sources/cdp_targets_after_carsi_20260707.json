@@ -1,0 +1,75 @@
+﻿[
+    {
+        "targetId":  "0944F7E1F0C81915A7FD6FBB0FDE5FF7",
+        "type":  "page",
+        "title":  "Zion-Johnson99/AI_Scientist_shanghai_route",
+        "url":  "https://github.com/Zion-Johnson99/AI_Scientist_shanghai_route",
+        "attached":  false,
+        "canAccessOpener":  false,
+        "browserContextId":  "4039F0408535C74E874E9A4D5F828D9F"
+    },
+    {
+        "targetId":  "34C250382D7000D8D70861E23DA96F46",
+        "type":  "page",
+        "title":  "SSH权限问题解析",
+        "url":  "https://chatgpt.com/c/6a4c6a7e-b470-83ea-b326-8aafce709cdf",
+        "attached":  false,
+        "canAccessOpener":  false,
+        "browserContextId":  "4039F0408535C74E874E9A4D5F828D9F"
+    },
+    {
+        "targetId":  "E836CE179FBC14CE6ABC7EF3598759CE",
+        "type":  "page",
+        "title":  "Codex 雷达",
+        "url":  "https://codexradar.com/",
+        "attached":  false,
+        "canAccessOpener":  false,
+        "browserContextId":  "4039F0408535C74E874E9A4D5F828D9F"
+    },
+    {
+        "targetId":  "04C99FE7509180DA715A723731D16931",
+        "type":  "page",
+        "title":  "上海交通大学图书馆",
+        "url":  "https://old.lib.sjtu.edu.cn/f/main/index.shtml",
+        "attached":  false,
+        "canAccessOpener":  false,
+        "openerFrameId":  "19D1CEFCE6F9344FE0741470A84BF9C7",
+        "browserContextId":  "4039F0408535C74E874E9A4D5F828D9F"
+    },
+    {
+        "targetId":  "131B4A82ECAE5BEB527524805DCC4B98",
+        "type":  "page",
+        "title":  "Mapbox | Maps, Navigation, Search, and Data",
+        "url":  "https://www.mapbox.com/",
+        "attached":  false,
+        "canAccessOpener":  false,
+        "browserContextId":  "4039F0408535C74E874E9A4D5F828D9F"
+    },
+    {
+        "targetId":  "BF743283CE855F73A99FB6DB76485513",
+        "type":  "page",
+        "title":  "上海交通大学图书馆",
+        "url":  "https://old.lib.sjtu.edu.cn/f/main/index.shtml",
+        "attached":  true,
+        "canAccessOpener":  false,
+        "browserContextId":  "4039F0408535C74E874E9A4D5F828D9F"
+    },
+    {
+        "targetId":  "E4467DF3C78529C882094FD05190723B",
+        "type":  "page",
+        "title":  "ScienceDirect.com | Science, health and medical journals, full text articles and books.",
+        "url":  "https://www.sciencedirect.com/",
+        "attached":  true,
+        "canAccessOpener":  false,
+        "browserContextId":  "4039F0408535C74E874E9A4D5F828D9F"
+    },
+    {
+        "targetId":  "A48B34A0C66BD1BE1764CD0C6F5D1105",
+        "type":  "page",
+        "title":  "GreenPaths",
+        "url":  "https://green-paths.web.app/?map=streets\u0026od=t",
+        "attached":  false,
+        "canAccessOpener":  false,
+        "browserContextId":  "4039F0408535C74E874E9A4D5F828D9F"
+    }
+]

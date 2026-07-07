@@ -1,0 +1,28 @@
+﻿{
+    "repo":  {
+                 "description":  "Documentation of Green Paths route planner (service architecture etc.)",
+                 "forkCount":  1,
+                 "homepageUrl":  "",
+                 "isArchived":  false,
+                 "licenseInfo":  {
+                                     "key":  "mit",
+                                     "name":  "MIT License",
+                                     "nickname":  ""
+                                 },
+                 "nameWithOwner":  "DigitalGeographyLab/green-paths",
+                 "primaryLanguage":  null,
+                 "pushedAt":  "2021-03-06T08:57:50Z",
+                 "repositoryTopics":  [
+                                          {
+                                              "name":  "green-paths"
+                                          },
+                                          {
+                                              "name":  "helsinki-region"
+                                          }
+                                      ],
+                 "stargazerCount":  0,
+                 "updatedAt":  "2021-03-06T08:57:51Z",
+                 "url":  "https://github.com/DigitalGeographyLab/green-paths"
+             },
+    "readme":  "# green-paths\n\nGreen Paths is an open source route planner being developed by Digital Geography Lab, University of Helsinki, currently within the project [UIA HOPE](https://ilmanlaatu.eu/briefly-in-english/) – Healthy Outdoor Premises for Everyone funded by [Urban Innovative Action](https://www.uia-initiative.eu/en/uia-cities/helsinki). \n\nIts goal is to help people find routes of fresh air, less noise and more greenery for walking and cycling in the Helsinki capital region. Also, it provides means for researchers to study citizens travel-time exposure to environmental qualities and to assess presence of healthier routes in different areas. \n\nThe project utilizes air quality index (AQI) data from the [FMI-ENFUSER](https://en.ilmatieteenlaitos.fi/environmental-information-fusion-service) modeling system (by the Finnish Meteorological Institute) and modeled [traffic noise data](www.syke.fi/en-US/Open_information/Spatial_datasets/Downloadable_spatial_dataset#E) from the Helsinki capital region. AQI is based on real-time hourly data as a composite measure of NO2, PM2.5, PM10, SO2 and O3. Green view (i.e. greenery) data is derived from [analyzing Google Street View images](https://www.sciencedirect.com/science/article/pii/S2352340920304959?via%3Dihub) and openly available [land cover data by HRI](https://hri.fi/data/en_GB/dataset/paakaupunkiseudun-maanpeiteaineisto). \n\nCurrently implemented features include calculation of unpolluted, green and quiet paths for walking or cycling (separately) with respect to real-time air quality, street level green view index and typical (day-evening-night) noise levels from road and rail traffic. The exposure-based routing method (and application) is based on [an MSc thesis](https://github.com/hellej/quiet-paths-msc). \n\nLive demo: [green-paths.web.app](https://green-paths.web.app/)\n\n## Roadmap\nThe project roadmap is currently presented as epics in [github.com/orgs/DigitalGeographyLab/projects/1](https://github.com/orgs/DigitalGeographyLab/projects/1).\n\n## Components\n- [green-path-ui](https://github.com/DigitalGeographyLab/hope-green-path-ui)\n- [green-path-server](https://github.com/DigitalGeographyLab/hope-green-path-server)\n- [graph-builder](https://github.com/DigitalGeographyLab/hope-graph-builder)\n\n\u003cimg src=\"images/service-architecture.png\" width=\"650\"\u003e\n\n## Materials\n* [OpenStreetMap](https://www.openstreetmap.org/about/) \n* [FMI-Enfuser modeling system](https://en.ilmatieteenlaitos.fi/environmental-information-fusion-service)\n* [SYKE - Traffic noise modeling data from Helsinki urban region](https://www.syke.fi/en-US/Open_information/Spatial_datasets/Downloadable_spatial_dataset#E)\n* [Traffic noise zones in Helsinki 2017](https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017)\n* [Street-level green view index by Google Street View images](https://www.sciencedirect.com/science/article/pii/S2352340920304959?via%3Dihub)\n* [Land cover data (low \u0026 high vegetation)](https://hri.fi/data/en_GB/dataset/paakaupunkiseudun-maanpeiteaineisto)\n\n## Tech\nServer \u0026 data processing: Python 3.8, igraph, GeoPandas, Shapely, Flask \u0026 Gunicorn  \nUI: React, Redux \u0026 Thunk, Mapbox GL JS \u0026 Turf.js, TypeScript\n\n## Green Paths routing API\nSee [hope-green-path-server/docs/green_paths_api.md](https://github.com/DigitalGeographyLab/hope-green-path-server/blob/master/docs/green_paths_api.md) for detailed documentation (endpoints etc.) of the green paths routing API.\n\n## Contributing\n* See also [CONTRIBUTING.md](CONTRIBUTING.md)\n* Please bear in mind that the current objective of the project is to develop a proof-of-concept of a green path route planner rather than a production ready service\n* You are most welcome to add feature requests or bug reports in the issue trackers of the related projects\n* When contributing to the project, please first discuss the change you wish to make via issue,\nemail, or any other method with the owners of this repository before making a change (firstname.lastname@helsinki.fi)\n* Simple typo fixes etc. can be sent as PRs directly, but for features or more complex bug fixes please add a corresponding issue first for discussion\n\n## Links\n* [Green Paths project website](https://www.helsinki.fi/en/researchgroups/digital-geography-lab/green-paths)\n* [UIA HOPE project](https://ilmanlaatu.eu/briefly-in-english/)\n\n## License\n[MIT](LICENSE)\n"
+}

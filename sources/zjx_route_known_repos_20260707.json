@@ -1,0 +1,544 @@
+﻿[
+    {
+        "description":  "Open Source Routing Machine - C++ backend",
+        "forkCount":  3946,
+        "homepageUrl":  "https://discord.gg/CpWzBC9G7Z",
+        "isArchived":  false,
+        "licenseInfo":  {
+                            "key":  "bsd-2-clause",
+                            "name":  "BSD 2-Clause \"Simplified\" License",
+                            "nickname":  ""
+                        },
+        "nameWithOwner":  "Project-OSRM/osrm-backend",
+        "primaryLanguage":  {
+                                "name":  "C++"
+                            },
+        "pushedAt":  "2026-07-07T05:23:20Z",
+        "repositoryTopics":  [
+                                 {
+                                     "name":  "osrm"
+                                 },
+                                 {
+                                     "name":  "cpp"
+                                 },
+                                 {
+                                     "name":  "c-plus-plus"
+                                 },
+                                 {
+                                     "name":  "routing"
+                                 },
+                                 {
+                                     "name":  "routing-engine"
+                                 },
+                                 {
+                                     "name":  "map-matching"
+                                 },
+                                 {
+                                     "name":  "traveling-salesman"
+                                 },
+                                 {
+                                     "name":  "openstreetmap"
+                                 },
+                                 {
+                                     "name":  "osm"
+                                 },
+                                 {
+                                     "name":  "isochrones"
+                                 },
+                                 {
+                                     "name":  "cpp17"
+                                 }
+                             ],
+        "stargazerCount":  7863,
+        "updatedAt":  "2026-07-06T21:21:52Z",
+        "url":  "https://github.com/Project-OSRM/osrm-backend"
+    },
+    {
+        "description":  "Open source routing engine for OpenStreetMap. Use it as Java library or standalone web server.",
+        "forkCount":  1936,
+        "homepageUrl":  "https://www.graphhopper.com/open-source/",
+        "isArchived":  false,
+        "licenseInfo":  {
+                            "key":  "apache-2.0",
+                            "name":  "Apache License 2.0",
+                            "nickname":  ""
+                        },
+        "nameWithOwner":  "graphhopper/graphhopper",
+        "primaryLanguage":  {
+                                "name":  "Java"
+                            },
+        "pushedAt":  "2026-07-06T23:28:13Z",
+        "repositoryTopics":  [
+                                 {
+                                     "name":  "openstreetmap"
+                                 },
+                                 {
+                                     "name":  "java"
+                                 },
+                                 {
+                                     "name":  "geospatial"
+                                 },
+                                 {
+                                     "name":  "dijkstra"
+                                 },
+                                 {
+                                     "name":  "directions"
+                                 },
+                                 {
+                                     "name":  "routing-engine"
+                                 },
+                                 {
+                                     "name":  "astar"
+                                 },
+                                 {
+                                     "name":  "pathfinding"
+                                 },
+                                 {
+                                     "name":  "public-transportation"
+                                 },
+                                 {
+                                     "name":  "isochrones"
+                                 },
+                                 {
+                                     "name":  "map-matching"
+                                 },
+                                 {
+                                     "name":  "graphhopper"
+                                 },
+                                 {
+                                     "name":  "routing"
+                                 }
+                             ],
+        "stargazerCount":  6554,
+        "updatedAt":  "2026-07-07T05:52:33Z",
+        "url":  "https://github.com/graphhopper/graphhopper"
+    },
+    {
+        "description":  "🌍 The open source route planner api with plenty of features.",
+        "forkCount":  475,
+        "homepageUrl":  "https://openrouteservice.org",
+        "isArchived":  false,
+        "licenseInfo":  {
+                            "key":  "gpl-3.0",
+                            "name":  "GNU General Public License v3.0",
+                            "nickname":  "GNU GPLv3"
+                        },
+        "nameWithOwner":  "GIScience/openrouteservice",
+        "primaryLanguage":  {
+                                "name":  "Java"
+                            },
+        "pushedAt":  "2026-07-02T14:09:47Z",
+        "repositoryTopics":  [
+                                 {
+                                     "name":  "directions-api"
+                                 },
+                                 {
+                                     "name":  "routing-engine"
+                                 },
+                                 {
+                                     "name":  "openstreetmap"
+                                 },
+                                 {
+                                     "name":  "routing"
+                                 },
+                                 {
+                                     "name":  "osm"
+                                 },
+                                 {
+                                     "name":  "isochrones"
+                                 },
+                                 {
+                                     "name":  "matrix"
+                                 }
+                             ],
+        "stargazerCount":  1917,
+        "updatedAt":  "2026-07-06T08:10:29Z",
+        "url":  "https://github.com/GIScience/openrouteservice"
+    },
+    {
+        "description":  "Open Source Routing Engine for OpenStreetMap",
+        "forkCount":  923,
+        "homepageUrl":  "https://valhalla.github.io/valhalla/",
+        "isArchived":  false,
+        "licenseInfo":  {
+                            "key":  "other",
+                            "name":  "Other",
+                            "nickname":  ""
+                        },
+        "nameWithOwner":  "valhalla/valhalla",
+        "primaryLanguage":  {
+                                "name":  "C++"
+                            },
+        "pushedAt":  "2026-07-06T23:18:11Z",
+        "repositoryTopics":  [
+                                 {
+                                     "name":  "openstreetmap"
+                                 },
+                                 {
+                                     "name":  "dijkstra"
+                                 },
+                                 {
+                                     "name":  "astar"
+                                 },
+                                 {
+                                     "name":  "tiled"
+                                 },
+                                 {
+                                     "name":  "directions"
+                                 },
+                                 {
+                                     "name":  "isochrones"
+                                 },
+                                 {
+                                     "name":  "multi-modal"
+                                 },
+                                 {
+                                     "name":  "traveling-salesman"
+                                 },
+                                 {
+                                     "name":  "routing-engine"
+                                 },
+                                 {
+                                     "name":  "routing"
+                                 }
+                             ],
+        "stargazerCount":  5884,
+        "updatedAt":  "2026-07-07T06:23:43Z",
+        "url":  "https://github.com/valhalla/valhalla"
+    },
+    {
+        "description":  "An open source multi-modal trip planner",
+        "forkCount":  1127,
+        "homepageUrl":  "http://www.opentripplanner.org",
+        "isArchived":  false,
+        "licenseInfo":  {
+                            "key":  "other",
+                            "name":  "Other",
+                            "nickname":  ""
+                        },
+        "nameWithOwner":  "opentripplanner/OpenTripPlanner",
+        "primaryLanguage":  {
+                                "name":  "Java"
+                            },
+        "pushedAt":  "2026-07-07T04:33:40Z",
+        "repositoryTopics":  null,
+        "stargazerCount":  2682,
+        "updatedAt":  "2026-07-06T20:14:56Z",
+        "url":  "https://github.com/opentripplanner/OpenTripPlanner"
+    },
+    {
+        "description":  "Repository contains pgRouting library. Development branch is \"develop\", stable branch is \"master\"",
+        "forkCount":  393,
+        "homepageUrl":  "https://pgrouting.org",
+        "isArchived":  false,
+        "licenseInfo":  {
+                            "key":  "gpl-2.0",
+                            "name":  "GNU General Public License v2.0",
+                            "nickname":  "GNU GPLv2"
+                        },
+        "nameWithOwner":  "pgRouting/pgrouting",
+        "primaryLanguage":  {
+                                "name":  "C++"
+                            },
+        "pushedAt":  "2026-06-24T08:42:53Z",
+        "repositoryTopics":  [
+                                 {
+                                     "name":  "postgis"
+                                 },
+                                 {
+                                     "name":  "postgresql-extension"
+                                 },
+                                 {
+                                     "name":  "routing"
+                                 },
+                                 {
+                                     "name":  "spatial-analysis"
+                                 },
+                                 {
+                                     "name":  "network-analysis"
+                                 },
+                                 {
+                                     "name":  "osgeo"
+                                 }
+                             ],
+        "stargazerCount":  1410,
+        "updatedAt":  "2026-06-24T05:50:41Z",
+        "url":  "https://github.com/pgRouting/pgrouting"
+    },
+    {
+        "description":  "Download, model, analyze, and visualize street networks and other geospatial features from OpenStreetMap.",
+        "forkCount":  881,
+        "homepageUrl":  "https://osmnx.readthedocs.io",
+        "isArchived":  false,
+        "licenseInfo":  {
+                            "key":  "mit",
+                            "name":  "MIT License",
+                            "nickname":  ""
+                        },
+        "nameWithOwner":  "gboeing/osmnx",
+        "primaryLanguage":  {
+                                "name":  "Python"
+                            },
+        "pushedAt":  "2026-07-06T10:27:18Z",
+        "repositoryTopics":  [
+                                 {
+                                     "name":  "openstreetmap"
+                                 },
+                                 {
+                                     "name":  "gis"
+                                 },
+                                 {
+                                     "name":  "street-networks"
+                                 },
+                                 {
+                                     "name":  "overpass-api"
+                                 },
+                                 {
+                                     "name":  "networkx"
+                                 },
+                                 {
+                                     "name":  "spatial-analysis"
+                                 },
+                                 {
+                                     "name":  "geospatial"
+                                 },
+                                 {
+                                     "name":  "urban-planning"
+                                 },
+                                 {
+                                     "name":  "transportation"
+                                 },
+                                 {
+                                     "name":  "geography"
+                                 },
+                                 {
+                                     "name":  "osmnx"
+                                 },
+                                 {
+                                     "name":  "networks"
+                                 },
+                                 {
+                                     "name":  "spatial-data"
+                                 },
+                                 {
+                                     "name":  "urban"
+                                 },
+                                 {
+                                     "name":  "osm"
+                                 },
+                                 {
+                                     "name":  "spatial"
+                                 },
+                                 {
+                                     "name":  "python"
+                                 },
+                                 {
+                                     "name":  "transport"
+                                 },
+                                 {
+                                     "name":  "mapping"
+                                 },
+                                 {
+                                     "name":  "routing"
+                                 }
+                             ],
+        "stargazerCount":  5765,
+        "updatedAt":  "2026-07-06T19:51:15Z",
+        "url":  "https://github.com/gboeing/osmnx"
+    },
+    {
+        "description":  "MapLibre GL JS - Interactive vector tile maps in the browser",
+        "forkCount":  1133,
+        "homepageUrl":  "https://maplibre.org/maplibre-gl-js/docs/",
+        "isArchived":  false,
+        "licenseInfo":  {
+                            "key":  "other",
+                            "name":  "Other",
+                            "nickname":  ""
+                        },
+        "nameWithOwner":  "maplibre/maplibre-gl-js",
+        "primaryLanguage":  {
+                                "name":  "TypeScript"
+                            },
+        "pushedAt":  "2026-07-06T11:16:29Z",
+        "repositoryTopics":  [
+                                 {
+                                     "name":  "typescript"
+                                 },
+                                 {
+                                     "name":  "maplibre"
+                                 },
+                                 {
+                                     "name":  "maplibre-gl"
+                                 },
+                                 {
+                                     "name":  "maplibre-gl-js"
+                                 },
+                                 {
+                                     "name":  "webgl2"
+                                 },
+                                 {
+                                     "name":  "hacktoberfest"
+                                 }
+                             ],
+        "stargazerCount":  10983,
+        "updatedAt":  "2026-07-07T06:07:48Z",
+        "url":  "https://github.com/maplibre/maplibre-gl-js"
+    },
+    {
+        "description":  "🍃 JavaScript library for mobile-friendly interactive maps 🇺🇦",
+        "forkCount":  6140,
+        "homepageUrl":  "https://leafletjs.com",
+        "isArchived":  false,
+        "licenseInfo":  {
+                            "key":  "bsd-2-clause",
+                            "name":  "BSD 2-Clause \"Simplified\" License",
+                            "nickname":  ""
+                        },
+        "nameWithOwner":  "Leaflet/Leaflet",
+        "primaryLanguage":  {
+                                "name":  "JavaScript"
+                            },
+        "pushedAt":  "2026-07-06T13:50:41Z",
+        "repositoryTopics":  [
+                                 {
+                                     "name":  "javascript"
+                                 },
+                                 {
+                                     "name":  "leaflet"
+                                 },
+                                 {
+                                     "name":  "maps"
+                                 }
+                             ],
+        "stargazerCount":  45302,
+        "updatedAt":  "2026-07-07T05:54:47Z",
+        "url":  "https://github.com/Leaflet/Leaflet"
+    },
+    {
+        "description":  "Python tools for geographic data",
+        "forkCount":  1034,
+        "homepageUrl":  "http://geopandas.org/",
+        "isArchived":  false,
+        "licenseInfo":  {
+                            "key":  "bsd-3-clause",
+                            "name":  "BSD 3-Clause \"New\" or \"Revised\" License",
+                            "nickname":  "Modified BSD License"
+                        },
+        "nameWithOwner":  "geopandas/geopandas",
+        "primaryLanguage":  {
+                                "name":  "Python"
+                            },
+        "pushedAt":  "2026-07-07T02:41:40Z",
+        "repositoryTopics":  [
+                                 {
+                                     "name":  "geoparquet"
+                                 },
+                                 {
+                                     "name":  "geospatial"
+                                 },
+                                 {
+                                     "name":  "pandas"
+                                 },
+                                 {
+                                     "name":  "python"
+                                 },
+                                 {
+                                     "name":  "spatial"
+                                 }
+                             ],
+        "stargazerCount":  5181,
+        "updatedAt":  "2026-07-07T02:41:42Z",
+        "url":  "https://github.com/geopandas/geopandas"
+    },
+    {
+        "description":  "Network Analysis in Python",
+        "forkCount":  3541,
+        "homepageUrl":  "https://networkx.org",
+        "isArchived":  false,
+        "licenseInfo":  {
+                            "key":  "other",
+                            "name":  "Other",
+                            "nickname":  ""
+                        },
+        "nameWithOwner":  "networkx/networkx",
+        "primaryLanguage":  {
+                                "name":  "Python"
+                            },
+        "pushedAt":  "2026-07-07T01:05:13Z",
+        "repositoryTopics":  [
+                                 {
+                                     "name":  "python"
+                                 },
+                                 {
+                                     "name":  "complex-networks"
+                                 },
+                                 {
+                                     "name":  "graph-theory"
+                                 },
+                                 {
+                                     "name":  "graph-algorithms"
+                                 },
+                                 {
+                                     "name":  "graph-analysis"
+                                 },
+                                 {
+                                     "name":  "graph-generation"
+                                 },
+                                 {
+                                     "name":  "graph-visualization"
+                                 }
+                             ],
+        "stargazerCount":  17073,
+        "updatedAt":  "2026-07-07T06:07:57Z",
+        "url":  "https://github.com/networkx/networkx"
+    },
+    {
+        "description":  "A modular geospatial engine written in JavaScript and TypeScript",
+        "forkCount":  1013,
+        "homepageUrl":  "https://turfjs.org",
+        "isArchived":  false,
+        "licenseInfo":  {
+                            "key":  "mit",
+                            "name":  "MIT License",
+                            "nickname":  ""
+                        },
+        "nameWithOwner":  "Turfjs/turf",
+        "primaryLanguage":  {
+                                "name":  "TypeScript"
+                            },
+        "pushedAt":  "2026-07-02T11:58:51Z",
+        "repositoryTopics":  [
+                                 {
+                                     "name":  "javascript"
+                                 },
+                                 {
+                                     "name":  "algorithm"
+                                 },
+                                 {
+                                     "name":  "computational-geometry"
+                                 },
+                                 {
+                                     "name":  "geojson"
+                                 },
+                                 {
+                                     "name":  "turf"
+                                 },
+                                 {
+                                     "name":  "gis"
+                                 },
+                                 {
+                                     "name":  "typescript"
+                                 },
+                                 {
+                                     "name":  "geospatial"
+                                 },
+                                 {
+                                     "name":  "mapping"
+                                 }
+                             ],
+        "stargazerCount":  10400,
+        "updatedAt":  "2026-07-07T06:42:28Z",
+        "url":  "https://github.com/Turfjs/turf"
+    }
+]

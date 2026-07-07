@@ -1,0 +1,217 @@
+﻿[
+    {
+        "doi":  "10.1145/2452516.2452518",
+        "title":  "Health-optimal routing in pedestrian navigation services",
+        "year":  2012,
+        "container":  "Proceedings of the First ACM SIGSPATIAL International Workshop on Use of GIS in Public Health",
+        "author":  "Monir H. Sharker; Hassan A. Karimi; Janice C. Zgibor",
+        "url":  "https://doi.org/10.1145/2452516.2452518",
+        "type":  "proceedings-article",
+        "reference_count":  32,
+        "cited_by_crossref":  20
+    },
+    {
+        "doi":  "10.1080/13658816.2013.841317",
+        "title":  "Computing least air pollution exposure routes",
+        "year":  2013,
+        "container":  "International Journal of Geographical Information Science",
+        "author":  "Monir H. Sharker; Hassan A. Karimi",
+        "url":  "https://doi.org/10.1080/13658816.2013.841317",
+        "type":  "journal-article",
+        "reference_count":  16,
+        "cited_by_crossref":  34
+    },
+    {
+        "doi":  "10.1016/j.envres.2013.03.004",
+        "title":  "A web-based route planning tool to reduce cyclists\u0027 exposures to traffic pollution: A case study in Montreal, Canada",
+        "year":  2013,
+        "container":  "Environmental Research",
+        "author":  "Marianne Hatzopoulou; Scott Weichenthal; Guillaume Barreau; Mark Goldberg; William Farrell; Dan Crouse",
+        "url":  "https://doi.org/10.1016/j.envres.2013.03.004",
+        "type":  "journal-article",
+        "reference_count":  22,
+        "cited_by_crossref":  55
+    },
+    {
+        "doi":  "10.1016/j.jth.2018.06.008",
+        "title":  "Reducing pedestrians\u0027 inhalation of traffic-related air pollution through route choices: Case study in California suburb",
+        "year":  2018,
+        "container":  "Journal of Transport \u0026amp; Health",
+        "author":  "Ji Luo; Kanok Boriboonsomsin; Matthew Barth",
+        "url":  "https://doi.org/10.1016/j.jth.2018.06.008",
+        "type":  "journal-article",
+        "reference_count":  49,
+        "cited_by_crossref":  33
+    },
+    {
+        "doi":  "10.1016/j.compenvurbsys.2019.101456",
+        "title":  "Healthier routes planning: A new method and online implementation for minimizing air pollution exposure risk",
+        "year":  2020,
+        "container":  "Computers, Environment and Urban Systems",
+        "author":  "Bin Zou; Shenxin Li; Zhong Zheng; Benjamin F. Zhan; Zhonglin Yang; Neng Wan",
+        "url":  "https://doi.org/10.1016/j.compenvurbsys.2019.101456",
+        "type":  "journal-article",
+        "reference_count":  55,
+        "cited_by_crossref":  41
+    },
+    {
+        "doi":  "10.1016/j.trd.2022.103176",
+        "title":  "Route planning for active travel considering air pollution exposure",
+        "year":  2022,
+        "container":  "Transportation Research Part D: Transport and Environment",
+        "author":  "Yuxin Wang; Yizheng Wu; Zhenyu Li; Kai Liao; Chao Li; Guohua Song",
+        "url":  "https://doi.org/10.1016/j.trd.2022.103176",
+        "type":  "journal-article",
+        "reference_count":  59,
+        "cited_by_crossref":  28
+    },
+    {
+        "doi":  "10.1016/j.scitotenv.2007.08.058",
+        "title":  "A proper choice of route significantly reduces air pollution exposure — A study on bicycle and bus trips in urban streets",
+        "year":  2008,
+        "container":  "Science of The Total Environment",
+        "author":  "Ole Hertel; Martin Hvidberg; Matthias Ketzel; Lars Storm; Lizzi Stausgaard",
+        "url":  "https://doi.org/10.1016/j.scitotenv.2007.08.058",
+        "type":  "journal-article",
+        "reference_count":  39,
+        "cited_by_crossref":  120
+    },
+    {
+        "doi":  "10.1016/j.jth.2015.12.002",
+        "title":  "Bicycle route preference and pollution inhalation dose: Comparing exposure and distance trade-offs",
+        "year":  2016,
+        "container":  "Journal of Transport \u0026amp; Health",
+        "author":  "Alexander Y. Bigazzi; Joseph Broach; Jennifer Dill",
+        "url":  "https://doi.org/10.1016/j.jth.2015.12.002",
+        "type":  "journal-article",
+        "reference_count":  30,
+        "cited_by_crossref":  21
+    },
+    {
+        "doi":  "10.1016/j.orhc.2018.04.001",
+        "title":  "Supporting healthy route choice for commuter cyclists: The trade-off between travel time and pollutant dose",
+        "year":  2018,
+        "container":  "Operations Research for Health Care",
+        "author":  "Judith Y.T. Wang; Kim N. Dirks; Matthias Ehrgott; Jon Pearce; Alan K.L. Cheung",
+        "url":  "https://doi.org/10.1016/j.orhc.2018.04.001",
+        "type":  "journal-article",
+        "reference_count":  41,
+        "cited_by_crossref":  16
+    },
+    {
+        "doi":  "10.1016/j.tra.2017.08.017",
+        "title":  "Quantifying the value of a clean ride: How far would you bicycle to avoid exposure to traffic-related air pollution?",
+        "year":  2017,
+        "container":  "Transportation Research Part A: Policy and Practice",
+        "author":  "Sabreena Anowar; Naveen Eluru; Marianne Hatzopoulou",
+        "url":  "https://doi.org/10.1016/j.tra.2017.08.017",
+        "type":  "journal-article",
+        "reference_count":  70,
+        "cited_by_crossref":  38
+    },
+    {
+        "doi":  "10.1080/01441647.2021.1895361",
+        "error":  "远程服务器返回错误: (429) Too Many Requests。"
+    },
+    {
+        "doi":  "10.1186/s12942-023-00326-7",
+        "title":  "Cyclists’ exposure to air pollution, noise, and greenery: a population-level spatial analysis approach",
+        "year":  2023,
+        "container":  "International Journal of Health Geographics",
+        "author":  "Elias Willberg; Age Poom; Joose Helle; Tuuli Toivonen",
+        "url":  "https://doi.org/10.1186/s12942-023-00326-7",
+        "type":  "journal-article",
+        "reference_count":  101,
+        "cited_by_crossref":  30
+    },
+    {
+        "doi":  "10.5334/jors.400",
+        "title":  "The Green Paths Route Planning Software for Exposure-Optimised Active Travel",
+        "year":  2023,
+        "container":  "Journal of Open Research Software",
+        "author":  "Joose Helle; Age Poom; Elias Willberg; Tuuli Toivonen",
+        "url":  "https://doi.org/10.5334/jors.400",
+        "type":  "journal-article",
+        "reference_count":  33,
+        "cited_by_crossref":  7
+    },
+    {
+        "doi":  "10.1145/2631775.2631799",
+        "title":  "The shortest path to happiness",
+        "year":  2014,
+        "container":  "Proceedings of the 25th ACM conference on Hypertext and social media",
+        "author":  "Daniele Quercia; Rossano Schifanella; Luca Maria Aiello",
+        "url":  "https://doi.org/10.1145/2631775.2631799",
+        "type":  "proceedings-article",
+        "reference_count":  36,
+        "cited_by_crossref":  295
+    },
+    {
+        "doi":  "10.1016/j.gaceta.2015.11.003",
+        "error":  "远程服务器返回错误: (429) Too Many Requests。"
+    },
+    {
+        "doi":  "10.1553/giscience2017_01_s327",
+        "title":  "Reducing Individual Heat Stress through Path Planning",
+        "year":  2017,
+        "container":  "GI_Forum",
+        "author":  "Joachim Rußig; Julian Bruns",
+        "url":  "https://doi.org/10.1553/giscience2017_01_s327",
+        "type":  "journal-article",
+        "reference_count":  0,
+        "cited_by_crossref":  10
+    },
+    {
+        "doi":  "10.1109/DEXA.2012.49",
+        "error":  "远程服务器返回错误: (429) Too Many Requests。"
+    },
+    {
+        "doi":  "10.1145/3411763.3451707",
+        "error":  "远程服务器返回错误: (429) Too Many Requests。"
+    },
+    {
+        "doi":  "10.1145/3491102.3502051",
+        "title":  "FlexNav: Flexible Navigation and Exploration through Connected Runnable Zones",
+        "year":  2022,
+        "container":  "CHI Conference on Human Factors in Computing Systems",
+        "author":  "Jutta Katharina Willamowski; Shreepriya Gonzalez-Jimenez; Christophe Legras; Danilo Gallo",
+        "url":  "https://doi.org/10.1145/3491102.3502051",
+        "type":  "proceedings-article",
+        "reference_count":  36,
+        "cited_by_crossref":  5
+    },
+    {
+        "doi":  "10.1016/j.ijhcs.2025.103512",
+        "error":  "远程服务器返回错误: (429) Too Many Requests。"
+    },
+    {
+        "doi":  "10.1145/1754399.1754400",
+        "title":  "Multiobjective A\n            \u003csup\u003e*\u003c/sup\u003e\n            search with consistent heuristics",
+        "year":  2008,
+        "container":  "Journal of the ACM",
+        "author":  "Lawrence Mandow; José. Luis Pérez De La Cruz",
+        "url":  "https://doi.org/10.1145/1754399.1754400",
+        "type":  "journal-article",
+        "reference_count":  21,
+        "cited_by_crossref":  79
+    },
+    {
+        "doi":  "10.1016/j.is.2015.10.005",
+        "error":  "远程服务器返回错误: (429) Too Many Requests。"
+    },
+    {
+        "doi":  "10.4230/LIPIcs.GIScience.2021.II.11",
+        "error":  "远程服务器返回错误: (429) Too Many Requests。"
+    },
+    {
+        "doi":  "10.1016/j.jth.2022.101410",
+        "title":  "Health-oriented routes for active mobility",
+        "year":  2022,
+        "container":  "Journal of Transport \u0026amp; Health",
+        "author":  "Paulo J.G. Ribeiro; Gabriel J.C. Dias; José F.G. Mendes",
+        "url":  "https://doi.org/10.1016/j.jth.2022.101410",
+        "type":  "journal-article",
+        "reference_count":  61,
+        "cited_by_crossref":  19
+    }
+]

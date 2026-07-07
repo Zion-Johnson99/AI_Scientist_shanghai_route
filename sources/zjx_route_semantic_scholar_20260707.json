@@ -1,0 +1,22 @@
+﻿[
+    {
+        "query":  "low pollution route planning active travel",
+        "url":  "https://api.semanticscholar.org/graph/v1/paper/search?query=low%20pollution%20route%20planning%20active%20travel\u0026limit=10\u0026fields=title,authors,year,venue,publicationTypes,publicationDate,externalIds,url,abstract,citationCount,openAccessPdf",
+        "error":  "远程服务器返回错误: (429)。"
+    },
+    {
+        "query":  "green path routing air pollution noise greenery",
+        "url":  "https://api.semanticscholar.org/graph/v1/paper/search?query=green%20path%20routing%20air%20pollution%20noise%20greenery\u0026limit=10\u0026fields=title,authors,year,venue,publicationTypes,publicationDate,externalIds,url,abstract,citationCount,openAccessPdf",
+        "error":  "远程服务器返回错误: (429)。"
+    },
+    {
+        "query":  "running route recommendation urban",
+        "url":  "https://api.semanticscholar.org/graph/v1/paper/search?query=running%20route%20recommendation%20urban\u0026limit=10\u0026fields=title,authors,year,venue,publicationTypes,publicationDate,externalIds,url,abstract,citationCount,openAccessPdf",
+        "error":  "远程服务器返回错误: (429)。"
+    },
+    {
+        "query":  "pedestrian thermal comfort route choice",
+        "url":  "https://api.semanticscholar.org/graph/v1/paper/search?query=pedestrian%20thermal%20comfort%20route%20choice\u0026limit=10\u0026fields=title,authors,year,venue,publicationTypes,publicationDate,externalIds,url,abstract,citationCount,openAccessPdf",
+        "error":  "远程服务器返回错误: (429)。"
+    }
+]

@@ -1,0 +1,309 @@
+﻿[
+    {
+        "query":  "green path routing",
+        "result":  {
+                       "value":  [
+                                     {
+                                         "description":  "Documentation of Green Paths route planner (service architecture etc.)",
+                                         "forksCount":  1,
+                                         "fullName":  "DigitalGeographyLab/green-paths",
+                                         "homepage":  "",
+                                         "isArchived":  false,
+                                         "language":  "",
+                                         "license":  {
+                                                         "key":  "mit",
+                                                         "name":  "MIT License",
+                                                         "url":  "https://api.github.com/licenses/mit"
+                                                     },
+                                         "pushedAt":  "2021-03-06T08:57:50Z",
+                                         "stargazersCount":  0,
+                                         "updatedAt":  "2021-03-06T08:57:51Z",
+                                         "url":  "https://github.com/DigitalGeographyLab/green-paths"
+                                     }
+                                 ],
+                       "Count":  1
+                   }
+    },
+    {
+        "query":  "healthy routing air pollution",
+        "result":  {
+                       "value":  [
+
+                                 ],
+                       "Count":  0
+                   }
+    },
+    {
+        "query":  "low pollution route",
+        "result":  {
+                       "value":  [
+
+                                 ],
+                       "Count":  0
+                   }
+    },
+    {
+        "query":  "route planner exposure",
+        "result":  {
+                       "value":  [
+
+                                 ],
+                       "Count":  0
+                   }
+    },
+    {
+        "query":  "osmnx routing walking",
+        "result":  {
+                       "value":  [
+
+                                 ],
+                       "Count":  0
+                   }
+    },
+    {
+        "query":  "running route recommendation",
+        "result":  {
+                       "value":  [
+                                     {
+                                         "description":  "A project worked in AWS AI/ML Mentor Scholarship Program. Hosted in streamlit.",
+                                         "forksCount":  0,
+                                         "fullName":  "samuellau0802/running-route-recommendation",
+                                         "homepage":  "https://running-route-recommendation-project-pzfp9xonkksciy4jg423dv.streamlit.app/",
+                                         "isArchived":  false,
+                                         "language":  "Python",
+                                         "license":  {
+                                                         "key":  "",
+                                                         "name":  "",
+                                                         "url":  ""
+                                                     },
+                                         "pushedAt":  "2024-08-16T01:33:48Z",
+                                         "stargazersCount":  0,
+                                         "updatedAt":  "2024-08-16T01:36:27Z",
+                                         "url":  "https://github.com/samuellau0802/running-route-recommendation"
+                                     },
+                                     {
+                                         "description":  "A project in AWS AI/ML Mentor Scholarship Program. Hosted in streamlit.",
+                                         "forksCount":  0,
+                                         "fullName":  "fickya1987/running-route-recommendation-project",
+                                         "homepage":  "https://running-route-recommendation-project-pzfp9xonkksciy4jg423dv.streamlit.app/",
+                                         "isArchived":  false,
+                                         "language":  "",
+                                         "license":  {
+                                                         "key":  "",
+                                                         "name":  "",
+                                                         "url":  ""
+                                                     },
+                                         "pushedAt":  "2024-03-14T03:28:00Z",
+                                         "stargazersCount":  0,
+                                         "updatedAt":  "2024-06-19T12:14:26Z",
+                                         "url":  "https://github.com/fickya1987/running-route-recommendation-project"
+                                     },
+                                     {
+                                         "description":  "running route recommendation",
+                                         "forksCount":  1,
+                                         "fullName":  "SummerZheng/iRun_YN",
+                                         "homepage":  "",
+                                         "isArchived":  false,
+                                         "language":  "Python",
+                                         "license":  {
+                                                         "key":  "mit",
+                                                         "name":  "MIT License",
+                                                         "url":  "https://api.github.com/licenses/mit"
+                                                     },
+                                         "pushedAt":  "2014-08-28T03:34:05Z",
+                                         "stargazersCount":  1,
+                                         "updatedAt":  "2024-06-07T00:57:46Z",
+                                         "url":  "https://github.com/SummerZheng/iRun_YN"
+                                     },
+                                     {
+                                         "description":  "agentic ai running route recommendations",
+                                         "forksCount":  0,
+                                         "fullName":  "lgp3212/runner-vision",
+                                         "homepage":  "",
+                                         "isArchived":  false,
+                                         "language":  "Python",
+                                         "license":  {
+                                                         "key":  "",
+                                                         "name":  "",
+                                                         "url":  ""
+                                                     },
+                                         "pushedAt":  "2025-12-10T20:50:15Z",
+                                         "stargazersCount":  0,
+                                         "updatedAt":  "2025-12-10T20:50:18Z",
+                                         "url":  "https://github.com/lgp3212/runner-vision"
+                                     },
+                                     {
+                                         "description":  "XploRun: Running routes recommendations and navigation",
+                                         "forksCount":  0,
+                                         "fullName":  "laserguy/xplorun_doc",
+                                         "homepage":  "",
+                                         "isArchived":  false,
+                                         "language":  "",
+                                         "license":  {
+                                                         "key":  "",
+                                                         "name":  "",
+                                                         "url":  ""
+                                                     },
+                                         "pushedAt":  "2023-12-03T12:20:19Z",
+                                         "stargazersCount":  0,
+                                         "updatedAt":  "2023-12-03T12:15:21Z",
+                                         "url":  "https://github.com/laserguy/xplorun_doc"
+                                     },
+                                     {
+                                         "description":  "AI-powered running route recommendation PWA - Built with Claude Code",
+                                         "forksCount":  0,
+                                         "fullName":  "davidml2/runroute",
+                                         "homepage":  "",
+                                         "isArchived":  false,
+                                         "language":  "Kotlin",
+                                         "license":  {
+                                                         "key":  "",
+                                                         "name":  "",
+                                                         "url":  ""
+                                                     },
+                                         "pushedAt":  "2026-03-10T10:58:52Z",
+                                         "stargazersCount":  0,
+                                         "updatedAt":  "2026-03-10T10:58:56Z",
+                                         "url":  "https://github.com/davidml2/runroute"
+                                     }
+                                 ],
+                       "Count":  6
+                   }
+    },
+    {
+        "query":  "openstreetmap routing engine walking cycling",
+        "result":  {
+                       "value":  [
+
+                                 ],
+                       "Count":  0
+                   }
+    },
+    {
+        "query":  "green route planner",
+        "result":  {
+                       "value":  [
+                                     {
+                                         "description":  "",
+                                         "forksCount":  0,
+                                         "fullName":  "Ganir19/EcoFriendly_GreenRoute_Planner",
+                                         "homepage":  "",
+                                         "isArchived":  false,
+                                         "language":  "HTML",
+                                         "license":  {
+                                                         "key":  "",
+                                                         "name":  "",
+                                                         "url":  ""
+                                                     },
+                                         "pushedAt":  "2024-11-17T04:41:26Z",
+                                         "stargazersCount":  0,
+                                         "updatedAt":  "2024-11-17T04:41:29Z",
+                                         "url":  "https://github.com/Ganir19/EcoFriendly_GreenRoute_Planner"
+                                     },
+                                     {
+                                         "description":  "",
+                                         "forksCount":  0,
+                                         "fullName":  "mariamseoudi/green_route_planner",
+                                         "homepage":  "",
+                                         "isArchived":  false,
+                                         "language":  "Python",
+                                         "license":  {
+                                                         "key":  "",
+                                                         "name":  "",
+                                                         "url":  ""
+                                                     },
+                                         "pushedAt":  "2022-04-14T19:51:28Z",
+                                         "stargazersCount":  0,
+                                         "updatedAt":  "2022-04-14T19:47:14Z",
+                                         "url":  "https://github.com/mariamseoudi/green_route_planner"
+                                     },
+                                     {
+                                         "description":  "Final Year Project",
+                                         "forksCount":  0,
+                                         "fullName":  "FlyPegasus/Green-Route-Planner",
+                                         "homepage":  "",
+                                         "isArchived":  false,
+                                         "language":  "Python",
+                                         "license":  {
+                                                         "key":  "",
+                                                         "name":  "",
+                                                         "url":  ""
+                                                     },
+                                         "pushedAt":  "2024-07-23T15:39:12Z",
+                                         "stargazersCount":  0,
+                                         "updatedAt":  "2024-07-23T15:39:16Z",
+                                         "url":  "https://github.com/FlyPegasus/Green-Route-Planner"
+                                     },
+                                     {
+                                         "description":  "",
+                                         "forksCount":  0,
+                                         "fullName":  "nelsam12/green_route_planner",
+                                         "homepage":  "",
+                                         "isArchived":  false,
+                                         "language":  "CSS",
+                                         "license":  {
+                                                         "key":  "",
+                                                         "name":  "",
+                                                         "url":  ""
+                                                     },
+                                         "pushedAt":  "2025-05-03T12:51:51Z",
+                                         "stargazersCount":  0,
+                                         "updatedAt":  "2025-05-03T12:51:54Z",
+                                         "url":  "https://github.com/nelsam12/green_route_planner"
+                                     },
+                                     {
+                                         "description":  "Green Route Planner with EV Priority \u0026 Emission Budgeting",
+                                         "forksCount":  0,
+                                         "fullName":  "Goutham7675/EcoRoute-Optimizer",
+                                         "homepage":  "",
+                                         "isArchived":  false,
+                                         "language":  "",
+                                         "license":  {
+                                                         "key":  "",
+                                                         "name":  "",
+                                                         "url":  ""
+                                                     },
+                                         "pushedAt":  "2025-07-12T17:17:44Z",
+                                         "stargazersCount":  0,
+                                         "updatedAt":  "2025-07-12T17:17:47Z",
+                                         "url":  "https://github.com/Goutham7675/EcoRoute-Optimizer"
+                                     },
+                                     {
+                                         "description":  "",
+                                         "forksCount":  0,
+                                         "fullName":  "shinchana1011/DL-Based-Carbon-Aware-Green-Route-Planner",
+                                         "homepage":  "",
+                                         "isArchived":  false,
+                                         "language":  "Python",
+                                         "license":  {
+                                                         "key":  "",
+                                                         "name":  "",
+                                                         "url":  ""
+                                                     },
+                                         "pushedAt":  "2025-12-08T06:12:45Z",
+                                         "stargazersCount":  1,
+                                         "updatedAt":  "2026-06-16T12:30:28Z",
+                                         "url":  "https://github.com/shinchana1011/DL-Based-Carbon-Aware-Green-Route-Planner"
+                                     },
+                                     {
+                                         "description":  "EcoTrack is a React web app built with Vite and Supabase. It tracks carbon footprints, calculates transport, food, and energy emissions, and visualizes virtual forests. Features include live database login streak tracking, custom sustainability milestones, and an OpenStreetMap-powered Green Route Planner offering multi-mode travel comparisons.",
+                                         "forksCount":  0,
+                                         "fullName":  "bindagearyan-bit/Ecotrack",
+                                         "homepage":  "",
+                                         "isArchived":  false,
+                                         "language":  "JavaScript",
+                                         "license":  {
+                                                         "key":  "",
+                                                         "name":  "",
+                                                         "url":  ""
+                                                     },
+                                         "pushedAt":  "2026-06-20T20:57:14Z",
+                                         "stargazersCount":  0,
+                                         "updatedAt":  "2026-06-20T20:57:18Z",
+                                         "url":  "https://github.com/bindagearyan-bit/Ecotrack"
+                                     }
+                                 ],
+                       "Count":  7
+                   }
+    }
+]
