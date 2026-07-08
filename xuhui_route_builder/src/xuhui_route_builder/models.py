@@ -37,6 +37,7 @@ class EntryPoint(BaseModel):
     entr_location: str | None = None
     nearest_metro: str | None = None
     source_api: str | None = None
+    default_visible: bool = False
 
 
 class RouteSeed(BaseModel):
@@ -89,6 +90,26 @@ class CandidateRoute(BaseModel):
     future_score: float | None = None
     score_note: str = "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。"
     raw_response_path: str | None = None
+    source_name: str = ""
+    source_url: str = ""
+    confidence: str = "中"
+    distance_error_m: int = 0
+    loop_flag: bool = False
+    feature_tags: list[str] = Field(default_factory=list)
+    candidate_rank: str = "candidate"
+
+
+class PoiPoint(BaseModel):
+    poi_id: str
+    poi_name: str
+    poi_type: Literal["coffee", "toilet", "convenience", "metro", "park_gate"]
+    region_zone: str
+    lng_gcj02: float
+    lat_gcj02: float
+    lng_wgs84: float
+    lat_wgs84: float
+    source_api: str = "curated_sample"
+    default_visible: bool = False
 
 
 class AccessCase(BaseModel):

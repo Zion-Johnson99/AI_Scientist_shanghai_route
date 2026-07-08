@@ -77,3 +77,19 @@ def test_amap_client_builds_expected_service_params(tmp_path) -> None:
     assert params["key"] == "test-key"
     assert params["keywords"] == "徐汇区"
     assert params["output"] == "JSON"
+
+
+def test_amap_client_builds_v5_poi_and_v2_route_params(tmp_path) -> None:
+    client = AmapClient("test-key", cache_dir=tmp_path)
+
+    poi_url, poi_params = client.prepare_request("place_text_v5", {"keywords": "咖啡", "region": "310104"})
+    walk_url, walk_params = client.prepare_request(
+        "walking_v2",
+        {"origin": "121.4388,31.1955", "destination": "121.4418,31.1984"},
+    )
+
+    assert poi_url.endswith("/v5/place/text")
+    assert poi_params["region"] == "310104"
+    assert poi_params["key"] == "test-key"
+    assert walk_url.endswith("/v5/direction/walking")
+    assert walk_params["origin"] == "121.4388,31.1955"

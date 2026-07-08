@@ -1,0 +1,775 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0001",
+        "poi_name": "徐汇滨江咖啡补给",
+        "poi_type": "coffee",
+        "region_zone": "徐汇滨江",
+        "lng_gcj02": 121.4574,
+        "lat_gcj02": 31.1582,
+        "lng_wgs84": 121.452834,
+        "lat_wgs84": 31.160137,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4574,
+          31.1582
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0002",
+        "poi_name": "徐汇滨江公共厕所",
+        "poi_type": "toilet",
+        "region_zone": "徐汇滨江",
+        "lng_gcj02": 121.4586,
+        "lat_gcj02": 31.15855,
+        "lng_wgs84": 121.454037,
+        "lat_wgs84": 31.160489,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4586,
+          31.15855
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0003",
+        "poi_name": "徐汇滨江便利店",
+        "poi_type": "convenience",
+        "region_zone": "徐汇滨江",
+        "lng_gcj02": 121.4598,
+        "lat_gcj02": 31.1589,
+        "lng_wgs84": 121.455241,
+        "lat_wgs84": 31.160842,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4598,
+          31.1589
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0004",
+        "poi_name": "徐汇滨江地铁口",
+        "poi_type": "metro",
+        "region_zone": "徐汇滨江",
+        "lng_gcj02": 121.461,
+        "lat_gcj02": 31.15925,
+        "lng_wgs84": 121.456444,
+        "lat_wgs84": 31.161195,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.461,
+          31.15925
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0005",
+        "poi_name": "徐汇滨江公园入口",
+        "poi_type": "park_gate",
+        "region_zone": "徐汇滨江",
+        "lng_gcj02": 121.4622,
+        "lat_gcj02": 31.1596,
+        "lng_wgs84": 121.457647,
+        "lat_wgs84": 31.161547,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4622,
+          31.1596
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0006",
+        "poi_name": "上海植物园咖啡补给",
+        "poi_type": "coffee",
+        "region_zone": "上海植物园",
+        "lng_gcj02": 121.4358,
+        "lat_gcj02": 31.1493,
+        "lng_wgs84": 121.431186,
+        "lat_wgs84": 31.1512,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4358,
+          31.1493
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0007",
+        "poi_name": "上海植物园公共厕所",
+        "poi_type": "toilet",
+        "region_zone": "上海植物园",
+        "lng_gcj02": 121.437,
+        "lat_gcj02": 31.14965,
+        "lng_wgs84": 121.432388,
+        "lat_wgs84": 31.151552,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.437,
+          31.14965
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0008",
+        "poi_name": "上海植物园便利店",
+        "poi_type": "convenience",
+        "region_zone": "上海植物园",
+        "lng_gcj02": 121.4382,
+        "lat_gcj02": 31.15,
+        "lng_wgs84": 121.43359,
+        "lat_wgs84": 31.151904,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4382,
+          31.15
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0009",
+        "poi_name": "上海植物园地铁口",
+        "poi_type": "metro",
+        "region_zone": "上海植物园",
+        "lng_gcj02": 121.4394,
+        "lat_gcj02": 31.15035,
+        "lng_wgs84": 121.434792,
+        "lat_wgs84": 31.152255,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4394,
+          31.15035
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0010",
+        "poi_name": "上海植物园公园入口",
+        "poi_type": "park_gate",
+        "region_zone": "上海植物园",
+        "lng_gcj02": 121.4406,
+        "lat_gcj02": 31.1507,
+        "lng_wgs84": 121.435995,
+        "lat_wgs84": 31.152607,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4406,
+          31.1507
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0011",
+        "poi_name": "康健园咖啡补给",
+        "poi_type": "coffee",
+        "region_zone": "康健园",
+        "lng_gcj02": 121.4181,
+        "lat_gcj02": 31.1518,
+        "lng_wgs84": 121.413462,
+        "lat_wgs84": 31.15368,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4181,
+          31.1518
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0012",
+        "poi_name": "康健园公共厕所",
+        "poi_type": "toilet",
+        "region_zone": "康健园",
+        "lng_gcj02": 121.4193,
+        "lat_gcj02": 31.15215,
+        "lng_wgs84": 121.414663,
+        "lat_wgs84": 31.15403,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4193,
+          31.15215
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0013",
+        "poi_name": "康健园便利店",
+        "poi_type": "convenience",
+        "region_zone": "康健园",
+        "lng_gcj02": 121.4205,
+        "lat_gcj02": 31.1525,
+        "lng_wgs84": 121.415864,
+        "lat_wgs84": 31.154381,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4205,
+          31.1525
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0014",
+        "poi_name": "康健园地铁口",
+        "poi_type": "metro",
+        "region_zone": "康健园",
+        "lng_gcj02": 121.4217,
+        "lat_gcj02": 31.15285,
+        "lng_wgs84": 121.417066,
+        "lat_wgs84": 31.154732,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4217,
+          31.15285
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0015",
+        "poi_name": "康健园公园入口",
+        "poi_type": "park_gate",
+        "region_zone": "康健园",
+        "lng_gcj02": 121.4229,
+        "lat_gcj02": 31.1532,
+        "lng_wgs84": 121.418267,
+        "lat_wgs84": 31.155083,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4229,
+          31.1532
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0016",
+        "poi_name": "徐家汇咖啡补给",
+        "poi_type": "coffee",
+        "region_zone": "徐家汇",
+        "lng_gcj02": 121.4394,
+        "lat_gcj02": 31.1974,
+        "lng_wgs84": 121.434788,
+        "lat_wgs84": 31.199281,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4394,
+          31.1974
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0017",
+        "poi_name": "徐家汇公共厕所",
+        "poi_type": "toilet",
+        "region_zone": "徐家汇",
+        "lng_gcj02": 121.4406,
+        "lat_gcj02": 31.19775,
+        "lng_wgs84": 121.435991,
+        "lat_wgs84": 31.199633,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4406,
+          31.19775
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0018",
+        "poi_name": "徐家汇便利店",
+        "poi_type": "convenience",
+        "region_zone": "徐家汇",
+        "lng_gcj02": 121.4418,
+        "lat_gcj02": 31.1981,
+        "lng_wgs84": 121.437193,
+        "lat_wgs84": 31.199985,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4418,
+          31.1981
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0019",
+        "poi_name": "徐家汇地铁口",
+        "poi_type": "metro",
+        "region_zone": "徐家汇",
+        "lng_gcj02": 121.443,
+        "lat_gcj02": 31.19845,
+        "lng_wgs84": 121.438395,
+        "lat_wgs84": 31.200337,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.443,
+          31.19845
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0020",
+        "poi_name": "徐家汇公园入口",
+        "poi_type": "park_gate",
+        "region_zone": "徐家汇",
+        "lng_gcj02": 121.4442,
+        "lat_gcj02": 31.1988,
+        "lng_wgs84": 121.439598,
+        "lat_wgs84": 31.200689,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4442,
+          31.1988
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0021",
+        "poi_name": "龙华咖啡补给",
+        "poi_type": "coffee",
+        "region_zone": "龙华",
+        "lng_gcj02": 121.4505,
+        "lat_gcj02": 31.1764,
+        "lng_wgs84": 121.445915,
+        "lat_wgs84": 31.178312,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4505,
+          31.1764
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0022",
+        "poi_name": "龙华公共厕所",
+        "poi_type": "toilet",
+        "region_zone": "龙华",
+        "lng_gcj02": 121.4517,
+        "lat_gcj02": 31.17675,
+        "lng_wgs84": 121.447118,
+        "lat_wgs84": 31.178665,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4517,
+          31.17675
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0023",
+        "poi_name": "龙华便利店",
+        "poi_type": "convenience",
+        "region_zone": "龙华",
+        "lng_gcj02": 121.4529,
+        "lat_gcj02": 31.1771,
+        "lng_wgs84": 121.448321,
+        "lat_wgs84": 31.179017,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4529,
+          31.1771
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0024",
+        "poi_name": "龙华地铁口",
+        "poi_type": "metro",
+        "region_zone": "龙华",
+        "lng_gcj02": 121.4541,
+        "lat_gcj02": 31.17745,
+        "lng_wgs84": 121.449524,
+        "lat_wgs84": 31.179369,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4541,
+          31.17745
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0025",
+        "poi_name": "龙华公园入口",
+        "poi_type": "park_gate",
+        "region_zone": "龙华",
+        "lng_gcj02": 121.4553,
+        "lat_gcj02": 31.1778,
+        "lng_wgs84": 121.450727,
+        "lat_wgs84": 31.179722,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4553,
+          31.1778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0026",
+        "poi_name": "衡复风貌区咖啡补给",
+        "poi_type": "coffee",
+        "region_zone": "衡复风貌区",
+        "lng_gcj02": 121.4436,
+        "lat_gcj02": 31.206,
+        "lng_wgs84": 121.438996,
+        "lat_wgs84": 31.207884,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4436,
+          31.206
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0027",
+        "poi_name": "衡复风貌区公共厕所",
+        "poi_type": "toilet",
+        "region_zone": "衡复风貌区",
+        "lng_gcj02": 121.4448,
+        "lat_gcj02": 31.20635,
+        "lng_wgs84": 121.440199,
+        "lat_wgs84": 31.208236,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4448,
+          31.20635
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0028",
+        "poi_name": "衡复风貌区便利店",
+        "poi_type": "convenience",
+        "region_zone": "衡复风貌区",
+        "lng_gcj02": 121.446,
+        "lat_gcj02": 31.2067,
+        "lng_wgs84": 121.441401,
+        "lat_wgs84": 31.208589,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.446,
+          31.2067
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0029",
+        "poi_name": "衡复风貌区地铁口",
+        "poi_type": "metro",
+        "region_zone": "衡复风貌区",
+        "lng_gcj02": 121.4472,
+        "lat_gcj02": 31.20705,
+        "lng_wgs84": 121.442604,
+        "lat_wgs84": 31.208941,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4472,
+          31.20705
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0030",
+        "poi_name": "衡复风貌区公园入口",
+        "poi_type": "park_gate",
+        "region_zone": "衡复风貌区",
+        "lng_gcj02": 121.4484,
+        "lat_gcj02": 31.2074,
+        "lng_wgs84": 121.443807,
+        "lat_wgs84": 31.209293,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4484,
+          31.2074
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0031",
+        "poi_name": "漕河泾咖啡补给",
+        "poi_type": "coffee",
+        "region_zone": "漕河泾",
+        "lng_gcj02": 121.4082,
+        "lat_gcj02": 31.1695,
+        "lng_wgs84": 121.403555,
+        "lat_wgs84": 31.171366,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4082,
+          31.1695
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0032",
+        "poi_name": "漕河泾公共厕所",
+        "poi_type": "toilet",
+        "region_zone": "漕河泾",
+        "lng_gcj02": 121.4094,
+        "lat_gcj02": 31.16985,
+        "lng_wgs84": 121.404755,
+        "lat_wgs84": 31.171716,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4094,
+          31.16985
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0033",
+        "poi_name": "漕河泾便利店",
+        "poi_type": "convenience",
+        "region_zone": "漕河泾",
+        "lng_gcj02": 121.4106,
+        "lat_gcj02": 31.1702,
+        "lng_wgs84": 121.405956,
+        "lat_wgs84": 31.172066,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4106,
+          31.1702
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0034",
+        "poi_name": "漕河泾地铁口",
+        "poi_type": "metro",
+        "region_zone": "漕河泾",
+        "lng_gcj02": 121.4118,
+        "lat_gcj02": 31.17055,
+        "lng_wgs84": 121.407156,
+        "lat_wgs84": 31.172416,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4118,
+          31.17055
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "XH_POI_0035",
+        "poi_name": "漕河泾公园入口",
+        "poi_type": "park_gate",
+        "region_zone": "漕河泾",
+        "lng_gcj02": 121.413,
+        "lat_gcj02": 31.1709,
+        "lng_wgs84": 121.408357,
+        "lat_wgs84": 31.172767,
+        "source_api": "curated_sample",
+        "default_visible": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.413,
+          31.1709
+        ]
+      }
+    }
+  ]
+}

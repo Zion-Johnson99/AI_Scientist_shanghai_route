@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Any, Iterable
 
-from .models import AccessCase, CandidateRoute, EntryPoint
+from .models import AccessCase, CandidateRoute, EntryPoint, PoiPoint
 
 
 def build_feature_collection(items: Iterable[EntryPoint]) -> dict[str, Any]:
@@ -57,9 +57,34 @@ def build_route_catalog(routes: Iterable[CandidateRoute]) -> list[dict[str, Any]
                 "tags": route.tags,
                 "future_score": route.future_score,
                 "score_note": route.score_note,
+                "source_name": route.source_name,
+                "source_url": route.source_url,
+                "confidence": route.confidence,
+                "distance_error_m": route.distance_error_m,
+                "loop_flag": route.loop_flag,
+                "feature_tags": route.feature_tags,
+                "candidate_rank": route.candidate_rank,
             }
         )
     return catalog
+
+
+def build_poi_feature_collection(items: Iterable[PoiPoint]) -> dict[str, Any]:
+    return {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": item.model_dump(),
+                "geometry": {"type": "Point", "coordinates": [item.lng_gcj02, item.lat_gcj02]},
+            }
+            for item in items
+        ],
+    }
+
+
+def build_access_catalog(cases: Iterable[AccessCase]) -> list[dict[str, Any]]:
+    return [case.model_dump() for case in cases]
 
 
 def write_json(path: Path, payload: Any) -> None:

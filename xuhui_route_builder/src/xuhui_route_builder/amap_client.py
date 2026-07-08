@@ -18,6 +18,11 @@ ENDPOINTS = {
     "place_around": "https://restapi.amap.com/v3/place/around",
     "place_polygon": "https://restapi.amap.com/v3/place/polygon",
     "place_detail": "https://restapi.amap.com/v3/place/detail",
+    "place_text_v5": "https://restapi.amap.com/v5/place/text",
+    "place_around_v5": "https://restapi.amap.com/v5/place/around",
+    "place_polygon_v5": "https://restapi.amap.com/v5/place/polygon",
+    "walking_v2": "https://restapi.amap.com/v5/direction/walking",
+    "bicycling_v2": "https://restapi.amap.com/v5/direction/bicycling",
     "walking": "https://restapi.amap.com/v3/direction/walking",
     "bicycling": "https://restapi.amap.com/v4/direction/bicycling",
     "driving": "https://restapi.amap.com/v3/direction/driving",
@@ -89,11 +94,39 @@ class AmapClient:
             params["types"] = types
         return self.request("place_polygon", params)
 
+    def place_text_v5(self, keywords: str, region: str = "310104", types: str | None = None) -> AmapRawRecord:
+        params: dict[str, Any] = {"keywords": keywords, "region": region, "show_fields": "business,navi"}
+        if types:
+            params["types"] = types
+        return self.request("place_text_v5", params)
+
+    def place_around_v5(self, location: str, radius: int, keywords: str | None = None, types: str | None = None) -> AmapRawRecord:
+        params: dict[str, Any] = {"location": location, "radius": radius, "show_fields": "business,navi"}
+        if keywords:
+            params["keywords"] = keywords
+        if types:
+            params["types"] = types
+        return self.request("place_around_v5", params)
+
+    def place_polygon_v5(self, polygon: str, keywords: str | None = None, types: str | None = None) -> AmapRawRecord:
+        params: dict[str, Any] = {"polygon": polygon, "show_fields": "business,navi"}
+        if keywords:
+            params["keywords"] = keywords
+        if types:
+            params["types"] = types
+        return self.request("place_polygon_v5", params)
+
     def walking(self, origin: str, destination: str) -> AmapRawRecord:
         return self.request("walking", {"origin": origin, "destination": destination})
 
     def bicycling(self, origin: str, destination: str) -> AmapRawRecord:
         return self.request("bicycling", {"origin": origin, "destination": destination})
+
+    def walking_v2(self, origin: str, destination: str) -> AmapRawRecord:
+        return self.request("walking_v2", {"origin": origin, "destination": destination})
+
+    def bicycling_v2(self, origin: str, destination: str) -> AmapRawRecord:
+        return self.request("bicycling_v2", {"origin": origin, "destination": destination})
 
     def driving(self, origin: str, destination: str) -> AmapRawRecord:
         return self.request("driving", {"origin": origin, "destination": destination, "extensions": "all"})
