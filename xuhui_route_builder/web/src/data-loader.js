@@ -7,11 +7,12 @@ export async function loadJson(path) {
 }
 
 export async function loadRouteData() {
-  const [boundary, entries, routes, catalog] = await Promise.all([
+  const [boundary, entries, routes, catalog, pois] = await Promise.all([
     loadJson("../data/web/xuhui_boundary.geojson"),
     loadJson("../data/web/xuhui_entries.geojson"),
     loadJson("../data/web/xuhui_routes.geojson"),
     loadJson("../data/web/route_catalog.json"),
+    loadJson("../data/web/poi_catalog.json"),
   ]);
-  return { boundary, entries, routes, catalog };
+  return { boundary, entries, routes, catalog, pois };
 }

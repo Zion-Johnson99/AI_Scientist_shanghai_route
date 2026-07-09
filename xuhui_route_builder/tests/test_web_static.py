@@ -64,6 +64,41 @@ def test_route_controls_support_local_candidate_search_and_preferences() -> None
     assert "candidate_rank" in route_ui_js
 
 
+def test_web_loads_pois_and_supports_navigation_session_controls() -> None:
+    html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+    data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
+    route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
+    map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
+
+    for element_id in [
+        "startNavigationButton",
+        "endNavigationButton",
+        "startPickButton",
+        "waypointInput",
+        "waypointPickButton",
+        "endPickButton",
+    ]:
+        assert f'id="{element_id}"' in html
+
+    assert "poi_catalog.json" in data_loader_js
+    assert "preference_hits" in route_ui_js
+    assert "startNavigationSession" in map_js
+    assert "endNavigationSession" in map_js
+    assert "enablePointPicker" in map_js
+    assert "setNavigationPoint" in map_js
+    assert "isPointInsideXuhui" in map_js
+    assert "addEventListener(\"click\"" in map_js
+    assert "containerToLngLat" in map_js
+
+
+def test_sidebar_route_list_has_independent_scroll_constraint() -> None:
+    css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
+    route_list_block = css[css.index(".route-list {") : css.index(".route-item {")]
+
+    assert "overflow-y: auto" in route_list_block
+    assert "max-height" in route_list_block
+
+
 def test_map_module_uses_amap_and_keeps_community_nodes_result_scoped() -> None:
     map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
 

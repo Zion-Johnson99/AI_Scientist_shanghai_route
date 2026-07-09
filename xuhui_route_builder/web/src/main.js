@@ -1,5 +1,15 @@
 import { loadRouteData } from "./data-loader.js";
-import { clearRouteResults, createMap, drawBoundary, highlightRoute, planNavigation, showRouteResults } from "./map.js";
+import {
+  clearRouteResults,
+  createMap,
+  drawBoundary,
+  enablePointPicker,
+  endNavigationSession,
+  highlightRoute,
+  planNavigation,
+  showRouteResults,
+  startNavigationSession,
+} from "./map.js";
 import { renderRoutePlanner } from "./route-ui.js";
 
 async function bootstrap() {
@@ -10,16 +20,25 @@ async function bootstrap() {
 
   drawBoundary(map, data.boundary);
   renderRoutePlanner(catalog, {
-    onSearch(routes, selectedRouteId) {
+    onSearch(routes, selectedRouteId, filters = {}) {
       if (!routes.length) {
         clearRouteResults(map);
         return;
       }
       const routeFeatures = routes.map((route) => routeFeaturesById.get(route.route_id)).filter(Boolean);
-      showRouteResults(map, routeFeatures, data.entries, selectedRouteId || routeFeatures[0]?.properties.route_id);
+      showRouteResults(map, routeFeatures, data.entries, data.pois, selectedRouteId || routeFeatures[0]?.properties.route_id, filters.preferences || []);
     },
     onSelect(routeId) {
       highlightRoute(map, routeId);
+    },
+    onStartNavigation(onPick) {
+      startNavigationSession(map, onPick);
+    },
+    onEndNavigation() {
+      endNavigationSession(map);
+    },
+    onPickNavigationPoint(role) {
+      enablePointPicker(map, role);
     },
     onNavigate(request) {
       return planNavigation(map, request);

@@ -55,3 +55,18 @@ def test_demo_routes_cover_preference_tags() -> None:
     tags = {tag for route in dataset.routes for tag in route.tags}
 
     assert {"咖啡", "厕所", "便利店", "地铁", "公园入口"} <= tags
+
+
+def test_demo_routes_are_built_from_real_route_seeds_with_poi_hits() -> None:
+    dataset = build_demo_dataset()
+    source_urls = {route.source_url for route in dataset.routes}
+    motherline_names = {route.route_name.split("·")[0] for route in dataset.routes}
+
+    assert len(source_urls) >= 10
+    assert len(motherline_names) >= 10
+    assert all(route.source_method == "real_route_seed" for route in dataset.routes)
+    assert all(route.geometry_source == "amap_direction" for route in dataset.routes)
+    assert all(route.source_level in {"official", "media", "curated"} for route in dataset.routes)
+    assert all(route.waypoint_names for route in dataset.routes)
+    assert all(route.nearby_pois for route in dataset.routes)
+    assert all(route.preference_hits for route in dataset.routes)

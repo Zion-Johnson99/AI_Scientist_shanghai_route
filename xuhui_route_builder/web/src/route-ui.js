@@ -19,6 +19,12 @@ const RANK_LABELS = {
   candidate: "候选",
 };
 
+const NAVIGATION_POINT_LABELS = {
+  origin: "起点",
+  waypoint: "途经点",
+  destination: "终点",
+};
+
 export function renderRoutePlanner(catalog, options) {
   const controls = getControls();
   populateZoneFilter(controls.zoneFilter, catalog);
@@ -28,13 +34,21 @@ export function renderRoutePlanner(catalog, options) {
     activeAppTab: "selection",
     activeResultTab: "recommend",
     selectedRouteId: catalog[0]?.route_id || "",
+    filters: readSelectionFilters(controls),
     groups: buildGroups(catalog, readSelectionFilters(controls)),
+    navigationStatus: "idle",
+    navigationPoints: {
+      origin: null,
+      waypoint: null,
+      destination: null,
+    },
   };
 
   bindAppTabs(state, controls, options);
   bindResultTabs(state, controls, options);
   bindSelectionControls(catalog, state, controls, options);
   bindNavigationControls(catalog, state, controls, options);
+  setNavigationControlsEnabled(controls, false);
 
   paintResults(state, controls, options);
   if (catalog[0]) {
@@ -44,13 +58,12 @@ export function renderRoutePlanner(catalog, options) {
 
 export function filterCandidateRoutes(catalog, filters) {
   const textFilters = [filters.keyword].map(normalizeText).filter(Boolean);
-  const preferredKeywords = filters.preferences.flatMap((preference) => PREFERENCE_KEYWORDS[preference] || []);
 
   return catalog
     .map((route, index) => ({
       route,
       index,
-      score: scoreRoute(route, textFilters, preferredKeywords),
+      score: scoreRoute(route, textFilters, filters.preferences),
     }))
     .filter(({ route, score }) => {
       if (filters.zone !== "all" && route.region_zone !== filters.zone) {
@@ -62,7 +75,10 @@ export function filterCandidateRoutes(catalog, filters) {
       if (filters.distance !== "all" && route.distance_level !== filters.distance) {
         return false;
       }
-      if (!textFilters.length && !preferredKeywords.length) {
+      if (filters.preferences.length && !matchesPreferences(route, filters.preferences)) {
+        return false;
+      }
+      if (!textFilters.length) {
         return true;
       }
       return score > 0;
@@ -96,7 +112,8 @@ function bindSelectionControls(catalog, state, controls, options) {
   controls.planButton.addEventListener("click", () => runSearch(catalog, state, controls, options));
   controls.resetButton.addEventListener("click", () => {
     resetSelectionControls(controls);
-    state.groups = buildGroups(catalog, readSelectionFilters(controls));
+    state.filters = readSelectionFilters(controls);
+    state.groups = buildGroups(catalog, state.filters);
     state.activeResultTab = "recommend";
     paintResults(state, controls, options);
   });
@@ -118,6 +135,46 @@ function bindSelectionControls(catalog, state, controls, options) {
 }
 
 function bindNavigationControls(catalog, state, controls, options) {
+  const handleMapPick = (result) => {
+    if (result.error) {
+      controls.navigationStatus.textContent = result.error;
+      return;
+    }
+    const point = result.point;
+    state.navigationPoints[result.role] = point;
+    inputForRole(result.role, controls).value = formatPoint(point);
+    controls.navigationStatus.textContent = `${NAVIGATION_POINT_LABELS[result.role]}已选：${formatPoint(point)}`;
+  };
+
+  controls.startNavigationButton.addEventListener("click", () => {
+    state.navigationStatus = "editing";
+    state.navigationPoints = { origin: null, waypoint: null, destination: null };
+    options.onStartNavigation(handleMapPick);
+    setNavigationControlsEnabled(controls, true);
+    controls.navigationStatus.textContent = "导航已开始，可输入地点或点击点选按钮后在地图取点。";
+  });
+
+  controls.endNavigationButton.addEventListener("click", () => {
+    resetNavigationState(state, controls);
+    options.onEndNavigation();
+  });
+
+  for (const [role, button] of [
+    ["origin", controls.startPickButton],
+    ["waypoint", controls.waypointPickButton],
+    ["destination", controls.endPickButton],
+  ]) {
+    button.addEventListener("click", () => {
+      try {
+        ensureNavigationEditing(state);
+        options.onPickNavigationPoint(role);
+        controls.navigationStatus.textContent = `请在徐汇区内点击${NAVIGATION_POINT_LABELS[role]}。`;
+      } catch (error) {
+        controls.navigationStatus.textContent = error.message;
+      }
+    });
+  }
+
   controls.navigationRouteSelect.addEventListener("change", () => {
     const route = findRoute(catalog, controls.navigationRouteSelect.value);
     if (!route) {
@@ -132,7 +189,7 @@ function bindNavigationControls(catalog, state, controls, options) {
     const route = findRoute(catalog, controls.navigationRouteSelect.value);
     let request;
     try {
-      request = readNavigationRequest(route, controls);
+      request = readNavigationRequest(route, state, controls);
     } catch (error) {
       controls.navigationStatus.textContent = error.message;
       return;
@@ -140,6 +197,7 @@ function bindNavigationControls(catalog, state, controls, options) {
     controls.navigationStatus.textContent = "正在调用高德路线导航...";
     options.onNavigate(request)
       .then((summary) => {
+        state.navigationStatus = "planned";
         controls.navigationStatus.textContent = summary;
       })
       .catch((error) => {
@@ -147,7 +205,7 @@ function bindNavigationControls(catalog, state, controls, options) {
       });
   });
 
-  for (const input of [controls.startInput, controls.endInput]) {
+  for (const input of [controls.startInput, controls.waypointInput, controls.endInput]) {
     input.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         event.preventDefault();
@@ -158,7 +216,8 @@ function bindNavigationControls(catalog, state, controls, options) {
 }
 
 function runSearch(catalog, state, controls, options) {
-  state.groups = buildGroups(catalog, readSelectionFilters(controls));
+  state.filters = readSelectionFilters(controls);
+  state.groups = buildGroups(catalog, state.filters);
   paintResults(state, controls, options);
 }
 
@@ -186,7 +245,7 @@ function paintResults(state, controls, options) {
   if (!visibleRoutes.length) {
     controls.list.innerHTML = `<div class="empty-state">没有匹配路线。</div>`;
     controls.detail.innerHTML = "";
-    options.onSearch([], "");
+    options.onSearch([], "", state.filters);
     return;
   }
 
@@ -210,7 +269,7 @@ function paintResults(state, controls, options) {
 
   const selectedRoute = findRoute(visibleRoutes, state.selectedRouteId) || visibleRoutes[0];
   selectRoute(selectedRoute, state, controls, options, { skipSearch: true });
-  options.onSearch(visibleOnMap, selectedRoute.route_id);
+  options.onSearch(visibleOnMap, selectedRoute.route_id, state.filters);
 }
 
 function selectRoute(route, state, controls, options, flags = {}) {
@@ -221,7 +280,7 @@ function selectRoute(route, state, controls, options, flags = {}) {
   options.onSelect(route.route_id);
   if (!flags.skipSearch) {
     const visibleRoutes = state.groups[state.activeResultTab] || [];
-    options.onSearch(visibleRoutes.slice(0, 24), route.route_id);
+    options.onSearch(visibleRoutes.slice(0, 24), route.route_id, state.filters);
   }
 }
 
@@ -243,22 +302,81 @@ function readSelectionFilters(controls) {
   };
 }
 
-function readNavigationRequest(route, controls) {
-  const originText = controls.startInput.value.trim();
-  const destinationText = controls.endInput.value.trim() || route?.start_entry_location || route?.end_entry_location || route?.start_entry_name || "";
-  if (!originText) {
-    throw new Error("请先输入导航起点。");
+function readNavigationRequest(route, state, controls) {
+  ensureNavigationEditing(state);
+  const origin = navigationValue(controls.startInput.value, state.navigationPoints.origin);
+  const waypoint = navigationValue(controls.waypointInput.value, state.navigationPoints.waypoint);
+  const destination =
+    navigationValue(controls.endInput.value, state.navigationPoints.destination) ||
+    route?.start_entry_location ||
+    route?.end_entry_location ||
+    route?.start_entry_name ||
+    "";
+
+  if (!origin) {
+    throw new Error("请先选择或输入导航起点。");
   }
-  if (!destinationText) {
-    throw new Error("缺少目标入口，请先选择候选路线。");
+  if (!destination) {
+    throw new Error("请先选择或输入导航终点。");
   }
+
   return {
-    originText,
-    destinationText,
+    origin,
+    waypoints: waypoint ? [waypoint] : [],
+    destination,
     mode: controls.navigationMode.value,
     routeId: route?.route_id || "",
     routeName: route?.route_name || "",
   };
+}
+
+function navigationValue(text, point) {
+  if (point) {
+    return point;
+  }
+  const trimmed = text.trim();
+  return trimmed ? { text: trimmed } : null;
+}
+
+function ensureNavigationEditing(state) {
+  if (state.navigationStatus === "idle") {
+    throw new Error("请先点击开始导航。");
+  }
+}
+
+function resetNavigationState(state, controls) {
+  state.navigationStatus = "idle";
+  state.navigationPoints = { origin: null, waypoint: null, destination: null };
+  controls.startInput.value = "";
+  controls.waypointInput.value = "";
+  controls.endInput.value = "";
+  setNavigationControlsEnabled(controls, false);
+  controls.navigationStatus.textContent = "点击开始导航后，可输入地点或在徐汇区内点选。";
+}
+
+function setNavigationControlsEnabled(controls, enabled) {
+  for (const control of [
+    controls.startInput,
+    controls.waypointInput,
+    controls.endInput,
+    controls.navigationMode,
+    controls.navigateButton,
+    controls.startPickButton,
+    controls.waypointPickButton,
+    controls.endPickButton,
+  ]) {
+    control.disabled = !enabled;
+  }
+  controls.endNavigationButton.disabled = !enabled;
+}
+
+function inputForRole(role, controls) {
+  const inputs = {
+    origin: controls.startInput,
+    waypoint: controls.waypointInput,
+    destination: controls.endInput,
+  };
+  return inputs[role];
 }
 
 function routeItemTemplate(route) {
@@ -275,19 +393,24 @@ function renderDetail(route, detail) {
   const tags = (route.tags || []).join("、") || "暂无标签";
   const startName = route.start_entry_name || route.start_entry_id || "入口待核验";
   const endName = route.end_entry_name || route.end_entry_id || "入口待核验";
+  const source = route.source_name ? `${route.source_name} · ${route.source_level || "curated"}` : "来源待核验";
+  const poiText = (route.nearby_pois || []).map((poi) => `${poi.poi_name} ${poi.distance_m}米`).join("、") || "暂无偏好点";
   detail.innerHTML = `
     <h2>${escapeHtml(route.route_name)}</h2>
     <p>${escapeHtml(route.region_zone)} · ${MODE_LABELS[route.route_mode] || route.route_mode} · ${escapeHtml(route.distance_level)}</p>
     <dl>
       <div><dt>入口</dt><dd>${escapeHtml(startName)} → ${escapeHtml(endName)}</dd></div>
       <div><dt>距离</dt><dd>${Number(route.distance_m || route.target_distance_m || 0).toFixed(0)} 米，预计 ${Number(route.duration_min || 0).toFixed(1)} 分钟</dd></div>
+      <div><dt>途经</dt><dd>${escapeHtml((route.waypoint_names || []).join("、") || "待核验")}</dd></div>
+      <div><dt>偏好</dt><dd>${escapeHtml(poiText)}</dd></div>
+      <div><dt>来源</dt><dd>${escapeHtml(source)}</dd></div>
       <div><dt>标签</dt><dd>${escapeHtml(tags)}</dd></div>
     </dl>
     <p>${escapeHtml(route.score_note || "当前阶段展示候选路线，后续接入环境暴露评分。")}</p>
   `;
 }
 
-function scoreRoute(route, textFilters, preferredKeywords) {
+function scoreRoute(route, textFilters, preferences) {
   const searchable = normalizeText([
     route.route_name,
     route.region_zone,
@@ -298,6 +421,8 @@ function scoreRoute(route, textFilters, preferredKeywords) {
     route.candidate_rank,
     ...(route.tags || []),
     ...(route.feature_tags || []),
+    ...(route.waypoint_names || []),
+    ...(route.nearby_pois || []).map((poi) => poi.poi_name),
   ].join(" "));
 
   let score = 0;
@@ -306,12 +431,26 @@ function scoreRoute(route, textFilters, preferredKeywords) {
       score += 8;
     }
   }
-  for (const keyword of preferredKeywords.map(normalizeText)) {
-    if (searchable.includes(keyword)) {
-      score += 3;
+  for (const preference of preferences) {
+    if ((route.preference_hits || []).includes(preference)) {
+      score += 12;
+      continue;
+    }
+    const keywords = PREFERENCE_KEYWORDS[preference] || [];
+    if (keywords.some((keyword) => searchable.includes(normalizeText(keyword)))) {
+      score += 2;
     }
   }
   return score;
+}
+
+function matchesPreferences(route, preferences) {
+  const hits = route.preference_hits || [];
+  if (preferences.every((preference) => hits.includes(preference))) {
+    return true;
+  }
+  const searchable = normalizeText([...(route.tags || []), ...(route.nearby_pois || []).map((poi) => poi.poi_name)].join(" "));
+  return preferences.every((preference) => (PREFERENCE_KEYWORDS[preference] || []).some((keyword) => searchable.includes(normalizeText(keyword))));
 }
 
 function routePriority(route) {
@@ -327,6 +466,7 @@ function routePriority(route) {
     score += 3;
   }
   score += Math.max(0, 6000 - Number(route.distance_m || route.target_distance_m || 0)) / 1000;
+  score += (route.preference_hits || []).length;
   return score;
 }
 
@@ -346,8 +486,14 @@ function getControls() {
     list: document.querySelector("#routeList"),
     detail: document.querySelector("#routeDetail"),
     navigationRouteSelect: document.querySelector("#navigationRouteSelect"),
+    startNavigationButton: document.querySelector("#startNavigationButton"),
+    endNavigationButton: document.querySelector("#endNavigationButton"),
     startInput: document.querySelector("#startInput"),
+    startPickButton: document.querySelector("#startPickButton"),
+    waypointInput: document.querySelector("#waypointInput"),
+    waypointPickButton: document.querySelector("#waypointPickButton"),
     endInput: document.querySelector("#endInput"),
+    endPickButton: document.querySelector("#endPickButton"),
     navigationMode: document.querySelector("#navigationMode"),
     navigateButton: document.querySelector("#navigateButton"),
     navigationStatus: document.querySelector("#navigationStatus"),
@@ -405,6 +551,10 @@ function setActive(routeId) {
 
 function findRoute(catalog, routeId) {
   return catalog.find((route) => route.route_id === routeId);
+}
+
+function formatPoint(point) {
+  return `${Number(point.lng_gcj02).toFixed(6)},${Number(point.lat_gcj02).toFixed(6)}`;
 }
 
 function tabLabel(tab) {

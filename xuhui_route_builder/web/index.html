@@ -89,17 +89,34 @@
 
         <section id="routeNavigationView" class="tab-view route-navigation-view" aria-label="起终点路线导航">
           <div class="controls">
+            <div class="command-row navigation-session-row">
+              <button id="startNavigationButton" class="primary-action" type="button">开始导航</button>
+              <button id="endNavigationButton" class="secondary-action" type="button">结束</button>
+            </div>
             <label>
               选择目标路线
               <select id="navigationRouteSelect"></select>
             </label>
             <label>
               起点
-              <input id="startInput" type="search" placeholder="例：上海交通大学徐汇校区" autocomplete="off" />
+              <span class="point-input-row">
+                <input id="startInput" type="search" placeholder="输入地点或在地图点选" autocomplete="off" />
+                <button id="startPickButton" class="secondary-action point-pick-action" type="button">点选</button>
+              </span>
+            </label>
+            <label>
+              途经点
+              <span class="point-input-row">
+                <input id="waypointInput" type="search" placeholder="可选，输入地点或地图点选" autocomplete="off" />
+                <button id="waypointPickButton" class="secondary-action point-pick-action" type="button">点选</button>
+              </span>
             </label>
             <label>
               终点
-              <input id="endInput" type="search" placeholder="默认使用所选路线入口" autocomplete="off" />
+              <span class="point-input-row">
+                <input id="endInput" type="search" placeholder="输入地点或默认使用所选路线入口" autocomplete="off" />
+                <button id="endPickButton" class="secondary-action point-pick-action" type="button">点选</button>
+              </span>
             </label>
             <div class="field-grid two-columns">
               <label>
@@ -110,9 +127,9 @@
                   <option value="drive">驾车接驳</option>
                 </select>
               </label>
-              <button id="navigateButton" class="primary-action inline-action" type="button">开始导航</button>
+              <button id="navigateButton" class="primary-action inline-action" type="button">规划路径</button>
             </div>
-            <div id="navigationStatus" class="navigation-status" aria-live="polite">选择路线后，可规划到运动入口的接驳路径。</div>
+            <div id="navigationStatus" class="navigation-status" aria-live="polite">点击开始导航后，可输入地点或在徐汇区内点选。</div>
           </div>
         </section>
 

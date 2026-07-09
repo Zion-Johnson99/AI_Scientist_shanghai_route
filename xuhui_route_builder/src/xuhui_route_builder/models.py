@@ -97,6 +97,11 @@ class CandidateRoute(BaseModel):
     loop_flag: bool = False
     feature_tags: list[str] = Field(default_factory=list)
     candidate_rank: str = "candidate"
+    geometry_source: str = "amap_direction"
+    source_level: Literal["official", "media", "curated"] = "curated"
+    waypoint_names: list[str] = Field(default_factory=list)
+    nearby_pois: list[dict[str, Any]] = Field(default_factory=list)
+    preference_hits: list[str] = Field(default_factory=list)
 
 
 class PoiPoint(BaseModel):

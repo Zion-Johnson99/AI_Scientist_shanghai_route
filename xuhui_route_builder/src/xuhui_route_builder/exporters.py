@@ -64,6 +64,11 @@ def build_route_catalog(routes: Iterable[CandidateRoute]) -> list[dict[str, Any]
                 "loop_flag": route.loop_flag,
                 "feature_tags": route.feature_tags,
                 "candidate_rank": route.candidate_rank,
+                "geometry_source": route.geometry_source,
+                "source_level": route.source_level,
+                "waypoint_names": route.waypoint_names,
+                "nearby_pois": route.nearby_pois,
+                "preference_hits": route.preference_hits,
             }
         )
     return catalog

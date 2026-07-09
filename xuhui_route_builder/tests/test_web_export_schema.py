@@ -46,3 +46,36 @@ def test_build_route_catalog_keeps_score_placeholder() -> None:
     assert catalog[0]["route_id"] == "XH_RUN_3K_0001"
     assert catalog[0]["future_score"] is None
     assert "后续评分" in catalog[0]["score_note"]
+
+
+def test_build_route_catalog_exports_navigation_and_preference_metadata() -> None:
+    route = CandidateRoute(
+        route_id="XH_WALK_REAL_0001",
+        route_name="衡复音乐街区 Citywalk",
+        route_mode="walk",
+        target_distance_m=2600,
+        actual_distance_m=2600,
+        duration_s=2080,
+        start_entry_id="XH_ENT_0011",
+        end_entry_id="XH_ENT_0012",
+        region_zone="衡复风貌区",
+        polyline_gcj02=[
+            CoordinatePair(lng_gcj02=121.446, lat_gcj02=31.205, lng_wgs84=121.441, lat_wgs84=31.207),
+            CoordinatePair(lng_gcj02=121.4387, lat_gcj02=31.2077, lng_wgs84=121.4337, lat_wgs84=31.2097),
+        ],
+        tags=["音乐", "历史建筑"],
+        source_method="real_route_seed",
+        geometry_source="amap_direction",
+        source_level="official",
+        waypoint_names=["衡山路8号", "东平路", "上海音乐学院"],
+        nearby_pois=[{"poi_id": "XH_POI_0001", "poi_type": "coffee", "poi_name": "咖啡", "distance_m": 80}],
+        preference_hits=["coffee"],
+    )
+
+    catalog = build_route_catalog([route])
+
+    assert catalog[0]["geometry_source"] == "amap_direction"
+    assert catalog[0]["source_level"] == "official"
+    assert catalog[0]["waypoint_names"] == ["衡山路8号", "东平路", "上海音乐学院"]
+    assert catalog[0]["nearby_pois"][0]["poi_type"] == "coffee"
+    assert catalog[0]["preference_hits"] == ["coffee"]
