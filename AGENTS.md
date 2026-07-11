@@ -28,7 +28,7 @@
 | Office 交付 | `pptx`、`ppt-local`、`ppt-master`、`ppt-deck-pro-max`、`pptx-posters`、`scientific-slides`、`docx`、`xlsx`、`pdf` | PPT、讲稿、Word、Excel、PDF 检查、展板和最终材料 |
 | 原型与界面 | `frontend-design`、`playwright`、`browser-use` | Web 原型、交互验证、页面截图、浏览器自动测试 |
 | 编码流程 | `karpathy-guidelines`、`test-driven-development`、`systematic-debugging`、`verification-before-completion`、`using-git-worktrees` | 写代码、修 bug、验证结果、准备合并 |
-| 团队开发方法 | `using-superpowers`、`writing-plans`、`executing-plans`、`requesting-code-review`、`receiving-code-review`、`finishing-a-development-branch` | 任务拆解、多人协作、评审、收尾和分支整理 |
+| 团队开发方法 | `writing-plans`、`executing-plans`、`requesting-code-review`、`receiving-code-review`、`finishing-a-development-branch` | 任务拆解、多人协作、评审、收尾和分支整理 |
 | AI4S 全链路 | `ai4s-agent`、`experiment-suite`、`research-manager`、`compiler`、`loopy` | 科研任务从方向、假设、实验、验证到交付物的全流程组织 |
 | 数据库与资源查找 | `database-lookup`、`get-available-resources`、`paperzilla`、`research-explorer` | 查公共科学数据库、检索可用资源、梳理研究方向和代表论文 |
 | 严谨性审查 | `integrity-auditor`、`rigor-reviewer`、`counterargument`、`validation` | 审查引用、数据口径、论证漏洞、验证协议和夸大表述 |
