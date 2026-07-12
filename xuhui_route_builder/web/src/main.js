@@ -1,4 +1,4 @@
-import { loadRouteData } from "./data-loader.js?v=20260712-route-picker-2";
+import { loadRouteData } from "./data-loader.js?v=20260712-sidebar-layout-1";
 import {
   clearRouteResults,
   createMap,
@@ -9,8 +9,8 @@ import {
   planNavigation,
   showSingleRoute,
   startNavigationSession,
-} from "./map.js?v=20260712-route-picker-2";
-import { renderRoutePlanner } from "./route-ui.js?v=20260712-route-picker-2";
+} from "./map.js?v=20260712-sidebar-layout-1";
+import { renderRoutePlanner } from "./route-ui.js?v=20260712-sidebar-layout-1";
 
 async function bootstrap() {
   const map = await createMap("map");

@@ -49,15 +49,16 @@ button {
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   min-width: 0;
   padding: 18px;
   border-right: 1px solid var(--line);
   background: var(--panel);
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .panel-header {
+  flex-shrink: 0;
   border-bottom: 1px solid var(--line);
   padding-bottom: 14px;
 }
@@ -88,6 +89,7 @@ button {
 
 .mode-tabs {
   display: grid;
+  flex-shrink: 0;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   min-width: 0;
   border: 1px solid var(--line);
@@ -122,20 +124,27 @@ button {
 
 .tab-view.active {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   min-height: 0;
 }
 
 .controls,
 .result-panel {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   min-width: 0;
   min-height: 0;
 }
 
 .route-selection-view.active {
-  grid-template-rows: auto minmax(0, 1fr);
+  flex: 1 1 auto;
+  grid-template-rows: auto minmax(190px, 1fr);
+  overflow: hidden;
+}
+
+.result-panel {
+  grid-template-rows: auto auto auto minmax(76px, 1fr);
+  overflow: hidden;
 }
 
 .field-grid {
@@ -323,21 +332,26 @@ select:disabled {
 }
 
 .route-tabs {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
   gap: 7px;
   min-width: 0;
-  padding: 2px 1px 7px;
-  overflow-x: auto;
+  min-height: 0;
+  padding: 2px 5px 6px 1px;
+  overflow-x: hidden;
+  overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
+  scrollbar-color: rgba(47, 95, 85, 0.42) transparent;
 }
 
 .route-tab {
   position: relative;
-  flex: 0 0 148px;
-  min-width: 148px;
-  min-height: 58px;
-  padding: 9px 10px;
+  width: 100%;
+  min-width: 0;
+  min-height: 68px;
+  padding: 10px 12px;
   border: 1px solid var(--line);
   border-top: 3px solid var(--teal);
   border-radius: 8px;
@@ -363,7 +377,7 @@ select:disabled {
   display: block;
   display: -webkit-box;
   overflow: hidden;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.3;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -373,7 +387,7 @@ select:disabled {
   display: block;
   margin-top: 5px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .route-tab[data-mode="run"] {
@@ -550,6 +564,7 @@ select:disabled {
 
 .legend {
   display: flex;
+  flex-shrink: 0;
   flex-wrap: wrap;
   gap: 8px 12px;
   padding-top: 8px;
@@ -702,18 +717,31 @@ select:disabled {
   .sidebar {
     grid-area: panel;
     overflow-y: auto;
-    max-height: 40dvh;
+    max-height: 46dvh;
     border-right: 0;
     border-top: 1px solid var(--line);
   }
 
   .map-wrap {
     grid-area: map;
-    min-height: 60dvh;
+    min-height: 54dvh;
   }
 
   #map {
-    height: 60dvh;
+    height: 54dvh;
+  }
+
+  .route-selection-view.active {
+    flex: none;
+    overflow: visible;
+  }
+
+  .result-panel {
+    overflow: visible;
+  }
+
+  .route-tabs {
+    max-height: 220px;
   }
 }
 

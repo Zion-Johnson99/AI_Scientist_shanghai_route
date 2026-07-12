@@ -28,7 +28,7 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
 
-    release = "v=20260712-route-picker-2"
+    release = "v=20260712-sidebar-layout-1"
     assert f"./styles/main.css?{release}" in html
     assert f"./src/main.js?{release}" in html
     assert f'./data-loader.js?{release}' in main_js
@@ -145,12 +145,18 @@ def test_web_loads_pois_and_supports_navigation_session_controls() -> None:
     assert "containerToLngLat" in map_js
 
 
-def test_sidebar_route_tabs_have_independent_horizontal_scroll() -> None:
+def test_sidebar_route_picker_has_independent_vertical_scroll_without_clipping() -> None:
     css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
     route_tabs_block = css[css.index(".route-tabs {") : css.index(".route-tab {")]
+    selection_block = css[
+        css.index(".route-selection-view.active {") : css.index(".field-grid {")
+    ]
 
-    assert "overflow-x: auto" in route_tabs_block
-    assert "display: flex" in route_tabs_block
+    assert "minmax(190px, 1fr)" in selection_block
+    assert "overflow-y: auto" in route_tabs_block
+    assert "overflow-x: hidden" in route_tabs_block
+    assert "display: grid" in route_tabs_block
+    assert "flex-shrink: 0" in css[css.index(".mode-tabs {") : css.index(".mode-tabs button {")]
 
 
 def test_map_module_uses_amap_and_keeps_community_nodes_result_scoped() -> None:
