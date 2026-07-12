@@ -1,4 +1,4 @@
-from pathlib import Path
+from datetime import datetime, timezone
 
 from xuhui_route_builder.exporters import build_feature_collection, build_route_catalog
 from xuhui_route_builder.models import CandidateRoute, CoordinatePair, EntryPoint
@@ -36,9 +36,19 @@ def test_build_route_catalog_keeps_score_placeholder() -> None:
         start_entry_id="XH_ENT_0001",
         end_entry_id="XH_ENT_0001",
         region_zone="徐汇滨江",
-        polyline_gcj02=[CoordinatePair(lng_gcj02=121.45, lat_gcj02=31.17, lng_wgs84=121.445, lat_wgs84=31.172)],
+        polyline_gcj02=[
+            CoordinatePair(lng_gcj02=121.45, lat_gcj02=31.17, lng_wgs84=121.445, lat_wgs84=31.172),
+            CoordinatePair(lng_gcj02=121.46, lat_gcj02=31.16, lng_wgs84=121.455, lat_wgs84=31.162),
+        ],
         tags=["滨江", "夜跑"],
         source_method="seed",
+        geometry_source="audited_import",
+        geometry_status="complete",
+        validation_status="accepted",
+        snap_ratio=0.99,
+        network_source="osm-test",
+        verified_at=datetime(2026, 7, 11, tzinfo=timezone.utc),
+        review_note="测试验收通过",
     )
 
     catalog = build_route_catalog([route])
@@ -66,16 +76,23 @@ def test_build_route_catalog_exports_navigation_and_preference_metadata() -> Non
         tags=["音乐", "历史建筑"],
         source_method="real_route_seed",
         geometry_source="amap_direction",
-        source_level="official",
+        geometry_status="complete",
+        source_level="A",
         waypoint_names=["衡山路8号", "东平路", "上海音乐学院"],
         nearby_pois=[{"poi_id": "XH_POI_0001", "poi_type": "coffee", "poi_name": "咖啡", "distance_m": 80}],
         preference_hits=["coffee"],
+        validation_status="accepted",
+        snap_ratio=0.99,
+        network_source="osm-test",
+        verified_at=datetime(2026, 7, 11, tzinfo=timezone.utc),
+        review_note="测试验收通过",
+        raw_response_paths=["raw/segment-1.json"],
     )
 
     catalog = build_route_catalog([route])
 
     assert catalog[0]["geometry_source"] == "amap_direction"
-    assert catalog[0]["source_level"] == "official"
+    assert catalog[0]["source_level"] == "A"
     assert catalog[0]["waypoint_names"] == ["衡山路8号", "东平路", "上海音乐学院"]
     assert catalog[0]["nearby_pois"][0]["poi_type"] == "coffee"
     assert catalog[0]["preference_hits"] == ["coffee"]

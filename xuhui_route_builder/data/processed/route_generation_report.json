@@ -1,0 +1,24 @@
+{
+  "batch_status": "succeeded",
+  "seed_count": 15,
+  "success_count": 15,
+  "failure_count": 0,
+  "success_route_ids": [
+    "XH_RUN_0001",
+    "XH_RUN_0002",
+    "XH_RUN_0003",
+    "XH_RUN_0004",
+    "XH_RUN_0005",
+    "XH_WALK_0006",
+    "XH_WALK_0007",
+    "XH_WALK_0008",
+    "XH_WALK_0009",
+    "XH_WALK_0010",
+    "XH_BIKE_0011",
+    "XH_BIKE_0012",
+    "XH_BIKE_0013",
+    "XH_BIKE_0014",
+    "XH_BIKE_0015"
+  ],
+  "failures": []
+}

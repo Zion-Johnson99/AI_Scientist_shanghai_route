@@ -8,6 +8,7 @@
 .env.*
 !.env.example
 xuhui_route_builder/web/local-amap-config.js
+xuhui_route_builder/data/raw/
 *.key
 *.pem
 *.token
@@ -25,6 +26,9 @@ env/
 
 # Data and generated outputs
 /tmp/
+/docs/superpowers/
+/.superpowers/
+/tmp/skill_sources/superpowers/
 /data_raw/
 /data_processed/
 /outputs/

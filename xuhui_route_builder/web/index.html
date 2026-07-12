@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>徐汇路线构建器</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%232f5f55'/%3E%3Cpath d='M4 9h8M8 4v8' stroke='white' stroke-width='2'/%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="./styles/main.css?v=20260712-route-picker-2" />
     <script src="./local-amap-config.js"></script>
   </head>
   <body>
@@ -76,14 +76,20 @@
             </div>
           </div>
 
-          <section class="result-panel" aria-label="候选路线结果">
-            <div id="resultTabs" class="result-tabs" role="tablist" aria-label="结果类型">
-              <button type="button" class="active" data-result-tab="recommend">推荐</button>
-              <button type="button" data-result-tab="convenient">便捷</button>
-              <button type="button" data-result-tab="candidate">候选</button>
+          <section class="result-panel" aria-label="路线推荐结果">
+            <div class="result-heading">
+              <div>
+                <span class="section-kicker">Route match</span>
+                <h2>推荐路线</h2>
+              </div>
+              <div id="routeSummary" class="route-summary" aria-live="polite">填写条件后筛选一条路线。</div>
             </div>
-            <div id="routeSummary" class="route-summary" aria-live="polite"></div>
-            <div id="routeList" class="route-list"></div>
+            <div id="routeDetail" class="detail" aria-live="polite"></div>
+            <div class="route-tab-heading">
+              <strong>选择一条路线</strong>
+              <span>11 条真实路网路线</span>
+            </div>
+            <div id="routeTabs" class="route-tabs" role="tablist" aria-label="候选路线选项卡"></div>
           </section>
         </section>
 
@@ -133,8 +139,6 @@
           </div>
         </section>
 
-        <section id="routeDetail" class="detail" aria-live="polite"></section>
-
         <section class="legend" aria-label="地图图例">
           <span><i class="legend-run"></i>跑步</span>
           <span><i class="legend-walk"></i>步行</span>
@@ -177,6 +181,6 @@
         });
       })();
     </script>
-    <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/main.js?v=20260712-route-picker-2"></script>
   </body>
 </html>

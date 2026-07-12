@@ -1,0 +1,92 @@
+[
+  {
+    "seed_id": "run_westbund_classic", "route_name": "徐汇滨江经典长跑线", "route_mode": "run", "distance_level": "8-10km", "target_distance_m": 8900, "region_zone": "徐汇滨江",
+    "start_hint": "星美术馆", "end_hint": "龙耀路隧道与龙腾大道交叉口", "waypoint_hints": ["龙美术馆", "西岸美术馆", "上海油罐艺术中心"], "tags": ["滨江", "长跑", "艺术"],
+    "reason": "从官方滨江长跑母线截取徐汇区内连续地标点序。", "source_name": "上海市文旅推广网", "source_url": "https://www.meet-in-shanghai.net/en/guide/popular-running-routes-in-shanghai-you-should-not-miss-603769/", "confidence": "中高", "source_level": "B", "evidence_note": "依据官方卢浦大桥至龙耀路隧道母线，截取徐汇区内星美术馆至龙耀路隧道浦西入口段。", "access_restrictions": ["仅沿浦西滨水步道通行，不进入龙耀路隧道"], "allowed_modes": ["run"],
+    "nodes": [{"query": "星美术馆", "expected_name": "START星美术馆", "expected_poi_id": "B0H0USLCSP"}, {"query": "龙美术馆(西岸馆)", "expected_name": "龙美术馆(西岸馆)"}, {"query": "西岸美术馆", "expected_name": "西岸美术馆"}, {"query": "上海油罐艺术中心", "expected_name": "上海油罐艺术中心"}, {"query": "龙耀路隧道与龙腾大道交叉口", "expected_name": "龙耀路隧道与龙腾大道交叉口", "expected_poi_id": "B0FFHPH4MR"}]
+  },
+  {
+    "seed_id": "run_westbund_art_10k", "route_name": "西岸最美艺术赛道", "route_mode": "run", "distance_level": "10km", "target_distance_m": 10000, "region_zone": "徐汇滨江",
+    "start_hint": "西岸穹顶艺术中心", "end_hint": "西岸穹顶艺术中心", "waypoint_hints": ["油罐艺术中心", "西岸美术馆", "龙美术馆"], "tags": ["赛事", "滨江", "艺术"],
+    "reason": "政府赛事报道明确起点、里程和主要地标。", "source_name": "上海市人民政府", "source_url": "https://www.shanghai.gov.cn/nw15343/20251229/3f98aa90344d45f88f046371f74c92c3.html", "confidence": "高", "source_level": "A", "evidence_note": "赛事报道给出10公里艺术赛道主要地标。", "access_restrictions": ["赛事闭环细节需按步行路网生成后人工复核"], "allowed_modes": ["run"],
+    "nodes": [{"query": "西岸穹顶艺术中心", "expected_name": "西岸穹顶艺术中心"}, {"query": "上海油罐艺术中心", "expected_name": "上海油罐艺术中心"}, {"query": "西岸美术馆", "expected_name": "西岸美术馆"}, {"query": "龙美术馆(西岸馆)", "expected_name": "龙美术馆(西岸馆)"}, {"query": "西岸穹顶艺术中心", "expected_name": "西岸穹顶艺术中心"}]
+  },
+  {
+    "seed_id": "run_westbund_short", "route_name": "西岸滨江短距离折返跑", "route_mode": "run", "distance_level": "3km", "target_distance_m": 3000, "region_zone": "徐汇滨江",
+    "start_hint": "西岸穹顶艺术中心", "end_hint": "西岸穹顶艺术中心", "waypoint_hints": ["上海油罐艺术中心", "西岸美术馆"], "tags": ["短跑", "折返", "滨江"],
+    "reason": "从官方艺术赛道母线派生短距离训练线。", "source_name": "上海市人民政府", "source_url": "https://www.shanghai.gov.cn/nw15343/20251229/3f98aa90344d45f88f046371f74c92c3.html", "confidence": "中高", "source_level": "B", "evidence_note": "点序来自官方母线，实际折返点以高德累计距离为准。", "access_restrictions": ["目标距离为生成约束，禁止预写固定折返点距离"], "allowed_modes": ["run"],
+    "nodes": [{"query": "西岸穹顶艺术中心", "expected_name": "西岸穹顶艺术中心"}, {"query": "上海油罐艺术中心", "expected_name": "上海油罐艺术中心"}, {"query": "西岸美术馆", "expected_name": "西岸美术馆"}, {"query": "西岸穹顶艺术中心", "expected_name": "西岸穹顶艺术中心"}]
+  },
+  {
+    "seed_id": "run_guijiang_greenway", "route_name": "桂江路中环绿廊健身步道", "route_mode": "run", "distance_level": "3.28km", "target_distance_m": 3280, "region_zone": "康健-桂江",
+    "start_hint": "漕宝路桂江路", "end_hint": "江安路桂江路", "waypoint_hints": ["钦州南路桂江路", "桂江支路桂江路"], "tags": ["绿廊", "健身步道", "林荫"],
+    "reason": "官方旅游资料确认3.28公里健身步道，规划资料确认分期边界。", "source_name": "上海市文旅推广网", "source_url": "https://www.meet-in-shanghai.net/tc/guide/run-a-autumn-in-the-cool-weather-please-put-away-this-shanghai-treasure-running-route-956451/", "confidence": "高", "source_level": "A", "evidence_note": "道路交叉口用于约束绿廊分期走向。", "access_restrictions": ["内部园路缺失时进入人工复核，禁止跨绿地直连"], "allowed_modes": ["run"],
+    "nodes": [{"query": "中环徐汇绿廊", "expected_name": "中环(徐汇)绿廊", "expected_poi_id": "B0FFHQ8DCP"}, {"query": "桂江支路桂江路", "expected_name": "桂江支路与桂江路交叉口", "expected_poi_id": "B0FFGGDP97"}, {"query": "钦州南路桂江路", "expected_name": "桂江路与钦州南路交叉口", "expected_poi_id": "B0FFLKZB8L"}, {"query": "江安路桂江路", "expected_name": "桂江路与江安路交叉口", "expected_poi_id": "B0FFI8OK6E"}]
+  },
+  {
+    "seed_id": "run_xujiahui_park", "route_name": "徐家汇公园外圈跑", "route_mode": "run", "distance_level": "1.22km", "target_distance_m": 1220, "region_zone": "徐家汇",
+    "start_hint": "徐家汇公园衡山路入口", "end_hint": "徐家汇公园衡山路入口", "waypoint_hints": ["徐家汇公园肇嘉浜路入口"], "tags": ["公园", "短跑", "健身步道"],
+    "reason": "可信报道明确外圈1220米及两个临街端点。", "source_name": "澎湃新闻", "source_url": "https://m.thepaper.cn/newsDetail_forward_14960078", "confidence": "中高", "source_level": "B", "evidence_note": "外圈线形仍需园内路网或人工采点复核。", "access_restrictions": ["仅限公园开放时段和健身步道"], "allowed_modes": ["run"],
+    "nodes": [{"query": "徐家汇公园衡山路入口", "expected_name": "徐家汇公园地下停车场(出口)", "expected_poi_id": "B0FFFQO507"}, {"query": "徐家汇公园肇嘉浜路入口", "expected_name": "徐家汇公园停车场(出入口)", "expected_poi_id": "B0FFFP35E8"}, {"query": "徐家汇公园衡山路入口", "expected_name": "徐家汇公园地下停车场(出口)", "expected_poi_id": "B0FFFQO507"}]
+  },
+  {
+    "seed_id": "walk_botanical_south", "route_name": "上海植物园南园主游线", "route_mode": "walk", "distance_level": "2-3km", "target_distance_m": 2500, "region_zone": "上海植物园",
+    "start_hint": "上海植物园1号门", "end_hint": "上海植物园3号门", "waypoint_hints": ["黄石大假山", "植物大楼"], "tags": ["植物园", "官方游线", "步行"],
+    "reason": "植物园官网明确南园主要游线节点。", "source_name": "上海植物园", "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?CtgId=737e03a1-a4d0-4e86-8f8c-e1fbffb005ae&InfoId=4b2d7e2f-b640-4a35-b4ca-65cb037b8e9c", "confidence": "高", "source_level": "A", "evidence_note": "南园节点顺序来自园方活动说明。", "access_restrictions": ["仅步行，按植物园当日开闭园时间通行"], "allowed_modes": ["walk"],
+    "nodes": [{"query": "上海植物园", "expected_name": "上海植物园", "expected_poi_id": "B00154DWH8"}, {"query": "植物大楼", "expected_name": "植物大楼", "expected_poi_id": "B0FFG2E8LW"}, {"query": "上海植物园3号门", "expected_name": "上海植物园3号门售票处", "expected_poi_id": "B00156ZSX5"}]
+  },
+  {
+    "seed_id": "walk_botanical_north", "route_name": "上海植物园北园主游线", "route_mode": "walk", "distance_level": "1-2km", "target_distance_m": 1600, "region_zone": "上海植物园",
+    "start_hint": "上海植物园4号门", "end_hint": "上海植物园北区大草坪", "waypoint_hints": ["4号门入口草坪"], "tags": ["植物园", "北园", "生态"],
+    "reason": "植物园官网明确北园主要游线节点。", "source_name": "上海植物园", "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?CtgId=737e03a1-a4d0-4e86-8f8c-e1fbffb005ae&InfoId=4b2d7e2f-b640-4a35-b4ca-65cb037b8e9c", "confidence": "高", "source_level": "A", "evidence_note": "北园点序来自园方说明。", "access_restrictions": ["仅步行，按植物园当日开闭园时间通行"], "allowed_modes": ["walk"],
+    "nodes": [{"query": "上海植物园4号门", "expected_name": "上海植物园4号门售票处", "expected_poi_id": "B0FFF64RUI"}, {"query": "上海植物园北区", "expected_name": "上海植物园-北区", "expected_poi_id": "B0LDT6NY7D"}]
+  },
+  {
+    "seed_id": "walk_hengfu_houses", "route_name": "衡复老洋房游览线", "route_mode": "walk", "distance_level": "4-6km", "target_distance_m": 5000, "region_zone": "衡复风貌区",
+    "start_hint": "武康路旅游咨询中心", "end_hint": "淮海西路", "waypoint_hints": ["湖南路", "复兴西路", "东平路"], "tags": ["Citywalk", "历史建筑", "梧桐"],
+    "reason": "规划设计机构给出完整道路顺序。", "source_name": "上海市城市规划设计研究院", "source_url": "https://www.supdri.com/artmap/details.html?id=2&isPath=1&type=line", "confidence": "高", "source_level": "A", "evidence_note": "节点采用官方线路中的代表性道路交叉口。", "access_restrictions": ["高人流时段降低推荐优先级"], "allowed_modes": ["walk"],
+    "nodes": [{"query": "武康路历史文化名街", "expected_name": "武康路历史文化名街", "expected_poi_id": "B0FFIK0Z21"}, {"query": "武康路湖南路", "expected_name": "武康路与湖南路交叉口", "expected_poi_id": "B0FFGGBZ5V"}, {"query": "复兴西路乌鲁木齐中路", "expected_name": "乌鲁木齐中路与复兴西路交叉口", "expected_poi_id": "B0FFGG99SC"}, {"query": "东平路岳阳路", "expected_name": "东平路与岳阳路交叉口", "expected_poi_id": "B0FFGGC6B3"}, {"query": "淮海西路", "expected_name": "淮海西路", "expected_poi_id": "B0IA3GL346"}]
+  },
+  {
+    "seed_id": "walk_hengfu_apartments", "route_name": "衡复转角公寓线", "route_mode": "walk", "distance_level": "1-2km", "target_distance_m": 1800, "region_zone": "衡复风貌区",
+    "start_hint": "武康大楼", "end_hint": "巨福公寓", "waypoint_hints": ["高安公寓", "西湖公寓"], "tags": ["建筑阅读", "Citywalk", "短线"],
+    "reason": "人民网报道给出四个建筑点序。", "source_name": "人民网", "source_url": "https://sh.people.com.cn/n2/2023/0823/c350122-40542555.html", "confidence": "中高", "source_level": "B", "evidence_note": "采用报道中的行走路线二。", "access_restrictions": ["只到建筑临街入口，不进入住宅内部"], "allowed_modes": ["walk"],
+    "nodes": [{"query": "武康大楼", "expected_name": "武康大楼", "expected_poi_id": "B00155ITJ1"}, {"query": "高安公寓", "expected_name": "高安公寓"}]
+  },
+  {
+    "seed_id": "walk_xujiahui_origin", "route_name": "徐家汇源人文线", "route_mode": "walk", "distance_level": "3-5km", "target_distance_m": 4000, "region_zone": "徐家汇",
+    "start_hint": "土山湾博物馆", "end_hint": "百代小楼", "waypoint_hints": ["徐光启纪念馆", "徐家汇书院", "徐家汇公园"], "tags": ["人文", "官方精品线", "历史"],
+    "reason": "上海市政府精品线路给出完整点序。", "source_name": "上海市人民政府", "source_url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html", "confidence": "高", "source_level": "A", "evidence_note": "观象台和藏书楼仅外观。", "access_restrictions": ["外观点落在临街公共通道，开放场馆需核对预约时间"], "allowed_modes": ["walk"],
+    "nodes": [{"query": "土山湾博物馆", "expected_name": "上海土山湾博物馆", "expected_poi_id": "B00155QHTA"}, {"query": "徐光启纪念馆", "expected_name": "徐光启纪念馆"}, {"query": "徐家汇书院", "expected_name": "上海市徐汇区图书馆(徐家汇书院)", "expected_poi_id": "B0FFMH4KQS"}, {"query": "徐家汇公园", "expected_name": "徐家汇公园"}, {"query": "百代小楼", "expected_name": "义勇军进行曲灌制地纪念馆", "expected_poi_id": "B0HATSXLKE"}]
+  },
+  {
+    "seed_id": "bike_westbund_art", "route_name": "徐汇滨江艺文智岸骑行线", "route_mode": "bike", "distance_level": "2.7km", "target_distance_m": 2700, "region_zone": "徐汇滨江",
+    "start_hint": "西岸穹顶艺术中心", "end_hint": "龙美术馆", "waypoint_hints": ["油罐艺术中心", "西岸美术馆"], "tags": ["骑行", "艺术", "滨江"],
+    "reason": "市文旅局明确徐汇滨江艺文智岸骑行段约2.7公里。", "source_name": "上海市文化和旅游局", "source_url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html", "confidence": "高", "source_level": "A", "evidence_note": "地标均位于官方艺文智岸段。", "access_restrictions": ["滨江慢行区域遵守现场骑行限速和人车分流"], "allowed_modes": ["bike"],
+    "nodes": [{"query": "西岸穹顶艺术中心", "expected_name": "西岸穹顶艺术中心"}, {"query": "上海油罐艺术中心", "expected_name": "上海油罐艺术中心"}, {"query": "西岸美术馆", "expected_name": "西岸美术馆"}, {"query": "龙美术馆(西岸馆)", "expected_name": "龙美术馆(西岸馆)"}]
+  },
+  {
+    "seed_id": "bike_longhua_westbund", "route_name": "龙华至西岸滨江骑行线", "route_mode": "bike", "distance_level": "4-6km", "target_distance_m": 5000, "region_zone": "龙华-西岸",
+    "start_hint": "龙华寺", "end_hint": "西岸美术馆", "waypoint_hints": ["龙华滨江休闲广场", "龙美术馆"], "tags": ["骑行", "滨江", "文化"],
+    "reason": "官方滨江文旅点位与骑行廊道组合。", "source_name": "上海市文化和旅游局", "source_url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html", "confidence": "中高", "source_level": "B", "evidence_note": "龙华接入段需由骑行路由确定合法道路。", "access_restrictions": ["龙华寺内部不骑行，起点设在公共道路入口"], "allowed_modes": ["bike"],
+    "nodes": [{"query": "龙华寺", "expected_name": "龙华寺"}, {"query": "龙华滨江休闲广场", "expected_name": "龙华滨江休闲广场"}, {"query": "龙美术馆(西岸馆)", "expected_name": "龙美术馆(西岸馆)"}, {"query": "西岸美术馆", "expected_name": "西岸美术馆"}]
+  },
+  {
+    "seed_id": "bike_botanical_westbund_1", "route_name": "植物园至西岸花卉骑行线一", "route_mode": "bike", "distance_level": "6-8km", "target_distance_m": 7000, "region_zone": "植物园-西岸",
+    "start_hint": "上海植物园1号门", "end_hint": "西岸穹顶艺术中心", "waypoint_hints": ["龙吴路龙水南路", "龙华滨江休闲广场"], "tags": ["骑行", "植物园接驳", "西岸"],
+    "reason": "花展官方骑行活动串联植物园与徐汇滨江。", "source_name": "上海市文化和旅游局", "source_url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html", "confidence": "中高", "source_level": "B", "evidence_note": "植物园节点只取门外公共道路。", "access_restrictions": ["植物园园内禁骑风险未解除，路线从门外起步"], "allowed_modes": ["bike"],
+    "nodes": [{"query": "上海植物园", "expected_name": "上海植物园", "expected_poi_id": "B00154DWH8"}, {"query": "龙吴路龙水南路", "expected_name": "龙吴路与龙水南路交叉口", "expected_poi_id": "B0FFHPFUQ1"}, {"query": "龙华滨江休闲广场", "expected_name": "龙华滨江休闲广场"}, {"query": "西岸穹顶艺术中心", "expected_name": "西岸穹顶艺术中心"}]
+  },
+  {
+    "seed_id": "bike_botanical_westbund_2", "route_name": "植物园至西岸花卉骑行线二", "route_mode": "bike", "distance_level": "8-10km", "target_distance_m": 9000, "region_zone": "植物园-西岸",
+    "start_hint": "上海植物园3号门", "end_hint": "上海油罐艺术中心", "waypoint_hints": ["百色路龙吴路", "龙华滨江休闲广场"], "tags": ["骑行", "花卉", "滨江"],
+    "reason": "使用另一园门和西岸终点形成独立合法路由候选。", "source_name": "上海市文化和旅游局", "source_url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html", "confidence": "中", "source_level": "C", "evidence_note": "属于官方走廊上的待验证派生候选。", "access_restrictions": ["植物园园内不骑行，百色路接入段需检查非机动车通行"], "allowed_modes": ["bike"],
+    "nodes": [{"query": "上海植物园3号门", "expected_name": "上海植物园3号门售票处", "expected_poi_id": "B00156ZSX5"}, {"query": "百色路龙吴路", "expected_name": "百色路与龙吴路交叉口", "expected_poi_id": "B0FFHPLHE3"}, {"query": "龙华滨江休闲广场", "expected_name": "龙华滨江休闲广场"}, {"query": "上海油罐艺术中心", "expected_name": "上海油罐艺术中心"}]
+  },
+  {
+    "seed_id": "bike_guijiang_caohejing", "route_name": "桂江路至漕河泾绿廊骑行线", "route_mode": "bike", "distance_level": "4-6km", "target_distance_m": 5000, "region_zone": "康健-漕河泾",
+    "start_hint": "江安路桂江路", "end_hint": "漕河泾开发区公园", "waypoint_hints": ["钦州南路桂江路", "漕宝路桂江路"], "tags": ["骑行", "绿廊接驳", "通勤"],
+    "reason": "桂江路绿廊边界与漕河泾公共道路组成通勤候选。", "source_name": "上海市人民政府", "source_url": "https://www.shanghai.gov.cn/gwk/search/content/15941bd0-dd0b-4daa-9fb1-ace81947058b", "confidence": "中", "source_level": "C", "evidence_note": "绿廊内部骑行条件需路由和现场标识复核。", "access_restrictions": ["遇步行专用园路时转入平行非机动车道路"], "allowed_modes": ["bike"],
+    "nodes": [{"query": "江安路桂江路", "expected_name": "桂江路与江安路交叉口", "expected_poi_id": "B0FFI8OK6E"}, {"query": "钦州南路桂江路", "expected_name": "桂江路与钦州南路交叉口", "expected_poi_id": "B0FFLKZB8L"}, {"query": "漕宝路桂平路", "expected_name": "桂平路与漕宝路交叉口", "expected_poi_id": "B0FFHPG76V"}, {"query": "漕河泾开发区科创公园", "expected_name": "漕河泾开发区科创公园", "expected_poi_id": "B00154DH42"}]
+  }
+]

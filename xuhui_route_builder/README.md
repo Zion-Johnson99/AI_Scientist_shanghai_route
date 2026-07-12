@@ -56,13 +56,17 @@ cd D:\SJTU\交大\揭榜挂帅\AI_Scientist\xuhui_route_builder
 python -m pytest tests -q
 ```
 
-重新导出演示数据：
+生成并验证真实路线数据：
 
 ```powershell
 cd D:\SJTU\交大\揭榜挂帅\AI_Scientist\xuhui_route_builder
 $env:PYTHONPATH="src"
-python -m xuhui_route_builder.cli export-demo
+python -m xuhui_route_builder.cli resolve-seeds
+python -m xuhui_route_builder.cli generate-routes
+python -m xuhui_route_builder.cli validate-routes
 ```
+
+`resolve-seeds` 将官方路线节点解析为高德 POI，`generate-routes` 逐段调用高德步行或骑行路径，`validate-routes` 完成 OSM 贴路检查后才更新网页路线。任一步失败都会保留上一版已验收数据。
 
 ## 网页功能
 

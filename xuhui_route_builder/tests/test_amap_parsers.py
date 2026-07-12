@@ -68,6 +68,34 @@ def test_parse_direction_path_extracts_distance_duration_and_polyline() -> None:
     assert parsed.road_names == ["龙腾大道"]
 
 
+def test_parse_direction_path_supports_real_v5_cost_and_step_fields() -> None:
+    response = {
+        "route": {
+            "paths": [
+                {
+                    "distance": "497",
+                    "cost": {"duration": "398"},
+                    "steps": [
+                        {
+                            "instruction": "沿园路步行",
+                            "road_name": "园路",
+                            "step_distance": "497",
+                            "polyline": "121.44,31.18;121.45,31.19",
+                        }
+                    ],
+                }
+            ]
+        }
+    }
+
+    parsed = parse_direction_path(response)
+
+    assert parsed.distance_m == 497
+    assert parsed.duration_s == 398
+    assert parsed.road_names == ["园路"]
+    assert parsed.polyline_gcj02 == ["121.44,31.18", "121.45,31.19"]
+
+
 def test_amap_client_builds_expected_service_params(tmp_path) -> None:
     client = AmapClient("test-key", cache_dir=tmp_path)
 
@@ -93,3 +121,56 @@ def test_amap_client_builds_v5_poi_and_v2_route_params(tmp_path) -> None:
     assert poi_params["key"] == "test-key"
     assert walk_url.endswith("/v5/direction/walking")
     assert walk_params["origin"] == "121.4388,31.1955"
+
+
+def test_v2_route_requests_include_cost_and_polyline_fields(tmp_path, monkeypatch) -> None:
+    client = AmapClient("test-key", cache_dir=tmp_path)
+    captured = []
+
+    def fake_request(endpoint, params):
+        captured.append((endpoint, params))
+        return object()
+
+    monkeypatch.setattr(client, "request", fake_request)
+
+    client.walking_v2("121.44,31.18", "121.45,31.19")
+    client.bicycling_v2("121.44,31.18", "121.45,31.19")
+
+    assert captured == [
+        ("walking_v2", {"origin": "121.44,31.18", "destination": "121.45,31.19", "show_fields": "cost,polyline"}),
+        ("bicycling_v2", {"origin": "121.44,31.18", "destination": "121.45,31.19", "show_fields": "cost,polyline"}),
+    ]
+
+
+def test_amap_client_retries_qps_limit_with_bounded_backoff(tmp_path, monkeypatch) -> None:
+    payloads = [
+        {"status": "0", "info": "CUQPS_HAS_EXCEEDED_THE_LIMIT", "infocode": "10021"},
+        {"status": "1", "info": "OK", "infocode": "10000", "pois": []},
+    ]
+    calls = []
+    sleeps = []
+
+    class Response:
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> dict:
+            return payloads[len(calls) - 1]
+
+    def fake_get(*args, **kwargs):
+        calls.append((args, kwargs))
+        return Response()
+
+    monkeypatch.setattr("xuhui_route_builder.amap_client.requests.get", fake_get)
+    client = AmapClient(
+        "test-key",
+        cache_dir=tmp_path,
+        qps_retry_delays=(1.0, 2.0),
+        sleep_fn=sleeps.append,
+    )
+
+    record = client.place_text_v5("星美术馆")
+
+    assert record.status == "1"
+    assert len(calls) == 2
+    assert sleeps == [1.0]

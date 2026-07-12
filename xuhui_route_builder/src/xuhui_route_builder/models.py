@@ -1,15 +1,20 @@
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, HttpUrl, field_validator
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl, field_validator, model_validator
 
 
 RouteMode = Literal["walk", "run", "bike", "bike_assist", "access"]
 AccessMode = Literal["walk", "bike", "transit", "drive"]
 
 
-class CoordinatePair(BaseModel):
+class StrictModel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+
+class CoordinatePair(StrictModel):
     lng_gcj02: float
     lat_gcj02: float
     lng_wgs84: float
@@ -19,7 +24,7 @@ class CoordinatePair(BaseModel):
         return [self.lng_gcj02, self.lat_gcj02]
 
 
-class EntryPoint(BaseModel):
+class EntryPoint(StrictModel):
     entry_id: str
     entry_name: str
     entry_type: str
@@ -40,7 +45,30 @@ class EntryPoint(BaseModel):
     default_visible: bool = False
 
 
-class RouteSeed(BaseModel):
+class RouteNode(StrictModel):
+    node_name: str
+    poi_id: str | None = None
+    lng_gcj02: float | None = Field(default=None, ge=-180, le=180)
+    lat_gcj02: float | None = Field(default=None, ge=-90, le=90)
+    lng_wgs84: float | None = Field(default=None, ge=-180, le=180)
+    lat_wgs84: float | None = Field(default=None, ge=-90, le=90)
+
+    @model_validator(mode="after")
+    def require_complete_location(self) -> RouteNode:
+        has_gcj_lng = self.lng_gcj02 is not None
+        has_gcj_lat = self.lat_gcj02 is not None
+        if has_gcj_lng != has_gcj_lat:
+            raise ValueError("GCJ02 coordinates must be a complete pair")
+        has_wgs_lng = self.lng_wgs84 is not None
+        has_wgs_lat = self.lat_wgs84 is not None
+        if has_wgs_lng != has_wgs_lat:
+            raise ValueError("WGS84 coordinates must be a complete pair")
+        if not self.poi_id and not (has_gcj_lng and has_gcj_lat):
+            raise ValueError("RouteNode requires poi_id or complete GCJ02 coordinates")
+        return self
+
+
+class RouteSeed(StrictModel):
     seed_id: str
     route_name: str
     route_mode: RouteMode
@@ -55,6 +83,11 @@ class RouteSeed(BaseModel):
     source_name: str
     source_url: str
     confidence: str
+    ordered_nodes: list[RouteNode] = Field(default_factory=list)
+    allowed_modes: list[RouteMode] = Field(default_factory=list)
+    source_level: Literal["A", "B", "C"] = "C"
+    evidence_note: str = ""
+    access_restrictions: list[str] = Field(default_factory=list)
 
     @field_validator("source_url")
     @classmethod
@@ -62,8 +95,20 @@ class RouteSeed(BaseModel):
         HttpUrl(value)
         return value
 
+    @model_validator(mode="after")
+    def require_complete_structured_route(self) -> RouteSeed:
+        if not self.ordered_nodes:
+            if self.allowed_modes:
+                raise ValueError("partial RouteSeed cannot have allowed_modes without ordered_nodes")
+            return self
+        if len(self.ordered_nodes) < 2:
+            raise ValueError("ordered_nodes must contain at least two nodes")
+        if not self.allowed_modes or self.route_mode not in self.allowed_modes:
+            raise ValueError("allowed_modes must contain route_mode")
+        return self
 
-class DirectionPath(BaseModel):
+
+class DirectionPath(StrictModel):
     distance_m: int
     duration_s: int
     polyline_gcj02: list[str]
@@ -71,7 +116,7 @@ class DirectionPath(BaseModel):
     instructions: list[str] = Field(default_factory=list)
 
 
-class CandidateRoute(BaseModel):
+class CandidateRoute(StrictModel):
     route_id: str
     route_name: str
     route_mode: RouteMode
@@ -89,7 +134,6 @@ class CandidateRoute(BaseModel):
     route_inside_ratio: float | None = None
     future_score: float | None = None
     score_note: str = "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。"
-    raw_response_path: str | None = None
     source_name: str = ""
     source_url: str = ""
     confidence: str = "中"
@@ -97,14 +141,66 @@ class CandidateRoute(BaseModel):
     loop_flag: bool = False
     feature_tags: list[str] = Field(default_factory=list)
     candidate_rank: str = "candidate"
-    geometry_source: str = "amap_direction"
-    source_level: Literal["official", "media", "curated"] = "curated"
+    geometry_source: Literal["not_generated", "amap_direction", "audited_import"] = "not_generated"
+    geometry_status: Literal["not_generated", "complete", "partial", "failed"] = "not_generated"
+    validation_status: Literal["pending", "accepted", "needs_review", "rejected"] = "pending"
+    snap_ratio: float | None = Field(default=None, ge=0, le=1)
+    network_source: str | None = None
+    verified_at: datetime | None = None
+    review_note: str = ""
+    raw_response_paths: list[str] = Field(default_factory=list)
+    source_level: Literal["A", "B", "C"] = "C"
     waypoint_names: list[str] = Field(default_factory=list)
     nearby_pois: list[dict[str, Any]] = Field(default_factory=list)
     preference_hits: list[str] = Field(default_factory=list)
 
+    def is_publishable(self) -> bool:
+        distinct_points = {(point.lng_gcj02, point.lat_gcj02) for point in self.polyline_gcj02}
+        verified_with_timezone = self.verified_at is not None and self.verified_at.utcoffset() is not None
+        has_safe_validation_status = self.validation_status == "accepted" or (
+            self.validation_status == "needs_review"
+            and self.review_note.startswith("实际距离与目标距离误差")
+            and "；" not in self.review_note
+        )
+        has_common_evidence = (
+            has_safe_validation_status
+            and self.geometry_source in {"amap_direction", "audited_import"}
+            and self.geometry_status == "complete"
+            and len(distinct_points) >= 2
+            and self.snap_ratio is not None
+            and self.snap_ratio >= 0.98
+            and bool(self.network_source and self.network_source.strip())
+            and verified_with_timezone
+            and bool(self.review_note.strip())
+        )
+        if not has_common_evidence:
+            return False
+        return self.geometry_source != "amap_direction" or bool(self.raw_response_paths)
 
-class PoiPoint(BaseModel):
+    @model_validator(mode="after")
+    def validate_accepted_route(self) -> CandidateRoute:
+        if self.validation_status != "accepted":
+            return self
+        if self.geometry_source not in {"amap_direction", "audited_import"}:
+            raise ValueError("accepted route requires approved geometry_source")
+        if self.geometry_status != "complete":
+            raise ValueError("accepted route requires geometry_status=complete")
+        if len({(point.lng_gcj02, point.lat_gcj02) for point in self.polyline_gcj02}) < 2:
+            raise ValueError("accepted route polyline_gcj02 requires two distinct coordinates")
+        if self.snap_ratio is None or self.snap_ratio < 0.98:
+            raise ValueError("accepted route requires snap_ratio >= 0.98")
+        if not self.network_source or not self.network_source.strip():
+            raise ValueError("accepted route requires network_source")
+        if self.verified_at is None or self.verified_at.utcoffset() is None:
+            raise ValueError("accepted route requires timezone-aware verified_at")
+        if not self.review_note.strip():
+            raise ValueError("accepted route requires review_note")
+        if self.geometry_source == "amap_direction" and not self.raw_response_paths:
+            raise ValueError("amap_direction route requires raw_response_paths")
+        return self
+
+
+class PoiPoint(StrictModel):
     poi_id: str
     poi_name: str
     poi_type: Literal["coffee", "toilet", "convenience", "metro", "park_gate"]
@@ -117,7 +213,7 @@ class PoiPoint(BaseModel):
     default_visible: bool = False
 
 
-class AccessCase(BaseModel):
+class AccessCase(StrictModel):
     case_id: str
     origin_type: str
     origin_name: str
@@ -133,7 +229,7 @@ class AccessCase(BaseModel):
     risk_note: str = "接驳段仅记录距离和时间，环境风险评分后续接入。"
 
 
-class AmapRawRecord(BaseModel):
+class AmapRawRecord(StrictModel):
     endpoint: str
     params_hash: str
     status: str | None

@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 import requests
 
@@ -31,12 +32,21 @@ ENDPOINTS = {
 
 
 class AmapClient:
-    def __init__(self, web_service_key: str, cache_dir: Path, timeout_s: int = 20) -> None:
+    def __init__(
+        self,
+        web_service_key: str,
+        cache_dir: Path,
+        timeout_s: int = 20,
+        qps_retry_delays: tuple[float, ...] = (1.0, 2.0, 4.0),
+        sleep_fn: Callable[[float], None] = time.sleep,
+    ) -> None:
         if not web_service_key.strip():
             raise ValueError("AMAP_WEB_SERVICE_KEY is required")
         self.web_service_key = web_service_key.strip()
         self.cache_dir = Path(cache_dir)
         self.timeout_s = timeout_s
+        self.qps_retry_delays = qps_retry_delays
+        self.sleep_fn = sleep_fn
         self.cache_dir.mkdir(parents=True, exist_ok=True)
 
     def prepare_request(self, endpoint: str, params: dict[str, Any]) -> tuple[str, dict[str, Any]]:
@@ -47,9 +57,14 @@ class AmapClient:
 
     def request(self, endpoint: str, params: dict[str, Any]) -> AmapRawRecord:
         url, prepared = self.prepare_request(endpoint, params)
-        response = requests.get(url, params=prepared, timeout=self.timeout_s)
-        response.raise_for_status()
-        payload = response.json()
+        payload: dict[str, Any] = {}
+        for attempt in range(len(self.qps_retry_delays) + 1):
+            response = requests.get(url, params=prepared, timeout=self.timeout_s)
+            response.raise_for_status()
+            payload = response.json()
+            if str(payload.get("infocode", "")) != "10021" or attempt == len(self.qps_retry_delays):
+                break
+            self.sleep_fn(self.qps_retry_delays[attempt])
         params_hash = self._hash_params(endpoint, prepared)
         raw_path = self.cache_dir / f"{endpoint}_{params_hash}.json"
         raw_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -123,10 +138,16 @@ class AmapClient:
         return self.request("bicycling", {"origin": origin, "destination": destination})
 
     def walking_v2(self, origin: str, destination: str) -> AmapRawRecord:
-        return self.request("walking_v2", {"origin": origin, "destination": destination})
+        return self.request(
+            "walking_v2",
+            {"origin": origin, "destination": destination, "show_fields": "cost,polyline"},
+        )
 
     def bicycling_v2(self, origin: str, destination: str) -> AmapRawRecord:
-        return self.request("bicycling_v2", {"origin": origin, "destination": destination})
+        return self.request(
+            "bicycling_v2",
+            {"origin": origin, "destination": destination, "show_fields": "cost,polyline"},
+        )
 
     def driving(self, origin: str, destination: str) -> AmapRawRecord:
         return self.request("driving", {"origin": origin, "destination": destination, "extensions": "all"})

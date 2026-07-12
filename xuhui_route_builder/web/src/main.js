@@ -1,4 +1,4 @@
-import { loadRouteData } from "./data-loader.js";
+import { loadRouteData } from "./data-loader.js?v=20260712-route-picker-2";
 import {
   clearRouteResults,
   createMap,
@@ -7,10 +7,10 @@ import {
   endNavigationSession,
   highlightRoute,
   planNavigation,
-  showRouteResults,
+  showSingleRoute,
   startNavigationSession,
-} from "./map.js";
-import { renderRoutePlanner } from "./route-ui.js";
+} from "./map.js?v=20260712-route-picker-2";
+import { renderRoutePlanner } from "./route-ui.js?v=20260712-route-picker-2";
 
 async function bootstrap() {
   const map = await createMap("map");
@@ -20,13 +20,14 @@ async function bootstrap() {
 
   drawBoundary(map, data.boundary);
   renderRoutePlanner(catalog, {
-    onSearch(routes, selectedRouteId, filters = {}) {
-      if (!routes.length) {
-        clearRouteResults(map);
-        return;
+    onShowRoute(route) {
+      const feature = routeFeaturesById.get(route.route_id);
+      if (feature) {
+        showSingleRoute(map, feature, data.entries, data.pois);
       }
-      const routeFeatures = routes.map((route) => routeFeaturesById.get(route.route_id)).filter(Boolean);
-      showRouteResults(map, routeFeatures, data.entries, data.pois, selectedRouteId || routeFeatures[0]?.properties.route_id, filters.preferences || []);
+    },
+    onClearRoutes() {
+      clearRouteResults(map);
     },
     onSelect(routeId) {
       highlightRoute(map, routeId);

@@ -13,12 +13,6 @@ const MODE_LABELS = {
   access: "接驳",
 };
 
-const RANK_LABELS = {
-  recommended: "推荐",
-  convenient: "便捷",
-  candidate: "候选",
-};
-
 const NAVIGATION_POINT_LABELS = {
   origin: "起点",
   waypoint: "途经点",
@@ -32,10 +26,9 @@ export function renderRoutePlanner(catalog, options) {
 
   const state = {
     activeAppTab: "selection",
-    activeResultTab: "recommend",
-    selectedRouteId: catalog[0]?.route_id || "",
+    selectedRouteId: "",
     filters: readSelectionFilters(controls),
-    groups: buildGroups(catalog, readSelectionFilters(controls)),
+    filteredRoutes: [],
     navigationStatus: "idle",
     navigationPoints: {
       origin: null,
@@ -45,15 +38,11 @@ export function renderRoutePlanner(catalog, options) {
   };
 
   bindAppTabs(state, controls, options);
-  bindResultTabs(state, controls, options);
   bindSelectionControls(catalog, state, controls, options);
   bindNavigationControls(catalog, state, controls, options);
   setNavigationControlsEnabled(controls, false);
-
-  paintResults(state, controls, options);
-  if (catalog[0]) {
-    renderDetail(catalog[0], controls.detail);
-  }
+  renderRouteTabs(catalog, state, controls, options);
+  renderEmptySelection(controls, options, "填写条件后筛选一条路线。");
 }
 
 export function filterCandidateRoutes(catalog, filters) {
@@ -92,18 +81,6 @@ function bindAppTabs(state, controls, options) {
     tab.addEventListener("click", () => {
       state.activeAppTab = tab.dataset.appTab;
       switchAppTab(state, controls);
-      if (state.activeAppTab === "selection") {
-        paintResults(state, controls, options);
-      }
-    });
-  });
-}
-
-function bindResultTabs(state, controls, options) {
-  controls.resultTabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      state.activeResultTab = tab.dataset.resultTab;
-      paintResults(state, controls, options);
     });
   });
 }
@@ -113,9 +90,10 @@ function bindSelectionControls(catalog, state, controls, options) {
   controls.resetButton.addEventListener("click", () => {
     resetSelectionControls(controls);
     state.filters = readSelectionFilters(controls);
-    state.groups = buildGroups(catalog, state.filters);
-    state.activeResultTab = "recommend";
-    paintResults(state, controls, options);
+    state.filteredRoutes = [];
+    state.selectedRouteId = "";
+    renderRouteTabs(catalog, state, controls, options);
+    renderEmptySelection(controls, options, "填写条件后筛选一条路线。");
   });
 
   for (const control of [controls.zoneFilter, controls.modeFilter, controls.distanceFilter]) {
@@ -217,71 +195,51 @@ function bindNavigationControls(catalog, state, controls, options) {
 
 function runSearch(catalog, state, controls, options) {
   state.filters = readSelectionFilters(controls);
-  state.groups = buildGroups(catalog, state.filters);
-  paintResults(state, controls, options);
-}
-
-function buildGroups(catalog, filters) {
-  const candidate = filterCandidateRoutes(catalog, filters);
-  return {
-    recommend: candidate.filter((route) => route.candidate_rank === "recommended").sort((a, b) => routePriority(b) - routePriority(a)),
-    convenient: candidate.filter((route) => route.candidate_rank === "convenient").sort((a, b) => Number(a.duration_min || 0) - Number(b.duration_min || 0)),
-    candidate,
-  };
-}
-
-function paintResults(state, controls, options) {
-  controls.resultTabs.forEach((tab) => {
-    tab.classList.toggle("active", tab.dataset.resultTab === state.activeResultTab);
-  });
-
-  const visibleRoutes = state.groups[state.activeResultTab] || [];
-  const total = state.groups.candidate.length;
-  controls.summary.textContent = total
-    ? `已匹配 ${total} 条路线，当前显示 ${tabLabel(state.activeResultTab)} ${visibleRoutes.length} 条。`
-    : "暂无匹配路线，放宽片区、距离或关键词。";
-
-  controls.list.innerHTML = "";
-  if (!visibleRoutes.length) {
-    controls.list.innerHTML = `<div class="empty-state">没有匹配路线。</div>`;
-    controls.detail.innerHTML = "";
-    options.onSearch([], "", state.filters);
+  state.filteredRoutes = filterCandidateRoutes(catalog, state.filters);
+  const route = selectBestRoute(state.filteredRoutes);
+  renderRouteTabs(catalog, state, controls, options);
+  if (!route) {
+    state.selectedRouteId = "";
+    renderEmptySelection(controls, options, "无推荐路线，请调整片区、类型、距离或关键词。");
     return;
   }
-
-  const visibleOnMap = visibleRoutes.slice(0, 24);
-  if (!visibleOnMap.some((route) => route.route_id === state.selectedRouteId)) {
-    state.selectedRouteId = visibleOnMap[0].route_id;
-  }
-
-  for (const route of visibleRoutes) {
-    const item = document.createElement("button");
-    item.type = "button";
-    item.className = "route-item";
-    item.dataset.routeId = route.route_id;
-    item.dataset.mode = route.route_mode;
-    item.innerHTML = routeItemTemplate(route);
-    item.addEventListener("click", () => {
-      selectRoute(route, state, controls, options);
-    });
-    controls.list.appendChild(item);
-  }
-
-  const selectedRoute = findRoute(visibleRoutes, state.selectedRouteId) || visibleRoutes[0];
-  selectRoute(selectedRoute, state, controls, options, { skipSearch: true });
-  options.onSearch(visibleOnMap, selectedRoute.route_id, state.filters);
+  showRoute(route, state, controls, options, `已从 ${state.filteredRoutes.length} 条匹配路线中推荐最优路线。`);
 }
 
-function selectRoute(route, state, controls, options, flags = {}) {
+export function selectBestRoute(routes) {
+  return routes[0] || null;
+}
+
+function renderRouteTabs(catalog, state, controls, options) {
+  controls.routeTabs.innerHTML = "";
+  for (const route of catalog) {
+    const item = document.createElement("button");
+    item.type = "button";
+    item.className = "route-tab";
+    item.setAttribute("role", "tab");
+    item.dataset.routeId = route.route_id;
+    item.dataset.mode = route.route_mode;
+    item.innerHTML = routeTabTemplate(route);
+    item.classList.toggle("active", route.route_id === state.selectedRouteId);
+    item.addEventListener("click", () => showRoute(route, state, controls, options, "已切换到所选路线。"));
+    controls.routeTabs.appendChild(item);
+  }
+}
+
+function showRoute(route, state, controls, options, summary) {
   state.selectedRouteId = route.route_id;
   setActive(route.route_id);
   renderDetail(route, controls.detail);
   syncNavigationRoute(route.route_id, controls);
-  options.onSelect(route.route_id);
-  if (!flags.skipSearch) {
-    const visibleRoutes = state.groups[state.activeResultTab] || [];
-    options.onSearch(visibleRoutes.slice(0, 24), route.route_id, state.filters);
-  }
+  controls.summary.textContent = summary;
+  options.onShowRoute(route);
+}
+
+function renderEmptySelection(controls, options, message) {
+  controls.summary.textContent = message;
+  controls.detail.innerHTML = `<div class="empty-state">${escapeHtml(message)}</div>`;
+  setActive("");
+  options.onClearRoutes();
 }
 
 function switchAppTab(state, controls) {
@@ -379,34 +337,26 @@ function inputForRole(role, controls) {
   return inputs[role];
 }
 
-function routeItemTemplate(route) {
-  const tags = (route.tags || []).slice(0, 4).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
+function routeTabTemplate(route) {
   return `
     <strong>${escapeHtml(route.route_name)}</strong>
-    <span class="meta">${escapeHtml(route.region_zone)} · ${MODE_LABELS[route.route_mode] || route.route_mode} · ${escapeHtml(route.distance_level)} · ${Number(route.duration_min || 0).toFixed(1)} 分钟</span>
-    <span class="rank">${RANK_LABELS[route.candidate_rank] || "候选"}</span>
-    <span class="tag-row">${tags}</span>
+    <span>${MODE_LABELS[route.route_mode] || route.route_mode} · ${Number(route.distance_m || 0).toFixed(0)}m</span>
   `;
 }
 
 function renderDetail(route, detail) {
-  const tags = (route.tags || []).join("、") || "暂无标签";
-  const startName = route.start_entry_name || route.start_entry_id || "入口待核验";
-  const endName = route.end_entry_name || route.end_entry_id || "入口待核验";
-  const source = route.source_name ? `${route.source_name} · ${route.source_level || "curated"}` : "来源待核验";
-  const poiText = (route.nearby_pois || []).map((poi) => `${poi.poi_name} ${poi.distance_m}米`).join("、") || "暂无偏好点";
+  const startName = route.waypoint_names?.[0] || route.start_entry_name || "路线起点";
+  const endName = route.waypoint_names?.at(-1) || route.end_entry_name || "路线终点";
+  const status = route.validation_status === "accepted" ? "已验收" : "真实路网 · 距离待调整";
   detail.innerHTML = `
+    <div class="route-card-topline">
+      <span class="mode-pill" data-mode="${escapeHtml(route.route_mode)}">${MODE_LABELS[route.route_mode] || route.route_mode}</span>
+      <span class="status-pill">${escapeHtml(status)}</span>
+    </div>
     <h2>${escapeHtml(route.route_name)}</h2>
-    <p>${escapeHtml(route.region_zone)} · ${MODE_LABELS[route.route_mode] || route.route_mode} · ${escapeHtml(route.distance_level)}</p>
-    <dl>
-      <div><dt>入口</dt><dd>${escapeHtml(startName)} → ${escapeHtml(endName)}</dd></div>
-      <div><dt>距离</dt><dd>${Number(route.distance_m || route.target_distance_m || 0).toFixed(0)} 米，预计 ${Number(route.duration_min || 0).toFixed(1)} 分钟</dd></div>
-      <div><dt>途经</dt><dd>${escapeHtml((route.waypoint_names || []).join("、") || "待核验")}</dd></div>
-      <div><dt>偏好</dt><dd>${escapeHtml(poiText)}</dd></div>
-      <div><dt>来源</dt><dd>${escapeHtml(source)}</dd></div>
-      <div><dt>标签</dt><dd>${escapeHtml(tags)}</dd></div>
-    </dl>
-    <p>${escapeHtml(route.score_note || "当前阶段展示候选路线，后续接入环境暴露评分。")}</p>
+    <p class="route-card-place">${escapeHtml(route.region_zone)} · ${Number(route.distance_m || 0).toFixed(0)} 米 · ${Number(route.duration_min || 0).toFixed(0)} 分钟</p>
+    <div class="route-endpoints"><span><b>起</b>${escapeHtml(startName)}</span><i></i><span><b>终</b>${escapeHtml(endName)}</span></div>
+    <p class="route-source">来源：${escapeHtml(route.source_name || "路线数据源")}</p>
   `;
 }
 
@@ -473,7 +423,6 @@ function routePriority(route) {
 function getControls() {
   return {
     appTabs: [...document.querySelectorAll("[data-app-tab]")],
-    resultTabs: [...document.querySelectorAll("#resultTabs [data-result-tab]")],
     selectionView: document.querySelector("#routeSelectionView"),
     navigationView: document.querySelector("#routeNavigationView"),
     zoneFilter: document.querySelector("#zoneFilter"),
@@ -483,7 +432,7 @@ function getControls() {
     planButton: document.querySelector("#planButton"),
     resetButton: document.querySelector("#resetButton"),
     summary: document.querySelector("#routeSummary"),
-    list: document.querySelector("#routeList"),
+    routeTabs: document.querySelector("#routeTabs"),
     detail: document.querySelector("#routeDetail"),
     navigationRouteSelect: document.querySelector("#navigationRouteSelect"),
     startNavigationButton: document.querySelector("#startNavigationButton"),
@@ -544,7 +493,7 @@ function resetSelectionControls(controls) {
 }
 
 function setActive(routeId) {
-  document.querySelectorAll(".route-item").forEach((item) => {
+  document.querySelectorAll(".route-tab").forEach((item) => {
     item.classList.toggle("active", item.dataset.routeId === routeId);
   });
 }
@@ -555,15 +504,6 @@ function findRoute(catalog, routeId) {
 
 function formatPoint(point) {
   return `${Number(point.lng_gcj02).toFixed(6)},${Number(point.lat_gcj02).toFixed(6)}`;
-}
-
-function tabLabel(tab) {
-  const labels = {
-    recommend: "推荐",
-    convenient: "便捷",
-    candidate: "候选",
-  };
-  return labels[tab] || tab;
 }
 
 function normalizeText(value) {

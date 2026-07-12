@@ -1,0 +1,137 @@
+{
+  "batch_status": "partial",
+  "accepted_count": 2,
+  "review_count": 13,
+  "rejected_count": 0,
+  "network_version": [
+    "2026-07-12T02:30:40Z",
+    "2026-07-12T02:33:44Z",
+    "2026-07-12T02:31:45Z",
+    "2026-07-12T02:32:43Z"
+  ],
+  "duplicate_groups": {},
+  "routes": [
+    {
+      "route_id": "XH_RUN_0001",
+      "mode": "run",
+      "validation_status": "needs_review",
+      "snap_ratio": 0.9942857142857143,
+      "network_source": "2026-07-12T02:30:40Z",
+      "review_note": "实际距离与目标距离误差 61.3% 超过 15%"
+    },
+    {
+      "route_id": "XH_RUN_0002",
+      "mode": "run",
+      "validation_status": "needs_review",
+      "snap_ratio": 0.9963898916967509,
+      "network_source": "2026-07-12T02:30:40Z",
+      "review_note": "实际距离与目标距离误差 45.5% 超过 15%"
+    },
+    {
+      "route_id": "XH_RUN_0003",
+      "mode": "run",
+      "validation_status": "needs_review",
+      "snap_ratio": 0.9878048780487805,
+      "network_source": "2026-07-12T02:33:44Z",
+      "review_note": "实际距离与目标距离误差 47.1% 超过 15%"
+    },
+    {
+      "route_id": "XH_RUN_0004",
+      "mode": "run",
+      "validation_status": "needs_review",
+      "snap_ratio": 0.9387755102040817,
+      "network_source": "2026-07-12T02:30:40Z",
+      "review_note": "路网贴合率 93.9% 低于 98%；实际距离与目标距离误差 41.6% 超过 15%"
+    },
+    {
+      "route_id": "XH_RUN_0005",
+      "mode": "run",
+      "validation_status": "needs_review",
+      "snap_ratio": 1.0,
+      "network_source": "2026-07-12T02:30:40Z",
+      "review_note": "实际距离与目标距离误差 45.4% 超过 15%"
+    },
+    {
+      "route_id": "XH_WALK_0006",
+      "mode": "walk",
+      "validation_status": "needs_review",
+      "snap_ratio": 0.9803921568627451,
+      "network_source": "2026-07-12T02:31:45Z",
+      "review_note": "实际距离与目标距离误差 61.0% 超过 15%"
+    },
+    {
+      "route_id": "XH_WALK_0007",
+      "mode": "walk",
+      "validation_status": "needs_review",
+      "snap_ratio": 0.29411764705882354,
+      "network_source": "2026-07-12T02:31:45Z",
+      "review_note": "路网贴合率 29.4% 低于 98%；实际距离与目标距离误差 80.4% 超过 15%"
+    },
+    {
+      "route_id": "XH_WALK_0008",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": 1.0,
+      "network_source": "2026-07-12T02:31:45Z",
+      "review_note": "OSM 贴路率和 API 距离误差检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0009",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": 1.0,
+      "network_source": "2026-07-12T02:31:45Z",
+      "review_note": "OSM 贴路率和 API 距离误差检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0010",
+      "mode": "walk",
+      "validation_status": "needs_review",
+      "snap_ratio": 0.9826086956521739,
+      "network_source": "2026-07-12T02:31:45Z",
+      "review_note": "实际距离与目标距离误差 44.2% 超过 15%"
+    },
+    {
+      "route_id": "XH_BIKE_0011",
+      "mode": "bike",
+      "validation_status": "needs_review",
+      "snap_ratio": 0.9586206896551724,
+      "network_source": "2026-07-12T02:31:45Z",
+      "review_note": "路网贴合率 95.9% 低于 98%"
+    },
+    {
+      "route_id": "XH_BIKE_0012",
+      "mode": "bike",
+      "validation_status": "needs_review",
+      "snap_ratio": 0.9823182711198428,
+      "network_source": "2026-07-12T02:31:45Z",
+      "review_note": "实际距离与目标距离误差 100.9% 超过 15%"
+    },
+    {
+      "route_id": "XH_BIKE_0013",
+      "mode": "bike",
+      "validation_status": "needs_review",
+      "snap_ratio": 1.0,
+      "network_source": "2026-07-12T02:33:44Z",
+      "review_note": "实际距离与目标距离误差 33.7% 超过 15%"
+    },
+    {
+      "route_id": "XH_BIKE_0014",
+      "mode": "bike",
+      "validation_status": "needs_review",
+      "snap_ratio": 0.9812206572769953,
+      "network_source": "2026-07-12T02:33:44Z",
+      "review_note": "实际距离与目标距离误差 53.4% 超过 15%"
+    },
+    {
+      "route_id": "XH_BIKE_0015",
+      "mode": "bike",
+      "validation_status": "needs_review",
+      "snap_ratio": 0.94,
+      "network_source": "2026-07-12T02:32:43Z",
+      "review_note": "路网贴合率 94.0% 低于 98%；实际距离与目标距离误差 41.1% 超过 15%"
+    }
+  ],
+  "failures": [],
+  "published_count": 11
+}

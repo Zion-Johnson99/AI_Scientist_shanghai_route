@@ -29,5 +29,5 @@ class Settings(BaseModel):
 
 def load_settings(env_file: Path | None = None) -> Settings:
     env_path = env_file or PROJECT_ROOT / ".env"
-    values = dotenv_values(env_path) if env_path.exists() else {}
+    values = dotenv_values(env_path, encoding="utf-8-sig") if env_path.exists() else {}
     return Settings(amap_web_service_key=str(values.get("AMAP_WEB_SERVICE_KEY", "")))

@@ -28,13 +28,14 @@ def build_route_feature_collection(routes: Iterable[CandidateRoute]) -> dict[str
         "features": [
             {
                 "type": "Feature",
-                "properties": route.model_dump(exclude={"polyline_gcj02"}),
+                "properties": route.model_dump(mode="json", exclude={"polyline_gcj02"}),
                 "geometry": {
                     "type": "LineString",
                     "coordinates": [point.gcj02_list() for point in route.polyline_gcj02],
                 },
             }
             for route in routes
+            if route.is_publishable()
         ],
     }
 
@@ -42,6 +43,8 @@ def build_route_feature_collection(routes: Iterable[CandidateRoute]) -> dict[str
 def build_route_catalog(routes: Iterable[CandidateRoute]) -> list[dict[str, Any]]:
     catalog = []
     for route in routes:
+        if not route.is_publishable():
+            continue
         catalog.append(
             {
                 "route_id": route.route_id,
@@ -65,6 +68,13 @@ def build_route_catalog(routes: Iterable[CandidateRoute]) -> list[dict[str, Any]
                 "feature_tags": route.feature_tags,
                 "candidate_rank": route.candidate_rank,
                 "geometry_source": route.geometry_source,
+                "geometry_status": route.geometry_status,
+                "validation_status": route.validation_status,
+                "snap_ratio": route.snap_ratio,
+                "network_source": route.network_source,
+                "verified_at": route.verified_at.isoformat() if route.verified_at else None,
+                "review_note": route.review_note,
+                "raw_response_paths": route.raw_response_paths,
                 "source_level": route.source_level,
                 "waypoint_names": route.waypoint_names,
                 "nearby_pois": route.nearby_pois,
