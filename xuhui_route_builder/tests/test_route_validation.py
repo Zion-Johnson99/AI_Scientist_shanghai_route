@@ -11,6 +11,7 @@ from xuhui_route_builder.validation import (
     OverpassClient,
     build_overpass_query,
     compute_snap_ratio,
+    compute_route_inside_ratio,
     find_duplicate_routes,
     parse_overpass_segments,
     polyline_length_m,
@@ -34,12 +35,18 @@ def _point(lng: float, lat: float) -> CoordinatePair:
     return CoordinatePair(lng_gcj02=lng + 0.005, lat_gcj02=lat - 0.002, lng_wgs84=lng, lat_wgs84=lat)
 
 
-def _route(points: list[CoordinatePair], *, route_id: str = "route", distance_m: int | None = None) -> CandidateRoute:
+def _route(
+    points: list[CoordinatePair],
+    *,
+    route_id: str = "route",
+    route_mode: str = "bike",
+    distance_m: int | None = None,
+) -> CandidateRoute:
     measured = round(polyline_length_m(points)) if distance_m is None else distance_m
     return CandidateRoute(
         route_id=route_id,
         route_name="徐汇测试路线",
-        route_mode="bike",
+        route_mode=route_mode,
         target_distance_m=measured,
         actual_distance_m=measured,
         duration_s=300,
@@ -48,9 +55,11 @@ def _route(points: list[CoordinatePair], *, route_id: str = "route", distance_m:
         region_zone="徐汇区",
         polyline_gcj02=points,
         source_method="amap_segmented_direction",
+        source_accessed_at="2026-08-13",
         geometry_source="amap_direction",
         geometry_status="complete",
         raw_response_paths=["raw/segment.json"],
+        waypoint_names=["测试路线入口", "测试路线终点"],
     )
 
 
@@ -147,6 +156,26 @@ def test_validate_candidate_reviews_target_distance_mismatch() -> None:
     assert "目标距离" in checked.review_note
 
 
+def test_validate_candidate_requires_endpoints_and_ninety_percent_inside_xuhui() -> None:
+    boundary = [[121.439, 31.179], [121.443, 31.179], [121.443, 31.181], [121.439, 31.181], [121.439, 31.179]]
+    inside_route = _route([_point(121.44, 31.18), _point(121.442, 31.18)])
+    outside_endpoint = _route([_point(121.44, 31.18), _point(121.444, 31.18)])
+
+    assert compute_route_inside_ratio(inside_route.polyline_gcj02, [boundary]) == 1.0
+    checked = validate_candidate(
+        outside_endpoint,
+        _overpass(),
+        datetime(2026, 7, 11, tzinfo=timezone.utc),
+        "osm-test",
+        boundary_polygons=[boundary],
+    )
+
+    assert checked.validation_status == "needs_review"
+    assert checked.route_inside_ratio is not None and checked.route_inside_ratio < 0.9
+    assert "起点或终点位于徐汇区外" in checked.review_note
+    assert "区内比例" in checked.review_note
+
+
 def test_validate_amap_raw_evidence_requires_real_successful_direction_response(tmp_path: Path) -> None:
     points = [_point(121.44, 31.18), _point(121.441, 31.18)]
     route = _route(points)
@@ -226,6 +255,20 @@ def test_find_duplicate_routes_treats_reverse_and_densified_backbone_as_same() -
         [_route(base, route_id="base"), _route(reverse, route_id="reverse"), _route(dense, route_id="dense"), _route(unique, route_id="unique")]
     )
     assert duplicates == {"base": ["reverse", "dense"]}
+
+
+def test_find_duplicate_routes_ignores_identical_geometry_across_modes() -> None:
+    points = [_point(121.44, 31.18), _point(121.441, 31.18), _point(121.442, 31.18)]
+
+    duplicates = find_duplicate_routes(
+        [
+            _route(points, route_id="walk", route_mode="walk"),
+            _route(points, route_id="run", route_mode="run"),
+            _route(points, route_id="bike", route_mode="bike"),
+        ]
+    )
+
+    assert duplicates == {}
 
 
 def test_duplicate_routes_support_closed_loop_rotation_and_high_overlap() -> None:

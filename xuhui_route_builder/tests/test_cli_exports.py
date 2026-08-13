@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import date, datetime, timezone
 import sys
 
 import pytest
@@ -24,7 +25,7 @@ def test_generate_routes_partial_failure_preserves_old_candidates(tmp_path, monk
     target = tmp_path / "data/interim/pilot_candidates.json"
     target.parent.mkdir(parents=True)
     target.write_text('[{"old": true}]', encoding="utf-8")
-    seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk"})() for i in range(15)]
+    seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk"})() for i in range(90)]
     monkeypatch.setattr(cli, "validate_seeds", lambda root: seeds)
 
     def generate(seed, client, index):
@@ -33,18 +34,18 @@ def test_generate_routes_partial_failure_preserves_old_candidates(tmp_path, monk
         return _candidate(index)
 
     monkeypatch.setattr(cli, "generate_candidate_from_seed", generate)
-    with pytest.raises(RuntimeError, match=r"success=14.*failure=1"):
+    with pytest.raises(RuntimeError, match=r"success=89.*failure=1"):
         cli.generate_routes(tmp_path, object())
 
     assert json.loads(target.read_text(encoding="utf-8")) == [{"old": True}]
     report = json.loads((tmp_path / "data/processed/route_generation_report.json").read_text(encoding="utf-8"))
     assert report["batch_status"] == "failed"
-    assert report["success_count"] == 14 and report["failure_count"] == 1
+    assert report["success_count"] == 89 and report["failure_count"] == 1
     assert report["failures"][0]["seed_id"] == "seed-1"
     assert report["failures"][0]["mode"] == "walk"
     assert report["failures"][0]["exception_type"] == "ValueError"
     assert "generate_candidate_from_seed" in report["failures"][0]["traceback"]
-    assert "route_generation_success=14 route_generation_failure=1" in capsys.readouterr().out
+    assert "route_generation_success=89 route_generation_failure=1" in capsys.readouterr().out
 
 
 def test_generate_routes_with_no_success_preserves_old_candidates(tmp_path, monkeypatch) -> None:
@@ -63,7 +64,7 @@ def test_generate_routes_with_no_success_preserves_old_candidates(tmp_path, monk
 
 
 def test_generate_routes_candidate_write_failure_records_failed_batch(tmp_path, monkeypatch) -> None:
-    seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk"})() for i in range(15)]
+    seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk"})() for i in range(90)]
     monkeypatch.setattr(cli, "validate_seeds", lambda root: seeds)
     monkeypatch.setattr(cli, "generate_candidate_from_seed", lambda seed, client, index: _candidate(index))
     real_atomic_write = cli._atomic_write_json
@@ -75,7 +76,7 @@ def test_generate_routes_candidate_write_failure_records_failed_batch(tmp_path, 
 
     monkeypatch.setattr(cli, "_atomic_write_json", fail_candidate_write)
 
-    with pytest.raises(RuntimeError, match=r"success=15.*failure=1"):
+    with pytest.raises(RuntimeError, match=r"success=90.*failure=1"):
         cli.generate_routes(tmp_path, object())
 
     report = json.loads((tmp_path / "data/processed/route_generation_report.json").read_text(encoding="utf-8"))
@@ -91,7 +92,7 @@ def test_generate_routes_final_report_failure_rolls_back_candidates(tmp_path, mo
     if old_payload is not None:
         candidate_path.parent.mkdir(parents=True)
         candidate_path.write_bytes(old_payload)
-    seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk"})() for i in range(15)]
+    seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk"})() for i in range(90)]
     monkeypatch.setattr(cli, "validate_seeds", lambda root: seeds)
     monkeypatch.setattr(cli, "generate_candidate_from_seed", lambda seed, client, index: _candidate(index))
     real_atomic_write = cli._atomic_write_json
@@ -107,7 +108,7 @@ def test_generate_routes_final_report_failure_rolls_back_candidates(tmp_path, mo
 
     monkeypatch.setattr(cli, "_atomic_write_json", fail_final_report)
 
-    with pytest.raises(RuntimeError, match=r"report stage.*success=15.*failure=1") as caught:
+    with pytest.raises(RuntimeError, match=r"report stage.*success=90.*failure=1") as caught:
         cli.generate_routes(tmp_path, object())
 
     assert isinstance(caught.value.__cause__, OSError)
@@ -141,3 +142,31 @@ def test_main_rejects_removed_demo_commands(monkeypatch) -> None:
     monkeypatch.setattr(sys, "argv", ["xuhui-route-builder", "export-demo"])
     with pytest.raises(SystemExit):
         cli.main()
+
+
+def test_export_candidate_routes_writes_90_route_web_data_and_audit_document(tmp_path) -> None:
+    routes = [_candidate(index) for index in range(90)]
+    for index, route in enumerate(routes):
+        route.route_mode = ("walk", "run", "bike")[index // 30]
+        route.source_accessed_at = date(2026, 8, 13)
+        route.waypoint_names = [f"入口{index}", f"终点{index}"]
+        route.validation_status = "accepted" if index < 6 else "needs_review"
+        route.review_note = "严格验收通过" if index < 6 else "待复核路网贴合率"
+        if index < 6:
+            route.snap_ratio = 0.99
+            route.network_source = "osm-test"
+            route.verified_at = datetime(2026, 8, 13, tzinfo=timezone.utc)
+    source = tmp_path / "data/processed/pilot_validated.json"
+    source.parent.mkdir(parents=True)
+    source.write_text(json.dumps([route.model_dump(mode="json") for route in routes], ensure_ascii=False), encoding="utf-8")
+
+    cli.export_candidate_routes(tmp_path)
+
+    catalog = json.loads((tmp_path / "data/web/route_catalog.json").read_text(encoding="utf-8"))
+    features = json.loads((tmp_path / "data/web/xuhui_routes.geojson").read_text(encoding="utf-8"))
+    document = (tmp_path / "0813徐汇区90条路线验收与考证清单.md").read_text(encoding="utf-8")
+    assert len(catalog) == len(features["features"]) == 90
+    assert sum(route["display_status"] == "严格验收" for route in catalog) == 6
+    assert "严格验收：6 条" in document
+    assert "待考证：84 条" in document
+    assert document.count("| route-") == 90

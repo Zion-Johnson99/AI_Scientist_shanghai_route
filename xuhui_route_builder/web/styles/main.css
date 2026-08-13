@@ -3,18 +3,18 @@
 }
 
 :root {
-  --ink: #17201d;
-  --muted: #66716c;
-  --line: #d9dfdc;
-  --panel: #ffffff;
-  --paper: #f5f6f2;
-  --field: #fbfcf9;
-  --teal: #2f5f55;
-  --teal-dark: #223d38;
-  --run: #c74a3e;
-  --walk: #2f7d57;
-  --bike: #2f6fb4;
-  --access: #a66f1d;
+  --ink: #13233a;
+  --muted: #6d7d91;
+  --line: rgba(107, 137, 174, 0.2);
+  --panel: rgba(247, 251, 255, 0.82);
+  --paper: #eaf3ff;
+  --field: rgba(255, 255, 255, 0.72);
+  --teal: #1677ff;
+  --teal-dark: #0759cf;
+  --run: #ff5d5d;
+  --walk: #13bfa6;
+  --bike: #1677ff;
+  --access: #ff9f1a;
 }
 
 html,
@@ -26,7 +26,7 @@ body {
   margin: 0;
   color: var(--ink);
   font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
-  background: var(--paper);
+  background: radial-gradient(circle at 12% 8%, #ffffff 0, #edf6ff 38%, #dcecff 100%);
 }
 
 button,
@@ -41,7 +41,7 @@ button {
 
 .app-shell {
   display: grid;
-  grid-template-columns: minmax(340px, 400px) 1fr;
+  grid-template-columns: minmax(360px, 420px) 1fr;
   height: 100vh;
   min-height: 640px;
 }
@@ -51,10 +51,16 @@ button {
   flex-direction: column;
   gap: 12px;
   min-width: 0;
-  padding: 18px;
-  border-right: 1px solid var(--line);
+  margin: 14px 0 14px 14px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 24px;
   background: var(--panel);
+  box-shadow: 0 24px 60px rgba(23, 80, 151, 0.18);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
   overflow: hidden;
+  z-index: 20;
 }
 
 .panel-header {
@@ -65,7 +71,8 @@ button {
 
 .panel-header h1 {
   margin: 4px 0 6px;
-  font-size: 24px;
+  font-family: "STZhongsong", "Microsoft YaHei", sans-serif;
+  font-size: 25px;
   line-height: 1.18;
   letter-spacing: 0;
 }
@@ -83,7 +90,10 @@ button {
   color: var(--teal);
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
 }
 
@@ -115,8 +125,38 @@ button {
 
 .mode-tabs button.active {
   color: #ffffff;
-  background: var(--teal-dark);
+  background: linear-gradient(135deg, #0871ff, #2f91ff);
 }
+
+.sport-mode-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 16px;
+  background: rgba(226, 239, 253, 0.7);
+}
+
+.sport-mode-tabs button {
+  display: grid;
+  gap: 2px;
+  min-height: 52px;
+  border: 0;
+  border-radius: 12px;
+  color: var(--muted);
+  background: transparent;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.sport-mode-tabs button:hover { transform: translateY(-1px); }
+.sport-mode-tabs button.active {
+  color: #fff;
+  background: linear-gradient(135deg, #0871ff, #4aa3ff);
+  box-shadow: 0 8px 20px rgba(22, 119, 255, 0.25);
+}
+.sport-mode-tabs b { font-size: 14px; }
+.sport-mode-tabs span { font-size: 10px; opacity: 0.78; }
 
 .tab-view {
   display: none;
@@ -126,6 +166,14 @@ button {
   display: grid;
   gap: 10px;
   min-height: 0;
+}
+
+.eyebrow span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 0 5px rgba(22, 119, 255, 0.12);
 }
 
 .controls,
@@ -138,13 +186,12 @@ button {
 
 .route-selection-view.active {
   flex: 1 1 auto;
-  grid-template-rows: auto minmax(190px, 1fr);
-  overflow: hidden;
+  align-content: start;
+  overflow-y: auto;
 }
 
 .result-panel {
-  grid-template-rows: auto auto auto minmax(76px, 1fr);
-  overflow: hidden;
+  grid-template-rows: auto auto auto auto;
 }
 
 .field-grid {
@@ -172,7 +219,7 @@ select {
   height: 38px;
   padding: 8px 10px;
   border: 1px solid #cbd5cf;
-  border-radius: 5px;
+  border-radius: 11px;
   color: var(--ink);
   background: var(--field);
   font-size: 14px;
@@ -193,8 +240,8 @@ select:focus {
   margin: 0;
   padding: 10px;
   border: 1px solid var(--line);
-  border-radius: 6px;
-  background: #fafbf8;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .preference-group legend {
@@ -234,7 +281,7 @@ select:focus {
 .secondary-action {
   min-width: 0;
   min-height: 40px;
-  border-radius: 5px;
+  border-radius: 11px;
   font-size: 14px;
   font-weight: 700;
 }
@@ -242,7 +289,8 @@ select:focus {
 .primary-action {
   border: 1px solid var(--teal-dark);
   color: #ffffff;
-  background: var(--teal);
+  background: linear-gradient(135deg, #0871ff, #3396ff);
+  box-shadow: 0 8px 18px rgba(22, 119, 255, 0.2);
 }
 
 .primary-action:hover {
@@ -331,75 +379,26 @@ select:disabled {
   background: #fafbf8;
 }
 
-.route-tabs {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  align-content: start;
-  gap: 7px;
-  min-width: 0;
-  min-height: 0;
-  padding: 2px 5px 6px 1px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(47, 95, 85, 0.42) transparent;
-}
-
-.route-tab {
-  position: relative;
-  width: 100%;
-  min-width: 0;
-  min-height: 68px;
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-top: 3px solid var(--teal);
-  border-radius: 8px;
-  color: var(--ink);
-  background: #ffffff;
-  text-align: left;
-  box-shadow: 0 4px 12px rgba(26, 47, 40, 0.05);
-  transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
-}
-
-.route-tab:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 7px 16px rgba(26, 47, 40, 0.1);
-}
-
-.route-tab.active {
-  border-color: var(--teal-dark);
-  background: #eef4f0;
-  box-shadow: inset 0 0 0 1px rgba(47, 95, 85, 0.12);
-}
-
-.route-tab strong {
+.route-picker {
   display: block;
-  display: -webkit-box;
+  min-width: 0;
+}
+
+.route-picker select {
+  height: 44px;
+  font-weight: 700;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
-  font-size: 13px;
-  line-height: 1.3;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.route-tab span {
-  display: block;
-  margin-top: 5px;
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.route-tab[data-mode="run"] {
-  border-top-color: var(--run);
-}
-
-.route-tab[data-mode="walk"] {
-  border-top-color: var(--walk);
-}
-
-.route-tab[data-mode="bike"] {
-  border-top-color: var(--bike);
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .meta,
@@ -450,9 +449,10 @@ select:disabled {
   flex: 0 0 auto;
   padding: 12px 13px;
   border: 1px solid var(--line);
-  border-radius: 10px;
-  background: linear-gradient(145deg, #ffffff 0%, #f5f8f4 100%);
-  box-shadow: 0 8px 22px rgba(31, 59, 50, 0.07);
+  border-radius: 17px;
+  background: linear-gradient(145deg, rgba(255,255,255,.9), rgba(231,243,255,.76));
+  box-shadow: 0 12px 30px rgba(31, 91, 164, 0.1);
+  backdrop-filter: blur(16px);
   line-height: 1.55;
   font-size: 13px;
 }
@@ -485,7 +485,17 @@ select:disabled {
 
 .mode-pill[data-mode="run"] { color: #8e3028; background: #f8e7e4; }
 .mode-pill[data-mode="bike"] { color: #1f558e; background: #e5eef8; }
-.status-pill { color: var(--muted); background: #edf0ec; }
+.status-pill { color: #7d5a16; background: #fff4d5; }
+.status-pill[data-status="accepted"] { color: #087a65; background: #dcf8f1; }
+
+.route-review-note {
+  padding: 8px 9px;
+  border-left: 3px solid #79b8ff;
+  border-radius: 0 8px 8px 0;
+  color: #53677f;
+  background: rgba(224, 239, 255, 0.68);
+  font-size: 10px;
+}
 
 .route-card-place,
 .route-source {
@@ -615,7 +625,7 @@ select:disabled {
 #map {
   width: 100%;
   height: 100vh;
-  background: #e8ebe4;
+  background: #dcecff;
 }
 
 .amap-entry-dot {
@@ -694,6 +704,19 @@ select:disabled {
   background: #c84636;
 }
 
+.navigation-mode-summary {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.68);
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .amap-boundary-label {
   display: inline-block;
   padding: 3px 8px;
@@ -718,7 +741,9 @@ select:disabled {
     grid-area: panel;
     overflow-y: auto;
     max-height: 46dvh;
+    margin: 0;
     border-right: 0;
+    border-radius: 22px 22px 0 0;
     border-top: 1px solid var(--line);
   }
 
@@ -740,9 +765,6 @@ select:disabled {
     overflow: visible;
   }
 
-  .route-tabs {
-    max-height: 220px;
-  }
 }
 
 @media (max-width: 520px) {

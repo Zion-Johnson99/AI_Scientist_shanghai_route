@@ -1,5 +1,8 @@
+const DATA_RELEASE = "20260813-route-geometry-1";
+
 export async function loadJson(path) {
-  const response = await fetch(path);
+  const separator = path.includes("?") ? "&" : "?";
+  const response = await fetch(`${path}${separator}v=${DATA_RELEASE}`, { cache: "no-store" });
   if (!response.ok) {
     throw new Error(`数据加载失败: ${path}`);
   }

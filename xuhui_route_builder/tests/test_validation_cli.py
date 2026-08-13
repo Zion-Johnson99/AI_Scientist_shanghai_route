@@ -10,20 +10,50 @@ from xuhui_route_builder.models import CandidateRoute, CoordinatePair
 from xuhui_route_builder.validation import polyline_length_m
 
 
-def _candidate(index: int, *, source_level: str = "A", offset: float | None = None) -> CandidateRoute:
+def _candidate(
+    index: int,
+    *,
+    route_mode: str = "walk",
+    distance_m: int = 1500,
+    source_level: str = "A",
+    offset: float | None = None,
+) -> CandidateRoute:
     latitude = 31.18 + (index * 0.002 if offset is None else offset)
+    longitude_delta = distance_m / 95_000
     points = [
         CoordinatePair(lng_gcj02=121.445, lat_gcj02=latitude - 0.002, lng_wgs84=121.44, lat_wgs84=latitude),
-        CoordinatePair(lng_gcj02=121.446, lat_gcj02=latitude - 0.002, lng_wgs84=121.441, lat_wgs84=latitude),
+        CoordinatePair(
+            lng_gcj02=121.445 + longitude_delta,
+            lat_gcj02=latitude - 0.002,
+            lng_wgs84=121.44 + longitude_delta,
+            lat_wgs84=latitude,
+        ),
     ]
     distance = round(polyline_length_m(points))
     return CandidateRoute(
-        route_id=f"route-{index}", route_name=f"路线{index}", route_mode=("run", "walk", "bike")[index % 3],
+        route_id=f"route-{index}", route_name=f"路线{index}", route_mode=route_mode,
         target_distance_m=distance, actual_distance_m=distance, duration_s=300,
         start_entry_id="start", end_entry_id="end", region_zone="徐汇区", polyline_gcj02=points,
         source_method="amap_segmented_direction", geometry_source="amap_direction", geometry_status="complete",
+        source_accessed_at="2026-08-13",
         raw_response_paths=[f"raw/{index}.json"], source_level=source_level,
     )
+
+
+def _catalog_candidates() -> list[CandidateRoute]:
+    specifications = {
+        "walk": (1500, 2500, 4000),
+        "run": (4000, 7000, 12000),
+        "bike": (7000, 15000, 25000),
+    }
+    candidates = []
+    index = 0
+    for mode, distances in specifications.items():
+        for distance in distances:
+            for _ in range(10):
+                candidates.append(_candidate(index, route_mode=mode, distance_m=distance))
+                index += 1
+    return candidates
 
 
 def _payload(route: CandidateRoute, *, shifted: bool = False) -> dict:
@@ -81,97 +111,135 @@ def _prepare(tmp_path, candidates: list[CandidateRoute]) -> None:
     (interim / "pilot_candidates.json").write_text(
         json.dumps([route.model_dump(mode="json") for route in prepared], ensure_ascii=False), encoding="utf-8"
     )
+    web = tmp_path / "data" / "web"
+    web.mkdir(parents=True, exist_ok=True)
+    (web / "xuhui_boundary.geojson").write_text(json.dumps({
+        "type": "FeatureCollection",
+        "features": [{
+            "type": "Feature",
+            "properties": {"district_name": "徐汇区"},
+            "geometry": {"type": "Polygon", "coordinates": [[
+                [121.0, 30.9], [122.0, 30.9], [122.0, 31.5], [121.0, 31.5], [121.0, 30.9]
+            ]]},
+        }],
+    }), encoding="utf-8")
 
 
-def test_validate_routes_publishes_only_when_all_fifteen_are_accepted(tmp_path) -> None:
-    candidates = [_candidate(index) for index in range(15)]
+def test_validate_routes_publishes_only_when_all_ninety_are_accepted_and_balanced(tmp_path) -> None:
+    candidates = _catalog_candidates()
     _prepare(tmp_path, candidates)
 
     result = cli.validate_routes(tmp_path, _Client(candidates), datetime(2026, 7, 12, tzinfo=timezone.utc))
 
-    assert len(result) == 15
+    assert len(result) == 90
     report = json.loads((tmp_path / "data/processed/route_validation_report.json").read_text(encoding="utf-8"))
-    assert (report["accepted_count"], report["review_count"], report["rejected_count"]) == (15, 0, 0)
-    assert report["network_version"] == "2026-07-12T00:00:00Z"
-    assert len(json.loads((tmp_path / "data/web/route_catalog.json").read_text(encoding="utf-8"))) == 15
-
-
-def test_validate_routes_publishes_eleven_network_matched_routes(tmp_path) -> None:
-    candidates = [_candidate(index) for index in range(15)]
-    distance_review_indices = {0, 1, 2, 4, 5, 9, 11, 12, 13}
-    candidates = [
-        route.model_copy(update={"target_distance_m": route.actual_distance_m * 2})
-        if index in distance_review_indices
-        else route
-        for index, route in enumerate(candidates)
-    ]
-    _prepare(tmp_path, candidates)
-
-    result = cli.validate_routes(
-        tmp_path,
-        _Client(candidates, low_indices={3, 6, 10, 14}),
-        datetime(2026, 7, 12, tzinfo=timezone.utc),
-    )
-
-    assert len(result) == 15
-    report = json.loads((tmp_path / "data/processed/route_validation_report.json").read_text(encoding="utf-8"))
-    assert report["batch_status"] == "partial"
-    assert report["published_count"] == 11
-    catalog = json.loads((tmp_path / "data/web/route_catalog.json").read_text(encoding="utf-8"))
-    assert len(catalog) == 11
-    assert {route["route_id"] for route in catalog} == {
-        f"route-{index}" for index in range(15) if index not in {3, 6, 10, 14}
+    assert (report["accepted_count"], report["review_count"], report["rejected_count"]) == (90, 0, 0)
+    assert report["mode_counts"] == {"walk": 30, "run": 30, "bike": 30}
+    assert report["distance_band_counts"] == {
+        "walk": {"short": 10, "medium": 10, "long": 10},
+        "run": {"short": 10, "medium": 10, "long": 10},
+        "bike": {"short": 10, "medium": 10, "long": 10},
     }
+    assert report["network_version"] == "2026-07-12T00:00:00Z"
+    assert len(json.loads((tmp_path / "data/web/route_catalog.json").read_text(encoding="utf-8"))) == 90
+
+
+def test_validate_routes_preserves_web_files_when_one_route_needs_review(tmp_path) -> None:
+    candidates = _catalog_candidates()
+    _prepare(tmp_path, candidates)
+    web = tmp_path / "data/web"
+    web.mkdir(parents=True, exist_ok=True)
+    (web / "xuhui_routes.geojson").write_text("old geojson", encoding="utf-8")
+    (web / "route_catalog.json").write_text("old catalog", encoding="utf-8")
+
+    with pytest.raises(RuntimeError, match="existing web files preserved"):
+        cli.validate_routes(
+            tmp_path,
+            _Client(candidates, low_index=3),
+            datetime(2026, 7, 12, tzinfo=timezone.utc),
+        )
+
+    report = json.loads((tmp_path / "data/processed/route_validation_report.json").read_text(encoding="utf-8"))
+    assert report["batch_status"] == "failed"
+    assert report["published_count"] == 0
+    assert len(report["routes"]) == 90
+    assert (web / "xuhui_routes.geojson").read_text(encoding="utf-8") == "old geojson"
+    assert (web / "route_catalog.json").read_text(encoding="utf-8") == "old catalog"
+
+
+@pytest.mark.parametrize(
+    ("mode", "distance_m", "expected_band"),
+    [
+        ("walk", 1000, "short"), ("walk", 1999, "short"), ("walk", 2000, "medium"),
+        ("walk", 3499, "medium"), ("walk", 3500, "long"), ("walk", 5000, "long"),
+        ("run", 3000, "short"), ("run", 5000, "medium"), ("run", 10000, "long"), ("run", 15000, "long"),
+        ("bike", 5000, "short"), ("bike", 10000, "medium"), ("bike", 20000, "long"), ("bike", 30000, "long"),
+    ],
+)
+def test_distance_band_boundaries_are_non_overlapping(mode, distance_m, expected_band) -> None:
+    assert cli._distance_band(mode, distance_m) == expected_band
+
+
+@pytest.mark.parametrize(
+    ("mode", "distance_m"),
+    [("walk", 999), ("walk", 5001), ("run", 2999), ("run", 15001), ("bike", 4999), ("bike", 30001)],
+)
+def test_distance_band_rejects_out_of_range_distances(mode, distance_m) -> None:
+    assert cli._distance_band(mode, distance_m) is None
 
 
 @pytest.mark.parametrize("failure", ["low_snap", "overpass_error"])
 def test_validate_routes_excludes_failed_network_check_and_reports_context(tmp_path, failure: str) -> None:
-    candidates = [_candidate(index) for index in range(15)]
+    candidates = _catalog_candidates()
     _prepare(tmp_path, candidates)
     web = tmp_path / "data/web"
-    web.mkdir(parents=True)
+    web.mkdir(parents=True, exist_ok=True)
     (web / "xuhui_routes.geojson").write_text("old geojson", encoding="utf-8")
     (web / "route_catalog.json").write_text("old catalog", encoding="utf-8")
     client = _Client(candidates, low_index=2 if failure == "low_snap" else None, error_index=2 if failure == "overpass_error" else None)
 
-    cli.validate_routes(tmp_path, client, datetime(2026, 7, 12, tzinfo=timezone.utc))
+    with pytest.raises(RuntimeError, match="existing web files preserved"):
+        cli.validate_routes(tmp_path, client, datetime(2026, 7, 12, tzinfo=timezone.utc))
 
-    catalog = json.loads((web / "route_catalog.json").read_text(encoding="utf-8"))
-    assert len(catalog) == 14
-    assert "route-2" not in {route["route_id"] for route in catalog}
+    assert (web / "route_catalog.json").read_text(encoding="utf-8") == "old catalog"
     report = json.loads((tmp_path / "data/processed/route_validation_report.json").read_text(encoding="utf-8"))
-    assert report["batch_status"] == "partial"
-    assert report["published_count"] == 14
+    assert report["batch_status"] == "failed"
+    assert report["published_count"] == 0
     if failure == "overpass_error":
         assert report["failures"][0]["route_id"] == "route-2"
-        assert report["failures"][0]["mode"] == "bike"
+        assert report["failures"][0]["mode"] == "walk"
         assert report["failures"][0]["type"] == "RuntimeError"
         assert report["failures"][0]["traceback"]
 
 
 def test_validate_routes_keeps_best_source_and_downgrades_duplicates(tmp_path) -> None:
-    candidates = [_candidate(index) for index in range(15)]
-    candidates[0] = _candidate(0, source_level="C", offset=31.21)
-    candidates[1] = _candidate(1, source_level="A", offset=31.21)
+    candidates = _catalog_candidates()
+    candidates[0] = _candidate(0, route_mode="walk", distance_m=1500, source_level="C")
+    candidates[1] = candidates[0].model_copy(update={
+        "route_id": "route-1",
+        "route_name": "路线1",
+        "source_level": "A",
+        "raw_response_paths": ["raw/1.json"],
+    })
     _prepare(tmp_path, candidates)
 
-    cli.validate_routes(tmp_path, _Client(candidates), datetime(2026, 7, 12, tzinfo=timezone.utc))
+    with pytest.raises(RuntimeError, match="existing web files preserved"):
+        cli.validate_routes(tmp_path, _Client(candidates), datetime(2026, 7, 12, tzinfo=timezone.utc))
 
     validated = json.loads((tmp_path / "data/processed/pilot_validated.json").read_text(encoding="utf-8"))
     by_id = {route["route_id"]: route for route in validated}
     assert by_id["route-1"]["validation_status"] == "accepted"
     assert by_id["route-0"]["validation_status"] == "needs_review"
     assert "重复" in by_id["route-0"]["review_note"]
-    catalog = json.loads((tmp_path / "data/web/route_catalog.json").read_text(encoding="utf-8"))
-    assert len(catalog) == 14
-    assert "route-0" not in {route["route_id"] for route in catalog}
+    report = json.loads((tmp_path / "data/processed/route_validation_report.json").read_text(encoding="utf-8"))
+    assert report["published_count"] == 0
 
 
 def test_validate_routes_rolls_back_both_web_files_on_publish_failure(tmp_path, monkeypatch) -> None:
-    candidates = [_candidate(index) for index in range(15)]
+    candidates = _catalog_candidates()
     _prepare(tmp_path, candidates)
     web = tmp_path / "data/web"
-    web.mkdir(parents=True)
+    web.mkdir(parents=True, exist_ok=True)
     first, second = web / "xuhui_routes.geojson", web / "route_catalog.json"
     first.write_text("old geojson", encoding="utf-8")
     second.write_text("old catalog", encoding="utf-8")
@@ -193,10 +261,10 @@ def test_validate_routes_rolls_back_both_web_files_on_publish_failure(tmp_path, 
 
 
 def test_validate_routes_rolls_back_web_and_records_failed_when_success_report_write_fails(tmp_path, monkeypatch) -> None:
-    candidates = [_candidate(index) for index in range(15)]
+    candidates = _catalog_candidates()
     _prepare(tmp_path, candidates)
     web = tmp_path / "data/web"
-    web.mkdir(parents=True)
+    web.mkdir(parents=True, exist_ok=True)
     first, second = web / "xuhui_routes.geojson", web / "route_catalog.json"
     first.write_text("old geojson", encoding="utf-8")
     second.write_text("old catalog", encoding="utf-8")
@@ -220,8 +288,8 @@ def test_validate_routes_rolls_back_web_and_records_failed_when_success_report_w
 @pytest.mark.parametrize(
     ("payload", "message"),
     [
-        ([], "exactly 15"),
-        ([_candidate(index).model_dump(mode="json") for index in range(14)], "exactly 15"),
+        ([], "exactly 90"),
+        ([_candidate(index).model_dump(mode="json") for index in range(89)], "exactly 90"),
     ],
 )
 def test_validate_routes_records_candidate_preflight_failures(tmp_path, payload, message) -> None:
@@ -240,7 +308,7 @@ def test_validate_routes_records_candidate_preflight_failures(tmp_path, payload,
 
 @pytest.mark.parametrize("failure", ["duplicate_id", "invalid_model"])
 def test_validate_routes_audits_candidate_identity_and_model_failures(tmp_path, failure: str) -> None:
-    payload = [_candidate(index).model_dump(mode="json") for index in range(15)]
+    payload = [_candidate(index).model_dump(mode="json") for index in range(90)]
     if failure == "duplicate_id":
         payload[1]["route_id"] = payload[0]["route_id"]
     else:

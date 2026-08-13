@@ -23,6 +23,7 @@ def _route(route_id: str, validation_status: str) -> CandidateRoute:
             CoordinatePair(lng_gcj02=121.45, lat_gcj02=31.18, lng_wgs84=121.445, lat_wgs84=31.182),
         ],
         source_method="amap_segmented_direction",
+        source_accessed_at="2026-08-13",
         geometry_source="amap_direction",
         geometry_status="complete",
         validation_status=validation_status,
@@ -31,6 +32,7 @@ def _route(route_id: str, validation_status: str) -> CandidateRoute:
         verified_at=datetime(2026, 7, 11, tzinfo=timezone.utc),
         review_note="路网检查通过",
         raw_response_paths=["raw/segment-1.json"],
+        waypoint_names=["真实路线入口", "真实路线终点"],
     )
 
 
@@ -55,6 +57,7 @@ def test_route_seed_supports_structured_nodes_and_evidence_fields() -> None:
         reason="官方游览节点",
         source_name="上海植物园",
         source_url="https://www.shbg.org/",
+        source_accessed_at="2026-08-13",
         confidence="高",
         ordered_nodes=[node, RouteNode(node_name="上海植物园三号门", poi_id="B003")],
         allowed_modes=["walk", "run"],
@@ -66,6 +69,7 @@ def test_route_seed_supports_structured_nodes_and_evidence_fields() -> None:
     assert seed.ordered_nodes[0].poi_id == "B001"
     assert seed.allowed_modes == ["walk", "run"]
     assert seed.source_level == "A"
+    assert seed.source_accessed_at.isoformat() == "2026-08-13"
     assert seed.evidence_note
     assert seed.access_restrictions == ["开放时间内通行"]
 
@@ -142,6 +146,13 @@ def test_exporters_recheck_publishable_state_after_unvalidated_update() -> None:
     assert build_route_catalog([forged]) == []
 
 
+def test_route_without_start_waypoint_name_is_not_publishable() -> None:
+    missing_name = _route("missing-name", "accepted").model_copy(update={"waypoint_names": []})
+
+    assert missing_name.is_publishable() is False
+    assert build_route_catalog([missing_name]) == []
+
+
 @pytest.mark.parametrize(
     "node",
     [
@@ -173,6 +184,7 @@ def test_structured_seed_requires_two_nodes_and_matching_allowed_mode() -> None:
         "reason": "证据",
         "source_name": "官方",
         "source_url": "https://example.com",
+        "source_accessed_at": "2026-08-13",
         "confidence": "高",
         "source_level": "A",
     }

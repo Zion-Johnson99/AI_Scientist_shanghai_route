@@ -1,6 +1,11 @@
 from datetime import datetime, timezone
 
-from xuhui_route_builder.exporters import build_feature_collection, build_route_catalog
+from xuhui_route_builder.exporters import (
+    build_candidate_route_catalog,
+    build_candidate_route_feature_collection,
+    build_feature_collection,
+    build_route_catalog,
+)
 from xuhui_route_builder.models import CandidateRoute, CoordinatePair, EntryPoint
 
 
@@ -42,6 +47,7 @@ def test_build_route_catalog_keeps_score_placeholder() -> None:
         ],
         tags=["滨江", "夜跑"],
         source_method="seed",
+        source_accessed_at="2026-08-13",
         geometry_source="audited_import",
         geometry_status="complete",
         validation_status="accepted",
@@ -49,6 +55,7 @@ def test_build_route_catalog_keeps_score_placeholder() -> None:
         network_source="osm-test",
         verified_at=datetime(2026, 7, 11, tzinfo=timezone.utc),
         review_note="测试验收通过",
+        waypoint_names=["徐汇滨江入口", "徐汇滨江入口"],
     )
 
     catalog = build_route_catalog([route])
@@ -56,6 +63,12 @@ def test_build_route_catalog_keeps_score_placeholder() -> None:
     assert catalog[0]["route_id"] == "XH_RUN_3K_0001"
     assert catalog[0]["future_score"] is None
     assert "后续评分" in catalog[0]["score_note"]
+    assert catalog[0]["start_location"] == {
+        "name": "徐汇滨江入口",
+        "lng_gcj02": 121.45,
+        "lat_gcj02": 31.17,
+    }
+    assert catalog[0]["source_accessed_at"] == "2026-08-13"
 
 
 def test_build_route_catalog_exports_navigation_and_preference_metadata() -> None:
@@ -75,6 +88,7 @@ def test_build_route_catalog_exports_navigation_and_preference_metadata() -> Non
         ],
         tags=["音乐", "历史建筑"],
         source_method="real_route_seed",
+        source_accessed_at="2026-08-13",
         geometry_source="amap_direction",
         geometry_status="complete",
         source_level="A",
@@ -96,3 +110,41 @@ def test_build_route_catalog_exports_navigation_and_preference_metadata() -> Non
     assert catalog[0]["waypoint_names"] == ["衡山路8号", "东平路", "上海音乐学院"]
     assert catalog[0]["nearby_pois"][0]["poi_type"] == "coffee"
     assert catalog[0]["preference_hits"] == ["coffee"]
+    assert catalog[0]["start_location"] == {
+        "name": "衡山路8号",
+        "lng_gcj02": 121.446,
+        "lat_gcj02": 31.205,
+    }
+
+
+def test_candidate_exports_include_routes_awaiting_strict_review() -> None:
+    route = CandidateRoute(
+        route_id="XH_WALK_REVIEW_0001",
+        route_name="待考证步行线",
+        route_mode="walk",
+        target_distance_m=1800,
+        actual_distance_m=1900,
+        duration_s=1400,
+        start_entry_id="candidate-start",
+        end_entry_id="candidate-end",
+        region_zone="徐汇滨江",
+        polyline_gcj02=[
+            CoordinatePair(lng_gcj02=121.45, lat_gcj02=31.17, lng_wgs84=121.445, lat_wgs84=31.172),
+            CoordinatePair(lng_gcj02=121.46, lat_gcj02=31.16, lng_wgs84=121.455, lat_wgs84=31.162),
+        ],
+        source_method="amap_segmented_direction",
+        source_accessed_at="2026-08-13",
+        geometry_source="amap_direction",
+        geometry_status="complete",
+        validation_status="needs_review",
+        review_note="路网贴合率待复核",
+        waypoint_names=["候选入口", "候选终点"],
+        raw_response_paths=["raw/candidate.json"],
+    )
+
+    catalog = build_candidate_route_catalog([route])
+    features = build_candidate_route_feature_collection([route])
+
+    assert [item["route_id"] for item in catalog] == [route.route_id]
+    assert catalog[0]["display_status"] == "待考证"
+    assert features["features"][0]["properties"]["display_status"] == "待考证"

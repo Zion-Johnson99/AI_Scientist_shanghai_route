@@ -1,4 +1,5 @@
 import json
+from copy import deepcopy
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -7,6 +8,31 @@ import pytest
 import xuhui_route_builder.cli as cli_module
 from xuhui_route_builder.cli import resolve_seed_drafts, validate_seeds
 from xuhui_route_builder.routes import resolve_node_query
+
+
+def _expanded_drafts() -> list[dict]:
+    source = []
+    research = Path(__file__).resolve().parents[1] / "data" / "seeds" / "research"
+    for path in sorted(research.glob("*_route_candidates_0813.json")):
+        source.extend(json.loads(path.read_text(encoding="utf-8")))
+    if len(source) == 90:
+        return source
+    path = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seed_drafts.json"
+    source = json.loads(path.read_text(encoding="utf-8"))
+    drafts = []
+    for copy_index in range(6):
+        for draft in source:
+            item = deepcopy(draft)
+            item["seed_id"] = f"{item['seed_id']}-{copy_index}"
+            item["route_name"] = f"{item['route_name']}-{copy_index}"
+            drafts.append(item)
+    return drafts
+
+
+def _write_expanded_drafts(seed_dir: Path) -> list[dict]:
+    drafts = _expanded_drafts()
+    (seed_dir / "route_seed_drafts.json").write_text(json.dumps(drafts, ensure_ascii=False), encoding="utf-8")
+    return drafts
 
 
 class DraftClient:
@@ -41,20 +67,38 @@ class DraftClient:
             },
         )
 
+    def geocode(self, address: str, city: str = "上海"):
+        self.calls.append((address, city))
+        if address == self.fail_query:
+            raise RuntimeError("forced failure")
+        return SimpleNamespace(
+            status="1",
+            raw_path=f"raw/{len(self.calls)}.json",
+            payload={
+                "geocodes": [
+                    {
+                        "formatted_address": address,
+                        "adcode": "310104",
+                        "location": f"121.{4000 + len(self.calls):04d},31.{1000 + len(self.calls):04d}",
+                    }
+                ]
+            },
+        )
+
 
 def test_route_seed_drafts_have_exact_balanced_strict_schema() -> None:
-    path = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seed_drafts.json"
-    drafts = json.loads(path.read_text(encoding="utf-8"))
+    drafts = _expanded_drafts()
 
-    assert len(drafts) == 15
+    assert len(drafts) == 90
     assert {mode: sum(item["route_mode"] == mode for item in drafts) for mode in ("run", "walk", "bike")} == {
-        "run": 5,
-        "walk": 5,
-        "bike": 5,
+        "run": 30,
+        "walk": 30,
+        "bike": 30,
     }
     for draft in drafts:
         assert draft["source_level"] in {"A", "B", "C"}
         assert draft["source_url"].startswith("https://")
+        assert draft["source_accessed_at"] == "2026-08-13"
         assert draft["access_restrictions"]
         assert len(draft["nodes"]) >= 2
         for node in draft["nodes"]:
@@ -64,8 +108,7 @@ def test_route_seed_drafts_have_exact_balanced_strict_schema() -> None:
 
 
 def test_route_seed_drafts_do_not_use_out_of_district_lupu_bridge_poi() -> None:
-    path = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seed_drafts.json"
-    drafts = json.loads(path.read_text(encoding="utf-8"))
+    drafts = _expanded_drafts()
 
     assert all(node["expected_name"] != "卢浦大桥" for draft in drafts for node in draft["nodes"])
 
@@ -90,28 +133,25 @@ def test_repository_raw_paths_are_persisted_as_relative_paths(tmp_path: Path) ->
 
 
 def test_resolve_seed_drafts_writes_strict_seeds_and_validate_seeds(tmp_path: Path) -> None:
-    source = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seed_drafts.json"
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
-    (seed_dir / "route_seed_drafts.json").write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+    _write_expanded_drafts(seed_dir)
 
     seeds = resolve_seed_drafts(tmp_path, DraftClient())
     validated = validate_seeds(tmp_path)
 
-    assert len(seeds) == len(validated) == 15
-    assert all(node.poi_id and node.lng_gcj02 is not None for seed in seeds for node in seed.ordered_nodes)
+    assert len(seeds) == len(validated) == 90
+    assert all(node.lng_gcj02 is not None and node.lat_gcj02 is not None for seed in seeds for node in seed.ordered_nodes)
     assert all("POI解析响应:" in seed.evidence_note for seed in seeds)
     assert all(str(tmp_path) not in seed.evidence_note for seed in seeds)
     persisted = json.loads((seed_dir / "route_seeds.json").read_text(encoding="utf-8"))
-    assert len(persisted) == 15
+    assert len(persisted) == 90
 
 
 def test_resolve_seed_drafts_does_not_overwrite_on_failure(tmp_path: Path) -> None:
-    source = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seed_drafts.json"
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
-    drafts = json.loads(source.read_text(encoding="utf-8"))
-    (seed_dir / "route_seed_drafts.json").write_text(json.dumps(drafts, ensure_ascii=False), encoding="utf-8")
+    drafts = _write_expanded_drafts(seed_dir)
     target = seed_dir / "route_seeds.json"
     target.write_text("old-content", encoding="utf-8")
     failing_query = drafts[2]["nodes"][1]["query"]
@@ -123,11 +163,30 @@ def test_resolve_seed_drafts_does_not_overwrite_on_failure(tmp_path: Path) -> No
     assert not (seed_dir / "route_seeds.json.tmp").exists()
 
 
+def test_resolve_seed_drafts_reports_all_node_failures(tmp_path: Path) -> None:
+    seed_dir = tmp_path / "data" / "seeds"
+    seed_dir.mkdir(parents=True)
+    drafts = _write_expanded_drafts(seed_dir)
+    first_query = drafts[0]["nodes"][0]["query"]
+    second_query = drafts[1]["nodes"][0]["query"]
+
+    class TwoFailureClient(DraftClient):
+        def place_text_v5(self, query: str, region: str = "310104"):
+            if query in {first_query, second_query}:
+                raise RuntimeError(f"forced failure {query}")
+            return super().place_text_v5(query, region)
+
+    with pytest.raises(ValueError) as caught:
+        resolve_seed_drafts(tmp_path, TwoFailureClient())
+
+    assert first_query in str(caught.value)
+    assert second_query in str(caught.value)
+
+
 def test_validate_seeds_rejects_wrong_mode_counts_or_missing_restrictions(tmp_path: Path) -> None:
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
-    source = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seed_drafts.json"
-    drafts = json.loads(source.read_text(encoding="utf-8"))
+    drafts = _expanded_drafts()
     drafts[0]["route_mode"] = "walk"
     drafts[0]["allowed_modes"] = ["walk"]
     drafts[1]["access_restrictions"] = []
@@ -150,8 +209,7 @@ def test_validate_seeds_rejects_wrong_mode_counts_or_missing_restrictions(tmp_pa
     ],
 )
 def test_draft_preflight_rejects_invalid_collection_before_api_calls(tmp_path: Path, mutate, message: str) -> None:
-    source = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seed_drafts.json"
-    drafts = json.loads(source.read_text(encoding="utf-8"))
+    drafts = _expanded_drafts()
     mutate(drafts)
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
@@ -164,10 +222,9 @@ def test_draft_preflight_rejects_invalid_collection_before_api_calls(tmp_path: P
 
 
 def test_atomic_replace_failure_preserves_existing_target_and_cleans_temp(tmp_path: Path, monkeypatch) -> None:
-    source = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seed_drafts.json"
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
-    (seed_dir / "route_seed_drafts.json").write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+    _write_expanded_drafts(seed_dir)
     target = seed_dir / "route_seeds.json"
     target.write_text("old-content", encoding="utf-8")
 
@@ -183,10 +240,9 @@ def test_atomic_replace_failure_preserves_existing_target_and_cleans_temp(tmp_pa
 
 
 def test_atomic_write_failure_preserves_existing_target_and_cleans_temp(tmp_path: Path, monkeypatch) -> None:
-    source = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seed_drafts.json"
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
-    (seed_dir / "route_seed_drafts.json").write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+    _write_expanded_drafts(seed_dir)
     target = seed_dir / "route_seeds.json"
     target.write_text("old-content", encoding="utf-8")
 
@@ -202,10 +258,9 @@ def test_atomic_write_failure_preserves_existing_target_and_cleans_temp(tmp_path
 
 
 def test_atomic_write_uses_a_unique_temp_name_for_each_run(tmp_path: Path, monkeypatch) -> None:
-    source = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seed_drafts.json"
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
-    (seed_dir / "route_seed_drafts.json").write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+    _write_expanded_drafts(seed_dir)
     sources: list[Path] = []
     real_replace = cli_module.os.replace
 

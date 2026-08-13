@@ -1,8 +1,8 @@
 const ROUTE_STYLES = {
-  run: { color: "#c84636", weight: 4 },
-  walk: { color: "#25734f", weight: 4 },
-  bike: { color: "#256db3", weight: 4 },
-  access: { color: "#a66f1d", weight: 4 },
+  run: { color: "#ff5d5d", weight: 4 },
+  walk: { color: "#13bfa6", weight: 4 },
+  bike: { color: "#1677ff", weight: 4 },
+  access: { color: "#ff9f1a", weight: 4 },
 };
 
 const ENTRY_COLORS = {
@@ -32,14 +32,13 @@ const POI_TYPES_BY_PREFERENCE = {
 
 const NAVIGATION_LABELS = {
   walk: "步行接驳",
+  run: "跑步接驳",
   bike: "骑行接驳",
-  drive: "驾车接驳",
 };
 
 const NAVIGATION_POINT_LABELS = {
-  origin: "起点",
-  waypoint: "途经点",
-  destination: "终点",
+  origin: "用户位置",
+  destination: "路线起点",
 };
 
 export async function createMap(targetId) {
@@ -70,7 +69,6 @@ export async function createMap(targetId) {
       markers: new Map(),
       points: {
         origin: null,
-        waypoint: null,
         destination: null,
       },
     },
@@ -86,12 +84,12 @@ export function drawBoundary(mapContext, boundary) {
     getPolygon: (_feature, lnglats) =>
       new AMap.Polygon({
         path: lnglats,
-        strokeColor: "#17483f",
+        strokeColor: "#1677ff",
         strokeWeight: 5,
         strokeOpacity: 0.96,
-        fillColor: "#dce8df",
+        fillColor: "#dcecff",
         fillOpacity: 0.16,
-        zIndex: 120,
+        zIndex: 30,
       }),
   });
 
@@ -250,6 +248,13 @@ export function highlightRoute(mapContext, selectedRouteId) {
   }
 }
 
+export function focusSportRoute(mapContext, selectedRouteId) {
+  clearNavigationService(mapContext);
+  clearNavigationPoints(mapContext);
+  highlightRoute(mapContext, selectedRouteId);
+  mapContext.navigation.state = "sporting";
+}
+
 export function clearRouteResults(mapContext) {
   const overlays = [...mapContext.routeLayers.values(), ...mapContext.entryLayers, ...mapContext.poiLayers];
   if (overlays.length) {
@@ -312,7 +317,7 @@ export function endNavigationSession(mapContext) {
 }
 
 export function enablePointPicker(mapContext, role) {
-  if (!["origin", "waypoint", "destination"].includes(role)) {
+  if (role !== "origin") {
     throw new Error("未知的导航点类型。");
   }
   if (mapContext.navigation.state === "idle") {
@@ -350,12 +355,6 @@ export function isPointInsideXuhui(mapContext, point) {
 export async function planNavigation(mapContext, request) {
   const origin = await resolveNavigationValue(mapContext, request.origin);
   const destination = await resolveNavigationValue(mapContext, request.destination);
-  const waypoints = [];
-  for (const waypoint of request.waypoints || []) {
-    if (waypoint) {
-      waypoints.push(await resolveNavigationValue(mapContext, waypoint));
-    }
-  }
 
   for (const [role, point] of [
     ["origin", origin],
@@ -363,20 +362,17 @@ export async function planNavigation(mapContext, request) {
   ]) {
     setNavigationPoint(mapContext, role, lngLatToPoint(point, NAVIGATION_POINT_LABELS[role]));
   }
-  if (waypoints[0]) {
-    setNavigationPoint(mapContext, "waypoint", lngLatToPoint(waypoints[0], NAVIGATION_POINT_LABELS.waypoint));
-  }
-
-  const service = navigationServiceForMode(mapContext, request.mode);
+  const mode = navigationServiceMode(request.routeMode);
+  const service = navigationServiceForMode(mapContext, mode);
   clearNavigationService(mapContext);
   mapContext.navigationService = service;
   mapContext.navigation.state = "planned";
+  previewSportRoute(mapContext, request.routeId);
 
-  const result = await searchNavigationPath(service, request.mode, origin, destination, waypoints);
-  const viaText = waypoints.length ? `，途经 ${waypoints.length} 点` : "";
+  const result = await searchNavigationPath(service, origin, destination);
   const distanceText = result.distance ? `${result.distance.toFixed(0)} 米` : "距离待确认";
   const durationText = result.duration ? `${Math.round(result.duration / 60)} 分钟` : "时间待确认";
-  return `${NAVIGATION_LABELS[request.mode] || "接驳导航"}${viaText}：${distanceText}，约 ${durationText}。`;
+  return `${NAVIGATION_LABELS[request.routeMode] || "接驳导航"}：${distanceText}，约 ${durationText}。到达后可开始运动。`;
 }
 
 function clearNavigationService(mapContext) {
@@ -394,7 +390,6 @@ function clearNavigationPoints(mapContext) {
   mapContext.navigation.markers.clear();
   mapContext.navigation.points = {
     origin: null,
-    waypoint: null,
     destination: null,
   };
 }
@@ -421,16 +416,12 @@ function containerEventToPoint(mapContext, event) {
 function createServiceHooks(AMap, amap) {
   const hooks = {
     geocoder: null,
-    driving: null,
     walking: null,
     riding: null,
   };
 
   if (AMap.Geocoder) {
     hooks.geocoder = new AMap.Geocoder({ city: "上海" });
-  }
-  if (AMap.Driving) {
-    hooks.driving = new AMap.Driving({ city: "上海", map: amap, hideMarkers: false });
   }
   if (AMap.Walking) {
     hooks.walking = new AMap.Walking({ city: "上海", map: amap, hideMarkers: false });
@@ -441,11 +432,21 @@ function createServiceHooks(AMap, amap) {
   return hooks;
 }
 
+function previewSportRoute(mapContext, selectedRouteId) {
+  for (const [routeId, layer] of mapContext.routeLayers.entries()) {
+    const active = routeId === selectedRouteId;
+    layer.setOptions({
+      strokeOpacity: active ? 0.32 : 0.12,
+      strokeWeight: active ? 4 : 3,
+      zIndex: active ? 80 : 60,
+    });
+  }
+}
+
 function navigationServiceForMode(mapContext, mode) {
   const services = {
     walk: mapContext.serviceHooks.walking,
     bike: mapContext.serviceHooks.riding,
-    drive: mapContext.serviceHooks.driving,
   };
   const service = services[mode];
   if (!service) {
@@ -454,11 +455,17 @@ function navigationServiceForMode(mapContext, mode) {
   return service;
 }
 
-function searchNavigationPath(service, mode, origin, destination, waypoints) {
-  if (waypoints.length && mode !== "drive") {
-    return searchNavigationSegments(service, [origin, ...waypoints, destination]);
+export function navigationServiceMode(routeMode) {
+  if (routeMode === "walk" || routeMode === "run") {
+    return "walk";
   }
+  if (routeMode === "bike") {
+    return "bike";
+  }
+  throw new Error(`不支持的运动类型：${routeMode || "空"}`);
+}
 
+function searchNavigationPath(service, origin, destination) {
   return new Promise((resolve, reject) => {
     const callback = (status, result) => {
       const summary = firstRouteSummary(result);
@@ -468,32 +475,8 @@ function searchNavigationPath(service, mode, origin, destination, waypoints) {
       }
       resolve(summary);
     };
-    if (waypoints.length && mode === "drive") {
-      service.search(origin, destination, { waypoints }, callback);
-      return;
-    }
     service.search(origin, destination, callback);
   });
-}
-
-async function searchNavigationSegments(service, points) {
-  let distance = 0;
-  let duration = 0;
-  for (let index = 0; index < points.length - 1; index += 1) {
-    const segment = await new Promise((resolve, reject) => {
-      service.search(points[index], points[index + 1], (status, result) => {
-        const summary = firstRouteSummary(result);
-        if (status !== "complete" || !summary) {
-          reject(new Error("高德路线导航失败，请检查途经点或 Key 权限。"));
-          return;
-        }
-        resolve(summary);
-      });
-    });
-    distance += segment.distance;
-    duration += segment.duration;
-  }
-  return { distance, duration };
 }
 
 function firstRouteSummary(result) {
@@ -639,7 +622,7 @@ function addBoundaryLabel(mapContext) {
     position: center,
     content: `<span class="amap-boundary-label">徐汇区</span>`,
     anchor: "center",
-    zIndex: 125,
+    zIndex: 35,
   });
   mapContext.amap.add(marker);
 }

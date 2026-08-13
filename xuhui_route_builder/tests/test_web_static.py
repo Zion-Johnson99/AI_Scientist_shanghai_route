@@ -6,16 +6,25 @@ WEB_ROOT = Path(__file__).resolve().parents[1] / "web"
 DATA_ROOT = Path(__file__).resolve().parents[1] / "data" / "web"
 
 
-def test_default_web_data_contains_eleven_network_matched_routes() -> None:
+def test_default_web_data_contains_90_status_labelled_candidate_routes() -> None:
     routes = json.loads((DATA_ROOT / "xuhui_routes.geojson").read_text(encoding="utf-8"))
     catalog = json.loads((DATA_ROOT / "route_catalog.json").read_text(encoding="utf-8"))
 
-    assert len(routes["features"]) == 11
-    assert len(catalog) == 11
-    assert all(route["snap_ratio"] >= 0.98 for route in catalog)
-    assert {route["route_id"] for route in catalog}.isdisjoint(
-        {"XH_RUN_0004", "XH_WALK_0007", "XH_BIKE_0011", "XH_BIKE_0015"}
+    assert len(routes["features"]) == 90
+    assert len(catalog) == 90
+    assert all(
+        item.get("start_location", {}).get("name")
+        and isinstance(item["start_location"].get("lng_gcj02"), float)
+        and isinstance(item["start_location"].get("lat_gcj02"), float)
+        for item in catalog
     )
+    assert {mode: sum(route["route_mode"] == mode for route in catalog) for mode in ("walk", "run", "bike")} == {
+        "walk": 30,
+        "run": 30,
+        "bike": 30,
+    }
+    assert sum(route["display_status"] == "严格验收" for route in catalog) == 6
+    assert sum(route["display_status"] == "待考证" for route in catalog) == 84
 
 
 def test_index_declares_inline_favicon_to_avoid_404() -> None:
@@ -27,13 +36,32 @@ def test_index_declares_inline_favicon_to_avoid_404() -> None:
 def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
+    data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260712-sidebar-layout-1"
+    release = "v=20260813-route-geometry-1"
     assert f"./styles/main.css?{release}" in html
     assert f"./src/main.js?{release}" in html
     assert f'./data-loader.js?{release}' in main_js
     assert f'./map.js?{release}' in main_js
     assert f'./route-ui.js?{release}' in main_js
+    assert "DATA_RELEASE" in data_loader_js
+    assert "cache: \"no-store\"" in data_loader_js
+    for data_path in [
+        "xuhui_boundary.geojson",
+        "xuhui_entries.geojson",
+        "xuhui_routes.geojson",
+        "route_catalog.json",
+        "poi_catalog.json",
+    ]:
+        assert data_path in data_loader_js
+
+
+def test_route_selection_reports_missing_geometry_instead_of_failing_silently() -> None:
+    main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
+
+    assert "showRouteFeature" in main_js
+    assert "缺少地图路径数据" in main_js
+    assert "if (feature)" not in main_js
 
 
 def test_index_uses_amap_js_loader_without_leaflet_stack() -> None:
@@ -65,7 +93,7 @@ def test_route_controls_support_local_candidate_search_and_preferences() -> None
         "routeNavigationTab",
         "keywordInput",
         "zoneFilter",
-        "modeFilter",
+        "sportModeTabs",
         "distanceFilter",
         "preferCoffee",
         "preferToilet",
@@ -73,33 +101,43 @@ def test_route_controls_support_local_candidate_search_and_preferences() -> None
         "preferMetro",
         "preferPark",
         "planButton",
-        "routeTabs",
+        "routeSelect",
     ]:
         assert f'id="{element_id}"' in html
 
     assert "route-selection-view" in html
     assert "route-navigation-view" in html
     assert "startInput" in html
-    assert "endInput" in html
+    assert "endInput" not in html
+    assert "waypointInput" not in html
+    assert "navigationModeSummary" in html
+    assert "startSportButton" in html
     assert "filterCandidateRoutes" in route_ui_js
     assert "onShowRoute" in route_ui_js
     assert "onNavigate" in route_ui_js
     assert "selectBestRoute" in route_ui_js
-    assert "renderRouteTabs" in route_ui_js
+    assert "renderRouteSelect" in route_ui_js
+    assert "data-route-mode" in html
     assert "onShowRoute" in route_ui_js
 
 
-def test_route_picker_uses_compact_route_tabs_and_single_route_selection() -> None:
+def test_route_picker_uses_single_select_and_waits_for_explicit_search() -> None:
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
 
-    assert 'id="routeTabs"' in html
+    assert 'id="routeSelect"' in html
+    assert 'id="routeTabs"' not in html
     assert 'id="resultTabs"' not in html
     assert "选择一条路线" in html
     assert "selectBestRoute" in route_ui_js
     assert "无推荐路线" in route_ui_js
     assert "options.onShowRoute(route)" in route_ui_js
+    assert "renderRouteSelect" in route_ui_js
+    assert "initializeRouteSelection" in route_ui_js
+    assert "runSearch(catalog, state, controls, options);" not in route_ui_js[\
+        route_ui_js.index("export function renderRoutePlanner") : route_ui_js.index("export function filterCandidateRoutes")\
+    ]
     assert "showSingleRoute" in main_js
     assert "showRouteResults(map, routeFeatures" not in main_js
 
@@ -115,7 +153,16 @@ def test_map_draws_a_thin_single_route_with_landmark_markers() -> None:
     assert "Math.min(3" in map_js
     assert "weight: 4" in map_js
     assert ".amap-route-marker" in css
-    assert ".route-tabs" in css
+    assert ".route-picker" in css
+
+
+def test_selected_route_layer_stays_above_the_xuhui_boundary() -> None:
+    map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
+
+    boundary_block = map_js[map_js.index("export function drawBoundary") : map_js.index("export function showRouteResults")]
+    route_block = map_js[map_js.index("export function showRouteResults") : map_js.index("export function showSingleRoute")]
+    assert "zIndex: 30" in boundary_block
+    assert "zIndex: active ? 100 : 70" in route_block
 
 
 def test_web_loads_pois_and_supports_navigation_session_controls() -> None:
@@ -128,11 +175,13 @@ def test_web_loads_pois_and_supports_navigation_session_controls() -> None:
         "startNavigationButton",
         "endNavigationButton",
         "startPickButton",
-        "waypointInput",
-        "waypointPickButton",
-        "endPickButton",
+        "navigationModeSummary",
+        "startSportButton",
     ]:
         assert f'id="{element_id}"' in html
+
+    for removed_element_id in ["waypointInput", "waypointPickButton", "endInput", "endPickButton", "navigationMode"]:
+        assert f'id="{removed_element_id}"' not in html
 
     assert "poi_catalog.json" in data_loader_js
     assert "preference_hits" in route_ui_js
@@ -141,21 +190,23 @@ def test_web_loads_pois_and_supports_navigation_session_controls() -> None:
     assert "enablePointPicker" in map_js
     assert "setNavigationPoint" in map_js
     assert "isPointInsideXuhui" in map_js
+    assert "navigationServiceMode" in map_js
+    assert "focusSportRoute" in map_js
+    assert "previewSportRoute" in map_js
+    assert "AMap.Driving" not in html
     assert "addEventListener(\"click\"" in map_js
     assert "containerToLngLat" in map_js
 
 
-def test_sidebar_route_picker_has_independent_vertical_scroll_without_clipping() -> None:
+def test_sidebar_route_picker_does_not_depend_on_an_internal_scrolling_route_list() -> None:
     css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
-    route_tabs_block = css[css.index(".route-tabs {") : css.index(".route-tab {")]
     selection_block = css[
         css.index(".route-selection-view.active {") : css.index(".field-grid {")
     ]
 
-    assert "minmax(190px, 1fr)" in selection_block
-    assert "overflow-y: auto" in route_tabs_block
-    assert "overflow-x: hidden" in route_tabs_block
-    assert "display: grid" in route_tabs_block
+    assert "minmax(190px, 1fr)" not in selection_block
+    assert ".route-picker" in css
+    assert ".route-tabs" not in css
     assert "flex-shrink: 0" in css[css.index(".mode-tabs {") : css.index(".mode-tabs button {")]
 
 

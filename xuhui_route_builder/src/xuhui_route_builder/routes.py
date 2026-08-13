@@ -60,6 +60,7 @@ def candidate_from_seed(seed: RouteSeed, direction: DirectionPath, index: int) -
         turn_count=max(0, len(direction.instructions) - 1),
         source_name=seed.source_name,
         source_url=seed.source_url,
+        source_accessed_at=seed.source_accessed_at,
         confidence=seed.confidence,
         distance_error_m=abs(direction.distance_m - seed.target_distance_m),
         loop_flag=_is_loop(seed),
@@ -91,7 +92,6 @@ def resolve_seed_nodes(seed: RouteSeed, client: Any) -> RouteSeed:
         if node.lng_gcj02 is not None and node.lat_gcj02 is not None:
             resolved_nodes.append(node)
             continue
-        context = f"seed_id={seed.seed_id} node_index={node_index} node_name={node.node_name}"
         resolved, raw_path = resolve_node_query(
             expected_name=node.node_name,
             query=node.node_name,
@@ -126,10 +126,19 @@ def resolve_node_query(
             raise ValueError(f"status={record.status!r}")
         if not str(record.raw_path).strip():
             raise ValueError("raw_path is empty")
-        resolved = _resolve_unique_poi_node(expected_name, expected_poi_id, record.payload.get("pois") or [])
+        try:
+            resolved = _resolve_unique_poi_node(expected_name, expected_poi_id, record.payload.get("pois") or [])
+            return resolved, str(record.raw_path)
+        except ValueError as poi_error:
+            if expected_poi_id is not None:
+                raise poi_error
+            geocode_record = client.geocode(f"上海市徐汇区{query}", city="上海")
+            if str(geocode_record.status) != "1" or not str(geocode_record.raw_path).strip():
+                raise poi_error
+            resolved = _resolve_unique_geocode_node(expected_name, geocode_record.payload.get("geocodes") or [])
+            return resolved, str(geocode_record.raw_path)
     except Exception as exc:
         raise ValueError(f"Amap POI resolution failed: {context}: {exc}") from exc
-    return resolved, str(record.raw_path)
 
 
 def generate_candidate_from_seed(seed: RouteSeed, client: Any, index: int) -> CandidateRoute:
@@ -223,6 +232,27 @@ def _resolve_unique_poi_node(expected_name: str, expected_poi_id: str | None, po
             for node, poi in in_xuhui
             if _normalize_poi_text(poi.get("name")) == _normalize_poi_text(expected_name)
         ]
+        if not matches:
+            normalized_expected = _normalize_poi_text(expected_name)
+            contained = [
+                (node, _normalize_poi_text(poi.get("name")))
+                for node, poi in in_xuhui
+                if normalized_expected in _normalize_poi_text(poi.get("name"))
+            ]
+            if contained:
+                shortest = min(len(name) for _, name in contained)
+                matches = [node for node, name in contained if len(name) == shortest]
+        if not matches:
+            expected_roads = _road_name_set(expected_name)
+            if len(expected_roads) >= 2:
+                matches = [node for node, poi in in_xuhui if _road_name_set(poi.get("name")) == expected_roads]
+        if not matches:
+            normalized_expected = _normalize_poi_text(expected_name)
+            matches = [
+                node
+                for node, poi in in_xuhui
+                if _normalize_poi_text(poi.get("address")).startswith(normalized_expected)
+            ]
     if len(matches) == 1:
         return matches[0]
     if len(in_xuhui) > 1:
@@ -232,9 +262,30 @@ def _resolve_unique_poi_node(expected_name: str, expected_poi_id: str | None, po
     raise ValueError(f"ambiguous POI results: {len(matches)} matching candidates")
 
 
+def _resolve_unique_geocode_node(expected_name: str, geocodes: list[dict[str, Any]]) -> RouteNode:
+    matches: dict[tuple[float, float], RouteNode] = {}
+    for geocode in geocodes:
+        if str(geocode.get("adcode", "")) != "310104" or not geocode.get("location"):
+            continue
+        try:
+            lng_text, lat_text = str(geocode["location"]).split(",", 1)
+            lng, lat = float(lng_text), float(lat_text)
+            matches[(lng, lat)] = RouteNode(node_name=expected_name, lng_gcj02=lng, lat_gcj02=lat)
+        except (TypeError, ValueError):
+            continue
+    if len(matches) != 1:
+        raise ValueError(f"geocode requires one Xuhui match, got {len(matches)}")
+    return next(iter(matches.values()))
+
+
 def _normalize_poi_text(value: Any) -> str:
     normalized = unicodedata.normalize("NFKC", str(value or "")).casefold()
     return "".join(normalized.split())
+
+
+def _road_name_set(value: Any) -> set[str]:
+    text = _normalize_poi_text(value).replace("交叉口", "").replace("路口", "")
+    return {part + "路" for part in text.replace("与", "").split("路") if part}
 
 
 def _node_location(node: RouteNode) -> str:

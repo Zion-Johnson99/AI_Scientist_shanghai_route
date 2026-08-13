@@ -4,17 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>徐汇路线构建器</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%232f5f55'/%3E%3Cpath d='M4 9h8M8 4v8' stroke='white' stroke-width='2'/%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="./styles/main.css?v=20260712-sidebar-layout-1" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%231677ff'/%3E%3Cpath d='M4 9h8M8 4v8' stroke='white' stroke-width='2'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./styles/main.css?v=20260813-route-geometry-1" />
     <script src="./local-amap-config.js"></script>
   </head>
   <body>
     <main class="app-shell">
       <aside class="sidebar">
         <header class="panel-header">
-          <p class="eyebrow">Xuhui Route Builder</p>
+          <p class="eyebrow"><span></span>Xuhui Route Builder</p>
           <h1>徐汇健康路线库</h1>
-          <p class="panel-subtitle">先选候选运动路线，再按需要做起终点导航。</p>
+          <p class="panel-subtitle">90 条城市运动候选路线，验收状态清晰可查。</p>
         </header>
 
         <nav class="mode-tabs" aria-label="路线功能切换">
@@ -24,6 +24,11 @@
 
         <section id="routeSelectionView" class="tab-view route-selection-view active" aria-label="候选路线选择">
           <div class="controls">
+            <div id="sportModeTabs" class="sport-mode-tabs" role="tablist" aria-label="运动类型">
+              <button class="active" type="button" role="tab" data-route-mode="walk"><b>步行</b><span>30 条</span></button>
+              <button type="button" role="tab" data-route-mode="run"><b>跑步</b><span>30 条</span></button>
+              <button type="button" role="tab" data-route-mode="bike"><b>骑行</b><span>30 条</span></button>
+            </div>
             <div class="field-grid two-columns">
               <label>
                 片区
@@ -35,26 +40,14 @@
                 距离档
                 <select id="distanceFilter">
                   <option value="all">全部距离</option>
-                  <option value="1km">1 km</option>
-                  <option value="2km">2 km</option>
-                  <option value="3km">3 km</option>
-                  <option value="5km">5 km</option>
-                  <option value="8km">8 km</option>
-                  <option value="10km">10 km</option>
+                  <option value="short">短线</option>
+                  <option value="medium">中线</option>
+                  <option value="long">长线</option>
                 </select>
               </label>
             </div>
 
             <div class="field-grid two-columns">
-              <label>
-                类型
-                <select id="modeFilter">
-                  <option value="all">全部类型</option>
-                  <option value="run">跑步</option>
-                  <option value="walk">步行</option>
-                  <option value="bike">骑行</option>
-                </select>
-              </label>
               <label>
                 关键词
                 <input id="keywordInput" type="search" placeholder="滨江、植物园、衡复" autocomplete="off" />
@@ -87,16 +80,19 @@
             <div id="routeDetail" class="detail" aria-live="polite"></div>
             <div class="route-tab-heading">
               <strong>选择一条路线</strong>
-              <span>11 条真实路网路线</span>
+              <span id="routeOptionCount">当前类型 30 条候选路线</span>
             </div>
-            <div id="routeTabs" class="route-tabs" role="tablist" aria-label="候选路线选项卡"></div>
+            <label class="route-picker">
+              <span class="visually-hidden">候选路线</span>
+              <select id="routeSelect" aria-label="选择一条候选路线"></select>
+            </label>
           </section>
         </section>
 
-        <section id="routeNavigationView" class="tab-view route-navigation-view" aria-label="起终点路线导航">
+        <section id="routeNavigationView" class="tab-view route-navigation-view" aria-label="前往运动路线起点">
           <div class="controls">
             <div class="command-row navigation-session-row">
-              <button id="startNavigationButton" class="primary-action" type="button">开始导航</button>
+              <button id="startNavigationButton" class="primary-action" type="button">设置接驳</button>
               <button id="endNavigationButton" class="secondary-action" type="button">结束</button>
             </div>
             <label>
@@ -104,37 +100,17 @@
               <select id="navigationRouteSelect"></select>
             </label>
             <label>
-              起点
+              用户位置
               <span class="point-input-row">
                 <input id="startInput" type="search" placeholder="输入地点或在地图点选" autocomplete="off" />
                 <button id="startPickButton" class="secondary-action point-pick-action" type="button">点选</button>
               </span>
             </label>
-            <label>
-              途经点
-              <span class="point-input-row">
-                <input id="waypointInput" type="search" placeholder="可选，输入地点或地图点选" autocomplete="off" />
-                <button id="waypointPickButton" class="secondary-action point-pick-action" type="button">点选</button>
-              </span>
-            </label>
-            <label>
-              终点
-              <span class="point-input-row">
-                <input id="endInput" type="search" placeholder="输入地点或默认使用所选路线入口" autocomplete="off" />
-                <button id="endPickButton" class="secondary-action point-pick-action" type="button">点选</button>
-              </span>
-            </label>
             <div class="field-grid two-columns">
-              <label>
-                导航方式
-                <select id="navigationMode">
-                  <option value="walk">步行接驳</option>
-                  <option value="bike">骑行接驳</option>
-                  <option value="drive">驾车接驳</option>
-                </select>
-              </label>
+              <div id="navigationModeSummary" class="navigation-mode-summary">接驳方式随所选路线自动确定</div>
               <button id="navigateButton" class="primary-action inline-action" type="button">规划路径</button>
             </div>
+            <button id="startSportButton" class="primary-action" type="button" disabled>开始运动</button>
             <div id="navigationStatus" class="navigation-status" aria-live="polite">点击开始导航后，可输入地点或在徐汇区内点选。</div>
           </div>
         </section>
@@ -158,7 +134,7 @@
         const params = new URLSearchParams(window.location.search);
         const key = params.get("amapKey") || window.XUHUI_AMAP_JS_KEY;
         const security = params.get("amapSecurity") || window.XUHUI_AMAP_JS_SECURITY_CODE;
-        const plugins = ["AMap.GeoJSON", "AMap.Geocoder", "AMap.Driving", "AMap.Walking", "AMap.Riding"];
+        const plugins = ["AMap.GeoJSON", "AMap.Geocoder", "AMap.Walking", "AMap.Riding"];
 
         window._AMapSecurityConfig = { securityJsCode: security };
         window.XUHUI_AMAP_READY = new Promise((resolve, reject) => {
@@ -181,6 +157,6 @@
         });
       })();
     </script>
-    <script type="module" src="./src/main.js?v=20260712-sidebar-layout-1"></script>
+    <script type="module" src="./src/main.js?v=20260813-route-geometry-1"></script>
   </body>
 </html>

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, field_validator, model_validator
@@ -82,6 +82,7 @@ class RouteSeed(StrictModel):
     reason: str
     source_name: str
     source_url: str
+    source_accessed_at: date
     confidence: str
     ordered_nodes: list[RouteNode] = Field(default_factory=list)
     allowed_modes: list[RouteMode] = Field(default_factory=list)
@@ -136,6 +137,7 @@ class CandidateRoute(StrictModel):
     score_note: str = "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。"
     source_name: str = ""
     source_url: str = ""
+    source_accessed_at: date | None = None
     confidence: str = "中"
     distance_error_m: int = 0
     loop_flag: bool = False
@@ -167,6 +169,8 @@ class CandidateRoute(StrictModel):
             and self.geometry_source in {"amap_direction", "audited_import"}
             and self.geometry_status == "complete"
             and len(distinct_points) >= 2
+            and bool(self.waypoint_names and self.waypoint_names[0].strip())
+            and self.source_accessed_at is not None
             and self.snap_ratio is not None
             and self.snap_ratio >= 0.98
             and bool(self.network_source and self.network_source.strip())

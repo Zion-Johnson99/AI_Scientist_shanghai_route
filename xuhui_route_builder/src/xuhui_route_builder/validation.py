@@ -153,6 +153,7 @@ def validate_candidate(
     verified_at: datetime,
     network_version: str,
     evidence_failures: Sequence[str] = (),
+    boundary_polygons: Sequence[Sequence[Sequence[float]]] = (),
 ) -> CandidateRoute:
     failures = list(evidence_failures)
     try:
@@ -185,6 +186,17 @@ def validate_candidate(
     target_error_ratio = abs(route.actual_distance_m - route.target_distance_m) / route.target_distance_m
     if target_error_ratio > MAX_TARGET_DISTANCE_ERROR_RATIO:
         failures.append(f"实际距离与目标距离误差 {target_error_ratio:.1%} 超过 15%")
+    inside_ratio = None
+    if boundary_polygons:
+        inside_ratio = compute_route_inside_ratio(route.polyline_gcj02, boundary_polygons)
+        endpoints_inside = all(
+            _point_in_any_polygon((point.lng_wgs84, point.lat_wgs84), boundary_polygons)
+            for point in (route.polyline_gcj02[0], route.polyline_gcj02[-1])
+        )
+        if not endpoints_inside:
+            failures.append("起点或终点位于徐汇区外")
+        if inside_ratio < 0.9:
+            failures.append(f"轨迹徐汇区内比例 {inside_ratio:.1%} 低于 90%")
 
     update = {
         "validation_status": "needs_review" if failures else "accepted",
@@ -192,10 +204,51 @@ def validate_candidate(
         "network_source": network_version.strip() if valid_network_version else None,
         "verified_at": verified_at if valid_verified_at else None,
         "review_note": "；".join(failures) if failures else "OSM 贴路率和 API 距离误差检查通过",
+        "route_inside_ratio": inside_ratio,
     }
     payload = route.model_dump()
     payload.update(update)
     return CandidateRoute.model_validate(payload)
+
+
+def compute_route_inside_ratio(
+    points: Sequence[CoordinatePair],
+    boundary_polygons: Sequence[Sequence[Sequence[float]]],
+    spacing_m: float = 20,
+) -> float:
+    samples = _sample_polyline(_as_wgs_points(points), spacing_m)
+    if not samples:
+        return 0.0
+    inside = sum(_point_in_any_polygon(point, boundary_polygons) for point in samples)
+    return inside / len(samples)
+
+
+def _point_in_any_polygon(point: WgsPoint, polygons: Sequence[Sequence[Sequence[float]]]) -> bool:
+    return any(_point_in_polygon(point, polygon) for polygon in polygons)
+
+
+def _point_in_polygon(point: WgsPoint, ring: Sequence[Sequence[float]]) -> bool:
+    x, y = point
+    inside = False
+    for index, first in enumerate(ring):
+        second = ring[index - 1]
+        x1, y1 = float(first[0]), float(first[1])
+        x2, y2 = float(second[0]), float(second[1])
+        if _point_on_segment(point, (x1, y1), (x2, y2)):
+            return True
+        if (y1 > y) != (y2 > y):
+            crossing_x = (x2 - x1) * (y - y1) / (y2 - y1) + x1
+            if x < crossing_x:
+                inside = not inside
+    return inside
+
+
+def _point_on_segment(point: WgsPoint, first: WgsPoint, second: WgsPoint) -> bool:
+    x, y = point
+    x1, y1 = first
+    x2, y2 = second
+    cross = (x - x1) * (y2 - y1) - (y - y1) * (x2 - x1)
+    return abs(cross) <= 1e-10 and min(x1, x2) <= x <= max(x1, x2) and min(y1, y2) <= y <= max(y1, y2)
 
 
 def geometry_signature(route: CandidateRoute, spacing_m: float = 20, precision: int = 5) -> tuple[WgsPoint, ...]:
@@ -227,6 +280,8 @@ def find_duplicate_routes(
     for index, route in enumerate(route_list):
         for candidate_index in range(index + 1, len(route_list)):
             candidate = route_list[candidate_index]
+            if route.route_mode != candidate.route_mode:
+                continue
             if geometry_signature(route) == geometry_signature(candidate) or _bidirectional_overlap(
                 route, candidate, tolerance_m
             ) >= overlap_threshold:

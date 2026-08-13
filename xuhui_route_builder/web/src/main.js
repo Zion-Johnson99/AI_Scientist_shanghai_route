@@ -1,16 +1,16 @@
-import { loadRouteData } from "./data-loader.js?v=20260712-sidebar-layout-1";
+import { loadRouteData } from "./data-loader.js?v=20260813-route-geometry-1";
 import {
   clearRouteResults,
   createMap,
   drawBoundary,
   enablePointPicker,
   endNavigationSession,
-  highlightRoute,
+  focusSportRoute,
   planNavigation,
   showSingleRoute,
   startNavigationSession,
-} from "./map.js?v=20260712-sidebar-layout-1";
-import { renderRoutePlanner } from "./route-ui.js?v=20260712-sidebar-layout-1";
+} from "./map.js?v=20260813-route-geometry-1";
+import { renderRoutePlanner } from "./route-ui.js?v=20260813-route-geometry-1";
 
 async function bootstrap() {
   const map = await createMap("map");
@@ -21,16 +21,13 @@ async function bootstrap() {
   drawBoundary(map, data.boundary);
   renderRoutePlanner(catalog, {
     onShowRoute(route) {
-      const feature = routeFeaturesById.get(route.route_id);
-      if (feature) {
-        showSingleRoute(map, feature, data.entries, data.pois);
-      }
+      showRouteFeature(map, routeFeaturesById, route.route_id, data);
     },
     onClearRoutes() {
       clearRouteResults(map);
     },
     onSelect(routeId) {
-      highlightRoute(map, routeId);
+      showRouteFeature(map, routeFeaturesById, routeId, data);
     },
     onStartNavigation(onPick) {
       startNavigationSession(map, onPick);
@@ -44,7 +41,23 @@ async function bootstrap() {
     onNavigate(request) {
       return planNavigation(map, request);
     },
+    onStartSport(routeId) {
+      focusSportRoute(map, routeId);
+    },
   });
+}
+
+function showRouteFeature(map, routeFeaturesById, routeId, data) {
+  const feature = routeFeaturesById.get(routeId);
+  if (!feature) {
+    clearRouteResults(map);
+    const message = `路线 ${routeId} 缺少地图路径数据，请刷新页面后重试。`;
+    document.querySelector("#routeDetail").textContent = message;
+    document.querySelector("#routeSummary").textContent = "路线加载失败";
+    console.error(message, { routeId, loadedFeatureCount: routeFeaturesById.size });
+    return;
+  }
+  showSingleRoute(map, feature, data.entries, data.pois);
 }
 
 function enrichCatalog(catalog, entries) {

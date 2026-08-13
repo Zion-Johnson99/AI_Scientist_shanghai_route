@@ -26,6 +26,7 @@ def _seed(mode: str = "run", nodes: list[RouteNode] | None = None) -> RouteSeed:
         reason="官方路线",
         source_name="上海市政府",
         source_url="https://www.shanghai.gov.cn/example",
+        source_accessed_at="2026-08-13",
         confidence="高",
         ordered_nodes=nodes
         or [
@@ -136,6 +137,145 @@ def test_resolve_node_query_uses_explicit_poi_id_to_disambiguate_same_name() -> 
     assert node.poi_id == "B"
 
 
+def test_resolve_node_query_accepts_one_unique_address_prefix_match() -> None:
+    client = FakeClient()
+    client.place_text_v5 = lambda _name, region="310104": SimpleNamespace(
+        status="1",
+        raw_path="raw/place.json",
+        payload={
+            "pois": [
+                {
+                    "id": "ADDRESS",
+                    "name": "城市会客厅",
+                    "address": "淮海中路1209号(常熟路地铁站步行170米)",
+                    "adcode": "310104",
+                    "location": "121.452937,31.213617",
+                },
+                {
+                    "id": "OTHER",
+                    "name": "淮海中路",
+                    "address": "徐汇区",
+                    "adcode": "310104",
+                    "location": "121.456655,31.215841",
+                },
+            ]
+        },
+    )
+
+    node, _ = resolve_node_query("淮海中路1209号", "淮海中路1209号", client, None, "seed", 0)
+
+    assert node.poi_id == "ADDRESS"
+
+
+def test_resolve_node_query_accepts_one_unique_normalized_containment_match() -> None:
+    client = FakeClient()
+    client.place_text_v5 = lambda _name, region="310104": SimpleNamespace(
+        status="1",
+        raw_path="raw/place.json",
+        payload={
+            "pois": [
+                {
+                    "id": "FORMAL",
+                    "name": "上海植物园-兰室",
+                    "address": "龙吴路1111号上海植物园内",
+                    "adcode": "310104",
+                    "location": "121.446205,31.146753",
+                },
+                {
+                    "id": "OTHER",
+                    "name": "上海植物园",
+                    "address": "龙吴路1111号",
+                    "adcode": "310104",
+                    "location": "121.444271,31.147478",
+                },
+            ]
+        },
+    )
+
+    node, _ = resolve_node_query("兰室", "上海植物园兰室", client, None, "seed", 0)
+
+    assert node.poi_id == "FORMAL"
+
+
+def test_resolve_node_query_falls_back_to_unique_xuhui_geocode() -> None:
+    client = FakeClient()
+    client.place_text_v5 = lambda _name, region="310104": SimpleNamespace(
+        status="1", raw_path="raw/place.json", payload={"pois": []}
+    )
+    client.geocode = lambda address, city="上海": SimpleNamespace(
+        status="1",
+        raw_path="raw/geocode.json",
+        payload={
+            "geocodes": [
+                {
+                    "formatted_address": "上海市徐汇区龙腾大道龙耀路",
+                    "adcode": "310104",
+                    "location": "121.459,31.159",
+                }
+            ]
+        },
+    )
+
+    node, raw_path = resolve_node_query("龙腾大道龙耀路口", "龙腾大道龙耀路", client, None, "seed", 0)
+
+    assert node.lng_gcj02 == 121.459
+    assert node.lat_gcj02 == 31.159
+    assert raw_path == "raw/geocode.json"
+
+
+def test_resolve_node_query_deduplicates_identical_geocode_records() -> None:
+    client = FakeClient()
+    client.place_text_v5 = lambda _name, region="310104": SimpleNamespace(
+        status="1", raw_path="raw/place.json", payload={"pois": []}
+    )
+    duplicate = {
+        "formatted_address": "上海市徐汇区桂林路",
+        "adcode": "310104",
+        "location": "121.416867,31.172599",
+    }
+    client.geocode = lambda address, city="上海": SimpleNamespace(
+        status="1", raw_path="raw/geocode.json", payload={"geocodes": [duplicate, duplicate, duplicate]}
+    )
+
+    node, _ = resolve_node_query("桂林路", "桂林路", client, None, "seed", 0)
+
+    assert node.lng_gcj02 == 121.416867
+
+
+def test_resolve_node_query_matches_reversed_intersection_name() -> None:
+    client = FakeClient()
+    client.place_text_v5 = lambda _name, region="310104": SimpleNamespace(
+        status="1",
+        raw_path="raw/place.json",
+        payload={"pois": [{
+            "id": "CROSS",
+            "name": "云锦路与龙耀路交叉口",
+            "adcode": "310104",
+            "location": "121.459280,31.161845",
+        }]},
+    )
+
+    node, _ = resolve_node_query("龙耀路与云锦路交叉口", "龙耀路云锦路", client, None, "seed", 0)
+
+    assert node.poi_id == "CROSS"
+
+
+def test_resolve_node_query_uses_unique_shortest_containment_match() -> None:
+    client = FakeClient()
+    client.place_text_v5 = lambda _name, region="310104": SimpleNamespace(
+        status="1",
+        raw_path="raw/place.json",
+        payload={"pois": [
+            {"id": "MAIN", "name": "Gate M西岸梦中心", "adcode": "310104", "location": "121.465,31.161"},
+            {"id": "PARKING", "name": "Gate M西岸梦中心地下停车场", "adcode": "310104", "location": "121.465,31.160"},
+        ]},
+    )
+
+    node, _ = resolve_node_query("西岸梦中心", "西岸梦中心", client, None, "seed", 0)
+
+    assert node.poi_id == "MAIN"
+
+
 @pytest.mark.parametrize("pois", [[], [{"id": "bad", "location": "oops"}], [{"id": "bad", "location": "181,31"}]])
 def test_resolve_seed_nodes_rejects_missing_or_invalid_places(pois: list[dict]) -> None:
     client = FakeClient()
@@ -170,6 +310,7 @@ def test_generate_candidate_stitches_segments_and_preserves_evidence() -> None:
     assert route.network_source == "amap_walking_v2"
     assert route.source_name == "上海市政府"
     assert route.source_url == "https://www.shanghai.gov.cn/example"
+    assert route.source_accessed_at.isoformat() == "2026-08-13"
     assert route.confidence == "高"
     assert route.source_level == "A"
     assert route.waypoint_names == ["起点", "途经点", "终点"]
