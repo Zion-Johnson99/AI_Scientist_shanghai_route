@@ -7,6 +7,7 @@ Source dataset:
 
 This folder currently stores:
 - `CHAP_PM2.5_D1K_2021_shanghai_daily.nc`: Shanghai daily PM2.5 subset for all of 2021
+- `cnemc_hourly_2021_shanghai/`: Shanghai hourly station PM2.5 tables for 2021
 
 Data fields:
 - Variable: `PM2.5`
