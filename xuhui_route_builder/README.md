@@ -10,7 +10,7 @@
 
 ## 配置
 
-Python 脚本读取高德 WebService Key。复制 `.env.example` 为 `.env`，填入本机高德 WebService Key：
+Python 脚本读取高德 WebService Key 和百度服务端 AK。复制 `.env.example` 为 `.env`，填入本机密钥：
 
 ```powershell
 Copy-Item .env.example .env
@@ -30,6 +30,28 @@ window.XUHUI_AMAP_JS_SECURITY_CODE = "你的高德安全密钥";
 ```
 
 `web/local-amap-config.js` 已在 `.gitignore` 中忽略，真实 Key 只留在本地。仓库中保留 `.env.example` 作为配置模板。
+
+### 百度服务端 AK
+
+百度地点检索只作为 OSM 无结果或结果存在歧义时的兜底来源。AK 需要选择“服务端”类型，并在百度地图开放平台配置 IP 白名单；白名单填写运行 Python 脚本时访问国内站点所使用的公网 IPv4。代理软件可能对国内外站点采用不同出口，因此应以国内 IP 查询服务的结果为准，切换校园网、家庭网络、热点或代理规则后需要重新核对。
+
+真实 AK 写入本地 `.env`：
+
+```text
+BAIDU_MAP_AK=你的百度服务端AK
+```
+
+AK、IP 白名单和本地缓存均不提交到仓库。百度接口返回 `status=0` 代表鉴权及请求成功；`status=210` 代表 IP 白名单未命中。
+
+## 地点搜索逻辑
+
+地点解析主链路为：已验收路线节点 → OSM 本地 POI 索引 → 百度地点检索 → 百度地理编码。高德继续负责路径规划和网页地图展示，不承担批量地点搜索。
+
+1. `resolve-seeds` 先复用 `route_seeds.json` 中已有且带坐标的节点，减少重复查询并保护已验收数据。
+2. `build-osm-poi-index` 通过一次 Overpass 查询获取徐汇区具名 POI，保存为本地索引；后续地点查询优先在这个索引中完成，不会为每个地点重复调用在线搜索服务。
+3. 本地数据和 OSM 均未唯一命中时，才调用百度区域地点检索；地点检索仍未命中时，再调用百度地理编码。百度结果限定徐汇区行政代码或徐汇边界，并直接请求 GCJ-02 坐标，供高德地图和路径规划使用。
+
+百度成功响应缓存在 `data/raw/baidu`，同一参数后续直接读取缓存。`resolve-seeds --max-online-calls 50` 将单次运行的百度联网请求限制为最多 50 次；需要完全离线解析时设为 `0`。解析过程失败时保留上一版已验收节点，避免错误结果覆盖现有路线数据。
 
 ## 常用命令
 
@@ -61,12 +83,13 @@ python -m pytest tests -q
 ```powershell
 cd D:\SJTU\交大\揭榜挂帅\AI_Scientist\xuhui_route_builder
 $env:PYTHONPATH="src"
-python -m xuhui_route_builder.cli resolve-seeds
+python -m xuhui_route_builder.cli build-osm-poi-index
+python -m xuhui_route_builder.cli resolve-seeds --max-online-calls 50
 python -m xuhui_route_builder.cli generate-routes
 python -m xuhui_route_builder.cli validate-routes
 ```
 
-`resolve-seeds` 将官方路线节点解析为高德 POI，`generate-routes` 逐段调用高德步行或骑行路径，`validate-routes` 完成 OSM 贴路检查后才更新网页路线。任一步失败都会保留上一版已验收数据。
+`generate-routes` 逐段调用高德步行或骑行路径，`validate-routes` 完成 OSM 贴路检查后更新网页路线。
 
 ## 网页功能
 

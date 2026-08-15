@@ -1,4 +1,13 @@
+from xuhui_route_builder.geo import gcj02_to_wgs84, wgs84_to_gcj02
 from xuhui_route_builder.models import CandidateRoute, CoordinatePair, EntryPoint
+
+
+def test_wgs84_gcj02_round_trip_stays_within_small_tolerance() -> None:
+    gcj_lng, gcj_lat = wgs84_to_gcj02(121.445, 31.172)
+    wgs_lng, wgs_lat = gcj02_to_wgs84(gcj_lng, gcj_lat)
+
+    assert abs(wgs_lng - 121.445) < 0.00001
+    assert abs(wgs_lat - 31.172) < 0.00001
 
 
 def test_entry_point_requires_both_coordinate_systems() -> None:
@@ -31,7 +40,11 @@ def test_candidate_route_polyline_keeps_both_coordinate_systems() -> None:
         start_entry_id="XH_ENT_0001",
         end_entry_id="XH_ENT_0001",
         region_zone="徐汇滨江",
-        polyline_gcj02=[CoordinatePair(lng_gcj02=121.45, lat_gcj02=31.17, lng_wgs84=121.445, lat_wgs84=31.172)],
+        polyline_gcj02=[
+            CoordinatePair(
+                lng_gcj02=121.45, lat_gcj02=31.17, lng_wgs84=121.445, lat_wgs84=31.172
+            )
+        ],
         tags=["滨江"],
         source_method="seed",
     )

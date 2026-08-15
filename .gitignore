@@ -10,6 +10,7 @@
 !.env.example
 xuhui_route_builder/web/local-amap-config.js
 xuhui_route_builder/data/raw/
+xuhui_route_builder/data/interim/*.json
 *.key
 *.pem
 *.token

@@ -9,6 +9,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 from .amap_client import AmapClient
+from .baidu_client import BaiduClient
 from .config import PROJECT_ROOT, load_settings
 from .demo_dataset import build_demo_dataset
 from .exporters import (
@@ -24,8 +25,10 @@ from .exporters import (
     write_json,
 )
 from .models import CandidateRoute, RouteSeed
+from .osm_poi import build_osm_poi_index
+from .place_resolver import HybridPlaceResolver
 from .route_research import merge_research_drafts
-from .routes import generate_candidate_from_seed, load_route_seeds, resolve_node_query
+from .routes import generate_candidate_from_seed, load_route_seeds
 from .validation import (
     OverpassClient,
     build_overpass_query,
@@ -53,9 +56,13 @@ def _distance_band(route_mode: str, distance_m: int) -> str | None:
     return None
 
 
-def _route_distribution(routes: list[CandidateRoute]) -> tuple[dict[str, int], dict[str, dict[str, int]]]:
+def _route_distribution(
+    routes: list[CandidateRoute],
+) -> tuple[dict[str, int], dict[str, dict[str, int]]]:
     mode_counts = {mode: 0 for mode in EXPECTED_MODE_COUNTS}
-    band_counts = {mode: {"short": 0, "medium": 0, "long": 0} for mode in EXPECTED_MODE_COUNTS}
+    band_counts = {
+        mode: {"short": 0, "medium": 0, "long": 0} for mode in EXPECTED_MODE_COUNTS
+    }
     for route in routes:
         if route.route_mode not in mode_counts:
             continue
@@ -71,10 +78,16 @@ def main() -> None:
     parser.add_argument(
         "command",
         choices=[
-            "merge-research", "resolve-seeds", "generate-routes", "validate-routes", "validate-seeds",
+            "merge-research",
+            "build-osm-poi-index",
+            "resolve-seeds",
+            "generate-routes",
+            "validate-routes",
+            "validate-seeds",
             "export-candidates",
         ],
     )
+    parser.add_argument("--max-online-calls", type=int, default=50)
     args = parser.parse_args()
     if args.command == "merge-research":
         merged = merge_research_drafts(
@@ -83,11 +96,24 @@ def main() -> None:
             _validate_draft_collection,
         )
         print(f"merged_route_draft_count={len(merged)}")
+    elif args.command == "build-osm-poi-index":
+        settings = load_settings()
+        client = OverpassClient(cache_dir=settings.raw_dir / "osm", timeout=180)
+        pois = build_osm_poi_index(client, settings.interim_dir / "osm_poi_index.json")
+        print(f"osm_poi_count={len(pois)}")
     elif args.command == "resolve-seeds":
         settings = load_settings()
-        client = AmapClient(settings.amap_web_service_key, settings.raw_dir / "amap")
-        seeds = resolve_seed_drafts(settings.project_root, client)
+        baidu_client = BaiduClient(settings.baidu_map_ak, settings.raw_dir / "baidu")
+        resolver = HybridPlaceResolver(
+            baidu_client,
+            local_seed_path=settings.seed_dir / "route_seeds.json",
+            osm_index_path=settings.interim_dir / "osm_poi_index.json",
+            boundary_path=settings.web_data_dir / "xuhui_boundary.geojson",
+            max_online_calls=args.max_online_calls,
+        )
+        seeds = resolve_seed_drafts(settings.project_root, resolver)
         print(f"resolved_route_seed_count={len(seeds)}")
+        print(f"baidu_online_call_count={resolver.online_calls}")
     elif args.command == "generate-routes":
         settings = load_settings()
         client = AmapClient(settings.amap_web_service_key, settings.raw_dir / "amap")
@@ -103,7 +129,7 @@ def main() -> None:
         export_candidate_routes(PROJECT_ROOT)
 
 
-def resolve_seed_drafts(project_root: Path, client) -> list[RouteSeed]:
+def resolve_seed_drafts(project_root: Path, resolver) -> list[RouteSeed]:
     seed_dir = project_root / "data" / "seeds"
     draft_path = seed_dir / "route_seed_drafts.json"
     raw = json.loads(draft_path.read_text(encoding="utf-8"))
@@ -116,15 +142,20 @@ def resolve_seed_drafts(project_root: Path, client) -> list[RouteSeed]:
         resolved_nodes = []
         raw_paths = []
         for node_index, node in enumerate(nodes):
-            if not isinstance(node, dict) or not set(node).issubset({"query", "expected_name", "expected_poi_id"}):
-                raise ValueError(f"draft {draft.get('seed_id')} node {node_index} has invalid schema")
+            if not isinstance(node, dict) or not set(node).issubset(
+                {"query", "expected_name", "expected_poi_id"}
+            ):
+                raise ValueError(
+                    f"draft {draft.get('seed_id')} node {node_index} has invalid schema"
+                )
             if not node.get("query") or not node.get("expected_name"):
-                raise ValueError(f"draft {draft.get('seed_id')} node {node_index} requires query and expected_name")
+                raise ValueError(
+                    f"draft {draft.get('seed_id')} node {node_index} requires query and expected_name"
+                )
             try:
-                resolved, raw_path = resolve_node_query(
+                resolved, raw_path = resolver.resolve(
                     node["expected_name"],
                     node["query"],
-                    client,
                     node.get("expected_poi_id"),
                     str(draft.get("seed_id", "")),
                     node_index,
@@ -140,15 +171,21 @@ def resolve_seed_drafts(project_root: Path, client) -> list[RouteSeed]:
             continue
         payload = {key: value for key, value in draft.items() if key != "nodes"}
         evidence = str(payload.get("evidence_note", "")).strip()
-        payload["evidence_note"] = "；".join([evidence, *(f"POI解析响应: {path}" for path in raw_paths)])
+        payload["evidence_note"] = "；".join(
+            [evidence, *(f"POI解析响应: {path}" for path in raw_paths)]
+        )
         payload["ordered_nodes"] = resolved_nodes
         try:
             seeds.append(RouteSeed(**payload))
         except Exception as exc:
-            resolution_failures.append(f"draft index={draft_index} seed_id={draft['seed_id']}: {exc}")
+            resolution_failures.append(
+                f"draft index={draft_index} seed_id={draft['seed_id']}: {exc}"
+            )
 
     if resolution_failures:
-        raise ValueError("route seed resolution failed:\n" + "\n".join(resolution_failures))
+        raise ValueError(
+            "route seed resolution failed:\n" + "\n".join(resolution_failures)
+        )
 
     _validate_seed_collection(seeds)
     seed_dir.mkdir(parents=True, exist_ok=True)
@@ -164,7 +201,12 @@ def resolve_seed_drafts(project_root: Path, client) -> list[RouteSeed]:
             delete=False,
         ) as handle:
             temporary = Path(handle.name)
-            json.dump([seed.model_dump(mode="json") for seed in seeds], handle, ensure_ascii=False, indent=2)
+            json.dump(
+                [seed.model_dump(mode="json") for seed in seeds],
+                handle,
+                ensure_ascii=False,
+                indent=2,
+            )
             handle.flush()
             os.fsync(handle.fileno())
         os.replace(temporary, target)
@@ -187,11 +229,16 @@ def generate_routes(project_root: Path, client) -> list:
     for index, seed in enumerate(seeds, start=1):
         try:
             candidate = generate_candidate_from_seed(seed, client, index)
-            candidates.append(candidate.model_copy(update={
-                "raw_response_paths": [
-                    _portable_raw_path(project_root, path) for path in candidate.raw_response_paths
-                ]
-            }))
+            candidates.append(
+                candidate.model_copy(
+                    update={
+                        "raw_response_paths": [
+                            _portable_raw_path(project_root, path)
+                            for path in candidate.raw_response_paths
+                        ]
+                    }
+                )
+            )
         except Exception as exc:
             failures.append(
                 {
@@ -204,7 +251,9 @@ def generate_routes(project_root: Path, client) -> list:
                 }
             )
     report = {
-        "batch_status": "failed" if failures or len(candidates) != EXPECTED_ROUTE_COUNT else "preparing",
+        "batch_status": "failed"
+        if failures or len(candidates) != EXPECTED_ROUTE_COUNT
+        else "preparing",
         "seed_count": len(seeds),
         "success_count": len(candidates),
         "failure_count": len(failures),
@@ -214,16 +263,22 @@ def generate_routes(project_root: Path, client) -> list:
     report_path = project_root / "data" / "processed" / "route_generation_report.json"
     candidate_path = project_root / "data" / "interim" / "pilot_candidates.json"
     _atomic_write_json(report_path, report)
-    print(f"route_generation_success={len(candidates)} route_generation_failure={len(failures)}")
+    print(
+        f"route_generation_success={len(candidates)} route_generation_failure={len(failures)}"
+    )
     if failures or len(candidates) != EXPECTED_ROUTE_COUNT:
         raise RuntimeError(
             f"route generation batch failed: success={len(candidates)} failure={len(failures)}; "
             "existing pilot candidates preserved"
         )
     previous_candidate_exists = candidate_path.exists()
-    previous_candidate_bytes = candidate_path.read_bytes() if previous_candidate_exists else None
+    previous_candidate_bytes = (
+        candidate_path.read_bytes() if previous_candidate_exists else None
+    )
     try:
-        _atomic_write_json(candidate_path, [route.model_dump(mode="json") for route in candidates])
+        _atomic_write_json(
+            candidate_path, [route.model_dump(mode="json") for route in candidates]
+        )
     except Exception as exc:
         write_failure = {
             "stage": "candidate_write",
@@ -253,7 +308,11 @@ def generate_routes(project_root: Path, client) -> list:
                 candidate_path.unlink()
         except Exception as rollback_exc:
             rollback_error = rollback_exc
-        detail = f"; candidate rollback failed: {rollback_error}" if rollback_error is not None else ""
+        detail = (
+            f"; candidate rollback failed: {rollback_error}"
+            if rollback_error is not None
+            else ""
+        )
         raise RuntimeError(
             f"route generation batch failed at report stage: success={len(candidates)} failure=1; "
             f"pilot candidates rolled back{detail}"
@@ -271,18 +330,24 @@ def _portable_raw_path(project_root: Path, raw_path: str) -> str:
         return str(path)
 
 
-def validate_routes(project_root: Path, overpass_client, verified_at: datetime | None = None) -> list[CandidateRoute]:
+def validate_routes(
+    project_root: Path, overpass_client, verified_at: datetime | None = None
+) -> list[CandidateRoute]:
     verified_at = verified_at or datetime.now(timezone.utc)
     candidate_path = project_root / "data" / "interim" / "pilot_candidates.json"
     report_path = project_root / "data" / "processed" / "route_validation_report.json"
     try:
         raw = json.loads(candidate_path.read_text(encoding="utf-8"))
         if not isinstance(raw, list) or len(raw) != EXPECTED_ROUTE_COUNT:
-            raise ValueError(f"pilot candidates must contain exactly {EXPECTED_ROUTE_COUNT} routes")
+            raise ValueError(
+                f"pilot candidates must contain exactly {EXPECTED_ROUTE_COUNT} routes"
+            )
         candidates = [CandidateRoute.model_validate(item) for item in raw]
         if len({route.route_id for route in candidates}) != EXPECTED_ROUTE_COUNT:
             raise ValueError("pilot candidate route_id values must be unique")
-        boundary_polygons = _load_boundary_polygons(project_root / "data" / "web" / "xuhui_boundary.geojson")
+        boundary_polygons = _load_boundary_polygons(
+            project_root / "data" / "web" / "xuhui_boundary.geojson"
+        )
     except Exception as exc:
         preflight_report = {
             "batch_status": "failed",
@@ -312,7 +377,10 @@ def validate_routes(project_root: Path, overpass_client, verified_at: datetime |
         try:
             evidence_failures = validate_amap_raw_evidence(route, project_root)
             payload = overpass_client.query(build_overpass_query(route))
-            version = str((payload.get("osm3s") or {}).get("timestamp_osm_base") or "overpass-version-unknown")
+            version = str(
+                (payload.get("osm3s") or {}).get("timestamp_osm_base")
+                or "overpass-version-unknown"
+            )
             network_versions.append(version)
             validated.append(
                 validate_candidate(
@@ -352,7 +420,13 @@ def validate_routes(project_root: Path, overpass_client, verified_at: datetime |
     original_order = {route.route_id: index for index, route in enumerate(validated)}
     for leader_id, duplicate_ids in duplicate_groups.items():
         group_ids = [leader_id, *duplicate_ids]
-        keep_id = min(group_ids, key=lambda route_id: (priority[by_id[route_id].source_level], original_order[route_id]))
+        keep_id = min(
+            group_ids,
+            key=lambda route_id: (
+                priority[by_id[route_id].source_level],
+                original_order[route_id],
+            ),
+        )
         for route_id in group_ids:
             if route_id == keep_id:
                 continue
@@ -368,15 +442,21 @@ def validate_routes(project_root: Path, overpass_client, verified_at: datetime |
             validated[original_order[route_id]] = replacement
 
     counts = {
-        "accepted_count": sum(route.validation_status == "accepted" for route in validated),
-        "review_count": sum(route.validation_status == "needs_review" for route in validated),
-        "rejected_count": sum(route.validation_status == "rejected" for route in validated),
+        "accepted_count": sum(
+            route.validation_status == "accepted" for route in validated
+        ),
+        "review_count": sum(
+            route.validation_status == "needs_review" for route in validated
+        ),
+        "rejected_count": sum(
+            route.validation_status == "rejected" for route in validated
+        ),
     }
     publishable = [route for route in validated if route.is_publishable()]
     mode_counts, distance_band_counts = _route_distribution(validated)
-    distribution_valid = (
-        mode_counts == EXPECTED_MODE_COUNTS
-        and all(counts == {"short": 10, "medium": 10, "long": 10} for counts in distance_band_counts.values())
+    distribution_valid = mode_counts == EXPECTED_MODE_COUNTS and all(
+        counts == {"short": 10, "medium": 10, "long": 10}
+        for counts in distance_band_counts.values()
     )
     batch_publishable = (
         len(validated) == EXPECTED_ROUTE_COUNT
@@ -391,7 +471,9 @@ def validate_routes(project_root: Path, overpass_client, verified_at: datetime |
         "published_count": EXPECTED_ROUTE_COUNT if batch_publishable else 0,
         "mode_counts": mode_counts,
         "distance_band_counts": distance_band_counts,
-        "network_version": distinct_versions[0] if len(distinct_versions) == 1 else distinct_versions,
+        "network_version": distinct_versions[0]
+        if len(distinct_versions) == 1
+        else distinct_versions,
         "duplicate_groups": duplicate_groups,
         "routes": [
             {
@@ -400,7 +482,9 @@ def validate_routes(project_root: Path, overpass_client, verified_at: datetime |
                 "validation_status": route.validation_status,
                 "snap_ratio": route.snap_ratio,
                 "route_inside_ratio": route.route_inside_ratio,
-                "source_accessed_at": route.source_accessed_at.isoformat() if route.source_accessed_at else None,
+                "source_accessed_at": route.source_accessed_at.isoformat()
+                if route.source_accessed_at
+                else None,
                 "network_source": route.network_source,
                 "review_note": route.review_note,
             }
@@ -410,7 +494,9 @@ def validate_routes(project_root: Path, overpass_client, verified_at: datetime |
     }
     processed = project_root / "data" / "processed"
     validated_path = processed / "pilot_validated.json"
-    _atomic_write_json(validated_path, [route.model_dump(mode="json") for route in validated])
+    _atomic_write_json(
+        validated_path, [route.model_dump(mode="json") for route in validated]
+    )
 
     if not batch_publishable:
         _atomic_write_json(report_path, report)
@@ -428,7 +514,10 @@ def validate_routes(project_root: Path, overpass_client, verified_at: datetime |
     try:
         _write_json_transaction(
             web_targets,
-            [build_route_feature_collection(publishable), build_route_catalog(publishable)],
+            [
+                build_route_feature_collection(publishable),
+                build_route_catalog(publishable),
+            ],
         )
     except Exception as exc:
         cause = exc.__cause__ or exc
@@ -448,7 +537,9 @@ def validate_routes(project_root: Path, overpass_client, verified_at: datetime |
             _atomic_write_json(report_path, report)
         except Exception:
             pass
-        raise RuntimeError("success report write failed; web files rolled back") from exc
+        raise RuntimeError(
+            "success report write failed; web files rolled back"
+        ) from exc
     return validated
 
 
@@ -475,14 +566,20 @@ def _write_json_transaction(targets: list[Path], payloads: list) -> None:
     except Exception as exc:
         rollback_failures = _restore_files(targets, snapshots)
         detail = f"; rollback failures={rollback_failures}" if rollback_failures else ""
-        raise RuntimeError(f"publish transaction failed; all targets rolled back{detail}") from exc
+        raise RuntimeError(
+            f"publish transaction failed; all targets rolled back{detail}"
+        ) from exc
 
 
 def _snapshot_files(targets: list[Path]) -> list[tuple[bool, bytes]]:
-    return [(path.exists(), path.read_bytes() if path.exists() else b"") for path in targets]
+    return [
+        (path.exists(), path.read_bytes() if path.exists() else b"") for path in targets
+    ]
 
 
-def _restore_files(targets: list[Path], snapshots: list[tuple[bool, bytes]]) -> list[str]:
+def _restore_files(
+    targets: list[Path], snapshots: list[tuple[bool, bytes]]
+) -> list[str]:
     failures = []
     for path, (existed, content) in zip(targets, snapshots):
         try:
@@ -500,7 +597,9 @@ def _stage_failure(stage: str, exc: Exception) -> dict:
         "stage": stage,
         "type": type(exc).__name__,
         "message": str(exc),
-        "traceback": "".join(traceback.format_exception(type(exc), exc, exc.__traceback__)),
+        "traceback": "".join(
+            traceback.format_exception(type(exc), exc, exc.__traceback__)
+        ),
     }
 
 
@@ -509,7 +608,12 @@ def _atomic_write_json(target: Path, payload) -> None:
     temporary: Path | None = None
     try:
         with tempfile.NamedTemporaryFile(
-            mode="w", encoding="utf-8", dir=target.parent, prefix=f".{target.stem}.", suffix=".tmp", delete=False
+            mode="w",
+            encoding="utf-8",
+            dir=target.parent,
+            prefix=f".{target.stem}.",
+            suffix=".tmp",
+            delete=False,
         ) as handle:
             temporary = Path(handle.name)
             json.dump(payload, handle, ensure_ascii=False, indent=2)
@@ -526,7 +630,11 @@ def _atomic_write_bytes(target: Path, payload: bytes) -> None:
     temporary: Path | None = None
     try:
         with tempfile.NamedTemporaryFile(
-            mode="wb", dir=target.parent, prefix=f".{target.stem}.", suffix=".tmp", delete=False
+            mode="wb",
+            dir=target.parent,
+            prefix=f".{target.stem}.",
+            suffix=".tmp",
+            delete=False,
         ) as handle:
             temporary = Path(handle.name)
             handle.write(payload)
@@ -540,19 +648,33 @@ def _atomic_write_bytes(target: Path, payload: bytes) -> None:
 
 def _validate_seed_collection(seeds: list[RouteSeed]) -> None:
     if len(seeds) != EXPECTED_ROUTE_COUNT:
-        raise ValueError(f"route seeds must contain exactly {EXPECTED_ROUTE_COUNT} routes")
-    counts = {mode: sum(seed.route_mode == mode for seed in seeds) for mode in ("run", "walk", "bike")}
+        raise ValueError(
+            f"route seeds must contain exactly {EXPECTED_ROUTE_COUNT} routes"
+        )
+    counts = {
+        mode: sum(seed.route_mode == mode for seed in seeds)
+        for mode in ("run", "walk", "bike")
+    }
     if counts != {"run": 30, "walk": 30, "bike": 30}:
         raise ValueError(f"route mode counts must be 30 each: {counts}")
     _, band_counts = _route_distribution_from_targets(seeds)
-    if not all(count == {"short": 10, "medium": 10, "long": 10} for count in band_counts.values()):
-        raise ValueError(f"route target-distance bands must contain 10 routes each: {band_counts}")
+    if not all(
+        count == {"short": 10, "medium": 10, "long": 10}
+        for count in band_counts.values()
+    ):
+        raise ValueError(
+            f"route target-distance bands must contain 10 routes each: {band_counts}"
+        )
     if len({seed.seed_id for seed in seeds}) != len(seeds):
         raise ValueError("route seed_id values must be unique")
     if len({seed.route_name for seed in seeds}) != len(seeds):
         raise ValueError("route_name values must be unique")
     for seed in seeds:
-        if not seed.source_name.strip() or not seed.source_url.strip() or not seed.evidence_note.strip():
+        if (
+            not seed.source_name.strip()
+            or not seed.source_url.strip()
+            or not seed.evidence_note.strip()
+        ):
             raise ValueError(f"seed {seed.seed_id} requires source evidence")
         if not seed.access_restrictions:
             raise ValueError(f"seed {seed.seed_id} requires access restrictions")
@@ -563,32 +685,61 @@ def _validate_seed_collection(seeds: list[RouteSeed]) -> None:
 
 def _validate_draft_collection(raw) -> None:
     if not isinstance(raw, list):
-        raise ValueError("draft index=collection seed_id=<unknown>: drafts must be a list")
+        raise ValueError(
+            "draft index=collection seed_id=<unknown>: drafts must be a list"
+        )
     if len(raw) != EXPECTED_ROUTE_COUNT:
         raise ValueError(
             f"draft index=collection seed_id=<unknown>: expected {EXPECTED_ROUTE_COUNT} drafts, got {len(raw)}"
         )
     allowed_keys = {
-        "seed_id", "route_name", "route_mode", "distance_level", "target_distance_m", "region_zone",
-        "start_hint", "end_hint", "waypoint_hints", "tags", "reason", "source_name", "source_url",
-        "source_accessed_at", "confidence", "source_level", "evidence_note", "access_restrictions", "allowed_modes", "nodes",
+        "seed_id",
+        "route_name",
+        "route_mode",
+        "distance_level",
+        "target_distance_m",
+        "region_zone",
+        "start_hint",
+        "end_hint",
+        "waypoint_hints",
+        "tags",
+        "reason",
+        "source_name",
+        "source_url",
+        "source_accessed_at",
+        "confidence",
+        "source_level",
+        "evidence_note",
+        "access_restrictions",
+        "allowed_modes",
+        "nodes",
     }
     required_text = {
-        "seed_id", "route_name", "source_name", "source_url", "source_accessed_at", "reason", "evidence_note"
+        "seed_id",
+        "route_name",
+        "source_name",
+        "source_url",
+        "source_accessed_at",
+        "reason",
+        "evidence_note",
     }
     seen_ids: set[str] = set()
     seen_names: set[str] = set()
     counts = {"run": 0, "walk": 0, "bike": 0}
     band_counts = {mode: {"short": 0, "medium": 0, "long": 0} for mode in counts}
     for draft_index, draft in enumerate(raw):
-        seed_id = str(draft.get("seed_id", "")) if isinstance(draft, dict) else "<unknown>"
+        seed_id = (
+            str(draft.get("seed_id", "")) if isinstance(draft, dict) else "<unknown>"
+        )
         context = f"draft index={draft_index} seed_id={seed_id or '<unknown>'}"
         if not isinstance(draft, dict):
             raise ValueError(f"{context}: item must be a dict")
         extras = set(draft) - allowed_keys
         missing = allowed_keys - set(draft)
         if extras or missing:
-            raise ValueError(f"{context}: extra or missing fields: extra={sorted(extras)} missing={sorted(missing)}")
+            raise ValueError(
+                f"{context}: extra or missing fields: extra={sorted(extras)} missing={sorted(missing)}"
+            )
         for field in required_text:
             if not isinstance(draft[field], str) or not draft[field].strip():
                 raise ValueError(f"{context}: {field} must be non-empty")
@@ -604,7 +755,9 @@ def _validate_draft_collection(raw) -> None:
         counts[mode] += 1
         band = _distance_band(mode, draft["target_distance_m"])
         if band is None:
-            raise ValueError(f"{context}: target_distance_m falls outside the approved range")
+            raise ValueError(
+                f"{context}: target_distance_m falls outside the approved range"
+            )
         band_counts[mode][band] += 1
         if draft["source_level"] not in {"A", "B", "C"}:
             raise ValueError(f"{context}: source_level must be A, B, or C")
@@ -613,26 +766,50 @@ def _validate_draft_collection(raw) -> None:
         try:
             date.fromisoformat(draft["source_accessed_at"])
         except ValueError as exc:
-            raise ValueError(f"{context}: source_accessed_at must use YYYY-MM-DD") from exc
-        if not isinstance(draft["access_restrictions"], list) or not draft["access_restrictions"] or not all(str(item).strip() for item in draft["access_restrictions"]):
+            raise ValueError(
+                f"{context}: source_accessed_at must use YYYY-MM-DD"
+            ) from exc
+        if (
+            not isinstance(draft["access_restrictions"], list)
+            or not draft["access_restrictions"]
+            or not all(str(item).strip() for item in draft["access_restrictions"])
+        ):
             raise ValueError(f"{context}: access_restrictions must be non-empty")
-        if not isinstance(draft["allowed_modes"], list) or mode not in draft["allowed_modes"]:
+        if (
+            not isinstance(draft["allowed_modes"], list)
+            or mode not in draft["allowed_modes"]
+        ):
             raise ValueError(f"{context}: allowed_modes must contain route_mode")
         nodes = draft["nodes"]
         if not isinstance(nodes, list) or len(nodes) < 2:
             raise ValueError(f"{context}: nodes must contain at least two items")
         for node_index, node in enumerate(nodes):
-            if not isinstance(node, dict) or not set(node).issubset({"query", "expected_name", "expected_poi_id"}):
-                raise ValueError(f"{context}: nodes[{node_index}] has extra or invalid fields")
+            if not isinstance(node, dict) or not set(node).issubset(
+                {"query", "expected_name", "expected_poi_id"}
+            ):
+                raise ValueError(
+                    f"{context}: nodes[{node_index}] has extra or invalid fields"
+                )
             if not node.get("query") or not node.get("expected_name"):
-                raise ValueError(f"{context}: nodes[{node_index}] requires query and expected_name")
+                raise ValueError(
+                    f"{context}: nodes[{node_index}] requires query and expected_name"
+                )
     if counts != {"run": 30, "walk": 30, "bike": 30}:
-        raise ValueError(f"draft index=collection seed_id=<unknown>: route mode counts must be 30 each: {counts}")
-    if not all(count == {"short": 10, "medium": 10, "long": 10} for count in band_counts.values()):
-        raise ValueError(f"draft index=collection seed_id=<unknown>: distance bands must contain 10 routes each: {band_counts}")
+        raise ValueError(
+            f"draft index=collection seed_id=<unknown>: route mode counts must be 30 each: {counts}"
+        )
+    if not all(
+        count == {"short": 10, "medium": 10, "long": 10}
+        for count in band_counts.values()
+    ):
+        raise ValueError(
+            f"draft index=collection seed_id=<unknown>: distance bands must contain 10 routes each: {band_counts}"
+        )
 
 
-def _route_distribution_from_targets(seeds: list[RouteSeed]) -> tuple[dict[str, int], dict[str, dict[str, int]]]:
+def _route_distribution_from_targets(
+    seeds: list[RouteSeed],
+) -> tuple[dict[str, int], dict[str, dict[str, int]]]:
     candidates = [
         CandidateRoute(
             route_id=seed.seed_id,
@@ -655,20 +832,39 @@ def _route_distribution_from_targets(seeds: list[RouteSeed]) -> tuple[dict[str, 
 
 def export_candidate_routes(project_root: Path) -> list[CandidateRoute]:
     source = project_root / "data" / "processed" / "pilot_validated.json"
-    routes = [CandidateRoute.model_validate(item) for item in json.loads(source.read_text(encoding="utf-8"))]
-    if len(routes) != EXPECTED_ROUTE_COUNT or len({route.route_id for route in routes}) != EXPECTED_ROUTE_COUNT:
+    routes = [
+        CandidateRoute.model_validate(item)
+        for item in json.loads(source.read_text(encoding="utf-8"))
+    ]
+    if (
+        len(routes) != EXPECTED_ROUTE_COUNT
+        or len({route.route_id for route in routes}) != EXPECTED_ROUTE_COUNT
+    ):
         raise ValueError("candidate web export requires 90 unique routes")
-    counts = {mode: sum(route.route_mode == mode for route in routes) for mode in EXPECTED_MODE_COUNTS}
+    counts = {
+        mode: sum(route.route_mode == mode for route in routes)
+        for mode in EXPECTED_MODE_COUNTS
+    }
     if counts != EXPECTED_MODE_COUNTS:
         raise ValueError(f"candidate web export requires 30 routes per mode: {counts}")
-    if any(route.validation_status not in {"accepted", "needs_review"} for route in routes):
-        raise ValueError("candidate web export only accepts accepted or needs_review routes")
+    if any(
+        route.validation_status not in {"accepted", "needs_review"} for route in routes
+    ):
+        raise ValueError(
+            "candidate web export only accepts accepted or needs_review routes"
+        )
 
     web = project_root / "data" / "web"
-    _atomic_write_json(web / "xuhui_routes.geojson", build_candidate_route_feature_collection(routes))
-    _atomic_write_json(web / "route_catalog.json", build_candidate_route_catalog(routes))
+    _atomic_write_json(
+        web / "xuhui_routes.geojson", build_candidate_route_feature_collection(routes)
+    )
+    _atomic_write_json(
+        web / "route_catalog.json", build_candidate_route_catalog(routes)
+    )
     document = _candidate_audit_document(routes)
-    (project_root / "0813徐汇区90条路线验收与考证清单.md").write_text(document, encoding="utf-8")
+    (project_root / "0813徐汇区90条路线验收与考证清单.md").write_text(
+        document, encoding="utf-8"
+    )
     print(
         f"candidate_web_routes={len(routes)} "
         f"accepted={sum(route.validation_status == 'accepted' for route in routes)} "
@@ -702,7 +898,11 @@ def _candidate_audit_document(routes: list[CandidateRoute]) -> str:
     for route in routes:
         status = "严格验收" if route.validation_status == "accepted" else "待考证"
         snap = f"{route.snap_ratio:.1%}" if route.snap_ratio is not None else "待复核"
-        inside = f"{route.route_inside_ratio:.1%}" if route.route_inside_ratio is not None else "待复核"
+        inside = (
+            f"{route.route_inside_ratio:.1%}"
+            if route.route_inside_ratio is not None
+            else "待复核"
+        )
         note = route.review_note.replace("|", "／").replace("\n", " ")
         name = route.route_name.replace("|", "／")
         lines.append(
@@ -728,14 +928,28 @@ def _candidate_audit_document(routes: list[CandidateRoute]) -> str:
 def export_demo(project_root: Path) -> None:
     dataset = build_demo_dataset()
     web_dir = project_root / "data" / "web"
-    write_json(web_dir / "xuhui_boundary.geojson", {"type": "FeatureCollection", "features": [dataset.boundary]})
-    write_json(web_dir / "xuhui_entries.geojson", build_feature_collection(dataset.entries))
-    write_json(web_dir / "xuhui_routes.geojson", build_route_feature_collection(dataset.routes))
+    write_json(
+        web_dir / "xuhui_boundary.geojson",
+        {"type": "FeatureCollection", "features": [dataset.boundary]},
+    )
+    write_json(
+        web_dir / "xuhui_entries.geojson", build_feature_collection(dataset.entries)
+    )
+    write_json(
+        web_dir / "xuhui_routes.geojson", build_route_feature_collection(dataset.routes)
+    )
     write_json(web_dir / "route_catalog.json", build_route_catalog(dataset.routes))
     write_json(web_dir / "poi_catalog.json", build_poi_feature_collection(dataset.pois))
-    write_json(web_dir / "access_cases.json", build_access_catalog(dataset.access_cases))
-    write_entries_csv(project_root / "data" / "processed" / "xuhui_entry_pool.csv", dataset.entries)
-    write_access_cases_csv(project_root / "data" / "processed" / "xuhui_access_cases.csv", dataset.access_cases)
+    write_json(
+        web_dir / "access_cases.json", build_access_catalog(dataset.access_cases)
+    )
+    write_entries_csv(
+        project_root / "data" / "processed" / "xuhui_entry_pool.csv", dataset.entries
+    )
+    write_access_cases_csv(
+        project_root / "data" / "processed" / "xuhui_access_cases.csv",
+        dataset.access_cases,
+    )
     print(
         " ".join(
             [

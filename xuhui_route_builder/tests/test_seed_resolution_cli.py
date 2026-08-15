@@ -17,7 +17,12 @@ def _expanded_drafts() -> list[dict]:
         source.extend(json.loads(path.read_text(encoding="utf-8")))
     if len(source) == 90:
         return source
-    path = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seed_drafts.json"
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "data"
+        / "seeds"
+        / "route_seed_drafts.json"
+    )
     source = json.loads(path.read_text(encoding="utf-8"))
     drafts = []
     for copy_index in range(6):
@@ -31,7 +36,9 @@ def _expanded_drafts() -> list[dict]:
 
 def _write_expanded_drafts(seed_dir: Path) -> list[dict]:
     drafts = _expanded_drafts()
-    (seed_dir / "route_seed_drafts.json").write_text(json.dumps(drafts, ensure_ascii=False), encoding="utf-8")
+    (seed_dir / "route_seed_drafts.json").write_text(
+        json.dumps(drafts, ensure_ascii=False), encoding="utf-8"
+    )
     return drafts
 
 
@@ -44,7 +51,12 @@ class DraftClient:
         self.calls.append((query, region))
         if query == self.fail_query:
             raise RuntimeError("forced failure")
-        drafts_path = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seed_drafts.json"
+        drafts_path = (
+            Path(__file__).resolve().parents[1]
+            / "data"
+            / "seeds"
+            / "route_seed_drafts.json"
+        )
         drafts = json.loads(drafts_path.read_text(encoding="utf-8"))
         expected_ids = {
             node["query"]: node["expected_poi_id"]
@@ -85,12 +97,20 @@ class DraftClient:
             },
         )
 
+    def resolve(self, expected_name, query, expected_poi_id, seed_id, node_index):
+        return resolve_node_query(
+            expected_name, query, self, expected_poi_id, seed_id, node_index
+        )
+
 
 def test_route_seed_drafts_have_exact_balanced_strict_schema() -> None:
     drafts = _expanded_drafts()
 
     assert len(drafts) == 90
-    assert {mode: sum(item["route_mode"] == mode for item in drafts) for mode in ("run", "walk", "bike")} == {
+    assert {
+        mode: sum(item["route_mode"] == mode for item in drafts)
+        for mode in ("run", "walk", "bike")
+    } == {
         "run": 30,
         "walk": 30,
         "bike": 30,
@@ -110,7 +130,11 @@ def test_route_seed_drafts_have_exact_balanced_strict_schema() -> None:
 def test_route_seed_drafts_do_not_use_out_of_district_lupu_bridge_poi() -> None:
     drafts = _expanded_drafts()
 
-    assert all(node["expected_name"] != "卢浦大桥" for draft in drafts for node in draft["nodes"])
+    assert all(
+        node["expected_name"] != "卢浦大桥"
+        for draft in drafts
+        for node in draft["nodes"]
+    )
 
 
 def test_resolve_node_query_returns_strict_real_node_and_contextual_error() -> None:
@@ -123,16 +147,23 @@ def test_resolve_node_query_returns_strict_real_node_and_contextual_error() -> N
     assert client.calls == [("入口", "310104")]
 
     with pytest.raises(ValueError, match=r"seed_id=seed-1.*node_index=3.*坏入口"):
-        resolve_node_query("坏入口", "坏入口", DraftClient(fail_query="坏入口"), None, "seed-1", 3)
+        resolve_node_query(
+            "坏入口", "坏入口", DraftClient(fail_query="坏入口"), None, "seed-1", 3
+        )
 
 
 def test_repository_raw_paths_are_persisted_as_relative_paths(tmp_path: Path) -> None:
     raw_path = tmp_path / "data" / "raw" / "amap" / "walking_v2_test.json"
 
-    assert cli_module._portable_raw_path(tmp_path, str(raw_path)) == "data/raw/amap/walking_v2_test.json"
+    assert (
+        cli_module._portable_raw_path(tmp_path, str(raw_path))
+        == "data/raw/amap/walking_v2_test.json"
+    )
 
 
-def test_resolve_seed_drafts_writes_strict_seeds_and_validate_seeds(tmp_path: Path) -> None:
+def test_resolve_seed_drafts_writes_strict_seeds_and_validate_seeds(
+    tmp_path: Path,
+) -> None:
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
     _write_expanded_drafts(seed_dir)
@@ -141,7 +172,11 @@ def test_resolve_seed_drafts_writes_strict_seeds_and_validate_seeds(tmp_path: Pa
     validated = validate_seeds(tmp_path)
 
     assert len(seeds) == len(validated) == 90
-    assert all(node.lng_gcj02 is not None and node.lat_gcj02 is not None for seed in seeds for node in seed.ordered_nodes)
+    assert all(
+        node.lng_gcj02 is not None and node.lat_gcj02 is not None
+        for seed in seeds
+        for node in seed.ordered_nodes
+    )
     assert all("POI解析响应:" in seed.evidence_note for seed in seeds)
     assert all(str(tmp_path) not in seed.evidence_note for seed in seeds)
     persisted = json.loads((seed_dir / "route_seeds.json").read_text(encoding="utf-8"))
@@ -183,14 +218,18 @@ def test_resolve_seed_drafts_reports_all_node_failures(tmp_path: Path) -> None:
     assert second_query in str(caught.value)
 
 
-def test_validate_seeds_rejects_wrong_mode_counts_or_missing_restrictions(tmp_path: Path) -> None:
+def test_validate_seeds_rejects_wrong_mode_counts_or_missing_restrictions(
+    tmp_path: Path,
+) -> None:
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
     drafts = _expanded_drafts()
     drafts[0]["route_mode"] = "walk"
     drafts[0]["allowed_modes"] = ["walk"]
     drafts[1]["access_restrictions"] = []
-    (seed_dir / "route_seed_drafts.json").write_text(json.dumps(drafts, ensure_ascii=False), encoding="utf-8")
+    (seed_dir / "route_seed_drafts.json").write_text(
+        json.dumps(drafts, ensure_ascii=False), encoding="utf-8"
+    )
 
     with pytest.raises(ValueError):
         resolve_seed_drafts(tmp_path, DraftClient())
@@ -201,19 +240,26 @@ def test_validate_seeds_rejects_wrong_mode_counts_or_missing_restrictions(tmp_pa
     [
         (lambda drafts: drafts[0].update({"unexpected": True}), "extra"),
         (lambda drafts: drafts[1].update({"seed_id": drafts[0]["seed_id"]}), "seed_id"),
-        (lambda drafts: drafts[1].update({"route_name": drafts[0]["route_name"]}), "route_name"),
+        (
+            lambda drafts: drafts[1].update({"route_name": drafts[0]["route_name"]}),
+            "route_name",
+        ),
         (lambda drafts: drafts[0].update({"source_name": ""}), "source_name"),
         (lambda drafts: drafts[0].update({"evidence_note": ""}), "evidence_note"),
         (lambda drafts: drafts[0].update({"allowed_modes": ["walk"]}), "allowed_modes"),
         (lambda drafts: drafts[0]["nodes"][0].update({"extra": "bad"}), "nodes"),
     ],
 )
-def test_draft_preflight_rejects_invalid_collection_before_api_calls(tmp_path: Path, mutate, message: str) -> None:
+def test_draft_preflight_rejects_invalid_collection_before_api_calls(
+    tmp_path: Path, mutate, message: str
+) -> None:
     drafts = _expanded_drafts()
     mutate(drafts)
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
-    (seed_dir / "route_seed_drafts.json").write_text(json.dumps(drafts, ensure_ascii=False), encoding="utf-8")
+    (seed_dir / "route_seed_drafts.json").write_text(
+        json.dumps(drafts, ensure_ascii=False), encoding="utf-8"
+    )
     client = DraftClient()
 
     with pytest.raises(ValueError, match=rf"draft index=.*seed_id=.*{message}"):
@@ -221,7 +267,9 @@ def test_draft_preflight_rejects_invalid_collection_before_api_calls(tmp_path: P
     assert client.calls == []
 
 
-def test_atomic_replace_failure_preserves_existing_target_and_cleans_temp(tmp_path: Path, monkeypatch) -> None:
+def test_atomic_replace_failure_preserves_existing_target_and_cleans_temp(
+    tmp_path: Path, monkeypatch
+) -> None:
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
     _write_expanded_drafts(seed_dir)
@@ -239,7 +287,9 @@ def test_atomic_replace_failure_preserves_existing_target_and_cleans_temp(tmp_pa
     assert list(seed_dir.glob(".route_seeds.*.tmp")) == []
 
 
-def test_atomic_write_failure_preserves_existing_target_and_cleans_temp(tmp_path: Path, monkeypatch) -> None:
+def test_atomic_write_failure_preserves_existing_target_and_cleans_temp(
+    tmp_path: Path, monkeypatch
+) -> None:
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
     _write_expanded_drafts(seed_dir)
@@ -257,7 +307,9 @@ def test_atomic_write_failure_preserves_existing_target_and_cleans_temp(tmp_path
     assert list(seed_dir.glob(".route_seeds.*.tmp")) == []
 
 
-def test_atomic_write_uses_a_unique_temp_name_for_each_run(tmp_path: Path, monkeypatch) -> None:
+def test_atomic_write_uses_a_unique_temp_name_for_each_run(
+    tmp_path: Path, monkeypatch
+) -> None:
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
     _write_expanded_drafts(seed_dir)
