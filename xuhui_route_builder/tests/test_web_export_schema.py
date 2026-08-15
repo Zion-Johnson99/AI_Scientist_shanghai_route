@@ -6,7 +6,7 @@ from xuhui_route_builder.exporters import (
     build_feature_collection,
     build_route_catalog,
 )
-from xuhui_route_builder.models import CandidateRoute, CoordinatePair, EntryPoint
+from xuhui_route_builder.models import CandidateRoute, CoordinatePair, EntryPoint, RouteLocation, RouteNode
 
 
 def test_build_feature_collection_returns_geojson() -> None:
@@ -31,15 +31,21 @@ def test_build_feature_collection_returns_geojson() -> None:
 
 
 def test_build_route_catalog_keeps_score_placeholder() -> None:
+    shared = RouteLocation(name="徐汇滨江入口", location_type="riverside_access", lng_gcj02=121.45, lat_gcj02=31.17, source_url="https://example.com/entry")
     route = CandidateRoute(
         route_id="XH_RUN_3K_0001",
         route_name="徐汇滨江舒心跑",
         route_mode="run",
+        route_shape="strict_loop",
         target_distance_m=3000,
         actual_distance_m=3050,
         duration_s=1200,
         start_entry_id="XH_ENT_0001",
         end_entry_id="XH_ENT_0001",
+        start_location=shared,
+        end_location=shared,
+        ordered_nodes=[RouteNode(node_name=shared.name, lng_gcj02=shared.lng_gcj02, lat_gcj02=shared.lat_gcj02), RouteNode(node_name=shared.name, lng_gcj02=shared.lng_gcj02, lat_gcj02=shared.lat_gcj02)],
+        amenity_ids=[],
         region_zone="徐汇滨江",
         polyline_gcj02=[
             CoordinatePair(lng_gcj02=121.45, lat_gcj02=31.17, lng_wgs84=121.445, lat_wgs84=31.172),
@@ -65,22 +71,31 @@ def test_build_route_catalog_keeps_score_placeholder() -> None:
     assert "后续评分" in catalog[0]["score_note"]
     assert catalog[0]["start_location"] == {
         "name": "徐汇滨江入口",
+        "location_type": "riverside_access",
         "lng_gcj02": 121.45,
         "lat_gcj02": 31.17,
+        "source_url": "https://example.com/entry",
     }
     assert catalog[0]["source_accessed_at"] == "2026-08-13"
 
 
 def test_build_route_catalog_exports_navigation_and_preference_metadata() -> None:
+    start = RouteLocation(name="衡山路8号", location_type="public_space", lng_gcj02=121.446, lat_gcj02=31.205, source_url="https://example.com/start")
+    end = RouteLocation(name="上海音乐学院", location_type="public_space", lng_gcj02=121.4387, lat_gcj02=31.2077, source_url="https://example.com/end")
     route = CandidateRoute(
         route_id="XH_WALK_REAL_0001",
         route_name="衡复音乐街区 Citywalk",
         route_mode="walk",
+        route_shape="one_way",
         target_distance_m=2600,
         actual_distance_m=2600,
         duration_s=2080,
         start_entry_id="XH_ENT_0011",
         end_entry_id="XH_ENT_0012",
+        start_location=start,
+        end_location=end,
+        ordered_nodes=[RouteNode(node_name=start.name, lng_gcj02=start.lng_gcj02, lat_gcj02=start.lat_gcj02), RouteNode(node_name="东平路", lng_gcj02=121.442, lat_gcj02=31.206), RouteNode(node_name=end.name, lng_gcj02=end.lng_gcj02, lat_gcj02=end.lat_gcj02)],
+        amenity_ids=["XH_POI_0001"],
         region_zone="衡复风貌区",
         polyline_gcj02=[
             CoordinatePair(lng_gcj02=121.446, lat_gcj02=31.205, lng_wgs84=121.441, lat_wgs84=31.207),
@@ -112,21 +127,30 @@ def test_build_route_catalog_exports_navigation_and_preference_metadata() -> Non
     assert catalog[0]["preference_hits"] == ["coffee"]
     assert catalog[0]["start_location"] == {
         "name": "衡山路8号",
+        "location_type": "public_space",
         "lng_gcj02": 121.446,
         "lat_gcj02": 31.205,
+        "source_url": "https://example.com/start",
     }
 
 
 def test_candidate_exports_include_routes_awaiting_strict_review() -> None:
+    start = RouteLocation(name="候选入口", location_type="public_space", lng_gcj02=121.45, lat_gcj02=31.17, source_url="https://example.com/start")
+    end = RouteLocation(name="候选终点", location_type="public_space", lng_gcj02=121.46, lat_gcj02=31.16, source_url="https://example.com/end")
     route = CandidateRoute(
         route_id="XH_WALK_REVIEW_0001",
         route_name="待考证步行线",
         route_mode="walk",
+        route_shape="one_way",
         target_distance_m=1800,
         actual_distance_m=1900,
         duration_s=1400,
         start_entry_id="candidate-start",
         end_entry_id="candidate-end",
+        start_location=start,
+        end_location=end,
+        ordered_nodes=[RouteNode(node_name=start.name, lng_gcj02=start.lng_gcj02, lat_gcj02=start.lat_gcj02), RouteNode(node_name=end.name, lng_gcj02=end.lng_gcj02, lat_gcj02=end.lat_gcj02)],
+        amenity_ids=[],
         region_zone="徐汇滨江",
         polyline_gcj02=[
             CoordinatePair(lng_gcj02=121.45, lat_gcj02=31.17, lng_wgs84=121.445, lat_wgs84=31.172),

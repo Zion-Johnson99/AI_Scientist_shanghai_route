@@ -13,7 +13,7 @@
   --teal-dark: #0759cf;
   --run: #ff5d5d;
   --walk: #13bfa6;
-  --bike: #1677ff;
+  --bike: #7C3AED;
   --access: #ff9f1a;
 }
 
@@ -484,7 +484,7 @@ select:disabled {
 }
 
 .mode-pill[data-mode="run"] { color: #8e3028; background: #f8e7e4; }
-.mode-pill[data-mode="bike"] { color: #1f558e; background: #e5eef8; }
+.mode-pill[data-mode="bike"] { color: #5b21b6; background: #ede9fe; }
 .status-pill { color: #7d5a16; background: #fff4d5; }
 .status-pill[data-status="accepted"] { color: #087a65; background: #dcf8f1; }
 

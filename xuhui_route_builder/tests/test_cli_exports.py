@@ -7,13 +7,18 @@ import sys
 import pytest
 
 from xuhui_route_builder import cli
-from xuhui_route_builder.models import CandidateRoute, CoordinatePair
+from xuhui_route_builder.models import CandidateRoute, CoordinatePair, RouteLocation, RouteNode
 
 
 def _candidate(index: int) -> CandidateRoute:
+    start = RouteLocation(name=f"入口{index}", location_type="public_space", lng_gcj02=121.4, lat_gcj02=31.1, source_url="https://example.com/start")
+    end = RouteLocation(name=f"终点{index}", location_type="public_space", lng_gcj02=121.401, lat_gcj02=31.1, source_url="https://example.com/end")
     return CandidateRoute(
         route_id=f"route-{index}", route_name=f"路线{index}", route_mode="walk", target_distance_m=100,
-        actual_distance_m=100, duration_s=80, start_entry_id="a", end_entry_id="b", region_zone="徐汇",
+        route_shape="one_way", actual_distance_m=100, duration_s=80, start_entry_id="a", end_entry_id="b",
+        start_location=start, end_location=end,
+        ordered_nodes=[RouteNode(node_name=start.name, lng_gcj02=start.lng_gcj02, lat_gcj02=start.lat_gcj02), RouteNode(node_name=end.name, lng_gcj02=end.lng_gcj02, lat_gcj02=end.lat_gcj02)],
+        amenity_ids=[], region_zone="徐汇",
         polyline_gcj02=[CoordinatePair(lng_gcj02=121.4, lat_gcj02=31.1, lng_wgs84=121.395, lat_wgs84=31.102),
                        CoordinatePair(lng_gcj02=121.401, lat_gcj02=31.1, lng_wgs84=121.396, lat_wgs84=31.102)],
         source_method="amap_segmented_direction", geometry_source="amap_direction", geometry_status="complete",
@@ -25,7 +30,7 @@ def test_generate_routes_partial_failure_preserves_old_candidates(tmp_path, monk
     target = tmp_path / "data/interim/pilot_candidates.json"
     target.parent.mkdir(parents=True)
     target.write_text('[{"old": true}]', encoding="utf-8")
-    seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk"})() for i in range(90)]
+    seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk", "geometry_action": "regenerate"})() for i in range(90)]
     monkeypatch.setattr(cli, "validate_seeds", lambda root: seeds)
 
     def generate(seed, client, index):
@@ -52,7 +57,7 @@ def test_generate_routes_with_no_success_preserves_old_candidates(tmp_path, monk
     target = tmp_path / "data/interim/pilot_candidates.json"
     target.parent.mkdir(parents=True)
     target.write_text('[{"old": true}]', encoding="utf-8")
-    seed = type("Seed", (), {"seed_id": "failed", "route_mode": "bike"})()
+    seed = type("Seed", (), {"seed_id": "failed", "route_mode": "bike", "geometry_action": "regenerate"})()
     monkeypatch.setattr(cli, "validate_seeds", lambda root: [seed])
     monkeypatch.setattr(cli, "generate_candidate_from_seed", lambda *args: (_ for _ in ()).throw(RuntimeError("down")))
 
@@ -64,7 +69,7 @@ def test_generate_routes_with_no_success_preserves_old_candidates(tmp_path, monk
 
 
 def test_generate_routes_candidate_write_failure_records_failed_batch(tmp_path, monkeypatch) -> None:
-    seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk"})() for i in range(90)]
+    seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk", "geometry_action": "regenerate"})() for i in range(90)]
     monkeypatch.setattr(cli, "validate_seeds", lambda root: seeds)
     monkeypatch.setattr(cli, "generate_candidate_from_seed", lambda seed, client, index: _candidate(index))
     real_atomic_write = cli._atomic_write_json
@@ -92,7 +97,7 @@ def test_generate_routes_final_report_failure_rolls_back_candidates(tmp_path, mo
     if old_payload is not None:
         candidate_path.parent.mkdir(parents=True)
         candidate_path.write_bytes(old_payload)
-    seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk"})() for i in range(90)]
+    seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk", "geometry_action": "regenerate"})() for i in range(90)]
     monkeypatch.setattr(cli, "validate_seeds", lambda root: seeds)
     monkeypatch.setattr(cli, "generate_candidate_from_seed", lambda seed, client, index: _candidate(index))
     real_atomic_write = cli._atomic_write_json
@@ -144,7 +149,7 @@ def test_main_rejects_removed_demo_commands(monkeypatch) -> None:
         cli.main()
 
 
-def test_export_candidate_routes_writes_90_route_web_data_and_audit_document(tmp_path) -> None:
+def test_export_candidate_routes_writes_web_data_without_overwriting_0813_baseline(tmp_path) -> None:
     routes = [_candidate(index) for index in range(90)]
     for index, route in enumerate(routes):
         route.route_mode = ("walk", "run", "bike")[index // 30]
@@ -164,9 +169,6 @@ def test_export_candidate_routes_writes_90_route_web_data_and_audit_document(tmp
 
     catalog = json.loads((tmp_path / "data/web/route_catalog.json").read_text(encoding="utf-8"))
     features = json.loads((tmp_path / "data/web/xuhui_routes.geojson").read_text(encoding="utf-8"))
-    document = (tmp_path / "0813徐汇区90条路线验收与考证清单.md").read_text(encoding="utf-8")
     assert len(catalog) == len(features["features"]) == 90
     assert sum(route["display_status"] == "严格验收" for route in catalog) == 6
-    assert "严格验收：6 条" in document
-    assert "待考证：84 条" in document
-    assert document.count("| route-") == 90
+    assert not (tmp_path / "0813徐汇区90条路线验收与考证清单.md").exists()

@@ -351,8 +351,11 @@ export function routeOptionLabel(route) {
 }
 
 function renderDetail(route, detail) {
-  const startName = route.waypoint_names?.[0] || route.start_entry_name || "路线起点";
-  const endName = route.waypoint_names?.at(-1) || route.end_entry_name || "路线终点";
+  const startName = route.start_location?.name || "路线起点";
+  const endName = route.end_location?.name || "路线终点";
+  const endpointHtml = route.route_shape === "strict_loop"
+    ? `<span><b>起终</b>${escapeHtml(startName)}</span>`
+    : `<span><b>起</b>${escapeHtml(startName)}</span><i></i><span><b>终</b>${escapeHtml(endName)}</span>`;
   const status = route.validation_status === "accepted" ? "严格验收" : "待考证";
   detail.innerHTML = `
     <div class="route-card-topline">
@@ -361,7 +364,7 @@ function renderDetail(route, detail) {
     </div>
     <h2>${escapeHtml(route.route_name)}</h2>
     <p class="route-card-place">${escapeHtml(route.region_zone)} · ${Number(route.distance_m || 0).toFixed(0)} 米 · ${Number(route.duration_min || 0).toFixed(0)} 分钟</p>
-    <div class="route-endpoints"><span><b>起</b>${escapeHtml(startName)}</span><i></i><span><b>终</b>${escapeHtml(endName)}</span></div>
+    <div class="route-endpoints">${endpointHtml}</div>
     <p class="route-source">来源：${escapeHtml(route.source_name || "路线数据源")}</p>
     <p class="route-review-note">${escapeHtml(reviewNoteSummary(route.review_note))}</p>
   `;

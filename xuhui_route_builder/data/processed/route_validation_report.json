@@ -1,7 +1,7 @@
 {
   "batch_status": "failed",
-  "accepted_count": 6,
-  "review_count": 84,
+  "accepted_count": 3,
+  "review_count": 87,
   "rejected_count": 0,
   "published_count": 0,
   "mode_counts": {
@@ -11,41 +11,52 @@
   },
   "distance_band_counts": {
     "walk": {
-      "short": 8,
-      "medium": 8,
-      "long": 7
+      "short": 9,
+      "medium": 19,
+      "long": 2
     },
     "run": {
       "short": 6,
-      "medium": 13,
-      "long": 7
+      "medium": 15,
+      "long": 4
     },
     "bike": {
-      "short": 8,
-      "medium": 15,
-      "long": 5
+      "short": 10,
+      "medium": 9,
+      "long": 4
     }
   },
   "network_version": [
-    "2026-07-12T02:33:44Z",
-    "2026-08-13T06:18:21Z",
-    "2026-08-13T06:19:18Z",
-    "2026-08-13T06:20:21Z",
-    "2026-08-13T06:21:21Z",
-    "2026-07-12T02:30:40Z",
-    "2026-08-13T06:22:22Z",
-    "2026-07-12T02:31:45Z",
+    "2026-08-15T07:16:04Z",
+    "2026-08-15T08:33:06Z",
+    "2026-08-15T07:17:05Z",
+    "2026-08-15T07:18:05Z",
+    "2026-08-15T07:19:06Z",
+    "2026-08-15T07:20:06Z",
+    "2026-08-15T07:21:06Z",
     "2026-08-13T06:23:25Z",
-    "2026-08-13T06:24:31Z",
-    "2026-08-13T06:25:31Z",
-    "2026-08-13T06:26:28Z",
+    "2026-08-15T07:22:06Z",
+    "2026-08-15T08:34:06Z",
+    "2026-08-15T07:23:10Z",
+    "2026-08-15T07:24:11Z",
+    "2026-08-15T09:07:01Z",
+    "2026-08-15T07:25:15Z",
     "2026-08-13T06:27:32Z",
-    "2026-08-13T06:28:32Z",
+    "2026-08-15T08:35:05Z",
+    "2026-08-15T07:26:19Z",
+    "2026-08-15T07:27:18Z",
     "2026-08-13T06:29:35Z",
-    "2026-08-13T06:30:35Z",
-    "2026-08-13T06:31:36Z",
+    "2026-08-15T07:28:19Z",
+    "2026-08-15T07:29:21Z",
+    "2026-08-15T08:36:06Z",
+    "2026-08-15T07:30:20Z",
+    "2026-08-15T07:31:24Z",
+    "2026-08-15T07:32:30Z",
     "2026-08-13T06:32:36Z",
-    "2026-08-13T06:33:40Z",
+    "2026-08-15T07:33:28Z",
+    "2026-08-15T07:35:35Z",
+    "2026-08-15T07:37:36Z",
+    "2026-08-15T07:39:35Z",
     "2026-08-13T06:34:40Z"
   ],
   "duplicate_groups": {},
@@ -54,21 +65,21 @@
       "route_id": "XH_WALK_0001",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9787234042553191,
+      "snap_ratio": 0.9384615384615385,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-07-12T02:33:44Z",
-      "review_note": "路网贴合率 97.9% 低于 98%；实际距离与目标距离误差 50.1% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:16:04Z",
+      "review_note": "途经点 西岸穹顶艺术中心 偏离轨迹 50.5 米；路网贴合率 93.8% 低于 98%；实际距离与目标距离误差 29.9% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0002",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=505be918b1b4f61f5b984ec44d231e23876730f7710cd49b5de4ab7a174a5887"
+      "snap_ratio": 0.6266666666666667,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:33:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 4.2%，最长 64.7 米；途经点 北区西侧园路口 偏离轨迹 55.1 米；路网贴合率 62.7% 低于 98%"
     },
     {
       "route_id": "XH_WALK_0003",
@@ -76,99 +87,99 @@
       "validation_status": "needs_review",
       "snap_ratio": 1.0,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:18:21Z",
-      "review_note": "实际距离与目标距离误差 17.1% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:17:05Z",
+      "review_note": "实际距离与目标距离误差 35.1% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0004",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=39fd98f364335c697770c70ded47d6b826bcb1a2f02f7c458169194130ee81d8"
+      "snap_ratio": 0.7681159420289855,
+      "route_inside_ratio": 0.8840579710144928,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:33:06Z",
+      "review_note": "路网贴合率 76.8% 低于 98%；轨迹徐汇区内比例 88.4% 低于 90%"
     },
     {
       "route_id": "XH_WALK_0005",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9845360824742269,
-      "route_inside_ratio": 0.9381443298969072,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:18:21Z",
-      "review_note": "实际距离与目标距离误差 123.2% 超过 15%；起点或终点位于徐汇区外"
+      "snap_ratio": 0.9444444444444444,
+      "route_inside_ratio": 0.4777777777777778,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:17:05Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 3.3%，最长 26.8 米；路网贴合率 94.4% 低于 98%；起点或终点位于徐汇区外；轨迹徐汇区内比例 47.8% 低于 90%"
     },
     {
       "route_id": "XH_WALK_0006",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=af6d4fa97eee509ef66bfdc71f0eebaed70cfd12726e96b7cf7033afa350ca20"
+      "snap_ratio": 0.9365079365079365,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:17:05Z",
+      "review_note": "路网贴合率 93.7% 低于 98%；实际距离与目标距离误差 32.8% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0007",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9710144927536232,
+      "snap_ratio": 0.8130081300813008,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:19:18Z",
-      "review_note": "路网贴合率 97.1% 低于 98%；实际距离与目标距离误差 58.8% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:17:05Z",
+      "review_note": "路网贴合率 81.3% 低于 98%；实际距离与目标距离误差 40.5% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0008",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=0ee2d67d21649b3b53138cfaba8a948765eb303eb43b2fec055562de2139e2e9"
+      "snap_ratio": 0.7380952380952381,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:18:05Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 8.1%，最长 40.0 米；路网贴合率 73.8% 低于 98%"
     },
     {
       "route_id": "XH_WALK_0009",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9076923076923077,
+      "snap_ratio": 0.8028169014084507,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:19:18Z",
-      "review_note": "路网贴合率 90.8% 低于 98%；实际距离与目标距离误差 41.9% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:18:05Z",
+      "review_note": "路网贴合率 80.3% 低于 98%；实际距离与目标距离误差 23.2% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0010",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=9f906661ba21c3fbebf64ab3918375f822acbac8599dfd6769827f0b9a289e63"
+      "snap_ratio": 0.975,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:18:05Z",
+      "review_note": "路网贴合率 97.5% 低于 98%；实际距离与目标距离误差 38.2% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0011",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9916317991631799,
+      "snap_ratio": 1.0,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:19:18Z",
-      "review_note": "实际距离与目标距离误差 194.4% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:18:05Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.2%，最长 59.7 米"
     },
     {
       "route_id": "XH_WALK_0012",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e96df230c9837f5ff55ef2eeba5769700becd06d2bad765d237ee4b68790d097"
+      "snap_ratio": 0.7904191616766467,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:18:05Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 10.1%，最长 93.1 米；路网贴合率 79.0% 低于 98%"
     },
     {
       "route_id": "XH_WALK_0013",
@@ -176,49 +187,49 @@
       "validation_status": "needs_review",
       "snap_ratio": 1.0,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:20:21Z",
-      "review_note": "实际距离与目标距离误差 16.3% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:18:05Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.7%，最长 42.6 米"
     },
     {
       "route_id": "XH_WALK_0014",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=57d2f795b815ea87988e178cdeae92ff94cac6fcfb637d3c7b8df788559a765d"
+      "snap_ratio": 0.9147286821705426,
+      "route_inside_ratio": 0.6744186046511628,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:19:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.3%，最长 26.8 米；路网贴合率 91.5% 低于 98%；起点或终点位于徐汇区外；轨迹徐汇区内比例 67.4% 低于 90%"
     },
     {
       "route_id": "XH_WALK_0015",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=661e75fe7dab3bdb177522a23e39f709f6d9b81e7a8f2a27a23bbea383b31a75"
+      "snap_ratio": 0.9261744966442953,
+      "route_inside_ratio": 0.8456375838926175,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:19:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 4.1%，最长 34.4 米；路网贴合率 92.6% 低于 98%；实际距离与目标距离误差 21.0% 超过 15%；起点或终点位于徐汇区外；轨迹徐汇区内比例 84.6% 低于 90%"
     },
     {
       "route_id": "XH_WALK_0016",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.8423645320197044,
+      "snap_ratio": 0.8130081300813008,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:19:18Z",
-      "review_note": "路网贴合率 84.2% 低于 98%；实际距离与目标距离误差 59.0% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:17:05Z",
+      "review_note": "路网贴合率 81.3% 低于 98%"
     },
     {
       "route_id": "XH_WALK_0017",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5dbcdbb78177168d8a947d7090f38bb7ce0d9aaaa7fb3e1ac71ae81cfd8a2b31"
+      "snap_ratio": 0.8846153846153846,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:19:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 9.8%，最长 77.1 米；路网贴合率 88.5% 低于 98%"
     },
     {
       "route_id": "XH_WALK_0018",
@@ -226,149 +237,149 @@
       "validation_status": "needs_review",
       "snap_ratio": 0.9438202247191011,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:21:21Z",
-      "review_note": "路网贴合率 94.4% 低于 98%；实际距离与目标距离误差 42.6% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:19:06Z",
+      "review_note": "路网贴合率 94.4% 低于 98%"
     },
     {
       "route_id": "XH_WALK_0019",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9387755102040817,
-      "route_inside_ratio": 0.12244897959183673,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-07-12T02:30:40Z",
-      "review_note": "路网贴合率 93.9% 低于 98%；实际距离与目标距离误差 40.1% 超过 15%；起点或终点位于徐汇区外；轨迹徐汇区内比例 12.2% 低于 90%"
+      "snap_ratio": 0.8888888888888888,
+      "route_inside_ratio": 0.1111111111111111,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:19:06Z",
+      "review_note": "路网贴合率 88.9% 低于 98%；实际距离与目标距离误差 67.3% 超过 15%；起点或终点位于徐汇区外；轨迹徐汇区内比例 11.1% 低于 90%"
     },
     {
       "route_id": "XH_WALK_0020",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9453551912568307,
+      "snap_ratio": 0.8897058823529411,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:21:21Z",
-      "review_note": "路网贴合率 94.5% 低于 98%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:33:06Z",
+      "review_note": "路网贴合率 89.0% 低于 98%；实际距离与目标距离误差 17.1% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0021",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9779559118236473,
+      "snap_ratio": 0.9629629629629629,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:21:21Z",
-      "review_note": "路网贴合率 97.8% 低于 98%；实际距离与目标距离误差 118.4% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:20:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 3.1%，最长 59.7 米；路网贴合率 96.3% 低于 98%；实际距离与目标距离误差 29.7% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0022",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=ba2f49d7c7ecd27116415f97dfb4e7e9b20a21d4f6664e5b5d1ce44a4ba5e8c5"
+      "snap_ratio": 0.9550561797752809,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:20:06Z",
+      "review_note": "途经点 西岸穹顶艺术中心 偏离轨迹 50.7 米；路网贴合率 95.5% 低于 98%；实际距离与目标距离误差 63.9% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0023",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=167ab95d2a4cce90c4ca501b2a3e34f47ab9cbc0224883ecbf317df359179371"
+      "snap_ratio": 0.8211382113821138,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:20:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.2%，最长 35.7 米；路网贴合率 82.1% 低于 98%；实际距离与目标距离误差 47.6% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0024",
       "mode": "walk",
       "validation_status": "needs_review",
       "snap_ratio": 0.9251968503937008,
-      "route_inside_ratio": 0.9133858267716536,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:22:22Z",
-      "review_note": "路网贴合率 92.5% 低于 98%"
+      "route_inside_ratio": 0.9094488188976378,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:33:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 4.4%，最长 80.7 米；路网贴合率 92.5% 低于 98%"
     },
     {
       "route_id": "XH_WALK_0025",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 1.0,
-      "route_inside_ratio": 0.6199095022624435,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-07-12T02:31:45Z",
-      "review_note": "起点或终点位于徐汇区外；轨迹徐汇区内比例 62.0% 低于 90%"
+      "snap_ratio": 0.944954128440367,
+      "route_inside_ratio": 0.9541284403669725,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:20:06Z",
+      "review_note": "路网贴合率 94.5% 低于 98%；实际距离与目标距离误差 56.8% 超过 15%；起点或终点位于徐汇区外"
     },
     {
       "route_id": "XH_WALK_0026",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.8585858585858586,
+      "snap_ratio": 0.8873239436619719,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:22:22Z",
-      "review_note": "路网贴合率 85.9% 低于 98%；实际距离与目标距离误差 58.2% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:21:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 6.0%，最长 77.1 米；路网贴合率 88.7% 低于 98%；实际距离与目标距离误差 40.0% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0027",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.8306451612903226,
+      "snap_ratio": 0.8225806451612904,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:22:22Z",
-      "review_note": "路网贴合率 83.1% 低于 98%；实际距离与目标距离误差 43.8% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:21:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 11.5%，最长 49.7 米；路网贴合率 82.3% 低于 98%；实际距离与目标距离误差 43.8% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0028",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9228187919463087,
+      "snap_ratio": 0.8995215311004785,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:22:22Z",
-      "review_note": "路网贴合率 92.3% 低于 98%；实际距离与目标距离误差 22.5% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:21:06Z",
+      "review_note": "路网贴合率 90.0% 低于 98%；实际距离与目标距离误差 16.2% 超过 15%"
     },
     {
       "route_id": "XH_WALK_0029",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9393939393939394,
-      "route_inside_ratio": 0.21717171717171718,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:22:22Z",
-      "review_note": "路网贴合率 93.9% 低于 98%；起点或终点位于徐汇区外；轨迹徐汇区内比例 21.7% 低于 90%"
+      "snap_ratio": 0.9428571428571428,
+      "route_inside_ratio": 0.29523809523809524,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:21:06Z",
+      "review_note": "路网贴合率 94.3% 低于 98%；实际距离与目标距离误差 46.2% 超过 15%；起点或终点位于徐汇区外；轨迹徐汇区内比例 29.5% 低于 90%"
     },
     {
       "route_id": "XH_WALK_0030",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9563636363636364,
-      "route_inside_ratio": 0.9,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:22:22Z",
-      "review_note": "路网贴合率 95.6% 低于 98%；实际距离与目标距离误差 126.4% 超过 15%"
+      "snap_ratio": 0.8046875,
+      "route_inside_ratio": 0.8671875,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:21:06Z",
+      "review_note": "路网贴合率 80.5% 低于 98%；实际距离与目标距离误差 47.9% 超过 15%；起点或终点位于徐汇区外；轨迹徐汇区内比例 86.7% 低于 90%"
     },
     {
       "route_id": "XH_RUN_0031",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b147b18667cfc62721a93da340ea94a58abb34531117f7b0cd87084888957388"
+      "snap_ratio": 0.9972375690607734,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:21:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 3.4%，最长 55.8 米；实际距离与目标距离误差 69.9% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0032",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9797752808988764,
+      "snap_ratio": 0.9056603773584906,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:23:25Z",
-      "review_note": "路网贴合率 98.0% 低于 98%；实际距离与目标距离误差 83.0% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:21:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 5.5%，最长 110.2 米；路网贴合率 90.6% 低于 98%"
     },
     {
       "route_id": "XH_RUN_0033",
@@ -376,7 +387,7 @@
       "validation_status": "accepted",
       "snap_ratio": 0.9964539007092199,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
+      "source_accessed_at": "2026-08-15",
       "network_source": "2026-08-13T06:23:25Z",
       "review_note": "OSM 贴路率和 API 距离误差检查通过"
     },
@@ -384,21 +395,21 @@
       "route_id": "XH_RUN_0034",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9678714859437751,
+      "snap_ratio": 0.9412878787878788,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:23:25Z",
-      "review_note": "路网贴合率 96.8% 低于 98%；实际距离与目标距离误差 22.9% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:21:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 1.7%，最长 54.9 米；路网贴合率 94.1% 低于 98%；实际距离与目标距离误差 30.2% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0035",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4b7f1e1e307e687d18bde6927c4549d07bcf199cabee01ff8159b846539464c4"
+      "snap_ratio": 0.9465346534653465,
+      "route_inside_ratio": 0.9247524752475248,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:22:06Z",
+      "review_note": "起终点标记偏离轨迹：起点 16.5 米，终点 244.0 米；轨迹存在可感知重复边或折返：累计 1.9%，最长 115.8 米；路网贴合率 94.7% 低于 98%"
     },
     {
       "route_id": "XH_RUN_0036",
@@ -406,7 +417,7 @@
       "validation_status": "accepted",
       "snap_ratio": 0.9977220956719818,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
+      "source_accessed_at": "2026-08-15",
       "network_source": "2026-08-13T06:23:25Z",
       "review_note": "OSM 贴路率和 API 距离误差检查通过"
     },
@@ -414,291 +425,291 @@
       "route_id": "XH_RUN_0037",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=dc3a72435ab6b4b5feb787c7a1f0cc01bc12c5026e0426984a82228d9d2ef957"
+      "snap_ratio": 0.989648033126294,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:22:06Z",
+      "review_note": "实际距离与目标距离误差 20.5% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0038",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=700f93e3e159558244ba2f36740dc826e9d3de5ea33be01d6b12a5ad5a193858"
+      "snap_ratio": 0.9606837606837607,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:22:06Z",
+      "review_note": "起终点标记偏离轨迹：起点 6.9 米，终点 244.0 米；路网贴合率 96.1% 低于 98%；实际距离与目标距离误差 17.4% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0039",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9534534534534534,
+      "snap_ratio": 0.9655172413793104,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:24:31Z",
-      "review_note": "路网贴合率 95.3% 低于 98%；实际距离与目标距离误差 229.3% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:22:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 9.6%，最长 93.0 米；路网贴合率 96.6% 低于 98%；实际距离与目标距离误差 29.0% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0040",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=3b6a6aceecf1b37a25260e14f51fb98727cb3e1482e15b3b70c6c6e2156c8702"
+      "snap_ratio": 1.0,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:34:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 6.1%，最长 93.1 米；实际距离与目标距离误差 27.0% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0041",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9568845618915159,
+      "snap_ratio": 0.9810126582278481,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:24:31Z",
-      "review_note": "路网贴合率 95.7% 低于 98%；实际距离与目标距离误差 89.9% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:23:10Z",
+      "review_note": "实际距离与目标距离误差 58.7% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0042",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.969639468690702,
-      "route_inside_ratio": 0.9563567362428842,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:25:31Z",
-      "review_note": "路网贴合率 97.0% 低于 98%；实际距离与目标距离误差 16.5% 超过 15%"
+      "snap_ratio": 0.8910505836575876,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:23:10Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.0%，最长 70.6 米；路网贴合率 89.1% 低于 98%；实际距离与目标距离误差 59.5% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0043",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9801980198019802,
-      "route_inside_ratio": 0.5181518151815182,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:25:31Z",
-      "review_note": "实际距离与目标距离误差 31.8% 超过 15%；起点或终点位于徐汇区外；轨迹徐汇区内比例 51.8% 低于 90%"
+      "snap_ratio": 0.9791666666666666,
+      "route_inside_ratio": 0.5486111111111112,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:23:10Z",
+      "review_note": "路网贴合率 97.9% 低于 98%；实际距离与目标距离误差 37.5% 超过 15%；起点或终点位于徐汇区外；轨迹徐汇区内比例 54.9% 低于 90%"
     },
     {
       "route_id": "XH_RUN_0044",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9161290322580645,
-      "route_inside_ratio": 0.7322580645161291,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:25:31Z",
-      "review_note": "路网贴合率 91.6% 低于 98%；轨迹徐汇区内比例 73.2% 低于 90%"
+      "snap_ratio": 0.9430379746835443,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:23:10Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 10.4%，最长 48.7 米；路网贴合率 94.3% 低于 98%；实际距离与目标距离误差 56.0% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0045",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=f6dbbb3b321865b667690c9d74b13906571b2f2a49637ee15b9094fbd8695a92"
+      "snap_ratio": 0.963963963963964,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:23:10Z",
+      "review_note": "起终点标记偏离轨迹：起点 146.5 米，终点 146.3 米；轨迹存在可感知重复边或折返：累计 4.1%，最长 60.6 米；途经点 上海体育馆 偏离轨迹 80.2 米；路网贴合率 96.4% 低于 98%；实际距离与目标距离误差 43.0% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0046",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.950354609929078,
+      "snap_ratio": 0.9626865671641791,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:25:31Z",
-      "review_note": "路网贴合率 95.0% 低于 98%；实际距离与目标距离误差 43.0% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:24:11Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 1.8%，最长 33.2 米；路网贴合率 96.3% 低于 98%；实际距离与目标距离误差 46.1% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0047",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9799196787148594,
+      "snap_ratio": 0.9816176470588235,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:26:28Z",
-      "review_note": "路网贴合率 98.0% 低于 98%；实际距离与目标距离误差 25.3% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T09:07:01Z",
+      "review_note": "途经点 上海体育馆 偏离轨迹 80.2 米；途经点 上海体育场 偏离轨迹 146.3 米；实际距离与目标距离误差 18.3% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0048",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=a90f33725a89b4c7b55e0786dc3095a3555edc37a1c7001ed98008dd1a9f5d5b"
+      "snap_ratio": 0.8937007874015748,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:24:11Z",
+      "review_note": "起终点标记偏离轨迹：起点 146.5 米，终点 146.5 米；轨迹存在可感知重复边或折返：累计 2.9%，最长 44.3 米；路网贴合率 89.4% 低于 98%；实际距离与目标距离误差 41.4% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0049",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9777777777777777,
+      "snap_ratio": 0.9667519181585678,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:26:28Z",
-      "review_note": "路网贴合率 97.8% 低于 98%；实际距离与目标距离误差 41.2% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:24:11Z",
+      "review_note": "途经点 上海体育场 偏离轨迹 146.3 米；路网贴合率 96.7% 低于 98%；实际距离与目标距离误差 36.1% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0050",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.7649769585253456,
+      "snap_ratio": 0.6953125,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:26:28Z",
-      "review_note": "路网贴合率 76.5% 低于 98%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:24:11Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.3%，最长 13.1 米；路网贴合率 69.5% 低于 98%；实际距离与目标距离误差 40.7% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0051",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9724025974025974,
+      "snap_ratio": 0.908675799086758,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:26:28Z",
-      "review_note": "路网贴合率 97.2% 低于 98%；实际距离与目标距离误差 61.7% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:25:15Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 6.2%，最长 152.6 米；路网贴合率 90.9% 低于 98%；实际距离与目标距离误差 42.8% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0052",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9144144144144144,
+      "snap_ratio": 0.9205702647657841,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:26:28Z",
-      "review_note": "路网贴合率 91.4% 低于 98%；实际距离与目标距离误差 24.0% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:25:15Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 6.8%，最长 152.6 米；路网贴合率 92.1% 低于 98%；实际距离与目标距离误差 15.7% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0053",
       "mode": "run",
-      "validation_status": "accepted",
+      "validation_status": "needs_review",
       "snap_ratio": 1.0,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
+      "source_accessed_at": "2026-08-15",
       "network_source": "2026-08-13T06:27:32Z",
-      "review_note": "OSM 贴路率和 API 距离误差检查通过"
+      "review_note": "高德原始响应分段数 2 与节点分段数 1 不一致"
     },
     {
       "route_id": "XH_RUN_0054",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=85746ede0ded90088ba8eef2913755a0559dc76ca9f260250950be79fcaa0a95"
+      "snap_ratio": 0.9032258064516129,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:25:15Z",
+      "review_note": "路网贴合率 90.3% 低于 98%；实际距离与目标距离误差 27.0% 超过 15%"
     },
     {
       "route_id": "XH_RUN_0055",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9454545454545454,
+      "snap_ratio": 0.9201277955271565,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:27:32Z",
-      "review_note": "路网贴合率 94.5% 低于 98%；实际距离与目标距离误差 59.4% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:25:15Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 5.1%，最长 73.1 米；路网贴合率 92.0% 低于 98%"
     },
     {
       "route_id": "XH_RUN_0056",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5364d915b6765daeabdd3591f960fbc6a41e961f20b8fe01e2aea5c988e247ac"
+      "snap_ratio": 0.9517102615694165,
+      "route_inside_ratio": 0.8853118712273642,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:25:15Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 1.1%，最长 60.3 米；路网贴合率 95.2% 低于 98%；起点或终点位于徐汇区外；轨迹徐汇区内比例 88.5% 低于 90%"
     },
     {
       "route_id": "XH_RUN_0057",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9595719381688466,
-      "route_inside_ratio": 0.9429250891795482,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:27:32Z",
-      "review_note": "路网贴合率 96.0% 低于 98%；实际距离与目标距离误差 32.6% 超过 15%"
+      "snap_ratio": 0.9380097879282219,
+      "route_inside_ratio": 0.7895595432300163,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:34:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 0.7%，最长 30.1 米；路网贴合率 93.8% 低于 98%；轨迹徐汇区内比例 79.0% 低于 90%"
     },
     {
       "route_id": "XH_RUN_0058",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9787234042553191,
-      "route_inside_ratio": 0.8723404255319149,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:28:32Z",
-      "review_note": "路网贴合率 97.9% 低于 98%；实际距离与目标距离误差 38.2% 超过 15%；轨迹徐汇区内比例 87.2% 低于 90%"
+      "snap_ratio": 0.9584487534626038,
+      "route_inside_ratio": 0.8836565096952909,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:35:05Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 4.5%，最长 102.3 米；路网贴合率 95.8% 低于 98%；实际距离与目标距离误差 32.3% 超过 15%；轨迹徐汇区内比例 88.4% 低于 90%"
     },
     {
       "route_id": "XH_RUN_0059",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9910979228486647,
-      "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:28:32Z",
-      "review_note": "实际距离与目标距离误差 46.7% 超过 15%"
+      "snap_ratio": 0.9809782608695652,
+      "route_inside_ratio": 0.8885869565217391,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:26:19Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.3%，最长 71.2 米；实际距离与目标距离误差 42.0% 超过 15%；轨迹徐汇区内比例 88.9% 低于 90%"
     },
     {
       "route_id": "XH_RUN_0060",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9985734664764622,
-      "route_inside_ratio": 0.8758915834522111,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:28:32Z",
-      "review_note": "轨迹徐汇区内比例 87.6% 低于 90%"
+      "snap_ratio": 0.9553903345724907,
+      "route_inside_ratio": 0.8159851301115242,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:26:19Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 1.1%，最长 71.7 米；路网贴合率 95.5% 低于 98%；实际距离与目标距离误差 26.6% 超过 15%；轨迹徐汇区内比例 81.6% 低于 90%"
     },
     {
       "route_id": "XH_BIKE_0061",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9641693811074918,
+      "snap_ratio": 0.9201030927835051,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:28:32Z",
-      "review_note": "路网贴合率 96.4% 低于 98%；实际距离与目标距离误差 101.7% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:26:19Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.5%，最长 189.8 米；路网贴合率 92.0% 低于 98%；实际距离与目标距离误差 27.3% 超过 15%"
     },
     {
       "route_id": "XH_BIKE_0062",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9541547277936963,
+      "snap_ratio": 0.9075829383886256,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:28:32Z",
-      "review_note": "路网贴合率 95.4% 低于 98%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:35:05Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.8%，最长 189.8 米；路网贴合率 90.8% 低于 98%"
     },
     {
       "route_id": "XH_BIKE_0063",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.8157894736842105,
+      "snap_ratio": 0.9546485260770975,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:28:32Z",
-      "review_note": "路网贴合率 81.6% 低于 98%；实际距离与目标距离误差 68.6% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:27:18Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 3.7%，最长 189.8 米；路网贴合率 95.5% 低于 98%"
     },
     {
       "route_id": "XH_BIKE_0064",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9820466786355476,
+      "snap_ratio": 0.95703125,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:28:32Z",
-      "review_note": "实际距离与目标距离误差 100.1% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:27:18Z",
+      "review_note": "路网贴合率 95.7% 低于 98%"
     },
     {
       "route_id": "XH_BIKE_0065",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=ba19af14e5700cb8296dcb3462fbd12be3726ea5b5c6a1c3319767528b212ee9"
+      "snap_ratio": 1.0,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:27:18Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 10.7%，最长 85.0 米；实际距离与目标距离误差 18.2% 超过 15%"
     },
     {
       "route_id": "XH_BIKE_0066",
@@ -706,7 +717,7 @@
       "validation_status": "accepted",
       "snap_ratio": 0.9827586206896551,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
+      "source_accessed_at": "2026-08-15",
       "network_source": "2026-08-13T06:29:35Z",
       "review_note": "OSM 贴路率和 API 距离误差检查通过"
     },
@@ -714,21 +725,21 @@
       "route_id": "XH_BIKE_0067",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=a5db5acb87bf036e7c4c14f57861d55f997447086f917e29ff03700e70458a4b"
+      "snap_ratio": 0.9528301886792453,
+      "route_inside_ratio": 0.8419811320754716,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:27:18Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 1.9%，最长 81.9 米；路网贴合率 95.3% 低于 98%；轨迹徐汇区内比例 84.2% 低于 90%"
     },
     {
       "route_id": "XH_BIKE_0068",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=1e79665fcad4a62c31436268e5ac60552c1491fd41e43bf5fc2972d060244c52"
+      "snap_ratio": 0.973170731707317,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:27:18Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.4%，最长 64.1 米；路网贴合率 97.3% 低于 98%；实际距离与目标距离误差 15.1% 超过 15%"
     },
     {
       "route_id": "XH_BIKE_0069",
@@ -736,438 +747,220 @@
       "validation_status": "needs_review",
       "snap_ratio": 1.0,
       "route_inside_ratio": 0.8285077951002228,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:30:35Z",
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:28:19Z",
       "review_note": "起点或终点位于徐汇区外；轨迹徐汇区内比例 82.9% 低于 90%"
     },
     {
       "route_id": "XH_BIKE_0070",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9938461538461538,
-      "route_inside_ratio": 0.7784615384615384,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:30:35Z",
-      "review_note": "实际距离与目标距离误差 28.7% 超过 15%；轨迹徐汇区内比例 77.8% 低于 90%"
+      "snap_ratio": 0.9909365558912386,
+      "route_inside_ratio": 0.7522658610271903,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:35:05Z",
+      "review_note": "实际距离与目标距离误差 27.4% 超过 15%；轨迹徐汇区内比例 75.2% 低于 90%"
     },
     {
       "route_id": "XH_BIKE_0071",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9762470308788599,
+      "snap_ratio": 0.9524680073126143,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:30:35Z",
-      "review_note": "路网贴合率 97.6% 低于 98%；实际距离与目标距离误差 38.7% 超过 15%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:28:19Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 6.2%，最长 190.4 米；路网贴合率 95.2% 低于 98%"
     },
     {
       "route_id": "XH_BIKE_0072",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=319505c4921aac23e54d1f0728cddb22a4247fba30c23fbc8285dba2a423a14a"
+      "snap_ratio": 0.9378068739770867,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:35:05Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.8%，最长 189.8 米；路网贴合率 93.8% 低于 98%；实际距离与目标距离误差 19.5% 超过 15%"
     },
     {
       "route_id": "XH_BIKE_0073",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=67d7780c620db2ec250337b8379b0bf4ca6744a335bf10851effbfd2643f0d5f"
+      "snap_ratio": 0.9665991902834008,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:35:05Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 10.5%，最长 250.3 米；路网贴合率 96.7% 低于 98%"
     },
     {
       "route_id": "XH_BIKE_0074",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.967741935483871,
+      "snap_ratio": 0.946031746031746,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:31:36Z",
-      "review_note": "路网贴合率 96.8% 低于 98%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:29:21Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 1.3%，最长 89.9 米；路网贴合率 94.6% 低于 98%"
     },
     {
       "route_id": "XH_BIKE_0075",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=a59dee1946122d341ba097ec72e03226ece60cd4f417d2d7cc541650d7515dcf"
+      "snap_ratio": 0.97911227154047,
+      "route_inside_ratio": 0.9660574412532638,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:29:21Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 0.5%，最长 45.2 米；路网贴合率 97.9% 低于 98%；实际距离与目标距离误差 33.9% 超过 15%"
     },
     {
       "route_id": "XH_BIKE_0076",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b3b8d73025a928c3ea64abea8942c17d95629250bc257bdbed32f0c2a65182b2"
+      "snap_ratio": 0.968503937007874,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:36:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 3.8%，最长 103.0 米；路网贴合率 96.9% 低于 98%；实际距离与目标距离误差 16.9% 超过 15%"
     },
     {
       "route_id": "XH_BIKE_0077",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.976878612716763,
-      "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:31:36Z",
-      "review_note": "路网贴合率 97.7% 低于 98%"
+      "snap_ratio": 0.963276836158192,
+      "route_inside_ratio": 0.8997175141242938,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T08:36:06Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 5.8%，最长 76.8 米；路网贴合率 96.3% 低于 98%；轨迹徐汇区内比例 90.0% 低于 90%"
     },
     {
       "route_id": "XH_BIKE_0078",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=9760c8545c319963efff222231635e0044227376550ed94c6deae2ab68e2556f"
+      "snap_ratio": 0.9688841201716738,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:30:20Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 0.7%，最长 45.2 米；路网贴合率 96.9% 低于 98%；实际距离与目标距离误差 15.1% 超过 15%"
     },
     {
       "route_id": "XH_BIKE_0079",
       "mode": "bike",
       "validation_status": "needs_review",
       "snap_ratio": 1.0,
-      "route_inside_ratio": 0.9042944785276074,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:32:36Z",
-      "review_note": "起点或终点位于徐汇区外"
+      "route_inside_ratio": 0.8612612612612612,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:31:24Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.3%，最长 71.0 米；实际距离与目标距离误差 26.8% 超过 15%；起点或终点位于徐汇区外；轨迹徐汇区内比例 86.1% 低于 90%"
     },
     {
       "route_id": "XH_BIKE_0080",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.995475113122172,
-      "route_inside_ratio": 0.8190045248868778,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:32:36Z",
-      "review_note": "实际距离与目标距离误差 45.3% 超过 15%；轨迹徐汇区内比例 81.9% 低于 90%"
+      "snap_ratio": 0.9979919678714859,
+      "route_inside_ratio": 0.7781124497991968,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:31:24Z",
+      "review_note": "实际距离与目标距离误差 22.9% 超过 15%；轨迹徐汇区内比例 77.8% 低于 90%"
     },
     {
       "route_id": "XH_BIKE_0081",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9799270072992701,
+      "snap_ratio": 0.9752407152682255,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:32:36Z",
-      "review_note": "路网贴合率 98.0% 低于 98%"
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:31:24Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 2.6%，最长 211.0 米；路网贴合率 97.5% 低于 98%"
     },
     {
       "route_id": "XH_BIKE_0082",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9661164205039097,
-      "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:32:36Z",
-      "review_note": "路网贴合率 96.6% 低于 98%"
+      "snap_ratio": 0.9741275571600482,
+      "route_inside_ratio": 0.9765342960288809,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:32:30Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 1.0%，最长 95.5 米；路网贴合率 97.4% 低于 98%；实际距离与目标距离误差 26.3% 超过 15%"
     },
     {
       "route_id": "XH_BIKE_0083",
       "mode": "bike",
-      "validation_status": "accepted",
+      "validation_status": "needs_review",
       "snap_ratio": 0.9956140350877193,
       "route_inside_ratio": 0.9931077694235589,
-      "source_accessed_at": "2026-08-13",
+      "source_accessed_at": "2026-08-15",
       "network_source": "2026-08-13T06:32:36Z",
-      "review_note": "OSM 贴路率和 API 距离误差检查通过"
+      "review_note": "高德原始响应分段数 10 与节点分段数 7 不一致"
     },
     {
       "route_id": "XH_BIKE_0084",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b9ff1f426f03d67d46c161f7a835a9ad0ada23f6f9173e3931ba7b9abe461c29"
+      "snap_ratio": 0.9863588667366212,
+      "route_inside_ratio": 0.9868835257082896,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:33:28Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 1.2%，最长 81.7 米；实际距离与目标距离误差 25.9% 超过 15%"
     },
     {
       "route_id": "XH_BIKE_0085",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=2757181312038fe5bda0d86bf760a19227b263c51788b16c39a20c2c837209ba"
+      "snap_ratio": 0.9857690202517789,
+      "route_inside_ratio": 0.9436234263820471,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:35:35Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 1.2%，最长 81.1 米；实际距离与目标距离误差 20.6% 超过 15%"
     },
     {
       "route_id": "XH_BIKE_0086",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9767282683093771,
-      "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:33:40Z",
-      "review_note": "路网贴合率 97.7% 低于 98%；实际距离与目标距离误差 25.4% 超过 15%"
+      "snap_ratio": 0.9806973848069739,
+      "route_inside_ratio": 0.9526774595267746,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:37:36Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 0.6%，最长 95.1 米；实际距离与目标距离误差 17.6% 超过 15%"
     },
     {
       "route_id": "XH_BIKE_0087",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e2845fec93851b482932c661966ef87ec5490a5cd26359580f29e61a02d02d33"
+      "snap_ratio": 0.9905826957033549,
+      "route_inside_ratio": 0.9540906415538553,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:39:35Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 0.7%，最长 55.3 米；实际距离与目标距离误差 19.9% 超过 15%；起点或终点位于徐汇区外"
     },
     {
       "route_id": "XH_BIKE_0088",
       "mode": "bike",
-      "validation_status": "accepted",
+      "validation_status": "needs_review",
       "snap_ratio": 0.9932935916542474,
       "route_inside_ratio": 0.9880774962742176,
-      "source_accessed_at": "2026-08-13",
+      "source_accessed_at": "2026-08-15",
       "network_source": "2026-08-13T06:34:40Z",
-      "review_note": "OSM 贴路率和 API 距离误差检查通过"
+      "review_note": "高德原始响应分段数 9 与节点分段数 7 不一致"
     },
     {
       "route_id": "XH_BIKE_0089",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9888143176733781,
-      "route_inside_ratio": 0.9686800894854586,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:34:40Z",
-      "review_note": "实际距离与目标距离误差 26.4% 超过 15%"
+      "snap_ratio": 0.982420554428668,
+      "route_inside_ratio": 0.9486139283299526,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:39:35Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 0.9%，最长 55.3 米"
     },
     {
       "route_id": "XH_BIKE_0090",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9945305378304466,
-      "route_inside_ratio": 0.9298085688240656,
-      "source_accessed_at": "2026-08-13",
-      "network_source": "2026-08-13T06:34:40Z",
-      "review_note": "实际距离与目标距离误差 25.0% 超过 15%"
+      "snap_ratio": 0.9856591285162714,
+      "route_inside_ratio": 0.9575289575289575,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-15T07:33:28Z",
+      "review_note": "轨迹存在可感知重复边或折返：累计 0.8%，最长 55.3 米；实际距离与目标距离误差 19.7% 超过 15%"
     }
   ],
-  "failures": [
-    {
-      "route_id": "XH_WALK_0002",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=505be918b1b4f61f5b984ec44d231e23876730f7710cd49b5de4ab7a174a5887",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=505be918b1b4f61f5b984ec44d231e23876730f7710cd49b5de4ab7a174a5887\n"
-    },
-    {
-      "route_id": "XH_WALK_0004",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=39fd98f364335c697770c70ded47d6b826bcb1a2f02f7c458169194130ee81d8",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=39fd98f364335c697770c70ded47d6b826bcb1a2f02f7c458169194130ee81d8\n"
-    },
-    {
-      "route_id": "XH_WALK_0006",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=af6d4fa97eee509ef66bfdc71f0eebaed70cfd12726e96b7cf7033afa350ca20",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=af6d4fa97eee509ef66bfdc71f0eebaed70cfd12726e96b7cf7033afa350ca20\n"
-    },
-    {
-      "route_id": "XH_WALK_0008",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=0ee2d67d21649b3b53138cfaba8a948765eb303eb43b2fec055562de2139e2e9",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=0ee2d67d21649b3b53138cfaba8a948765eb303eb43b2fec055562de2139e2e9\n"
-    },
-    {
-      "route_id": "XH_WALK_0010",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=9f906661ba21c3fbebf64ab3918375f822acbac8599dfd6769827f0b9a289e63",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=9f906661ba21c3fbebf64ab3918375f822acbac8599dfd6769827f0b9a289e63\n"
-    },
-    {
-      "route_id": "XH_WALK_0012",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e96df230c9837f5ff55ef2eeba5769700becd06d2bad765d237ee4b68790d097",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e96df230c9837f5ff55ef2eeba5769700becd06d2bad765d237ee4b68790d097\n"
-    },
-    {
-      "route_id": "XH_WALK_0014",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=57d2f795b815ea87988e178cdeae92ff94cac6fcfb637d3c7b8df788559a765d",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=57d2f795b815ea87988e178cdeae92ff94cac6fcfb637d3c7b8df788559a765d\n"
-    },
-    {
-      "route_id": "XH_WALK_0015",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=661e75fe7dab3bdb177522a23e39f709f6d9b81e7a8f2a27a23bbea383b31a75",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=661e75fe7dab3bdb177522a23e39f709f6d9b81e7a8f2a27a23bbea383b31a75\n"
-    },
-    {
-      "route_id": "XH_WALK_0017",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5dbcdbb78177168d8a947d7090f38bb7ce0d9aaaa7fb3e1ac71ae81cfd8a2b31",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5dbcdbb78177168d8a947d7090f38bb7ce0d9aaaa7fb3e1ac71ae81cfd8a2b31\n"
-    },
-    {
-      "route_id": "XH_WALK_0022",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=ba2f49d7c7ecd27116415f97dfb4e7e9b20a21d4f6664e5b5d1ce44a4ba5e8c5",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=ba2f49d7c7ecd27116415f97dfb4e7e9b20a21d4f6664e5b5d1ce44a4ba5e8c5\n"
-    },
-    {
-      "route_id": "XH_WALK_0023",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=167ab95d2a4cce90c4ca501b2a3e34f47ab9cbc0224883ecbf317df359179371",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=167ab95d2a4cce90c4ca501b2a3e34f47ab9cbc0224883ecbf317df359179371\n"
-    },
-    {
-      "route_id": "XH_RUN_0031",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b147b18667cfc62721a93da340ea94a58abb34531117f7b0cd87084888957388",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b147b18667cfc62721a93da340ea94a58abb34531117f7b0cd87084888957388\n"
-    },
-    {
-      "route_id": "XH_RUN_0035",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4b7f1e1e307e687d18bde6927c4549d07bcf199cabee01ff8159b846539464c4",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4b7f1e1e307e687d18bde6927c4549d07bcf199cabee01ff8159b846539464c4\n"
-    },
-    {
-      "route_id": "XH_RUN_0037",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=dc3a72435ab6b4b5feb787c7a1f0cc01bc12c5026e0426984a82228d9d2ef957",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=dc3a72435ab6b4b5feb787c7a1f0cc01bc12c5026e0426984a82228d9d2ef957\n"
-    },
-    {
-      "route_id": "XH_RUN_0038",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=700f93e3e159558244ba2f36740dc826e9d3de5ea33be01d6b12a5ad5a193858",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=700f93e3e159558244ba2f36740dc826e9d3de5ea33be01d6b12a5ad5a193858\n"
-    },
-    {
-      "route_id": "XH_RUN_0040",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=3b6a6aceecf1b37a25260e14f51fb98727cb3e1482e15b3b70c6c6e2156c8702",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=3b6a6aceecf1b37a25260e14f51fb98727cb3e1482e15b3b70c6c6e2156c8702\n"
-    },
-    {
-      "route_id": "XH_RUN_0045",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=f6dbbb3b321865b667690c9d74b13906571b2f2a49637ee15b9094fbd8695a92",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=f6dbbb3b321865b667690c9d74b13906571b2f2a49637ee15b9094fbd8695a92\n"
-    },
-    {
-      "route_id": "XH_RUN_0048",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=a90f33725a89b4c7b55e0786dc3095a3555edc37a1c7001ed98008dd1a9f5d5b",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=a90f33725a89b4c7b55e0786dc3095a3555edc37a1c7001ed98008dd1a9f5d5b\n"
-    },
-    {
-      "route_id": "XH_RUN_0054",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=85746ede0ded90088ba8eef2913755a0559dc76ca9f260250950be79fcaa0a95",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=85746ede0ded90088ba8eef2913755a0559dc76ca9f260250950be79fcaa0a95\n"
-    },
-    {
-      "route_id": "XH_RUN_0056",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5364d915b6765daeabdd3591f960fbc6a41e961f20b8fe01e2aea5c988e247ac",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5364d915b6765daeabdd3591f960fbc6a41e961f20b8fe01e2aea5c988e247ac\n"
-    },
-    {
-      "route_id": "XH_BIKE_0065",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=ba19af14e5700cb8296dcb3462fbd12be3726ea5b5c6a1c3319767528b212ee9",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=ba19af14e5700cb8296dcb3462fbd12be3726ea5b5c6a1c3319767528b212ee9\n"
-    },
-    {
-      "route_id": "XH_BIKE_0067",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=a5db5acb87bf036e7c4c14f57861d55f997447086f917e29ff03700e70458a4b",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=a5db5acb87bf036e7c4c14f57861d55f997447086f917e29ff03700e70458a4b\n"
-    },
-    {
-      "route_id": "XH_BIKE_0068",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=1e79665fcad4a62c31436268e5ac60552c1491fd41e43bf5fc2972d060244c52",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=1e79665fcad4a62c31436268e5ac60552c1491fd41e43bf5fc2972d060244c52\n"
-    },
-    {
-      "route_id": "XH_BIKE_0072",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=319505c4921aac23e54d1f0728cddb22a4247fba30c23fbc8285dba2a423a14a",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=319505c4921aac23e54d1f0728cddb22a4247fba30c23fbc8285dba2a423a14a\n"
-    },
-    {
-      "route_id": "XH_BIKE_0073",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=67d7780c620db2ec250337b8379b0bf4ca6744a335bf10851effbfd2643f0d5f",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=67d7780c620db2ec250337b8379b0bf4ca6744a335bf10851effbfd2643f0d5f\n"
-    },
-    {
-      "route_id": "XH_BIKE_0075",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=a59dee1946122d341ba097ec72e03226ece60cd4f417d2d7cc541650d7515dcf",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=a59dee1946122d341ba097ec72e03226ece60cd4f417d2d7cc541650d7515dcf\n"
-    },
-    {
-      "route_id": "XH_BIKE_0076",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b3b8d73025a928c3ea64abea8942c17d95629250bc257bdbed32f0c2a65182b2",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b3b8d73025a928c3ea64abea8942c17d95629250bc257bdbed32f0c2a65182b2\n"
-    },
-    {
-      "route_id": "XH_BIKE_0078",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=9760c8545c319963efff222231635e0044227376550ed94c6deae2ab68e2556f",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=9760c8545c319963efff222231635e0044227376550ed94c6deae2ab68e2556f\n"
-    },
-    {
-      "route_id": "XH_BIKE_0084",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b9ff1f426f03d67d46c161f7a835a9ad0ada23f6f9173e3931ba7b9abe461c29",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b9ff1f426f03d67d46c161f7a835a9ad0ada23f6f9173e3931ba7b9abe461c29\n"
-    },
-    {
-      "route_id": "XH_BIKE_0085",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=2757181312038fe5bda0d86bf760a19227b263c51788b16c39a20c2c837209ba",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=2757181312038fe5bda0d86bf760a19227b263c51788b16c39a20c2c837209ba\n"
-    },
-    {
-      "route_id": "XH_BIKE_0087",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e2845fec93851b482932c661966ef87ec5490a5cd26359580f29e61a02d02d33",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 347, in query\n    response.raise_for_status()\n  File \"D:\\ProgramData\\miniconda3\\envs\\Common\\Lib\\site-packages\\requests\\models.py\", line 1028, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 307, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 350, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e2845fec93851b482932c661966ef87ec5490a5cd26359580f29e61a02d02d33\n"
-    }
-  ]
+  "failures": []
 }

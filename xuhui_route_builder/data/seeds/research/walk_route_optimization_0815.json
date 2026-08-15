@@ -1,0 +1,2978 @@
+[
+    {
+        "route_id":  "XH_WALK_0001",
+        "seed_id":  "walk_westbund_tank_short",
+        "route_name":  "西岸油罐艺术短线",
+        "route_mode":  "walk",
+        "target_distance_m":  1800,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "西岸梦中心",
+                               "poi_id":  "B0LKLP88CD",
+                               "lng_gcj02":  121.466601,
+                               "lat_gcj02":  31.161366,
+                               "source":  "高德POI B0LKLP88CD，本地缓存"
+                           },
+        "end_location":  {
+                             "name":  "西岸美术馆",
+                             "poi_id":  "B0FFJGOAFY",
+                             "lng_gcj02":  121.463841,
+                             "lat_gcj02":  31.167682,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "西岸梦中心",
+                                  "poi_id":  "B0LKLP88CD",
+                                  "lng_gcj02":  121.466601,
+                                  "lat_gcj02":  31.161366,
+                                  "source":  "高德POI B0LKLP88CD，本地缓存"
+                              },
+                              {
+                                  "name":  "西岸穹顶艺术中心",
+                                  "poi_id":  "B0HAL54MUG",
+                                  "lng_gcj02":  121.464561,
+                                  "lat_gcj02":  31.163167,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海油罐艺术中心",
+                                  "poi_id":  "B0FFHUD4BQ",
+                                  "lng_gcj02":  121.464321,
+                                  "lat_gcj02":  31.164519,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "西岸美术馆",
+                                  "poi_id":  "B0FFJGOAFY",
+                                  "lng_gcj02":  121.463841,
+                                  "lat_gcj02":  31.167682,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "西岸穹顶艺术中心",
+                               "上海油罐艺术中心"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据书香徐汇·西岸艺术之旅；节点坐标沿用本地高德GCJ-02解析。沿同一滨江公共步道由南向北单向串联，取消油罐艺术中心往返支叉。",
+        "access_restrictions":  [
+                                    "只走滨水公共步道",
+                                    "大型活动期间可能限流或绕行"
+                                ],
+        "design_rationale":  "沿同一滨江公共步道由南向北单向串联，取消油罐艺术中心往返支叉。",
+        "risk_flags":  [
+                           "滨江大型活动期间可能分流",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "书香徐汇·西岸艺术之旅",
+                                   "source_url":  "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0002",
+        "seed_id":  "walk_botanical_north_lawn",
+        "route_name":  "植物园全园园路环线",
+        "route_mode":  "walk",
+        "target_distance_m":  3000,
+        "route_shape":  "strict_loop",
+        "start_location":  {
+                               "name":  "上海植物园4号门售票处",
+                               "poi_id":  "B0FFF64RUI",
+                               "lng_gcj02":  121.445793,
+                               "lat_gcj02":  31.151884,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "上海植物园4号门售票处",
+                             "poi_id":  "B0FFF64RUI",
+                             "lng_gcj02":  121.445793,
+                             "lat_gcj02":  31.151884,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "上海植物园4号门售票处",
+                                  "poi_id":  "B0FFF64RUI",
+                                  "lng_gcj02":  121.445793,
+                                  "lat_gcj02":  31.151884,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "北区东侧园路口",
+                                  "lng_gcj02":  121.4468,
+                                  "lat_gcj02":  31.1509,
+                                  "source":  "上海植物园北区官方游园导览中的外围园路节点"
+                              },
+                              {
+                                  "name":  "北区东南园路口",
+                                  "lng_gcj02":  121.4463,
+                                  "lat_gcj02":  31.1482,
+                                  "source":  "上海植物园北区官方游园导览中的外围园路节点"
+                              },
+                              {
+                                  "name":  "北区西南园路口",
+                                  "lng_gcj02":  121.4425,
+                                  "lat_gcj02":  31.148,
+                                  "source":  "上海植物园北区官方游园导览中的外围园路节点"
+                              },
+                              {
+                                  "name":  "北区西侧园路口",
+                                  "lng_gcj02":  121.4415,
+                                  "lat_gcj02":  31.1506,
+                                  "source":  "上海植物园北区官方游园导览中的外围园路节点"
+                              },
+                              {
+                                  "name":  "上海植物园4号门售票处",
+                                  "poi_id":  "B0FFF64RUI",
+                                  "lng_gcj02":  121.445793,
+                                  "lat_gcj02":  31.151884,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "北区东侧园路口",
+                               "北区东南园路口",
+                               "北区西南园路口",
+                               "北区西侧园路口"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据上海植物园北区官方游园导览；节点坐标沿用本地高德GCJ-02解析。以4号门为唯一进出点，按东侧、南侧、西侧园路顺时针形成全园闭环，主线只在起终点汇合。",
+        "access_restrictions":  [
+                                    "按植物园当日开闭园时间通行",
+                                    "展区可能随花展调整",
+                                    "只走正式园路"
+                                ],
+        "design_rationale":  "以4号门为唯一进出点，按东侧、南侧、西侧园路顺时针形成全园闭环，主线只在起终点汇合。",
+        "risk_flags":  [
+                           "园内具体环路需高德与现场步行复核",
+                           "花展期间局部园路可能调整",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "上海植物园北区官方游园导览",
+                                   "source_url":  "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae\u0026infoId=e7f65f87-3fff-4e58-b780-4a46b1463f66",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0003",
+        "seed_id":  "walk_botanical_orchid_bonsai",
+        "route_name":  "植物园兰室盆景线",
+        "route_mode":  "walk",
+        "target_distance_m":  1800,
+        "route_shape":  "strict_loop",
+        "start_location":  {
+                               "name":  "上海植物园3号门售票处",
+                               "poi_id":  "B00156ZSX5",
+                               "lng_gcj02":  121.43947,
+                               "lat_gcj02":  31.142747,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "上海植物园3号门售票处",
+                             "poi_id":  "B00156ZSX5",
+                             "lng_gcj02":  121.43947,
+                             "lat_gcj02":  31.142747,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "上海植物园3号门售票处",
+                                  "poi_id":  "B00156ZSX5",
+                                  "lng_gcj02":  121.43947,
+                                  "lat_gcj02":  31.142747,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "植物大楼",
+                                  "poi_id":  "B0FFG2E8LW",
+                                  "lng_gcj02":  121.44408,
+                                  "lat_gcj02":  31.146016,
+                                  "source":  "高德POI B0FFG2E8LW，本地缓存"
+                              },
+                              {
+                                  "name":  "上海植物园-兰室",
+                                  "poi_id":  "B0FFFDPYX9",
+                                  "lng_gcj02":  121.446205,
+                                  "lat_gcj02":  31.146753,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海植物园盆景园",
+                                  "poi_id":  "B0FFGM2161",
+                                  "lng_gcj02":  121.445201,
+                                  "lat_gcj02":  31.147755,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海植物园3号门售票处",
+                                  "poi_id":  "B00156ZSX5",
+                                  "lng_gcj02":  121.43947,
+                                  "lat_gcj02":  31.142747,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "植物大楼",
+                               "上海植物园-兰室",
+                               "上海植物园盆景园"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据上海植物园语音导览专类园线；节点坐标沿用本地高德GCJ-02解析。3号门进出，依次绕行植物大楼、兰室和盆景园，避免单一入口段反复使用。",
+        "access_restrictions":  [
+                                    "2号门当前开放状态需现场核对",
+                                    "专类园可能另行售票或临时关闭"
+                                ],
+        "design_rationale":  "3号门进出，依次绕行植物大楼、兰室和盆景园，避免单一入口段反复使用。",
+        "risk_flags":  [
+                           "专类园票务与临时封闭需复核",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "上海植物园语音导览专类园线",
+                                   "source_url":  "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae\u0026infoId=bc3ac58b-5775-4cb6-a921-53f179926c2b",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0004",
+        "seed_id":  "walk_hengfu_fenyang_music",
+        "route_name":  "汾阳音乐街区线",
+        "route_mode":  "walk",
+        "target_distance_m":  1200,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "淮海中路1209号",
+                               "poi_id":  "B0KRFSM91O",
+                               "lng_gcj02":  121.452937,
+                               "lat_gcj02":  31.213617,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "玉门公寓",
+                             "poi_id":  "B0FFG74MR2",
+                             "lng_gcj02":  121.450817,
+                             "lat_gcj02":  31.210537,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "淮海中路1209号",
+                                  "poi_id":  "B0KRFSM91O",
+                                  "lng_gcj02":  121.452937,
+                                  "lat_gcj02":  31.213617,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上音绿地",
+                                  "poi_id":  "B0JGXDYI8Z",
+                                  "lng_gcj02":  121.453816,
+                                  "lat_gcj02":  31.21437,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "黑石公寓",
+                                  "poi_id":  "B0I17NNOSV",
+                                  "lng_gcj02":  121.452428,
+                                  "lat_gcj02":  31.211041,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "捷豹上海交响音乐厅",
+                                  "poi_id":  "B0FFF3T00K",
+                                  "lng_gcj02":  121.451646,
+                                  "lat_gcj02":  31.211519,
+                                  "source":  "高德POI B0FFF3T00K，本地缓存"
+                              },
+                              {
+                                  "name":  "玉门公寓",
+                                  "poi_id":  "B0FFG74MR2",
+                                  "lng_gcj02":  121.450817,
+                                  "lat_gcj02":  31.210537,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "上音绿地",
+                               "黑石公寓",
+                               "捷豹上海交响音乐厅"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据音乐汾阳路；节点坐标沿用本地高德GCJ-02解析。按汾阳路音乐街区由北向南连续走读，起终点分离且无折返。",
+        "access_restrictions":  [
+                                    "只到建筑临街公共空间",
+                                    "音乐学院与黑石公寓内部按开放安排"
+                                ],
+        "design_rationale":  "按汾阳路音乐街区由北向南连续走读，起终点分离且无折返。",
+        "risk_flags":  [
+                           "建筑内部开放时间各异",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "音乐汾阳路",
+                                   "source_url":  "https://www.xuhui.gov.cn/xwzx_zwxx/20241115/547298.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0005",
+        "seed_id":  "walk_hengfu_autumn_green",
+        "route_name":  "衡复秋色绿地线",
+        "route_mode":  "walk",
+        "target_distance_m":  1700,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "东湖绿地",
+                               "poi_id":  "B0JRNRU7ZU",
+                               "lng_gcj02":  121.455621,
+                               "lat_gcj02":  31.215537,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "捷豹上海交响音乐厅",
+                             "poi_id":  "B0FFF3T00K",
+                             "lng_gcj02":  121.451646,
+                             "lat_gcj02":  31.211519,
+                             "source":  "高德POI B0FFF3T00K，本地缓存"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "东湖绿地",
+                                  "poi_id":  "B0JRNRU7ZU",
+                                  "lng_gcj02":  121.455621,
+                                  "lat_gcj02":  31.215537,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "襄阳公园",
+                                  "poi_id":  "B0015581AB",
+                                  "lng_gcj02":  121.456737,
+                                  "lat_gcj02":  31.216991,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上音绿地",
+                                  "poi_id":  "B0JGXDYI8Z",
+                                  "lng_gcj02":  121.453816,
+                                  "lat_gcj02":  31.21437,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "黑石公寓",
+                                  "poi_id":  "B0I17NNOSV",
+                                  "lng_gcj02":  121.452428,
+                                  "lat_gcj02":  31.211041,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "捷豹上海交响音乐厅",
+                                  "poi_id":  "B0FFF3T00K",
+                                  "lng_gcj02":  121.451646,
+                                  "lat_gcj02":  31.211519,
+                                  "source":  "高德POI B0FFF3T00K，本地缓存"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "襄阳公园",
+                               "上音绿地",
+                               "黑石公寓"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据衡复梧桐秋日Citywalk；节点坐标沿用本地高德GCJ-02解析。采用东湖路—襄阳公园—汾阳路连续方向，剔除旧数据中坐标错误的聂耳绿地。",
+        "access_restrictions":  [
+                                    "主干路过街使用信号灯和人行横道",
+                                    "绿地开放状态以现场为准"
+                                ],
+        "design_rationale":  "采用东湖路—襄阳公园—汾阳路连续方向，剔除旧数据中坐标错误的聂耳绿地。",
+        "risk_flags":  [
+                           "节假日街区人流密集",
+                           "聂耳绿地待重新地理编码后再纳入",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "衡复梧桐秋日Citywalk",
+                                   "source_url":  "https://www.xuhui.gov.cn/zfjg_qzfbm_lvhsrglj_bmdt/20241107/546813.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0006",
+        "seed_id":  "walk_xujiahui_wending_books",
+        "route_name":  "文定书香短线",
+        "route_mode":  "walk",
+        "target_distance_m":  1800,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "徐光启纪念馆",
+                               "poi_id":  "B0FFGXK5WR",
+                               "lng_gcj02":  121.434317,
+                               "lat_gcj02":  31.189282,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "徐汇公学旧址",
+                             "poi_id":  "B001576O3C",
+                             "lng_gcj02":  121.435745,
+                             "lat_gcj02":  31.193026,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "徐光启纪念馆",
+                                  "poi_id":  "B0FFGXK5WR",
+                                  "lng_gcj02":  121.434317,
+                                  "lat_gcj02":  31.189282,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海市徐汇区图书馆(徐家汇书院)",
+                                  "poi_id":  "B0FFMH4KQS",
+                                  "lng_gcj02":  121.437082,
+                                  "lat_gcj02":  31.19043,
+                                  "source":  "高德POI B0FFMH4KQS，本地缓存"
+                              },
+                              {
+                                  "name":  "徐家汇藏书楼",
+                                  "poi_id":  "B00150E486",
+                                  "lng_gcj02":  121.437753,
+                                  "lat_gcj02":  31.192096,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "徐汇公学旧址",
+                                  "poi_id":  "B001576O3C",
+                                  "lng_gcj02":  121.435745,
+                                  "lat_gcj02":  31.193026,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "上海市徐汇区图书馆(徐家汇书院)",
+                               "徐家汇藏书楼"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据海派寻源·文定书香；节点坐标沿用本地高德GCJ-02解析。在徐家汇源核心区形成由南向北的书香走读线，四节点顺序连续。",
+        "access_restrictions":  [
+                                    "藏书楼和旧址可能只支持外观",
+                                    "场馆开放与预约时间分别核对"
+                                ],
+        "design_rationale":  "在徐家汇源核心区形成由南向北的书香走读线，四节点顺序连续。",
+        "risk_flags":  [
+                           "场馆开放与预约时间各异",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "海派寻源·文定书香",
+                                   "source_url":  "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0007",
+        "seed_id":  "walk_xujiahui_pocket_green",
+        "route_name":  "体育公园口袋绿地短线",
+        "route_mode":  "walk",
+        "target_distance_m":  1700,
+        "route_shape":  "strict_loop",
+        "start_location":  {
+                               "name":  "零陵路899号",
+                               "poi_id":  null,
+                               "lng_gcj02":  121.43748,
+                               "lat_gcj02":  31.183167,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "零陵路899号",
+                             "poi_id":  null,
+                             "lng_gcj02":  121.43748,
+                             "lat_gcj02":  31.183167,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "零陵路899号",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.43748,
+                                  "lat_gcj02":  31.183167,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "徐家汇体育公园",
+                                  "poi_id":  "B0FFHKDU6C",
+                                  "lng_gcj02":  121.440734,
+                                  "lat_gcj02":  31.181297,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "漕溪路地铁站绿地",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.43841,
+                                  "lat_gcj02":  31.176746,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "乐汇小游园",
+                                  "poi_id":  "B0J647JYMM",
+                                  "lng_gcj02":  121.435575,
+                                  "lat_gcj02":  31.179879,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "零陵路899号",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.43748,
+                                  "lat_gcj02":  31.183167,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "徐家汇体育公园",
+                               "漕溪路地铁站绿地",
+                               "乐汇小游园"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据运动徐家汇·体育公园周边街区；节点坐标沿用本地高德GCJ-02解析。围绕体育公园外侧公共道路成环，移除旧路线向星游城口袋公园的孤立支叉。",
+        "access_restrictions":  [
+                                    "商圈高峰人流密集",
+                                    "桥下空间和施工围挡需动态检查"
+                                ],
+        "design_rationale":  "围绕体育公园外侧公共道路成环，移除旧路线向星游城口袋公园的孤立支叉。",
+        "risk_flags":  [
+                           "赛事演出期间可能限流",
+                           "过街点需按信号通行",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "运动徐家汇·体育公园周边街区",
+                                   "source_url":  "https://www.xuhui.gov.cn/xwzx_zwxx/20241115/547298.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0008",
+        "seed_id":  "walk_longhua_temple_tower",
+        "route_name":  "龙华古刹塔影线",
+        "route_mode":  "walk",
+        "target_distance_m":  1800,
+        "route_shape":  "strict_loop",
+        "start_location":  {
+                               "name":  "龙华寺",
+                               "poi_id":  "B00155AMEJ",
+                               "lng_gcj02":  121.451842,
+                               "lat_gcj02":  31.175174,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "龙华寺",
+                             "poi_id":  "B00155AMEJ",
+                             "lng_gcj02":  121.451842,
+                             "lat_gcj02":  31.175174,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "龙华寺",
+                                  "poi_id":  "B00155AMEJ",
+                                  "lng_gcj02":  121.451842,
+                                  "lat_gcj02":  31.175174,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙华塔",
+                                  "poi_id":  "B001513D74",
+                                  "lng_gcj02":  121.45195,
+                                  "lat_gcj02":  31.173657,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "塔影空间",
+                                  "poi_id":  "B0JDY51YGL",
+                                  "lng_gcj02":  121.451515,
+                                  "lat_gcj02":  31.172855,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙华会",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.453425,
+                                  "lat_gcj02":  31.173657,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙华寺",
+                                  "poi_id":  "B00155AMEJ",
+                                  "lng_gcj02":  121.451842,
+                                  "lat_gcj02":  31.175174,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "龙华塔",
+                               "塔影空间",
+                               "龙华会"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据海派城市考古·龙华古刹古塔；节点坐标沿用本地高德GCJ-02解析。沿龙华核心街区外围顺时针成环，入口与出口统一在龙华寺公共入口。",
+        "access_restrictions":  [
+                                    "寺院和塔影空间按开放时间通行",
+                                    "庙会和农历十五客流大时降低推荐优先级"
+                                ],
+        "design_rationale":  "沿龙华核心街区外围顺时针成环，入口与出口统一在龙华寺公共入口。",
+        "risk_flags":  [
+                           "庙会与农历十五客流较大",
+                           "场所开放时间需复核",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "海派城市考古·龙华古刹古塔",
+                                   "source_url":  "https://whlyj.sh.gov.cn/cmsres/46/464a2102fd604413bed836c786438662/a8efa6aad6f05424dccba59ac2a7426a.pdf",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0009",
+        "seed_id":  "walk_kangjian_park_loop",
+        "route_name":  "康健公园社区环线",
+        "route_mode":  "walk",
+        "target_distance_m":  1800,
+        "route_shape":  "strict_loop",
+        "start_location":  {
+                               "name":  "康健园冠生园路入口",
+                               "poi_id":  "B00156NS4T",
+                               "lng_gcj02":  121.422467,
+                               "lat_gcj02":  31.163034,
+                               "source":  "高德POI B00156NS4T 导航入口，本地缓存 place_text_v5_55500f4b8be75e2c.json"
+                           },
+        "end_location":  {
+                             "name":  "康健园冠生园路入口",
+                             "poi_id":  "B00156NS4T",
+                             "lng_gcj02":  121.422467,
+                             "lat_gcj02":  31.163034,
+                             "source":  "高德POI B00156NS4T 导航入口，本地缓存 place_text_v5_55500f4b8be75e2c.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "康健园冠生园路入口",
+                                  "poi_id":  "B00156NS4T",
+                                  "lng_gcj02":  121.422467,
+                                  "lat_gcj02":  31.163034,
+                                  "source":  "高德POI B00156NS4T 导航入口，本地缓存 place_text_v5_55500f4b8be75e2c.json"
+                              },
+                              {
+                                  "name":  "冠生园路与桂林路交叉口",
+                                  "poi_id":  "B0FFGGH7AI",
+                                  "lng_gcj02":  121.419296,
+                                  "lat_gcj02":  31.162803,
+                                  "source":  "高德POI B0FFGGH7AI，本地缓存 place_text_v5_55500f4b8be75e2c.json"
+                              },
+                              {
+                                  "name":  "桂林路与康健路交叉口",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.419023,
+                                  "lat_gcj02":  31.16451,
+                                  "source":  "高德路径缓存道路节点，本地缓存 bicycling_v2_3bd87970f3326e06.json"
+                              },
+                              {
+                                  "name":  "康健路东侧入口",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.424028,
+                                  "lat_gcj02":  31.16503,
+                                  "source":  "高德路径缓存道路节点，本地缓存 bicycling_v2_3bd87970f3326e06.json"
+                              },
+                              {
+                                  "name":  "康健园冠生园路入口",
+                                  "poi_id":  "B00156NS4T",
+                                  "lng_gcj02":  121.422467,
+                                  "lat_gcj02":  31.163034,
+                                  "source":  "高德POI B00156NS4T 导航入口，本地缓存 place_text_v5_55500f4b8be75e2c.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "冠生园路与桂林路交叉口",
+                               "桂林路与康健路交叉口",
+                               "康健路东侧入口"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据康健街道公园绿地系统；节点坐标沿用本地高德GCJ-02解析。采用冠生园路—桂林路—康健路—东侧入口的公园外围闭环，替换坐标错误的旧东门。",
+        "access_restrictions":  [
+                                    "入口名称和园路连续性待核验",
+                                    "夜间开放情况待现场确认"
+                                ],
+        "design_rationale":  "采用冠生园路—桂林路—康健路—东侧入口的公园外围闭环，替换坐标错误的旧东门。",
+        "risk_flags":  [
+                           "公园内部穿行段需现场复核",
+                           "夜间开放状态待核实",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "康健街道公园绿地系统",
+                                   "source_url":  "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6b2ddd3cd8",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0010",
+        "seed_id":  "walk_caohjing_neoworld_direct",
+        "route_name":  "元界NeoWorld直达线",
+        "route_mode":  "walk",
+        "target_distance_m":  1700,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "游戏博物馆",
+                               "poi_id":  "B0KRXMYJCQ",
+                               "lng_gcj02":  121.404865,
+                               "lat_gcj02":  31.172699,
+                               "source":  "高德POI B0KRXMYJCQ，本地缓存"
+                           },
+        "end_location":  {
+                             "name":  "桂林公园",
+                             "poi_id":  "B00155L0UC",
+                             "lng_gcj02":  121.417929,
+                             "lat_gcj02":  31.16532,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "游戏博物馆",
+                                  "poi_id":  "B0KRXMYJCQ",
+                                  "lng_gcj02":  121.404865,
+                                  "lat_gcj02":  31.172699,
+                                  "source":  "高德POI B0KRXMYJCQ，本地缓存"
+                              },
+                              {
+                                  "name":  "桂箐路与田林路交叉口",
+                                  "poi_id":  "B0FFGGY07H",
+                                  "lng_gcj02":  121.406357,
+                                  "lat_gcj02":  31.168308,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "田林路与桂林路交叉口",
+                                  "poi_id":  "B0FFHPLJBK",
+                                  "lng_gcj02":  121.417746,
+                                  "lat_gcj02":  31.170512,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "桂林公园",
+                                  "poi_id":  "B00155L0UC",
+                                  "lng_gcj02":  121.417929,
+                                  "lat_gcj02":  31.16532,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "桂箐路与田林路交叉口",
+                               "田林路与桂林路交叉口"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据元界NeoWorld元宇宙街区；节点坐标沿用本地高德GCJ-02解析。沿田林路由西向东直达桂林公园，保持单一主干和清晰终点。",
+        "access_restrictions":  [
+                                    "沿城市人行道通行",
+                                    "商业体与主题装置开放不影响基本线路"
+                                ],
+        "design_rationale":  "沿田林路由西向东直达桂林公园，保持单一主干和清晰终点。",
+        "risk_flags":  [
+                           "商业主题装置开放状态不影响公共人行道",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "元界NeoWorld元宇宙街区",
+                                   "source_url":  "https://www.xuhui.gov.cn/xwzx_zwxx/20251201/566509.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0011",
+        "seed_id":  "walk_westbund_north_art",
+        "route_name":  "西岸北段艺术走读线",
+        "route_mode":  "walk",
+        "target_distance_m":  3200,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "Station1907启点",
+                               "poi_id":  "B0KDPO8IM9",
+                               "lng_gcj02":  121.468215,
+                               "lat_gcj02":  31.188275,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "西岸美术馆",
+                             "poi_id":  "B0FFJGOAFY",
+                             "lng_gcj02":  121.463841,
+                             "lat_gcj02":  31.167682,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "Station1907启点",
+                                  "poi_id":  "B0KDPO8IM9",
+                                  "lng_gcj02":  121.468215,
+                                  "lat_gcj02":  31.188275,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙美术馆(西岸馆)",
+                                  "poi_id":  "B0FFF2YL75",
+                                  "lng_gcj02":  121.464761,
+                                  "lat_gcj02":  31.183954,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "西岸美术馆",
+                                  "poi_id":  "B0FFJGOAFY",
+                                  "lng_gcj02":  121.463841,
+                                  "lat_gcj02":  31.167682,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "龙美术馆(西岸馆)"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据书香徐汇·西岸艺术之旅；节点坐标沿用本地高德GCJ-02解析。沿龙腾大道与滨江公共空间由北向南连续走读，剔除坐标明显错误的星美术馆节点。",
+        "access_restrictions":  [
+                                    "滨水活动期间可能分流",
+                                    "只到场馆公共入口"
+                                ],
+        "design_rationale":  "沿龙腾大道与滨江公共空间由北向南连续走读，剔除坐标明显错误的星美术馆节点。",
+        "risk_flags":  [
+                           "Station1907周边施工与开放状态需复核",
+                           "星美术馆待重新地理编码",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "书香徐汇·西岸艺术之旅",
+                                   "source_url":  "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0012",
+        "seed_id":  "walk_botanical_south_main",
+        "route_name":  "植物园南园主游线",
+        "route_mode":  "walk",
+        "target_distance_m":  3300,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "上海植物园1号门",
+                               "poi_id":  null,
+                               "lng_gcj02":  121.450227,
+                               "lat_gcj02":  31.146374,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "上海植物园3号门售票处",
+                             "poi_id":  "B00156ZSX5",
+                             "lng_gcj02":  121.43947,
+                             "lat_gcj02":  31.142747,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "上海植物园1号门",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.450227,
+                                  "lat_gcj02":  31.146374,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "黄母祠",
+                                  "poi_id":  "B0FFGM1ZK9",
+                                  "lng_gcj02":  121.448374,
+                                  "lat_gcj02":  31.151306,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "草药园",
+                                  "poi_id":  "B0FFFRNINC",
+                                  "lng_gcj02":  121.448494,
+                                  "lat_gcj02":  31.147705,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "植物大楼",
+                                  "poi_id":  "B0FFG2E8LW",
+                                  "lng_gcj02":  121.44408,
+                                  "lat_gcj02":  31.146016,
+                                  "source":  "高德POI B0FFG2E8LW，本地缓存"
+                              },
+                              {
+                                  "name":  "上海植物园3号门售票处",
+                                  "poi_id":  "B00156ZSX5",
+                                  "lng_gcj02":  121.43947,
+                                  "lat_gcj02":  31.142747,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "黄母祠",
+                               "草药园",
+                               "植物大楼"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据上海植物园南园导览；节点坐标沿用本地高德GCJ-02解析。以1号门入园、3号门离园，按南园主轴连续穿行，不设置回头支线。",
+        "access_restrictions":  [
+                                    "按植物园当日开闭园时间通行",
+                                    "专类园开放和售票情况需复核"
+                                ],
+        "design_rationale":  "以1号门入园、3号门离园，按南园主轴连续穿行，不设置回头支线。",
+        "risk_flags":  [
+                           "专类园开放状态需复核",
+                           "只走正式园路",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "上海植物园南园导览",
+                                   "source_url":  "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae\u0026infoId=bc3ac58b-5775-4cb6-a921-53f179926c2b",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0013",
+        "seed_id":  "walk_botanical_greenhouse_orchid",
+        "route_name":  "植物园温室兰室线",
+        "route_mode":  "walk",
+        "target_distance_m":  2700,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "上海植物园3号门售票处",
+                               "poi_id":  "B00156ZSX5",
+                               "lng_gcj02":  121.43947,
+                               "lat_gcj02":  31.142747,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "上海植物园2号门",
+                             "poi_id":  null,
+                             "lng_gcj02":  121.449758,
+                             "lat_gcj02":  31.150063,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "上海植物园3号门售票处",
+                                  "poi_id":  "B00156ZSX5",
+                                  "lng_gcj02":  121.43947,
+                                  "lat_gcj02":  31.142747,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "植物大楼",
+                                  "poi_id":  "B0FFG2E8LW",
+                                  "lng_gcj02":  121.44408,
+                                  "lat_gcj02":  31.146016,
+                                  "source":  "高德POI B0FFG2E8LW，本地缓存"
+                              },
+                              {
+                                  "name":  "上海植物园-兰室",
+                                  "poi_id":  "B0FFFDPYX9",
+                                  "lng_gcj02":  121.446205,
+                                  "lat_gcj02":  31.146753,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海植物园盆景园",
+                                  "poi_id":  "B0FFGM2161",
+                                  "lng_gcj02":  121.445201,
+                                  "lat_gcj02":  31.147755,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海植物园2号门",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.449758,
+                                  "lat_gcj02":  31.150063,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "植物大楼",
+                               "上海植物园-兰室",
+                               "上海植物园盆景园"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据上海植物园语音导览专类园线；节点坐标沿用本地高德GCJ-02解析。从3号门向东北单向穿越专类园并在2号门结束，节点沿空间方向展开。",
+        "access_restrictions":  [
+                                    "2号门当前开放状态需核验",
+                                    "专类园票务和内部通道需核验"
+                                ],
+        "design_rationale":  "从3号门向东北单向穿越专类园并在2号门结束，节点沿空间方向展开。",
+        "risk_flags":  [
+                           "2号门当前开放状态需现场核验",
+                           "专类园票务需复核",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "上海植物园语音导览专类园线",
+                                   "source_url":  "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae\u0026infoId=bc3ac58b-5775-4cb6-a921-53f179926c2b",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0014",
+        "seed_id":  "walk_hengfu_park_music",
+        "route_name":  "衡复公园音乐线",
+        "route_mode":  "walk",
+        "target_distance_m":  2800,
+        "route_shape":  "strict_loop",
+        "start_location":  {
+                               "name":  "东湖绿地",
+                               "poi_id":  "B0JRNRU7ZU",
+                               "lng_gcj02":  121.455621,
+                               "lat_gcj02":  31.215537,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "东湖绿地",
+                             "poi_id":  "B0JRNRU7ZU",
+                             "lng_gcj02":  121.455621,
+                             "lat_gcj02":  31.215537,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "东湖绿地",
+                                  "poi_id":  "B0JRNRU7ZU",
+                                  "lng_gcj02":  121.455621,
+                                  "lat_gcj02":  31.215537,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "襄阳公园",
+                                  "poi_id":  "B0015581AB",
+                                  "lng_gcj02":  121.456737,
+                                  "lat_gcj02":  31.216991,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "黑石公寓",
+                                  "poi_id":  "B0I17NNOSV",
+                                  "lng_gcj02":  121.452428,
+                                  "lat_gcj02":  31.211041,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "捷豹上海交响音乐厅",
+                                  "poi_id":  "B0FFF3T00K",
+                                  "lng_gcj02":  121.451646,
+                                  "lat_gcj02":  31.211519,
+                                  "source":  "高德POI B0FFF3T00K，本地缓存"
+                              },
+                              {
+                                  "name":  "上音绿地",
+                                  "poi_id":  "B0JGXDYI8Z",
+                                  "lng_gcj02":  121.453816,
+                                  "lat_gcj02":  31.21437,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "东湖绿地",
+                                  "poi_id":  "B0JRNRU7ZU",
+                                  "lng_gcj02":  121.455621,
+                                  "lat_gcj02":  31.215537,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "襄阳公园",
+                               "黑石公寓",
+                               "捷豹上海交响音乐厅",
+                               "上音绿地"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据衡复梧桐秋日Citywalk；节点坐标沿用本地高德GCJ-02解析。以东湖绿地为起终点，沿襄阳路与汾阳路形成街区闭环，移除错误聂耳绿地坐标。",
+        "access_restrictions":  [
+                                    "公园与绿地开放时间独立",
+                                    "主干道过街按信号通行"
+                                ],
+        "design_rationale":  "以东湖绿地为起终点，沿襄阳路与汾阳路形成街区闭环，移除错误聂耳绿地坐标。",
+        "risk_flags":  [
+                           "主干道路口按信号通行",
+                           "节假日人流密集",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "衡复梧桐秋日Citywalk",
+                                   "source_url":  "https://www.xuhui.gov.cn/zfjg_qzfbm_lvhsrglj_bmdt/20241107/546813.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0015",
+        "seed_id":  "walk_hengfu_corner_apartments",
+        "route_name":  "衡复转角公寓线",
+        "route_mode":  "walk",
+        "target_distance_m":  2400,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "武康大楼",
+                               "poi_id":  "B00155ITJ1",
+                               "lng_gcj02":  121.438278,
+                               "lat_gcj02":  31.20443,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "夏衍旧居",
+                             "poi_id":  "B0FFKK8QLO",
+                             "lng_gcj02":  121.449173,
+                             "lat_gcj02":  31.203289,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "武康大楼",
+                                  "poi_id":  "B00155ITJ1",
+                                  "lng_gcj02":  121.438278,
+                                  "lat_gcj02":  31.20443,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "西湖公寓",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.445529,
+                                  "lat_gcj02":  31.202711,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "高安公寓",
+                                  "poi_id":  "B001559IIF",
+                                  "lng_gcj02":  121.448032,
+                                  "lat_gcj02":  31.19934,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "草婴书房",
+                                  "poi_id":  "B0FFKJZ4DH",
+                                  "lng_gcj02":  121.44887,
+                                  "lat_gcj02":  31.203077,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "夏衍旧居",
+                                  "poi_id":  "B0FFKK8QLO",
+                                  "lng_gcj02":  121.449173,
+                                  "lat_gcj02":  31.203289,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "西湖公寓",
+                               "高安公寓",
+                               "草婴书房"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据衡复转角遇到的建筑；节点坐标沿用本地高德GCJ-02解析。沿武康路—高安路—复兴西路方向连续走读，剔除坐标错误的巨福公寓节点。",
+        "access_restrictions":  [
+                                    "只到住宅临街立面",
+                                    "武康大楼周边节假日拥挤",
+                                    "西湖公寓和巨福公寓入口需再核"
+                                ],
+        "design_rationale":  "沿武康路—高安路—复兴西路方向连续走读，剔除坐标错误的巨福公寓节点。",
+        "risk_flags":  [
+                           "住宅只观赏临街立面",
+                           "巨福公寓需重新核址",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "衡复转角遇到的建筑",
+                                   "source_url":  "https://sh.people.com.cn/n2/2023/0823/c350122-40542555.html",
+                                   "source_type":  "secondary_media_route_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0016",
+        "seed_id":  "walk_xujiahui_sports_full",
+        "route_name":  "运动徐家汇完整线",
+        "route_mode":  "walk",
+        "target_distance_m":  2700,
+        "route_shape":  "strict_loop",
+        "start_location":  {
+                               "name":  "零陵路899号",
+                               "poi_id":  null,
+                               "lng_gcj02":  121.43748,
+                               "lat_gcj02":  31.183167,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "零陵路899号",
+                             "poi_id":  null,
+                             "lng_gcj02":  121.43748,
+                             "lat_gcj02":  31.183167,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "零陵路899号",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.43748,
+                                  "lat_gcj02":  31.183167,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "徐家汇体育公园",
+                                  "poi_id":  "B0FFHKDU6C",
+                                  "lng_gcj02":  121.440734,
+                                  "lat_gcj02":  31.181297,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "中山南二路与龙华西路交叉口",
+                                  "poi_id":  "B0FFI8I82A",
+                                  "lng_gcj02":  121.440918,
+                                  "lat_gcj02":  31.177849,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "漕溪路地铁站绿地",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.43841,
+                                  "lat_gcj02":  31.176746,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "乐汇小游园",
+                                  "poi_id":  "B0J647JYMM",
+                                  "lng_gcj02":  121.435575,
+                                  "lat_gcj02":  31.179879,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "零陵路899号",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.43748,
+                                  "lat_gcj02":  31.183167,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "徐家汇体育公园",
+                               "中山南二路与龙华西路交叉口",
+                               "漕溪路地铁站绿地",
+                               "乐汇小游园"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据运动徐家汇·感受体育脉动；节点坐标沿用本地高德GCJ-02解析。围绕体育公园外围道路闭合，所有中间节点沿顺时针方向排列。",
+        "access_restrictions":  [
+                                    "赛事演出及商圈高峰可能限流",
+                                    "沿街公共空间通行"
+                                ],
+        "design_rationale":  "围绕体育公园外围道路闭合，所有中间节点沿顺时针方向排列。",
+        "risk_flags":  [
+                           "赛事演出及商圈高峰可能限流",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "运动徐家汇·感受体育脉动",
+                                   "source_url":  "https://www.xuhui.gov.cn/xwzx_zwxx/20241115/547298.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0017",
+        "seed_id":  "walk_xujiahui_science",
+        "route_name":  "超胜会通科学线",
+        "route_mode":  "walk",
+        "target_distance_m":  2500,
+        "route_shape":  "strict_loop",
+        "start_location":  {
+                               "name":  "徐光启纪念馆",
+                               "poi_id":  "B0FFGXK5WR",
+                               "lng_gcj02":  121.434317,
+                               "lat_gcj02":  31.189282,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "徐光启纪念馆",
+                             "poi_id":  "B0FFGXK5WR",
+                             "lng_gcj02":  121.434317,
+                             "lat_gcj02":  31.189282,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "徐光启纪念馆",
+                                  "poi_id":  "B0FFGXK5WR",
+                                  "lng_gcj02":  121.434317,
+                                  "lat_gcj02":  31.189282,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海土山湾博物馆",
+                                  "poi_id":  "B00155QHTA",
+                                  "lng_gcj02":  121.435149,
+                                  "lat_gcj02":  31.186616,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海电影博物馆",
+                                  "poi_id":  "B001575OGK",
+                                  "lng_gcj02":  121.438473,
+                                  "lat_gcj02":  31.186294,
+                                  "source":  "高德POI B001575OGK，本地缓存"
+                              },
+                              {
+                                  "name":  "上海市徐汇区图书馆(徐家汇书院)",
+                                  "poi_id":  "B0FFMH4KQS",
+                                  "lng_gcj02":  121.437082,
+                                  "lat_gcj02":  31.19043,
+                                  "source":  "高德POI B0FFMH4KQS，本地缓存"
+                              },
+                              {
+                                  "name":  "上海气象博物馆",
+                                  "poi_id":  "B0I0NM6P0T",
+                                  "lng_gcj02":  121.436219,
+                                  "lat_gcj02":  31.190156,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "徐光启纪念馆",
+                                  "poi_id":  "B0FFGXK5WR",
+                                  "lng_gcj02":  121.434317,
+                                  "lat_gcj02":  31.189282,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "上海土山湾博物馆",
+                               "上海电影博物馆",
+                               "上海市徐汇区图书馆(徐家汇书院)",
+                               "上海气象博物馆"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据海派寻源·超胜会通；节点坐标沿用本地高德GCJ-02解析。围绕徐家汇源核心文化场馆形成单一闭环，避免土山湾博物馆原路折返。",
+        "access_restrictions":  [
+                                    "博物馆开放与预约安排分别核对",
+                                    "闭馆时保留外观节点"
+                                ],
+        "design_rationale":  "围绕徐家汇源核心文化场馆形成单一闭环，避免土山湾博物馆原路折返。",
+        "risk_flags":  [
+                           "场馆开放与预约安排分别核对",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "海派寻源·超胜会通",
+                                   "source_url":  "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0018",
+        "seed_id":  "walk_longhua_red_memory",
+        "route_name":  "龙华红色记忆线",
+        "route_mode":  "walk",
+        "target_distance_m":  1800,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "龙华革命烈士纪念地大门",
+                               "poi_id":  null,
+                               "lng_gcj02":  121.45214,
+                               "lat_gcj02":  31.177366,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "龙华塔",
+                             "poi_id":  "B001513D74",
+                             "lng_gcj02":  121.45195,
+                             "lat_gcj02":  31.173657,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "龙华革命烈士纪念地大门",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.45214,
+                                  "lat_gcj02":  31.177366,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙华墙",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.450906,
+                                  "lat_gcj02":  31.178991,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙华烈士纪念馆",
+                                  "poi_id":  "B00154B0EA",
+                                  "lng_gcj02":  121.449023,
+                                  "lat_gcj02":  31.176658,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海市龙华烈士陵园",
+                                  "poi_id":  "B00155R1DV",
+                                  "lng_gcj02":  121.449206,
+                                  "lat_gcj02":  31.175819,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙华塔",
+                                  "poi_id":  "B001513D74",
+                                  "lng_gcj02":  121.45195,
+                                  "lat_gcj02":  31.173657,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "龙华墙",
+                               "龙华烈士纪念馆",
+                               "上海市龙华烈士陵园"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据龙华千古仰高风；节点坐标沿用本地高德GCJ-02解析。从纪念地大门向南单向行进至龙华塔，删除起点北侧多余轨迹和纪念馆进出共线。",
+        "access_restrictions":  [
+                                    "陵园按开放和安检要求通行",
+                                    "纪念场所保持安静",
+                                    "龙华塔接入段需高德复核"
+                                ],
+        "design_rationale":  "从纪念地大门向南单向行进至龙华塔，删除起点北侧多余轨迹和纪念馆进出共线。",
+        "risk_flags":  [
+                           "陵园安检与开放时间需核验",
+                           "纪念场所保持安静",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "龙华千古仰高风",
+                                   "source_url":  "https://whlyj.sh.gov.cn/gqfc/20241021/eec3bb2c96504b059712ec348032212a.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0019",
+        "seed_id":  "walk_guijiang_mid_greenway",
+        "route_name":  "桂江绿廊中段线",
+        "route_mode":  "walk",
+        "target_distance_m":  3200,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "桂江路与钦州南路交叉口",
+                               "poi_id":  "B0FFLKZB8L",
+                               "lng_gcj02":  121.407256,
+                               "lat_gcj02":  31.155183,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "桂江路与江安路交叉口",
+                             "poi_id":  "B0FFI8OK6E",
+                             "lng_gcj02":  121.410732,
+                             "lat_gcj02":  31.147197,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "桂江路与钦州南路交叉口",
+                                  "poi_id":  "B0FFLKZB8L",
+                                  "lng_gcj02":  121.407256,
+                                  "lat_gcj02":  31.155183,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "桂江支路与桂江路交叉口",
+                                  "poi_id":  "B0FFGGDP97",
+                                  "lng_gcj02":  121.408364,
+                                  "lat_gcj02":  31.152616,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "中环(徐汇)绿廊",
+                                  "poi_id":  "B0FFHQ8DCP",
+                                  "lng_gcj02":  121.409989,
+                                  "lat_gcj02":  31.147052,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "桂江路与江安路交叉口",
+                                  "poi_id":  "B0FFI8OK6E",
+                                  "lng_gcj02":  121.410732,
+                                  "lat_gcj02":  31.147197,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "桂江支路与桂江路交叉口",
+                               "中环(徐汇)绿廊"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据中环绿廊桂江路公共空间；节点坐标沿用本地高德GCJ-02解析。沿桂江绿廊由北向南单向通过，不再从南端返回北段凑里程。",
+        "access_restrictions":  [
+                                    "内部园路缺失处沿平行公共人行道通行",
+                                    "完整点序需高德与现场复核"
+                                ],
+        "design_rationale":  "沿桂江绿廊由北向南单向通过，不再从南端返回北段凑里程。",
+        "risk_flags":  [
+                           "绿廊断点使用平行公共人行道",
+                           "夜间照明待复核",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "中环绿廊桂江路公共空间",
+                                   "source_url":  "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069ab0643c019ea540f687030f",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0020",
+        "seed_id":  "walk_caohjing_neoworld_aotang",
+        "route_name":  "元界上澳塘连接线",
+        "route_mode":  "walk",
+        "target_distance_m":  3200,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "游戏博物馆",
+                               "poi_id":  "B0KRXMYJCQ",
+                               "lng_gcj02":  121.404865,
+                               "lat_gcj02":  31.172699,
+                               "source":  "高德POI B0KRXMYJCQ，本地缓存"
+                           },
+        "end_location":  {
+                             "name":  "桂林公园",
+                             "poi_id":  "B00155L0UC",
+                             "lng_gcj02":  121.417929,
+                             "lat_gcj02":  31.16532,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "游戏博物馆",
+                                  "poi_id":  "B0KRXMYJCQ",
+                                  "lng_gcj02":  121.404865,
+                                  "lat_gcj02":  31.172699,
+                                  "source":  "高德POI B0KRXMYJCQ，本地缓存"
+                              },
+                              {
+                                  "name":  "田林路与桂箐路交叉口",
+                                  "poi_id":  "B0FFGGY07H",
+                                  "lng_gcj02":  121.406357,
+                                  "lat_gcj02":  31.168308,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "华鑫慧享城",
+                                  "poi_id":  "B0FFJM7ZL3",
+                                  "lng_gcj02":  121.408645,
+                                  "lat_gcj02":  31.171274,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "桂林公园",
+                                  "poi_id":  "B00155L0UC",
+                                  "lng_gcj02":  121.417929,
+                                  "lat_gcj02":  31.16532,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "田林路与桂箐路交叉口",
+                               "华鑫慧享城"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据元界NeoWorld二期扩展区；节点坐标沿用本地高德GCJ-02解析。由元界街区向东连接上澳塘与桂林公园，调整旧点序中的东西向回折。",
+        "access_restrictions":  [
+                                    "当前连续人行通道需实地复核",
+                                    "施工围挡和开放状态需动态检查"
+                                ],
+        "design_rationale":  "由元界街区向东连接上澳塘与桂林公园，调整旧点序中的东西向回折。",
+        "risk_flags":  [
+                           "上澳塘连续人行通道与施工围挡需动态检查",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "元界NeoWorld二期扩展区",
+                                   "source_url":  "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069a97abda019eb5fd16732786",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0021",
+        "seed_id":  "walk_westbund_museum_avenue",
+        "route_name":  "西岸美术馆大道北段线",
+        "route_mode":  "walk",
+        "target_distance_m":  4500,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "Station1907启点",
+                               "poi_id":  "B0KDPO8IM9",
+                               "lng_gcj02":  121.468215,
+                               "lat_gcj02":  31.188275,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "西岸美术馆",
+                             "poi_id":  "B0FFJGOAFY",
+                             "lng_gcj02":  121.463841,
+                             "lat_gcj02":  31.167682,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "Station1907启点",
+                                  "poi_id":  "B0KDPO8IM9",
+                                  "lng_gcj02":  121.468215,
+                                  "lat_gcj02":  31.188275,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙美术馆(西岸馆)",
+                                  "poi_id":  "B0FFF2YL75",
+                                  "lng_gcj02":  121.464761,
+                                  "lat_gcj02":  31.183954,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "西岸艺术中心",
+                                  "poi_id":  "B0FFFFROYU",
+                                  "lng_gcj02":  121.461939,
+                                  "lat_gcj02":  31.167719,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "西岸美术馆",
+                                  "poi_id":  "B0FFJGOAFY",
+                                  "lng_gcj02":  121.463841,
+                                  "lat_gcj02":  31.167682,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "龙美术馆(西岸馆)",
+                               "西岸艺术中心"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据西岸艺术之旅与美术馆大道；节点坐标沿用本地高德GCJ-02解析。沿龙腾大道和滨江艺术带由北向南贯穿，剔除错误星美术馆坐标与重复场馆。",
+        "access_restrictions":  [
+                                    "场馆内部按开放时间",
+                                    "滨江大型活动期间局部绕行"
+                                ],
+        "design_rationale":  "沿龙腾大道和滨江艺术带由北向南贯穿，剔除错误星美术馆坐标与重复场馆。",
+        "risk_flags":  [
+                           "滨江活动期间可能分流",
+                           "Station1907入口状态需核验",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "西岸艺术之旅与美术馆大道",
+                                   "source_url":  "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0022",
+        "seed_id":  "walk_westbund_dreamcenter_south",
+        "route_name":  "西岸南段梦中心滨水线",
+        "route_mode":  "walk",
+        "target_distance_m":  4800,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "西岸美术馆",
+                               "poi_id":  "B0FFJGOAFY",
+                               "lng_gcj02":  121.463841,
+                               "lat_gcj02":  31.167682,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "龙华码头",
+                             "poi_id":  "B0K0PCWWBZ",
+                             "lng_gcj02":  121.465024,
+                             "lat_gcj02":  31.157613,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "西岸美术馆",
+                                  "poi_id":  "B0FFJGOAFY",
+                                  "lng_gcj02":  121.463841,
+                                  "lat_gcj02":  31.167682,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海油罐艺术中心",
+                                  "poi_id":  "B0FFHUD4BQ",
+                                  "lng_gcj02":  121.464321,
+                                  "lat_gcj02":  31.164519,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "西岸穹顶艺术中心",
+                                  "poi_id":  "B0HAL54MUG",
+                                  "lng_gcj02":  121.464561,
+                                  "lat_gcj02":  31.163167,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "西岸梦中心",
+                                  "poi_id":  "B0LKLP88CD",
+                                  "lng_gcj02":  121.466601,
+                                  "lat_gcj02":  31.161366,
+                                  "source":  "高德POI B0LKLP88CD，本地缓存"
+                              },
+                              {
+                                  "name":  "龙华码头",
+                                  "poi_id":  "B0K0PCWWBZ",
+                                  "lng_gcj02":  121.465024,
+                                  "lat_gcj02":  31.157613,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "上海油罐艺术中心",
+                               "西岸穹顶艺术中心",
+                               "西岸梦中心"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据侬好西岸主题线路与滨江公共空间；节点坐标沿用本地高德GCJ-02解析。沿同侧滨江步道由北向南依次抵达梦中心和码头，取消往返式凑里程。",
+        "access_restrictions":  [
+                                    "梦中心周末和夜间客流大",
+                                    "码头运营活动可能影响终点空间",
+                                    "岸线同侧贯通需核查"
+                                ],
+        "design_rationale":  "沿同侧滨江步道由北向南依次抵达梦中心和码头，取消往返式凑里程。",
+        "risk_flags":  [
+                           "码头活动及梦中心高峰客流需动态检查",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "侬好西岸主题线路与滨江公共空间",
+                                   "source_url":  "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069ab0643c019ea5494fe90321",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0023",
+        "seed_id":  "walk_botanical_north_south",
+        "route_name":  "植物园南北贯穿线",
+        "route_mode":  "walk",
+        "target_distance_m":  4600,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "上海植物园4号门售票处",
+                               "poi_id":  "B0FFF64RUI",
+                               "lng_gcj02":  121.445793,
+                               "lat_gcj02":  31.151884,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "上海植物园3号门售票处",
+                             "poi_id":  "B00156ZSX5",
+                             "lng_gcj02":  121.43947,
+                             "lat_gcj02":  31.142747,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "上海植物园4号门售票处",
+                                  "poi_id":  "B0FFF64RUI",
+                                  "lng_gcj02":  121.445793,
+                                  "lat_gcj02":  31.151884,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海植物园-北区",
+                                  "poi_id":  "B0LDT6NY7D",
+                                  "lng_gcj02":  121.44402,
+                                  "lat_gcj02":  31.150251,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "展览温室(一)",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.447336,
+                                  "lat_gcj02":  31.147296,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "草药园",
+                                  "poi_id":  "B0FFFRNINC",
+                                  "lng_gcj02":  121.448494,
+                                  "lat_gcj02":  31.147705,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "植物大楼",
+                                  "poi_id":  "B0FFG2E8LW",
+                                  "lng_gcj02":  121.44408,
+                                  "lat_gcj02":  31.146016,
+                                  "source":  "高德POI B0FFG2E8LW，本地缓存"
+                              },
+                              {
+                                  "name":  "上海植物园3号门售票处",
+                                  "poi_id":  "B00156ZSX5",
+                                  "lng_gcj02":  121.43947,
+                                  "lat_gcj02":  31.142747,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "上海植物园-北区",
+                               "展览温室(一)",
+                               "草药园",
+                               "植物大楼"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据上海植物园全园语音导览；节点坐标沿用本地高德GCJ-02解析。从4号门到3号门连续贯穿北区与南园，终点改为路网更自然的3号门。",
+        "access_restrictions":  [
+                                    "跨区通道和季节性封闭需核验",
+                                    "温室票务需核对",
+                                    "只走正式园路"
+                                ],
+        "design_rationale":  "从4号门到3号门连续贯穿北区与南园，终点改为路网更自然的3号门。",
+        "risk_flags":  [
+                           "跨区园路与季节性封闭需核验",
+                           "温室票务需复核",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "上海植物园全园语音导览",
+                                   "source_url":  "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae\u0026infoId=bc3ac58b-5775-4cb6-a921-53f179926c2b",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0024",
+        "seed_id":  "walk_hengfu_literature_houses",
+        "route_name":  "衡复文学故居线",
+        "route_mode":  "walk",
+        "target_distance_m":  4900,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "上海市徐汇区图书馆(徐家汇书院)",
+                               "poi_id":  "B0FFMH4KQS",
+                               "lng_gcj02":  121.437082,
+                               "lat_gcj02":  31.19043,
+                               "source":  "高德POI B0FFMH4KQS，本地缓存"
+                           },
+        "end_location":  {
+                             "name":  "夏衍旧居",
+                             "poi_id":  "B0FFKK8QLO",
+                             "lng_gcj02":  121.449173,
+                             "lat_gcj02":  31.203289,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "上海市徐汇区图书馆(徐家汇书院)",
+                                  "poi_id":  "B0FFMH4KQS",
+                                  "lng_gcj02":  121.437082,
+                                  "lat_gcj02":  31.19043,
+                                  "source":  "高德POI B0FFMH4KQS，本地缓存"
+                              },
+                              {
+                                  "name":  "张乐平故居",
+                                  "poi_id":  "B00155LW7J",
+                                  "lng_gcj02":  121.443329,
+                                  "lat_gcj02":  31.212563,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "柯灵故居",
+                                  "poi_id":  "B0FFH9VT2B",
+                                  "lng_gcj02":  121.442448,
+                                  "lat_gcj02":  31.210553,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "草婴书房",
+                                  "poi_id":  "B0FFKJZ4DH",
+                                  "lng_gcj02":  121.44887,
+                                  "lat_gcj02":  31.203077,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "夏衍旧居",
+                                  "poi_id":  "B0FFKK8QLO",
+                                  "lng_gcj02":  121.449173,
+                                  "lat_gcj02":  31.203289,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "张乐平故居",
+                               "柯灵故居",
+                               "草婴书房"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据书香徐汇·文学体验之旅；节点坐标沿用本地高德GCJ-02解析。按官方文学体验点序由徐家汇向衡复单向展开，起终点交通语义清晰。",
+        "access_restrictions":  [
+                                    "故居和书房开放时间与预约条件各异",
+                                    "闭馆时只走临街公共空间"
+                                ],
+        "design_rationale":  "按官方文学体验点序由徐家汇向衡复单向展开，起终点交通语义清晰。",
+        "risk_flags":  [
+                           "故居和书房开放时间与预约条件各异",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "书香徐汇·文学体验之旅",
+                                   "source_url":  "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0025",
+        "seed_id":  "walk_hengfu_historic_roads",
+        "route_name":  "衡复老洋房道路线",
+        "route_mode":  "walk",
+        "target_distance_m":  4900,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "武康路历史文化名街",
+                               "poi_id":  "B0FFIK0Z21",
+                               "lng_gcj02":  121.43993,
+                               "lat_gcj02":  31.207255,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "捷豹上海交响音乐厅",
+                             "poi_id":  "B0FFF3T00K",
+                             "lng_gcj02":  121.451646,
+                             "lat_gcj02":  31.211519,
+                             "source":  "高德POI B0FFF3T00K，本地缓存"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "武康路历史文化名街",
+                                  "poi_id":  "B0FFIK0Z21",
+                                  "lng_gcj02":  121.43993,
+                                  "lat_gcj02":  31.207255,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "武康路与湖南路交叉口",
+                                  "poi_id":  "B0FFGGBZ5V",
+                                  "lng_gcj02":  121.440378,
+                                  "lat_gcj02":  31.208333,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "乌鲁木齐中路与复兴西路交叉口",
+                                  "poi_id":  "B0FFGG99SC",
+                                  "lng_gcj02":  121.44678,
+                                  "lat_gcj02":  31.210506,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "东平路与岳阳路交叉口",
+                                  "poi_id":  "B0FFGGC6B3",
+                                  "lng_gcj02":  121.451798,
+                                  "lat_gcj02":  31.208581,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "捷豹上海交响音乐厅",
+                                  "poi_id":  "B0FFF3T00K",
+                                  "lng_gcj02":  121.451646,
+                                  "lat_gcj02":  31.211519,
+                                  "source":  "高德POI B0FFF3T00K，本地缓存"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "武康路与湖南路交叉口",
+                               "乌鲁木齐中路与复兴西路交叉口",
+                               "东平路与岳阳路交叉口"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据衡复老洋房游览线；节点坐标沿用本地高德GCJ-02解析。按武康路—湖南路—复兴西路—东平路—汾阳路连续走读，删除解析到西侧的错误淮海西路终点。",
+        "access_restrictions":  [
+                                    "高人流时段降低推荐优先级",
+                                    "只走公共道路，不进入住宅内部"
+                                ],
+        "design_rationale":  "按武康路—湖南路—复兴西路—东平路—汾阳路连续走读，删除解析到西侧的错误淮海西路终点。",
+        "risk_flags":  [
+                           "高人流时段降低推荐优先级",
+                           "住宅仅观赏临街外观",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "衡复老洋房游览线",
+                                   "source_url":  "https://www.supdri.com/artmap/details.html?id=2\u0026isPath=1\u0026type=line",
+                                   "source_type":  "planning_institute_route_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0026",
+        "seed_id":  "walk_xujiahui_origin_panorama",
+        "route_name":  "徐家汇海派寻源全景线",
+        "route_mode":  "walk",
+        "target_distance_m":  4600,
+        "route_shape":  "strict_loop",
+        "start_location":  {
+                               "name":  "徐家汇藏书楼",
+                               "poi_id":  "B00150E486",
+                               "lng_gcj02":  121.437753,
+                               "lat_gcj02":  31.192096,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "徐家汇藏书楼",
+                             "poi_id":  "B00150E486",
+                             "lng_gcj02":  121.437753,
+                             "lat_gcj02":  31.192096,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "徐家汇藏书楼",
+                                  "poi_id":  "B00150E486",
+                                  "lng_gcj02":  121.437753,
+                                  "lat_gcj02":  31.192096,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海气象博物馆",
+                                  "poi_id":  "B0I0NM6P0T",
+                                  "lng_gcj02":  121.436219,
+                                  "lat_gcj02":  31.190156,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "徐光启纪念馆",
+                                  "poi_id":  "B0FFGXK5WR",
+                                  "lng_gcj02":  121.434317,
+                                  "lat_gcj02":  31.189282,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海土山湾博物馆",
+                                  "poi_id":  "B00155QHTA",
+                                  "lng_gcj02":  121.435149,
+                                  "lat_gcj02":  31.186616,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海电影博物馆",
+                                  "poi_id":  "B001575OGK",
+                                  "lng_gcj02":  121.438473,
+                                  "lat_gcj02":  31.186294,
+                                  "source":  "高德POI B001575OGK，本地缓存"
+                              },
+                              {
+                                  "name":  "徐家汇藏书楼",
+                                  "poi_id":  "B00150E486",
+                                  "lng_gcj02":  121.437753,
+                                  "lat_gcj02":  31.192096,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "上海气象博物馆",
+                               "徐光启纪念馆",
+                               "上海土山湾博物馆",
+                               "上海电影博物馆"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据书香徐汇·海派寻源之旅；节点坐标沿用本地高德GCJ-02解析。以藏书楼为起终点，围绕徐家汇源场馆形成闭环，删除原路折返节点。",
+        "access_restrictions":  [
+                                    "场馆开放与预约时间各异",
+                                    "跨主要道路时按人行设施通行"
+                                ],
+        "design_rationale":  "以藏书楼为起终点，围绕徐家汇源场馆形成闭环，删除原路折返节点。",
+        "risk_flags":  [
+                           "场馆开放与预约时间各异",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "书香徐汇·海派寻源之旅",
+                                   "source_url":  "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0027",
+        "seed_id":  "walk_longhua_ancient_modern_loop",
+        "route_name":  "龙华古今街区环线",
+        "route_mode":  "walk",
+        "target_distance_m":  4300,
+        "route_shape":  "strict_loop",
+        "start_location":  {
+                               "name":  "龙华寺",
+                               "poi_id":  "B00155AMEJ",
+                               "lng_gcj02":  121.451842,
+                               "lat_gcj02":  31.175174,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "龙华寺",
+                             "poi_id":  "B00155AMEJ",
+                             "lng_gcj02":  121.451842,
+                             "lat_gcj02":  31.175174,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "龙华寺",
+                                  "poi_id":  "B00155AMEJ",
+                                  "lng_gcj02":  121.451842,
+                                  "lat_gcj02":  31.175174,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙华塔",
+                                  "poi_id":  "B001513D74",
+                                  "lng_gcj02":  121.45195,
+                                  "lat_gcj02":  31.173657,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "塔影空间",
+                                  "poi_id":  "B0JDY51YGL",
+                                  "lng_gcj02":  121.451515,
+                                  "lat_gcj02":  31.172855,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙华会",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.453425,
+                                  "lat_gcj02":  31.173657,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "上海市龙华烈士陵园",
+                                  "poi_id":  "B00155R1DV",
+                                  "lng_gcj02":  121.449206,
+                                  "lat_gcj02":  31.175819,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙华寺",
+                                  "poi_id":  "B00155AMEJ",
+                                  "lng_gcj02":  121.451842,
+                                  "lat_gcj02":  31.175174,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "龙华塔",
+                               "塔影空间",
+                               "龙华会",
+                               "上海市龙华烈士陵园"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据龙华古刹古塔与龙华千古仰高风；节点坐标沿用本地高德GCJ-02解析。以龙华寺为起终点绕龙华核心街区一周，景点按外围道路顺序排列。",
+        "access_restrictions":  [
+                                    "各场所按开放时间通行",
+                                    "庙会期间周边交通管制和大客流风险较高"
+                                ],
+        "design_rationale":  "以龙华寺为起终点绕龙华核心街区一周，景点按外围道路顺序排列。",
+        "risk_flags":  [
+                           "庙会期间交通管制与大客流风险较高",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "龙华古刹古塔与龙华千古仰高风",
+                                   "source_url":  "https://whlyj.sh.gov.cn/gqfc/20241021/eec3bb2c96504b059712ec348032212a.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0028",
+        "seed_id":  "walk_longhua_to_dreamcenter",
+        "route_name":  "龙华至滨江梦中心线",
+        "route_mode":  "walk",
+        "target_distance_m":  4900,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "上海市龙华烈士陵园",
+                               "poi_id":  "B00155R1DV",
+                               "lng_gcj02":  121.449206,
+                               "lat_gcj02":  31.175819,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "龙华码头",
+                             "poi_id":  "B0K0PCWWBZ",
+                             "lng_gcj02":  121.465024,
+                             "lat_gcj02":  31.157613,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "上海市龙华烈士陵园",
+                                  "poi_id":  "B00155R1DV",
+                                  "lng_gcj02":  121.449206,
+                                  "lat_gcj02":  31.175819,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙华寺",
+                                  "poi_id":  "B00155AMEJ",
+                                  "lng_gcj02":  121.451842,
+                                  "lat_gcj02":  31.175174,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "龙华会",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.453425,
+                                  "lat_gcj02":  31.173657,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "西岸梦中心",
+                                  "poi_id":  "B0LKLP88CD",
+                                  "lng_gcj02":  121.466601,
+                                  "lat_gcj02":  31.161366,
+                                  "source":  "高德POI B0LKLP88CD，本地缓存"
+                              },
+                              {
+                                  "name":  "龙华码头",
+                                  "poi_id":  "B0K0PCWWBZ",
+                                  "lng_gcj02":  121.465024,
+                                  "lat_gcj02":  31.157613,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "龙华寺",
+                               "龙华会",
+                               "西岸梦中心"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据龙华文旅街区至西岸滨江连接带；节点坐标沿用本地高德GCJ-02解析。从龙华核心区向东南接入滨江，先到梦中心后沿岸南行至码头，删除位置与主线不符的休闲广场。",
+        "access_restrictions":  [
+                                    "龙华会至滨江的公共道路需高德确定",
+                                    "码头活动和梦中心高峰客流需动态检查"
+                                ],
+        "design_rationale":  "从龙华核心区向东南接入滨江，先到梦中心后沿岸南行至码头，删除位置与主线不符的休闲广场。",
+        "risk_flags":  [
+                           "龙华会至滨江的公共道路需路由复核",
+                           "码头活动期间可能分流",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "龙华文旅街区至西岸滨江连接带",
+                                   "source_url":  "https://whlyj.sh.gov.cn/cysc/20250523/e07df4d4a5a14751bf5ca138e2d8d5e3.html",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0029",
+        "seed_id":  "walk_guijiang_full_greenway",
+        "route_name":  "桂江全段绿廊线",
+        "route_mode":  "walk",
+        "target_distance_m":  3800,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "桂平路与漕宝路交叉口",
+                               "poi_id":  "B0FFHPG76V",
+                               "lng_gcj02":  121.40525,
+                               "lat_gcj02":  31.163012,
+                               "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                           },
+        "end_location":  {
+                             "name":  "桂江路与江安路交叉口",
+                             "poi_id":  "B0FFI8OK6E",
+                             "lng_gcj02":  121.410732,
+                             "lat_gcj02":  31.147197,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "桂平路与漕宝路交叉口",
+                                  "poi_id":  "B0FFHPG76V",
+                                  "lng_gcj02":  121.40525,
+                                  "lat_gcj02":  31.163012,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "桂江路与钦州南路交叉口",
+                                  "poi_id":  "B0FFLKZB8L",
+                                  "lng_gcj02":  121.407256,
+                                  "lat_gcj02":  31.155183,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "桂江支路与桂江路交叉口",
+                                  "poi_id":  "B0FFGGDP97",
+                                  "lng_gcj02":  121.408364,
+                                  "lat_gcj02":  31.152616,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "中环(徐汇)绿廊",
+                                  "poi_id":  "B0FFHQ8DCP",
+                                  "lng_gcj02":  121.409989,
+                                  "lat_gcj02":  31.147052,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "桂江路与江安路交叉口",
+                                  "poi_id":  "B0FFI8OK6E",
+                                  "lng_gcj02":  121.410732,
+                                  "lat_gcj02":  31.147197,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "桂江路与钦州南路交叉口",
+                               "桂江支路与桂江路交叉口",
+                               "中环(徐汇)绿廊"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据桂江路中环绿廊健身步道；节点坐标沿用本地高德GCJ-02解析。从漕宝路北端沿桂江绿廊向南贯穿，纠正旧点序先到南端再折回北段的问题。",
+        "access_restrictions":  [
+                                    "内部绿廊断点处使用平行人行道",
+                                    "目标距离需高德累计确认",
+                                    "夜间照明待复核"
+                                ],
+        "design_rationale":  "从漕宝路北端沿桂江绿廊向南贯穿，纠正旧点序先到南端再折回北段的问题。",
+        "risk_flags":  [
+                           "内部绿廊断点处使用平行人行道",
+                           "夜间照明待复核",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "桂江路中环绿廊健身步道",
+                                   "source_url":  "https://www.meet-in-shanghai.net/tc/guide/run-a-autumn-in-the-cool-weather-please-put-away-this-shanghai-treasure-running-route-956451/",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    },
+    {
+        "route_id":  "XH_WALK_0030",
+        "seed_id":  "walk_caohjing_innovation_waterfront",
+        "route_name":  "漕河泾创新水岸线",
+        "route_mode":  "walk",
+        "target_distance_m":  4800,
+        "route_shape":  "one_way",
+        "start_location":  {
+                               "name":  "漕河泾开发区科创公园",
+                               "poi_id":  "B00154DH42",
+                               "lng_gcj02":  121.40033,
+                               "lat_gcj02":  31.169296,
+                               "source":  "高德POI B00154DH42，本地缓存"
+                           },
+        "end_location":  {
+                             "name":  "科技绿洲",
+                             "poi_id":  null,
+                             "lng_gcj02":  121.409429,
+                             "lat_gcj02":  31.179892,
+                             "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                         },
+        "ordered_nodes":  [
+                              {
+                                  "name":  "漕河泾开发区科创公园",
+                                  "poi_id":  "B00154DH42",
+                                  "lng_gcj02":  121.40033,
+                                  "lat_gcj02":  31.169296,
+                                  "source":  "高德POI B00154DH42，本地缓存"
+                              },
+                              {
+                                  "name":  "游戏博物馆",
+                                  "poi_id":  "B0KRXMYJCQ",
+                                  "lng_gcj02":  121.404865,
+                                  "lat_gcj02":  31.172699,
+                                  "source":  "高德POI B0KRXMYJCQ，本地缓存"
+                              },
+                              {
+                                  "name":  "华鑫慧享城",
+                                  "poi_id":  "B0FFJM7ZL3",
+                                  "lng_gcj02":  121.408645,
+                                  "lat_gcj02":  31.171274,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              },
+                              {
+                                  "name":  "科技绿洲",
+                                  "poi_id":  null,
+                                  "lng_gcj02":  121.409429,
+                                  "lat_gcj02":  31.179892,
+                                  "source":  "高德地图 POI v5 本地缓存，已写入 route_seeds.json"
+                              }
+                          ],
+        "waypoint_names":  [
+                               "游戏博物馆",
+                               "华鑫慧享城"
+                           ],
+        "amenities":  [
+
+                      ],
+        "amenity_ids":  [
+
+                        ],
+        "geometry_action":  "regenerate",
+        "geometry_source":  "amap_walking_direction",
+        "evidence_note":  "路线语义依据漕河泾10公里创新水环；节点坐标沿用本地高德GCJ-02解析。采用科创公园—元界—上澳塘—科技绿洲的西向东再北向单程骨架，移除错误蒲汇塘坐标。",
+        "access_restrictions":  [
+                                    "当前贯通状态需现场核验",
+                                    "蒲汇塘堵点和同侧绕行方案需复核",
+                                    "施工影响需动态检查"
+                                ],
+        "design_rationale":  "采用科创公园—元界—上澳塘—科技绿洲的西向东再北向单程骨架，移除错误蒲汇塘坐标。",
+        "risk_flags":  [
+                           "创新水环仍有滨水堵点",
+                           "科技绿洲内部通行与施工状态需现场核验",
+                           "蒲汇塘节点待重新地理编码",
+                           "amenities_pending_live_verification",
+                           "geometry_regeneration_required"
+                       ],
+        "source_records":  [
+                               {
+                                   "source_name":  "漕河泾10公里创新水环",
+                                   "source_url":  "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069a97abda019eaa3045c42706",
+                                   "source_type":  "official_route_or_place_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "路线主题、场所关系与开放语义"
+                               },
+                               {
+                                   "source_name":  "高德地图本地解析缓存",
+                                   "source_path":  "data/raw/amap",
+                                   "source_type":  "coordinate_evidence",
+                                   "accessed_at":  "2026-08-15",
+                                   "supports":  "GCJ-02坐标与道路节点"
+                               }
+                           ]
+    }
+]

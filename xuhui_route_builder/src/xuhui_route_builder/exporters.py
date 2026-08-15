@@ -66,23 +66,32 @@ def build_route_catalog(routes: Iterable[CandidateRoute]) -> list[dict[str, Any]
     for route in routes:
         if not route.is_publishable():
             continue
-        start_point = route.polyline_gcj02[0]
         catalog.append(
             {
                 "route_id": route.route_id,
                 "route_name": route.route_name,
                 "route_mode": route.route_mode,
+                "route_shape": route.route_shape,
                 "distance_level": _distance_level(route.target_distance_m),
                 "target_distance_m": route.target_distance_m,
                 "distance_m": route.actual_distance_m,
                 "duration_min": round(route.duration_s / 60, 1),
                 "start_entry_id": route.start_entry_id,
                 "start_location": {
-                    "name": route.waypoint_names[0],
-                    "lng_gcj02": start_point.lng_gcj02,
-                    "lat_gcj02": start_point.lat_gcj02,
+                    "name": route.start_location.name,
+                    "location_type": route.start_location.location_type,
+                    "lng_gcj02": route.start_location.lng_gcj02,
+                    "lat_gcj02": route.start_location.lat_gcj02,
+                    "source_url": route.start_location.source_url,
                 },
                 "end_entry_id": route.end_entry_id,
+                "end_location": {
+                    "name": route.end_location.name,
+                    "location_type": route.end_location.location_type,
+                    "lng_gcj02": route.end_location.lng_gcj02,
+                    "lat_gcj02": route.end_location.lat_gcj02,
+                    "source_url": route.end_location.source_url,
+                },
                 "region_zone": route.region_zone,
                 "tags": route.tags,
                 "future_score": route.future_score,
@@ -105,6 +114,8 @@ def build_route_catalog(routes: Iterable[CandidateRoute]) -> list[dict[str, Any]
                 "raw_response_paths": route.raw_response_paths,
                 "source_level": route.source_level,
                 "waypoint_names": route.waypoint_names,
+                "ordered_nodes": [_export_node(node) for node in route.ordered_nodes],
+                "amenity_ids": route.amenity_ids,
                 "nearby_pois": route.nearby_pois,
                 "preference_hits": route.preference_hits,
             }
@@ -117,22 +128,31 @@ def build_candidate_route_catalog(routes: Iterable[CandidateRoute]) -> list[dict
 
 
 def _catalog_item(route: CandidateRoute) -> dict[str, Any]:
-    start_point = route.polyline_gcj02[0]
     return {
         "route_id": route.route_id,
         "route_name": route.route_name,
         "route_mode": route.route_mode,
+        "route_shape": route.route_shape,
         "distance_level": _distance_level(route.target_distance_m),
         "target_distance_m": route.target_distance_m,
         "distance_m": route.actual_distance_m,
         "duration_min": round(route.duration_s / 60, 1),
         "start_entry_id": route.start_entry_id,
         "start_location": {
-            "name": route.waypoint_names[0],
-            "lng_gcj02": start_point.lng_gcj02,
-            "lat_gcj02": start_point.lat_gcj02,
+            "name": route.start_location.name,
+            "location_type": route.start_location.location_type,
+            "lng_gcj02": route.start_location.lng_gcj02,
+            "lat_gcj02": route.start_location.lat_gcj02,
+            "source_url": route.start_location.source_url,
         },
         "end_entry_id": route.end_entry_id,
+        "end_location": {
+            "name": route.end_location.name,
+            "location_type": route.end_location.location_type,
+            "lng_gcj02": route.end_location.lng_gcj02,
+            "lat_gcj02": route.end_location.lat_gcj02,
+            "source_url": route.end_location.source_url,
+        },
         "region_zone": route.region_zone,
         "tags": route.tags,
         "future_score": route.future_score,
@@ -157,8 +177,21 @@ def _catalog_item(route: CandidateRoute) -> dict[str, Any]:
         "raw_response_paths": route.raw_response_paths,
         "source_level": route.source_level,
         "waypoint_names": route.waypoint_names,
+        "ordered_nodes": [_export_node(node) for node in route.ordered_nodes],
+        "amenity_ids": route.amenity_ids,
         "nearby_pois": route.nearby_pois,
         "preference_hits": route.preference_hits,
+    }
+
+
+def _export_node(node) -> dict[str, Any]:
+    return {
+        "name": node.node_name,
+        "node_type": node.node_type,
+        "lng_gcj02": node.lng_gcj02,
+        "lat_gcj02": node.lat_gcj02,
+        "source_url": node.source_url,
+        "poi_id": node.poi_id,
     }
 
 

@@ -2,25 +2,36 @@ from types import SimpleNamespace
 
 import pytest
 
-from xuhui_route_builder.models import DirectionPath, RouteNode, RouteSeed
+from xuhui_route_builder.models import DirectionPath, RouteLocation, RouteNode, RouteSeed
 from xuhui_route_builder.routes import (
     candidate_from_seed,
     generate_candidate_from_seed,
+    preserve_candidate_geometry,
     resolve_node_query,
     resolve_seed_nodes,
 )
 
 
-def _seed(mode: str = "run", nodes: list[RouteNode] | None = None) -> RouteSeed:
+def _seed(mode: str = "run", nodes: list[RouteNode] | None = None, route_shape: str = "one_way") -> RouteSeed:
+    route_nodes = nodes or [
+        RouteNode(node_name="起点", lng_gcj02=121.44, lat_gcj02=31.18),
+        RouteNode(node_name="终点", lng_gcj02=121.45, lat_gcj02=31.19),
+    ]
+    first, last = route_nodes[0], route_nodes[-1]
+    start = RouteLocation(name=first.node_name, location_type="public_space", lng_gcj02=first.lng_gcj02 or 121.44, lat_gcj02=first.lat_gcj02 or 31.18, source_url="https://www.shanghai.gov.cn/example")
+    end = RouteLocation(name=last.node_name, location_type="public_space", lng_gcj02=last.lng_gcj02 or 121.45, lat_gcj02=last.lat_gcj02 or 31.19, source_url="https://www.shanghai.gov.cn/example")
     return RouteSeed(
         seed_id="pilot",
         route_name="真实母线",
         route_mode=mode,
+        route_shape=route_shape,
         distance_level="3km",
         target_distance_m=3000,
         region_zone="徐汇滨江",
-        start_hint="起点",
-        end_hint="终点",
+        start_hint=start.name,
+        end_hint=end.name,
+        start_location=start,
+        end_location=end,
         waypoint_hints=["途经点"],
         tags=["滨江"],
         reason="官方路线",
@@ -28,15 +39,13 @@ def _seed(mode: str = "run", nodes: list[RouteNode] | None = None) -> RouteSeed:
         source_url="https://www.shanghai.gov.cn/example",
         source_accessed_at="2026-08-13",
         confidence="高",
-        ordered_nodes=nodes
-        or [
-            RouteNode(node_name="起点", lng_gcj02=121.44, lat_gcj02=31.18),
-            RouteNode(node_name="终点", lng_gcj02=121.45, lat_gcj02=31.19),
-        ],
+        ordered_nodes=route_nodes,
         allowed_modes=[mode],
         source_level="A",
         evidence_note="官方给出地标顺序",
         access_restrictions=["开放时间内通行"],
+        amenity_ids=[],
+        geometry_action="regenerate",
     )
 
 
@@ -344,12 +353,31 @@ def test_candidate_from_seed_keeps_source_fields() -> None:
 
 def test_candidate_from_seed_marks_same_poi_as_loop() -> None:
     node = RouteNode(node_name="环线入口", poi_id="LOOP", lng_gcj02=121.44, lat_gcj02=31.18)
-    seed = _seed(nodes=[node, node])
+    seed = _seed(nodes=[node, node], route_shape="strict_loop")
     direction = DirectionPath(distance_m=100, duration_s=60, polyline_gcj02=["121.44,31.18", "121.441,31.18"])
 
     route = candidate_from_seed(seed, direction, 1)
 
     assert route.loop_flag is True
+
+
+def test_preserve_candidate_geometry_updates_semantics_without_changing_polyline() -> None:
+    node = RouteNode(node_name="保护入口", poi_id="LOOP", lng_gcj02=121.44, lat_gcj02=31.18)
+    seed = _seed(nodes=[node, node], route_shape="strict_loop")
+    previous = candidate_from_seed(
+        seed,
+        DirectionPath(distance_m=500, duration_s=300, polyline_gcj02=["121.44,31.18", "121.441,31.181", "121.44,31.18"]),
+        33,
+    ).model_dump(mode="json")
+    old_geometry = previous["polyline_gcj02"]
+
+    preserved = preserve_candidate_geometry(seed, previous, 33)
+
+    assert preserved.polyline_gcj02[0].model_dump(mode="json") == old_geometry[0]
+    assert preserved.polyline_gcj02[-1].model_dump(mode="json") == old_geometry[-1]
+    assert preserved.route_shape == "strict_loop"
+    assert preserved.start_location == preserved.end_location
+    assert preserved.validation_status == "pending"
 
 
 def test_resolve_seed_nodes_passes_xuhui_region_and_rejects_ambiguous_pois() -> None:

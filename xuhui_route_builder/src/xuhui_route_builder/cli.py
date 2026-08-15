@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import tempfile
@@ -27,8 +28,8 @@ from .exporters import (
 from .models import CandidateRoute, RouteSeed
 from .osm_poi import build_osm_poi_index
 from .place_resolver import HybridPlaceResolver
-from .route_research import merge_research_drafts
-from .routes import generate_candidate_from_seed, load_route_seeds
+from .route_research import PROTECTED_GEOMETRY_IDS, merge_research_drafts, merge_route_optimizations
+from .routes import generate_candidate_from_seed, load_route_seeds, preserve_candidate_geometry
 from .validation import (
     OverpassClient,
     build_overpass_query,
@@ -79,6 +80,7 @@ def main() -> None:
         "command",
         choices=[
             "merge-research",
+            "merge-route-optimizations",
             "build-osm-poi-index",
             "resolve-seeds",
             "generate-routes",
@@ -96,6 +98,10 @@ def main() -> None:
             _validate_draft_collection,
         )
         print(f"merged_route_draft_count={len(merged)}")
+    elif args.command == "merge-route-optimizations":
+        target = PROJECT_ROOT / "data" / "seeds" / "route_seeds.json"
+        merged = merge_route_optimizations(PROJECT_ROOT / "data" / "seeds" / "research", target, target)
+        print(f"merged_route_optimization_count={len(merged)}")
     elif args.command == "build-osm-poi-index":
         settings = load_settings()
         client = OverpassClient(cache_dir=settings.raw_dir / "osm", timeout=180)
@@ -175,6 +181,32 @@ def resolve_seed_drafts(project_root: Path, resolver) -> list[RouteSeed]:
             [evidence, *(f"POI解析响应: {path}" for path in raw_paths)]
         )
         payload["ordered_nodes"] = resolved_nodes
+        first_node, last_node = resolved_nodes[0], resolved_nodes[-1]
+        same_endpoint = (
+            first_node.node_name == last_node.node_name
+            and first_node.lng_gcj02 == last_node.lng_gcj02
+            and first_node.lat_gcj02 == last_node.lat_gcj02
+        )
+        payload["route_shape"] = "strict_loop" if same_endpoint else "one_way"
+        payload["start_location"] = {
+            "name": first_node.node_name,
+            "location_type": "route_node",
+            "lng_gcj02": first_node.lng_gcj02,
+            "lat_gcj02": first_node.lat_gcj02,
+            "source_url": payload["source_url"],
+            "poi_id": first_node.poi_id,
+        }
+        payload["end_location"] = {
+            "name": last_node.node_name,
+            "location_type": "route_node",
+            "lng_gcj02": last_node.lng_gcj02,
+            "lat_gcj02": last_node.lat_gcj02,
+            "source_url": payload["source_url"],
+            "poi_id": last_node.poi_id,
+        }
+        payload["amenity_ids"] = []
+        route_id = _seed_route_id(payload["route_mode"], draft_index + 1)
+        payload["geometry_action"] = "preserve" if route_id in PROTECTED_GEOMETRY_IDS else "regenerate"
         try:
             seeds.append(RouteSeed(**payload))
         except Exception as exc:
@@ -216,6 +248,11 @@ def resolve_seed_drafts(project_root: Path, resolver) -> list[RouteSeed]:
     return seeds
 
 
+def _seed_route_id(route_mode: str, index: int) -> str:
+    prefix = {"walk": "WALK", "run": "RUN", "bike": "BIKE"}[route_mode]
+    return f"XH_{prefix}_{index:04d}"
+
+
 def validate_seeds(project_root: Path) -> list[RouteSeed]:
     seeds = load_route_seeds(project_root / "data" / "seeds" / "route_seeds.json")
     _validate_seed_collection(seeds)
@@ -224,11 +261,30 @@ def validate_seeds(project_root: Path) -> list[RouteSeed]:
 
 def generate_routes(project_root: Path, client) -> list:
     seeds = validate_seeds(project_root)
+    previous_path = project_root / "data" / "processed" / "pilot_validated.json"
+    previous_items = json.loads(previous_path.read_text(encoding="utf-8")) if previous_path.exists() else []
+    previous_by_id = {
+        item.get("route_id"): item for item in previous_items if isinstance(item, dict) and item.get("route_id")
+    }
     candidates = []
     failures = []
+    protected_geometry_hashes = {}
     for index, seed in enumerate(seeds, start=1):
         try:
-            candidate = generate_candidate_from_seed(seed, client, index)
+            prefix = "RUN" if seed.route_mode == "run" else "WALK" if seed.route_mode == "walk" else "BIKE"
+            route_id = f"XH_{prefix}_{index:04d}"
+            if seed.geometry_action == "preserve":
+                if route_id not in previous_by_id:
+                    raise ValueError(f"protected geometry missing from {previous_path}: {route_id}")
+                previous = previous_by_id[route_id]
+                before_hash = _geometry_hash(previous.get("polyline_gcj02", []))
+                candidate = preserve_candidate_geometry(seed, previous, index)
+                after_hash = _geometry_hash([point.model_dump(mode="json") for point in candidate.polyline_gcj02])
+                if before_hash != after_hash:
+                    raise ValueError(f"protected geometry changed: {route_id}")
+                protected_geometry_hashes[route_id] = before_hash
+            else:
+                candidate = generate_candidate_from_seed(seed, client, index)
             candidates.append(
                 candidate.model_copy(
                     update={
@@ -258,6 +314,7 @@ def generate_routes(project_root: Path, client) -> list:
         "success_count": len(candidates),
         "failure_count": len(failures),
         "success_route_ids": [route.route_id for route in candidates],
+        "protected_geometry_hashes": protected_geometry_hashes,
         "failures": failures,
     }
     report_path = project_root / "data" / "processed" / "route_generation_report.json"
@@ -320,6 +377,11 @@ def generate_routes(project_root: Path, client) -> list:
     return candidates
 
 
+def _geometry_hash(points) -> str:
+    payload = json.dumps(points, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
 def _portable_raw_path(project_root: Path, raw_path: str) -> str:
     path = Path(raw_path)
     if not path.is_absolute():
@@ -375,7 +437,11 @@ def validate_routes(
     network_versions: list[str] = []
     for route in candidates:
         try:
-            evidence_failures = validate_amap_raw_evidence(route, project_root)
+            evidence_failures = (
+                validate_amap_raw_evidence(route, project_root)
+                if route.geometry_source == "amap_direction"
+                else []
+            )
             payload = overpass_client.query(build_overpass_query(route))
             version = str(
                 (payload.get("osm3s") or {}).get("timestamp_osm_base")
@@ -810,24 +876,14 @@ def _validate_draft_collection(raw) -> None:
 def _route_distribution_from_targets(
     seeds: list[RouteSeed],
 ) -> tuple[dict[str, int], dict[str, dict[str, int]]]:
-    candidates = [
-        CandidateRoute(
-            route_id=seed.seed_id,
-            route_name=seed.route_name,
-            route_mode=seed.route_mode,
-            target_distance_m=seed.target_distance_m,
-            actual_distance_m=seed.target_distance_m,
-            duration_s=0,
-            start_entry_id="draft",
-            end_entry_id="draft",
-            region_zone=seed.region_zone,
-            polyline_gcj02=[],
-            source_method="seed_distribution",
-            source_accessed_at=seed.source_accessed_at,
-        )
-        for seed in seeds
-    ]
-    return _route_distribution(candidates)
+    mode_counts = {mode: 0 for mode in EXPECTED_MODE_COUNTS}
+    band_counts = {mode: {"short": 0, "medium": 0, "long": 0} for mode in EXPECTED_MODE_COUNTS}
+    for seed in seeds:
+        mode_counts[seed.route_mode] += 1
+        band = _distance_band(seed.route_mode, seed.target_distance_m)
+        if band is not None:
+            band_counts[seed.route_mode][band] += 1
+    return mode_counts, band_counts
 
 
 def export_candidate_routes(project_root: Path) -> list[CandidateRoute]:
@@ -861,68 +917,12 @@ def export_candidate_routes(project_root: Path) -> list[CandidateRoute]:
     _atomic_write_json(
         web / "route_catalog.json", build_candidate_route_catalog(routes)
     )
-    document = _candidate_audit_document(routes)
-    (project_root / "0813徐汇区90条路线验收与考证清单.md").write_text(
-        document, encoding="utf-8"
-    )
     print(
         f"candidate_web_routes={len(routes)} "
         f"accepted={sum(route.validation_status == 'accepted' for route in routes)} "
         f"needs_review={sum(route.validation_status == 'needs_review' for route in routes)}"
     )
     return routes
-
-
-def _candidate_audit_document(routes: list[CandidateRoute]) -> str:
-    accepted = sum(route.validation_status == "accepted" for route in routes)
-    review = sum(route.validation_status == "needs_review" for route in routes)
-    lines = [
-        "# 徐汇区 90 条运动路线验收与考证清单",
-        "",
-        "> 更新日期：2026-08-13。网页展示范围包含全部 90 条高德真实路径候选；验收状态直接来自严格验证报告。",
-        "",
-        "## 状态说明",
-        "",
-        f"- 严格验收：{accepted} 条",
-        f"- 待考证：{review} 条",
-        "- 严格验收代表路线已通过来源、轨迹、距离、徐汇边界和 OSM 贴路检查。",
-        "- 待考证代表路线拥有真实来源、高德路径和原始响应，仍有一项或多项门槛待复核。",
-        "- 网页中的待考证路线仅作候选展示，状态徽标和详情说明会持续显示。",
-        "",
-        "## 逐条清单",
-        "",
-        "| 路线编号 | 类型 | 路线名称 | 实际距离 | 贴路率 | 区内比例 | 状态 | 验收说明 |",
-        "| --- | --- | --- | ---: | ---: | ---: | --- | --- |",
-    ]
-    labels = {"walk": "步行", "run": "跑步", "bike": "骑行"}
-    for route in routes:
-        status = "严格验收" if route.validation_status == "accepted" else "待考证"
-        snap = f"{route.snap_ratio:.1%}" if route.snap_ratio is not None else "待复核"
-        inside = (
-            f"{route.route_inside_ratio:.1%}"
-            if route.route_inside_ratio is not None
-            else "待复核"
-        )
-        note = route.review_note.replace("|", "／").replace("\n", " ")
-        name = route.route_name.replace("|", "／")
-        lines.append(
-            f"| {route.route_id} | {labels.get(route.route_mode, route.route_mode)} | {name} | "
-            f"{route.actual_distance_m / 1000:.2f} km | {snap} | {inside} | {status} | {note} |"
-        )
-    lines.extend(
-        [
-            "",
-            "## 后续复核顺序",
-            "",
-            "1. 重试 Overpass 超时路线，补齐 OSM 贴路结果。",
-            "2. 调整距离偏差超过 15% 的节点和目标里程。",
-            "3. 修订区外端点及区内比例低于 90% 的路线。",
-            "4. 复核贴路率低于 98% 的园内道路、滨水步道和非机动车道路。",
-            "5. 90 条全部达到严格门槛后，将候选展示切换为正式发布目录。",
-            "",
-        ]
-    )
-    return "\n".join(lines)
 
 
 def export_demo(project_root: Path) -> None:

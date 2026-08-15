@@ -4,19 +4,26 @@ import pytest
 from pydantic import ValidationError
 
 from xuhui_route_builder.exporters import build_route_catalog, build_route_feature_collection
-from xuhui_route_builder.models import CandidateRoute, CoordinatePair, RouteNode, RouteSeed
+from xuhui_route_builder.models import CandidateRoute, CoordinatePair, RouteLocation, RouteNode, RouteSeed
 
 
 def _route(route_id: str, validation_status: str) -> CandidateRoute:
+    start = RouteLocation(name="真实路线入口", location_type="public_space", lng_gcj02=121.44, lat_gcj02=31.19, source_url="https://example.com/start")
+    end = RouteLocation(name="真实路线终点", location_type="public_space", lng_gcj02=121.45, lat_gcj02=31.18, source_url="https://example.com/end")
     return CandidateRoute(
         route_id=route_id,
         route_name="真实路线",
         route_mode="walk",
+        route_shape="one_way",
         target_distance_m=1000,
         actual_distance_m=1020,
         duration_s=800,
         start_entry_id="start",
         end_entry_id="end",
+        start_location=start,
+        end_location=end,
+        ordered_nodes=[RouteNode(node_name=start.name, lng_gcj02=start.lng_gcj02, lat_gcj02=start.lat_gcj02), RouteNode(node_name=end.name, lng_gcj02=end.lng_gcj02, lat_gcj02=end.lat_gcj02)],
+        amenity_ids=[],
         region_zone="徐汇区",
         polyline_gcj02=[
             CoordinatePair(lng_gcj02=121.44, lat_gcj02=31.19, lng_wgs84=121.435, lat_wgs84=31.192),
@@ -49,21 +56,26 @@ def test_route_seed_supports_structured_nodes_and_evidence_fields() -> None:
         seed_id="botanical-walk",
         route_name="植物园步行线",
         route_mode="walk",
+        route_shape="one_way",
         distance_level="2km",
         target_distance_m=2000,
         region_zone="上海植物园",
         start_hint="一号门",
-        end_hint="一号门",
+        end_hint="三号门",
+        start_location=RouteLocation(name=node.node_name, location_type="park_gate", lng_gcj02=node.lng_gcj02, lat_gcj02=node.lat_gcj02, source_url="https://www.shbg.org/"),
+        end_location=RouteLocation(name="上海植物园三号门", location_type="park_gate", lng_gcj02=121.449, lat_gcj02=31.145, source_url="https://www.shbg.org/"),
         reason="官方游览节点",
         source_name="上海植物园",
         source_url="https://www.shbg.org/",
         source_accessed_at="2026-08-13",
         confidence="高",
-        ordered_nodes=[node, RouteNode(node_name="上海植物园三号门", poi_id="B003")],
+        ordered_nodes=[node, RouteNode(node_name="上海植物园三号门", poi_id="B003", lng_gcj02=121.449, lat_gcj02=31.145)],
         allowed_modes=["walk", "run"],
         source_level="A",
         evidence_note="节点来自官方导览资料",
         access_restrictions=["开放时间内通行"],
+        amenity_ids=[],
+        geometry_action="regenerate",
     )
 
     assert seed.ordered_nodes[0].poi_id == "B001"
@@ -75,15 +87,22 @@ def test_route_seed_supports_structured_nodes_and_evidence_fields() -> None:
 
 
 def test_candidate_route_defaults_to_unverified_geometry() -> None:
+    start = RouteLocation(name="起点", location_type="public_space", lng_gcj02=121.44, lat_gcj02=31.19, source_url="https://example.com/start")
+    end = RouteLocation(name="终点", location_type="public_space", lng_gcj02=121.45, lat_gcj02=31.18, source_url="https://example.com/end")
     route = CandidateRoute(
         route_id="pending",
         route_name="待生成路线",
         route_mode="walk",
+        route_shape="one_way",
         target_distance_m=1000,
         actual_distance_m=0,
         duration_s=0,
         start_entry_id="start",
         end_entry_id="end",
+        start_location=start,
+        end_location=end,
+        ordered_nodes=[RouteNode(node_name=start.name, lng_gcj02=start.lng_gcj02, lat_gcj02=start.lat_gcj02), RouteNode(node_name=end.name, lng_gcj02=end.lng_gcj02, lat_gcj02=end.lat_gcj02)],
+        amenity_ids=[],
         region_zone="徐汇区",
         polyline_gcj02=[],
         source_method="route_seed",
@@ -176,17 +195,22 @@ def test_structured_seed_requires_two_nodes_and_matching_allowed_mode() -> None:
         "seed_id": "seed",
         "route_name": "路线",
         "route_mode": "walk",
+        "route_shape": "one_way",
         "distance_level": "1km",
         "target_distance_m": 1000,
         "region_zone": "徐汇区",
         "start_hint": "起点",
         "end_hint": "终点",
+        "start_location": RouteLocation(name="入口", location_type="public_space", lng_gcj02=121.44, lat_gcj02=31.18, source_url="https://example.com/start"),
+        "end_location": RouteLocation(name="终点", location_type="public_space", lng_gcj02=121.45, lat_gcj02=31.18, source_url="https://example.com/end"),
         "reason": "证据",
         "source_name": "官方",
         "source_url": "https://example.com",
         "source_accessed_at": "2026-08-13",
         "confidence": "高",
         "source_level": "A",
+        "amenity_ids": [],
+        "geometry_action": "regenerate",
     }
     node = RouteNode(node_name="入口", poi_id="B001")
 

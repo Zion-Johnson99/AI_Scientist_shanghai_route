@@ -1,7 +1,7 @@
 const ROUTE_STYLES = {
   run: { color: "#ff5d5d", weight: 4 },
   walk: { color: "#13bfa6", weight: 4 },
-  bike: { color: "#1677ff", weight: 4 },
+  bike: { color: "#7C3AED", weight: 4 },
   access: { color: "#ff9f1a", weight: 4 },
 };
 
@@ -126,6 +126,7 @@ export function showRouteResults(mapContext, routes, entries, pois, selectedRout
       strokeOpacity: active ? 0.95 : 0.44,
       lineJoin: "round",
       lineCap: "round",
+      showDir: properties.route_shape === "one_way",
       zIndex: active ? 100 : 70,
       extData: {
         routeId: properties.route_id,
@@ -183,12 +184,15 @@ export function showSingleRoute(mapContext, route, entries, pois) {
     return;
   }
 
-  const names = route.properties?.waypoint_names || [];
-  const markerSpecs = [
-    { role: "start", label: "起点", name: names[0] || "路线起点", position: path[0] },
-    { role: "end", label: "终点", name: names.at(-1) || "路线终点", position: path.at(-1) },
-    ...landmarkSpecs(route, path, pois),
-  ];
+  const properties = route.properties || {};
+  const isLoop = properties.route_shape === "strict_loop";
+  const markerSpecs = isLoop
+    ? [{ role: "start", label: "起终点", name: properties.start_location?.name || "路线起终点", position: locationPosition(properties.start_location, path[0]) }]
+    : [
+        { role: "start", label: "起点", name: properties.start_location?.name || "路线起点", position: locationPosition(properties.start_location, path[0]) },
+        { role: "end", label: "终点", name: properties.end_location?.name || "路线终点", position: locationPosition(properties.end_location, path.at(-1)) },
+      ];
+  markerSpecs.push(...landmarkSpecs(route, pois));
   for (const spec of markerSpecs) {
     const marker = createRouteMarker(mapContext, spec);
     mapContext.amap.add(marker);
@@ -196,7 +200,7 @@ export function showSingleRoute(mapContext, route, entries, pois) {
   }
 }
 
-function landmarkSpecs(route, path, pois) {
+function landmarkSpecs(route, pois) {
   const specs = [];
   const properties = route.properties || {};
   const poiById = new Map((pois?.features || []).map((poi) => [poi.properties?.poi_id, poi]));
@@ -211,13 +215,21 @@ function landmarkSpecs(route, path, pois) {
     }
   }
 
-  const names = (properties.waypoint_names || []).slice(1, -1);
-  const remaining = Math.min(3 - specs.length, names.length);
-  for (let index = 0; index < remaining; index += 1) {
-    const pathIndex = Math.round(((index + 1) * (path.length - 1)) / (remaining + 1));
-    specs.push({ role: "landmark", label: "途经", name: names[index], position: path[pathIndex] });
+  const nodes = (properties.ordered_nodes || []).slice(1, -1);
+  const remaining = Math.min(3 - specs.length, nodes.length);
+  for (const node of nodes.slice(0, remaining)) {
+    if (Number.isFinite(node.lng_gcj02) && Number.isFinite(node.lat_gcj02)) {
+      specs.push({ role: "landmark", label: "途经", name: node.node_name || node.name, position: [node.lng_gcj02, node.lat_gcj02] });
+    }
   }
   return specs;
+}
+
+function locationPosition(location, fallback) {
+  if (Number.isFinite(location?.lng_gcj02) && Number.isFinite(location?.lat_gcj02)) {
+    return [location.lng_gcj02, location.lat_gcj02];
+  }
+  return fallback;
 }
 
 function createRouteMarker(mapContext, spec) {

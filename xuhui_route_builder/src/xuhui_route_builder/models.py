@@ -8,6 +8,8 @@ from pydantic import BaseModel, ConfigDict, Field, HttpUrl, field_validator, mod
 
 RouteMode = Literal["walk", "run", "bike", "bike_assist", "access"]
 AccessMode = Literal["walk", "bike", "transit", "drive"]
+RouteShape = Literal["one_way", "strict_loop"]
+GeometryAction = Literal["regenerate", "preserve"]
 
 
 class StrictModel(BaseModel):
@@ -47,6 +49,8 @@ class EntryPoint(StrictModel):
 
 class RouteNode(StrictModel):
     node_name: str
+    node_type: str | None = None
+    source_url: str | None = None
     poi_id: str | None = None
     lng_gcj02: float | None = Field(default=None, ge=-180, le=180)
     lat_gcj02: float | None = Field(default=None, ge=-90, le=90)
@@ -68,15 +72,33 @@ class RouteNode(StrictModel):
         return self
 
 
+class RouteLocation(StrictModel):
+    name: str
+    location_type: str
+    lng_gcj02: float = Field(ge=-180, le=180)
+    lat_gcj02: float = Field(ge=-90, le=90)
+    source_url: str
+    poi_id: str | None = None
+
+    @field_validator("source_url")
+    @classmethod
+    def require_https_source(cls, value: str) -> str:
+        HttpUrl(value)
+        return value
+
+
 class RouteSeed(StrictModel):
     seed_id: str
     route_name: str
     route_mode: RouteMode
+    route_shape: RouteShape
     distance_level: str
     target_distance_m: int
     region_zone: str
     start_hint: str
     end_hint: str
+    start_location: RouteLocation
+    end_location: RouteLocation
     waypoint_hints: list[str] = Field(default_factory=list)
     tags: list[str] = Field(default_factory=list)
     reason: str
@@ -89,6 +111,8 @@ class RouteSeed(StrictModel):
     source_level: Literal["A", "B", "C"] = "C"
     evidence_note: str = ""
     access_restrictions: list[str] = Field(default_factory=list)
+    amenity_ids: list[str]
+    geometry_action: GeometryAction
 
     @field_validator("source_url")
     @classmethod
@@ -106,6 +130,15 @@ class RouteSeed(StrictModel):
             raise ValueError("ordered_nodes must contain at least two nodes")
         if not self.allowed_modes or self.route_mode not in self.allowed_modes:
             raise ValueError("allowed_modes must contain route_mode")
+        if not _locations_match_node(self.start_location, self.ordered_nodes[0]):
+            raise ValueError("start_location must match the first ordered node")
+        if not _locations_match_node(self.end_location, self.ordered_nodes[-1]):
+            raise ValueError("end_location must match the last ordered node")
+        same_endpoints = _same_location(self.start_location, self.end_location)
+        if self.route_shape == "strict_loop" and not same_endpoints:
+            raise ValueError("strict_loop requires one shared start and end location")
+        if self.route_shape == "one_way" and same_endpoints:
+            raise ValueError("one_way requires distinct start and end locations")
         return self
 
 
@@ -121,11 +154,16 @@ class CandidateRoute(StrictModel):
     route_id: str
     route_name: str
     route_mode: RouteMode
+    route_shape: RouteShape
     target_distance_m: int
     actual_distance_m: int
     duration_s: int
     start_entry_id: str
     end_entry_id: str
+    start_location: RouteLocation
+    end_location: RouteLocation
+    ordered_nodes: list[RouteNode]
+    amenity_ids: list[str]
     region_zone: str
     polyline_gcj02: list[CoordinatePair]
     tags: list[str] = Field(default_factory=list)
@@ -202,6 +240,24 @@ class CandidateRoute(StrictModel):
         if self.geometry_source == "amap_direction" and not self.raw_response_paths:
             raise ValueError("amap_direction route requires raw_response_paths")
         return self
+
+
+def _same_location(first: RouteLocation, second: RouteLocation) -> bool:
+    return (
+        first.name == second.name
+        and abs(first.lng_gcj02 - second.lng_gcj02) <= 1e-6
+        and abs(first.lat_gcj02 - second.lat_gcj02) <= 1e-6
+    )
+
+
+def _locations_match_node(location: RouteLocation, node: RouteNode) -> bool:
+    if node.lng_gcj02 is None or node.lat_gcj02 is None:
+        return location.name == node.node_name
+    return (
+        location.name == node.node_name
+        and abs(location.lng_gcj02 - node.lng_gcj02) <= 1e-6
+        and abs(location.lat_gcj02 - node.lat_gcj02) <= 1e-6
+    )
 
 
 class PoiPoint(StrictModel):

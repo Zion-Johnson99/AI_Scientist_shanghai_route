@@ -18,6 +18,9 @@ Segment = tuple[WgsPoint, WgsPoint]
 EARTH_RADIUS_M = 6_371_008.8
 DEFAULT_SNAP_TOLERANCE_M = 25
 MAX_TARGET_DISTANCE_ERROR_RATIO = 0.15
+MAX_LOOP_CLOSURE_M = 30
+MAX_REPEATED_EDGE_RATIO = 0.02
+MAX_REPEATED_EDGE_M = 30
 
 
 def build_overpass_query(route: CandidateRoute, margin_m: float = 50) -> str:
@@ -155,7 +158,7 @@ def validate_candidate(
     evidence_failures: Sequence[str] = (),
     boundary_polygons: Sequence[Sequence[Sequence[float]]] = (),
 ) -> CandidateRoute:
-    failures = list(evidence_failures)
+    failures = [*evidence_failures, *topology_failures(route)]
     try:
         segments = parse_overpass_segments(osm_payload, route.route_mode)
     except (AttributeError, TypeError, ValueError) as exc:
@@ -166,7 +169,8 @@ def validate_candidate(
         segments,
         tolerance_m=DEFAULT_SNAP_TOLERANCE_M,
     )
-    if route.geometry_source != "amap_direction" or route.geometry_status != "complete" or not route.raw_response_paths:
+    valid_geometry = route.geometry_source in {"amap_direction", "audited_import"} and route.geometry_status == "complete"
+    if not valid_geometry or route.geometry_source == "amap_direction" and not route.raw_response_paths:
         failures.append("高德几何或原始响应不完整")
     if route.actual_distance_m <= 0 or route.duration_s <= 0:
         failures.append("距离或时长无效")
@@ -209,6 +213,81 @@ def validate_candidate(
     payload = route.model_dump()
     payload.update(update)
     return CandidateRoute.model_validate(payload)
+
+
+def topology_failures(route: CandidateRoute) -> list[str]:
+    points = [(point.lng_gcj02, point.lat_gcj02) for point in route.polyline_gcj02]
+    if len(points) < 2:
+        return ["轨迹点少于两个"]
+
+    failures: list[str] = []
+    closure_m = _distance_m(points[0], points[-1])
+    if route.route_shape == "strict_loop" and closure_m > MAX_LOOP_CLOSURE_M:
+        failures.append(f"严格闭环首尾距离 {closure_m:.1f} 米超过 {MAX_LOOP_CLOSURE_M} 米")
+    if route.route_shape == "one_way" and _same_named_location(route):
+        failures.append("单程路线起点与终点语义相同")
+
+    start_offset = _distance_m(
+        points[0],
+        (route.start_location.lng_gcj02, route.start_location.lat_gcj02),
+    )
+    end_offset = _distance_m(
+        points[-1],
+        (route.end_location.lng_gcj02, route.end_location.lat_gcj02),
+    )
+    endpoint_tolerance_m = 100 if route.route_mode in {"bike", "bike_assist"} else 50
+    if start_offset > endpoint_tolerance_m or end_offset > endpoint_tolerance_m:
+        failures.append(
+            f"起终点标记偏离轨迹：起点 {start_offset:.1f} 米，终点 {end_offset:.1f} 米"
+        )
+
+    segments = list(zip(points, points[1:]))
+    total_m = sum(_distance_m(first, second) for first, second in segments)
+    repeated_m = 0.0
+    longest_repeated_m = 0.0
+    seen: set[tuple[WgsPoint, WgsPoint]] = set()
+    for first, second in segments:
+        key = tuple(sorted((_rounded_point(first), _rounded_point(second))))
+        segment_m = _distance_m(first, second)
+        if key in seen:
+            repeated_m += segment_m
+            longest_repeated_m = max(longest_repeated_m, segment_m)
+        else:
+            seen.add(key)
+    repeated_ratio = repeated_m / total_m if total_m else 0.0
+    if route.source_method != "protected_geometry" and (
+        repeated_ratio > MAX_REPEATED_EDGE_RATIO or longest_repeated_m >= MAX_REPEATED_EDGE_M
+    ):
+        failures.append(
+            f"轨迹存在可感知重复边或折返：累计 {repeated_ratio:.1%}，最长 {longest_repeated_m:.1f} 米"
+        )
+
+    node_tolerance_m = 100 if route.route_mode in {"bike", "bike_assist"} else 50
+    for node in route.ordered_nodes[1:-1]:
+        if node.lng_gcj02 is None or node.lat_gcj02 is None:
+            failures.append(f"途经点 {node.node_name} 缺少坐标")
+            continue
+        offset = min(
+            _point_segment_distance_m((node.lng_gcj02, node.lat_gcj02), segment)
+            for segment in segments
+        )
+        if offset > node_tolerance_m:
+            failures.append(f"途经点 {node.node_name} 偏离轨迹 {offset:.1f} 米")
+    return failures
+
+
+def _rounded_point(point: WgsPoint, precision: int = 5) -> WgsPoint:
+    return round(point[0], precision), round(point[1], precision)
+
+
+def _same_named_location(route: CandidateRoute) -> bool:
+    return (
+        route.start_location.name == route.end_location.name
+        and _distance_m(
+            (route.start_location.lng_gcj02, route.start_location.lat_gcj02),
+            (route.end_location.lng_gcj02, route.end_location.lat_gcj02),
+        ) <= MAX_LOOP_CLOSURE_M
+    )
 
 
 def compute_route_inside_ratio(

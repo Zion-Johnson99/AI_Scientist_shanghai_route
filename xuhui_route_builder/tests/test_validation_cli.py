@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 import pytest
 
 from xuhui_route_builder import cli
-from xuhui_route_builder.models import CandidateRoute, CoordinatePair
+from xuhui_route_builder.models import CandidateRoute, CoordinatePair, RouteLocation, RouteNode
 from xuhui_route_builder.validation import polyline_length_m
 
 
@@ -30,10 +30,15 @@ def _candidate(
         ),
     ]
     distance = round(polyline_length_m(points))
+    start = RouteLocation(name="起点", location_type="public_space", lng_gcj02=points[0].lng_gcj02, lat_gcj02=points[0].lat_gcj02, source_url="https://example.com/start")
+    end = RouteLocation(name="终点", location_type="public_space", lng_gcj02=points[-1].lng_gcj02, lat_gcj02=points[-1].lat_gcj02, source_url="https://example.com/end")
     return CandidateRoute(
         route_id=f"route-{index}", route_name=f"路线{index}", route_mode=route_mode,
+        route_shape="one_way",
         target_distance_m=distance, actual_distance_m=distance, duration_s=300,
-        start_entry_id="start", end_entry_id="end", region_zone="徐汇区", polyline_gcj02=points,
+        start_entry_id="start", end_entry_id="end", start_location=start, end_location=end,
+        ordered_nodes=[RouteNode(node_name="起点", lng_gcj02=start.lng_gcj02, lat_gcj02=start.lat_gcj02), RouteNode(node_name="终点", lng_gcj02=end.lng_gcj02, lat_gcj02=end.lat_gcj02)],
+        amenity_ids=[], region_zone="徐汇区", polyline_gcj02=points,
         source_method="amap_segmented_direction", geometry_source="amap_direction", geometry_status="complete",
         source_accessed_at="2026-08-13",
         raw_response_paths=[f"raw/{index}.json"], source_level=source_level,

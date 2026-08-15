@@ -1,5 +1,5 @@
 from xuhui_route_builder.geo import gcj02_to_wgs84, wgs84_to_gcj02
-from xuhui_route_builder.models import CandidateRoute, CoordinatePair, EntryPoint
+from xuhui_route_builder.models import CandidateRoute, CoordinatePair, EntryPoint, RouteLocation, RouteNode
 
 
 def test_wgs84_gcj02_round_trip_stays_within_small_tolerance() -> None:
@@ -30,15 +30,21 @@ def test_entry_point_requires_both_coordinate_systems() -> None:
 
 
 def test_candidate_route_polyline_keeps_both_coordinate_systems() -> None:
+    shared = RouteLocation(name="徐汇滨江入口", location_type="riverside_access", lng_gcj02=121.45, lat_gcj02=31.17, source_url="https://example.com")
     route = CandidateRoute(
         route_id="XH_RUN_3K_0001",
         route_name="徐汇滨江舒心跑",
         route_mode="run",
+        route_shape="strict_loop",
         target_distance_m=3000,
         actual_distance_m=3050,
         duration_s=1200,
         start_entry_id="XH_ENT_0001",
         end_entry_id="XH_ENT_0001",
+        start_location=shared,
+        end_location=shared,
+        ordered_nodes=[RouteNode(node_name=shared.name, lng_gcj02=shared.lng_gcj02, lat_gcj02=shared.lat_gcj02), RouteNode(node_name=shared.name, lng_gcj02=shared.lng_gcj02, lat_gcj02=shared.lat_gcj02)],
+        amenity_ids=[],
         region_zone="徐汇滨江",
         polyline_gcj02=[
             CoordinatePair(

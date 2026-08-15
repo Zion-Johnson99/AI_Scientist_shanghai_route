@@ -23,8 +23,8 @@ def test_default_web_data_contains_90_status_labelled_candidate_routes() -> None
         "run": 30,
         "bike": 30,
     }
-    assert sum(route["display_status"] == "严格验收" for route in catalog) == 6
-    assert sum(route["display_status"] == "待考证" for route in catalog) == 84
+    assert sum(route["display_status"] == "严格验收" for route in catalog) == 3
+    assert sum(route["display_status"] == "待考证" for route in catalog) == 87
 
 
 def test_index_declares_inline_favicon_to_avoid_404() -> None:
@@ -154,6 +154,17 @@ def test_map_draws_a_thin_single_route_with_landmark_markers() -> None:
     assert "weight: 4" in map_js
     assert ".amap-route-marker" in css
     assert ".route-picker" in css
+
+
+def test_map_uses_route_shape_and_real_waypoint_coordinates() -> None:
+    map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
+
+    assert 'bike: { color: "#7C3AED"' in map_js
+    assert 'route_shape === "strict_loop"' in map_js
+    assert 'label: "起终点"' in map_js
+    assert "ordered_nodes" in map_js
+    assert "node.node_name || node.name" in map_js
+    assert "Math.round(((index + 1) * (path.length - 1))" not in map_js
 
 
 def test_selected_route_layer_stays_above_the_xuhui_boundary() -> None:

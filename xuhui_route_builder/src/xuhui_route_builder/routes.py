@@ -47,11 +47,16 @@ def candidate_from_seed(seed: RouteSeed, direction: DirectionPath, index: int) -
         route_id=f"XH_{prefix}_{index:04d}",
         route_name=seed.route_name,
         route_mode=seed.route_mode,
+        route_shape=seed.route_shape,
         target_distance_m=seed.target_distance_m,
         actual_distance_m=direction.distance_m,
         duration_s=direction.duration_s,
         start_entry_id=f"{seed.seed_id}_start",
         end_entry_id=f"{seed.seed_id}_end",
+        start_location=seed.start_location,
+        end_location=seed.end_location,
+        ordered_nodes=seed.ordered_nodes,
+        amenity_ids=seed.amenity_ids,
         region_zone=seed.region_zone,
         polyline_gcj02=polyline_to_coordinate_pairs(direction.polyline_gcj02),
         tags=seed.tags,
@@ -63,7 +68,7 @@ def candidate_from_seed(seed: RouteSeed, direction: DirectionPath, index: int) -
         source_accessed_at=seed.source_accessed_at,
         confidence=seed.confidence,
         distance_error_m=abs(direction.distance_m - seed.target_distance_m),
-        loop_flag=_is_loop(seed),
+        loop_flag=seed.route_shape == "strict_loop",
         source_level=seed.source_level,
         waypoint_names=[node.node_name for node in seed.ordered_nodes] or [seed.start_hint, *seed.waypoint_hints, seed.end_hint],
         review_note=_review_note(seed),
@@ -103,9 +108,16 @@ def resolve_seed_nodes(seed: RouteSeed, client: Any) -> RouteSeed:
         resolved_nodes.append(resolved)
         poi_raw_paths.append(raw_path)
     evidence_parts = [seed.evidence_note.strip(), *(f"POI解析响应: {path}" for path in poi_raw_paths)]
+    start_node, end_node = resolved_nodes[0], resolved_nodes[-1]
     return seed.model_copy(
         update={
             "ordered_nodes": resolved_nodes,
+            "start_location": seed.start_location.model_copy(
+                update={"lng_gcj02": start_node.lng_gcj02, "lat_gcj02": start_node.lat_gcj02, "poi_id": start_node.poi_id}
+            ),
+            "end_location": seed.end_location.model_copy(
+                update={"lng_gcj02": end_node.lng_gcj02, "lat_gcj02": end_node.lat_gcj02, "poi_id": end_node.poi_id}
+            ),
             "evidence_note": "；".join(part for part in evidence_parts if part),
         }
     )
@@ -186,6 +198,57 @@ def generate_candidate_from_seed(seed: RouteSeed, client: Any, index: int) -> Ca
     route.network_source = f"amap_{mode}_v2"
     route.raw_response_paths = raw_response_paths
     return route
+
+
+def preserve_candidate_geometry(seed: RouteSeed, previous: dict[str, Any], index: int) -> CandidateRoute:
+    prefix = "RUN" if seed.route_mode == "run" else "WALK" if seed.route_mode == "walk" else "BIKE"
+    points = previous["polyline_gcj02"]
+    waypoint_names = previous.get("waypoint_names") or [seed.start_location.name, seed.end_location.name]
+    previous_loop = bool(previous.get("loop_flag"))
+    start_name = waypoint_names[0]
+    end_name = start_name if previous_loop else waypoint_names[-1]
+    start_location = seed.start_location.model_copy(
+        update={"name": start_name, "lng_gcj02": points[0]["lng_gcj02"], "lat_gcj02": points[0]["lat_gcj02"]}
+    )
+    end_point = points[0] if previous_loop else points[-1]
+    end_location = seed.end_location.model_copy(
+        update={"name": end_name, "lng_gcj02": end_point["lng_gcj02"], "lat_gcj02": end_point["lat_gcj02"]}
+    )
+    protected_nodes = [
+        RouteNode(node_name=start_name, lng_gcj02=start_location.lng_gcj02, lat_gcj02=start_location.lat_gcj02),
+        RouteNode(node_name=end_name, lng_gcj02=end_location.lng_gcj02, lat_gcj02=end_location.lat_gcj02),
+    ]
+    payload = {
+        **previous,
+        "route_id": f"XH_{prefix}_{index:04d}",
+        "route_name": seed.route_name,
+        "route_mode": seed.route_mode,
+        "route_shape": "strict_loop" if previous_loop else "one_way",
+        "target_distance_m": seed.target_distance_m,
+        "start_entry_id": f"{seed.seed_id}_start",
+        "end_entry_id": f"{seed.seed_id}_end",
+        "start_location": start_location.model_dump(mode="json"),
+        "end_location": end_location.model_dump(mode="json"),
+        "ordered_nodes": [node.model_dump(mode="json") for node in protected_nodes],
+        "amenity_ids": seed.amenity_ids,
+        "region_zone": seed.region_zone,
+        "tags": seed.tags,
+        "source_name": seed.source_name,
+        "source_url": seed.source_url,
+        "source_accessed_at": seed.source_accessed_at.isoformat(),
+        "confidence": seed.confidence,
+        "source_level": seed.source_level,
+        "distance_error_m": abs(int(previous["actual_distance_m"]) - seed.target_distance_m),
+        "loop_flag": previous_loop,
+        "waypoint_names": waypoint_names,
+        "source_method": "protected_geometry",
+        "validation_status": "pending",
+        "snap_ratio": None,
+        "route_inside_ratio": None,
+        "verified_at": None,
+        "review_note": _review_note(seed),
+    }
+    return CandidateRoute.model_validate(payload)
 
 
 def _first_path(response: dict[str, Any]) -> dict[str, Any]:

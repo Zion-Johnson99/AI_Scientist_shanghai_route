@@ -1,0 +1,139 @@
+- main [ref=e2]:
+  - complementary [ref=e3]:
+    - generic [ref=e4]:
+      - paragraph [ref=e5]: Xuhui Route Builder
+      - heading "徐汇健康路线库" [level=1] [ref=e7]
+      - paragraph [ref=e8]: 90 条城市运动候选路线，验收状态清晰可查。
+    - navigation "路线功能切换" [ref=e9]:
+      - button "路线选择" [ref=e10] [cursor=pointer]
+      - button "路线导航" [ref=e11] [cursor=pointer]
+    - region "候选路线选择" [ref=e12]:
+      - generic [ref=e13]:
+        - tablist "运动类型" [ref=e14]:
+          - tab "步行 30 条" [ref=e15] [cursor=pointer]:
+            - generic [ref=e16]: 步行
+            - generic [ref=e17]: 30 条
+          - tab "跑步 30 条" [ref=e18] [cursor=pointer]:
+            - generic [ref=e19]: 跑步
+            - generic [ref=e20]: 30 条
+          - tab "骑行 30 条" [ref=e21] [cursor=pointer]:
+            - generic [ref=e22]: 骑行
+            - generic [ref=e23]: 30 条
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - text: 片区
+            - combobox "片区" [ref=e26]:
+              - option "全部片区" [selected]
+              - option "漕河泾—蒲汇塘—南部连接区"
+              - option "衡复风貌区"
+              - option "康健—桂江绿廊"
+              - option "龙华街区"
+              - option "上海植物园及周边"
+              - option "徐汇滨江及龙华滨江"
+              - option "徐家汇及体育公园"
+          - generic [ref=e27]:
+            - text: 距离档
+            - combobox "距离档" [ref=e28]:
+              - option "全部距离" [selected]
+              - option "短线"
+              - option "中线"
+              - option "长线"
+        - generic [ref=e30]:
+          - text: 关键词
+          - searchbox "关键词" [ref=e31]
+        - group "途经偏好" [ref=e32]:
+          - generic [ref=e34]:
+            - checkbox "咖啡" [ref=e35]
+            - text: 咖啡
+          - generic [ref=e36]:
+            - checkbox "厕所" [ref=e37]
+            - text: 厕所
+          - generic [ref=e38]:
+            - checkbox "补给" [ref=e39]
+            - text: 补给
+          - generic [ref=e40]:
+            - checkbox "地铁" [ref=e41]
+            - text: 地铁
+          - generic [ref=e42]:
+            - checkbox "公园" [ref=e43]
+            - text: 公园
+        - generic [ref=e44]:
+          - button "筛选候选路线" [ref=e45] [cursor=pointer]
+          - button "清空" [ref=e46] [cursor=pointer]
+      - region "路线推荐结果" [ref=e47]:
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - text: Route match
+            - heading "推荐路线" [level=2] [ref=e50]
+          - generic [ref=e51]: 已切换到所选路线。
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e80]: 步行
+            - generic [ref=e81]: 待考证
+          - heading "植物园北区草坪线" [level=2] [ref=e82]
+          - paragraph [ref=e83]: 上海植物园及周边 · 800 米 · 11 分钟
+          - generic [ref=e85]:
+            - generic [ref=e86]: 起终
+            - text: 上海植物园4号门售票处
+          - paragraph [ref=e87]: 来源：上海植物园北区官方游园导览
+          - paragraph [ref=e88]: 轨迹存在可感知重复边或折返：累计 10.1%，最长 48.7 米；路网贴合率 38.1% 低于 98%；实际距离与目标距离误差 50.0% 超过 15%
+        - generic [ref=e52]:
+          - strong [ref=e53]: 选择一条路线
+          - generic [ref=e54]: 30 条候选路线
+        - generic [ref=e55]:
+          - generic [ref=e56]: 候选路线
+          - combobox "选择一条候选路线" [ref=e57]:
+            - option "请选择一条路线" [disabled]
+            - option "衡复秋色绿地线｜衡复风貌区｜1.7 km｜待考证"
+            - option "西岸油罐艺术短线｜徐汇滨江及龙华滨江｜1.3 km｜待考证"
+            - option "康健公园社区环线｜康健—桂江绿廊｜1.4 km｜待考证"
+            - option "体育公园口袋绿地短线｜徐家汇及体育公园｜2.4 km｜待考证"
+            - option "运动徐家汇完整线｜徐家汇及体育公园｜2.4 km｜待考证"
+            - option "衡复公园音乐线｜衡复风貌区｜2.5 km｜待考证"
+            - option "西岸北段艺术走读线｜徐汇滨江及龙华滨江｜2.8 km｜待考证"
+            - option "西岸美术馆大道北段线｜徐汇滨江及龙华滨江｜3.2 km｜待考证"
+            - option "龙华至滨江梦中心线｜龙华街区｜4.1 km｜待考证"
+            - option "植物园北区草坪线｜上海植物园及周边｜0.8 km｜待考证" [selected]
+            - option "桂江绿廊中段线｜康健—桂江绿廊｜1.0 km｜待考证"
+            - option "文定书香短线｜徐家汇及体育公园｜1.2 km｜待考证"
+            - option "汾阳音乐街区线｜衡复风貌区｜1.3 km｜待考证"
+            - option "龙华古刹塔影线｜龙华街区｜1.6 km｜待考证"
+            - option "龙华红色记忆线｜龙华街区｜1.7 km｜待考证"
+            - option "西岸南段梦中心滨水线｜徐汇滨江及龙华滨江｜1.7 km｜待考证"
+            - option "桂江全段绿廊线｜康健—桂江绿廊｜2.0 km｜待考证"
+            - option "衡复老洋房道路线｜衡复风貌区｜2.1 km｜待考证"
+            - option "元界NeoWorld直达线｜漕河泾—蒲汇塘—南部连接区｜2.3 km｜待考证"
+            - option "植物园南北贯穿线｜上海植物园及周边｜2.4 km｜待考证"
+            - option "植物园温室兰室线｜上海植物园及周边｜2.4 km｜待考证"
+            - option "龙华古今街区环线｜龙华街区｜2.4 km｜待考证"
+            - option "植物园兰室盆景线｜上海植物园及周边｜2.4 km｜待考证"
+            - option "漕河泾创新水岸线｜漕河泾—蒲汇塘—南部连接区｜2.5 km｜待考证"
+            - option "超胜会通科学线｜徐家汇及体育公园｜2.5 km｜待考证"
+            - option "元界上澳塘连接线｜漕河泾—蒲汇塘—南部连接区｜2.7 km｜待考证"
+            - option "徐家汇海派寻源全景线｜徐家汇及体育公园｜2.8 km｜待考证"
+            - option "衡复转角公寓线｜衡复风貌区｜2.9 km｜待考证"
+            - option "植物园南园主游线｜上海植物园及周边｜3.3 km｜待考证"
+            - option "衡复文学故居线｜衡复风貌区｜5.0 km｜待考证"
+    - region "地图图例" [ref=e58]:
+      - generic [ref=e59]: 跑步
+      - generic [ref=e61]: 步行
+      - generic [ref=e63]: 骑行
+      - generic [ref=e65]: 接驳
+      - generic [ref=e67]: 徐汇边界
+  - region "徐汇路线地图" [ref=e69]:
+    - generic [ref=e70]:
+      - iframe [ref=e71]:
+        
+      - generic [ref=e73]:
+        - generic:
+          - generic [ref=e75]: 徐汇区
+          - generic [ref=e90]:
+            - generic [ref=e91]: 起终点
+            - emphasis [ref=e92]: 上海植物园4号门售票处
+          - generic [ref=e94]:
+            - generic [ref=e95]: 途经
+            - emphasis [ref=e96]
+          - generic [ref=e98]:
+            - generic [ref=e99]: 途经
+            - emphasis [ref=e100]
+      - generic [ref=e77]: © 2026 AutoNavi - GS(2025)5996号

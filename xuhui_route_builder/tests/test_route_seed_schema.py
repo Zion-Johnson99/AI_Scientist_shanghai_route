@@ -12,7 +12,7 @@ def test_route_seed_file_contains_90_unique_routes() -> None:
     assert len({seed.seed_id for seed in seeds}) == 90
     assert all(seed.source_url.startswith("https://") for seed in seeds)
     assert all(seed.confidence in {"高", "中高", "中", "中低"} for seed in seeds)
-    assert all(seed.source_accessed_at.isoformat() == "2026-08-13" for seed in seeds)
+    assert all(seed.source_accessed_at.isoformat() == "2026-08-15" for seed in seeds)
 
 
 def test_route_seed_json_is_plain_list() -> None:
