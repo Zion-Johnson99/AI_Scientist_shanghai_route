@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>徐汇路线构建器</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%231677ff'/%3E%3Cpath d='M4 9h8M8 4v8' stroke='white' stroke-width='2'/%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="./styles/main.css?v=20260817-responsive-layout-1" />
+    <link rel="stylesheet" href="./styles/main.css?v=20260817-inline-navigation-2" />
     <script src="./local-amap-config.js"></script>
   </head>
   <body>
@@ -59,7 +59,6 @@
               <label><input id="preferCoffee" type="checkbox" value="coffee" /> 咖啡</label>
               <label><input id="preferToilet" type="checkbox" value="toilet" /> 厕所</label>
               <label><input id="preferStore" type="checkbox" value="store" /> 补给</label>
-              <label><input id="preferMetro" type="checkbox" value="metro" /> 地铁</label>
               <label><input id="preferPark" type="checkbox" value="park" /> 公园</label>
             </fieldset>
 
@@ -91,9 +90,10 @@
 
         <section id="routeNavigationView" class="tab-view route-navigation-view" aria-label="前往运动路线起点">
           <div class="controls">
-            <div class="command-row navigation-session-row">
-              <button id="startNavigationButton" class="primary-action" type="button">设置接驳</button>
-              <button id="endNavigationButton" class="secondary-action" type="button">结束</button>
+            <div id="navigationSportModeTabs" class="sport-mode-tabs" role="tablist" aria-label="导航运动类型">
+              <button class="active" type="button" role="tab" data-navigation-mode="walk"><b>步行</b><span>30 条</span></button>
+              <button type="button" role="tab" data-navigation-mode="run"><b>跑步</b><span>30 条</span></button>
+              <button type="button" role="tab" data-navigation-mode="bike"><b>骑行</b><span>30 条</span></button>
             </div>
             <label>
               选择目标路线
@@ -106,12 +106,16 @@
                 <button id="startPickButton" class="secondary-action point-pick-action" type="button">点选</button>
               </span>
             </label>
+            <div class="command-row navigation-session-row">
+              <button id="startNavigationButton" class="primary-action" type="button">设置用户位置</button>
+              <button id="endNavigationButton" class="secondary-action" type="button">结束接驳</button>
+            </div>
             <div class="field-grid two-columns">
               <div id="navigationModeSummary" class="navigation-mode-summary">接驳方式随所选路线自动确定</div>
               <button id="navigateButton" class="primary-action inline-action" type="button">规划路径</button>
             </div>
-            <button id="startSportButton" class="primary-action" type="button" disabled>开始运动</button>
-            <div id="navigationStatus" class="navigation-status" aria-live="polite">点击开始导航后，可输入地点或在徐汇区内点选。</div>
+            <button id="startSportButton" class="primary-action" type="button" disabled>开始网页内导航</button>
+            <div id="navigationStatus" class="navigation-status" aria-live="polite">先选择运动类型和目标路线，再设置用户位置。</div>
           </div>
         </section>
 
@@ -126,6 +130,25 @@
 
       <section class="map-wrap" aria-label="徐汇路线地图">
         <div id="map"></div>
+        <aside id="inlineNavigationGuide" class="inline-navigation-guide" aria-label="实时接驳导航" aria-live="polite" hidden>
+          <header class="inline-navigation-guide__head">
+            <span id="inlineNavigationState" class="inline-navigation-guide__state">实时接驳</span>
+            <button id="inlineNavigationEndButton" type="button">结束导航</button>
+          </header>
+          <div class="inline-navigation-guide__maneuver">
+            <span class="inline-navigation-guide__arrow" aria-hidden="true">↗</span>
+            <div>
+              <small>下一步</small>
+              <strong id="inlineNavigationInstruction">正在获取当前位置</strong>
+            </div>
+          </div>
+          <div class="inline-navigation-guide__metrics">
+            <div><small>剩余距离</small><strong id="inlineNavigationRemaining">--</strong></div>
+            <div><small>预计时间</small><strong id="inlineNavigationDuration">--</strong></div>
+            <div><small>定位精度</small><strong id="inlineNavigationAccuracy">等待定位</strong></div>
+          </div>
+          <div class="inline-navigation-guide__progress" aria-hidden="true"><i id="inlineNavigationProgress"></i></div>
+        </aside>
       </section>
     </main>
 
@@ -157,6 +180,6 @@
         });
       })();
     </script>
-    <script type="module" src="./src/main.js?v=20260817-responsive-layout-1"></script>
+    <script type="module" src="./src/main.js?v=20260817-inline-navigation-2"></script>
   </body>
 </html>

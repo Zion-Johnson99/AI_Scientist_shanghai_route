@@ -38,11 +38,13 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260817-responsive-layout-1"
+    release = "v=20260817-inline-navigation-2"
     assert f"./styles/main.css?{release}" in html
     assert f"./src/main.js?{release}" in html
     assert f'./data-loader.js?{release}' in main_js
+    assert f'./navigation-session.js?{release}' in main_js
     assert f'./map.js?{release}' in main_js
+    assert f'./route-dock.js?{release}' in main_js
     assert f'./route-ui.js?{release}' in main_js
     assert "DATA_RELEASE" in data_loader_js
     assert "cache: \"no-store\"" in data_loader_js
@@ -54,6 +56,16 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
         "poi_catalog.json",
     ]:
         assert data_path in data_loader_js
+
+
+def test_main_wires_planned_access_request_to_inline_navigation() -> None:
+    main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
+
+    assert 'import { createNavigationController } from "./navigation-session.js?' in main_js
+    assert "onStartInlineNavigation" in main_js
+    assert "beginInlineNavigation" in main_js
+    assert "updateInlineNavigation" in main_js
+    assert "launchAmapNavigation" not in main_js
 
 
 def test_route_selection_reports_missing_geometry_instead_of_failing_silently() -> None:
@@ -98,12 +110,14 @@ def test_route_controls_support_local_candidate_search_and_preferences() -> None
         "preferCoffee",
         "preferToilet",
         "preferStore",
-        "preferMetro",
         "preferPark",
         "planButton",
         "routeSelect",
     ]:
         assert f'id="{element_id}"' in html
+
+    assert 'id="preferMetro"' not in html
+    assert "metro:" not in route_ui_js
 
     assert "route-selection-view" in html
     assert "route-navigation-view" in html
@@ -188,6 +202,11 @@ def test_web_loads_pois_and_supports_navigation_session_controls() -> None:
         "startPickButton",
         "navigationModeSummary",
         "startSportButton",
+        "inlineNavigationGuide",
+        "inlineNavigationInstruction",
+        "inlineNavigationRemaining",
+        "inlineNavigationAccuracy",
+        "inlineNavigationEndButton",
     ]:
         assert f'id="{element_id}"' in html
 
@@ -204,6 +223,9 @@ def test_web_loads_pois_and_supports_navigation_session_controls() -> None:
     assert "navigationServiceMode" in map_js
     assert "focusSportRoute" in map_js
     assert "previewSportRoute" in map_js
+    assert "navigationPlanFromResult" in map_js
+    assert "beginInlineNavigation" in map_js
+    assert "updateInlineNavigation" in map_js
     assert "AMap.Driving" not in html
     assert "addEventListener(\"click\"" in map_js
     assert "containerToLngLat" in map_js
@@ -216,6 +238,16 @@ def test_sidebar_route_picker_does_not_depend_on_an_internal_scrolling_route_lis
     ]
 
     assert "minmax(190px, 1fr)" not in selection_block
+
+
+def test_mobile_inline_navigation_expands_map_to_avoid_route_dock_overlap() -> None:
+    css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
+    main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
+
+    assert ".map-wrap.inline-navigation-active" in css
+    assert "min-height: 68dvh" in css
+    assert 'classList.add("inline-navigation-active")' in main_js
+    assert 'classList.remove("inline-navigation-active")' in main_js
     assert ".route-picker" in css
     assert ".route-tabs" not in css
     assert "flex-shrink: 0" in css[css.index(".mode-tabs {") : css.index(".mode-tabs button {")]

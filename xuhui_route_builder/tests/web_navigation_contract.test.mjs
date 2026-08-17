@@ -1,11 +1,16 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
   buildNavigationRequest,
   filterCandidateRoutes,
+  filterNavigationRoutes,
+  startPlannedNavigation,
+  resetNavigationForModeChange,
   resetPlannedNavigationForRouteChange,
   routeOptionLabel,
+  selectNavigationRoute,
 } from "../web/src/route-ui.js";
 import { navigationServiceMode } from "../web/src/map.js";
 
@@ -19,6 +24,83 @@ const route = {
     lat_gcj02: 31.184,
   },
 };
+
+const navigationCatalog = [
+  { ...route, route_id: "XH_RUN_0001", route_mode: "run" },
+  { ...route, route_id: "XH_WALK_0001", route_name: "衡复步行线", route_mode: "walk" },
+  { ...route, route_id: "XH_BIKE_0001", route_name: "滨江骑行线", route_mode: "bike" },
+];
+
+test("导航页使用独立运动类型选项卡并置于路线和用户位置之前", () => {
+  const html = readFileSync(new URL("../web/index.html", import.meta.url), "utf8");
+  const modeIndex = html.indexOf('id="navigationSportModeTabs"');
+  const routeIndex = html.indexOf('id="navigationRouteSelect"');
+  const originIndex = html.indexOf('id="startInput"');
+
+  assert.ok(modeIndex >= 0);
+  assert.ok(html.includes('data-navigation-mode="walk"'));
+  assert.equal(html.match(/data-navigation-mode=/g)?.length, 3);
+  assert.ok(modeIndex < routeIndex && routeIndex < originIndex);
+});
+
+test("导航路线下拉只保留当前运动类型", () => {
+  const routes = filterNavigationRoutes(navigationCatalog, "bike");
+
+  assert.deepEqual(routes.map((item) => item.route_id), ["XH_BIKE_0001"]);
+});
+
+test("切换导航运动类型会清除路线和旧接驳结果", () => {
+  assert.deepEqual(resetNavigationForModeChange("planned"), {
+    navigationStatus: "editing",
+    selectedRouteId: "",
+    plannedRequest: null,
+    launchDisabled: true,
+  });
+  assert.equal(resetNavigationForModeChange("idle").navigationStatus, "idle");
+});
+
+test("选择导航目标路线立即显示路线并推送指标", () => {
+  const shown = [];
+  const metrics = [];
+
+  const selected = selectNavigationRoute(navigationCatalog, "XH_WALK_0001", {
+    onSelect: (routeId) => shown.push(routeId),
+    onRouteMetrics: (selectedRoute) => metrics.push(selectedRoute),
+  });
+
+  assert.equal(selected.route_id, "XH_WALK_0001");
+  assert.deepEqual(shown, ["XH_WALK_0001"]);
+  assert.deepEqual(metrics, [selected]);
+});
+
+test("接驳尚未规划时不会启动网页内导航", () => {
+  let starts = 0;
+
+  assert.equal(startPlannedNavigation("editing", null, { routeId: "XH_RUN_0001" }, {
+    onStartInlineNavigation: () => starts += 1,
+  }), false);
+  assert.equal(starts, 0);
+});
+
+test("缺少网页导航处理器时不会伪报启动成功", () => {
+  const request = buildNavigationRequest(route, { text: "上海南站" });
+
+  assert.equal(startPlannedNavigation("planned", { path: [[121.45, 31.19], [121.46, 31.18]] }, request, {}), false);
+});
+
+test("接驳规划后把路径和请求交给网页内导航", () => {
+  const request = buildNavigationRequest(route, { text: "上海南站" });
+  const plan = { path: [[121.45, 31.19], [121.46, 31.18]], distance: 1200 };
+  let started = null;
+
+  assert.equal(startPlannedNavigation("planned", plan, request, {
+    onStartInlineNavigation: (value) => {
+      started = value;
+    },
+  }), true);
+  assert.strictEqual(started.plan, plan);
+  assert.strictEqual(started.request, request);
+});
 
 test("接驳请求只包含用户起点和已选路线起点", () => {
   const request = buildNavigationRequest(route, {

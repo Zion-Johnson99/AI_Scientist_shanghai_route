@@ -5,6 +5,49 @@ const ROUTE_STYLES = {
   access: { color: "#ff9f1a", weight: 4 },
 };
 
+const ROUTE_LAYER_STATES = {
+  active: {
+    mainOpacity: 0.98,
+    mainWeightOffset: 2,
+    mainZIndex: 100,
+    haloOpacity: 0.82,
+    haloWeightOffset: 8,
+    haloZIndex: 99,
+  },
+  inactive: {
+    mainOpacity: 0.4,
+    mainWeightOffset: 0,
+    mainZIndex: 70,
+    haloOpacity: 0.34,
+    haloWeightOffset: 5,
+    haloZIndex: 69,
+  },
+  preview: {
+    mainOpacity: 0.3,
+    mainWeightOffset: 0,
+    mainZIndex: 82,
+    haloOpacity: 0.28,
+    haloWeightOffset: 5,
+    haloZIndex: 81,
+  },
+  muted: {
+    mainOpacity: 0.1,
+    mainWeightOffset: -1,
+    mainZIndex: 62,
+    haloOpacity: 0.12,
+    haloWeightOffset: 3,
+    haloZIndex: 61,
+  },
+  sporting: {
+    mainOpacity: 1,
+    mainWeightOffset: 3,
+    mainZIndex: 112,
+    haloOpacity: 0.9,
+    haloWeightOffset: 9,
+    haloZIndex: 111,
+  },
+};
+
 const ENTRY_COLORS = {
   metro_exit: "#256db3",
   park_gate: "#25734f",
@@ -71,6 +114,7 @@ export async function createMap(targetId) {
         origin: null,
         destination: null,
       },
+      inlineLayers: null,
     },
     serviceHooks: createServiceHooks(AMap, amap),
   };
@@ -118,25 +162,43 @@ export function showRouteResults(mapContext, routes, entries, pois, selectedRout
     }
 
     const active = properties.route_id === selectedRouteId;
-    const style = routeStyle(properties.route_mode, active);
-    const layer = new mapContext.AMap.Polyline({
+    const style = routeStyle(properties.route_mode);
+    const sharedExtData = {
+      routeId: properties.route_id,
+      routeMode: properties.route_mode,
+    };
+    const halo = new mapContext.AMap.Polyline({
+      path,
+      strokeColor: "#ffffff",
+      strokeWeight: style.weight + 8,
+      strokeOpacity: active ? 0.82 : 0.34,
+      lineJoin: "round",
+      lineCap: "round",
+      showDir: false,
+      zIndex: active ? 99 : 69,
+      extData: { ...sharedExtData, layerRole: "halo" },
+    });
+    const main = new mapContext.AMap.Polyline({
       path,
       strokeColor: style.color,
-      strokeWeight: style.weight,
-      strokeOpacity: active ? 0.95 : 0.44,
+      strokeWeight: active ? style.weight + 2 : style.weight,
+      strokeOpacity: active ? 0.98 : 0.4,
       lineJoin: "round",
       lineCap: "round",
       showDir: properties.route_shape === "one_way",
       zIndex: active ? 100 : 70,
-      extData: {
-        routeId: properties.route_id,
-        routeMode: properties.route_mode,
-      },
+      extData: { ...sharedExtData, layerRole: "main" },
     });
-    layer.on("click", () => openRouteInfo(mapContext, layer, route));
-    mapContext.amap.add(layer);
-    mapContext.routeLayers.set(properties.route_id, layer);
-    boundsOverlays.push(layer);
+    main.on("click", () => openRouteInfo(mapContext, main, route));
+    mapContext.amap.add(halo);
+    mapContext.amap.add(main);
+    mapContext.routeLayers.set(properties.route_id, {
+      halo,
+      main,
+      routeMode: properties.route_mode,
+      state: active ? "active" : "inactive",
+    });
+    boundsOverlays.push(main);
   }
 
   for (const entry of entries.features || []) {
@@ -247,28 +309,24 @@ function createRouteMarker(mapContext, spec) {
 }
 
 export function highlightRoute(mapContext, selectedRouteId) {
-  for (const [routeId, layer] of mapContext.routeLayers.entries()) {
-    const mode = layer.getExtData()?.routeMode;
-    const active = routeId === selectedRouteId;
-    const style = routeStyle(mode, active);
-    layer.setOptions({
-      strokeColor: style.color,
-      strokeWeight: style.weight,
-      strokeOpacity: active ? 0.95 : 0.38,
-      zIndex: active ? 110 : 70,
-    });
+  for (const [routeId, layers] of mapContext.routeLayers.entries()) {
+    setRouteLayerState(layers, routeId === selectedRouteId ? "active" : "inactive");
   }
 }
 
 export function focusSportRoute(mapContext, selectedRouteId) {
   clearNavigationService(mapContext);
+  clearInlineNavigation(mapContext);
   clearNavigationPoints(mapContext);
-  highlightRoute(mapContext, selectedRouteId);
+  for (const [routeId, layers] of mapContext.routeLayers.entries()) {
+    setRouteLayerState(layers, routeId === selectedRouteId ? "sporting" : "muted");
+  }
   mapContext.navigation.state = "sporting";
 }
 
 export function clearRouteResults(mapContext) {
-  const overlays = [...mapContext.routeLayers.values(), ...mapContext.entryLayers, ...mapContext.poiLayers];
+  const routeOverlays = [...mapContext.routeLayers.values()].flatMap(({ halo, main }) => [halo, main]);
+  const overlays = [...routeOverlays, ...mapContext.entryLayers, ...mapContext.poiLayers];
   if (overlays.length) {
     mapContext.amap.remove(overlays);
   }
@@ -314,6 +372,7 @@ export function startNavigationSession(mapContext, onPick) {
 
 export function endNavigationSession(mapContext) {
   clearNavigationService(mapContext);
+  clearInlineNavigation(mapContext);
   clearNavigationPoints(mapContext);
   if (mapContext.navigation.clickHandler) {
     mapContext.amap.off("click", mapContext.navigation.clickHandler);
@@ -384,7 +443,87 @@ export async function planNavigation(mapContext, request) {
   const result = await searchNavigationPath(service, origin, destination);
   const distanceText = result.distance ? `${result.distance.toFixed(0)} 米` : "距离待确认";
   const durationText = result.duration ? `${Math.round(result.duration / 60)} 分钟` : "时间待确认";
-  return `${NAVIGATION_LABELS[request.routeMode] || "接驳导航"}：${distanceText}，约 ${durationText}。到达后可开始运动。`;
+  return {
+    ...result,
+    routeId: request.routeId,
+    routeMode: request.routeMode,
+    summary: `${NAVIGATION_LABELS[request.routeMode] || "接驳导航"}：${distanceText}，约 ${durationText}。`,
+  };
+}
+
+export function beginInlineNavigation(mapContext, plan) {
+  clearNavigationService(mapContext);
+  clearInlineNavigation(mapContext);
+  if (!Array.isArray(plan?.path) || plan.path.length < 2) {
+    throw new Error("接驳规划缺少网页内导航路径。");
+  }
+
+  const halo = new mapContext.AMap.Polyline({
+    path: plan.path,
+    strokeColor: "#ffffff",
+    strokeWeight: 12,
+    strokeOpacity: 0.9,
+    lineJoin: "round",
+    lineCap: "round",
+    zIndex: 139,
+  });
+  const remaining = new mapContext.AMap.Polyline({
+    path: plan.path,
+    strokeColor: ROUTE_STYLES.access.color,
+    strokeWeight: 6,
+    strokeOpacity: 1,
+    lineJoin: "round",
+    lineCap: "round",
+    showDir: true,
+    zIndex: 140,
+  });
+  const traveled = new mapContext.AMap.Polyline({
+    path: [plan.path[0], plan.path[0]],
+    strokeColor: "#7f918c",
+    strokeWeight: 5,
+    strokeOpacity: 0.8,
+    lineJoin: "round",
+    lineCap: "round",
+    zIndex: 141,
+  });
+  const user = new mapContext.AMap.Marker({
+    position: plan.path[0],
+    content: '<span class="amap-navigation-user"><i></i></span>',
+    anchor: "center",
+    zIndex: 150,
+  });
+  mapContext.amap.add([halo, remaining, traveled, user]);
+  mapContext.navigation.inlineLayers = { halo, remaining, traveled, user };
+  mapContext.navigation.state = "navigating";
+  mapContext.amap.setFitView([remaining], false, [110, 90, 180, 90]);
+}
+
+export function updateInlineNavigation(mapContext, progress) {
+  const layers = mapContext.navigation.inlineLayers;
+  if (!layers) {
+    throw new Error("网页内导航图层尚未初始化。");
+  }
+  layers.traveled.setPath(progress.traveledPath);
+  layers.remaining.setPath(progress.remainingPath);
+  layers.remaining.setOptions({
+    strokeColor: progress.status === "off_route" ? "#e14f3d" : ROUTE_STYLES.access.color,
+  });
+  const position = [progress.position.lng, progress.position.lat];
+  layers.user.setPosition(position);
+  if (Number.isFinite(progress.position.heading)) {
+    layers.user.setAngle(progress.position.heading);
+  }
+  mapContext.navigation.state = progress.status;
+  mapContext.amap.panTo(position, 280);
+}
+
+export function clearInlineNavigation(mapContext) {
+  const layers = mapContext.navigation.inlineLayers;
+  if (!layers) {
+    return;
+  }
+  mapContext.amap.remove([layers.halo, layers.remaining, layers.traveled, layers.user]);
+  mapContext.navigation.inlineLayers = null;
 }
 
 function clearNavigationService(mapContext) {
@@ -445,13 +584,8 @@ function createServiceHooks(AMap, amap) {
 }
 
 function previewSportRoute(mapContext, selectedRouteId) {
-  for (const [routeId, layer] of mapContext.routeLayers.entries()) {
-    const active = routeId === selectedRouteId;
-    layer.setOptions({
-      strokeOpacity: active ? 0.32 : 0.12,
-      strokeWeight: active ? 4 : 3,
-      zIndex: active ? 80 : 60,
-    });
+  for (const [routeId, layers] of mapContext.routeLayers.entries()) {
+    setRouteLayerState(layers, routeId === selectedRouteId ? "preview" : "muted");
   }
 }
 
@@ -480,26 +614,58 @@ export function navigationServiceMode(routeMode) {
 function searchNavigationPath(service, origin, destination) {
   return new Promise((resolve, reject) => {
     const callback = (status, result) => {
-      const summary = firstRouteSummary(result);
-      if (status !== "complete" || !summary) {
+      const plan = navigationPlanFromResult(result);
+      if (status !== "complete" || !plan) {
         reject(new Error("高德路线导航失败，请检查起点、终点或 Key 权限。"));
         return;
       }
-      resolve(summary);
+      resolve(plan);
     };
     service.search(origin, destination, callback);
   });
 }
 
-function firstRouteSummary(result) {
+export function navigationPlanFromResult(result) {
   const route = result?.routes?.[0] || result?.paths?.[0];
   if (!route) {
+    return null;
+  }
+  const rawSteps = route.steps || route.rides || [];
+  const steps = rawSteps.map((step) => ({
+    instruction: String(step.instruction || step.action || "沿接驳路线继续前行"),
+    distance: Number(step.distance || 0),
+  }));
+  const routePath = normalizeServicePath(route.path);
+  const stepPath = rawSteps.flatMap((step) => normalizeServicePath(step.path));
+  const path = dedupePath(routePath.length >= 2 ? routePath : stepPath);
+  if (path.length < 2) {
     return null;
   }
   return {
     distance: Number(route.distance || 0),
     duration: Number(route.time || route.duration || 0),
+    path,
+    steps,
   };
+}
+
+function normalizeServicePath(path) {
+  return (path || []).map((point) => {
+    if (Array.isArray(point)) {
+      return [Number(point[0]), Number(point[1])];
+    }
+    return [
+      Number(point?.lng ?? point?.getLng?.()),
+      Number(point?.lat ?? point?.getLat?.()),
+    ];
+  }).filter(([lng, lat]) => Number.isFinite(lng) && Number.isFinite(lat));
+}
+
+function dedupePath(path) {
+  return path.filter((point, index) => {
+    const previous = path[index - 1];
+    return !previous || previous[0] !== point[0] || previous[1] !== point[1];
+  });
 }
 
 function resolveNavigationValue(mapContext, value) {
@@ -675,12 +841,33 @@ function getLinePath(route) {
   return coordinates.filter((point) => Array.isArray(point) && point.length >= 2);
 }
 
-function routeStyle(mode, active) {
+function routeStyle(mode) {
   const style = ROUTE_STYLES[mode] || ROUTE_STYLES.access;
   return {
     color: style.color,
     weight: style.weight,
   };
+}
+
+function setRouteLayerState(layers, stateName) {
+  const state = ROUTE_LAYER_STATES[stateName];
+  if (!state) {
+    throw new Error(`未知路线显示状态：${stateName}`);
+  }
+  const style = routeStyle(layers.routeMode);
+  layers.halo.setOptions({
+    strokeColor: "#ffffff",
+    strokeWeight: style.weight + state.haloWeightOffset,
+    strokeOpacity: state.haloOpacity,
+    zIndex: state.haloZIndex,
+  });
+  layers.main.setOptions({
+    strokeColor: style.color,
+    strokeWeight: style.weight + state.mainWeightOffset,
+    strokeOpacity: state.mainOpacity,
+    zIndex: state.mainZIndex,
+  });
+  layers.state = stateName;
 }
 
 function extractBoundaryRings(boundary) {
