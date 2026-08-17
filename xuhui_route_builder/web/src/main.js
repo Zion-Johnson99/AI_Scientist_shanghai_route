@@ -1,4 +1,4 @@
-import { loadRouteData } from "./data-loader.js?v=20260813-route-geometry-1";
+import { loadRouteData } from "./data-loader.js?v=20260817-responsive-layout-1";
 import {
   clearRouteResults,
   createMap,
@@ -9,8 +9,8 @@ import {
   planNavigation,
   showSingleRoute,
   startNavigationSession,
-} from "./map.js?v=20260813-route-geometry-1";
-import { renderRoutePlanner } from "./route-ui.js?v=20260813-route-geometry-1";
+} from "./map.js?v=20260817-responsive-layout-1";
+import { renderRoutePlanner } from "./route-ui.js?v=20260817-responsive-layout-1";
 
 async function bootstrap() {
   const map = await createMap("map");

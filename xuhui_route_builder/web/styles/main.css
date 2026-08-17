@@ -185,7 +185,8 @@ button {
 }
 
 .route-selection-view.active {
-  flex: 1 1 auto;
+  flex: 1 1 0;
+  grid-template-rows: max-content max-content;
   align-content: start;
   overflow-y: auto;
 }

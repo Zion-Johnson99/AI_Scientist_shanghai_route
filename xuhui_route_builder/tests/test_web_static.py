@@ -38,7 +38,7 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260813-route-geometry-1"
+    release = "v=20260817-responsive-layout-1"
     assert f"./styles/main.css?{release}" in html
     assert f"./src/main.js?{release}" in html
     assert f'./data-loader.js?{release}' in main_js
@@ -219,6 +219,17 @@ def test_sidebar_route_picker_does_not_depend_on_an_internal_scrolling_route_lis
     assert ".route-picker" in css
     assert ".route-tabs" not in css
     assert "flex-shrink: 0" in css[css.index(".mode-tabs {") : css.index(".mode-tabs button {")]
+
+
+def test_route_selection_preserves_content_rows_before_scrolling() -> None:
+    css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
+    selection_block = css[
+        css.index(".route-selection-view.active {") : css.index(".field-grid {")
+    ]
+
+    assert "flex: 1 1 0;" in selection_block
+    assert "grid-template-rows: max-content max-content;" in selection_block
+    assert "overflow-y: auto;" in selection_block
 
 
 def test_map_module_uses_amap_and_keeps_community_nodes_result_scoped() -> None:
