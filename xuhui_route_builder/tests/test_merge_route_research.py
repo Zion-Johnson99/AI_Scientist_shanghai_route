@@ -81,7 +81,7 @@ def test_merge_route_optimizations_normalizes_three_mode_results(tmp_path) -> No
                 "waypoint_names": [],
                 "amenities": [],
                 "amenity_ids": [],
-                "geometry_action": "preserve" if route_id in {"XH_RUN_0033", "XH_RUN_0036", "XH_RUN_0053", "XH_BIKE_0066", "XH_BIKE_0083", "XH_BIKE_0088"} else "regenerate",
+                "geometry_action": "regenerate",
                 "geometry_source": "amap_direction",
                 "evidence_note": "新证据",
                 "access_restrictions": ["新限制"],
@@ -100,3 +100,4 @@ def test_merge_route_optimizations_normalizes_three_mode_results(tmp_path) -> No
     assert merged[0]["start_location"]["name"] == "新起点"
     assert merged[0]["ordered_nodes"][0]["node_name"] == "新起点"
     assert merged[0]["evidence_note"] == "新证据"
+    assert all(route["geometry_action"] == "regenerate" for route in merged)

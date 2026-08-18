@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { buildRouteDockModel } from "../web/src/route-dock.js";
-import { clearRouteResults, showRouteResults } from "../web/src/map.js";
+import { clearRouteResults, showRouteResults, showSingleRoute } from "../web/src/map.js";
 
 const sampleRoute = {
   type: "Feature",
@@ -88,4 +88,30 @@ test("路线使用外描边和主色双层，清理时不留残层", () => {
   clearRouteResults(mapContext);
   assert.deepEqual(removed, [halo, main]);
   assert.equal(mapContext.routeLayers.size, 0);
+});
+
+test("单路线在端点标记完成后重新聚焦自身范围", () => {
+  class Overlay {
+    constructor(options) { this.options = options; }
+    on() {}
+  }
+  const fitCalls = [];
+  const mapContext = {
+    AMap: { Polyline: Overlay, Marker: Overlay, Pixel: class {} },
+    amap: {
+      add() {},
+      remove() {},
+      setFitView(...args) { fitCalls.push(args); },
+    },
+    routeLayers: new Map(),
+    entryLayers: [],
+    poiLayers: [],
+  };
+
+  showSingleRoute(mapContext, sampleRoute, { features: [] }, { features: [] });
+
+  assert.equal(fitCalls.length, 2);
+  assert.equal(fitCalls.at(-1)[0].length, 3);
+  assert.equal(fitCalls.at(-1)[1], true);
+  assert.equal(fitCalls.at(-1)[3], 18);
 });

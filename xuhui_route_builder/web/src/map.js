@@ -185,7 +185,7 @@ export function showRouteResults(mapContext, routes, entries, pois, selectedRout
       strokeOpacity: active ? 0.98 : 0.4,
       lineJoin: "round",
       lineCap: "round",
-      showDir: properties.route_shape === "one_way",
+      showDir: true,
       zIndex: active ? 100 : 70,
       extData: { ...sharedExtData, layerRole: "main" },
     });
@@ -260,6 +260,9 @@ export function showSingleRoute(mapContext, route, entries, pois) {
     mapContext.amap.add(marker);
     mapContext.entryLayers.push(marker);
   }
+  const activeRoute = mapContext.routeLayers.get(routeId)?.main;
+  const focusOverlays = [activeRoute, ...mapContext.entryLayers].filter(Boolean);
+  mapContext.amap.setFitView(focusOverlays, true, [110, 90, 180, 90], 18);
 }
 
 function landmarkSpecs(route, pois) {

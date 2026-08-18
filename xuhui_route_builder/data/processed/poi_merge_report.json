@@ -1,0 +1,26 @@
+{
+  "input_record_count": 605,
+  "published_association_count": 7,
+  "published_unique_poi_count": 2,
+  "routes_with_verified_pois": [
+    "XH_RUN_0031",
+    "XH_RUN_0039",
+    "XH_RUN_0040",
+    "XH_WALK_0001",
+    "XH_WALK_0012",
+    "XH_WALK_0022",
+    "XH_WALK_0023"
+  ],
+  "excluded": {
+    "unverified": 521,
+    "closed": 2,
+    "unpublished_route": 75,
+    "invalid": 0
+  },
+  "published_route_count": 13,
+  "source_files": [
+    "data/interim/poi/walk_route_pois.json",
+    "data/interim/poi/run_route_pois.json",
+    "data/interim/poi/bike_route_pois.json"
+  ]
+}

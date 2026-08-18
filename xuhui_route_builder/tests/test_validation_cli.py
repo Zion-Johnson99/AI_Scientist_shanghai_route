@@ -149,7 +149,7 @@ def test_validate_routes_publishes_only_when_all_ninety_are_accepted_and_balance
     assert len(json.loads((tmp_path / "data/web/route_catalog.json").read_text(encoding="utf-8"))) == 90
 
 
-def test_validate_routes_preserves_web_files_when_one_route_needs_review(tmp_path) -> None:
+def test_validate_routes_publishes_only_accepted_routes_when_one_needs_review(tmp_path) -> None:
     candidates = _catalog_candidates()
     _prepare(tmp_path, candidates)
     web = tmp_path / "data/web"
@@ -157,19 +157,58 @@ def test_validate_routes_preserves_web_files_when_one_route_needs_review(tmp_pat
     (web / "xuhui_routes.geojson").write_text("old geojson", encoding="utf-8")
     (web / "route_catalog.json").write_text("old catalog", encoding="utf-8")
 
-    with pytest.raises(RuntimeError, match="existing web files preserved"):
-        cli.validate_routes(
-            tmp_path,
-            _Client(candidates, low_index=3),
-            datetime(2026, 7, 12, tzinfo=timezone.utc),
-        )
+    cli.validate_routes(
+        tmp_path,
+        _Client(candidates, low_index=3),
+        datetime(2026, 7, 12, tzinfo=timezone.utc),
+    )
 
     report = json.loads((tmp_path / "data/processed/route_validation_report.json").read_text(encoding="utf-8"))
-    assert report["batch_status"] == "failed"
-    assert report["published_count"] == 0
+    assert report["batch_status"] == "partial"
+    assert report["published_count"] == 89
     assert len(report["routes"]) == 90
-    assert (web / "xuhui_routes.geojson").read_text(encoding="utf-8") == "old geojson"
-    assert (web / "route_catalog.json").read_text(encoding="utf-8") == "old catalog"
+    catalog = json.loads((web / "route_catalog.json").read_text(encoding="utf-8"))
+    assert len(catalog) == 89
+    assert "route-3" not in {route["route_id"] for route in catalog}
+
+
+def test_validate_routes_skips_overpass_when_local_shape_gate_fails(tmp_path) -> None:
+    candidates = _catalog_candidates()
+    original = candidates[0]
+    start, turn = original.polyline_gcj02
+    end = CoordinatePair(
+        lng_gcj02=start.lng_gcj02,
+        lat_gcj02=start.lat_gcj02 + 0.004,
+        lng_wgs84=start.lng_wgs84,
+        lat_wgs84=start.lat_wgs84 + 0.004,
+    )
+    polyline = [start, turn, start, end]
+    distance = round(polyline_length_m(polyline))
+    end_location = original.end_location.model_copy(
+        update={"lng_gcj02": end.lng_gcj02, "lat_gcj02": end.lat_gcj02}
+    )
+    candidates[0] = original.model_copy(
+        update={
+            "target_distance_m": distance,
+            "actual_distance_m": distance,
+            "end_location": end_location,
+            "ordered_nodes": [
+                original.ordered_nodes[0],
+                RouteNode(node_name="终点", lng_gcj02=end.lng_gcj02, lat_gcj02=end.lat_gcj02),
+            ],
+            "polyline_gcj02": polyline,
+        }
+    )
+    _prepare(tmp_path, candidates)
+    client = _Client(candidates[1:])
+
+    cli.validate_routes(tmp_path, client, datetime(2026, 7, 12, tzinfo=timezone.utc))
+
+    assert client.calls == 89
+    report = json.loads((tmp_path / "data/processed/route_validation_report.json").read_text(encoding="utf-8"))
+    failed = next(route for route in report["routes"] if route["route_id"] == "route-0")
+    assert failed["validation_status"] == "needs_review"
+    assert "本地形态门禁失败" in failed["review_note"]
 
 
 @pytest.mark.parametrize(
@@ -203,13 +242,13 @@ def test_validate_routes_excludes_failed_network_check_and_reports_context(tmp_p
     (web / "route_catalog.json").write_text("old catalog", encoding="utf-8")
     client = _Client(candidates, low_index=2 if failure == "low_snap" else None, error_index=2 if failure == "overpass_error" else None)
 
-    with pytest.raises(RuntimeError, match="existing web files preserved"):
-        cli.validate_routes(tmp_path, client, datetime(2026, 7, 12, tzinfo=timezone.utc))
+    cli.validate_routes(tmp_path, client, datetime(2026, 7, 12, tzinfo=timezone.utc))
 
-    assert (web / "route_catalog.json").read_text(encoding="utf-8") == "old catalog"
+    catalog = json.loads((web / "route_catalog.json").read_text(encoding="utf-8"))
+    assert len(catalog) == 89
     report = json.loads((tmp_path / "data/processed/route_validation_report.json").read_text(encoding="utf-8"))
-    assert report["batch_status"] == "failed"
-    assert report["published_count"] == 0
+    assert report["batch_status"] == "partial"
+    assert report["published_count"] == 89
     if failure == "overpass_error":
         assert report["failures"][0]["route_id"] == "route-2"
         assert report["failures"][0]["mode"] == "walk"
@@ -228,8 +267,7 @@ def test_validate_routes_keeps_best_source_and_downgrades_duplicates(tmp_path) -
     })
     _prepare(tmp_path, candidates)
 
-    with pytest.raises(RuntimeError, match="existing web files preserved"):
-        cli.validate_routes(tmp_path, _Client(candidates), datetime(2026, 7, 12, tzinfo=timezone.utc))
+    cli.validate_routes(tmp_path, _Client(candidates), datetime(2026, 7, 12, tzinfo=timezone.utc))
 
     validated = json.loads((tmp_path / "data/processed/pilot_validated.json").read_text(encoding="utf-8"))
     by_id = {route["route_id"]: route for route in validated}
@@ -237,7 +275,7 @@ def test_validate_routes_keeps_best_source_and_downgrades_duplicates(tmp_path) -
     assert by_id["route-0"]["validation_status"] == "needs_review"
     assert "重复" in by_id["route-0"]["review_note"]
     report = json.loads((tmp_path / "data/processed/route_validation_report.json").read_text(encoding="utf-8"))
-    assert report["published_count"] == 0
+    assert report["published_count"] == 89
 
 
 def test_validate_routes_rolls_back_both_web_files_on_publish_failure(tmp_path, monkeypatch) -> None:

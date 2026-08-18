@@ -134,7 +134,7 @@ def test_build_route_catalog_exports_navigation_and_preference_metadata() -> Non
     }
 
 
-def test_candidate_exports_include_routes_awaiting_strict_review() -> None:
+def test_candidate_exports_exclude_routes_awaiting_strict_review() -> None:
     start = RouteLocation(name="候选入口", location_type="public_space", lng_gcj02=121.45, lat_gcj02=31.17, source_url="https://example.com/start")
     end = RouteLocation(name="候选终点", location_type="public_space", lng_gcj02=121.46, lat_gcj02=31.16, source_url="https://example.com/end")
     route = CandidateRoute(
@@ -169,6 +169,5 @@ def test_candidate_exports_include_routes_awaiting_strict_review() -> None:
     catalog = build_candidate_route_catalog([route])
     features = build_candidate_route_feature_collection([route])
 
-    assert [item["route_id"] for item in catalog] == [route.route_id]
-    assert catalog[0]["display_status"] == "待考证"
-    assert features["features"][0]["properties"]["display_status"] == "待考证"
+    assert catalog == []
+    assert features["features"] == []

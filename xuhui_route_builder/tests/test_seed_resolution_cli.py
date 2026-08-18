@@ -183,6 +183,22 @@ def test_resolve_seed_drafts_writes_strict_seeds_and_validate_seeds(
     assert len(persisted) == 90
 
 
+def test_validate_seeds_accepts_quality_driven_uneven_distance_bands(tmp_path: Path) -> None:
+    source = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seeds.json"
+    target = tmp_path / "data" / "seeds" / "route_seeds.json"
+    target.parent.mkdir(parents=True)
+    target.write_bytes(source.read_bytes())
+
+    seeds = validate_seeds(tmp_path)
+
+    assert len(seeds) == 90
+    assert {mode: sum(seed.route_mode == mode for seed in seeds) for mode in ("walk", "run", "bike")} == {
+        "walk": 30,
+        "run": 30,
+        "bike": 30,
+    }
+
+
 def test_resolve_seed_drafts_does_not_overwrite_on_failure(tmp_path: Path) -> None:
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)

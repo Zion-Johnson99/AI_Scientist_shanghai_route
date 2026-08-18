@@ -351,6 +351,21 @@ def test_candidate_from_seed_keeps_source_fields() -> None:
     assert route.waypoint_names == ["起点", "终点"]
 
 
+def test_candidate_from_seed_snaps_endpoint_markers_to_generated_geometry() -> None:
+    direction = DirectionPath(
+        distance_m=100,
+        duration_s=60,
+        polyline_gcj02=["121.4405,31.1805", "121.4495,31.1895"],
+    )
+
+    route = candidate_from_seed(_seed(), direction, 1)
+
+    assert (route.start_location.lng_gcj02, route.start_location.lat_gcj02) == (121.4405, 31.1805)
+    assert (route.end_location.lng_gcj02, route.end_location.lat_gcj02) == (121.4495, 31.1895)
+    assert (route.ordered_nodes[0].lng_gcj02, route.ordered_nodes[0].lat_gcj02) == (121.4405, 31.1805)
+    assert (route.ordered_nodes[-1].lng_gcj02, route.ordered_nodes[-1].lat_gcj02) == (121.4495, 31.1895)
+
+
 def test_candidate_from_seed_marks_same_poi_as_loop() -> None:
     node = RouteNode(node_name="环线入口", poi_id="LOOP", lng_gcj02=121.44, lat_gcj02=31.18)
     seed = _seed(nodes=[node, node], route_shape="strict_loop")

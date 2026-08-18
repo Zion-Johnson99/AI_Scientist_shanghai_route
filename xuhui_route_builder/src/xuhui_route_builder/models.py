@@ -197,13 +197,8 @@ class CandidateRoute(StrictModel):
     def is_publishable(self) -> bool:
         distinct_points = {(point.lng_gcj02, point.lat_gcj02) for point in self.polyline_gcj02}
         verified_with_timezone = self.verified_at is not None and self.verified_at.utcoffset() is not None
-        has_safe_validation_status = self.validation_status == "accepted" or (
-            self.validation_status == "needs_review"
-            and self.review_note.startswith("实际距离与目标距离误差")
-            and "；" not in self.review_note
-        )
         has_common_evidence = (
-            has_safe_validation_status
+            self.validation_status == "accepted"
             and self.geometry_source in {"amap_direction", "audited_import"}
             and self.geometry_status == "complete"
             and len(distinct_points) >= 2

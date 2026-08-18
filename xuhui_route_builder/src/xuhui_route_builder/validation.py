@@ -21,6 +21,10 @@ MAX_TARGET_DISTANCE_ERROR_RATIO = 0.15
 MAX_LOOP_CLOSURE_M = 30
 MAX_REPEATED_EDGE_RATIO = 0.02
 MAX_REPEATED_EDGE_M = 30
+MAX_ONE_WAY_CIRCUITY = 2.5
+LOCAL_RETURN_RADIUS_M = 20
+LOCAL_RETURN_PATH_MIN_M = 200
+STRICT_LOOP_CLOSURE_MARGIN_M = 75
 
 
 def build_overpass_query(route: CandidateRoute, margin_m: float = 50) -> str:
@@ -207,7 +211,7 @@ def validate_candidate(
         "snap_ratio": snap_ratio,
         "network_source": network_version.strip() if valid_network_version else None,
         "verified_at": verified_at if valid_verified_at else None,
-        "review_note": "；".join(failures) if failures else "OSM 贴路率和 API 距离误差检查通过",
+        "review_note": "；".join(failures) if failures else "路线形态、OSM 贴路率和 API 距离误差检查通过",
         "route_inside_ratio": inside_ratio,
     }
     payload = route.model_dump()
@@ -224,6 +228,8 @@ def topology_failures(route: CandidateRoute) -> list[str]:
     closure_m = _distance_m(points[0], points[-1])
     if route.route_shape == "strict_loop" and closure_m > MAX_LOOP_CLOSURE_M:
         failures.append(f"严格闭环首尾距离 {closure_m:.1f} 米超过 {MAX_LOOP_CLOSURE_M} 米")
+    if route.route_shape == "strict_loop" and not _is_single_simple_cycle(points):
+        failures.append("严格闭环未形成单一简单环")
     if route.route_shape == "one_way" and _same_named_location(route):
         failures.append("单程路线起点与终点语义相同")
 
@@ -235,7 +241,7 @@ def topology_failures(route: CandidateRoute) -> list[str]:
         points[-1],
         (route.end_location.lng_gcj02, route.end_location.lat_gcj02),
     )
-    endpoint_tolerance_m = 100 if route.route_mode in {"bike", "bike_assist"} else 50
+    endpoint_tolerance_m = 30
     if start_offset > endpoint_tolerance_m or end_offset > endpoint_tolerance_m:
         failures.append(
             f"起终点标记偏离轨迹：起点 {start_offset:.1f} 米，终点 {end_offset:.1f} 米"
@@ -255,12 +261,28 @@ def topology_failures(route: CandidateRoute) -> list[str]:
         else:
             seen.add(key)
     repeated_ratio = repeated_m / total_m if total_m else 0.0
-    if route.source_method != "protected_geometry" and (
-        repeated_ratio > MAX_REPEATED_EDGE_RATIO or longest_repeated_m >= MAX_REPEATED_EDGE_M
-    ):
+    if repeated_ratio > MAX_REPEATED_EDGE_RATIO or longest_repeated_m >= MAX_REPEATED_EDGE_M:
         failures.append(
             f"轨迹存在可感知重复边或折返：累计 {repeated_ratio:.1%}，最长 {longest_repeated_m:.1f} 米"
         )
+
+    branch_count = _branch_like_node_count(points)
+    intersection_count = _proper_self_intersection_count(points, route.route_shape)
+    if branch_count or intersection_count:
+        failures.append(f"轨迹存在分叉或自交：分叉节点 {branch_count} 个，自交 {intersection_count} 处")
+
+    uturn_count, longest_uturn_m = _local_uturn_metrics(points)
+    if uturn_count:
+        failures.append(f"轨迹存在局部折返：{uturn_count} 处，最长 {longest_uturn_m:.1f} 米")
+
+    local_return_count, longest_return_m = _local_return_loop_metrics(points, route.route_shape)
+    if local_return_count:
+        failures.append(f"轨迹存在局部回环：{local_return_count} 处，最长 {longest_return_m:.1f} 米")
+
+    if route.route_shape == "one_way" and closure_m > 0:
+        circuity = total_m / closure_m
+        if circuity > MAX_ONE_WAY_CIRCUITY:
+            failures.append(f"单程路线曲折系数 {circuity:.2f} 高于 {MAX_ONE_WAY_CIRCUITY:.2f}")
 
     node_tolerance_m = 100 if route.route_mode in {"bike", "bike_assist"} else 50
     for node in route.ordered_nodes[1:-1]:
@@ -274,6 +296,116 @@ def topology_failures(route: CandidateRoute) -> list[str]:
         if offset > node_tolerance_m:
             failures.append(f"途经点 {node.node_name} 偏离轨迹 {offset:.1f} 米")
     return failures
+
+
+def _is_single_simple_cycle(points: Sequence[WgsPoint]) -> bool:
+    keys = [_rounded_point(point) for point in points]
+    if _distance_m(points[0], points[-1]) <= MAX_LOOP_CLOSURE_M:
+        keys[-1] = keys[0]
+
+    adjacency: dict[WgsPoint, set[WgsPoint]] = {}
+    edges: set[tuple[WgsPoint, WgsPoint]] = set()
+    for first, second in zip(keys, keys[1:]):
+        if first == second:
+            continue
+        adjacency.setdefault(first, set()).add(second)
+        adjacency.setdefault(second, set()).add(first)
+        edges.add(tuple(sorted((first, second))))
+    if not adjacency or any(len(neighbors) != 2 for neighbors in adjacency.values()):
+        return False
+
+    unseen = set(adjacency)
+    component_count = 0
+    while unseen:
+        component_count += 1
+        stack = [unseen.pop()]
+        while stack:
+            current = stack.pop()
+            neighbors = adjacency[current] & unseen
+            unseen.difference_update(neighbors)
+            stack.extend(neighbors)
+    cycle_rank = len(edges) - len(adjacency) + component_count
+    return component_count == 1 and cycle_rank == 1
+
+
+def _branch_like_node_count(points: Sequence[WgsPoint]) -> int:
+    adjacency: dict[WgsPoint, set[WgsPoint]] = {}
+    for first, second in zip(points, points[1:]):
+        first_key, second_key = _rounded_point(first), _rounded_point(second)
+        if first_key == second_key:
+            continue
+        adjacency.setdefault(first_key, set()).add(second_key)
+        adjacency.setdefault(second_key, set()).add(first_key)
+    return sum(len(neighbors) > 2 for neighbors in adjacency.values())
+
+
+def _proper_self_intersection_count(points: Sequence[WgsPoint], route_shape: str) -> int:
+    count = 0
+    segment_count = len(points) - 1
+    for first_index in range(segment_count):
+        first_start, first_end = points[first_index], points[first_index + 1]
+        for second_index in range(first_index + 2, segment_count):
+            if route_shape == "strict_loop" and first_index == 0 and second_index == segment_count - 1:
+                continue
+            second_start, second_end = points[second_index], points[second_index + 1]
+            if _properly_intersects(first_start, first_end, second_start, second_end):
+                count += 1
+    return count
+
+
+def _properly_intersects(first: WgsPoint, second: WgsPoint, third: WgsPoint, fourth: WgsPoint) -> bool:
+    if (
+        max(first[0], second[0]) <= min(third[0], fourth[0])
+        or max(third[0], fourth[0]) <= min(first[0], second[0])
+        or max(first[1], second[1]) <= min(third[1], fourth[1])
+        or max(third[1], fourth[1]) <= min(first[1], second[1])
+    ):
+        return False
+    first_side = _orientation(first, second, third)
+    second_side = _orientation(first, second, fourth)
+    third_side = _orientation(third, fourth, first)
+    fourth_side = _orientation(third, fourth, second)
+    return first_side * second_side < 0 and third_side * fourth_side < 0
+
+
+def _orientation(first: WgsPoint, second: WgsPoint, third: WgsPoint) -> float:
+    return (second[0] - first[0]) * (third[1] - first[1]) - (second[1] - first[1]) * (third[0] - first[0])
+
+
+def _local_uturn_metrics(points: Sequence[WgsPoint]) -> tuple[int, float]:
+    count = 0
+    longest_m = 0.0
+    for first, middle, last in zip(points, points[1:], points[2:]):
+        first_leg_m = _distance_m(first, middle)
+        second_leg_m = _distance_m(middle, last)
+        if first_leg_m >= 15 and second_leg_m >= 15 and _distance_m(first, last) <= 10:
+            count += 1
+            longest_m = max(longest_m, first_leg_m + second_leg_m)
+    return count, longest_m
+
+
+def _local_return_loop_metrics(points: Sequence[WgsPoint], route_shape: str) -> tuple[int, float]:
+    lengths = [_distance_m(first, second) for first, second in zip(points, points[1:])]
+    cumulative = [0.0]
+    for length in lengths:
+        cumulative.append(cumulative[-1] + length)
+
+    count = 0
+    longest_m = 0.0
+    for index, point in enumerate(points):
+        for previous in range(index - 3):
+            path_distance_m = cumulative[index] - cumulative[previous]
+            if (
+                route_shape == "strict_loop"
+                and cumulative[previous] <= STRICT_LOOP_CLOSURE_MARGIN_M
+                and cumulative[-1] - cumulative[index] <= STRICT_LOOP_CLOSURE_MARGIN_M
+            ):
+                continue
+            if path_distance_m >= LOCAL_RETURN_PATH_MIN_M and _distance_m(points[previous], point) <= LOCAL_RETURN_RADIUS_M:
+                count += 1
+                longest_m = max(longest_m, path_distance_m)
+                break
+    return count, longest_m
 
 
 def _rounded_point(point: WgsPoint, precision: int = 5) -> WgsPoint:

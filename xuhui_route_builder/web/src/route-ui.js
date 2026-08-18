@@ -1,10 +1,3 @@
-const PREFERENCE_KEYWORDS = {
-  coffee: ["咖啡", "coffee"],
-  toilet: ["厕所", "卫生间", "洗手间"],
-  store: ["便利店", "补给", "商店"],
-  park: ["公园入口", "公园", "绿地", "植物园"],
-};
-
 const MODE_LABELS = {
   run: "跑步",
   walk: "步行",
@@ -18,6 +11,7 @@ const NAVIGATION_POINT_LABELS = {
 
 export function renderRoutePlanner(catalog, options) {
   const controls = getControls();
+  updateModeCounts(catalog, controls);
   populateZoneFilter(controls.zoneFilter, catalog);
   populateNavigationRoutes(controls.navigationRouteSelect, filterNavigationRoutes(catalog, "walk"));
 
@@ -474,11 +468,6 @@ function scoreRoute(route, textFilters, preferences) {
   for (const preference of preferences) {
     if ((route.preference_hits || []).includes(preference)) {
       score += 12;
-      continue;
-    }
-    const keywords = PREFERENCE_KEYWORDS[preference] || [];
-    if (keywords.some((keyword) => searchable.includes(normalizeText(keyword)))) {
-      score += 2;
     }
   }
   return score;
@@ -486,11 +475,7 @@ function scoreRoute(route, textFilters, preferences) {
 
 function matchesPreferences(route, preferences) {
   const hits = route.preference_hits || [];
-  if (preferences.every((preference) => hits.includes(preference))) {
-    return true;
-  }
-  const searchable = normalizeText([...(route.tags || []), ...(route.nearby_pois || []).map((poi) => poi.poi_name)].join(" "));
-  return preferences.every((preference) => (PREFERENCE_KEYWORDS[preference] || []).some((keyword) => searchable.includes(normalizeText(keyword))));
+  return preferences.every((preference) => hits.includes(preference));
 }
 
 function routePriority(route) {
@@ -554,6 +539,17 @@ function populateZoneFilter(select, catalog) {
     option.value = zone;
     option.textContent = zone;
     select.appendChild(option);
+  }
+}
+
+function updateModeCounts(catalog, controls) {
+  for (const tab of controls.sportModeTabs) {
+    const count = catalog.filter((route) => route.route_mode === tab.dataset.routeMode).length;
+    tab.querySelector("span").textContent = `${count} 条`;
+  }
+  for (const tab of controls.navigationModeTabs) {
+    const count = catalog.filter((route) => route.route_mode === tab.dataset.navigationMode).length;
+    tab.querySelector("span").textContent = `${count} 条`;
   }
 }
 

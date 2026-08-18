@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import tempfile
@@ -28,12 +27,14 @@ from .exporters import (
 from .models import CandidateRoute, RouteSeed
 from .osm_poi import build_osm_poi_index
 from .place_resolver import HybridPlaceResolver
-from .route_research import PROTECTED_GEOMETRY_IDS, merge_research_drafts, merge_route_optimizations
-from .routes import generate_candidate_from_seed, load_route_seeds, preserve_candidate_geometry
+from .route_research import merge_research_drafts, merge_route_optimizations
+from .routes import generate_candidate_from_seed, load_route_seeds
+from .service_pois import merge_verified_service_pois
 from .validation import (
     OverpassClient,
     build_overpass_query,
     find_duplicate_routes,
+    topology_failures,
     validate_amap_raw_evidence,
     validate_candidate,
 )
@@ -87,6 +88,7 @@ def main() -> None:
             "validate-routes",
             "validate-seeds",
             "export-candidates",
+            "merge-service-pois",
         ],
     )
     parser.add_argument("--max-online-calls", type=int, default=50)
@@ -133,6 +135,8 @@ def main() -> None:
         print(f"route_seed_count={len(seeds)}")
     elif args.command == "export-candidates":
         export_candidate_routes(PROJECT_ROOT)
+    elif args.command == "merge-service-pois":
+        merge_service_pois(PROJECT_ROOT)
 
 
 def resolve_seed_drafts(project_root: Path, resolver) -> list[RouteSeed]:
@@ -205,8 +209,7 @@ def resolve_seed_drafts(project_root: Path, resolver) -> list[RouteSeed]:
             "poi_id": last_node.poi_id,
         }
         payload["amenity_ids"] = []
-        route_id = _seed_route_id(payload["route_mode"], draft_index + 1)
-        payload["geometry_action"] = "preserve" if route_id in PROTECTED_GEOMETRY_IDS else "regenerate"
+        payload["geometry_action"] = "regenerate"
         try:
             seeds.append(RouteSeed(**payload))
         except Exception as exc:
@@ -248,11 +251,6 @@ def resolve_seed_drafts(project_root: Path, resolver) -> list[RouteSeed]:
     return seeds
 
 
-def _seed_route_id(route_mode: str, index: int) -> str:
-    prefix = {"walk": "WALK", "run": "RUN", "bike": "BIKE"}[route_mode]
-    return f"XH_{prefix}_{index:04d}"
-
-
 def validate_seeds(project_root: Path) -> list[RouteSeed]:
     seeds = load_route_seeds(project_root / "data" / "seeds" / "route_seeds.json")
     _validate_seed_collection(seeds)
@@ -261,30 +259,11 @@ def validate_seeds(project_root: Path) -> list[RouteSeed]:
 
 def generate_routes(project_root: Path, client) -> list:
     seeds = validate_seeds(project_root)
-    previous_path = project_root / "data" / "processed" / "pilot_validated.json"
-    previous_items = json.loads(previous_path.read_text(encoding="utf-8")) if previous_path.exists() else []
-    previous_by_id = {
-        item.get("route_id"): item for item in previous_items if isinstance(item, dict) and item.get("route_id")
-    }
     candidates = []
     failures = []
-    protected_geometry_hashes = {}
     for index, seed in enumerate(seeds, start=1):
         try:
-            prefix = "RUN" if seed.route_mode == "run" else "WALK" if seed.route_mode == "walk" else "BIKE"
-            route_id = f"XH_{prefix}_{index:04d}"
-            if seed.geometry_action == "preserve":
-                if route_id not in previous_by_id:
-                    raise ValueError(f"protected geometry missing from {previous_path}: {route_id}")
-                previous = previous_by_id[route_id]
-                before_hash = _geometry_hash(previous.get("polyline_gcj02", []))
-                candidate = preserve_candidate_geometry(seed, previous, index)
-                after_hash = _geometry_hash([point.model_dump(mode="json") for point in candidate.polyline_gcj02])
-                if before_hash != after_hash:
-                    raise ValueError(f"protected geometry changed: {route_id}")
-                protected_geometry_hashes[route_id] = before_hash
-            else:
-                candidate = generate_candidate_from_seed(seed, client, index)
+            candidate = generate_candidate_from_seed(seed, client, index)
             candidates.append(
                 candidate.model_copy(
                     update={
@@ -314,7 +293,6 @@ def generate_routes(project_root: Path, client) -> list:
         "success_count": len(candidates),
         "failure_count": len(failures),
         "success_route_ids": [route.route_id for route in candidates],
-        "protected_geometry_hashes": protected_geometry_hashes,
         "failures": failures,
     }
     report_path = project_root / "data" / "processed" / "route_generation_report.json"
@@ -377,11 +355,6 @@ def generate_routes(project_root: Path, client) -> list:
     return candidates
 
 
-def _geometry_hash(points) -> str:
-    payload = json.dumps(points, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
-    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
-
-
 def _portable_raw_path(project_root: Path, raw_path: str) -> str:
     path = Path(raw_path)
     if not path.is_absolute():
@@ -437,6 +410,18 @@ def validate_routes(
     network_versions: list[str] = []
     for route in candidates:
         try:
+            shape_failures = topology_failures(route)
+            if shape_failures:
+                validated.append(
+                    route.model_copy(
+                        update={
+                            "validation_status": "needs_review",
+                            "verified_at": verified_at,
+                            "review_note": f"本地形态门禁失败：{'；'.join(shape_failures)}",
+                        }
+                    )
+                )
+                continue
             evidence_failures = (
                 validate_amap_raw_evidence(route, project_root)
                 if route.geometry_source == "amap_direction"
@@ -520,21 +505,12 @@ def validate_routes(
     }
     publishable = [route for route in validated if route.is_publishable()]
     mode_counts, distance_band_counts = _route_distribution(validated)
-    distribution_valid = mode_counts == EXPECTED_MODE_COUNTS and all(
-        counts == {"short": 10, "medium": 10, "long": 10}
-        for counts in distance_band_counts.values()
-    )
-    batch_publishable = (
-        len(validated) == EXPECTED_ROUTE_COUNT
-        and counts["accepted_count"] == EXPECTED_ROUTE_COUNT
-        and len(publishable) == EXPECTED_ROUTE_COUNT
-        and distribution_valid
-    )
+    collection_valid = len(validated) == EXPECTED_ROUTE_COUNT and mode_counts == EXPECTED_MODE_COUNTS
     distinct_versions = list(dict.fromkeys(network_versions))
     report = {
-        "batch_status": "preparing" if batch_publishable else "failed",
+        "batch_status": "preparing" if collection_valid else "failed",
         **counts,
-        "published_count": EXPECTED_ROUTE_COUNT if batch_publishable else 0,
+        "published_count": len(publishable) if collection_valid else 0,
         "mode_counts": mode_counts,
         "distance_band_counts": distance_band_counts,
         "network_version": distinct_versions[0]
@@ -564,7 +540,7 @@ def validate_routes(
         validated_path, [route.model_dump(mode="json") for route in validated]
     )
 
-    if not batch_publishable:
+    if not collection_valid:
         _atomic_write_json(report_path, report)
         raise RuntimeError(
             "route validation failed: "
@@ -592,7 +568,7 @@ def validate_routes(
         _atomic_write_json(report_path, report)
         raise
 
-    report["batch_status"] = "succeeded"
+    report["batch_status"] = "succeeded" if len(publishable) == EXPECTED_ROUTE_COUNT else "partial"
     try:
         _atomic_write_json(report_path, report)
     except Exception as exc:
@@ -723,14 +699,6 @@ def _validate_seed_collection(seeds: list[RouteSeed]) -> None:
     }
     if counts != {"run": 30, "walk": 30, "bike": 30}:
         raise ValueError(f"route mode counts must be 30 each: {counts}")
-    _, band_counts = _route_distribution_from_targets(seeds)
-    if not all(
-        count == {"short": 10, "medium": 10, "long": 10}
-        for count in band_counts.values()
-    ):
-        raise ValueError(
-            f"route target-distance bands must contain 10 routes each: {band_counts}"
-        )
     if len({seed.seed_id for seed in seeds}) != len(seeds):
         raise ValueError("route seed_id values must be unique")
     if len({seed.route_name for seed in seeds}) != len(seeds):
@@ -923,6 +891,43 @@ def export_candidate_routes(project_root: Path) -> list[CandidateRoute]:
         f"needs_review={sum(route.validation_status == 'needs_review' for route in routes)}"
     )
     return routes
+
+
+def merge_service_pois(project_root: Path) -> list[CandidateRoute]:
+    processed = project_root / "data" / "processed"
+    route_path = processed / "pilot_validated.json"
+    routes = [
+        CandidateRoute.model_validate(item)
+        for item in json.loads(route_path.read_text(encoding="utf-8"))
+    ]
+    poi_dir = project_root / "data" / "interim" / "poi"
+    source_paths = [
+        poi_dir / "walk_route_pois.json",
+        poi_dir / "run_route_pois.json",
+        poi_dir / "bike_route_pois.json",
+    ]
+    documents = [json.loads(path.read_text(encoding="utf-8")) for path in source_paths]
+    updated, poi_catalog, report = merge_verified_service_pois(routes, documents)
+    publishable = [route for route in updated if route.is_publishable()]
+    web = project_root / "data" / "web"
+    _atomic_write_json(route_path, [route.model_dump(mode="json") for route in updated])
+    _write_json_transaction(
+        [web / "xuhui_routes.geojson", web / "route_catalog.json", web / "poi_catalog.json"],
+        [
+            build_route_feature_collection(publishable),
+            build_route_catalog(publishable),
+            poi_catalog,
+        ],
+    )
+    report["published_route_count"] = len(publishable)
+    report["source_files"] = [path.relative_to(project_root).as_posix() for path in source_paths]
+    _atomic_write_json(processed / "poi_merge_report.json", report)
+    print(
+        f"published_route_count={len(publishable)} "
+        f"published_poi_count={report['published_unique_poi_count']} "
+        f"published_association_count={report['published_association_count']}"
+    )
+    return updated
 
 
 def export_demo(project_root: Path) -> None:

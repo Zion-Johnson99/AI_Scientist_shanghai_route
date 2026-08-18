@@ -12,14 +12,6 @@ from .models import RouteSeed
 
 RESEARCH_FILES = tuple(f"{mode}_route_candidates_0813.json" for mode in ("walk", "run", "bike"))
 OPTIMIZATION_FILES = tuple(f"{mode}_route_optimization_0815.json" for mode in ("walk", "run", "bike"))
-PROTECTED_GEOMETRY_IDS = {
-    "XH_RUN_0033",
-    "XH_RUN_0036",
-    "XH_RUN_0053",
-    "XH_BIKE_0066",
-    "XH_BIKE_0083",
-    "XH_BIKE_0088",
-}
 
 
 def merge_research_drafts(
@@ -80,8 +72,7 @@ def merge_route_optimizations(research_dir: Path, base_path: Path, target: Path)
         item = by_id[route_id]
         if item.get("seed_id") != old.get("seed_id") or item.get("route_mode") != old.get("route_mode"):
             raise ValueError(f"optimization identity mismatch: {route_id}")
-        expected_action = "preserve" if route_id in PROTECTED_GEOMETRY_IDS else "regenerate"
-        if item.get("geometry_action") != expected_action:
+        if item.get("geometry_action") != "regenerate":
             raise ValueError(f"geometry_action mismatch: {route_id}")
         source_record = next(
             (record for record in item.get("source_records", []) if record.get("source_url") or record.get("url")),

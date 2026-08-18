@@ -197,7 +197,7 @@ def _export_node(node) -> dict[str, Any]:
 
 def _is_candidate_displayable(route: CandidateRoute) -> bool:
     return (
-        route.validation_status in {"accepted", "needs_review"}
+        route.validation_status == "accepted"
         and route.geometry_source == "amap_direction"
         and route.geometry_status == "complete"
         and len({(point.lng_gcj02, point.lat_gcj02) for point in route.polyline_gcj02}) >= 2

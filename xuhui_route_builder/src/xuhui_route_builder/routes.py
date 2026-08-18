@@ -43,6 +43,23 @@ def parse_direction_path(response: dict[str, Any]) -> DirectionPath:
 
 def candidate_from_seed(seed: RouteSeed, direction: DirectionPath, index: int) -> CandidateRoute:
     prefix = "RUN" if seed.route_mode == "run" else "WALK" if seed.route_mode == "walk" else "BIKE"
+    coordinates = polyline_to_coordinate_pairs(direction.polyline_gcj02)
+    if not coordinates:
+        raise ValueError(f"generated route has no geometry: seed_id={seed.seed_id}")
+    start_coordinate, end_coordinate = coordinates[0], coordinates[-1]
+    start_location = seed.start_location.model_copy(
+        update={"lng_gcj02": start_coordinate.lng_gcj02, "lat_gcj02": start_coordinate.lat_gcj02}
+    )
+    end_location = seed.end_location.model_copy(
+        update={"lng_gcj02": end_coordinate.lng_gcj02, "lat_gcj02": end_coordinate.lat_gcj02}
+    )
+    ordered_nodes = list(seed.ordered_nodes)
+    ordered_nodes[0] = ordered_nodes[0].model_copy(
+        update={"lng_gcj02": start_coordinate.lng_gcj02, "lat_gcj02": start_coordinate.lat_gcj02}
+    )
+    ordered_nodes[-1] = ordered_nodes[-1].model_copy(
+        update={"lng_gcj02": end_coordinate.lng_gcj02, "lat_gcj02": end_coordinate.lat_gcj02}
+    )
     route = CandidateRoute(
         route_id=f"XH_{prefix}_{index:04d}",
         route_name=seed.route_name,
@@ -53,12 +70,12 @@ def candidate_from_seed(seed: RouteSeed, direction: DirectionPath, index: int) -
         duration_s=direction.duration_s,
         start_entry_id=f"{seed.seed_id}_start",
         end_entry_id=f"{seed.seed_id}_end",
-        start_location=seed.start_location,
-        end_location=seed.end_location,
-        ordered_nodes=seed.ordered_nodes,
+        start_location=start_location,
+        end_location=end_location,
+        ordered_nodes=ordered_nodes,
         amenity_ids=seed.amenity_ids,
         region_zone=seed.region_zone,
-        polyline_gcj02=polyline_to_coordinate_pairs(direction.polyline_gcj02),
+        polyline_gcj02=coordinates,
         tags=seed.tags,
         source_method="amap_seed",
         road_names=direction.road_names,

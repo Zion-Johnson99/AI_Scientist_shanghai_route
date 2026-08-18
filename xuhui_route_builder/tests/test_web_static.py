@@ -6,12 +6,12 @@ WEB_ROOT = Path(__file__).resolve().parents[1] / "web"
 DATA_ROOT = Path(__file__).resolve().parents[1] / "data" / "web"
 
 
-def test_default_web_data_contains_90_status_labelled_candidate_routes() -> None:
+def test_default_web_data_contains_only_formally_published_routes() -> None:
     routes = json.loads((DATA_ROOT / "xuhui_routes.geojson").read_text(encoding="utf-8"))
     catalog = json.loads((DATA_ROOT / "route_catalog.json").read_text(encoding="utf-8"))
 
-    assert len(routes["features"]) == 90
-    assert len(catalog) == 90
+    assert len(routes["features"]) == 13
+    assert len(catalog) == 13
     assert all(
         item.get("start_location", {}).get("name")
         and isinstance(item["start_location"].get("lng_gcj02"), float)
@@ -19,12 +19,11 @@ def test_default_web_data_contains_90_status_labelled_candidate_routes() -> None
         for item in catalog
     )
     assert {mode: sum(route["route_mode"] == mode for route in catalog) for mode in ("walk", "run", "bike")} == {
-        "walk": 30,
-        "run": 30,
-        "bike": 30,
+        "walk": 8,
+        "run": 5,
+        "bike": 0,
     }
-    assert sum(route["display_status"] == "严格验收" for route in catalog) == 3
-    assert sum(route["display_status"] == "待考证" for route in catalog) == 87
+    assert all(route["validation_status"] == "accepted" for route in catalog)
 
 
 def test_index_declares_inline_favicon_to_avoid_404() -> None:
@@ -133,6 +132,16 @@ def test_route_controls_support_local_candidate_search_and_preferences() -> None
     assert "renderRouteSelect" in route_ui_js
     assert "data-route-mode" in html
     assert "onShowRoute" in route_ui_js
+    assert "updateModeCounts(catalog, controls)" in route_ui_js
+    assert "30 条" not in html
+    assert "90 条城市运动候选路线" not in html
+
+
+def test_preference_filters_use_verified_route_hits_only() -> None:
+    route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
+
+    assert "PREFERENCE_KEYWORDS" not in route_ui_js
+    assert "preferences.every((preference) => hits.includes(preference))" in route_ui_js
 
 
 def test_route_picker_uses_single_select_and_waits_for_explicit_search() -> None:
@@ -179,6 +188,13 @@ def test_map_uses_route_shape_and_real_waypoint_coordinates() -> None:
     assert "ordered_nodes" in map_js
     assert "node.node_name || node.name" in map_js
     assert "Math.round(((index + 1) * (path.length - 1))" not in map_js
+
+
+def test_all_route_shapes_show_direction_arrows() -> None:
+    map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
+
+    assert "showDir: true" in map_js
+    assert 'showDir: properties.route_shape === "one_way"' not in map_js
 
 
 def test_selected_route_layer_stays_above_the_xuhui_boundary() -> None:

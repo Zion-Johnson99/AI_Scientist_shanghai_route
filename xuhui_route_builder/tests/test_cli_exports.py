@@ -169,6 +169,7 @@ def test_export_candidate_routes_writes_web_data_without_overwriting_0813_baseli
 
     catalog = json.loads((tmp_path / "data/web/route_catalog.json").read_text(encoding="utf-8"))
     features = json.loads((tmp_path / "data/web/xuhui_routes.geojson").read_text(encoding="utf-8"))
-    assert len(catalog) == len(features["features"]) == 90
+    assert len(catalog) == len(features["features"]) == 6
+    assert {route["validation_status"] for route in catalog} == {"accepted"}
     assert sum(route["display_status"] == "严格验收" for route in catalog) == 6
     assert not (tmp_path / "0813徐汇区90条路线验收与考证清单.md").exists()
