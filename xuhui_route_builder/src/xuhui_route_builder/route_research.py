@@ -12,6 +12,11 @@ from .models import RouteSeed
 
 RESEARCH_FILES = tuple(f"{mode}_route_candidates_0813.json" for mode in ("walk", "run", "bike"))
 OPTIMIZATION_FILES = tuple(f"{mode}_route_optimization_0815.json" for mode in ("walk", "run", "bike"))
+PROTECTED_GEOMETRY_IDS = {
+    "XH_WALK_0001", "XH_WALK_0003", "XH_WALK_0011", "XH_WALK_0012",
+    "XH_WALK_0021", "XH_WALK_0022", "XH_WALK_0023", "XH_WALK_0025",
+    "XH_RUN_0031", "XH_RUN_0032", "XH_RUN_0037", "XH_RUN_0039", "XH_RUN_0040",
+}
 
 
 def merge_research_drafts(
@@ -72,8 +77,12 @@ def merge_route_optimizations(research_dir: Path, base_path: Path, target: Path)
         item = by_id[route_id]
         if item.get("seed_id") != old.get("seed_id") or item.get("route_mode") != old.get("route_mode"):
             raise ValueError(f"optimization identity mismatch: {route_id}")
-        if item.get("geometry_action") != "regenerate":
+        if item.get("geometry_action") not in {"regenerate", "preserve"}:
             raise ValueError(f"geometry_action mismatch: {route_id}")
+        if route_id in PROTECTED_GEOMETRY_IDS and item.get("geometry_action") != "preserve":
+            raise ValueError(f"protected geometry must be preserved: {route_id}")
+        if item.get("geometry_action") == "preserve" and route_id not in PROTECTED_GEOMETRY_IDS:
+            raise ValueError(f"unapproved protected geometry: {route_id}")
         source_record = next(
             (record for record in item.get("source_records", []) if record.get("source_url") or record.get("url")),
             {},
@@ -110,6 +119,9 @@ def merge_route_optimizations(research_dir: Path, base_path: Path, target: Path)
             "evidence_note": item["evidence_note"],
             "access_restrictions": item["access_restrictions"],
             "amenity_ids": list(item.get("amenity_ids", [])),
+            "popular_area_ids": list(item.get("popular_area_ids", [])),
+            "preference_search_status": dict(item.get("preference_search_status", {})),
+            "preference_hits": list(item.get("preference_hits", [])),
             "geometry_action": item["geometry_action"],
         }
         merged.append(RouteSeed.model_validate(candidate).model_dump(mode="json"))

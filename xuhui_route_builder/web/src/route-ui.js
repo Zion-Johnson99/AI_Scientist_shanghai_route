@@ -66,7 +66,7 @@ export function filterCandidateRoutes(catalog, filters) {
 }
 
 export function filterNavigationRoutes(catalog, mode) {
-  return catalog.filter((route) => route.route_mode === mode);
+  return catalog.filter((route) => route.route_mode === mode && route.validation_status === "accepted");
 }
 
 function bindAppTabs(state, controls, options) {
@@ -295,7 +295,7 @@ function runSearch(catalog, state, controls, options) {
 }
 
 export function selectBestRoute(routes) {
-  return routes[0] || null;
+  return routes.find((route) => route.validation_status === "accepted") || null;
 }
 
 function initializeRouteSelection(catalog, state, controls, options) {
@@ -421,7 +421,8 @@ function setNavigationControlsEnabled(controls, enabled) {
 
 export function routeOptionLabel(route) {
   const status = route.validation_status === "accepted" ? "严格验收" : "待考证";
-  return `${route.route_name}｜${route.region_zone}｜${(Number(route.distance_m || 0) / 1000).toFixed(1)} km｜${status}`;
+  const shape = route.route_shape === "strict_loop" ? "环线" : "单程";
+  return `${route.route_name}｜${route.region_zone}｜${(Number(route.distance_m || 0) / 1000).toFixed(1)} km｜${shape}｜${status}`;
 }
 
 function renderDetail(route, detail) {
@@ -431,9 +432,11 @@ function renderDetail(route, detail) {
     ? `<span><b>起终</b>${escapeHtml(startName)}</span>`
     : `<span><b>起</b>${escapeHtml(startName)}</span><i></i><span><b>终</b>${escapeHtml(endName)}</span>`;
   const status = route.validation_status === "accepted" ? "严格验收" : "待考证";
+  const shape = route.route_shape === "strict_loop" ? "环线" : "单程";
   detail.innerHTML = `
     <div class="route-card-topline">
       <span class="mode-pill" data-mode="${escapeHtml(route.route_mode)}">${MODE_LABELS[route.route_mode] || route.route_mode}</span>
+      <span class="shape-pill" data-shape="${escapeHtml(route.route_shape)}">${shape}</span>
       <span class="status-pill" data-status="${escapeHtml(route.validation_status)}">${escapeHtml(status)}</span>
     </div>
     <h2>${escapeHtml(route.route_name)}</h2>
@@ -544,12 +547,12 @@ function populateZoneFilter(select, catalog) {
 
 function updateModeCounts(catalog, controls) {
   for (const tab of controls.sportModeTabs) {
-    const count = catalog.filter((route) => route.route_mode === tab.dataset.routeMode).length;
-    tab.querySelector("span").textContent = `${count} 条`;
+    const routes = catalog.filter((route) => route.route_mode === tab.dataset.routeMode);
+    tab.querySelector("span").textContent = `${routes.length} 条`;
   }
   for (const tab of controls.navigationModeTabs) {
-    const count = catalog.filter((route) => route.route_mode === tab.dataset.navigationMode).length;
-    tab.querySelector("span").textContent = `${count} 条`;
+    const routes = filterNavigationRoutes(catalog, tab.dataset.navigationMode);
+    tab.querySelector("span").textContent = `${routes.length} 条严格验收`;
   }
 }
 
@@ -573,8 +576,8 @@ function populateNavigationRoutes(select, catalog) {
 function routeDistanceBand(route) {
   const distance = Number(route.target_distance_m || route.distance_m || 0);
   const bands = {
-    walk: [[1000, 2000], [2000, 3500], [3500, 5000]],
-    run: [[3000, 5000], [5000, 10000], [10000, 15000]],
+    walk: [[500, 2000], [2000, 3500], [3500, 5000]],
+    run: [[1000, 5000], [5000, 10000], [10000, 15000]],
     bike: [[5000, 10000], [10000, 20000], [20000, 30000]],
   }[route.route_mode] || [];
   const index = bands.findIndex(([lower, upper], bandIndex) =>

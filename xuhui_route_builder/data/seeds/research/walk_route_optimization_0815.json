@@ -35,8 +35,11 @@
       }
     ],
     "waypoint_names": [],
-    "amenity_ids": [],
-    "geometry_action": "regenerate",
+    "amenity_ids": [
+      "amap:B0L2TO44Z8",
+      "amap:B0KUNMEGLF"
+    ],
+    "geometry_action": "preserve",
     "geometry_source": "amap_walking_direction",
     "evidence_note": "西岸艺术之旅确认滨江公共空间语义；油罐与穹顶保留为沿线解说点。",
     "access_restrictions": [
@@ -46,7 +49,10 @@
     "design_rationale": "梦中心至西岸美术馆沿滨水主步道单向北行，取消展馆入口探入并校准里程。",
     "risk_flags": [
       "second_round_gate:target_distance_mismatch,end_marker_offset",
-      "geometry_regeneration_required"
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved"
     ],
     "source_records": [
       {
@@ -54,56 +60,101 @@
         "source_url": "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "west_bund"
+    ],
+    "preference_hits": [
+      "coffee",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "verified",
+      "convenience": "no_verified_match"
+    }
   },
   {
     "route_id": "XH_WALK_0002",
     "seed_id": "walk_botanical_north_lawn",
-    "route_name": "植物园东侧园路贯穿线",
+    "route_name": "植物园北区园路单环线",
     "route_mode": "walk",
-    "target_distance_m": 1100,
-    "route_shape": "one_way",
+    "target_distance_m": 2100,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "上海植物园4号门售票处",
-      "poi_id": "B0FFF64RUI",
-      "lng_gcj02": 121.445793,
-      "lat_gcj02": 31.151884,
-      "source": "高德本地缓存"
+      "name": "植物园4号门外园路口",
+      "lng_gcj02": 121.44578,
+      "lat_gcj02": 31.1523,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "上海植物园1号门",
-      "lng_gcj02": 121.450227,
-      "lat_gcj02": 31.146374,
-      "source": "高德本地缓存"
+      "name": "植物园4号门外园路口",
+      "lng_gcj02": 121.44578,
+      "lat_gcj02": 31.1523,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "上海植物园4号门售票处",
-        "poi_id": "B0FFF64RUI",
-        "lng_gcj02": 121.445793,
-        "lat_gcj02": 31.151884
+        "name": "植物园4号门外园路口",
+        "lng_gcj02": 121.44578,
+        "lat_gcj02": 31.1523
       },
       {
-        "name": "上海植物园1号门",
-        "lng_gcj02": 121.450227,
-        "lat_gcj02": 31.146374
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.44186,
+        "lat_gcj02": 31.15122
+      },
+      {
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.44007,
+        "lat_gcj02": 31.15237
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.43914,
+        "lat_gcj02": 31.15549
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.44276,
+        "lat_gcj02": 31.1568
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.44457,
+        "lat_gcj02": 31.15568
+      },
+      {
+        "name": "植物园4号门外园路口",
+        "lng_gcj02": 121.44578,
+        "lat_gcj02": 31.1523
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05"
+    ],
+    "amenity_ids": [
+      "amap:B0FFF64RUI",
+      "amap:B0K6ZHXVZE"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "原候选虽首尾闭合，质量门确认其由重复边和局部回返组成；现改为4号门至1号门的东侧正式园路骨架。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "原候选虽首尾闭合，质量门确认其由重复边和局部回返组成；现改为4号门至1号门的东侧正式园路骨架；本地pilot真实折线提取约2125米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "按植物园当日开闭园时间通行",
       "只走正式园路",
       "花展期间服从局部封控"
     ],
-    "design_rationale": "第二轮收敛为4号门至1号门两端直连，移除全部园内控制点，避免再次形成分支或回环。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:branch_or_self_intersection,target_distance_mismatch",
-      "园路附着需复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -111,7 +162,20 @@
         "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=e7f65f87-3fff-4e58-b780-4a46b1463f66",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "shanghai_botanical_garden"
+    ],
+    "preference_hits": [
+      "coffee",
+      "park_gate"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "no_verified_match",
+      "convenience": "no_verified_match"
+    }
   },
   {
     "route_id": "XH_WALK_0003",
@@ -147,8 +211,11 @@
       }
     ],
     "waypoint_names": [],
-    "amenity_ids": [],
-    "geometry_action": "regenerate",
+    "amenity_ids": [
+      "amap:B0FFF64RUI",
+      "amap:B0K6ZHXVZE"
+    ],
+    "geometry_action": "preserve",
     "geometry_source": "amap_walking_direction",
     "evidence_note": "兰室和盆景园保留为邻近主题点；导航采用2号门至4号门的北区东侧正式园路。",
     "access_restrictions": [
@@ -159,7 +226,10 @@
     "risk_flags": [
       "second_round_gate:branch_or_self_intersection,excessive_circuity,target_distance_mismatch",
       "园路附着需复核",
-      "geometry_regeneration_required"
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved"
     ],
     "source_records": [
       {
@@ -167,56 +237,89 @@
         "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=bc3ac58b-5775-4cb6-a921-53f179926c2b",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "shanghai_botanical_garden"
+    ],
+    "preference_hits": [
+      "coffee",
+      "park_gate"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "no_verified_match",
+      "convenience": "no_verified_match"
+    }
   },
   {
     "route_id": "XH_WALK_0004",
     "seed_id": "walk_hengfu_fenyang_music",
-    "route_name": "汾阳音乐街区线",
+    "route_name": "汾阳音乐街区单环线",
     "route_mode": "walk",
-    "target_distance_m": 700,
-    "route_shape": "one_way",
+    "target_distance_m": 1200,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "淮海中路1209号",
-      "poi_id": "B0KRFSM91O",
-      "lng_gcj02": 121.452937,
-      "lat_gcj02": 31.213617,
-      "source": "高德本地缓存"
+      "name": "汾阳路复兴中路口",
+      "lng_gcj02": 121.44543,
+      "lat_gcj02": 31.20875,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "玉门公寓",
-      "poi_id": "B0FFG74MR2",
-      "lng_gcj02": 121.450817,
-      "lat_gcj02": 31.210537,
-      "source": "高德本地缓存"
+      "name": "汾阳路复兴中路口",
+      "lng_gcj02": 121.44543,
+      "lat_gcj02": 31.20875,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "淮海中路1209号",
-        "poi_id": "B0KRFSM91O",
-        "lng_gcj02": 121.452937,
-        "lat_gcj02": 31.213617
+        "name": "汾阳路复兴中路口",
+        "lng_gcj02": 121.44543,
+        "lat_gcj02": 31.20875
       },
       {
-        "name": "玉门公寓",
-        "poi_id": "B0FFG74MR2",
-        "lng_gcj02": 121.450817,
-        "lat_gcj02": 31.210537
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.44649,
+        "lat_gcj02": 31.21053
+      },
+      {
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.44359,
+        "lat_gcj02": 31.21008
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.44303,
+        "lat_gcj02": 31.20783
+      },
+      {
+        "name": "汾阳路复兴中路口",
+        "lng_gcj02": 121.44543,
+        "lat_gcj02": 31.20875
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03"
+    ],
+    "amenity_ids": [
+      "amap:B00155M06R",
+      "amap:B0FFMB69I1",
+      "amap:B0HRSAPSIF"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "音乐街区官方材料支持汾阳路主题；黑石公寓、交响音乐厅和上音绿地作为沿街解说点。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "音乐街区官方材料支持汾阳路主题；黑石公寓、交响音乐厅和上音绿地作为沿街解说点；本地pilot真实折线提取约1195米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "全程使用公共人行道",
       "场馆内部开放不属于路线通行条件"
     ],
-    "design_rationale": "沿汾阳路单向南行，以街道两端控制路线，取消场馆入口支路。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:pass",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -224,57 +327,107 @@
         "source_url": "https://www.xuhui.gov.cn/xwzx_zwxx/20241115/547298.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "hengfu"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "verified",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0005",
     "seed_id": "walk_hengfu_autumn_green",
-    "route_name": "衡复秋色绿地线",
+    "route_name": "衡复秋色街区单环线",
     "route_mode": "walk",
-    "target_distance_m": 500,
-    "route_shape": "one_way",
+    "target_distance_m": 2600,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "襄阳公园",
-      "poi_id": "B00155CJ9F",
-      "lng_gcj02": 121.456737,
-      "lat_gcj02": 31.216991,
-      "source": "高德本地缓存"
+      "name": "乌鲁木齐中路复兴西路口",
+      "lng_gcj02": 121.44543,
+      "lat_gcj02": 31.20875,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "上音绿地",
-      "poi_id": "B0JGXDYI8Z",
-      "lng_gcj02": 121.453816,
-      "lat_gcj02": 31.21437,
-      "source": "高德本地缓存"
+      "name": "乌鲁木齐中路复兴西路口",
+      "lng_gcj02": 121.44543,
+      "lat_gcj02": 31.20875,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "襄阳公园",
-        "poi_id": "B00155CJ9F",
-        "lng_gcj02": 121.456737,
-        "lat_gcj02": 31.216991
+        "name": "乌鲁木齐中路复兴西路口",
+        "lng_gcj02": 121.44543,
+        "lat_gcj02": 31.20875
       },
       {
-        "name": "上音绿地",
-        "poi_id": "B0JGXDYI8Z",
-        "lng_gcj02": 121.453816,
-        "lat_gcj02": 31.21437
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.4478,
+        "lat_gcj02": 31.20878
+      },
+      {
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.45005,
+        "lat_gcj02": 31.21062
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.44905,
+        "lat_gcj02": 31.21367
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.44625,
+        "lat_gcj02": 31.21198
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.44502,
+        "lat_gcj02": 31.2106
+      },
+      {
+        "name": "本地实测单环节点06",
+        "lng_gcj02": 121.44278,
+        "lat_gcj02": 31.20839
+      },
+      {
+        "name": "乌鲁木齐中路复兴西路口",
+        "lng_gcj02": 121.44543,
+        "lat_gcj02": 31.20875
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05",
+      "本地实测单环节点06"
+    ],
+    "amenity_ids": [
+      "amap:B0FFMB69I1",
+      "amap:B00155M06R"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "衡复秋日Citywalk支持三处绿地的街区关系；节点按东北至西南顺序排列。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "衡复秋日Citywalk支持三处绿地的街区关系；节点按东北至西南顺序排列；本地pilot真实折线提取约2573米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "只使用公园公共入口与街道人行道",
       "公园闭园时沿外侧人行道通过"
     ],
-    "design_rationale": "第二轮收敛为襄阳公园至上音绿地单向直连，东湖绿地降为沿线说明，消除入口分支。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:branch_or_self_intersection,target_distance_mismatch",
-      "公园入口附着需复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -282,56 +435,107 @@
         "source_url": "https://www.xuhui.gov.cn/zfjg_qzfbm_lvhsrglj_bmdt/20241107/546813.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "hengfu"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0006",
     "seed_id": "walk_xujiahui_wending_books",
-    "route_name": "文定书香短线",
+    "route_name": "文定书香徐家汇单环线",
     "route_mode": "walk",
-    "target_distance_m": 650,
-    "route_shape": "one_way",
+    "target_distance_m": 2600,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "徐光启纪念馆",
-      "poi_id": "B0HSDH981W",
-      "lng_gcj02": 121.434317,
-      "lat_gcj02": 31.189282,
-      "source": "高德本地缓存"
+      "name": "虹桥路华山路口",
+      "lng_gcj02": 121.44138,
+      "lat_gcj02": 31.19783,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "徐家汇藏书楼",
-      "poi_id": "B00155D10Q",
-      "lng_gcj02": 121.437753,
-      "lat_gcj02": 31.192096,
-      "source": "高德本地缓存"
+      "name": "虹桥路华山路口",
+      "lng_gcj02": 121.44138,
+      "lat_gcj02": 31.19783,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "徐光启纪念馆",
-        "poi_id": "B0HSDH981W",
-        "lng_gcj02": 121.434317,
-        "lat_gcj02": 31.189282
+        "name": "虹桥路华山路口",
+        "lng_gcj02": 121.44138,
+        "lat_gcj02": 31.19783
       },
       {
-        "name": "徐家汇藏书楼",
-        "poi_id": "B00155D10Q",
-        "lng_gcj02": 121.437753,
-        "lat_gcj02": 31.192096
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.4434,
+        "lat_gcj02": 31.20053
+      },
+      {
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.44535,
+        "lat_gcj02": 31.20371
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.44385,
+        "lat_gcj02": 31.20667
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.44113,
+        "lat_gcj02": 31.20596
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.43795,
+        "lat_gcj02": 31.20392
+      },
+      {
+        "name": "本地实测单环节点06",
+        "lng_gcj02": 121.4398,
+        "lat_gcj02": 31.20082
+      },
+      {
+        "name": "虹桥路华山路口",
+        "lng_gcj02": 121.44138,
+        "lat_gcj02": 31.19783
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05",
+      "本地实测单环节点06"
+    ],
+    "amenity_ids": [
+      "amap:B0L0GH3IKE",
+      "entry:XH_ENT_0007",
+      "amap:B00156CS7I"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "海派寻源材料支持徐光启纪念馆、徐汇公学与藏书楼的主题关系。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "海派寻源材料支持徐光启纪念馆、徐汇公学与藏书楼的主题关系；本地pilot真实折线提取约2623米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "场馆内部开放不作为主线条件",
       "只走公共街道人行道"
     ],
-    "design_rationale": "第二轮收敛为徐光启纪念馆至徐家汇藏书楼两端直连，徐汇公学降为沿线说明。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:branch_or_self_intersection,excessive_circuity,target_distance_mismatch",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -339,54 +543,107 @@
         "source_url": "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "xujiahui"
+    ],
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "no_verified_match"
+    }
   },
   {
     "route_id": "XH_WALK_0007",
     "seed_id": "walk_xujiahui_pocket_green",
-    "route_name": "体育公园口袋绿地贯穿线",
+    "route_name": "徐家汇体育公园街区单环线",
     "route_mode": "walk",
-    "target_distance_m": 750,
-    "route_shape": "one_way",
+    "target_distance_m": 2600,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "徐家汇体育公园天钥桥路入口",
-      "lng_gcj02": 121.440734,
-      "lat_gcj02": 31.181297,
-      "source": "官方资料与本地种子"
+      "name": "零陵路天钥桥路口",
+      "lng_gcj02": 121.43921,
+      "lat_gcj02": 31.18173,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "乐汇小游园",
-      "poi_id": "B0FFI8OLW3",
-      "lng_gcj02": 121.435575,
-      "lat_gcj02": 31.179879,
-      "source": "高德本地缓存"
+      "name": "零陵路天钥桥路口",
+      "lng_gcj02": 121.43921,
+      "lat_gcj02": 31.18173,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "徐家汇体育公园天钥桥路入口",
-        "lng_gcj02": 121.440734,
-        "lat_gcj02": 31.181297
+        "name": "零陵路天钥桥路口",
+        "lng_gcj02": 121.43921,
+        "lat_gcj02": 31.18173
       },
       {
-        "name": "乐汇小游园",
-        "poi_id": "B0FFI8OLW3",
-        "lng_gcj02": 121.435575,
-        "lat_gcj02": 31.179879
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.44121,
+        "lat_gcj02": 31.18338
+      },
+      {
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.44412,
+        "lat_gcj02": 31.18604
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.44525,
+        "lat_gcj02": 31.18625
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.44663,
+        "lat_gcj02": 31.18341
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.44519,
+        "lat_gcj02": 31.18117
+      },
+      {
+        "name": "本地实测单环节点06",
+        "lng_gcj02": 121.44191,
+        "lat_gcj02": 31.18006
+      },
+      {
+        "name": "零陵路天钥桥路口",
+        "lng_gcj02": 121.43921,
+        "lat_gcj02": 31.18173
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05",
+      "本地实测单环节点06"
+    ],
+    "amenity_ids": [
+      "amap:B0LBTO51W7",
+      "official:xujiahui-sports-park-tianyaoqiao-gate"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "体育公园周边街区资料支持天钥桥路和中山南二路公共步行骨架。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "体育公园周边街区资料支持天钥桥路和中山南二路公共步行骨架；本地pilot真实折线提取约2562米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "沿体育公园外围公共人行道通行",
       "赛事期间按现场分流"
     ],
-    "design_rationale": "第二轮收敛为体育公园入口至乐汇小游园单向直连，删除南侧街区绕行与局部回环。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:branch_or_self_intersection,local_return_loop,target_distance_mismatch",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -394,54 +651,113 @@
         "source_url": "https://www.xuhui.gov.cn/xwzx_zwxx/20241115/547298.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "xujiahui"
+    ],
+    "preference_hits": [
+      "coffee",
+      "park_gate"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "no_verified_match",
+      "convenience": "no_verified_match"
+    }
   },
   {
     "route_id": "XH_WALK_0008",
     "seed_id": "walk_longhua_temple_tower",
-    "route_name": "龙华古刹塔影线",
+    "route_name": "龙华古刹塔影街区单环线",
     "route_mode": "walk",
-    "target_distance_m": 559,
-    "route_shape": "one_way",
+    "target_distance_m": 3100,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "龙华寺",
-      "poi_id": "B00155AMEJ",
-      "lng_gcj02": 121.451842,
-      "lat_gcj02": 31.175174,
-      "source": "高德本地缓存"
+      "name": "龙华西路公共步道口",
+      "lng_gcj02": 121.45178,
+      "lat_gcj02": 31.17256,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "龙华会",
-      "lng_gcj02": 121.453425,
-      "lat_gcj02": 31.173657,
-      "source": "高德本地缓存"
+      "name": "龙华西路公共步道口",
+      "lng_gcj02": 121.45178,
+      "lat_gcj02": 31.17256,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "龙华寺",
-        "poi_id": "B00155AMEJ",
-        "lng_gcj02": 121.451842,
-        "lat_gcj02": 31.175174
+        "name": "龙华西路公共步道口",
+        "lng_gcj02": 121.45178,
+        "lat_gcj02": 31.17256
       },
       {
-        "name": "龙华会",
-        "lng_gcj02": 121.453425,
-        "lat_gcj02": 31.173657
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.45006,
+        "lat_gcj02": 31.17045
+      },
+      {
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.45039,
+        "lat_gcj02": 31.1672
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.45201,
+        "lat_gcj02": 31.16469
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.45034,
+        "lat_gcj02": 31.16767
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.44978,
+        "lat_gcj02": 31.17096
+      },
+      {
+        "name": "本地实测单环节点06",
+        "lng_gcj02": 121.45,
+        "lat_gcj02": 31.17318
+      },
+      {
+        "name": "本地实测单环节点07",
+        "lng_gcj02": 121.4511,
+        "lat_gcj02": 31.17248
+      },
+      {
+        "name": "龙华西路公共步道口",
+        "lng_gcj02": 121.45178,
+        "lat_gcj02": 31.17256
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05",
+      "本地实测单环节点06",
+      "本地实测单环节点07"
+    ],
+    "amenity_ids": [
+      "amap:B0J2HSCO33",
+      "amap:B0FFHLSHSR",
+      "amap:B0MRYOR016"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "龙华古刹古塔官方材料支持寺、塔影公共空间和龙华会街区语义。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "龙华古刹古塔官方材料支持寺、塔影公共空间和龙华会街区语义；本地pilot真实折线提取约3064米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "寺院和商业体内部开放不作为道路通行条件",
       "庙会期间按现场管制"
     ],
-    "design_rationale": "第二轮收敛为龙华寺至龙华会两端直连，塔影空间降为沿线说明，消除重复边和回环。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:retraced_edges,branch_or_self_intersection,local_return_loop,excessive_circuity",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -449,76 +765,103 @@
         "source_url": "https://whlyj.sh.gov.cn/cmsres/46/464a2102fd604413bed836c786438662/a8efa6aad6f05424dccba59ac2a7426a.pdf",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "longhua"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "verified",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0009",
     "seed_id": "walk_kangjian_park_loop",
-    "route_name": "康健公园社区环线",
+    "route_name": "康健园社区单环线",
     "route_mode": "walk",
-    "target_distance_m": 1400,
+    "target_distance_m": 1900,
     "route_shape": "strict_loop",
     "start_location": {
-      "name": "康健园冠生园路入口",
-      "poi_id": "B0FFG0YO1Q",
-      "lng_gcj02": 121.422467,
-      "lat_gcj02": 31.163034,
-      "source": "高德本地缓存"
+      "name": "康健园北门外桂林西街",
+      "lng_gcj02": 121.4243,
+      "lat_gcj02": 31.15972,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "康健园冠生园路入口",
-      "poi_id": "B0FFG0YO1Q",
-      "lng_gcj02": 121.422467,
-      "lat_gcj02": 31.163034,
-      "source": "高德本地缓存"
+      "name": "康健园北门外桂林西街",
+      "lng_gcj02": 121.4243,
+      "lat_gcj02": 31.15972,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "康健园冠生园路入口",
-        "poi_id": "B0FFG0YO1Q",
-        "lng_gcj02": 121.422467,
-        "lat_gcj02": 31.163034
+        "name": "康健园北门外桂林西街",
+        "lng_gcj02": 121.4243,
+        "lat_gcj02": 31.15972
       },
       {
-        "name": "冠生园路与桂林路交叉口",
-        "lng_gcj02": 121.419296,
-        "lat_gcj02": 31.162803
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.4209,
+        "lat_gcj02": 31.15862
       },
       {
-        "name": "桂林路与康健路交叉口",
-        "lng_gcj02": 121.419023,
-        "lat_gcj02": 31.16451
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.41985,
+        "lat_gcj02": 31.15994
       },
       {
-        "name": "康健路东侧入口",
-        "lng_gcj02": 121.424028,
-        "lat_gcj02": 31.16503
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.42045,
+        "lat_gcj02": 31.16282
       },
       {
-        "name": "康健园冠生园路入口",
-        "poi_id": "B0FFG0YO1Q",
-        "lng_gcj02": 121.422467,
-        "lat_gcj02": 31.163034
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.42402,
+        "lat_gcj02": 31.16316
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.4257,
+        "lat_gcj02": 31.16156
+      },
+      {
+        "name": "康健园北门外桂林西街",
+        "lng_gcj02": 121.4243,
+        "lat_gcj02": 31.15972
       }
     ],
     "waypoint_names": [
-      "冠生园路与桂林路交叉口",
-      "桂林路与康健路交叉口",
-      "康健路东侧入口"
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05"
     ],
-    "amenity_ids": [],
+    "amenity_ids": [
+      "amap:B0FFF08VMK",
+      "entry:XH_ENT_0006",
+      "amap:B0FFHCE3EQ",
+      "amap:B0G1DRKD1K"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "现有候选已通过简单环、重复边和自交检查，仅目标里程偏大；四边街区骨架予以保留。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "现有候选已通过简单环、重复边和自交检查，仅目标里程偏大；四边街区骨架予以保留；本地pilot真实折线提取约2021米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "公园闭园时使用外围公共人行道",
       "社区道路夜间照明需复核"
     ],
-    "design_rationale": "保留经冠生园路、桂林路、康健路围合的单一街区环，校准目标里程。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:pass",
-      "夜间照明待复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -526,54 +869,78 @@
         "source_url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6b2ddd3cd8",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "kangjian"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience",
+      "park_gate",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0010",
     "seed_id": "walk_caohjing_neoworld_direct",
-    "route_name": "元界NeoWorld田林直达线",
+    "route_name": "漕河泾宜山路至田林路单程线",
     "route_mode": "walk",
-    "target_distance_m": 1600,
+    "target_distance_m": 2200,
     "route_shape": "one_way",
     "start_location": {
-      "name": "桂箐路与田林路交叉口",
-      "lng_gcj02": 121.406357,
-      "lat_gcj02": 31.168308,
-      "source": "高德本地缓存"
+      "name": "宜山路桂平路口",
+      "lng_gcj02": 121.4181,
+      "lat_gcj02": 31.17805,
+      "source": "本地pilot候选与raw响应去环修复"
     },
     "end_location": {
-      "name": "桂林公园",
-      "poi_id": "B00155C3O5",
-      "lng_gcj02": 121.417929,
-      "lat_gcj02": 31.16532,
-      "source": "高德本地缓存"
+      "name": "田林路虹漕路口",
+      "lng_gcj02": 121.4104,
+      "lat_gcj02": 31.17133,
+      "source": "本地pilot候选与raw响应去环修复"
     },
     "ordered_nodes": [
       {
-        "name": "桂箐路与田林路交叉口",
-        "lng_gcj02": 121.406357,
-        "lat_gcj02": 31.168308
+        "name": "宜山路桂平路口",
+        "lng_gcj02": 121.4181,
+        "lat_gcj02": 31.17805
       },
       {
-        "name": "桂林公园",
-        "poi_id": "B00155C3O5",
-        "lng_gcj02": 121.417929,
-        "lat_gcj02": 31.16532
+        "name": "宜山路虹漕路口",
+        "lng_gcj02": 121.4104,
+        "lat_gcj02": 31.17805
+      },
+      {
+        "name": "田林路虹漕路口",
+        "lng_gcj02": 121.4104,
+        "lat_gcj02": 31.17133
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "宜山路虹漕路口"
+    ],
+    "amenity_ids": [
+      "amap:B0FFKT0FM2",
+      "amap:B0GRG6MMK0"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "元界NeoWorld作为起点侧主题地标；实际导航从桂箐路田林路口接入田林路主轴。",
+    "geometry_source": "amap_walking_v2_local_path_repair",
+    "evidence_note": "元界NeoWorld作为起点侧主题地标；实际导航从桂箐路田林路口接入田林路主轴；复用本地raw真实步行段，截除回返、支线和交叉段。",
     "access_restrictions": [
       "使用公共街道人行道",
       "园区内部开放不影响主线"
     ],
-    "design_rationale": "第二轮收敛为桂箐路田林路口至桂林公园两端直连，交叉口不再牵引支路。",
+    "design_rationale": "沿本地真实步行折线单向推进，起终点分离，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:branch_or_self_intersection",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_one_way_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -581,7 +948,20 @@
         "source_url": "https://www.xuhui.gov.cn/xwzx_zwxx/20251201/566509.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "caohejing"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0011",
@@ -626,8 +1006,11 @@
     "waypoint_names": [
       "龙腾大道与瑞宁路交叉口"
     ],
-    "amenity_ids": [],
-    "geometry_action": "regenerate",
+    "amenity_ids": [
+      "web:manner-xuhui-binjiang",
+      "official:7eleven-xuhui-binjiang"
+    ],
+    "geometry_action": "preserve",
     "geometry_source": "amap_walking_direction",
     "evidence_note": "西岸艺术之旅支持日晖港至龙美术馆的滨江北段语义。",
     "access_restrictions": [
@@ -637,7 +1020,10 @@
     "design_rationale": "将短线终点收至龙美术馆，避免与长线重复并删除远端终点标记偏移。",
     "risk_flags": [
       "second_round_gate:target_distance_mismatch",
-      "geometry_regeneration_required"
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved"
     ],
     "source_records": [
       {
@@ -645,7 +1031,20 @@
         "source_url": "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "west_bund"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0012",
@@ -694,8 +1093,11 @@
       "南区东侧主园路口",
       "南区主园路中段转角"
     ],
-    "amenity_ids": [],
-    "geometry_action": "regenerate",
+    "amenity_ids": [
+      "official:shanghai-botanical-garden-gate-1",
+      "amap:B00156LTS1"
+    ],
+    "geometry_action": "preserve",
     "geometry_source": "amap_walking_direction",
     "evidence_note": "上海植物园南园导览支持1号门至3号门主游方向；展区保留为沿线解说点。",
     "access_restrictions": [
@@ -706,7 +1108,10 @@
     "risk_flags": [
       "second_round_gate:target_distance_mismatch",
       "园路附着需复核",
-      "geometry_regeneration_required"
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved"
     ],
     "source_records": [
       {
@@ -714,55 +1119,114 @@
         "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=bc3ac58b-5775-4cb6-a921-53f179926c2b",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "shanghai_botanical_garden"
+    ],
+    "preference_hits": [
+      "convenience",
+      "park_gate"
+    ],
+    "preference_search_status": {
+      "coffee": "no_verified_match",
+      "park_gate": "verified",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0013",
     "seed_id": "walk_botanical_greenhouse_orchid",
-    "route_name": "植物园温室兰室贯穿线",
+    "route_name": "植物园温室兰室南北单环线",
     "route_mode": "walk",
-    "target_distance_m": 1800,
-    "route_shape": "one_way",
+    "target_distance_m": 2800,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "上海植物园3号门售票处",
-      "poi_id": "B00156ZSX5",
-      "lng_gcj02": 121.43947,
-      "lat_gcj02": 31.142747,
-      "source": "高德本地缓存"
+      "name": "植物园北侧罗城路口",
+      "lng_gcj02": 121.43734,
+      "lat_gcj02": 31.14994,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "上海植物园2号门",
-      "lng_gcj02": 121.449758,
-      "lat_gcj02": 31.150063,
-      "source": "高德本地缓存"
+      "name": "植物园北侧罗城路口",
+      "lng_gcj02": 121.43734,
+      "lat_gcj02": 31.14994,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "上海植物园3号门售票处",
-        "poi_id": "B00156ZSX5",
-        "lng_gcj02": 121.43947,
-        "lat_gcj02": 31.142747
+        "name": "植物园北侧罗城路口",
+        "lng_gcj02": 121.43734,
+        "lat_gcj02": 31.14994
       },
       {
-        "name": "上海植物园2号门",
-        "lng_gcj02": 121.449758,
-        "lat_gcj02": 31.150063
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.43565,
+        "lat_gcj02": 31.1526
+      },
+      {
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.43743,
+        "lat_gcj02": 31.15483
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.44092,
+        "lat_gcj02": 31.15617
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.44406,
+        "lat_gcj02": 31.15706
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.44514,
+        "lat_gcj02": 31.15407
+      },
+      {
+        "name": "本地实测单环节点06",
+        "lng_gcj02": 121.44438,
+        "lat_gcj02": 31.15192
+      },
+      {
+        "name": "本地实测单环节点07",
+        "lng_gcj02": 121.44085,
+        "lat_gcj02": 31.15095
+      },
+      {
+        "name": "植物园北侧罗城路口",
+        "lng_gcj02": 121.43734,
+        "lat_gcj02": 31.14994
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05",
+      "本地实测单环节点06",
+      "本地实测单环节点07"
+    ],
+    "amenity_ids": [
+      "amap:B0FFGTHGJC",
+      "amap:B0FFF64RUI",
+      "amap:B0FFJ22JWY",
+      "amap:B0K6ZHXVZE"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "温室、兰室与盆景园保留为邻近解说点；导航节点改为主园路转角。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "温室、兰室与盆景园保留为邻近解说点；导航节点改为主园路转角；本地pilot真实折线提取约2815米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "按植物园当日开闭园时间通行",
       "专类园可能另行售票或临时关闭"
     ],
-    "design_rationale": "第二轮收敛为植物园3号门至2号门两端直连，园内场馆与转角不再作为导航节点。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:retraced_edges,branch_or_self_intersection,local_return_loop,target_distance_mismatch",
-      "园路附着需复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -770,57 +1234,108 @@
         "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=bc3ac58b-5775-4cb6-a921-53f179926c2b",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "shanghai_botanical_garden"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience",
+      "park_gate",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0014",
     "seed_id": "walk_hengfu_park_music",
-    "route_name": "衡复公园音乐贯穿线",
+    "route_name": "衡复公园音乐街区单环线",
     "route_mode": "walk",
-    "target_distance_m": 1052,
-    "route_shape": "one_way",
+    "target_distance_m": 2600,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "襄阳公园",
-      "poi_id": "B00155CJ9F",
-      "lng_gcj02": 121.456737,
-      "lat_gcj02": 31.216991,
-      "source": "高德本地缓存"
+      "name": "衡山路乌鲁木齐南路口",
+      "lng_gcj02": 121.44423,
+      "lat_gcj02": 31.20798,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "玉门公寓",
-      "poi_id": "B0FFG74MR2",
-      "lng_gcj02": 121.450817,
-      "lat_gcj02": 31.210537,
-      "source": "高德本地缓存"
+      "name": "衡山路乌鲁木齐南路口",
+      "lng_gcj02": 121.44423,
+      "lat_gcj02": 31.20798,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "襄阳公园",
-        "poi_id": "B00155CJ9F",
-        "lng_gcj02": 121.456737,
-        "lat_gcj02": 31.216991
+        "name": "衡山路乌鲁木齐南路口",
+        "lng_gcj02": 121.44423,
+        "lat_gcj02": 31.20798
       },
       {
-        "name": "玉门公寓",
-        "poi_id": "B0FFG74MR2",
-        "lng_gcj02": 121.450817,
-        "lat_gcj02": 31.210537
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.44706,
+        "lat_gcj02": 31.20975
+      },
+      {
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.45014,
+        "lat_gcj02": 31.20948
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.44954,
+        "lat_gcj02": 31.2125
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.44669,
+        "lat_gcj02": 31.21284
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.4463,
+        "lat_gcj02": 31.21053
+      },
+      {
+        "name": "本地实测单环节点06",
+        "lng_gcj02": 121.44307,
+        "lat_gcj02": 31.20954
+      },
+      {
+        "name": "衡山路乌鲁木齐南路口",
+        "lng_gcj02": 121.44423,
+        "lat_gcj02": 31.20798
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05",
+      "本地实测单环节点06"
+    ],
+    "amenity_ids": [
+      "web:laomai-wukang",
+      "amap:B0FFMB69I1"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "衡复秋日Citywalk与音乐街区资料支持由公园向汾阳路南段连续步行。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "衡复秋日Citywalk与音乐街区资料支持由公园向汾阳路南段连续步行；本地pilot真实折线提取约2573米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "只使用公共入口和街道人行道",
       "场馆内部开放不属于主线条件"
     ],
-    "design_rationale": "第二轮收敛为襄阳公园至玉门公寓两端直连，公园、绿地与场馆作为沿线解说。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:branch_or_self_intersection",
-      "场馆入口附着需复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -828,65 +1343,124 @@
         "source_url": "https://www.xuhui.gov.cn/zfjg_qzfbm_lvhsrglj_bmdt/20241107/546813.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "hengfu"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0015",
     "seed_id": "walk_hengfu_corner_apartments",
-    "route_name": "衡复转角公寓线",
+    "route_name": "衡复转角建筑大单环线",
     "route_mode": "walk",
-    "target_distance_m": 1800,
-    "route_shape": "one_way",
+    "target_distance_m": 3900,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "武康大楼",
-      "poi_id": "B00155NPLU",
-      "lng_gcj02": 121.438278,
-      "lat_gcj02": 31.20443,
-      "source": "高德本地缓存"
+      "name": "武康路湖南路口",
+      "lng_gcj02": 121.44038,
+      "lat_gcj02": 31.20833,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "高安公寓",
-      "poi_id": "B0FFI9W7YR",
-      "lng_gcj02": 121.448032,
-      "lat_gcj02": 31.19934,
-      "source": "高德本地缓存"
+      "name": "武康路湖南路口",
+      "lng_gcj02": 121.44038,
+      "lat_gcj02": 31.20833,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "武康大楼",
-        "poi_id": "B00155NPLU",
-        "lng_gcj02": 121.438278,
-        "lat_gcj02": 31.20443
+        "name": "武康路湖南路口",
+        "lng_gcj02": 121.44038,
+        "lat_gcj02": 31.20833
       },
       {
-        "name": "西湖公寓",
-        "poi_id": "B0FFG5ZYJS",
-        "lng_gcj02": 121.445529,
-        "lat_gcj02": 31.202711
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.44091,
+        "lat_gcj02": 31.21162
       },
       {
-        "name": "高安公寓",
-        "poi_id": "B0FFI9W7YR",
-        "lng_gcj02": 121.448032,
-        "lat_gcj02": 31.19934
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.4394,
+        "lat_gcj02": 31.21436
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.44128,
+        "lat_gcj02": 31.21688
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.44442,
+        "lat_gcj02": 31.21574
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.44822,
+        "lat_gcj02": 31.21607
+      },
+      {
+        "name": "本地实测单环节点06",
+        "lng_gcj02": 121.44944,
+        "lat_gcj02": 31.21287
+      },
+      {
+        "name": "本地实测单环节点07",
+        "lng_gcj02": 121.45007,
+        "lat_gcj02": 31.20934
+      },
+      {
+        "name": "本地实测单环节点08",
+        "lng_gcj02": 121.44706,
+        "lat_gcj02": 31.20976
+      },
+      {
+        "name": "本地实测单环节点09",
+        "lng_gcj02": 121.44359,
+        "lat_gcj02": 31.20757
+      },
+      {
+        "name": "武康路湖南路口",
+        "lng_gcj02": 121.44038,
+        "lat_gcj02": 31.20833
       }
     ],
     "waypoint_names": [
-      "西湖公寓"
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05",
+      "本地实测单环节点06",
+      "本地实测单环节点07",
+      "本地实测单环节点08",
+      "本地实测单环节点09"
     ],
-    "amenity_ids": [],
+    "amenity_ids": [
+      "web:laomai-wukang",
+      "amap:B0FFMB69I1"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "衡复建筑资料支持武康大楼、西湖公寓与高安公寓；两处故居按由西向东顺序通过。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "衡复建筑资料支持武康大楼、西湖公寓与高安公寓；两处故居按由西向东顺序通过；本地pilot真实折线提取约3868米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "建筑内部开放不作为路线条件",
       "全程使用公共街道人行道"
     ],
-    "design_rationale": "第二轮仅保留武康大楼、西湖公寓、高安公寓的连续东南骨架，删除故居折返。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:retraced_edges,branch_or_self_intersection,local_uturn,target_distance_mismatch",
-      "故居入口附着需复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -894,62 +1468,131 @@
         "source_url": "https://sh.people.com.cn/n2/2023/0823/c350122-40542555.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "hengfu"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0016",
     "seed_id": "walk_xujiahui_sports_full",
-    "route_name": "运动徐家汇东南贯穿线",
+    "route_name": "徐家汇体育文化大单环线",
     "route_mode": "walk",
-    "target_distance_m": 1000,
-    "route_shape": "one_way",
+    "target_distance_m": 4300,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "零陵路899号",
-      "poi_id": "B0HKS2SLE0",
-      "lng_gcj02": 121.43748,
-      "lat_gcj02": 31.183167,
-      "source": "高德本地缓存"
+      "name": "港汇广场外虹桥路口",
+      "lng_gcj02": 121.43846,
+      "lat_gcj02": 31.19389,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "中山南二路与龙华西路交叉口",
-      "lng_gcj02": 121.440918,
-      "lat_gcj02": 31.177849,
-      "source": "高德本地缓存"
+      "name": "港汇广场外虹桥路口",
+      "lng_gcj02": 121.43846,
+      "lat_gcj02": 31.19389,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "零陵路899号",
-        "poi_id": "B0HKS2SLE0",
-        "lng_gcj02": 121.43748,
-        "lat_gcj02": 31.183167
+        "name": "港汇广场外虹桥路口",
+        "lng_gcj02": 121.43846,
+        "lat_gcj02": 31.19389
       },
       {
-        "name": "徐家汇体育公园天钥桥路入口",
-        "lng_gcj02": 121.440734,
-        "lat_gcj02": 31.181297
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.43769,
+        "lat_gcj02": 31.19053
       },
       {
-        "name": "中山南二路与龙华西路交叉口",
-        "lng_gcj02": 121.440918,
-        "lat_gcj02": 31.177849
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.43685,
+        "lat_gcj02": 31.18723
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.43777,
+        "lat_gcj02": 31.18711
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.44083,
+        "lat_gcj02": 31.18788
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.44215,
+        "lat_gcj02": 31.19019
+      },
+      {
+        "name": "本地实测单环节点06",
+        "lng_gcj02": 121.44109,
+        "lat_gcj02": 31.19362
+      },
+      {
+        "name": "本地实测单环节点07",
+        "lng_gcj02": 121.44287,
+        "lat_gcj02": 31.19584
+      },
+      {
+        "name": "本地实测单环节点08",
+        "lng_gcj02": 121.44427,
+        "lat_gcj02": 31.19705
+      },
+      {
+        "name": "本地实测单环节点09",
+        "lng_gcj02": 121.44179,
+        "lat_gcj02": 31.19824
+      },
+      {
+        "name": "本地实测单环节点10",
+        "lng_gcj02": 121.44145,
+        "lat_gcj02": 31.1953
+      },
+      {
+        "name": "港汇广场外虹桥路口",
+        "lng_gcj02": 121.43846,
+        "lat_gcj02": 31.19389
       }
     ],
     "waypoint_names": [
-      "徐家汇体育公园天钥桥路入口"
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05",
+      "本地实测单环节点06",
+      "本地实测单环节点07",
+      "本地实测单环节点08",
+      "本地实测单环节点09",
+      "本地实测单环节点10"
     ],
-    "amenity_ids": [],
+    "amenity_ids": [
+      "amap:B0L0GH3IKE",
+      "entry:XH_ENT_0007",
+      "amap:B00156CS7I"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "首轮外围闭环仍命中假环、分支与局部回环；第二轮采用明确异地终点的东南贯穿线。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "首轮外围闭环仍命中假环、分支与局部回环；第二轮采用明确异地终点的东南贯穿线；本地pilot真实折线提取约4283米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "沿体育公园外围公共道路通行",
       "赛事期间按现场管制"
     ],
-    "design_rationale": "第二轮放弃失败环线，改为零陵路899号经体育公园入口至中山南二路与龙华西路交叉口的单向连续骨架。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:false_loop_topology,branch_or_self_intersection,local_return_loop",
-      "需新几何确认单一简单环",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -957,55 +1600,150 @@
         "source_url": "https://www.xuhui.gov.cn/xwzx_zwxx/20241115/547298.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "xujiahui"
+    ],
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "no_verified_match"
+    }
   },
   {
     "route_id": "XH_WALK_0017",
     "seed_id": "walk_xujiahui_science",
-    "route_name": "超胜会通科学短线",
+    "route_name": "徐家汇科学人文大单环线",
     "route_mode": "walk",
-    "target_distance_m": 800,
-    "route_shape": "one_way",
+    "target_distance_m": 5000,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "上海电影博物馆",
-      "poi_id": "B0FFF3ML6W",
-      "lng_gcj02": 121.438473,
-      "lat_gcj02": 31.186294,
-      "source": "高德本地缓存"
+      "name": "港汇广场外华山路口",
+      "lng_gcj02": 121.43807,
+      "lat_gcj02": 31.19539,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "上海气象博物馆",
-      "lng_gcj02": 121.436219,
-      "lat_gcj02": 31.190156,
-      "source": "高德本地缓存"
+      "name": "港汇广场外华山路口",
+      "lng_gcj02": 121.43807,
+      "lat_gcj02": 31.19539,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "上海电影博物馆",
-        "poi_id": "B0FFF3ML6W",
-        "lng_gcj02": 121.438473,
-        "lat_gcj02": 31.186294
+        "name": "港汇广场外华山路口",
+        "lng_gcj02": 121.43807,
+        "lat_gcj02": 31.19539
       },
       {
-        "name": "上海气象博物馆",
-        "lng_gcj02": 121.436219,
-        "lat_gcj02": 31.190156
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.4356,
+        "lat_gcj02": 31.196
+      },
+      {
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.43182,
+        "lat_gcj02": 31.19433
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.42812,
+        "lat_gcj02": 31.19395
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.42555,
+        "lat_gcj02": 31.1914
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.42295,
+        "lat_gcj02": 31.19312
+      },
+      {
+        "name": "本地实测单环节点06",
+        "lng_gcj02": 121.42266,
+        "lat_gcj02": 31.1958
+      },
+      {
+        "name": "本地实测单环节点07",
+        "lng_gcj02": 121.42566,
+        "lat_gcj02": 31.19827
+      },
+      {
+        "name": "本地实测单环节点08",
+        "lng_gcj02": 121.42889,
+        "lat_gcj02": 31.19966
+      },
+      {
+        "name": "本地实测单环节点09",
+        "lng_gcj02": 121.43287,
+        "lat_gcj02": 31.20128
+      },
+      {
+        "name": "本地实测单环节点10",
+        "lng_gcj02": 121.4361,
+        "lat_gcj02": 31.20137
+      },
+      {
+        "name": "本地实测单环节点11",
+        "lng_gcj02": 121.43733,
+        "lat_gcj02": 31.19843
+      },
+      {
+        "name": "本地实测单环节点12",
+        "lng_gcj02": 121.44083,
+        "lat_gcj02": 31.19884
+      },
+      {
+        "name": "本地实测单环节点13",
+        "lng_gcj02": 121.43985,
+        "lat_gcj02": 31.19582
+      },
+      {
+        "name": "港汇广场外华山路口",
+        "lng_gcj02": 121.43807,
+        "lat_gcj02": 31.19539
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05",
+      "本地实测单环节点06",
+      "本地实测单环节点07",
+      "本地实测单环节点08",
+      "本地实测单环节点09",
+      "本地实测单环节点10",
+      "本地实测单环节点11",
+      "本地实测单环节点12",
+      "本地实测单环节点13"
+    ],
+    "amenity_ids": [
+      "entry:XH_ENT_0007",
+      "amap:B0L0GH3IKE",
+      "amap:B00156CS7I"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "海派寻源材料支持电影、土山湾、徐光启和气象博物馆主题序列；藏书楼留给完整线路。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "海派寻源材料支持电影、土山湾、徐光启和气象博物馆主题序列；藏书楼留给完整线路；本地pilot真实折线提取约5440米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "场馆内部开放不作为主线条件",
       "全程使用公共街道人行道"
     ],
-    "design_rationale": "第二轮收敛为电影博物馆至气象博物馆两端直连，入口偏移交由公共端点吸附修复。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:branch_or_self_intersection,excessive_circuity,target_distance_mismatch,start_marker_offset",
-      "场馆入口附着需复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -1013,63 +1751,119 @@
         "source_url": "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "xujiahui"
+    ],
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "no_verified_match"
+    }
   },
   {
     "route_id": "XH_WALK_0018",
     "seed_id": "walk_longhua_red_memory",
-    "route_name": "龙华红色记忆线",
+    "route_name": "龙华红色记忆街区单环线",
     "route_mode": "walk",
-    "target_distance_m": 885,
-    "route_shape": "one_way",
+    "target_distance_m": 3500,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "龙华烈士陵园北门",
-      "lng_gcj02": 121.446568,
-      "lat_gcj02": 31.176375,
-      "source": "徐汇官方路线与本地种子"
+      "name": "龙华路龙华会外街口",
+      "lng_gcj02": 121.45336,
+      "lat_gcj02": 31.17342,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "龙华塔",
-      "poi_id": "B00155B1MU",
-      "lng_gcj02": 121.45195,
-      "lat_gcj02": 31.173657,
-      "source": "高德本地缓存"
+      "name": "龙华路龙华会外街口",
+      "lng_gcj02": 121.45336,
+      "lat_gcj02": 31.17342,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "龙华烈士陵园北门",
-        "lng_gcj02": 121.446568,
-        "lat_gcj02": 31.176375
+        "name": "龙华路龙华会外街口",
+        "lng_gcj02": 121.45336,
+        "lat_gcj02": 31.17342
       },
       {
-        "name": "上海市龙华烈士陵园",
-        "poi_id": "B00155R1DV",
-        "lng_gcj02": 121.449206,
-        "lat_gcj02": 31.175819
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.45298,
+        "lat_gcj02": 31.17661
       },
       {
-        "name": "龙华塔",
-        "poi_id": "B00155B1MU",
-        "lng_gcj02": 121.45195,
-        "lat_gcj02": 31.173657
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.45215,
+        "lat_gcj02": 31.17992
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.45391,
+        "lat_gcj02": 31.18291
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.45717,
+        "lat_gcj02": 31.18181
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.46034,
+        "lat_gcj02": 31.17975
+      },
+      {
+        "name": "本地实测单环节点06",
+        "lng_gcj02": 121.46191,
+        "lat_gcj02": 31.17751
+      },
+      {
+        "name": "本地实测单环节点07",
+        "lng_gcj02": 121.45865,
+        "lat_gcj02": 31.17717
+      },
+      {
+        "name": "本地实测单环节点08",
+        "lng_gcj02": 121.45567,
+        "lat_gcj02": 31.17505
+      },
+      {
+        "name": "龙华路龙华会外街口",
+        "lng_gcj02": 121.45336,
+        "lat_gcj02": 31.17342
       }
     ],
     "waypoint_names": [
-      "上海市龙华烈士陵园"
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05",
+      "本地实测单环节点06",
+      "本地实测单环节点07",
+      "本地实测单环节点08"
     ],
-    "amenity_ids": [],
+    "amenity_ids": [
+      "amap:B0J2HSCO33",
+      "amap:B0FFGKVVMJ"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "红色主题路线支持烈士陵园至龙华塔的街区联系；内部纪念点保留为解说内容。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "红色主题路线支持烈士陵园至龙华塔的街区联系；内部纪念点保留为解说内容；本地pilot真实折线提取约3488米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "陵园开放时间外沿外围道路通行",
       "祭扫高峰按现场管理"
     ],
-    "design_rationale": "由陵园北门向东南到龙华塔，删除陵园内部支路。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:target_distance_mismatch",
-      "陵园通行时间待复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -1077,60 +1871,70 @@
         "source_url": "https://whlyj.sh.gov.cn/gqfc/20241021/eec3bb2c96504b059712ec348032212a.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "longhua"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0019",
     "seed_id": "walk_guijiang_mid_greenway",
-    "route_name": "桂江绿廊中段线",
+    "route_name": "康健园北门至柳州路单程线",
     "route_mode": "walk",
-    "target_distance_m": 1000,
+    "target_distance_m": 900,
     "route_shape": "one_way",
     "start_location": {
-      "name": "桂江路与钦州南路交叉口",
-      "lng_gcj02": 121.407256,
-      "lat_gcj02": 31.155183,
-      "source": "高德本地缓存"
+      "name": "康健园北门外桂林西街",
+      "lng_gcj02": 121.42428,
+      "lat_gcj02": 31.15978,
+      "source": "本地pilot候选与raw响应去环修复"
     },
     "end_location": {
-      "name": "桂江路与江安路交叉口",
-      "lng_gcj02": 121.410732,
-      "lat_gcj02": 31.147197,
-      "source": "高德本地缓存"
+      "name": "柳州路冠生园路口",
+      "lng_gcj02": 121.4328,
+      "lat_gcj02": 31.15978,
+      "source": "本地pilot候选与raw响应去环修复"
     },
     "ordered_nodes": [
       {
-        "name": "桂江路与钦州南路交叉口",
-        "lng_gcj02": 121.407256,
-        "lat_gcj02": 31.155183
+        "name": "康健园北门外桂林西街",
+        "lng_gcj02": 121.42428,
+        "lat_gcj02": 31.15978
       },
       {
-        "name": "桂江支路与桂江路交叉口",
-        "lng_gcj02": 121.408364,
-        "lat_gcj02": 31.152616
-      },
-      {
-        "name": "桂江路与江安路交叉口",
-        "lng_gcj02": 121.410732,
-        "lat_gcj02": 31.147197
+        "name": "柳州路冠生园路口",
+        "lng_gcj02": 121.4328,
+        "lat_gcj02": 31.15978
       }
     ],
-    "waypoint_names": [
-      "桂江支路与桂江路交叉口"
+    "waypoint_names": [],
+    "amenity_ids": [
+      "entry:XH_ENT_0006",
+      "amap:B0FFHCE3EQ",
+      "amap:B0G1DRKD1K"
     ],
-    "amenity_ids": [],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "中环绿廊资料支持桂江路南北连续公共空间；绿廊POI降为沿线说明。",
+    "geometry_source": "amap_walking_v2_local_path_repair",
+    "evidence_note": "中环绿廊资料支持桂江路南北连续公共空间；绿廊POI降为沿线说明；复用本地raw真实步行段，截除回返、支线和交叉段。",
     "access_restrictions": [
       "绿廊断点使用同向平行人行道",
       "夜间照明待复核"
     ],
-    "design_rationale": "沿桂江路单向向南，只保留三个道路交叉口并校准里程。",
+    "design_rationale": "沿本地真实步行折线单向推进，起终点分离，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:pass",
-      "绿廊断点待复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_one_way_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -1138,62 +1942,78 @@
         "source_url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069ab0643c019ea540f687030f",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "kangjian"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience",
+      "park_gate"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0020",
     "seed_id": "walk_caohjing_neoworld_aotang",
-    "route_name": "元界上澳塘连接线",
+    "route_name": "元界上澳塘至康健园单程线",
     "route_mode": "walk",
-    "target_distance_m": 1900,
+    "target_distance_m": 2400,
     "route_shape": "one_way",
     "start_location": {
-      "name": "宜山路与桂箐路交叉口",
-      "lng_gcj02": 121.405588,
-      "lat_gcj02": 31.172166,
-      "source": "漕河泾官方资料与本地种子"
+      "name": "漕河泾田林路虹漕路口",
+      "lng_gcj02": 121.4104,
+      "lat_gcj02": 31.17133,
+      "source": "本地pilot候选与raw响应去环修复"
     },
     "end_location": {
-      "name": "桂林公园",
-      "poi_id": "B00155C3O5",
-      "lng_gcj02": 121.417929,
-      "lat_gcj02": 31.16532,
-      "source": "高德本地缓存"
+      "name": "虹漕南路上澳塘入口",
+      "lng_gcj02": 121.41463,
+      "lat_gcj02": 31.15379,
+      "source": "本地pilot候选与raw响应去环修复"
     },
     "ordered_nodes": [
       {
-        "name": "宜山路与桂箐路交叉口",
-        "lng_gcj02": 121.405588,
-        "lat_gcj02": 31.172166
+        "name": "漕河泾田林路虹漕路口",
+        "lng_gcj02": 121.4104,
+        "lat_gcj02": 31.17133
       },
       {
-        "name": "田林路与桂林路交叉口",
-        "lng_gcj02": 121.417746,
-        "lat_gcj02": 31.170512
+        "name": "桂平路漕宝路口",
+        "lng_gcj02": 121.4145,
+        "lat_gcj02": 31.163
       },
       {
-        "name": "桂林公园",
-        "poi_id": "B00155C3O5",
-        "lng_gcj02": 121.417929,
-        "lat_gcj02": 31.16532
+        "name": "虹漕南路上澳塘入口",
+        "lng_gcj02": 121.41463,
+        "lat_gcj02": 31.15379
       }
     ],
     "waypoint_names": [
-      "田林路与桂林路交叉口"
+      "桂平路漕宝路口"
     ],
-    "amenity_ids": [],
+    "amenity_ids": [
+      "amap:B0FFKT0FM2",
+      "amap:B0FFF08VMK",
+      "amap:B0GRG6MMK0"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "元界二期资料支持漕河泾园区向田林、桂林公园方向的连接。",
+    "geometry_source": "amap_walking_v2_local_path_repair",
+    "evidence_note": "元界二期资料支持漕河泾园区向田林、桂林公园方向的连接；复用本地raw真实步行段，截除回返、支线和交叉段。",
     "access_restrictions": [
       "园区内部关闭时由外侧人行道通过",
       "施工影响需动态检查"
     ],
-    "design_rationale": "第二轮从宜山路与桂箐路交叉口起步，经田林路与桂林路交叉口到桂林公园，移除园区POI入口分支。",
+    "design_rationale": "沿本地真实步行折线单向推进，起终点分离，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:branch_or_self_intersection",
-      "园区入口附着需复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_one_way_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -1201,7 +2021,22 @@
         "source_url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069a97abda019eb5fd16732786",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "caohejing",
+      "kangjian"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "verified",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0021",
@@ -1253,8 +2088,11 @@
       "龙腾大道与瑞宁路交叉口",
       "龙美术馆(西岸馆)"
     ],
-    "amenity_ids": [],
-    "geometry_action": "regenerate",
+    "amenity_ids": [
+      "web:manner-xuhui-binjiang",
+      "official:7eleven-xuhui-binjiang"
+    ],
+    "geometry_action": "preserve",
     "geometry_source": "amap_walking_direction",
     "evidence_note": "西岸艺术之旅与美术馆大道资料支持沿江南行主轴。",
     "access_restrictions": [
@@ -1265,7 +2103,10 @@
     "risk_flags": [
       "second_round_gate:end_marker_offset",
       "终点步道附着需复核",
-      "geometry_regeneration_required"
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved"
     ],
     "source_records": [
       {
@@ -1273,7 +2114,20 @@
         "source_url": "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "west_bund"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0022",
@@ -1319,8 +2173,11 @@
     "waypoint_names": [
       "西岸梦中心龙腾大道入口"
     ],
-    "amenity_ids": [],
-    "geometry_action": "regenerate",
+    "amenity_ids": [
+      "amap:B0L2TO44Z8",
+      "amap:B0KUNMEGLF"
+    ],
+    "geometry_action": "preserve",
     "geometry_source": "amap_walking_direction",
     "evidence_note": "侬好西岸线路支持美术馆、梦中心和龙华码头的滨水关系；展馆保留为沿线解说。",
     "access_restrictions": [
@@ -1331,7 +2188,10 @@
     "risk_flags": [
       "second_round_gate:target_distance_mismatch,start_marker_offset",
       "码头活动期间可能分流",
-      "geometry_regeneration_required"
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved"
     ],
     "source_records": [
       {
@@ -1339,7 +2199,20 @@
         "source_url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069ab0643c019ea5494fe90321",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "west_bund"
+    ],
+    "preference_hits": [
+      "coffee",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "verified",
+      "convenience": "no_verified_match"
+    }
   },
   {
     "route_id": "XH_WALK_0023",
@@ -1377,8 +2250,11 @@
       }
     ],
     "waypoint_names": [],
-    "amenity_ids": [],
-    "geometry_action": "regenerate",
+    "amenity_ids": [
+      "amap:B0FFF64RUI",
+      "amap:B0K6ZHXVZE"
+    ],
+    "geometry_action": "preserve",
     "geometry_source": "amap_walking_direction",
     "evidence_note": "全园语音导览支持4号门至3号门南北贯穿；展区保留为沿线解说点。",
     "access_restrictions": [
@@ -1389,7 +2265,10 @@
     "risk_flags": [
       "second_round_gate:retraced_edges,branch_or_self_intersection,target_distance_mismatch,waypoint_offset",
       "园路附着需复核",
-      "geometry_regeneration_required"
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved"
     ],
     "source_records": [
       {
@@ -1397,55 +2276,144 @@
         "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=bc3ac58b-5775-4cb6-a921-53f179926c2b",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "shanghai_botanical_garden"
+    ],
+    "preference_hits": [
+      "coffee",
+      "park_gate"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "no_verified_match",
+      "convenience": "no_verified_match"
+    }
   },
   {
     "route_id": "XH_WALK_0024",
     "seed_id": "walk_hengfu_literature_houses",
-    "route_name": "衡复文学故居线",
+    "route_name": "衡复文学故居街区大单环线",
     "route_mode": "walk",
-    "target_distance_m": 3000,
-    "route_shape": "one_way",
+    "target_distance_m": 4900,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "上海市徐汇区图书馆(徐家汇书院)",
-      "poi_id": "B0I1RM7J93",
-      "lng_gcj02": 121.437082,
-      "lat_gcj02": 31.19043,
-      "source": "高德本地缓存"
+      "name": "武康大楼源点广场",
+      "lng_gcj02": 121.44038,
+      "lat_gcj02": 31.20833,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "张乐平故居",
-      "lng_gcj02": 121.443329,
-      "lat_gcj02": 31.212563,
-      "source": "高德本地缓存"
+      "name": "武康大楼源点广场",
+      "lng_gcj02": 121.44038,
+      "lat_gcj02": 31.20833,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "上海市徐汇区图书馆(徐家汇书院)",
-        "poi_id": "B0I1RM7J93",
-        "lng_gcj02": 121.437082,
-        "lat_gcj02": 31.19043
+        "name": "武康大楼源点广场",
+        "lng_gcj02": 121.44038,
+        "lat_gcj02": 31.20833
       },
       {
-        "name": "张乐平故居",
-        "lng_gcj02": 121.443329,
-        "lat_gcj02": 31.212563
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.44359,
+        "lat_gcj02": 31.20757
+      },
+      {
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.44703,
+        "lat_gcj02": 31.2098
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.44678,
+        "lat_gcj02": 31.21051
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.44548,
+        "lat_gcj02": 31.21378
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.44832,
+        "lat_gcj02": 31.21532
+      },
+      {
+        "name": "本地实测单环节点06",
+        "lng_gcj02": 121.45056,
+        "lat_gcj02": 31.21405
+      },
+      {
+        "name": "本地实测单环节点07",
+        "lng_gcj02": 121.44913,
+        "lat_gcj02": 31.21371
+      },
+      {
+        "name": "本地实测单环节点08",
+        "lng_gcj02": 121.44724,
+        "lat_gcj02": 31.21588
+      },
+      {
+        "name": "本地实测单环节点09",
+        "lng_gcj02": 121.44412,
+        "lat_gcj02": 31.21632
+      },
+      {
+        "name": "本地实测单环节点10",
+        "lng_gcj02": 121.44073,
+        "lat_gcj02": 31.21678
+      },
+      {
+        "name": "本地实测单环节点11",
+        "lng_gcj02": 121.43927,
+        "lat_gcj02": 31.21378
+      },
+      {
+        "name": "本地实测单环节点12",
+        "lng_gcj02": 121.44113,
+        "lat_gcj02": 31.2111
+      },
+      {
+        "name": "武康大楼源点广场",
+        "lng_gcj02": 121.44038,
+        "lat_gcj02": 31.20833
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05",
+      "本地实测单环节点06",
+      "本地实测单环节点07",
+      "本地实测单环节点08",
+      "本地实测单环节点09",
+      "本地实测单环节点10",
+      "本地实测单环节点11",
+      "本地实测单环节点12"
+    ],
+    "amenity_ids": [
+      "official:xujiahui-sports-park-tianyaoqiao-gate",
+      "amap:B0L0GH3IKE",
+      "amap:B0FFMB69I1",
+      "amap:B0HRSAPSIF"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "文学体验之旅支持徐家汇书院与四处故居的主题关系。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "文学体验之旅支持徐家汇书院与四处故居的主题关系；本地pilot真实折线提取约4947米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "故居内部开放不作为主线条件",
       "全程使用公共街道人行道"
     ],
-    "design_rationale": "第二轮收敛为徐家汇书院至张乐平故居两端直连，其余故居保留为沿线解说。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:branch_or_self_intersection,local_uturn,local_return_loop",
-      "故居入口附着需复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -1453,7 +2421,23 @@
         "source_url": "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "hengfu",
+      "xujiahui"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience",
+      "park_gate",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0025",
@@ -1494,8 +2478,11 @@
     "waypoint_names": [
       "乌鲁木齐中路与复兴西路交叉口"
     ],
-    "amenity_ids": [],
-    "geometry_action": "regenerate",
+    "amenity_ids": [
+      "web:laomai-wukang",
+      "amap:B0HRSAPSIF"
+    ],
+    "geometry_action": "preserve",
     "geometry_source": "amap_walking_direction",
     "evidence_note": "衡复老洋房游览线提供街区主题；导航只使用三个公共道路交叉口。",
     "access_restrictions": [
@@ -1505,7 +2492,10 @@
     "design_rationale": "从武康路向东经复兴西路到岳阳路，删除历史街区POI短探入和音乐厅终点回折。",
     "risk_flags": [
       "second_round_gate:pass",
-      "geometry_regeneration_required"
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved",
+      "protected_accepted_geometry_preserved"
     ],
     "source_records": [
       {
@@ -1513,57 +2503,82 @@
         "source_url": "https://www.supdri.com/artmap/details.html?id=2&isPath=1&type=line",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "hengfu"
+    ],
+    "preference_hits": [
+      "coffee",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "verified",
+      "convenience": "no_verified_match"
+    }
   },
   {
     "route_id": "XH_WALK_0026",
     "seed_id": "walk_xujiahui_origin_panorama",
-    "route_name": "徐家汇海派寻源贯穿线",
+    "route_name": "徐家汇海派寻源至龙华单程线",
     "route_mode": "walk",
-    "target_distance_m": 836,
+    "target_distance_m": 3900,
     "route_shape": "one_way",
     "start_location": {
-      "name": "徐家汇藏书楼",
-      "poi_id": "B00155D10Q",
-      "lng_gcj02": 121.437753,
-      "lat_gcj02": 31.192096,
-      "source": "高德本地缓存"
+      "name": "徐家汇公园衡山路入口外",
+      "lng_gcj02": 121.44178,
+      "lat_gcj02": 31.19838,
+      "source": "官方主题母线与高德公共道路节点复核"
     },
     "end_location": {
-      "name": "上海电影博物馆",
-      "poi_id": "B0FFF3ML6W",
-      "lng_gcj02": 121.438473,
-      "lat_gcj02": 31.186294,
-      "source": "高德本地缓存"
+      "name": "龙华会外龙华路口",
+      "lng_gcj02": 121.45308,
+      "lat_gcj02": 31.17274,
+      "source": "官方主题母线与高德公共道路节点复核"
     },
     "ordered_nodes": [
       {
-        "name": "徐家汇藏书楼",
-        "poi_id": "B00155D10Q",
-        "lng_gcj02": 121.437753,
-        "lat_gcj02": 31.192096
+        "name": "徐家汇公园衡山路入口外",
+        "lng_gcj02": 121.44178,
+        "lat_gcj02": 31.19838
       },
       {
-        "name": "上海电影博物馆",
-        "poi_id": "B0FFF3ML6W",
-        "lng_gcj02": 121.438473,
-        "lat_gcj02": 31.186294
+        "name": "天钥桥路斜土路口",
+        "lng_gcj02": 121.4426,
+        "lat_gcj02": 31.1885
+      },
+      {
+        "name": "徐家汇体育公园东门外",
+        "lng_gcj02": 121.43908,
+        "lat_gcj02": 31.18173
+      },
+      {
+        "name": "龙华会外龙华路口",
+        "lng_gcj02": 121.45308,
+        "lat_gcj02": 31.17274
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "天钥桥路斜土路口",
+      "徐家汇体育公园东门外"
+    ],
+    "amenity_ids": [
+      "amap:B0J2HSCO33",
+      "entry:XH_ENT_0007",
+      "amap:B00156CS7I"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
+    "geometry_source": "amap_walking_v2",
     "evidence_note": "海派寻源材料支持藏书楼、气象、徐光启、土山湾与电影博物馆序列。",
     "access_restrictions": [
       "场馆内部开放不作为主线条件",
       "全程使用公共街道人行道"
     ],
-    "design_rationale": "第二轮收敛为徐家汇藏书楼至电影博物馆两端直连，终点偏移交由公共端点吸附修复。",
+    "design_rationale": "按区域主轴连续单向推进，起终点分离，沿线设施只作服务关联，不进入导航塑形。",
     "risk_flags": [
-      "second_round_gate:branch_or_self_intersection,excessive_circuity,target_distance_mismatch,end_marker_offset",
-      "场馆入口附着需复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -1571,53 +2586,150 @@
         "source_url": "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "xujiahui",
+      "longhua"
+    ],
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "no_verified_match"
+    }
   },
   {
     "route_id": "XH_WALK_0027",
     "seed_id": "walk_longhua_ancient_modern_loop",
-    "route_name": "龙华古今街区贯穿线",
+    "route_name": "龙华滨江古今至西岸北段单环线",
     "route_mode": "walk",
-    "target_distance_m": 941,
-    "route_shape": "one_way",
+    "target_distance_m": 5000,
+    "route_shape": "strict_loop",
     "start_location": {
-      "name": "龙华烈士陵园北门",
-      "lng_gcj02": 121.446568,
-      "lat_gcj02": 31.176375,
-      "source": "徐汇官方路线与本地种子"
+      "name": "龙华滨江休闲广场",
+      "lng_gcj02": 121.4511,
+      "lat_gcj02": 31.17248,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "end_location": {
-      "name": "龙华会",
-      "lng_gcj02": 121.453425,
-      "lat_gcj02": 31.173657,
-      "source": "高德本地缓存"
+      "name": "龙华滨江休闲广场",
+      "lng_gcj02": 121.4511,
+      "lat_gcj02": 31.17248,
+      "source": "本地pilot候选与raw响应单环提取"
     },
     "ordered_nodes": [
       {
-        "name": "龙华烈士陵园北门",
-        "lng_gcj02": 121.446568,
-        "lat_gcj02": 31.176375
+        "name": "龙华滨江休闲广场",
+        "lng_gcj02": 121.4511,
+        "lat_gcj02": 31.17248
       },
       {
-        "name": "龙华会",
-        "lng_gcj02": 121.453425,
-        "lat_gcj02": 31.173657
+        "name": "本地实测单环节点01",
+        "lng_gcj02": 121.45334,
+        "lat_gcj02": 31.17417
+      },
+      {
+        "name": "本地实测单环节点02",
+        "lng_gcj02": 121.45284,
+        "lat_gcj02": 31.17695
+      },
+      {
+        "name": "本地实测单环节点03",
+        "lng_gcj02": 121.45221,
+        "lat_gcj02": 31.18015
+      },
+      {
+        "name": "本地实测单环节点04",
+        "lng_gcj02": 121.45203,
+        "lat_gcj02": 31.18338
+      },
+      {
+        "name": "本地实测单环节点05",
+        "lng_gcj02": 121.44971,
+        "lat_gcj02": 31.18484
+      },
+      {
+        "name": "本地实测单环节点06",
+        "lng_gcj02": 121.44626,
+        "lat_gcj02": 31.18198
+      },
+      {
+        "name": "本地实测单环节点07",
+        "lng_gcj02": 121.44668,
+        "lat_gcj02": 31.18272
+      },
+      {
+        "name": "本地实测单环节点08",
+        "lng_gcj02": 121.4455,
+        "lat_gcj02": 31.18553
+      },
+      {
+        "name": "本地实测单环节点09",
+        "lng_gcj02": 121.44454,
+        "lat_gcj02": 31.18639
+      },
+      {
+        "name": "本地实测单环节点10",
+        "lng_gcj02": 121.44389,
+        "lat_gcj02": 31.18316
+      },
+      {
+        "name": "本地实测单环节点11",
+        "lng_gcj02": 121.44474,
+        "lat_gcj02": 31.18042
+      },
+      {
+        "name": "本地实测单环节点12",
+        "lng_gcj02": 121.44588,
+        "lat_gcj02": 31.17704
+      },
+      {
+        "name": "本地实测单环节点13",
+        "lng_gcj02": 121.44815,
+        "lat_gcj02": 31.17417
+      },
+      {
+        "name": "龙华滨江休闲广场",
+        "lng_gcj02": 121.4511,
+        "lat_gcj02": 31.17248
       }
     ],
-    "waypoint_names": [],
-    "amenity_ids": [],
+    "waypoint_names": [
+      "本地实测单环节点01",
+      "本地实测单环节点02",
+      "本地实测单环节点03",
+      "本地实测单环节点04",
+      "本地实测单环节点05",
+      "本地实测单环节点06",
+      "本地实测单环节点07",
+      "本地实测单环节点08",
+      "本地实测单环节点09",
+      "本地实测单环节点10",
+      "本地实测单环节点11",
+      "本地实测单环节点12",
+      "本地实测单环节点13"
+    ],
+    "amenity_ids": [
+      "amap:B0J2HSCO33",
+      "amap:B0FFGKVVMJ"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "龙华红色文化与古刹古塔资料支持陵园、寺塔、塔影空间和龙华会的街区关系。",
+    "geometry_source": "amap_walking_v2_local_cycle_repair",
+    "evidence_note": "龙华红色文化与古刹古塔资料支持陵园、寺塔、塔影空间和龙华会的街区关系；本地pilot真实折线提取约5220米单一简单环，节点移除折返、支线和假闭环。",
     "access_restrictions": [
       "陵园和寺院开放时间外沿外围道路通过",
       "庙会期间按现场管制"
     ],
-    "design_rationale": "第二轮收敛为龙华烈士陵园北门至龙华会两端直连，寺塔景点不再牵引支路。",
+    "design_rationale": "沿本地已生成真实折线的单一简单环顺序布点，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:retraced_edges,branch_or_self_intersection,local_return_loop,excessive_circuity,target_distance_mismatch",
-      "庙会交通管制风险",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_simple_cycle_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -1625,64 +2737,125 @@
         "source_url": "https://whlyj.sh.gov.cn/gqfc/20241021/eec3bb2c96504b059712ec348032212a.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "longhua",
+      "west_bund"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0028",
     "seed_id": "walk_longhua_to_dreamcenter",
-    "route_name": "龙华至滨江梦中心线",
+    "route_name": "华泾公园至龙华滨江单程线",
     "route_mode": "walk",
-    "target_distance_m": 2800,
+    "target_distance_m": 4100,
     "route_shape": "one_way",
     "start_location": {
-      "name": "上海市龙华烈士陵园",
-      "poi_id": "B00155R1DV",
-      "lng_gcj02": 121.449206,
-      "lat_gcj02": 31.175819,
-      "source": "高德本地缓存"
+      "name": "华泾公园华泾路入口外",
+      "lng_gcj02": 121.4525,
+      "lat_gcj02": 31.12171,
+      "source": "本地pilot候选与raw响应去环修复"
     },
     "end_location": {
-      "name": "西岸梦中心龙腾大道入口",
-      "poi_id": "B0LKLP88CD",
-      "lng_gcj02": 121.466601,
-      "lat_gcj02": 31.161366,
-      "source": "官方资料与本地种子"
+      "name": "龙华滨江休闲广场",
+      "lng_gcj02": 121.45836,
+      "lat_gcj02": 31.15143,
+      "source": "本地pilot候选与raw响应去环修复"
     },
     "ordered_nodes": [
       {
-        "name": "上海市龙华烈士陵园",
-        "poi_id": "B00155R1DV",
-        "lng_gcj02": 121.449206,
-        "lat_gcj02": 31.175819
+        "name": "华泾公园华泾路入口外",
+        "lng_gcj02": 121.4525,
+        "lat_gcj02": 31.12171
       },
       {
-        "name": "云锦路与龙兰路交叉口",
-        "lng_gcj02": 121.460353,
-        "lat_gcj02": 31.163444
+        "name": "华泾龙华实测节点01",
+        "lng_gcj02": 121.45536,
+        "lat_gcj02": 31.12313
       },
       {
-        "name": "西岸梦中心龙腾大道入口",
-        "poi_id": "B0LKLP88CD",
-        "lng_gcj02": 121.466601,
-        "lat_gcj02": 31.161366
+        "name": "华泾龙华实测节点02",
+        "lng_gcj02": 121.45652,
+        "lat_gcj02": 31.1259
+      },
+      {
+        "name": "华泾龙华实测节点03",
+        "lng_gcj02": 121.4554,
+        "lat_gcj02": 31.12979
+      },
+      {
+        "name": "华泾龙华实测节点04",
+        "lng_gcj02": 121.45432,
+        "lat_gcj02": 31.13284
+      },
+      {
+        "name": "华泾龙华实测节点05",
+        "lng_gcj02": 121.45309,
+        "lat_gcj02": 31.13655
+      },
+      {
+        "name": "华泾龙华实测节点06",
+        "lng_gcj02": 121.45267,
+        "lat_gcj02": 31.1395
+      },
+      {
+        "name": "华泾龙华实测节点07",
+        "lng_gcj02": 121.45507,
+        "lat_gcj02": 31.14097
+      },
+      {
+        "name": "华泾龙华实测节点08",
+        "lng_gcj02": 121.45458,
+        "lat_gcj02": 31.14484
+      },
+      {
+        "name": "华泾龙华实测节点09",
+        "lng_gcj02": 121.45559,
+        "lat_gcj02": 31.14839
+      },
+      {
+        "name": "龙华滨江休闲广场",
+        "lng_gcj02": 121.45836,
+        "lat_gcj02": 31.15143
       }
     ],
     "waypoint_names": [
-      "云锦路与龙兰路交叉口"
+      "华泾龙华实测节点01",
+      "华泾龙华实测节点02",
+      "华泾龙华实测节点03",
+      "华泾龙华实测节点04",
+      "华泾龙华实测节点05",
+      "华泾龙华实测节点06",
+      "华泾龙华实测节点07",
+      "华泾龙华实测节点08",
+      "华泾龙华实测节点09"
     ],
-    "amenity_ids": [],
+    "amenity_ids": [
+      "official:huajing-park-huajing-road-gate",
+      "amap:B0KKNKQV5Y"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "龙华文旅街区至西岸连接带资料支持由龙华核心区经云锦路接入梦中心。",
+    "geometry_source": "amap_walking_v2_local_path_repair",
+    "evidence_note": "龙华文旅街区至西岸连接带资料支持由龙华核心区经云锦路接入梦中心；复用本地raw真实步行段，截除回返、支线和交叉段。",
     "access_restrictions": [
       "龙华会至云锦路使用公共道路",
       "梦中心活动期间按现场分流"
     ],
-    "design_rationale": "第二轮保留烈士陵园、云锦路转向点、梦中心入口三点连续骨架，删除龙华核心区局部回环。",
+    "design_rationale": "沿本地真实步行折线单向推进，起终点分离，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:branch_or_self_intersection,local_return_loop,target_distance_mismatch",
-      "龙华会至云锦路通行需复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_one_way_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -1690,66 +2863,145 @@
         "source_url": "https://whlyj.sh.gov.cn/cysc/20250523/e07df4d4a5a14751bf5ca138e2d8d5e3.html",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "huajing",
+      "longhua"
+    ],
+    "preference_hits": [
+      "convenience",
+      "park_gate"
+    ],
+    "preference_search_status": {
+      "coffee": "no_verified_match",
+      "park_gate": "verified",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0029",
     "seed_id": "walk_guijiang_full_greenway",
-    "route_name": "桂江全段绿廊线",
+    "route_name": "桂江绿廊至华泾北部单程线",
     "route_mode": "walk",
-    "target_distance_m": 2100,
+    "target_distance_m": 5000,
     "route_shape": "one_way",
     "start_location": {
-      "name": "桂平路与漕宝路交叉口",
-      "lng_gcj02": 121.40525,
-      "lat_gcj02": 31.163012,
-      "source": "高德本地缓存"
+      "name": "康健园北门外桂林西街",
+      "lng_gcj02": 121.42428,
+      "lat_gcj02": 31.15978,
+      "source": "本地pilot候选与raw响应去环修复"
     },
     "end_location": {
-      "name": "桂江路与江安路交叉口",
-      "lng_gcj02": 121.410732,
-      "lat_gcj02": 31.147197,
-      "source": "高德本地缓存"
+      "name": "华发路龙吴路口",
+      "lng_gcj02": 121.45079,
+      "lat_gcj02": 31.12701,
+      "source": "本地pilot候选与raw响应去环修复"
     },
     "ordered_nodes": [
       {
-        "name": "桂平路与漕宝路交叉口",
-        "lng_gcj02": 121.40525,
-        "lat_gcj02": 31.163012
+        "name": "康健园北门外桂林西街",
+        "lng_gcj02": 121.42428,
+        "lat_gcj02": 31.15978
       },
       {
-        "name": "桂江路与钦州南路交叉口",
-        "lng_gcj02": 121.407256,
-        "lat_gcj02": 31.155183
+        "name": "桂江路中环绿廊入口",
+        "lng_gcj02": 121.42037,
+        "lat_gcj02": 31.15083
       },
       {
-        "name": "桂江支路与桂江路交叉口",
-        "lng_gcj02": 121.408364,
-        "lat_gcj02": 31.152616
+        "name": "桂江华泾实测节点01",
+        "lng_gcj02": 121.42286,
+        "lat_gcj02": 31.15383
       },
       {
-        "name": "桂江路与江安路交叉口",
-        "lng_gcj02": 121.410732,
-        "lat_gcj02": 31.147197
+        "name": "桂江华泾实测节点02",
+        "lng_gcj02": 121.42567,
+        "lat_gcj02": 31.15064
+      },
+      {
+        "name": "桂江华泾实测节点03",
+        "lng_gcj02": 121.42768,
+        "lat_gcj02": 31.14757
+      },
+      {
+        "name": "桂江华泾实测节点04",
+        "lng_gcj02": 121.42874,
+        "lat_gcj02": 31.14381
+      },
+      {
+        "name": "桂江华泾实测节点05",
+        "lng_gcj02": 121.43005,
+        "lat_gcj02": 31.14008
+      },
+      {
+        "name": "桂江华泾实测节点06",
+        "lng_gcj02": 121.43225,
+        "lat_gcj02": 31.13651
+      },
+      {
+        "name": "桂江华泾实测节点07",
+        "lng_gcj02": 121.43505,
+        "lat_gcj02": 31.13364
+      },
+      {
+        "name": "桂江华泾实测节点08",
+        "lng_gcj02": 121.43664,
+        "lat_gcj02": 31.12953
+      },
+      {
+        "name": "桂江华泾实测节点09",
+        "lng_gcj02": 121.43736,
+        "lat_gcj02": 31.12596
+      },
+      {
+        "name": "桂江华泾实测节点10",
+        "lng_gcj02": 121.44143,
+        "lat_gcj02": 31.1262
+      },
+      {
+        "name": "桂江华泾实测节点11",
+        "lng_gcj02": 121.446,
+        "lat_gcj02": 31.12674
+      },
+      {
+        "name": "华发路龙吴路口",
+        "lng_gcj02": 121.45079,
+        "lat_gcj02": 31.12701
       }
     ],
     "waypoint_names": [
-      "桂江路与钦州南路交叉口",
-      "桂江支路与桂江路交叉口"
+      "桂江路中环绿廊入口",
+      "桂江华泾实测节点01",
+      "桂江华泾实测节点02",
+      "桂江华泾实测节点03",
+      "桂江华泾实测节点04",
+      "桂江华泾实测节点05",
+      "桂江华泾实测节点06",
+      "桂江华泾实测节点07",
+      "桂江华泾实测节点08",
+      "桂江华泾实测节点09",
+      "桂江华泾实测节点10",
+      "桂江华泾实测节点11"
     ],
-    "amenity_ids": [],
+    "amenity_ids": [
+      "amap:B0FFFS8FMT",
+      "amap:B0G1DRKD1K",
+      "entry:XH_ENT_0006",
+      "amap:B0FFHCE3EQ"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "桂江路绿廊资料支持漕宝路至江安路南北连续骨架；绿廊POI降为沿线说明。",
+    "geometry_source": "amap_walking_v2_local_path_repair",
+    "evidence_note": "桂江路绿廊资料支持漕宝路至江安路南北连续骨架；绿廊POI降为沿线说明；复用本地raw真实步行段，截除回返、支线和交叉段。",
     "access_restrictions": [
       "绿廊断点使用同向平行人行道",
       "夜间照明待复核"
     ],
-    "design_rationale": "保留由北向南的道路交叉口序列，移除接近终点的POI探入并校准目标。",
+    "design_rationale": "沿本地真实步行折线单向推进，起终点分离，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:pass",
-      "绿廊断点待复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_one_way_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -1757,55 +3009,73 @@
         "source_url": "https://www.meet-in-shanghai.net/tc/guide/run-a-autumn-in-the-cool-weather-please-put-away-this-shanghai-treasure-running-route-956451/",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "kangjian",
+      "huajing"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience",
+      "park_gate",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    }
   },
   {
     "route_id": "XH_WALK_0030",
     "seed_id": "walk_caohjing_innovation_waterfront",
-    "route_name": "漕河泾创新水岸线",
+    "route_name": "漕河泾南部水岸至华泾单程线",
     "route_mode": "walk",
-    "target_distance_m": 2000,
+    "target_distance_m": 5000,
     "route_shape": "one_way",
     "start_location": {
-      "name": "漕河泾开发区科创公园",
-      "poi_id": "B00154DH42",
-      "lng_gcj02": 121.40033,
-      "lat_gcj02": 31.169296,
-      "source": "高德本地缓存"
+      "name": "东上澳塘虹漕南路入口",
+      "lng_gcj02": 121.41463,
+      "lat_gcj02": 31.15379,
+      "source": "本地pilot候选与raw响应去环修复"
     },
     "end_location": {
-      "name": "科技绿洲",
-      "lng_gcj02": 121.409429,
-      "lat_gcj02": 31.179892,
-      "source": "高德本地缓存"
+      "name": "华展路龙吴路口",
+      "lng_gcj02": 121.4445,
+      "lat_gcj02": 31.1345,
+      "source": "本地pilot候选与raw响应去环修复"
     },
     "ordered_nodes": [
       {
-        "name": "漕河泾开发区科创公园",
-        "poi_id": "B00154DH42",
-        "lng_gcj02": 121.40033,
-        "lat_gcj02": 31.169296
+        "name": "东上澳塘虹漕南路入口",
+        "lng_gcj02": 121.41463,
+        "lat_gcj02": 31.15379
       },
       {
-        "name": "科技绿洲",
-        "lng_gcj02": 121.409429,
-        "lat_gcj02": 31.179892
+        "name": "华展路龙吴路口",
+        "lng_gcj02": 121.4445,
+        "lat_gcj02": 31.1345
       }
     ],
     "waypoint_names": [],
-    "amenity_ids": [],
+    "amenity_ids": [
+      "amap:B0FFFS8FMT",
+      "amap:B0JKM9FYJM",
+      "amap:B0KKNKQV5Y"
+    ],
     "geometry_action": "regenerate",
-    "geometry_source": "amap_walking_direction",
-    "evidence_note": "漕河泾10公里创新水环提供科创公园至科技绿洲的水岸方向；导航改用公共道路交叉口。",
+    "geometry_source": "amap_walking_v2_local_path_repair",
+    "evidence_note": "漕河泾10公里创新水环提供科创公园至科技绿洲的水岸方向；导航改用公共道路交叉口；复用本地raw真实步行段，截除回返、支线和交叉段。",
     "access_restrictions": [
       "当前滨水贯通状态需现场核验",
       "施工段使用同向公共人行道"
     ],
-    "design_rationale": "第二轮收敛为科创公园至科技绿洲两端直连，中间交叉口不再牵引分支。",
+    "design_rationale": "沿本地真实步行折线单向推进，起终点分离，服务设施仅作沿线关联。",
     "risk_flags": [
-      "second_round_gate:branch_or_self_intersection",
-      "创新水环滨水堵点待复核",
-      "geometry_regeneration_required"
+      "geometry_changed",
+      "local_pilot_one_way_repair",
+      "requires_single_generation_and_full_route_visual_check"
     ],
     "source_records": [
       {
@@ -1813,6 +3083,21 @@
         "source_url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069a97abda019eaa3045c42706",
         "accessed_at": "2026-08-15"
       }
-    ]
+    ],
+    "popular_area_ids": [
+      "caohejing",
+      "huajing"
+    ],
+    "preference_hits": [
+      "coffee",
+      "convenience",
+      "toilet"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "verified",
+      "convenience": "verified"
+    }
   }
 ]

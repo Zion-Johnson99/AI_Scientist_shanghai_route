@@ -117,6 +117,8 @@ def build_route_catalog(routes: Iterable[CandidateRoute]) -> list[dict[str, Any]
                 "ordered_nodes": [_export_node(node) for node in route.ordered_nodes],
                 "amenity_ids": route.amenity_ids,
                 "nearby_pois": route.nearby_pois,
+                "popular_area_ids": route.popular_area_ids,
+                "preference_search_status": route.preference_search_status,
                 "preference_hits": route.preference_hits,
             }
         )
@@ -180,6 +182,8 @@ def _catalog_item(route: CandidateRoute) -> dict[str, Any]:
         "ordered_nodes": [_export_node(node) for node in route.ordered_nodes],
         "amenity_ids": route.amenity_ids,
         "nearby_pois": route.nearby_pois,
+        "popular_area_ids": route.popular_area_ids,
+        "preference_search_status": route.preference_search_status,
         "preference_hits": route.preference_hits,
     }
 
@@ -197,7 +201,7 @@ def _export_node(node) -> dict[str, Any]:
 
 def _is_candidate_displayable(route: CandidateRoute) -> bool:
     return (
-        route.validation_status == "accepted"
+        route.validation_status in {"accepted", "needs_review"}
         and route.geometry_source == "amap_direction"
         and route.geometry_status == "complete"
         and len({(point.lng_gcj02, point.lat_gcj02) for point in route.polyline_gcj02}) >= 2

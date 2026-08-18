@@ -475,6 +475,7 @@ select:disabled {
 }
 
 .mode-pill,
+.shape-pill,
 .status-pill {
   padding: 2px 7px;
   border-radius: 999px;
@@ -624,6 +625,8 @@ select:disabled {
   min-height: 100vh;
   overflow: hidden;
 }
+.shape-pill { color: #315166; background: #e8f0f4; }
+.shape-pill[data-shape="strict_loop"] { color: #89520c; background: #fff0cf; }
 
 #map {
   width: 100%;

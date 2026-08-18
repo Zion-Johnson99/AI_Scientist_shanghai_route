@@ -68,9 +68,9 @@ const POI_COLORS = {
 const POI_TYPES_BY_PREFERENCE = {
   coffee: ["coffee"],
   toilet: ["toilet"],
-  store: ["convenience"],
+  convenience: ["convenience"],
   metro: ["metro"],
-  park: ["park_gate"],
+  park_gate: ["park_gate"],
 };
 
 const NAVIGATION_LABELS = {

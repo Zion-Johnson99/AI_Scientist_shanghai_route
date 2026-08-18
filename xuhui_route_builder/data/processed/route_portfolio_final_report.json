@@ -1,0 +1,489 @@
+{
+  "status": "fail",
+  "metrics": {
+    "route_count": 90,
+    "validation_status_counts": {
+      "accepted": 14,
+      "needs_review": 76
+    },
+    "mode_counts": {
+      "walk": 30,
+      "run": 30,
+      "bike": 30
+    },
+    "distance_bucket_counts": {
+      "walk": {
+        "0.5-2km": 9,
+        "2-3.5km": 12,
+        "3.5-5km": 7
+      },
+      "run": {
+        "1-5km": 9,
+        "5-10km": 13,
+        "10-15km": 6
+      },
+      "bike": {
+        "5-10km": 11,
+        "10-20km": 10,
+        "20-30km": 9
+      }
+    },
+    "shape_counts": {
+      "walk": {
+        "one_way": 15,
+        "strict_loop": 15
+      },
+      "run": {
+        "one_way": 15,
+        "strict_loop": 15
+      },
+      "bike": {
+        "one_way": 15,
+        "strict_loop": 15
+      }
+    },
+    "shape_target_per_mode": {
+      "strict_loop": 15,
+      "one_way": 15,
+      "strict_loop_allowed": [
+        14,
+        16
+      ]
+    },
+    "strict_loop_geometry_checked_count": 45,
+    "preference_coverage_counts": {
+      "two": 39,
+      "three": 22,
+      "four": 29
+    },
+    "popular_area_counts": {
+      "west_bund": 33,
+      "longhua": 33,
+      "xujiahui": 35,
+      "hengfu": 23,
+      "shanghai_botanical_garden": 34,
+      "kangjian": 21,
+      "caohejing": 21,
+      "huajing": 21
+    },
+    "popular_area_mode_counts": {
+      "west_bund": {
+        "walk": 5,
+        "run": 10,
+        "bike": 18
+      },
+      "longhua": {
+        "walk": 5,
+        "run": 10,
+        "bike": 18
+      },
+      "xujiahui": {
+        "walk": 6,
+        "run": 9,
+        "bike": 20
+      },
+      "hengfu": {
+        "walk": 6,
+        "run": 4,
+        "bike": 13
+      },
+      "shanghai_botanical_garden": {
+        "walk": 5,
+        "run": 11,
+        "bike": 18
+      },
+      "kangjian": {
+        "walk": 4,
+        "run": 7,
+        "bike": 10
+      },
+      "caohejing": {
+        "walk": 3,
+        "run": 4,
+        "bike": 14
+      },
+      "huajing": {
+        "walk": 3,
+        "run": 6,
+        "bike": 12
+      }
+    },
+    "web_catalog": {
+      "displayed_count": 90,
+      "needs_review_count": 76,
+      "recommendation_eligible_count": 14,
+      "navigation_eligible_count": 14
+    }
+  },
+  "failures": [
+    {
+      "code": "distance_bucket_count_mismatch",
+      "details": {
+        "mode": "walk",
+        "counts": {
+          "0.5-2km": 9,
+          "2-3.5km": 12,
+          "3.5-5km": 7
+        }
+      }
+    },
+    {
+      "code": "distance_bucket_count_mismatch",
+      "details": {
+        "mode": "run",
+        "counts": {
+          "1-5km": 9,
+          "5-10km": 13,
+          "10-15km": 6
+        }
+      }
+    },
+    {
+      "code": "distance_bucket_count_mismatch",
+      "details": {
+        "mode": "bike",
+        "counts": {
+          "5-10km": 11,
+          "10-20km": 10,
+          "20-30km": 9
+        }
+      }
+    },
+    {
+      "code": "distance_out_of_range",
+      "details": [
+        {
+          "route_id": "XH_WALK_0017",
+          "mode": "walk",
+          "distance_m": 5370.0
+        },
+        {
+          "route_id": "XH_WALK_0029",
+          "mode": "walk",
+          "distance_m": 6566.0
+        },
+        {
+          "route_id": "XH_RUN_0053",
+          "mode": "run",
+          "distance_m": 16122.0
+        },
+        {
+          "route_id": "XH_RUN_0057",
+          "mode": "run",
+          "distance_m": 15900.0
+        }
+      ]
+    },
+    {
+      "code": "false_loop_detected",
+      "details": [
+        {
+          "route_id": "XH_WALK_0002",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_WALK_0004",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_WALK_0005",
+          "failure_codes": [
+            "branch_or_self_intersection"
+          ]
+        },
+        {
+          "route_id": "XH_WALK_0006",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_WALK_0007",
+          "failure_codes": [
+            "branch_or_self_intersection"
+          ]
+        },
+        {
+          "route_id": "XH_WALK_0008",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_WALK_0015",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_WALK_0016",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_WALK_0017",
+          "failure_codes": [
+            "branch_or_self_intersection"
+          ]
+        },
+        {
+          "route_id": "XH_WALK_0018",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_WALK_0024",
+          "failure_codes": [
+            "branch_or_self_intersection"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0033",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0034",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0036",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0041",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0042",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0043",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0044",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0047",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0048",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0051",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0052",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0053",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0055",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0057",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_RUN_0059",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0061",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0062",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0063",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0064",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0065",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0071",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0072",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0073",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0074",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0075",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0081",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0082",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0083",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology",
+            "retraced_edges"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0084",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        },
+        {
+          "route_id": "XH_BIKE_0085",
+          "failure_codes": [
+            "branch_or_self_intersection",
+            "false_loop_topology"
+          ]
+        }
+      ]
+    },
+    {
+      "code": "long_route_supply_gap",
+      "details": [
+        "XH_RUN_0042",
+        "XH_RUN_0050"
+      ]
+    }
+  ]
+}

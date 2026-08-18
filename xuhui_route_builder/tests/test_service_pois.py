@@ -83,6 +83,38 @@ def test_merge_service_pois_publishes_only_open_verified_records() -> None:
             "evidence_path": "data/raw/amap/place.json",
         },
         {
+            "related_route_ids": ["XH_WALK_0001"],
+            "poi_id": "B005",
+            "source_id": "amap:B005",
+            "poi_name": "公园开放入口",
+            "poi_type": "park_gate",
+            "lng": 121.444,
+            "lat": 31.184,
+            "coordinate_system": "GCJ02",
+            "source": "AMap cache",
+            "query_time": "2026-08-17T08:00:00+08:00",
+            "open_status": "06:00-22:00",
+            "distance_to_route_m": 20,
+            "verification_status": "verified",
+            "evidence_path": "data/raw/amap/place.json",
+        },
+        {
+            "route_id": "XH_WALK_0001",
+            "poi_id": "B004",
+            "source_id": "amap:B004",
+            "poi_name": "远离路线的咖啡",
+            "poi_type": "coffee",
+            "lng": 121.47,
+            "lat": 31.21,
+            "coordinate_system": "GCJ02",
+            "source": "AMap cache",
+            "query_time": "2026-08-17T08:00:00+08:00",
+            "open_status": "08:00-22:00",
+            "distance_to_route_m": 10,
+            "verification_status": "verified",
+            "evidence_path": "data/raw/amap/place.json",
+        },
+        {
             "route_id": "XH_WALK_0001",
             "poi_id": "B002",
             "source_id": "amap:B002",
@@ -116,15 +148,44 @@ def test_merge_service_pois_publishes_only_open_verified_records() -> None:
         [_accepted_route()], [{"records": records}]
     )
 
-    assert routes[0].amenity_ids == ["amap:B001"]
-    assert routes[0].preference_hits == ["coffee"]
+    assert routes[0].amenity_ids == ["amap:B001", "amap:B005"]
+    assert routes[0].preference_hits == ["coffee", "park_gate"]
+    assert routes[0].validation_status == "accepted"
     assert routes[0].nearby_pois[0]["poi_name"] == "沿线咖啡"
+    assert routes[0].nearby_pois[0]["distance_m"] < 1
     assert [
         feature["properties"]["poi_id"] for feature in feature_collection["features"]
-    ] == ["amap:B001"]
+    ] == ["amap:B001", "amap:B005"]
     assert report["excluded"] == {
         "unverified": 1,
         "closed": 1,
         "unpublished_route": 0,
         "invalid": 0,
+        "outside_corridor": 1,
     }
+
+
+def test_merge_service_pois_downgrades_route_with_fewer_than_two_preferences() -> None:
+    record = {
+        "route_id": "XH_WALK_0001",
+        "poi_id": "B001",
+        "source_id": "amap:B001",
+        "poi_name": "沿线咖啡",
+        "poi_type": "coffee",
+        "lng": 121.445,
+        "lat": 31.185,
+        "coordinate_system": "GCJ02",
+        "source": "AMap cache",
+        "open_status": "08:00-22:00",
+        "verification_status": "verified",
+    }
+
+    routes, feature_collection, report = merge_verified_service_pois(
+        [_accepted_route()], [{"records": [record]}]
+    )
+
+    assert routes[0].validation_status == "needs_review"
+    assert routes[0].amenity_ids == []
+    assert routes[0].nearby_pois == []
+    assert feature_collection["features"] == []
+    assert report["published_association_count"] == 0

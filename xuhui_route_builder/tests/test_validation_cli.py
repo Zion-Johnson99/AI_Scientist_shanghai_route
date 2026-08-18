@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timezone
+from types import SimpleNamespace
 
 import pytest
 
@@ -149,7 +150,7 @@ def test_validate_routes_publishes_only_when_all_ninety_are_accepted_and_balance
     assert len(json.loads((tmp_path / "data/web/route_catalog.json").read_text(encoding="utf-8"))) == 90
 
 
-def test_validate_routes_publishes_only_accepted_routes_when_one_needs_review(tmp_path) -> None:
+def test_validate_routes_displays_all_routes_when_one_needs_review(tmp_path) -> None:
     candidates = _catalog_candidates()
     _prepare(tmp_path, candidates)
     web = tmp_path / "data/web"
@@ -166,10 +167,12 @@ def test_validate_routes_publishes_only_accepted_routes_when_one_needs_review(tm
     report = json.loads((tmp_path / "data/processed/route_validation_report.json").read_text(encoding="utf-8"))
     assert report["batch_status"] == "partial"
     assert report["published_count"] == 89
+    assert report["displayed_count"] == 90
     assert len(report["routes"]) == 90
     catalog = json.loads((web / "route_catalog.json").read_text(encoding="utf-8"))
-    assert len(catalog) == 89
-    assert "route-3" not in {route["route_id"] for route in catalog}
+    assert len(catalog) == 90
+    review_route = next(route for route in catalog if route["route_id"] == "route-3")
+    assert review_route["validation_status"] == "needs_review"
 
 
 def test_validate_routes_skips_overpass_when_local_shape_gate_fails(tmp_path) -> None:
@@ -214,9 +217,9 @@ def test_validate_routes_skips_overpass_when_local_shape_gate_fails(tmp_path) ->
 @pytest.mark.parametrize(
     ("mode", "distance_m", "expected_band"),
     [
-        ("walk", 1000, "short"), ("walk", 1999, "short"), ("walk", 2000, "medium"),
+        ("walk", 500, "short"), ("walk", 1999, "short"), ("walk", 2000, "medium"),
         ("walk", 3499, "medium"), ("walk", 3500, "long"), ("walk", 5000, "long"),
-        ("run", 3000, "short"), ("run", 5000, "medium"), ("run", 10000, "long"), ("run", 15000, "long"),
+        ("run", 1000, "short"), ("run", 4999, "short"), ("run", 5000, "medium"), ("run", 10000, "long"), ("run", 15000, "long"),
         ("bike", 5000, "short"), ("bike", 10000, "medium"), ("bike", 20000, "long"), ("bike", 30000, "long"),
     ],
 )
@@ -226,10 +229,47 @@ def test_distance_band_boundaries_are_non_overlapping(mode, distance_m, expected
 
 @pytest.mark.parametrize(
     ("mode", "distance_m"),
-    [("walk", 999), ("walk", 5001), ("run", 2999), ("run", 15001), ("bike", 4999), ("bike", 30001)],
+    [("walk", 499), ("walk", 5001), ("run", 999), ("run", 15001), ("bike", 4999), ("bike", 30001)],
 )
 def test_distance_band_rejects_out_of_range_distances(mode, distance_m) -> None:
     assert cli._distance_band(mode, distance_m) is None
+
+
+def test_seed_portfolio_gate_requires_balanced_shapes_bands_and_preferences() -> None:
+    distances = {
+        "walk": (1000, 2500, 4000),
+        "run": (3000, 7000, 12000),
+        "bike": (7000, 15000, 25000),
+    }
+    seeds = []
+    for mode, band_distances in distances.items():
+        for band_index, distance in enumerate(band_distances):
+            for index in range(10):
+                sequence = band_index * 10 + index
+                seeds.append(
+                    SimpleNamespace(
+                        seed_id=f"{mode}-{sequence}",
+                        route_mode=mode,
+                        target_distance_m=distance,
+                        route_shape="strict_loop" if sequence < 15 else "one_way",
+                        popular_area_ids=["west_bund", "longhua", "xujiahui", "hengfu", "shanghai_botanical_garden", "kangjian", "caohejing", "huajing"],
+                        preference_search_status={
+                            "coffee": "verified",
+                            "park_gate": "verified",
+                            "toilet": "verified",
+                            "convenience": "verified",
+                        },
+                        preference_hits=["coffee", "park_gate", "toilet", "convenience"],
+                    )
+                )
+
+    assert cli._seed_portfolio_failures(seeds) == []
+    seeds[0].preference_hits = ["coffee"]
+    seeds[1].route_shape = "one_way"
+
+    failures = cli._seed_portfolio_failures(seeds)
+    assert any("at least two verified preference types" in item for item in failures)
+    assert any("shape balance" in item for item in failures)
 
 
 @pytest.mark.parametrize("failure", ["low_snap", "overpass_error"])
@@ -245,10 +285,11 @@ def test_validate_routes_excludes_failed_network_check_and_reports_context(tmp_p
     cli.validate_routes(tmp_path, client, datetime(2026, 7, 12, tzinfo=timezone.utc))
 
     catalog = json.loads((web / "route_catalog.json").read_text(encoding="utf-8"))
-    assert len(catalog) == 89
+    assert len(catalog) == 90
     report = json.loads((tmp_path / "data/processed/route_validation_report.json").read_text(encoding="utf-8"))
     assert report["batch_status"] == "partial"
     assert report["published_count"] == 89
+    assert report["displayed_count"] == 90
     if failure == "overpass_error":
         assert report["failures"][0]["route_id"] == "route-2"
         assert report["failures"][0]["mode"] == "walk"

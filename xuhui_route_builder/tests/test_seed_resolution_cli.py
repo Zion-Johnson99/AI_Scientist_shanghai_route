@@ -161,29 +161,20 @@ def test_repository_raw_paths_are_persisted_as_relative_paths(tmp_path: Path) ->
     )
 
 
-def test_resolve_seed_drafts_writes_strict_seeds_and_validate_seeds(
+def test_resolve_seed_drafts_rejects_legacy_portfolio_without_new_gates(
     tmp_path: Path,
 ) -> None:
     seed_dir = tmp_path / "data" / "seeds"
     seed_dir.mkdir(parents=True)
     _write_expanded_drafts(seed_dir)
 
-    seeds = resolve_seed_drafts(tmp_path, DraftClient())
-    validated = validate_seeds(tmp_path)
+    with pytest.raises(ValueError, match="route seed portfolio failed"):
+        resolve_seed_drafts(tmp_path, DraftClient())
 
-    assert len(seeds) == len(validated) == 90
-    assert all(
-        node.lng_gcj02 is not None and node.lat_gcj02 is not None
-        for seed in seeds
-        for node in seed.ordered_nodes
-    )
-    assert all("POI解析响应:" in seed.evidence_note for seed in seeds)
-    assert all(str(tmp_path) not in seed.evidence_note for seed in seeds)
-    persisted = json.loads((seed_dir / "route_seeds.json").read_text(encoding="utf-8"))
-    assert len(persisted) == 90
+    assert not (seed_dir / "route_seeds.json").exists()
 
 
-def test_validate_seeds_accepts_quality_driven_uneven_distance_bands(tmp_path: Path) -> None:
+def test_validate_seeds_accepts_balanced_portfolio(tmp_path: Path) -> None:
     source = Path(__file__).resolve().parents[1] / "data" / "seeds" / "route_seeds.json"
     target = tmp_path / "data" / "seeds" / "route_seeds.json"
     target.parent.mkdir(parents=True)
@@ -197,6 +188,15 @@ def test_validate_seeds_accepts_quality_driven_uneven_distance_bands(tmp_path: P
         "run": 30,
         "bike": 30,
     }
+    assert all(len(seed.preference_hits) >= 2 for seed in seeds)
+    assert all(len(seed.preference_search_status) == 4 for seed in seeds)
+    assert {
+        mode: sum(
+            seed.route_mode == mode and seed.route_shape == "strict_loop"
+            for seed in seeds
+        )
+        for mode in ("walk", "run", "bike")
+    } == {"walk": 15, "run": 15, "bike": 15}
 
 
 def test_resolve_seed_drafts_does_not_overwrite_on_failure(tmp_path: Path) -> None:
@@ -291,6 +291,7 @@ def test_atomic_replace_failure_preserves_existing_target_and_cleans_temp(
     _write_expanded_drafts(seed_dir)
     target = seed_dir / "route_seeds.json"
     target.write_text("old-content", encoding="utf-8")
+    monkeypatch.setattr(cli_module, "_validate_seed_collection", lambda seeds: None)
 
     def fail_replace(_source, _target):
         raise OSError("replace failed")
@@ -311,6 +312,7 @@ def test_atomic_write_failure_preserves_existing_target_and_cleans_temp(
     _write_expanded_drafts(seed_dir)
     target = seed_dir / "route_seeds.json"
     target.write_text("old-content", encoding="utf-8")
+    monkeypatch.setattr(cli_module, "_validate_seed_collection", lambda seeds: None)
 
     def fail_dump(*_args, **_kwargs):
         raise OSError("write failed")
@@ -331,6 +333,7 @@ def test_atomic_write_uses_a_unique_temp_name_for_each_run(
     _write_expanded_drafts(seed_dir)
     sources: list[Path] = []
     real_replace = cli_module.os.replace
+    monkeypatch.setattr(cli_module, "_validate_seed_collection", lambda seeds: None)
 
     def capture_replace(source_path, target_path):
         sources.append(Path(source_path))

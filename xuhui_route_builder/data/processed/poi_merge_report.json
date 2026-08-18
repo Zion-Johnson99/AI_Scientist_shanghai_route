@@ -1,23 +1,35 @@
 {
-  "input_record_count": 605,
-  "published_association_count": 7,
-  "published_unique_poi_count": 2,
+  "input_record_count": 202,
+  "published_association_count": 30,
+  "published_unique_poi_count": 20,
   "routes_with_verified_pois": [
     "XH_RUN_0031",
+    "XH_RUN_0032",
+    "XH_RUN_0037",
     "XH_RUN_0039",
     "XH_RUN_0040",
     "XH_WALK_0001",
+    "XH_WALK_0003",
+    "XH_WALK_0009",
+    "XH_WALK_0011",
     "XH_WALK_0012",
+    "XH_WALK_0021",
     "XH_WALK_0022",
-    "XH_WALK_0023"
+    "XH_WALK_0023",
+    "XH_WALK_0025"
   ],
-  "excluded": {
-    "unverified": 521,
-    "closed": 2,
-    "unpublished_route": 75,
-    "invalid": 0
+  "preference_gate_failures": {
+    "XH_RUN_0050": "长路线缺少已核实厕所或便利店"
   },
-  "published_route_count": 13,
+  "excluded": {
+    "unverified": 0,
+    "closed": 0,
+    "unpublished_route": 1531,
+    "invalid": 0,
+    "outside_corridor": 10
+  },
+  "published_route_count": 14,
+  "displayed_route_count": 90,
   "source_files": [
     "data/interim/poi/walk_route_pois.json",
     "data/interim/poi/run_route_pois.json",

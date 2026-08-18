@@ -6,12 +6,12 @@ WEB_ROOT = Path(__file__).resolve().parents[1] / "web"
 DATA_ROOT = Path(__file__).resolve().parents[1] / "data" / "web"
 
 
-def test_default_web_data_contains_only_formally_published_routes() -> None:
+def test_default_web_data_contains_all_90_status_labelled_routes() -> None:
     routes = json.loads((DATA_ROOT / "xuhui_routes.geojson").read_text(encoding="utf-8"))
     catalog = json.loads((DATA_ROOT / "route_catalog.json").read_text(encoding="utf-8"))
 
-    assert len(routes["features"]) == 13
-    assert len(catalog) == 13
+    assert len(routes["features"]) == 90
+    assert len(catalog) == 90
     assert all(
         item.get("start_location", {}).get("name")
         and isinstance(item["start_location"].get("lng_gcj02"), float)
@@ -19,11 +19,11 @@ def test_default_web_data_contains_only_formally_published_routes() -> None:
         for item in catalog
     )
     assert {mode: sum(route["route_mode"] == mode for route in catalog) for mode in ("walk", "run", "bike")} == {
-        "walk": 8,
-        "run": 5,
-        "bike": 0,
+        "walk": 30,
+        "run": 30,
+        "bike": 30,
     }
-    assert all(route["validation_status"] == "accepted" for route in catalog)
+    assert all(route["validation_status"] in {"accepted", "needs_review"} for route in catalog)
 
 
 def test_index_declares_inline_favicon_to_avoid_404() -> None:
@@ -37,7 +37,7 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260817-inline-navigation-2"
+    release = "v=20260818-portfolio-1"
     assert f"./styles/main.css?{release}" in html
     assert f"./src/main.js?{release}" in html
     assert f'./data-loader.js?{release}' in main_js
@@ -116,6 +116,8 @@ def test_route_controls_support_local_candidate_search_and_preferences() -> None
         assert f'id="{element_id}"' in html
 
     assert 'id="preferMetro"' not in html
+    assert 'id="preferStore" type="checkbox" value="convenience"' in html
+    assert 'id="preferPark" type="checkbox" value="park_gate"' in html
     assert "metro:" not in route_ui_js
 
     assert "route-selection-view" in html
@@ -133,6 +135,10 @@ def test_route_controls_support_local_candidate_search_and_preferences() -> None
     assert "data-route-mode" in html
     assert "onShowRoute" in route_ui_js
     assert "updateModeCounts(catalog, controls)" in route_ui_js
+    assert 'tab.querySelector("span").textContent = `${routes.length} 条`;' in route_ui_js
+    assert "routeShapeCounts" not in route_ui_js
+    assert "环" in route_ui_js
+    assert "单" in route_ui_js
     assert "30 条" not in html
     assert "90 条城市运动候选路线" not in html
 

@@ -2,3201 +2,3729 @@
   {
     "route_id": "XH_BIKE_0061",
     "seed_id": "bike_xh_0813_001",
-    "route_name": "西岸穹顶艺术中心—龙腾大道与瑞宁路骑行线",
+    "route_name": "西岸—徐家汇体育公园骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 3500,
-    "route_shape": "one_way",
-    "start_location": {
-      "name": "西岸穹顶艺术中心外侧龙腾大道",
-      "lng_gcj02": 121.464561,
-      "lat_gcj02": 31.163167,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0HAL54MUG）"
-    },
-    "end_location": {
-      "name": "龙腾大道与瑞宁路交叉口",
-      "lng_gcj02": 121.466947,
-      "lat_gcj02": 31.186049,
-      "location_type": "end",
-      "source": "高德交叉口解析缓存（2026-08-13）"
-    },
-    "ordered_nodes": [
-      {
-        "name": "西岸穹顶艺术中心外侧龙腾大道",
-        "lng_gcj02": 121.464561,
-        "lat_gcj02": 31.163167,
-        "source": "高德POI解析缓存（2026-08-13，B0HAL54MUG）",
-        "poi_id": "B0HAL54MUG"
-      },
-      {
-        "name": "龙腾大道与瑞宁路交叉口",
-        "lng_gcj02": 121.466947,
-        "lat_gcj02": 31.186049,
-        "source": "高德交叉口解析缓存（2026-08-13）"
-      }
+    "target_distance_m": 7800,
+    "distance_band": "5-10km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 1,
+    "popular_area_ids": [
+      "west_bund",
+      "longhua",
+      "xujiahui"
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      },
-      {
-        "amenity_id": "B0ID7CH2HC",
-        "name": "GATE M 西岸凤巢-女洗手间",
-        "type": "toilet",
-        "lng_gcj02": 121.459966,
-        "lat_gcj02": 31.163799,
-        "source": "高德POI解析缓存 place_text_v5_fca87dd620b5a0fd.json"
-      }
-    ],
-    "amenity_ids": [
-      "B0KUNMEGLF",
-      "B0ID7CH2HC"
-    ],
-    "geometry_action": "regenerate",
-    "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：西岸穹顶艺术中心外侧龙腾大道 → 龙腾大道与瑞宁路交叉口；取消中间塑形节点。",
-    "access_restrictions": [
-      "滨江步行层、人流密集广场和展馆内部按现场标志推行",
-      "仅使用浦西地面道路，排除隧道和高架"
-    ],
-    "design_rationale": "仅保留端点，由骑行路由选择连续主干道路，降低分叉、重复边、局部返回和掉头风险。",
-    "risk_flags": [
-      "龙腾大道局部施工和滨水层人车分流状态需出发前复核"
-    ],
-    "source_records": [
-      {
-        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
-        "publisher": "上海市文化和旅游局",
-        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      }
-    ]
-  },
-  {
-    "route_id": "XH_BIKE_0062",
-    "seed_id": "bike_xh_0813_002",
-    "route_name": "西岸梦中心—龙腾大道与瑞宁路骑行线",
-    "route_mode": "bike",
-    "target_distance_m": 3500,
-    "route_shape": "one_way",
-    "start_location": {
-      "name": "西岸梦中心龙腾大道入口",
-      "lng_gcj02": 121.466601,
-      "lat_gcj02": 31.161366,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0LKLP88CD）"
-    },
-    "end_location": {
-      "name": "龙腾大道与瑞宁路交叉口",
-      "lng_gcj02": 121.466947,
-      "lat_gcj02": 31.186049,
-      "location_type": "end",
-      "source": "高德交叉口解析缓存（2026-08-13）"
-    },
-    "ordered_nodes": [
-      {
-        "name": "西岸梦中心龙腾大道入口",
-        "lng_gcj02": 121.466601,
-        "lat_gcj02": 31.161366,
-        "source": "高德POI解析缓存（2026-08-13，B0LKLP88CD）",
-        "poi_id": "B0LKLP88CD"
-      },
-      {
-        "name": "龙腾大道与瑞宁路交叉口",
-        "lng_gcj02": 121.466947,
-        "lat_gcj02": 31.186049,
-        "source": "高德交叉口解析缓存（2026-08-13）"
-      }
-    ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      },
-      {
-        "amenity_id": "B0ID7CH2HC",
-        "name": "GATE M 西岸凤巢-女洗手间",
-        "type": "toilet",
-        "lng_gcj02": 121.459966,
-        "lat_gcj02": 31.163799,
-        "source": "高德POI解析缓存 place_text_v5_fca87dd620b5a0fd.json"
-      }
-    ],
-    "amenity_ids": [
-      "B0KUNMEGLF",
-      "B0ID7CH2HC"
-    ],
-    "geometry_action": "regenerate",
-    "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：西岸梦中心龙腾大道入口 → 龙腾大道与瑞宁路交叉口；取消中间塑形节点。",
-    "access_restrictions": [
-      "商业体内部与展馆广场按现场标志推行",
-      "排除龙耀路隧道"
-    ],
-    "design_rationale": "仅保留端点，由骑行路由选择连续主干道路，降低分叉、重复边、局部返回和掉头风险。",
-    "risk_flags": [
-      "龙腾大道滨江骑行层的人车分流状态需在生成后复核"
-    ],
-    "source_records": [
-      {
-        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
-        "publisher": "上海市文化和旅游局",
-        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      }
-    ]
-  },
-  {
-    "route_id": "XH_BIKE_0063",
-    "seed_id": "bike_xh_0813_003",
-    "route_name": "龙耀路与云锦路—龙美术馆西岸馆骑行线",
-    "route_mode": "bike",
-    "target_distance_m": 3000,
-    "route_shape": "one_way",
     "start_location": {
       "name": "龙耀路与云锦路交叉口",
       "lng_gcj02": 121.45928,
       "lat_gcj02": 31.161845,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0FFI8KKQT）"
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "龙美术馆西岸馆外侧龙腾大道",
-      "lng_gcj02": 121.464761,
-      "lat_gcj02": 31.183954,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0FFF2YL75）"
+      "name": "龙耀路与云锦路交叉口",
+      "lng_gcj02": 121.45928,
+      "lat_gcj02": 31.161845,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
         "name": "龙耀路与云锦路交叉口",
         "lng_gcj02": 121.45928,
         "lat_gcj02": 31.161845,
-        "source": "高德POI解析缓存（2026-08-13，B0FFI8KKQT）",
-        "poi_id": "B0FFI8KKQT"
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "龙美术馆西岸馆外侧龙腾大道",
-        "lng_gcj02": 121.464761,
-        "lat_gcj02": 31.183954,
-        "source": "高德POI解析缓存（2026-08-13，B0FFF2YL75）",
-        "poi_id": "B0FFF2YL75"
+        "name": "丰谷路与龙腾大道交叉口",
+        "lng_gcj02": 121.4628,
+        "lat_gcj02": 31.17109,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "徐家汇体育公园天钥桥路入口外侧道路",
+        "lng_gcj02": 121.440734,
+        "lat_gcj02": 31.181297,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙华会外侧龙华路",
+        "lng_gcj02": 121.453425,
+        "lat_gcj02": 31.173657,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0ID7CH2HC",
-        "name": "GATE M 西岸凤巢-女洗手间",
-        "type": "toilet",
-        "lng_gcj02": 121.459966,
-        "lat_gcj02": 31.163799,
-        "source": "高德POI解析缓存 place_text_v5_fca87dd620b5a0fd.json"
-      },
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      }
+    "waypoint_names": [
+      "丰谷路与龙腾大道交叉口",
+      "徐家汇体育公园天钥桥路入口外侧道路",
+      "龙华会外侧龙华路"
     ],
     "amenity_ids": [
-      "B0ID7CH2HC",
+      "node/7409372497",
       "B0KUNMEGLF"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "verified",
+      "convenience": "no_verified_match"
+    },
+    "preference_hits": [
+      "coffee",
+      "toilet"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：龙耀路与云锦路交叉口 → 龙美术馆西岸馆外侧龙腾大道；取消中间塑形节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "不进入龙耀路隧道",
-      "商业体内部推行"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "仅保留端点，由骑行路由选择连续主干道路，降低分叉、重复边、局部返回和掉头风险。",
+    "design_rationale": "覆盖west_bund、longhua、xujiahui；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "龙耀路与云锦路接入滨江骑行层的路口导向需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
+      }
+    ]
+  },
+  {
+    "route_id": "XH_BIKE_0062",
+    "seed_id": "bike_xh_0813_002",
+    "route_name": "上海植物园外围骑行环线",
+    "route_mode": "bike",
+    "target_distance_m": 8100,
+    "distance_band": "5-10km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 1,
+    "popular_area_ids": [
+      "shanghai_botanical_garden",
+      "longhua"
+    ],
+    "start_location": {
+      "name": "上海植物园3号门外百色路",
+      "lng_gcj02": 121.43947,
+      "lat_gcj02": 31.142747,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
+    },
+    "end_location": {
+      "name": "上海植物园3号门外百色路",
+      "lng_gcj02": 121.43947,
+      "lat_gcj02": 31.142747,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
+    },
+    "ordered_nodes": [
+      {
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "百色路与龙吴路交叉口",
+        "lng_gcj02": 121.450605,
+        "lat_gcj02": 31.144441,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙水南路与龙腾大道交叉口",
+        "lng_gcj02": 121.460338,
+        "lat_gcj02": 31.15566,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园4号门外罗城路",
+        "lng_gcj02": 121.445793,
+        "lat_gcj02": 31.151884,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      }
+    ],
+    "waypoint_names": [
+      "百色路与龙吴路交叉口",
+      "龙水南路与龙腾大道交叉口",
+      "上海植物园4号门外罗城路"
+    ],
+    "amenity_ids": [
+      "amap:gate:B0FFF64RUI",
+      "B0FFG27ABK"
+    ],
+    "preference_search_status": {
+      "coffee": "no_verified_match",
+      "park_gate": "verified",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "park_gate",
+      "convenience"
+    ],
+    "geometry_action": "regenerate",
+    "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
+    "access_restrictions": [
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
+    ],
+    "design_rationale": "覆盖shanghai_botanical_garden、longhua；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
+    "risk_flags": [
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
+    ],
+    "source_records": [
+      {
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
+      },
+      {
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
+      }
+    ]
+  },
+  {
+    "route_id": "XH_BIKE_0063",
+    "seed_id": "bike_xh_0813_003",
+    "route_name": "漕河泾—桂江绿廊骑行环线",
+    "route_mode": "bike",
+    "target_distance_m": 9400,
+    "distance_band": "5-10km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 1,
+    "popular_area_ids": [
+      "caohejing",
+      "kangjian"
+    ],
+    "start_location": {
+      "name": "宜山路与虹梅路交叉口",
+      "lng_gcj02": 121.397164,
+      "lat_gcj02": 31.170541,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
+    },
+    "end_location": {
+      "name": "宜山路与虹梅路交叉口",
+      "lng_gcj02": 121.397164,
+      "lat_gcj02": 31.170541,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
+    },
+    "ordered_nodes": [
+      {
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "桂江路与钦州南路交叉口",
+        "lng_gcj02": 121.407256,
+        "lat_gcj02": 31.155183,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "江安路与桂江路交叉口",
+        "lng_gcj02": 121.410732,
+        "lat_gcj02": 31.147197,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "蒲汇塘路与桂林路交叉口",
+        "lng_gcj02": 121.416867,
+        "lat_gcj02": 31.172599,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      }
+    ],
+    "waypoint_names": [
+      "桂江路与钦州南路交叉口",
+      "江安路与桂江路交叉口",
+      "蒲汇塘路与桂林路交叉口"
+    ],
+    "amenity_ids": [
+      "node/12518143102",
+      "node/5239012373"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "convenience"
+    ],
+    "geometry_action": "regenerate",
+    "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
+    "access_restrictions": [
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
+    ],
+    "design_rationale": "覆盖caohejing、kangjian；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
+    "risk_flags": [
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
+    ],
+    "source_records": [
+      {
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
+        "accessed_at": "2026-08-15",
+        "source_level": "A",
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
+      },
+      {
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0064",
     "seed_id": "bike_xh_0813_004",
-    "route_name": "上海植物园1号门—龙水南路与龙腾大道骑行线",
+    "route_name": "徐家汇—衡复风貌骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 2000,
-    "route_shape": "one_way",
+    "target_distance_m": 8600,
+    "distance_band": "5-10km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 1,
+    "popular_area_ids": [
+      "xujiahui",
+      "hengfu"
+    ],
     "start_location": {
-      "name": "上海植物园1号门外龙吴路",
-      "lng_gcj02": 121.450227,
-      "lat_gcj02": 31.146374,
-      "location_type": "start",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "徐家汇体育公园天钥桥路入口外侧道路",
+      "lng_gcj02": 121.440734,
+      "lat_gcj02": 31.181297,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "龙水南路与龙腾大道交叉口",
-      "lng_gcj02": 121.460338,
-      "lat_gcj02": 31.15566,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0FFLL702P）"
+      "name": "徐家汇体育公园天钥桥路入口外侧道路",
+      "lng_gcj02": 121.440734,
+      "lat_gcj02": 31.181297,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "上海植物园1号门外龙吴路",
-        "lng_gcj02": 121.450227,
-        "lat_gcj02": 31.146374,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "name": "徐家汇体育公园天钥桥路入口外侧道路",
+        "lng_gcj02": 121.440734,
+        "lat_gcj02": 31.181297,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "龙水南路与龙腾大道交叉口",
-        "lng_gcj02": 121.460338,
-        "lat_gcj02": 31.15566,
-        "source": "高德POI解析缓存（2026-08-13，B0FFLL702P）",
-        "poi_id": "B0FFLL702P"
+        "name": "安顺路与淮海西路交叉口",
+        "lng_gcj02": 121.426585,
+        "lat_gcj02": 31.198656,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "徐家汇体育公园天钥桥路入口外侧道路",
+        "lng_gcj02": 121.440734,
+        "lat_gcj02": 31.181297,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0FFHR87AU",
-        "name": "雅迪电动车(百色路店)",
-        "type": "bike_service",
-        "lng_gcj02": 121.450346,
-        "lat_gcj02": 31.144552,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      }
+    "waypoint_names": [
+      "安顺路与淮海西路交叉口",
+      "徐家汇公园衡山路入口外侧道路"
     ],
     "amenity_ids": [
-      "B0FFG27ABK",
-      "B0FFHR87AU",
-      "B0KUNMEGLF"
+      "node/4405321290",
+      "amap:gate:B00155IQRX",
+      "B00156CS7I",
+      "node/4382936389"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：上海植物园1号门外龙吴路 → 龙水南路与龙腾大道交叉口；取消中间塑形节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "植物园内部不纳入骑行段",
-      "龙吴路仅走地面非机动车道"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "仅保留端点，由骑行路由选择连续主干道路，降低分叉、重复边、局部返回和掉头风险。",
+    "design_rationale": "覆盖xujiahui、hengfu；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "龙水南路接入龙腾大道的路口渠化需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
-      },
-      {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
+      },
+      {
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0065",
     "seed_id": "bike_xh_0813_005",
-    "route_name": "上海植物园3号门—龙华滨江休闲广场骑行线",
+    "route_name": "康健—漕河泾骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 2435,
-    "route_shape": "one_way",
+    "target_distance_m": 9400,
+    "distance_band": "5-10km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 1,
+    "popular_area_ids": [
+      "kangjian",
+      "caohejing"
+    ],
     "start_location": {
-      "name": "上海植物园3号门外百色路",
-      "lng_gcj02": 121.43947,
-      "lat_gcj02": 31.142747,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B00156ZSX5）"
+      "name": "蒲汇塘路与桂林路交叉口",
+      "lng_gcj02": 121.416867,
+      "lat_gcj02": 31.172599,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "龙华滨江休闲广场外侧道路",
-      "lng_gcj02": 121.458454,
-      "lat_gcj02": 31.151373,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0015474F4）"
+      "name": "蒲汇塘路与桂林路交叉口",
+      "lng_gcj02": 121.416867,
+      "lat_gcj02": 31.172599,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "上海植物园3号门外百色路",
-        "lng_gcj02": 121.43947,
-        "lat_gcj02": 31.142747,
-        "source": "高德POI解析缓存（2026-08-13，B00156ZSX5）",
-        "poi_id": "B00156ZSX5"
+        "name": "蒲汇塘路与桂林路交叉口",
+        "lng_gcj02": 121.416867,
+        "lat_gcj02": 31.172599,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "龙华滨江休闲广场外侧道路",
-        "lng_gcj02": 121.458454,
-        "lat_gcj02": 31.151373,
-        "source": "高德POI解析缓存（2026-08-13，B0015474F4）",
-        "poi_id": "B0015474F4"
+        "name": "宜山路与虹漕路交叉口",
+        "lng_gcj02": 121.409495,
+        "lat_gcj02": 31.17309,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "桂江路与钦州南路交叉口",
+        "lng_gcj02": 121.407256,
+        "lat_gcj02": 31.155183,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "蒲汇塘路与桂林路交叉口",
+        "lng_gcj02": 121.416867,
+        "lat_gcj02": 31.172599,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0FFHR87AU",
-        "name": "雅迪电动车(百色路店)",
-        "type": "bike_service",
-        "lng_gcj02": 121.450346,
-        "lat_gcj02": 31.144552,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      }
+    "waypoint_names": [
+      "宜山路与虹漕路交叉口",
+      "桂江路与钦州南路交叉口"
     ],
     "amenity_ids": [
-      "B0FFG27ABK",
-      "B0FFHR87AU"
+      "node/12518143102",
+      "node/5239012373"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：上海植物园3号门外百色路 → 龙华滨江休闲广场外侧道路；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "园内不骑行",
-      "龙吴路与龙水南路路口按非机动车信号通行"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖kangjian、caohejing；采用蒲汇塘路—宜山路—桂江路外围连续街区环，删除跨植物园的长对角连接。",
     "risk_flags": [
-      "百色路接入龙吴路的路口渠化需在生成后复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_XH_GOV_SOUTH_CYCLE_PLAN",
-        "title": "徐汇滨江南部高品质骑行网络建设资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069a97abda019e49836f7a2406",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持龙腾大道、龙吴路和华泾南部的连续骑行骨架；规划段开放状态需现场复核。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0066",
     "seed_id": "bike_xh_0813_006",
-    "route_name": "上海植物园四号门—龙华历史风貌骑行线",
+    "route_name": "植物园—西岸龙腾大道骑行线",
     "route_mode": "bike",
-    "target_distance_m": 5000,
+    "target_distance_m": 5900,
+    "distance_band": "5-10km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 2,
+    "popular_area_ids": [
+      "shanghai_botanical_garden",
+      "longhua",
+      "west_bund"
+    ],
     "start_location": {
-      "name": "上海植物园4号门外罗城路",
-      "lng_gcj02": 121.445793,
-      "lat_gcj02": 31.151884,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0FFF64RUI）"
+      "name": "上海植物园1号门外龙吴路",
+      "lng_gcj02": 121.450227,
+      "lat_gcj02": 31.146374,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "龙华寺外龙华路",
-      "lng_gcj02": 121.451842,
-      "lat_gcj02": 31.175174,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B00155AMEJ）"
+      "name": "龙腾大道与瑞宁路交叉口",
+      "lng_gcj02": 121.466947,
+      "lat_gcj02": 31.186049,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "上海植物园4号门外罗城路",
-        "lng_gcj02": 121.445793,
-        "lat_gcj02": 31.151884,
-        "source": "高德POI解析缓存（2026-08-13，B0FFF64RUI）",
-        "poi_id": "B0FFF64RUI"
-      },
-      {
-        "name": "龙吴路与龙水南路交叉口",
-        "lng_gcj02": 121.450231,
-        "lat_gcj02": 31.153632,
-        "source": "高德POI解析缓存（2026-08-13，B0FFHPFUQ1）",
-        "poi_id": "B0FFHPFUQ1"
+        "name": "上海植物园1号门外龙吴路",
+        "lng_gcj02": 121.450227,
+        "lat_gcj02": 31.146374,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
         "name": "龙华滨江休闲广场外侧道路",
         "lng_gcj02": 121.458454,
         "lat_gcj02": 31.151373,
-        "source": "高德POI解析缓存（2026-08-13，B0015474F4）",
-        "poi_id": "B0015474F4"
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "龙华会外侧龙华路",
-        "lng_gcj02": 121.453425,
-        "lat_gcj02": 31.173657,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "龙华寺外龙华路",
-        "lng_gcj02": 121.451842,
-        "lat_gcj02": 31.175174,
-        "source": "高德POI解析缓存（2026-08-13，B00155AMEJ）",
-        "poi_id": "B00155AMEJ"
+        "name": "丰谷路与龙腾大道交叉口",
+        "lng_gcj02": 121.4628,
+        "lat_gcj02": 31.17109,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
     "waypoint_names": [
-      "龙吴路与龙水南路交叉口",
       "龙华滨江休闲广场外侧道路",
-      "龙华会外侧龙华路"
-    ],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0LBTO51W7",
-        "name": "星巴克上海徐家汇体育公园店",
-        "type": "coffee",
-        "lng_gcj02": 121.439075,
-        "lat_gcj02": 31.181725,
-        "source": "高德POI解析缓存 place_text_v5_5706b91e34c67d58.json"
-      }
+      "龙耀路与云锦路交叉口",
+      "丰谷路与龙腾大道交叉口"
     ],
     "amenity_ids": [
-      "B0FFG27ABK",
-      "B0LBTO51W7"
+      "node/7409372497",
+      "B0KUNMEGLF"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "verified",
+      "convenience": "no_verified_match"
+    },
+    "preference_hits": [
+      "coffee",
+      "toilet"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "从植物园四号门外直接接入龙吴路—龙水南路，随后沿龙华滨江外侧公共道路北行至龙华寺。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "植物园、龙华寺和商业体内部推行",
-      "排除龙耀路隧道"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除近重合的罗城路口节点和石龙路地铁站绕行，形成植物园—龙华滨江—龙华历史片区单程骨架。",
+    "design_rationale": "覆盖shanghai_botanical_garden、longhua、west_bund；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "龙华滨江至龙华路的非机动车接续需在生成后复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_XH_GOV_LONGHUA_CULTURE",
-        "title": "龙华历史文化线路资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6b29b732ca",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认龙华寺、龙华烈士陵园与徐家汇体育片区文化节点；骑行仅取外围公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0067",
     "seed_id": "bike_xh_0813_007",
-    "route_name": "上海音乐学院音乐城堡外侧淮海中路—徐家汇公园骑行线",
+    "route_name": "上海植物园—龙华骑行线",
     "route_mode": "bike",
-    "target_distance_m": 3000,
+    "target_distance_m": 7800,
+    "distance_band": "5-10km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 2,
+    "popular_area_ids": [
+      "shanghai_botanical_garden",
+      "longhua"
+    ],
     "start_location": {
-      "name": "上海音乐学院音乐城堡外侧淮海中路",
-      "lng_gcj02": 121.454651,
-      "lat_gcj02": 31.214251,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0MB36E7LJ）"
+      "name": "上海植物园3号门外百色路",
+      "lng_gcj02": 121.43947,
+      "lat_gcj02": 31.142747,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "徐家汇公园衡山路入口",
-      "lng_gcj02": 121.442461,
-      "lat_gcj02": 31.197401,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B00155ILI8）"
+      "name": "龙华会外侧龙华路",
+      "lng_gcj02": 121.453425,
+      "lat_gcj02": 31.173657,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "上海音乐学院音乐城堡外侧淮海中路",
-        "lng_gcj02": 121.454651,
-        "lat_gcj02": 31.214251,
-        "source": "高德POI解析缓存（2026-08-13，B0MB36E7LJ）",
-        "poi_id": "B0MB36E7LJ"
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "衡山路8号外侧公共道路",
-        "lng_gcj02": 121.447346,
-        "lat_gcj02": 31.206492,
-        "source": "高德POI解析缓存（2026-08-13，B0HU6S1SWJ）",
-        "poi_id": "B0HU6S1SWJ"
+        "name": "上海植物园4号门外罗城路",
+        "lng_gcj02": 121.445793,
+        "lat_gcj02": 31.151884,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "徐家汇公园衡山路入口",
-        "lng_gcj02": 121.442461,
-        "lat_gcj02": 31.197401,
-        "source": "高德POI解析缓存（2026-08-13，B00155ILI8）",
-        "poi_id": "B00155ILI8"
+        "name": "龙华滨江休闲广场外侧道路",
+        "lng_gcj02": 121.458454,
+        "lat_gcj02": 31.151373,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙华会外侧龙华路",
+        "lng_gcj02": 121.453425,
+        "lat_gcj02": 31.173657,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
     "waypoint_names": [
-      "衡山路8号外侧公共道路"
-    ],
-    "amenities": [
-      {
-        "amenity_id": "B00156CS7I",
-        "name": "徐家汇公园-公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.441945,
-        "lat_gcj02": 31.197235,
-        "source": "高德POI解析缓存 place_text_v5_56fdf2a5447234fe.json"
-      },
-      {
-        "amenity_id": "B0LG7SVBWT",
-        "name": "漫慢SLOWPACED咖啡(徐家汇店)",
-        "type": "coffee",
-        "lng_gcj02": 121.433853,
-        "lat_gcj02": 31.186768,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      }
+      "上海植物园4号门外罗城路",
+      "龙华滨江休闲广场外侧道路"
     ],
     "amenity_ids": [
-      "B00156CS7I",
-      "B0LG7SVBWT"
+      "amap:gate:B0FFF64RUI",
+      "B0FFG27ABK"
+    ],
+    "preference_search_status": {
+      "coffee": "no_verified_match",
+      "park_gate": "verified",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "park_gate",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：上海音乐学院音乐城堡外侧淮海中路 → 衡山路8号外侧公共道路 → 徐家汇公园衡山路入口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "风貌区窄路和高人流时段降速",
-      "建筑、校园与公园内部推行"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖shanghai_botanical_garden、longhua；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "部分风貌区道路可能单行，需按骑行导航方向生成"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
+      },
+      {
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0068",
     "seed_id": "bike_xh_0813_008",
-    "route_name": "徐家汇体育公园—徐家汇书院外侧漕溪北路骑行线",
+    "route_name": "漕河泾—徐家汇骑行线",
     "route_mode": "bike",
-    "target_distance_m": 2000,
+    "target_distance_m": 6200,
+    "distance_band": "5-10km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 2,
+    "popular_area_ids": [
+      "caohejing",
+      "xujiahui"
+    ],
     "start_location": {
-      "name": "徐家汇体育公园天钥桥路入口",
-      "lng_gcj02": 121.440734,
-      "lat_gcj02": 31.181297,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0FFHKDU6C）"
+      "name": "宜山路与虹梅路交叉口",
+      "lng_gcj02": 121.397164,
+      "lat_gcj02": 31.170541,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "徐家汇书院外侧漕溪北路",
-      "lng_gcj02": 121.437201,
-      "lat_gcj02": 31.190521,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0L3X129LK）"
+      "name": "徐家汇体育公园天钥桥路入口外侧道路",
+      "lng_gcj02": 121.440734,
+      "lat_gcj02": 31.181297,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "徐家汇体育公园天钥桥路入口",
-        "lng_gcj02": 121.440734,
-        "lat_gcj02": 31.181297,
-        "source": "高德POI解析缓存（2026-08-13，B0FFHKDU6C）",
-        "poi_id": "B0FFHKDU6C"
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "徐家汇书院外侧漕溪北路",
-        "lng_gcj02": 121.437201,
-        "lat_gcj02": 31.190521,
-        "source": "高德POI解析缓存（2026-08-13，B0L3X129LK）",
-        "poi_id": "B0L3X129LK"
+        "name": "徐家汇体育公园天钥桥路入口外侧道路",
+        "lng_gcj02": 121.440734,
+        "lat_gcj02": 31.181297,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
     "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0LBTO51W7",
-        "name": "星巴克上海徐家汇体育公园店",
-        "type": "coffee",
-        "lng_gcj02": 121.439075,
-        "lat_gcj02": 31.181725,
-        "source": "高德POI解析缓存 place_text_v5_5706b91e34c67d58.json"
-      },
-      {
-        "amenity_id": "B00156CS7I",
-        "name": "徐家汇公园-公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.441945,
-        "lat_gcj02": 31.197235,
-        "source": "高德POI解析缓存 place_text_v5_56fdf2a5447234fe.json"
-      },
-      {
-        "amenity_id": "B0LG7SVBWT",
-        "name": "漫慢SLOWPACED咖啡(徐家汇店)",
-        "type": "coffee",
-        "lng_gcj02": 121.433853,
-        "lat_gcj02": 31.186768,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      }
-    ],
     "amenity_ids": [
-      "B0LBTO51W7",
-      "B00156CS7I",
-      "B0LG7SVBWT"
+      "node/12518143102",
+      "node/5239012373"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "no_verified_match",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：徐家汇体育公园天钥桥路入口 → 徐家汇书院外侧漕溪北路；取消中间塑形节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "体育公园、纪念馆与徐家汇公园内部推行",
-      "漕溪北路仅走地面非机动车道"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "仅保留端点，由骑行路由选择连续主干道路，降低分叉、重复边、局部返回和掉头风险。",
+    "design_rationale": "覆盖caohejing、xujiahui；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "大型路口过街方式需服从非机动车信号"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
+      },
+      {
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0069",
     "seed_id": "bike_xh_0813_009",
-    "route_name": "江安路与桂江路—桂平路与漕宝路骑行线",
+    "route_name": "衡复—西岸骑行线",
     "route_mode": "bike",
-    "target_distance_m": 1942,
+    "target_distance_m": 9800,
+    "distance_band": "5-10km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 2,
+    "popular_area_ids": [
+      "hengfu",
+      "xujiahui",
+      "longhua",
+      "west_bund"
+    ],
     "start_location": {
-      "name": "江安路与桂江路交叉口",
-      "lng_gcj02": 121.410732,
-      "lat_gcj02": 31.147197,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0FFI8OK6E）"
+      "name": "乌鲁木齐中路与复兴西路交叉口",
+      "lng_gcj02": 121.44678,
+      "lat_gcj02": 31.210506,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "桂平路与漕宝路交叉口",
-      "lng_gcj02": 121.40525,
-      "lat_gcj02": 31.163012,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0FFHPG76V）"
+      "name": "龙耀路与云锦路交叉口",
+      "lng_gcj02": 121.45928,
+      "lat_gcj02": 31.161845,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "江安路与桂江路交叉口",
-        "lng_gcj02": 121.410732,
-        "lat_gcj02": 31.147197,
-        "source": "高德POI解析缓存（2026-08-13，B0FFI8OK6E）",
-        "poi_id": "B0FFI8OK6E"
+        "name": "乌鲁木齐中路与复兴西路交叉口",
+        "lng_gcj02": 121.44678,
+        "lat_gcj02": 31.210506,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "桂江路与钦州南路交叉口",
-        "lng_gcj02": 121.407256,
-        "lat_gcj02": 31.155183,
-        "source": "高德POI解析缓存（2026-08-13，B0FFLKZB8L）",
-        "poi_id": "B0FFLKZB8L"
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "桂平路与漕宝路交叉口",
-        "lng_gcj02": 121.40525,
-        "lat_gcj02": 31.163012,
-        "source": "高德POI解析缓存（2026-08-13，B0FFHPG76V）",
-        "poi_id": "B0FFHPG76V"
+        "name": "徐家汇体育公园天钥桥路入口外侧道路",
+        "lng_gcj02": 121.440734,
+        "lat_gcj02": 31.181297,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙华会外侧龙华路",
+        "lng_gcj02": 121.453425,
+        "lat_gcj02": 31.173657,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "丰谷路与龙腾大道交叉口",
+        "lng_gcj02": 121.4628,
+        "lat_gcj02": 31.17109,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
     "waypoint_names": [
-      "桂江路与钦州南路交叉口"
-    ],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      }
+      "徐家汇公园衡山路入口外侧道路",
+      "徐家汇体育公园天钥桥路入口外侧道路",
+      "龙华会外侧龙华路",
+      "丰谷路与龙腾大道交叉口"
     ],
     "amenity_ids": [
-      "B0FFG27ABK"
+      "node/7409372497",
+      "amap:gate:B00155IQRX",
+      "B0KUNMEGLF",
+      "node/4382936389"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：江安路与桂江路交叉口 → 桂江路与钦州南路交叉口 → 桂平路与漕宝路交叉口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "康健园内部不骑行",
-      "绿廊无骑行标志时走平行道路"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖hengfu、xujiahui、longhua、west_bund；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "桂江路工程分段开放状态需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_SH_GOV_GUIJIANG_PDF",
-        "title": "桂江路慢行与绿廊建设资料",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/cmsres/8f/8f342720baec4ef2a2368c3c2ecdc58d/6476cae1152b512ce10b8baff0d0967b.pdf",
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "支持桂江路、康健与蒲汇塘片区慢行联系；未明确允许骑行的绿廊和亲水段转平行公共道路。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
+      },
+      {
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0070",
     "seed_id": "bike_xh_0813_010",
-    "route_name": "宜山路与虹梅路—虹漕路与钦州北路骑行线",
+    "route_name": "华泾—上海植物园骑行线",
     "route_mode": "bike",
-    "target_distance_m": 1082,
+    "target_distance_m": 7000,
+    "distance_band": "5-10km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 2,
+    "popular_area_ids": [
+      "huajing",
+      "shanghai_botanical_garden"
+    ],
     "start_location": {
-      "name": "宜山路与虹梅路交叉口",
-      "lng_gcj02": 121.398296,
-      "lat_gcj02": 31.176291,
-      "location_type": "start",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "华展路与龙吴路交叉口",
+      "lng_gcj02": 121.45552,
+      "lat_gcj02": 31.112256,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "虹漕路与钦州北路交叉口",
-      "lng_gcj02": 121.408076,
-      "lat_gcj02": 31.179598,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0FFHPH4O6）"
+      "name": "上海植物园4号门外罗城路",
+      "lng_gcj02": 121.445793,
+      "lat_gcj02": 31.151884,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "宜山路与虹梅路交叉口",
-        "lng_gcj02": 121.398296,
-        "lat_gcj02": 31.176291,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "虹漕路与钦州北路交叉口",
-        "lng_gcj02": 121.408076,
-        "lat_gcj02": 31.179598,
-        "source": "高德POI解析缓存（2026-08-13，B0FFHPH4O6）",
-        "poi_id": "B0FFHPH4O6"
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园4号门外罗城路",
+        "lng_gcj02": 121.445793,
+        "lat_gcj02": 31.151884,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG69LN8",
-        "name": "星巴克(蒲汇塘路店)",
-        "type": "coffee",
-        "lng_gcj02": 121.431594,
-        "lat_gcj02": 31.187331,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      }
+    "waypoint_names": [
+      "上海植物园3号门外百色路"
     ],
     "amenity_ids": [
-      "B0FFG69LN8"
+      "amap:gate:B0FFF64RUI",
+      "node/9826900117"
+    ],
+    "preference_search_status": {
+      "coffee": "no_verified_match",
+      "park_gate": "verified",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "park_gate",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：宜山路与虹梅路交叉口 → 虹漕路与钦州北路交叉口；取消中间塑形节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "园区门禁与施工状态需复核",
-      "宜山路靠中环匝道处按非机动车导向"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "仅保留端点，由骑行路由选择连续主干道路，降低分叉、重复边、局部返回和掉头风险。",
+    "design_rationale": "连接华泾与上海植物园外围公共道路；删除向西岸折返的龙吴路—龙腾大道支段。",
     "risk_flags": [
-      "钦江路局部企业园区边界需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_XH_GOV_CAOHEJING_GREEN",
-        "title": "漕河泾开发区绿色慢行网络资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6afaa73eb9",
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "支持漕河泾、桂江路及田林片区公共道路慢行骨架；园区门禁与施工状态需复核。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
+      },
+      {
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0071",
     "seed_id": "bike_xh_0813_011",
-    "route_name": "龙腾大道与瑞宁路—西岸梦中心骑行线",
+    "route_name": "西岸—徐家汇—龙华骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 3500,
-    "route_shape": "one_way",
+    "target_distance_m": 13500,
+    "distance_band": "10-20km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 3,
+    "popular_area_ids": [
+      "west_bund",
+      "longhua",
+      "xujiahui"
+    ],
     "start_location": {
-      "name": "龙腾大道与瑞宁路交叉口",
-      "lng_gcj02": 121.466947,
-      "lat_gcj02": 31.186049,
-      "location_type": "start",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "龙耀路与云锦路交叉口",
+      "lng_gcj02": 121.45928,
+      "lat_gcj02": 31.161845,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "西岸梦中心龙腾大道入口",
-      "lng_gcj02": 121.466601,
-      "lat_gcj02": 31.161366,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0LKLP88CD）"
+      "name": "龙耀路与云锦路交叉口",
+      "lng_gcj02": 121.45928,
+      "lat_gcj02": 31.161845,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
+      {
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
       {
         "name": "龙腾大道与瑞宁路交叉口",
         "lng_gcj02": 121.466947,
         "lat_gcj02": 31.186049,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "西岸梦中心龙腾大道入口",
-        "lng_gcj02": 121.466601,
-        "lat_gcj02": 31.161366,
-        "source": "高德POI解析缓存（2026-08-13，B0LKLP88CD）",
-        "poi_id": "B0LKLP88CD"
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙华会外侧龙华路",
+        "lng_gcj02": 121.453425,
+        "lat_gcj02": 31.173657,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      },
-      {
-        "amenity_id": "B0ID7CH2HC",
-        "name": "GATE M 西岸凤巢-女洗手间",
-        "type": "toilet",
-        "lng_gcj02": 121.459966,
-        "lat_gcj02": 31.163799,
-        "source": "高德POI解析缓存 place_text_v5_fca87dd620b5a0fd.json"
-      }
+    "waypoint_names": [
+      "龙腾大道与瑞宁路交叉口",
+      "徐家汇公园衡山路入口外侧道路",
+      "龙华会外侧龙华路"
     ],
     "amenity_ids": [
+      "node/7409372497",
+      "amap:gate:B00155ILI8",
       "B0KUNMEGLF",
-      "B0ID7CH2HC"
+      "node/4382936389"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：龙腾大道与瑞宁路交叉口 → 西岸梦中心龙腾大道入口；取消中间塑形节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "滨水步行层按现场标志推行",
-      "排除打浦路隧道"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "仅保留端点，由骑行路由选择连续主干道路，降低分叉、重复边、局部返回和掉头风险。",
+    "design_rationale": "覆盖west_bund、longhua、xujiahui；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "瑞宁路至梦中心滨江骑行层的人车分流状态需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0072",
     "seed_id": "bike_xh_0813_012",
-    "route_name": "龙华滨江休闲广场—西岸梦中心骑行线",
+    "route_name": "植物园—康健—漕河泾骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 2000,
-    "route_shape": "one_way",
+    "target_distance_m": 16000,
+    "distance_band": "10-20km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 3,
+    "popular_area_ids": [
+      "shanghai_botanical_garden",
+      "kangjian",
+      "caohejing"
+    ],
     "start_location": {
-      "name": "龙华滨江休闲广场外侧道路",
-      "lng_gcj02": 121.458454,
-      "lat_gcj02": 31.151373,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0015474F4）"
+      "name": "上海植物园4号门外罗城路",
+      "lng_gcj02": 121.445793,
+      "lat_gcj02": 31.151884,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "西岸梦中心龙腾大道入口",
-      "lng_gcj02": 121.466601,
-      "lat_gcj02": 31.161366,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0LKLP88CD）"
+      "name": "上海植物园4号门外罗城路",
+      "lng_gcj02": 121.445793,
+      "lat_gcj02": 31.151884,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "龙华滨江休闲广场外侧道路",
-        "lng_gcj02": 121.458454,
-        "lat_gcj02": 31.151373,
-        "source": "高德POI解析缓存（2026-08-13，B0015474F4）",
-        "poi_id": "B0015474F4"
+        "name": "上海植物园4号门外罗城路",
+        "lng_gcj02": 121.445793,
+        "lat_gcj02": 31.151884,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "龙水南路与龙腾大道交叉口",
-        "lng_gcj02": 121.460338,
-        "lat_gcj02": 31.15566,
-        "source": "高德POI解析缓存（2026-08-13，B0FFLL702P）",
-        "poi_id": "B0FFLL702P"
+        "name": "蒲汇塘路与桂林路交叉口",
+        "lng_gcj02": 121.416867,
+        "lat_gcj02": 31.172599,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "西岸梦中心龙腾大道入口",
-        "lng_gcj02": 121.466601,
-        "lat_gcj02": 31.161366,
-        "source": "高德POI解析缓存（2026-08-13，B0LKLP88CD）",
-        "poi_id": "B0LKLP88CD"
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "桂江路与钦州南路交叉口",
+        "lng_gcj02": 121.407256,
+        "lat_gcj02": 31.155183,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "江安路与桂江路交叉口",
+        "lng_gcj02": 121.410732,
+        "lat_gcj02": 31.147197,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园4号门外罗城路",
+        "lng_gcj02": 121.445793,
+        "lat_gcj02": 31.151884,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
     "waypoint_names": [
-      "龙水南路与龙腾大道交叉口"
-    ],
-    "amenities": [
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      },
-      {
-        "amenity_id": "B0ID7CH2HC",
-        "name": "GATE M 西岸凤巢-女洗手间",
-        "type": "toilet",
-        "lng_gcj02": 121.459966,
-        "lat_gcj02": 31.163799,
-        "source": "高德POI解析缓存 place_text_v5_fca87dd620b5a0fd.json"
-      }
+      "蒲汇塘路与桂林路交叉口",
+      "宜山路与虹梅路交叉口",
+      "桂江路与钦州南路交叉口",
+      "江安路与桂江路交叉口",
+      "上海植物园3号门外百色路"
     ],
     "amenity_ids": [
-      "B0KUNMEGLF",
-      "B0ID7CH2HC"
+      "node/12518143102",
+      "amap:gate:B0FFF64RUI",
+      "B0FFG27ABK"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "no_verified_match",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：龙华滨江休闲广场外侧道路 → 龙水南路与龙腾大道交叉口 → 西岸梦中心龙腾大道入口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "龙华港亲水步道无骑行标志时走龙腾大道",
-      "排除龙耀路隧道"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖shanghai_botanical_garden、kangjian、caohejing；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "龙华港和龙水南路局部通行状态需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_XH_GOV_SOUTH_CYCLE_PLAN",
-        "title": "徐汇滨江南部高品质骑行网络建设资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069a97abda019e49836f7a2406",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持龙腾大道、龙吴路和华泾南部的连续骑行骨架；规划段开放状态需现场复核。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0073",
     "seed_id": "bike_xh_0813_013",
-    "route_name": "西岸梦中心—上海植物园1号门骑行线",
+    "route_name": "衡复—徐家汇—龙华—西岸骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 3000,
-    "route_shape": "one_way",
+    "target_distance_m": 13800,
+    "distance_band": "10-20km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 3,
+    "popular_area_ids": [
+      "hengfu",
+      "xujiahui",
+      "longhua",
+      "west_bund"
+    ],
     "start_location": {
-      "name": "西岸梦中心龙腾大道入口",
-      "lng_gcj02": 121.466601,
-      "lat_gcj02": 31.161366,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0LKLP88CD）"
+      "name": "徐家汇公园衡山路入口外侧道路",
+      "lng_gcj02": 121.443374,
+      "lat_gcj02": 31.196741,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "上海植物园1号门外龙吴路",
-      "lng_gcj02": 121.450227,
-      "lat_gcj02": 31.146374,
-      "location_type": "end",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "徐家汇公园衡山路入口外侧道路",
+      "lng_gcj02": 121.443374,
+      "lat_gcj02": 31.196741,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "西岸梦中心龙腾大道入口",
-        "lng_gcj02": 121.466601,
-        "lat_gcj02": 31.161366,
-        "source": "高德POI解析缓存（2026-08-13，B0LKLP88CD）",
-        "poi_id": "B0LKLP88CD"
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "龙水南路与龙腾大道交叉口",
-        "lng_gcj02": 121.460338,
-        "lat_gcj02": 31.15566,
-        "source": "高德POI解析缓存（2026-08-13，B0FFLL702P）",
-        "poi_id": "B0FFLL702P"
+        "name": "上海音乐学院外侧淮海中路",
+        "lng_gcj02": 121.454651,
+        "lat_gcj02": 31.214251,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "上海植物园1号门外龙吴路",
-        "lng_gcj02": 121.450227,
-        "lat_gcj02": 31.146374,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "丰谷路与龙腾大道交叉口",
+        "lng_gcj02": 121.4628,
+        "lat_gcj02": 31.17109,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙华会外侧龙华路",
+        "lng_gcj02": 121.453425,
+        "lat_gcj02": 31.173657,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
     "waypoint_names": [
-      "龙水南路与龙腾大道交叉口"
-    ],
-    "amenities": [
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      },
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0FFHR87AU",
-        "name": "雅迪电动车(百色路店)",
-        "type": "bike_service",
-        "lng_gcj02": 121.450346,
-        "lat_gcj02": 31.144552,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      }
+      "上海音乐学院外侧淮海中路",
+      "龙腾大道与瑞宁路交叉口",
+      "丰谷路与龙腾大道交叉口",
+      "龙华会外侧龙华路"
     ],
     "amenity_ids": [
+      "node/7409372497",
+      "amap:gate:B00155IQRX",
       "B0KUNMEGLF",
-      "B0FFG27ABK",
-      "B0FFHR87AU"
+      "node/4382936389"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：西岸梦中心龙腾大道入口 → 龙水南路与龙腾大道交叉口 → 上海植物园1号门外龙吴路；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "排除徐浦大桥、外环快速路与龙耀路隧道",
-      "规划专用道未落地段服从现场标志"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖hengfu、xujiahui、longhua、west_bund；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "龙水南路接入龙吴路的非机动车渠化需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_XH_GOV_SOUTH_CYCLE_PLAN",
-        "title": "徐汇滨江南部高品质骑行网络建设资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069a97abda019e49836f7a2406",
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "支持龙腾大道、龙吴路和华泾南部的连续骑行骨架；规划段开放状态需现场复核。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0074",
     "seed_id": "bike_xh_0813_014",
-    "route_name": "上海植物园1号门—龙华滨江休闲广场骑行线",
+    "route_name": "华泾—植物园—西岸南段骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 1578,
-    "route_shape": "one_way",
+    "target_distance_m": 16500,
+    "distance_band": "10-20km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 3,
+    "popular_area_ids": [
+      "huajing",
+      "shanghai_botanical_garden",
+      "west_bund"
+    ],
     "start_location": {
-      "name": "上海植物园1号门外龙吴路",
-      "lng_gcj02": 121.450227,
-      "lat_gcj02": 31.146374,
-      "location_type": "start",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "华展路与龙吴路交叉口",
+      "lng_gcj02": 121.45552,
+      "lat_gcj02": 31.112256,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "龙华滨江休闲广场外侧道路",
-      "lng_gcj02": 121.458454,
-      "lat_gcj02": 31.151373,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0015474F4）"
+      "name": "华展路与龙吴路交叉口",
+      "lng_gcj02": 121.45552,
+      "lat_gcj02": 31.112256,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "上海植物园1号门外龙吴路",
-        "lng_gcj02": 121.450227,
-        "lat_gcj02": 31.146374,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园4号门外罗城路",
+        "lng_gcj02": 121.445793,
+        "lat_gcj02": 31.151884,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
         "name": "龙华滨江休闲广场外侧道路",
         "lng_gcj02": 121.458454,
         "lat_gcj02": 31.151373,
-        "source": "高德POI解析缓存（2026-08-13，B0015474F4）",
-        "poi_id": "B0015474F4"
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙水南路与龙腾大道交叉口",
+        "lng_gcj02": 121.460338,
+        "lat_gcj02": 31.15566,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      },
-      {
-        "amenity_id": "B0LBTO51W7",
-        "name": "星巴克上海徐家汇体育公园店",
-        "type": "coffee",
-        "lng_gcj02": 121.439075,
-        "lat_gcj02": 31.181725,
-        "source": "高德POI解析缓存 place_text_v5_5706b91e34c67d58.json"
-      }
+    "waypoint_names": [
+      "上海植物园3号门外百色路",
+      "上海植物园4号门外罗城路",
+      "龙华滨江休闲广场外侧道路",
+      "龙水南路与龙腾大道交叉口"
     ],
     "amenity_ids": [
-      "B0FFG27ABK",
+      "amap:gate:B0FFF64RUI",
       "B0KUNMEGLF",
-      "B0LBTO51W7"
+      "node/9826900117"
+    ],
+    "preference_search_status": {
+      "coffee": "no_verified_match",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：上海植物园1号门外龙吴路 → 龙华滨江休闲广场外侧道路；取消中间塑形节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "植物园、龙华寺内部推行",
-      "龙吴路仅走地面非机动车道"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "仅保留端点，由骑行路由选择连续主干道路，降低分叉、重复边、局部返回和掉头风险。",
+    "design_rationale": "覆盖huajing、shanghai_botanical_garden、west_bund；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "龙吴路至龙华滨江的地面非机动车接续需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
-      },
-      {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_XH_GOV_LONGHUA_CULTURE",
-        "title": "龙华历史文化线路资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6b29b732ca",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认龙华寺、龙华烈士陵园与徐家汇体育片区文化节点；骑行仅取外围公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0075",
     "seed_id": "bike_xh_0813_015",
-    "route_name": "江安路与桂江路—康健园北门外桂林路骑行线",
+    "route_name": "漕河泾—徐家汇—衡复骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 3000,
-    "route_shape": "one_way",
+    "target_distance_m": 17000,
+    "distance_band": "10-20km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 3,
+    "popular_area_ids": [
+      "caohejing",
+      "xujiahui",
+      "hengfu"
+    ],
     "start_location": {
-      "name": "江安路与桂江路交叉口",
-      "lng_gcj02": 121.410732,
-      "lat_gcj02": 31.147197,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0FFI8OK6E）"
+      "name": "宜山路与虹梅路交叉口",
+      "lng_gcj02": 121.397164,
+      "lat_gcj02": 31.170541,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "康健园北门外桂林路",
-      "lng_gcj02": 121.424031,
-      "lat_gcj02": 31.164834,
-      "location_type": "end",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "宜山路与虹梅路交叉口",
+      "lng_gcj02": 121.397164,
+      "lat_gcj02": 31.170541,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "江安路与桂江路交叉口",
-        "lng_gcj02": 121.410732,
-        "lat_gcj02": 31.147197,
-        "source": "高德POI解析缓存（2026-08-13，B0FFI8OK6E）",
-        "poi_id": "B0FFI8OK6E"
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "康健园北门外桂林路",
-        "lng_gcj02": 121.424031,
-        "lat_gcj02": 31.164834,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "name": "蒲汇塘路与桂林路交叉口",
+        "lng_gcj02": 121.416867,
+        "lat_gcj02": 31.172599,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "徐家汇体育公园天钥桥路入口外侧道路",
+        "lng_gcj02": 121.440734,
+        "lat_gcj02": 31.181297,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "安顺路与淮海西路交叉口",
+        "lng_gcj02": 121.426585,
+        "lat_gcj02": 31.198656,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0FFHR87AU",
-        "name": "雅迪电动车(百色路店)",
-        "type": "bike_service",
-        "lng_gcj02": 121.450346,
-        "lat_gcj02": 31.144552,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      }
+    "waypoint_names": [
+      "蒲汇塘路与桂林路交叉口",
+      "徐家汇体育公园天钥桥路入口外侧道路",
+      "徐家汇公园衡山路入口外侧道路",
+      "安顺路与淮海西路交叉口"
     ],
     "amenity_ids": [
-      "B0FFG27ABK",
-      "B0FFHR87AU",
-      "B0KUNMEGLF"
+      "node/12518143102",
+      "amap:gate:B00155IQRX",
+      "B00156CS7I",
+      "node/5239012373"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：江安路与桂江路交叉口 → 康健园北门外桂林路；取消中间塑形节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "园内不骑行",
-      "铁路跨越与龙吴路渠化按导航和现场标志"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "仅保留端点，由骑行路由选择连续主干道路，降低分叉、重复边、局部返回和掉头风险。",
+    "design_rationale": "覆盖caohejing、xujiahui、hengfu；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "桂江路工程状态与康健园外围道路接续需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_GUIJIANG_PDF",
-        "title": "桂江路慢行与绿廊建设资料",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/cmsres/8f/8f342720baec4ef2a2368c3c2ecdc58d/6476cae1152b512ce10b8baff0d0967b.pdf",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持桂江路、康健与蒲汇塘片区慢行联系；未明确允许骑行的绿廊和亲水段转平行公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0076",
     "seed_id": "bike_xh_0813_016",
-    "route_name": "衡山路8号—日晖港桥南岸骑行线",
+    "route_name": "衡复—徐家汇—植物园—华泾骑行线",
     "route_mode": "bike",
-    "target_distance_m": 4000,
+    "target_distance_m": 18500,
+    "distance_band": "10-20km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 4,
+    "popular_area_ids": [
+      "hengfu",
+      "xujiahui",
+      "kangjian",
+      "shanghai_botanical_garden",
+      "huajing"
+    ],
     "start_location": {
-      "name": "衡山路8号外侧公共道路",
-      "lng_gcj02": 121.447346,
-      "lat_gcj02": 31.206492,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0HU6S1SWJ）"
+      "name": "上海音乐学院外侧淮海中路",
+      "lng_gcj02": 121.454651,
+      "lat_gcj02": 31.214251,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "日晖港桥南岸",
-      "lng_gcj02": 121.47268,
-      "lat_gcj02": 31.190561,
-      "location_type": "end",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "华展路与龙吴路交叉口",
+      "lng_gcj02": 121.45552,
+      "lat_gcj02": 31.112256,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "衡山路8号外侧公共道路",
-        "lng_gcj02": 121.447346,
-        "lat_gcj02": 31.206492,
-        "source": "高德POI解析缓存（2026-08-13，B0HU6S1SWJ）",
-        "poi_id": "B0HU6S1SWJ"
+        "name": "上海音乐学院外侧淮海中路",
+        "lng_gcj02": 121.454651,
+        "lat_gcj02": 31.214251,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "日晖港桥南岸",
-        "lng_gcj02": 121.47268,
-        "lat_gcj02": 31.190561,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "蒲汇塘路与桂林路交叉口",
+        "lng_gcj02": 121.416867,
+        "lat_gcj02": 31.172599,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园4号门外罗城路",
+        "lng_gcj02": 121.445793,
+        "lat_gcj02": 31.151884,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B00156CS7I",
-        "name": "徐家汇公园-公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.441945,
-        "lat_gcj02": 31.197235,
-        "source": "高德POI解析缓存 place_text_v5_56fdf2a5447234fe.json"
-      },
-      {
-        "amenity_id": "B0LG7SVBWT",
-        "name": "漫慢SLOWPACED咖啡(徐家汇店)",
-        "type": "coffee",
-        "lng_gcj02": 121.433853,
-        "lat_gcj02": 31.186768,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      }
+    "waypoint_names": [
+      "徐家汇公园衡山路入口外侧道路",
+      "蒲汇塘路与桂林路交叉口",
+      "上海植物园4号门外罗城路",
+      "上海植物园3号门外百色路"
     ],
     "amenity_ids": [
+      "node/4405321290",
+      "amap:gate:B0FFF64RUI",
       "B00156CS7I",
-      "B0LG7SVBWT"
+      "node/9826900117"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：衡山路8号外侧公共道路 → 日晖港桥南岸；取消中间塑形节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "风貌区窄路降速",
-      "校园、场馆和公园内部推行"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "仅保留端点，由骑行路由选择连续主干道路，降低分叉、重复边、局部返回和掉头风险。",
+    "design_rationale": "覆盖hengfu、xujiahui、kangjian、shanghai_botanical_garden、huajing；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "单行路方向需在生成时由高德骑行模式确定"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_LONGHUA_CULTURE",
-        "title": "龙华历史文化线路资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6b29b732ca",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认龙华寺、龙华烈士陵园与徐家汇体育片区文化节点；骑行仅取外围公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0077",
     "seed_id": "bike_xh_0813_017",
-    "route_name": "徐家汇体育公园—徐家汇公园骑行线",
+    "route_name": "漕河泾—徐家汇—龙华—西岸骑行线",
     "route_mode": "bike",
-    "target_distance_m": 2500,
+    "target_distance_m": 10800,
+    "distance_band": "10-20km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 4,
+    "popular_area_ids": [
+      "caohejing",
+      "xujiahui",
+      "longhua",
+      "west_bund"
+    ],
     "start_location": {
-      "name": "徐家汇体育公园天钥桥路入口",
-      "lng_gcj02": 121.440734,
-      "lat_gcj02": 31.181297,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0FFHKDU6C）"
+      "name": "宜山路与虹梅路交叉口",
+      "lng_gcj02": 121.397164,
+      "lat_gcj02": 31.170541,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "徐家汇公园衡山路入口",
-      "lng_gcj02": 121.442461,
-      "lat_gcj02": 31.197401,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B00155ILI8）"
+      "name": "龙耀路与云锦路交叉口",
+      "lng_gcj02": 121.45928,
+      "lat_gcj02": 31.161845,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "徐家汇体育公园天钥桥路入口",
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "蒲汇塘路与桂林路交叉口",
+        "lng_gcj02": 121.416867,
+        "lat_gcj02": 31.172599,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "徐家汇体育公园天钥桥路入口外侧道路",
         "lng_gcj02": 121.440734,
         "lat_gcj02": 31.181297,
-        "source": "高德POI解析缓存（2026-08-13，B0FFHKDU6C）",
-        "poi_id": "B0FFHKDU6C"
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "徐家汇书院外侧漕溪北路",
-        "lng_gcj02": 121.437201,
-        "lat_gcj02": 31.190521,
-        "source": "高德POI解析缓存（2026-08-13，B0L3X129LK）",
-        "poi_id": "B0L3X129LK"
+        "name": "龙华会外侧龙华路",
+        "lng_gcj02": 121.453425,
+        "lat_gcj02": 31.173657,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "徐家汇公园衡山路入口",
-        "lng_gcj02": 121.442461,
-        "lat_gcj02": 31.197401,
-        "source": "高德POI解析缓存（2026-08-13，B00155ILI8）",
-        "poi_id": "B00155ILI8"
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
     "waypoint_names": [
-      "徐家汇书院外侧漕溪北路"
-    ],
-    "amenities": [
-      {
-        "amenity_id": "B0LBTO51W7",
-        "name": "星巴克上海徐家汇体育公园店",
-        "type": "coffee",
-        "lng_gcj02": 121.439075,
-        "lat_gcj02": 31.181725,
-        "source": "高德POI解析缓存 place_text_v5_5706b91e34c67d58.json"
-      },
-      {
-        "amenity_id": "B00156CS7I",
-        "name": "徐家汇公园-公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.441945,
-        "lat_gcj02": 31.197235,
-        "source": "高德POI解析缓存 place_text_v5_56fdf2a5447234fe.json"
-      },
-      {
-        "amenity_id": "B0LG7SVBWT",
-        "name": "漫慢SLOWPACED咖啡(徐家汇店)",
-        "type": "coffee",
-        "lng_gcj02": 121.433853,
-        "lat_gcj02": 31.186768,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      }
+      "蒲汇塘路与桂林路交叉口",
+      "徐家汇体育公园天钥桥路入口外侧道路",
+      "龙华会外侧龙华路"
     ],
     "amenity_ids": [
-      "B0LBTO51W7",
-      "B00156CS7I",
-      "B0LG7SVBWT"
+      "node/7409372497",
+      "amap:gate:B00155ILI8",
+      "B0KUNMEGLF",
+      "node/5239012373"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：徐家汇体育公园天钥桥路入口 → 徐家汇书院外侧漕溪北路 → 徐家汇公园衡山路入口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "体育公园与校园内部推行",
-      "大型路口遵守非机动车信号"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖caohejing、xujiahui、longhua、west_bund；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "天钥桥路施工导改需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
+      },
+      {
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0078",
     "seed_id": "bike_xh_0813_018",
-    "route_name": "龙华寺—徐家汇公园骑行线",
+    "route_name": "华泾—植物园—西岸龙腾大道骑行线",
     "route_mode": "bike",
-    "target_distance_m": 4000,
+    "target_distance_m": 17200,
+    "distance_band": "10-20km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 4,
+    "popular_area_ids": [
+      "huajing",
+      "shanghai_botanical_garden",
+      "longhua",
+      "west_bund"
+    ],
     "start_location": {
-      "name": "龙华寺外龙华路",
-      "lng_gcj02": 121.451842,
-      "lat_gcj02": 31.175174,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B00155AMEJ）"
+      "name": "华展路与龙吴路交叉口",
+      "lng_gcj02": 121.45552,
+      "lat_gcj02": 31.112256,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "徐家汇公园衡山路入口",
-      "lng_gcj02": 121.442461,
-      "lat_gcj02": 31.197401,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B00155ILI8）"
+      "name": "龙腾大道与瑞宁路交叉口",
+      "lng_gcj02": 121.466947,
+      "lat_gcj02": 31.186049,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "龙华寺外龙华路",
-        "lng_gcj02": 121.451842,
-        "lat_gcj02": 31.175174,
-        "source": "高德POI解析缓存（2026-08-13，B00155AMEJ）",
-        "poi_id": "B00155AMEJ"
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "徐家汇体育公园天钥桥路入口",
-        "lng_gcj02": 121.440734,
-        "lat_gcj02": 31.181297,
-        "source": "高德POI解析缓存（2026-08-13，B0FFHKDU6C）",
-        "poi_id": "B0FFHKDU6C"
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "徐家汇公园衡山路入口",
-        "lng_gcj02": 121.442461,
-        "lat_gcj02": 31.197401,
-        "source": "高德POI解析缓存（2026-08-13，B00155ILI8）",
-        "poi_id": "B00155ILI8"
+        "name": "上海植物园4号门外罗城路",
+        "lng_gcj02": 121.445793,
+        "lat_gcj02": 31.151884,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙华滨江休闲广场外侧道路",
+        "lng_gcj02": 121.458454,
+        "lat_gcj02": 31.151373,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
     "waypoint_names": [
-      "徐家汇体育公园天钥桥路入口"
-    ],
-    "amenities": [
-      {
-        "amenity_id": "B0LBTO51W7",
-        "name": "星巴克上海徐家汇体育公园店",
-        "type": "coffee",
-        "lng_gcj02": 121.439075,
-        "lat_gcj02": 31.181725,
-        "source": "高德POI解析缓存 place_text_v5_5706b91e34c67d58.json"
-      },
-      {
-        "amenity_id": "B0LG7SVBWT",
-        "name": "漫慢SLOWPACED咖啡(徐家汇店)",
-        "type": "coffee",
-        "lng_gcj02": 121.433853,
-        "lat_gcj02": 31.186768,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      }
+      "上海植物园3号门外百色路",
+      "上海植物园4号门外罗城路",
+      "龙华滨江休闲广场外侧道路",
+      "龙耀路与云锦路交叉口"
     ],
     "amenity_ids": [
-      "B0LBTO51W7",
-      "B0LG7SVBWT"
+      "node/7409372497",
+      "amap:gate:B0FFF64RUI",
+      "B0KUNMEGLF",
+      "node/9826900117"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：龙华寺外龙华路 → 徐家汇体育公园天钥桥路入口 → 徐家汇公园衡山路入口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "寺庙、陵园、体育公园内部推行",
-      "龙华西路按非机动车渠化通行"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖huajing、shanghai_botanical_garden、longhua、west_bund；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "漕溪北路大型立交地面骑行连续性需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_LONGHUA_CULTURE",
-        "title": "龙华历史文化线路资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6b29b732ca",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认龙华寺、龙华烈士陵园与徐家汇体育片区文化节点；骑行仅取外围公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0079",
     "seed_id": "bike_xh_0813_019",
-    "route_name": "桂江路与钦州南路—蒲汇塘路与桂林路骑行线",
+    "route_name": "衡复—徐家汇—漕河泾骑行线",
     "route_mode": "bike",
-    "target_distance_m": 3000,
+    "target_distance_m": 12100,
+    "distance_band": "10-20km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 4,
+    "popular_area_ids": [
+      "hengfu",
+      "xujiahui",
+      "caohejing"
+    ],
     "start_location": {
-      "name": "桂江路与钦州南路交叉口",
-      "lng_gcj02": 121.407256,
-      "lat_gcj02": 31.155183,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0FFLKZB8L）"
+      "name": "上海音乐学院外侧淮海中路",
+      "lng_gcj02": 121.454651,
+      "lat_gcj02": 31.214251,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "蒲汇塘路与桂林路交叉口",
-      "lng_gcj02": 121.416867,
-      "lat_gcj02": 31.172599,
-      "location_type": "end",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "宜山路与虹梅路交叉口",
+      "lng_gcj02": 121.397164,
+      "lat_gcj02": 31.170541,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "桂江路与钦州南路交叉口",
-        "lng_gcj02": 121.407256,
-        "lat_gcj02": 31.155183,
-        "source": "高德POI解析缓存（2026-08-13，B0FFLKZB8L）",
-        "poi_id": "B0FFLKZB8L"
+        "name": "上海音乐学院外侧淮海中路",
+        "lng_gcj02": 121.454651,
+        "lat_gcj02": 31.214251,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "桂平路与漕宝路交叉口",
-        "lng_gcj02": 121.40525,
-        "lat_gcj02": 31.163012,
-        "source": "高德POI解析缓存（2026-08-13，B0FFHPG76V）",
-        "poi_id": "B0FFHPG76V"
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "徐家汇体育公园天钥桥路入口外侧道路",
+        "lng_gcj02": 121.440734,
+        "lat_gcj02": 31.181297,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
         "name": "蒲汇塘路与桂林路交叉口",
         "lng_gcj02": 121.416867,
         "lat_gcj02": 31.172599,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
     "waypoint_names": [
-      "桂平路与漕宝路交叉口"
-    ],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG69LN8",
-        "name": "星巴克(蒲汇塘路店)",
-        "type": "coffee",
-        "lng_gcj02": 121.431594,
-        "lat_gcj02": 31.187331,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      },
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      }
+      "徐家汇公园衡山路入口外侧道路",
+      "徐家汇体育公园天钥桥路入口外侧道路",
+      "蒲汇塘路与桂林路交叉口"
     ],
     "amenity_ids": [
-      "B0FFG69LN8",
-      "B0FFG27ABK"
+      "node/12518143102",
+      "amap:gate:B00155IQRX",
+      "B00156CS7I",
+      "node/5239012373"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：桂江路与钦州南路交叉口 → 桂平路与漕宝路交叉口 → 蒲汇塘路与桂林路交叉口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "公园内部推行",
-      "亲水步道无骑行标志时走平行道路"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖hengfu、xujiahui、caohejing；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "蒲汇塘路局部施工与骑行道连续性需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_SH_GOV_GUIJIANG_PDF",
-        "title": "桂江路慢行与绿廊建设资料",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/cmsres/8f/8f342720baec4ef2a2368c3c2ecdc58d/6476cae1152b512ce10b8baff0d0967b.pdf",
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "支持桂江路、康健与蒲汇塘片区慢行联系；未明确允许骑行的绿廊和亲水段转平行公共道路。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
+      },
+      {
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0080",
     "seed_id": "bike_xh_0813_020",
-    "route_name": "虹漕路与钦州北路—上海音乐学院音乐城堡外侧淮海中路骑行线",
+    "route_name": "植物园—龙华—西岸—衡复骑行线",
     "route_mode": "bike",
-    "target_distance_m": 8000,
+    "target_distance_m": 14500,
+    "distance_band": "10-20km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 4,
+    "popular_area_ids": [
+      "shanghai_botanical_garden",
+      "longhua",
+      "west_bund",
+      "xujiahui",
+      "hengfu"
+    ],
     "start_location": {
-      "name": "虹漕路与钦州北路交叉口",
-      "lng_gcj02": 121.408076,
-      "lat_gcj02": 31.179598,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0FFHPH4O6）"
+      "name": "上海植物园3号门外百色路",
+      "lng_gcj02": 121.43947,
+      "lat_gcj02": 31.142747,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "上海音乐学院音乐城堡外侧淮海中路",
-      "lng_gcj02": 121.454651,
-      "lat_gcj02": 31.214251,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0MB36E7LJ）"
+      "name": "乌鲁木齐中路与复兴西路交叉口",
+      "lng_gcj02": 121.44678,
+      "lat_gcj02": 31.210506,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "虹漕路与钦州北路交叉口",
-        "lng_gcj02": 121.408076,
-        "lat_gcj02": 31.179598,
-        "source": "高德POI解析缓存（2026-08-13，B0FFHPH4O6）",
-        "poi_id": "B0FFHPH4O6"
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "徐家汇公园衡山路入口",
-        "lng_gcj02": 121.442461,
-        "lat_gcj02": 31.197401,
-        "source": "高德POI解析缓存（2026-08-13，B00155ILI8）",
-        "poi_id": "B00155ILI8"
+        "name": "龙华滨江休闲广场外侧道路",
+        "lng_gcj02": 121.458454,
+        "lat_gcj02": 31.151373,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "上海音乐学院音乐城堡外侧淮海中路",
-        "lng_gcj02": 121.454651,
-        "lat_gcj02": 31.214251,
-        "source": "高德POI解析缓存（2026-08-13，B0MB36E7LJ）",
-        "poi_id": "B0MB36E7LJ"
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "乌鲁木齐中路与复兴西路交叉口",
+        "lng_gcj02": 121.44678,
+        "lat_gcj02": 31.210506,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
     "waypoint_names": [
-      "徐家汇公园衡山路入口"
-    ],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG69LN8",
-        "name": "星巴克(蒲汇塘路店)",
-        "type": "coffee",
-        "lng_gcj02": 121.431594,
-        "lat_gcj02": 31.187331,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      }
+      "龙华滨江休闲广场外侧道路",
+      "龙耀路与云锦路交叉口",
+      "龙腾大道与瑞宁路交叉口",
+      "徐家汇公园衡山路入口外侧道路"
     ],
     "amenity_ids": [
-      "B0FFG69LN8"
+      "node/7409372497",
+      "amap:gate:B0FFF64RUI",
+      "B0KUNMEGLF",
+      "B0FFG27ABK"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：虹漕路与钦州北路交叉口 → 徐家汇公园衡山路入口 → 上海音乐学院音乐城堡外侧淮海中路；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "园区门禁、施工和禁非道路需复核",
-      "宜山路远离中环匝道"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖shanghai_botanical_garden、longhua、west_bund、xujiahui、hengfu；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "虹漕路至衡复片区的单行方向与大型路口过街需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_XH_GOV_CAOHEJING_GREEN",
-        "title": "漕河泾开发区绿色慢行网络资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6afaa73eb9",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持漕河泾、桂江路及田林片区公共道路慢行骨架；园区门禁与施工状态需复核。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_GUIJIANG_PDF",
-        "title": "桂江路慢行与绿廊建设资料",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/cmsres/8f/8f342720baec4ef2a2368c3c2ecdc58d/6476cae1152b512ce10b8baff0d0967b.pdf",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持桂江路、康健与蒲汇塘片区慢行联系；未明确允许骑行的绿廊和亲水段转平行公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0081",
     "seed_id": "bike_xh_0813_021",
-    "route_name": "日晖港桥南岸—漕河泾开发区地铁站骑行线",
+    "route_name": "徐汇全域外围骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 9500,
-    "route_shape": "one_way",
+    "target_distance_m": 29500,
+    "distance_band": "20-30km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 5,
+    "popular_area_ids": [
+      "west_bund",
+      "longhua",
+      "xujiahui",
+      "caohejing",
+      "kangjian",
+      "shanghai_botanical_garden",
+      "huajing"
+    ],
     "start_location": {
-      "name": "日晖港桥南岸",
-      "lng_gcj02": 121.47268,
-      "lat_gcj02": 31.190561,
-      "location_type": "start",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "龙腾大道与瑞宁路交叉口",
+      "lng_gcj02": 121.466947,
+      "lat_gcj02": 31.186049,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "漕河泾开发区地铁站公共道路入口",
-      "lng_gcj02": 121.398481,
-      "lat_gcj02": 31.171096,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，BX10016957）"
+      "name": "龙腾大道与瑞宁路交叉口",
+      "lng_gcj02": 121.466947,
+      "lat_gcj02": 31.186049,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "日晖港桥南岸",
-        "lng_gcj02": 121.47268,
-        "lat_gcj02": 31.190561,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "漕河泾开发区地铁站公共道路入口",
-        "lng_gcj02": 121.398481,
-        "lat_gcj02": 31.171096,
-        "source": "高德POI解析缓存（2026-08-13，BX10016957）",
-        "poi_id": "BX10016957"
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "江安路与桂江路交叉口",
+        "lng_gcj02": 121.410732,
+        "lat_gcj02": 31.147197,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙水南路与龙腾大道交叉口",
+        "lng_gcj02": 121.460338,
+        "lat_gcj02": 31.15566,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      },
-      {
-        "amenity_id": "B0ID7CH2HC",
-        "name": "GATE M 西岸凤巢-女洗手间",
-        "type": "toilet",
-        "lng_gcj02": 121.459966,
-        "lat_gcj02": 31.163799,
-        "source": "高德POI解析缓存 place_text_v5_fca87dd620b5a0fd.json"
-      }
+    "waypoint_names": [
+      "宜山路与虹梅路交叉口",
+      "江安路与桂江路交叉口",
+      "华展路与龙吴路交叉口",
+      "龙水南路与龙腾大道交叉口"
     ],
     "amenity_ids": [
+      "node/7409372497",
+      "amap:gate:B0FFF64RUI",
       "B0KUNMEGLF",
-      "B0ID7CH2HC"
+      "node/9826900117"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：日晖港桥南岸 → 漕河泾开发区地铁站公共道路入口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "无骑行标志的滨水步行层转龙腾大道",
-      "排除隧道、高架与越江设施"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖west_bund、longhua、xujiahui、hengfu、caohejing、kangjian、shanghai_botanical_garden、huajing；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "日晖港至漕河泾跨城路径的大型立交和非机动车导向需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_CAOHEJING_GREEN",
-        "title": "漕河泾开发区绿色慢行网络资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6afaa73eb9",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持漕河泾、桂江路及田林片区公共道路慢行骨架；园区门禁与施工状态需复核。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_GUIJIANG_PDF",
-        "title": "桂江路慢行与绿廊建设资料",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/cmsres/8f/8f342720baec4ef2a2368c3c2ecdc58d/6476cae1152b512ce10b8baff0d0967b.pdf",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持桂江路、康健与蒲汇塘片区慢行联系；未明确允许骑行的绿廊和亲水段转平行公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0082",
     "seed_id": "bike_xh_0813_022",
-    "route_name": "日晖港桥南岸—上海植物园3号门骑行线",
+    "route_name": "西岸—植物园—漕河泾—徐家汇骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 8000,
-    "route_shape": "one_way",
+    "target_distance_m": 22500,
+    "distance_band": "20-30km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 5,
+    "popular_area_ids": [
+      "west_bund",
+      "longhua",
+      "shanghai_botanical_garden",
+      "kangjian",
+      "caohejing",
+      "xujiahui"
+    ],
     "start_location": {
-      "name": "日晖港桥南岸",
-      "lng_gcj02": 121.47268,
-      "lat_gcj02": 31.190561,
-      "location_type": "start",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "龙耀路与云锦路交叉口",
+      "lng_gcj02": 121.45928,
+      "lat_gcj02": 31.161845,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "上海植物园3号门外百色路",
-      "lng_gcj02": 121.43947,
-      "lat_gcj02": 31.142747,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B00156ZSX5）"
+      "name": "龙耀路与云锦路交叉口",
+      "lng_gcj02": 121.45928,
+      "lat_gcj02": 31.161845,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "日晖港桥南岸",
-        "lng_gcj02": 121.47268,
-        "lat_gcj02": 31.190561,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
         "name": "上海植物园3号门外百色路",
         "lng_gcj02": 121.43947,
         "lat_gcj02": 31.142747,
-        "source": "高德POI解析缓存（2026-08-13，B00156ZSX5）",
-        "poi_id": "B00156ZSX5"
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "江安路与桂江路交叉口",
+        "lng_gcj02": 121.410732,
+        "lat_gcj02": 31.147197,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "安顺路与淮海西路交叉口",
+        "lng_gcj02": 121.426585,
+        "lat_gcj02": 31.198656,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      },
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0FFHR87AU",
-        "name": "雅迪电动车(百色路店)",
-        "type": "bike_service",
-        "lng_gcj02": 121.450346,
-        "lat_gcj02": 31.144552,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0LBTO51W7",
-        "name": "星巴克上海徐家汇体育公园店",
-        "type": "coffee",
-        "lng_gcj02": 121.439075,
-        "lat_gcj02": 31.181725,
-        "source": "高德POI解析缓存 place_text_v5_5706b91e34c67d58.json"
-      }
+    "waypoint_names": [
+      "上海植物园3号门外百色路",
+      "江安路与桂江路交叉口",
+      "宜山路与虹梅路交叉口",
+      "安顺路与淮海西路交叉口",
+      "徐家汇公园衡山路入口外侧道路"
     ],
     "amenity_ids": [
+      "node/7409372497",
+      "amap:gate:B0FFF64RUI",
       "B0KUNMEGLF",
-      "B0FFG27ABK",
-      "B0FFHR87AU",
-      "B0LBTO51W7"
+      "B0FFG27ABK"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：日晖港桥南岸 → 上海植物园3号门外百色路；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "植物园、龙华寺内部推行",
-      "石龙路铁路跨越按现场标志"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖west_bund、longhua、shanghai_botanical_garden、kangjian、caohejing、xujiahui；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "石龙路铁路跨越和瑞宁路北端连接需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_LONGHUA_CULTURE",
-        "title": "龙华历史文化线路资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6b29b732ca",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认龙华寺、龙华烈士陵园与徐家汇体育片区文化节点；骑行仅取外围公共道路。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_GUIJIANG_PDF",
-        "title": "桂江路慢行与绿廊建设资料",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/cmsres/8f/8f342720baec4ef2a2368c3c2ecdc58d/6476cae1152b512ce10b8baff0d0967b.pdf",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持桂江路、康健与蒲汇塘片区慢行联系；未明确允许骑行的绿廊和亲水段转平行公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0083",
     "seed_id": "bike_xh_0813_023",
-    "route_name": "日晖港桥南岸—华泾公园骑行线",
+    "route_name": "华泾—植物园—龙华—西岸—徐家汇骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 10000,
-    "route_shape": "one_way",
+    "target_distance_m": 28800,
+    "distance_band": "20-30km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 5,
+    "popular_area_ids": [
+      "huajing",
+      "shanghai_botanical_garden",
+      "longhua",
+      "west_bund",
+      "xujiahui"
+    ],
     "start_location": {
-      "name": "日晖港桥南岸",
-      "lng_gcj02": 121.47268,
-      "lat_gcj02": 31.190561,
-      "location_type": "start",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "华展路与龙吴路交叉口",
+      "lng_gcj02": 121.45552,
+      "lat_gcj02": 31.112256,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "华泾公园华泾路入口",
-      "lng_gcj02": 121.452542,
-      "lat_gcj02": 31.121725,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0LKXCOKXH）"
+      "name": "华展路与龙吴路交叉口",
+      "lng_gcj02": 121.45552,
+      "lat_gcj02": 31.112256,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "日晖港桥南岸",
-        "lng_gcj02": 121.47268,
-        "lat_gcj02": 31.190561,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "华泾公园华泾路入口",
-        "lng_gcj02": 121.452542,
-        "lat_gcj02": 31.121725,
-        "source": "高德POI解析缓存（2026-08-13，B0LKXCOKXH）",
-        "poi_id": "B0LKXCOKXH"
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "江安路与桂江路交叉口",
+        "lng_gcj02": 121.410732,
+        "lat_gcj02": 31.147197,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      },
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0FFHR87AU",
-        "name": "雅迪电动车(百色路店)",
-        "type": "bike_service",
-        "lng_gcj02": 121.450346,
-        "lat_gcj02": 31.144552,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      }
+    "waypoint_names": [
+      "上海植物园3号门外百色路",
+      "江安路与桂江路交叉口",
+      "徐家汇公园衡山路入口外侧道路",
+      "龙耀路与云锦路交叉口"
     ],
     "amenity_ids": [
+      "node/7409372497",
+      "amap:gate:B0FFF64RUI",
       "B0KUNMEGLF",
-      "B0FFG27ABK",
-      "B0FFHR87AU"
+      "node/9826900117"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：日晖港桥南岸 → 华泾公园华泾路入口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "排除徐浦大桥、外环快速路、龙耀路隧道",
-      "南段按现场骑行标志"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖huajing、shanghai_botanical_garden、longhua、west_bund、xujiahui；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "华泾南段骑行道开放状态与龙吴路路口渠化需在生成后复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_XH_GOV_SOUTH_CYCLE_PLAN",
-        "title": "徐汇滨江南部高品质骑行网络建设资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069a97abda019e49836f7a2406",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持龙腾大道、龙吴路和华泾南部的连续骑行骨架；规划段开放状态需现场复核。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0084",
     "seed_id": "bike_xh_0813_024",
-    "route_name": "上海音乐学院音乐城堡外侧淮海中路—西岸梦中心骑行线",
+    "route_name": "衡复—徐家汇—漕河泾—植物园—龙华骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 7500,
-    "route_shape": "one_way",
+    "target_distance_m": 28500,
+    "distance_band": "20-30km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 5,
+    "popular_area_ids": [
+      "hengfu",
+      "xujiahui",
+      "caohejing",
+      "kangjian",
+      "shanghai_botanical_garden",
+      "longhua"
+    ],
     "start_location": {
-      "name": "上海音乐学院音乐城堡外侧淮海中路",
-      "lng_gcj02": 121.454651,
-      "lat_gcj02": 31.214251,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0MB36E7LJ）"
+      "name": "乌鲁木齐中路与复兴西路交叉口",
+      "lng_gcj02": 121.44678,
+      "lat_gcj02": 31.210506,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "西岸梦中心龙腾大道入口",
-      "lng_gcj02": 121.466601,
-      "lat_gcj02": 31.161366,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0LKLP88CD）"
+      "name": "乌鲁木齐中路与复兴西路交叉口",
+      "lng_gcj02": 121.44678,
+      "lat_gcj02": 31.210506,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "上海音乐学院音乐城堡外侧淮海中路",
-        "lng_gcj02": 121.454651,
-        "lat_gcj02": 31.214251,
-        "source": "高德POI解析缓存（2026-08-13，B0MB36E7LJ）",
-        "poi_id": "B0MB36E7LJ"
+        "name": "乌鲁木齐中路与复兴西路交叉口",
+        "lng_gcj02": 121.44678,
+        "lat_gcj02": 31.210506,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "西岸梦中心龙腾大道入口",
-        "lng_gcj02": 121.466601,
-        "lat_gcj02": 31.161366,
-        "source": "高德POI解析缓存（2026-08-13，B0LKLP88CD）",
-        "poi_id": "B0LKLP88CD"
+        "name": "安顺路与淮海西路交叉口",
+        "lng_gcj02": 121.426585,
+        "lat_gcj02": 31.198656,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "江安路与桂江路交叉口",
+        "lng_gcj02": 121.410732,
+        "lat_gcj02": 31.147197,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙华滨江休闲广场外侧道路",
+        "lng_gcj02": 121.458454,
+        "lat_gcj02": 31.151373,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "乌鲁木齐中路与复兴西路交叉口",
+        "lng_gcj02": 121.44678,
+        "lat_gcj02": 31.210506,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B00156CS7I",
-        "name": "徐家汇公园-公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.441945,
-        "lat_gcj02": 31.197235,
-        "source": "高德POI解析缓存 place_text_v5_56fdf2a5447234fe.json"
-      },
-      {
-        "amenity_id": "B0LBTO51W7",
-        "name": "星巴克上海徐家汇体育公园店",
-        "type": "coffee",
-        "lng_gcj02": 121.439075,
-        "lat_gcj02": 31.181725,
-        "source": "高德POI解析缓存 place_text_v5_5706b91e34c67d58.json"
-      },
-      {
-        "amenity_id": "B0LG7SVBWT",
-        "name": "漫慢SLOWPACED咖啡(徐家汇店)",
-        "type": "coffee",
-        "lng_gcj02": 121.433853,
-        "lat_gcj02": 31.186768,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      }
+    "waypoint_names": [
+      "安顺路与淮海西路交叉口",
+      "宜山路与虹梅路交叉口",
+      "江安路与桂江路交叉口",
+      "上海植物园3号门外百色路",
+      "龙华滨江休闲广场外侧道路",
+      "龙腾大道与瑞宁路交叉口"
     ],
     "amenity_ids": [
+      "node/12518143102",
+      "amap:gate:B0FFF64RUI",
       "B00156CS7I",
-      "B0LBTO51W7",
-      "B0LG7SVBWT"
+      "B0FFG27ABK"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：上海音乐学院音乐城堡外侧淮海中路 → 西岸梦中心龙腾大道入口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "场馆、公园、校园、陵园与寺庙内部推行",
-      "风貌区高人流时段降速"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖hengfu、xujiahui、caohejing、kangjian、shanghai_botanical_garden、longhua；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "淮海中路单行方向与滨江入口接续需由骑行导航确认"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_SOUTH_CYCLE_PLAN",
-        "title": "徐汇滨江南部高品质骑行网络建设资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069a97abda019e49836f7a2406",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持龙腾大道、龙吴路和华泾南部的连续骑行骨架；规划段开放状态需现场复核。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_CAOHEJING_GREEN",
-        "title": "漕河泾开发区绿色慢行网络资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6afaa73eb9",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持漕河泾、桂江路及田林片区公共道路慢行骨架；园区门禁与施工状态需复核。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0085",
     "seed_id": "bike_xh_0813_025",
-    "route_name": "徐家汇体育公园—华泾路与龙吴路骑行线",
+    "route_name": "西岸—龙华—植物园—华泾骑行环线",
     "route_mode": "bike",
-    "target_distance_m": 9000,
-    "route_shape": "one_way",
+    "target_distance_m": 26800,
+    "distance_band": "20-30km",
+    "route_shape": "strict_loop",
+    "validation_status": "needs_review",
+    "repair_batch": 5,
+    "popular_area_ids": [
+      "west_bund",
+      "longhua",
+      "shanghai_botanical_garden",
+      "huajing"
+    ],
     "start_location": {
-      "name": "徐家汇体育公园天钥桥路入口",
-      "lng_gcj02": 121.440734,
-      "lat_gcj02": 31.181297,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0FFHKDU6C）"
+      "name": "龙耀路与云锦路交叉口",
+      "lng_gcj02": 121.45928,
+      "lat_gcj02": 31.161845,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "华泾路与龙吴路交叉口",
-      "lng_gcj02": 121.45679,
-      "lat_gcj02": 31.120008,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0FFLKX57L）"
+      "name": "龙耀路与云锦路交叉口",
+      "lng_gcj02": 121.45928,
+      "lat_gcj02": 31.161845,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "徐家汇体育公园天钥桥路入口",
-        "lng_gcj02": 121.440734,
-        "lat_gcj02": 31.181297,
-        "source": "高德POI解析缓存（2026-08-13，B0FFHKDU6C）",
-        "poi_id": "B0FFHKDU6C"
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "华泾路与龙吴路交叉口",
-        "lng_gcj02": 121.45679,
-        "lat_gcj02": 31.120008,
-        "source": "高德POI解析缓存（2026-08-13，B0FFLKX57L）",
-        "poi_id": "B0FFLKX57L"
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "蒲汇塘路与桂林路交叉口",
+        "lng_gcj02": 121.416867,
+        "lat_gcj02": 31.172599,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙华滨江休闲广场外侧道路",
+        "lng_gcj02": 121.458454,
+        "lat_gcj02": 31.151373,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0LBTO51W7",
-        "name": "星巴克上海徐家汇体育公园店",
-        "type": "coffee",
-        "lng_gcj02": 121.439075,
-        "lat_gcj02": 31.181725,
-        "source": "高德POI解析缓存 place_text_v5_5706b91e34c67d58.json"
-      },
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      },
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0FFHR87AU",
-        "name": "雅迪电动车(百色路店)",
-        "type": "bike_service",
-        "lng_gcj02": 121.450346,
-        "lat_gcj02": 31.144552,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      }
+    "waypoint_names": [
+      "龙腾大道与瑞宁路交叉口",
+      "徐家汇公园衡山路入口外侧道路",
+      "蒲汇塘路与桂林路交叉口",
+      "上海植物园3号门外百色路",
+      "华展路与龙吴路交叉口",
+      "龙华滨江休闲广场外侧道路"
     ],
     "amenity_ids": [
-      "B0LBTO51W7",
+      "node/7409372497",
+      "amap:gate:B0FFF64RUI",
       "B0KUNMEGLF",
-      "B0FFG27ABK",
-      "B0FFHR87AU"
+      "node/9826900117"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：徐家汇体育公园天钥桥路入口 → 华泾路与龙吴路交叉口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按地理外围顺序构成单一环，删除穿越中心和重复连接节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "体育公园、植物园和寺庙内部推行",
-      "排除龙耀路隧道"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖west_bund、longhua、shanghai_botanical_garden、huajing；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "石龙路铁路跨越与龙华西路立交地面通行需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_SOUTH_CYCLE_PLAN",
-        "title": "徐汇滨江南部高品质骑行网络建设资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069a97abda019e49836f7a2406",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持龙腾大道、龙吴路和华泾南部的连续骑行骨架；规划段开放状态需现场复核。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_CAOHEJING_GREEN",
-        "title": "漕河泾开发区绿色慢行网络资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6afaa73eb9",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持漕河泾、桂江路及田林片区公共道路慢行骨架；园区门禁与施工状态需复核。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_GUIJIANG_PDF",
-        "title": "桂江路慢行与绿廊建设资料",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/cmsres/8f/8f342720baec4ef2a2368c3c2ecdc58d/6476cae1152b512ce10b8baff0d0967b.pdf",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持桂江路、康健与蒲汇塘片区慢行联系；未明确允许骑行的绿廊和亲水段转平行公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0086",
     "seed_id": "bike_xh_0813_026",
-    "route_name": "龙华寺—漕河泾开发区地铁站骑行线",
+    "route_name": "漕河泾—衡复—龙华—植物园—华泾骑行线",
     "route_mode": "bike",
-    "target_distance_m": 6500,
+    "target_distance_m": 24000,
+    "distance_band": "20-30km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 6,
+    "popular_area_ids": [
+      "hengfu",
+      "xujiahui",
+      "caohejing",
+      "kangjian",
+      "huajing",
+      "west_bund"
+    ],
     "start_location": {
-      "name": "龙华寺外龙华路",
-      "lng_gcj02": 121.451842,
-      "lat_gcj02": 31.175174,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B00155AMEJ）"
+      "name": "宜山路与虹梅路交叉口",
+      "lng_gcj02": 121.397164,
+      "lat_gcj02": 31.170541,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "漕河泾开发区地铁站公共道路入口",
-      "lng_gcj02": 121.398481,
-      "lat_gcj02": 31.171096,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，BX10016957）"
+      "name": "华展路与龙吴路交叉口",
+      "lng_gcj02": 121.45552,
+      "lat_gcj02": 31.112256,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "龙华寺外龙华路",
-        "lng_gcj02": 121.451842,
-        "lat_gcj02": 31.175174,
-        "source": "高德POI解析缓存（2026-08-13，B00155AMEJ）",
-        "poi_id": "B00155AMEJ"
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "漕河泾开发区地铁站公共道路入口",
-        "lng_gcj02": 121.398481,
-        "lat_gcj02": 31.171096,
-        "source": "高德POI解析缓存（2026-08-13，BX10016957）",
-        "poi_id": "BX10016957"
+        "name": "安顺路与淮海西路交叉口",
+        "lng_gcj02": 121.426585,
+        "lat_gcj02": 31.198656,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "乌鲁木齐中路与复兴西路交叉口",
+        "lng_gcj02": 121.44678,
+        "lat_gcj02": 31.210506,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海音乐学院外侧淮海中路",
+        "lng_gcj02": 121.454651,
+        "lat_gcj02": 31.214251,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙华滨江休闲广场外侧道路",
+        "lng_gcj02": 121.458454,
+        "lat_gcj02": 31.151373,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0LBTO51W7",
-        "name": "星巴克上海徐家汇体育公园店",
-        "type": "coffee",
-        "lng_gcj02": 121.439075,
-        "lat_gcj02": 31.181725,
-        "source": "高德POI解析缓存 place_text_v5_5706b91e34c67d58.json"
-      },
-      {
-        "amenity_id": "B00156CS7I",
-        "name": "徐家汇公园-公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.441945,
-        "lat_gcj02": 31.197235,
-        "source": "高德POI解析缓存 place_text_v5_56fdf2a5447234fe.json"
-      },
-      {
-        "amenity_id": "B0KUNMEGLF",
-        "name": "龙腾大道2380号附近公共厕所",
-        "type": "toilet",
-        "lng_gcj02": 121.465163,
-        "lat_gcj02": 31.164966,
-        "source": "高德POI解析缓存 place_text_v5_ac14cd685ef1f4c2.json"
-      }
+    "waypoint_names": [
+      "安顺路与淮海西路交叉口",
+      "乌鲁木齐中路与复兴西路交叉口",
+      "上海音乐学院外侧淮海中路",
+      "龙腾大道与瑞宁路交叉口",
+      "龙耀路与云锦路交叉口",
+      "龙华滨江休闲广场外侧道路"
     ],
     "amenity_ids": [
-      "B0LBTO51W7",
-      "B00156CS7I",
-      "B0KUNMEGLF"
+      "node/7409372497",
+      "amap:gate:B00156NS4T",
+      "B0KUNMEGLF",
+      "node/9826900117"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：龙华寺外龙华路 → 漕河泾开发区地铁站公共道路入口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "寺庙、陵园、体育公园、校园和场馆内部推行",
-      "日晖港桥按现场非机动车导向"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖hengfu、xujiahui、caohejing、kangjian、huajing、west_bund；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "龙华路至漕河泾开发区的铁路跨越和大型路口需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_CAOHEJING_GREEN",
-        "title": "漕河泾开发区绿色慢行网络资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6afaa73eb9",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持漕河泾、桂江路及田林片区公共道路慢行骨架；园区门禁与施工状态需复核。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_LONGHUA_CULTURE",
-        "title": "龙华历史文化线路资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6b29b732ca",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认龙华寺、龙华烈士陵园与徐家汇体育片区文化节点；骑行仅取外围公共道路。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_GUIJIANG_PDF",
-        "title": "桂江路慢行与绿廊建设资料",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/cmsres/8f/8f342720baec4ef2a2368c3c2ecdc58d/6476cae1152b512ce10b8baff0d0967b.pdf",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持桂江路、康健与蒲汇塘片区慢行联系；未明确允许骑行的绿廊和亲水段转平行公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0087",
     "seed_id": "bike_xh_0813_027",
-    "route_name": "江安路与桂江路—日晖港桥南岸骑行线",
+    "route_name": "漕河泾—衡复—西岸—华泾骑行线",
     "route_mode": "bike",
-    "target_distance_m": 10000,
+    "target_distance_m": 22000,
+    "distance_band": "20-30km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 6,
+    "popular_area_ids": [
+      "caohejing",
+      "xujiahui",
+      "hengfu",
+      "west_bund",
+      "longhua",
+      "shanghai_botanical_garden",
+      "huajing"
+    ],
     "start_location": {
-      "name": "江安路与桂江路交叉口",
-      "lng_gcj02": 121.410732,
-      "lat_gcj02": 31.147197,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，B0FFI8OK6E）"
+      "name": "宜山路与虹梅路交叉口",
+      "lng_gcj02": 121.397164,
+      "lat_gcj02": 31.170541,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "日晖港桥南岸",
-      "lng_gcj02": 121.47268,
-      "lat_gcj02": 31.190561,
-      "location_type": "end",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "华展路与龙吴路交叉口",
+      "lng_gcj02": 121.45552,
+      "lat_gcj02": 31.112256,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "江安路与桂江路交叉口",
-        "lng_gcj02": 121.410732,
-        "lat_gcj02": 31.147197,
-        "source": "高德POI解析缓存（2026-08-13，B0FFI8OK6E）",
-        "poi_id": "B0FFI8OK6E"
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "日晖港桥南岸",
-        "lng_gcj02": 121.47268,
-        "lat_gcj02": 31.190561,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "name": "上海音乐学院外侧淮海中路",
+        "lng_gcj02": 121.454651,
+        "lat_gcj02": 31.214251,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园3号门外百色路",
+        "lng_gcj02": 121.43947,
+        "lat_gcj02": 31.142747,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG69LN8",
-        "name": "星巴克(蒲汇塘路店)",
-        "type": "coffee",
-        "lng_gcj02": 121.431594,
-        "lat_gcj02": 31.187331,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      },
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      }
+    "waypoint_names": [
+      "上海音乐学院外侧淮海中路",
+      "龙腾大道与瑞宁路交叉口",
+      "龙耀路与云锦路交叉口",
+      "上海植物园3号门外百色路"
     ],
     "amenity_ids": [
-      "B0FFG69LN8",
-      "B0FFG27ABK"
+      "node/7409372497",
+      "amap:gate:B0FFF64RUI",
+      "B0KUNMEGLF",
+      "node/9826900117"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：江安路与桂江路交叉口 → 日晖港桥南岸；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "亲水段与绿廊无骑行标志时走平行公共道路",
-      "园区门禁需复核"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖caohejing、xujiahui、hengfu、west_bund、longhua、shanghai_botanical_garden、huajing；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "桂江路工程与钦江路园区边界需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_CAOHEJING_GREEN",
-        "title": "漕河泾开发区绿色慢行网络资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6afaa73eb9",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持漕河泾、桂江路及田林片区公共道路慢行骨架；园区门禁与施工状态需复核。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_GUIJIANG_PDF",
-        "title": "桂江路慢行与绿廊建设资料",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/cmsres/8f/8f342720baec4ef2a2368c3c2ecdc58d/6476cae1152b512ce10b8baff0d0967b.pdf",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持桂江路、康健与蒲汇塘片区慢行联系；未明确允许骑行的绿廊和亲水段转平行公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0088",
     "seed_id": "bike_xh_0813_028",
-    "route_name": "康健园北门外桂林路—华泾公园骑行线",
+    "route_name": "徐家汇—衡复—西岸—植物园—华泾骑行线",
     "route_mode": "bike",
-    "target_distance_m": 7000,
+    "target_distance_m": 20500,
+    "distance_band": "20-30km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 6,
+    "popular_area_ids": [
+      "xujiahui",
+      "hengfu",
+      "west_bund",
+      "longhua",
+      "shanghai_botanical_garden",
+      "huajing"
+    ],
     "start_location": {
-      "name": "康健园北门外桂林路",
-      "lng_gcj02": 121.424031,
-      "lat_gcj02": 31.164834,
-      "location_type": "start",
-      "source": "高德交叉口解析缓存（2026-08-13）"
+      "name": "徐家汇体育公园天钥桥路入口外侧道路",
+      "lng_gcj02": 121.440734,
+      "lat_gcj02": 31.181297,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "华泾公园华泾路入口",
-      "lng_gcj02": 121.452542,
-      "lat_gcj02": 31.121725,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0LKXCOKXH）"
+      "name": "华展路与龙吴路交叉口",
+      "lng_gcj02": 121.45552,
+      "lat_gcj02": 31.112256,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "康健园北门外桂林路",
-        "lng_gcj02": 121.424031,
-        "lat_gcj02": 31.164834,
-        "source": "高德交叉口解析缓存（2026-08-13）"
+        "name": "徐家汇体育公园天钥桥路入口外侧道路",
+        "lng_gcj02": 121.440734,
+        "lat_gcj02": 31.181297,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "华泾公园华泾路入口",
-        "lng_gcj02": 121.452542,
-        "lat_gcj02": 31.121725,
-        "source": "高德POI解析缓存（2026-08-13，B0LKXCOKXH）",
-        "poi_id": "B0LKXCOKXH"
+        "name": "徐家汇公园衡山路入口外侧道路",
+        "lng_gcj02": 121.443374,
+        "lat_gcj02": 31.196741,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海音乐学院外侧淮海中路",
+        "lng_gcj02": 121.454651,
+        "lat_gcj02": 31.214251,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙耀路与云锦路交叉口",
+        "lng_gcj02": 121.45928,
+        "lat_gcj02": 31.161845,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海植物园4号门外罗城路",
+        "lng_gcj02": 121.445793,
+        "lat_gcj02": 31.151884,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0FFHR87AU",
-        "name": "雅迪电动车(百色路店)",
-        "type": "bike_service",
-        "lng_gcj02": 121.450346,
-        "lat_gcj02": 31.144552,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      }
+    "waypoint_names": [
+      "徐家汇公园衡山路入口外侧道路",
+      "上海音乐学院外侧淮海中路",
+      "龙腾大道与瑞宁路交叉口",
+      "龙耀路与云锦路交叉口",
+      "上海植物园4号门外罗城路"
     ],
     "amenity_ids": [
-      "B0FFG27ABK",
-      "B0FFHR87AU"
+      "node/7409372497",
+      "amap:gate:B0FFF64RUI",
+      "B0KUNMEGLF",
+      "node/9826900117"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：康健园北门外桂林路 → 华泾公园华泾路入口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "植物园和康健园内部推行",
-      "排除外环快速路"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖xujiahui、hengfu、west_bund、longhua、shanghai_botanical_garden、huajing；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "桂江路工程状态与华泾南段骑行开放状态需在生成后复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
-        "record_id": "SRC_SH_GOV_GUIJIANG_PDF",
-        "title": "桂江路慢行与绿廊建设资料",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/cmsres/8f/8f342720baec4ef2a2368c3c2ecdc58d/6476cae1152b512ce10b8baff0d0967b.pdf",
+        "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
+        "publisher": "上海市文化和旅游局",
+        "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "支持桂江路、康健与蒲汇塘片区慢行联系；未明确允许骑行的绿廊和亲水段转平行公共道路。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_SOUTH_CYCLE_PLAN",
-        "title": "徐汇滨江南部高品质骑行网络建设资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069a97abda019e49836f7a2406",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持龙腾大道、龙吴路和华泾南部的连续骑行骨架；规划段开放状态需现场复核。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0089",
     "seed_id": "bike_xh_0813_029",
-    "route_name": "漕河泾开发区地铁站—西岸梦中心骑行线",
+    "route_name": "华泾—漕河泾—衡复—西岸骑行线",
     "route_mode": "bike",
-    "target_distance_m": 8500,
+    "target_distance_m": 25500,
+    "distance_band": "20-30km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 6,
+    "popular_area_ids": [
+      "huajing",
+      "shanghai_botanical_garden",
+      "kangjian",
+      "caohejing",
+      "xujiahui",
+      "hengfu",
+      "west_bund"
+    ],
     "start_location": {
-      "name": "漕河泾开发区地铁站公共道路入口",
-      "lng_gcj02": 121.398481,
-      "lat_gcj02": 31.171096,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，BX10016957）"
+      "name": "华展路与龙吴路交叉口",
+      "lng_gcj02": 121.45552,
+      "lat_gcj02": 31.112256,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
-      "name": "西岸梦中心龙腾大道入口",
-      "lng_gcj02": 121.466601,
-      "lat_gcj02": 31.161366,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0LKLP88CD）"
+      "name": "龙腾大道与瑞宁路交叉口",
+      "lng_gcj02": 121.466947,
+      "lat_gcj02": 31.186049,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "漕河泾开发区地铁站公共道路入口",
-        "lng_gcj02": 121.398481,
-        "lat_gcj02": 31.171096,
-        "source": "高德POI解析缓存（2026-08-13，BX10016957）",
-        "poi_id": "BX10016957"
+        "name": "华展路与龙吴路交叉口",
+        "lng_gcj02": 121.45552,
+        "lat_gcj02": 31.112256,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
-        "name": "西岸梦中心龙腾大道入口",
-        "lng_gcj02": 121.466601,
-        "lat_gcj02": 31.161366,
-        "source": "高德POI解析缓存（2026-08-13，B0LKLP88CD）",
-        "poi_id": "B0LKLP88CD"
+        "name": "江安路与桂江路交叉口",
+        "lng_gcj02": 121.410732,
+        "lat_gcj02": 31.147197,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "安顺路与淮海西路交叉口",
+        "lng_gcj02": 121.426585,
+        "lat_gcj02": 31.198656,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "乌鲁木齐中路与复兴西路交叉口",
+        "lng_gcj02": 121.44678,
+        "lat_gcj02": 31.210506,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "上海音乐学院外侧淮海中路",
+        "lng_gcj02": 121.454651,
+        "lat_gcj02": 31.214251,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG69LN8",
-        "name": "星巴克(蒲汇塘路店)",
-        "type": "coffee",
-        "lng_gcj02": 121.431594,
-        "lat_gcj02": 31.187331,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      },
-      {
-        "amenity_id": "B0LBTO51W7",
-        "name": "星巴克上海徐家汇体育公园店",
-        "type": "coffee",
-        "lng_gcj02": 121.439075,
-        "lat_gcj02": 31.181725,
-        "source": "高德POI解析缓存 place_text_v5_5706b91e34c67d58.json"
-      },
-      {
-        "amenity_id": "B0LG7SVBWT",
-        "name": "漫慢SLOWPACED咖啡(徐家汇店)",
-        "type": "coffee",
-        "lng_gcj02": 121.433853,
-        "lat_gcj02": 31.186768,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      }
+    "waypoint_names": [
+      "江安路与桂江路交叉口",
+      "宜山路与虹梅路交叉口",
+      "安顺路与淮海西路交叉口",
+      "乌鲁木齐中路与复兴西路交叉口",
+      "上海音乐学院外侧淮海中路"
     ],
     "amenity_ids": [
-      "B0FFG69LN8",
-      "B0LBTO51W7",
-      "B0LG7SVBWT"
+      "node/7409372497",
+      "amap:gate:B0FFF64RUI",
+      "B0KUNMEGLF",
+      "node/9826900117"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：漕河泾开发区地铁站公共道路入口 → 西岸梦中心龙腾大道入口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "宜山路中环匝道附近按非机动车导向",
-      "体育公园内部推行"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖huajing、shanghai_botanical_garden、kangjian、caohejing、xujiahui、hengfu、west_bund；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "宜山路大型立交和钦江路园区边界需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_CAOHEJING_GREEN",
-        "title": "漕河泾开发区绿色慢行网络资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6afaa73eb9",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持漕河泾、桂江路及田林片区公共道路慢行骨架；园区门禁与施工状态需复核。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_LONGHUA_CULTURE",
-        "title": "龙华历史文化线路资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6b29b732ca",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认龙华寺、龙华烈士陵园与徐家汇体育片区文化节点；骑行仅取外围公共道路。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_GUIJIANG_PDF",
-        "title": "桂江路慢行与绿廊建设资料",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/cmsres/8f/8f342720baec4ef2a2368c3c2ecdc58d/6476cae1152b512ce10b8baff0d0967b.pdf",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持桂江路、康健与蒲汇塘片区慢行联系；未明确允许骑行的绿廊和亲水段转平行公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   },
   {
     "route_id": "XH_BIKE_0090",
     "seed_id": "bike_xh_0813_030",
-    "route_name": "漕河泾开发区地铁站—华展路与龙吴路骑行线",
+    "route_name": "西岸北段—衡复—漕河泾—华泾骑行线",
     "route_mode": "bike",
-    "target_distance_m": 11000,
+    "target_distance_m": 23000,
+    "distance_band": "20-30km",
     "route_shape": "one_way",
+    "validation_status": "needs_review",
+    "repair_batch": 6,
+    "popular_area_ids": [
+      "west_bund",
+      "hengfu",
+      "xujiahui",
+      "caohejing",
+      "kangjian",
+      "huajing",
+      "shanghai_botanical_garden",
+      "longhua"
+    ],
     "start_location": {
-      "name": "漕河泾开发区地铁站公共道路入口",
-      "lng_gcj02": 121.398481,
-      "lat_gcj02": 31.171096,
-      "location_type": "start",
-      "source": "高德POI解析缓存（2026-08-13，BX10016957）"
+      "name": "龙腾大道与瑞宁路交叉口",
+      "lng_gcj02": 121.466947,
+      "lat_gcj02": 31.186049,
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "start"
     },
     "end_location": {
       "name": "华展路与龙吴路交叉口",
       "lng_gcj02": 121.45552,
       "lat_gcj02": 31.112256,
-      "location_type": "end",
-      "source": "高德POI解析缓存（2026-08-13，B0FFGGTEX3）"
+      "source": "高德本地POI或交叉口解析缓存（2026-08-13）",
+      "location_type": "end"
     },
     "ordered_nodes": [
       {
-        "name": "漕河泾开发区地铁站公共道路入口",
-        "lng_gcj02": 121.398481,
-        "lat_gcj02": 31.171096,
-        "source": "高德POI解析缓存（2026-08-13，BX10016957）",
-        "poi_id": "BX10016957"
+        "name": "龙腾大道与瑞宁路交叉口",
+        "lng_gcj02": 121.466947,
+        "lat_gcj02": 31.186049,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "安顺路与淮海西路交叉口",
+        "lng_gcj02": 121.426585,
+        "lat_gcj02": 31.198656,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "宜山路与虹梅路交叉口",
+        "lng_gcj02": 121.397164,
+        "lat_gcj02": 31.170541,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
+      },
+      {
+        "name": "江安路与桂江路交叉口",
+        "lng_gcj02": 121.410732,
+        "lat_gcj02": 31.147197,
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       },
       {
         "name": "华展路与龙吴路交叉口",
         "lng_gcj02": 121.45552,
         "lat_gcj02": 31.112256,
-        "source": "高德POI解析缓存（2026-08-13，B0FFGGTEX3）",
-        "poi_id": "B0FFGGTEX3"
+        "source": "高德本地POI或交叉口解析缓存（2026-08-13）"
       }
     ],
-    "waypoint_names": [],
-    "amenities": [
-      {
-        "amenity_id": "B0FFG69LN8",
-        "name": "星巴克(蒲汇塘路店)",
-        "type": "coffee",
-        "lng_gcj02": 121.431594,
-        "lat_gcj02": 31.187331,
-        "source": "高德POI解析缓存 place_text_v5_c03e1e934ac87326.json"
-      },
-      {
-        "amenity_id": "B0FFG27ABK",
-        "name": "惠好的(植物园百色店)",
-        "type": "convenience",
-        "lng_gcj02": 121.440363,
-        "lat_gcj02": 31.142461,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      },
-      {
-        "amenity_id": "B0FFHR87AU",
-        "name": "雅迪电动车(百色路店)",
-        "type": "bike_service",
-        "lng_gcj02": 121.450346,
-        "lat_gcj02": 31.144552,
-        "source": "高德POI解析缓存 place_text_v5_6f7ddd828dc5e517.json"
-      }
+    "waypoint_names": [
+      "安顺路与淮海西路交叉口",
+      "宜山路与虹梅路交叉口",
+      "江安路与桂江路交叉口"
     ],
     "amenity_ids": [
-      "B0FFG69LN8",
-      "B0FFG27ABK",
-      "B0FFHR87AU"
+      "node/7409372497",
+      "amap:gate:B0FFF64RUI",
+      "B0KUNMEGLF",
+      "node/9826900117"
+    ],
+    "preference_search_status": {
+      "coffee": "verified",
+      "park_gate": "verified",
+      "toilet": "verified",
+      "convenience": "verified"
+    },
+    "preference_hits": [
+      "coffee",
+      "park_gate",
+      "toilet",
+      "convenience"
     ],
     "geometry_action": "regenerate",
     "geometry_source": "amap_bicycling_v2_on_ordered_public_road_nodes",
-    "evidence_note": "第二轮质量门收敛为连续单程骨架：漕河泾开发区地铁站公共道路入口 → 华展路与龙吴路交叉口；仅保留主干道路或滨江走廊导航节点。",
+    "evidence_note": "依据当前 route_quality_gate_report 的失败几何重排节点；按起点至终点的持续推进方向删去回摆节点。 第二次本地骨架复核使用旧几何路由倍率校正目标里程。",
     "access_restrictions": [
-      "植物园内部推行",
-      "桂江绿廊无骑行标志段走平行公共道路"
+      "仅使用浦西地面公共道路和非机动车道",
+      "排除龙耀路隧道、地下通道、高架、轮渡及公园内部纯步行园路",
+      "施工、临时交通管制与公园入口开放时间需出发前复核"
     ],
-    "design_rationale": "删除导致分叉、重复边、局部返回或多环闭合的导航节点，起终点分离。",
+    "design_rationale": "覆盖west_bund、hengfu、xujiahui、caohejing、kangjian、huajing、shanghai_botanical_garden、longhua；本轮以最少道路转折消除旧几何的折返、分叉、自交和假闭环，POI维持200米沿线服务角色。",
     "risk_flags": [
-      "桂江路工程、石龙路铁路跨越和园区门禁需复核"
+      "previous_geometry_quality_gate_failed",
+      "geometry_regeneration_required",
+      "poi_corridor_recheck_required",
+      "full_route_visual_check_pending"
     ],
     "source_records": [
       {
         "record_id": "SRC_SH_WHLYJ_20250521_YIWENZHIAN",
-        "title": "骑行浦江，寻踪徐汇“艺文智岸”",
+        "title": "骑行浦江，寻踪徐汇艺文智岸",
         "publisher": "上海市文化和旅游局",
         "url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
         "accessed_at": "2026-08-15",
         "source_level": "A",
-        "note": "确认徐汇滨江北起日晖港、南至徐浦大桥，徐汇滨江段5.9公里；艺文智岸骑行路线约2.7公里及沿线节点顺序。"
+        "note": "确认徐汇滨江、龙腾大道及艺文智岸骑行母线。"
       },
       {
-        "record_id": "SRC_SH_GOV_20250430_45_ROUTES",
-        "title": "一键收藏！上海推出45条精品线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20250430/a3efe384da7544e38e8a74c10714f73b.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认星美术馆至西岸梦中心约3.5公里滨江线路适合骑行，并确认徐家汇源、衡复音乐街区节点。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_20260427_FLOWER_RIDE",
-        "title": "上海国际花展徐汇骑行线路",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/nw17239/20260427/a50209dcaec54c2d851abbfb2534e024.html",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "确认上海植物园园门、徐汇滨江和龙华之间的骑行联系；道路通行仍按现场标志复核。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_SOUTH_CYCLE_PLAN",
-        "title": "徐汇滨江南部高品质骑行网络建设资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c069a97abda019e49836f7a2406",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持龙腾大道、龙吴路和华泾南部的连续骑行骨架；规划段开放状态需现场复核。"
-      },
-      {
-        "record_id": "SRC_XH_GOV_CAOHEJING_GREEN",
-        "title": "漕河泾开发区绿色慢行网络资料",
-        "publisher": "上海市徐汇区人民政府",
-        "url": "https://www.xuhui.gov.cn/xxgk/portal/article/detail?id=8a4c0c06829b645701829b6afaa73eb9",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持漕河泾、桂江路及田林片区公共道路慢行骨架；园区门禁与施工状态需复核。"
-      },
-      {
-        "record_id": "SRC_SH_GOV_GUIJIANG_PDF",
-        "title": "桂江路慢行与绿廊建设资料",
-        "publisher": "上海市人民政府",
-        "url": "https://www.shanghai.gov.cn/cmsres/8f/8f342720baec4ef2a2368c3c2ecdc58d/6476cae1152b512ce10b8baff0d0967b.pdf",
-        "accessed_at": "2026-08-15",
-        "source_level": "A",
-        "note": "支持桂江路、康健与蒲汇塘片区慢行联系；未明确允许骑行的绿廊和亲水段转平行公共道路。"
+        "record_id": "SRC_LOCAL_AMAP_BIKE_NODES_20260813",
+        "title": "高德本地道路节点与POI成功缓存",
+        "publisher": "高德地图",
+        "evidence_path": "data/raw/amap/place_text_v5_*.json",
+        "accessed_at": "2026-08-13",
+        "source_level": "B",
+        "note": "确认道路交叉口、入口与沿线设施坐标；本轮只重排既有真实节点，未发起网络请求。"
       }
     ]
   }

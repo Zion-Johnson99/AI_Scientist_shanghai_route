@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import tempfile
 import traceback
+from collections import Counter
 from datetime import date, datetime, timezone
 from pathlib import Path
 
@@ -28,7 +30,7 @@ from .models import CandidateRoute, RouteSeed
 from .osm_poi import build_osm_poi_index
 from .place_resolver import HybridPlaceResolver
 from .route_research import merge_research_drafts, merge_route_optimizations
-from .routes import generate_candidate_from_seed, load_route_seeds
+from .routes import generate_candidate_from_seed, load_route_seeds, preserve_candidate_geometry
 from .service_pois import merge_verified_service_pois
 from .validation import (
     OverpassClient,
@@ -42,9 +44,26 @@ from .validation import (
 
 EXPECTED_ROUTE_COUNT = 90
 EXPECTED_MODE_COUNTS = {"walk": 30, "run": 30, "bike": 30}
+PREFERENCE_TYPES = {"coffee", "park_gate", "toilet", "convenience"}
+PREFERENCE_SEARCH_STATES = {
+    "verified",
+    "no_verified_match",
+    "needs_review",
+    "source_failed",
+}
+POPULAR_AREA_IDS = {
+    "west_bund",
+    "longhua",
+    "xujiahui",
+    "hengfu",
+    "shanghai_botanical_garden",
+    "kangjian",
+    "caohejing",
+    "huajing",
+}
 DISTANCE_BANDS_M = {
-    "walk": (("short", 1000, 2000), ("medium", 2000, 3500), ("long", 3500, 5000)),
-    "run": (("short", 3000, 5000), ("medium", 5000, 10000), ("long", 10000, 15000)),
+    "walk": (("short", 500, 2000), ("medium", 2000, 3500), ("long", 3500, 5000)),
+    "run": (("short", 1000, 5000), ("medium", 5000, 10000), ("long", 10000, 15000)),
     "bike": (("short", 5000, 10000), ("medium", 10000, 20000), ("long", 20000, 30000)),
 }
 
@@ -259,11 +278,33 @@ def validate_seeds(project_root: Path) -> list[RouteSeed]:
 
 def generate_routes(project_root: Path, client) -> list:
     seeds = validate_seeds(project_root)
+    previous_path = project_root / "data" / "processed" / "pilot_validated.json"
+    previous_items = json.loads(previous_path.read_text(encoding="utf-8")) if previous_path.exists() else []
+    previous_by_id = {
+        item.get("route_id"): item
+        for item in previous_items
+        if isinstance(item, dict) and item.get("route_id")
+    }
     candidates = []
     failures = []
+    protected_geometry_hashes = {}
     for index, seed in enumerate(seeds, start=1):
         try:
-            candidate = generate_candidate_from_seed(seed, client, index)
+            route_id = _route_id_for_seed(seed.route_mode, index)
+            if seed.geometry_action == "preserve":
+                previous = previous_by_id.get(route_id)
+                if previous is None:
+                    raise ValueError(f"protected geometry missing from {previous_path}: {route_id}")
+                before_hash = _geometry_hash(previous.get("polyline_gcj02", []))
+                candidate = preserve_candidate_geometry(seed, previous, index)
+                after_hash = _geometry_hash(
+                    [point.model_dump(mode="json") for point in candidate.polyline_gcj02]
+                )
+                if before_hash != after_hash:
+                    raise ValueError(f"protected geometry changed: {route_id}")
+                protected_geometry_hashes[route_id] = before_hash
+            else:
+                candidate = generate_candidate_from_seed(seed, client, index)
             candidates.append(
                 candidate.model_copy(
                     update={
@@ -293,6 +334,7 @@ def generate_routes(project_root: Path, client) -> list:
         "success_count": len(candidates),
         "failure_count": len(failures),
         "success_route_ids": [route.route_id for route in candidates],
+        "protected_geometry_hashes": protected_geometry_hashes,
         "failures": failures,
     }
     report_path = project_root / "data" / "processed" / "route_generation_report.json"
@@ -353,6 +395,16 @@ def generate_routes(project_root: Path, client) -> list:
             f"pilot candidates rolled back{detail}"
         ) from exc
     return candidates
+
+
+def _route_id_for_seed(route_mode: str, index: int) -> str:
+    prefix = {"walk": "WALK", "run": "RUN", "bike": "BIKE"}[route_mode]
+    return f"XH_{prefix}_{index:04d}"
+
+
+def _geometry_hash(points) -> str:
+    payload = json.dumps(points, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
 def _portable_raw_path(project_root: Path, raw_path: str) -> str:
@@ -511,6 +563,7 @@ def validate_routes(
         "batch_status": "preparing" if collection_valid else "failed",
         **counts,
         "published_count": len(publishable) if collection_valid else 0,
+        "displayed_count": len(validated) if collection_valid else 0,
         "mode_counts": mode_counts,
         "distance_band_counts": distance_band_counts,
         "network_version": distinct_versions[0]
@@ -557,8 +610,8 @@ def validate_routes(
         _write_json_transaction(
             web_targets,
             [
-                build_route_feature_collection(publishable),
-                build_route_catalog(publishable),
+                build_candidate_route_feature_collection(validated),
+                build_candidate_route_catalog(validated),
             ],
         )
     except Exception as exc:
@@ -703,6 +756,9 @@ def _validate_seed_collection(seeds: list[RouteSeed]) -> None:
         raise ValueError("route seed_id values must be unique")
     if len({seed.route_name for seed in seeds}) != len(seeds):
         raise ValueError("route_name values must be unique")
+    portfolio_failures = _seed_portfolio_failures(seeds)
+    if portfolio_failures:
+        raise ValueError("route seed portfolio failed: " + "; ".join(portfolio_failures))
     for seed in seeds:
         if (
             not seed.source_name.strip()
@@ -715,6 +771,69 @@ def _validate_seed_collection(seeds: list[RouteSeed]) -> None:
         for node in seed.ordered_nodes:
             if node.lng_gcj02 is None or node.lat_gcj02 is None:
                 raise ValueError(f"seed {seed.seed_id} contains unresolved nodes")
+
+
+def _seed_portfolio_failures(seeds: list[RouteSeed]) -> list[str]:
+    failures: list[str] = []
+    band_counts = {
+        mode: Counter(
+            _distance_band(seed.route_mode, seed.target_distance_m)
+            for seed in seeds
+            if seed.route_mode == mode
+        )
+        for mode in EXPECTED_MODE_COUNTS
+    }
+    for mode, counts in band_counts.items():
+        if any(counts[band] != 10 for band in ("short", "medium", "long")) or counts[None]:
+            failures.append(f"{mode} distance bands must contain 10 routes each: {dict(counts)}")
+
+    for mode in EXPECTED_MODE_COUNTS:
+        shapes = Counter(
+            seed.route_shape for seed in seeds if seed.route_mode == mode
+        )
+        if shapes != {"strict_loop": 15, "one_way": 15}:
+            failures.append(f"{mode} shape balance must be 15 strict_loop and 15 one_way: {dict(shapes)}")
+
+    covered_areas = {
+        area_id for seed in seeds for area_id in seed.popular_area_ids
+    }
+    missing_areas = sorted(POPULAR_AREA_IDS - covered_areas)
+    if missing_areas:
+        failures.append(f"popular area coverage missing: {missing_areas}")
+
+    for seed in seeds:
+        statuses = seed.preference_search_status
+        invalid_statuses = {
+            preference: statuses.get(preference)
+            for preference in PREFERENCE_TYPES
+            if statuses.get(preference) not in PREFERENCE_SEARCH_STATES
+        }
+        if invalid_statuses:
+            failures.append(
+                f"{seed.seed_id} requires four preference search statuses: {invalid_statuses}"
+            )
+            continue
+        verified = {
+            preference
+            for preference in PREFERENCE_TYPES
+            if statuses[preference] == "verified"
+        }
+        hits = set(seed.preference_hits)
+        if hits != verified:
+            failures.append(
+                f"{seed.seed_id} preference hits must match verified searches: "
+                f"hits={sorted(hits)} verified={sorted(verified)}"
+            )
+        if len(hits) < 2:
+            failures.append(
+                f"{seed.seed_id} requires at least two verified preference types"
+            )
+        if (
+            (seed.route_mode == "run" and seed.target_distance_m > 5_000)
+            or (seed.route_mode == "bike" and seed.target_distance_m > 10_000)
+        ) and not hits & {"toilet", "convenience"}:
+            failures.append(f"{seed.seed_id} long route requires toilet or convenience")
+    return failures
 
 
 def _validate_draft_collection(raw) -> None:
@@ -914,16 +1033,18 @@ def merge_service_pois(project_root: Path) -> list[CandidateRoute]:
     _write_json_transaction(
         [web / "xuhui_routes.geojson", web / "route_catalog.json", web / "poi_catalog.json"],
         [
-            build_route_feature_collection(publishable),
-            build_route_catalog(publishable),
+            build_candidate_route_feature_collection(updated),
+            build_candidate_route_catalog(updated),
             poi_catalog,
         ],
     )
     report["published_route_count"] = len(publishable)
+    report["displayed_route_count"] = len(updated)
     report["source_files"] = [path.relative_to(project_root).as_posix() for path in source_paths]
     _atomic_write_json(processed / "poi_merge_report.json", report)
     print(
         f"published_route_count={len(publishable)} "
+        f"displayed_route_count={len(updated)} "
         f"published_poi_count={report['published_unique_poi_count']} "
         f"published_association_count={report['published_association_count']}"
     )

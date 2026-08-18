@@ -1,4 +1,4 @@
-const DATA_RELEASE = "20260817-inline-navigation-2";
+const DATA_RELEASE = "20260818-portfolio-1";
 
 export async function loadJson(path) {
   const separator = path.includes("?") ? "&" : "?";

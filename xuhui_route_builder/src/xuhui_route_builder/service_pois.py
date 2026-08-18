@@ -6,13 +6,14 @@ from typing import Any
 
 from .geo import gcj02_to_wgs84, wgs84_to_gcj02
 from .models import CandidateRoute
+from .validation import point_to_polyline_distance_m
 
 CLOSED_MARKERS = ("暂停", "关闭", "歇业", "停业", "closed", "suspended")
 PREFERENCE_BY_TYPE = {
     "coffee": "coffee",
     "toilet": "toilet",
-    "convenience": "store",
-    "park_gate": "park",
+    "convenience": "convenience",
+    "park_gate": "park_gate",
 }
 
 
@@ -23,6 +24,11 @@ def merge_verified_service_pois(
     accepted_ids = {
         route.route_id for route in route_list if route.validation_status == "accepted"
     }
+    accepted_routes = {
+        route.route_id: route
+        for route in route_list
+        if route.validation_status == "accepted"
+    }
     associations: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
     pois: dict[str, dict[str, Any]] = {}
     counts = {
@@ -31,6 +37,7 @@ def merge_verified_service_pois(
         "closed": 0,
         "unpublished_route": 0,
         "invalid": 0,
+        "outside_corridor": 0,
     }
 
     for document in documents:
@@ -42,39 +49,75 @@ def merge_verified_service_pois(
             if _is_closed(record):
                 counts["closed"] += 1
                 continue
-            route_id = str(record.get("route_id") or "")
-            if route_id not in accepted_ids:
-                counts["unpublished_route"] += 1
+            route_ids = list(
+                dict.fromkeys(
+                    [
+                        str(record.get("route_id") or ""),
+                        *(
+                            str(route_id)
+                            for route_id in record.get("related_route_ids", [])
+                        ),
+                    ]
+                )
+            )
+            route_ids = [route_id for route_id in route_ids if route_id]
+            accepted_record_ids = [
+                route_id for route_id in route_ids if route_id in accepted_ids
+            ]
+            counts["unpublished_route"] += len(route_ids) - len(accepted_record_ids)
+            if not accepted_record_ids:
                 continue
             normalized = _normalize_record(record)
             if normalized is None:
                 counts["invalid"] += 1
                 continue
-            poi_id = normalized["poi_id"]
-            association = {
-                "poi_id": poi_id,
-                "poi_type": normalized["poi_type"],
-                "poi_name": normalized["poi_name"],
-                "distance_m": normalized["distance_to_route_m"],
-            }
-            current = associations[route_id].get(poi_id)
-            if current is None or association["distance_m"] < current["distance_m"]:
-                associations[route_id][poi_id] = association
-            if poi_id not in pois:
-                pois[poi_id] = {**normalized, "route_ids": {route_id}}
-            else:
-                pois[poi_id]["route_ids"].add(route_id)
-                pois[poi_id]["distance_to_route_m"] = min(
-                    pois[poi_id]["distance_to_route_m"],
-                    normalized["distance_to_route_m"],
+            for route_id in accepted_record_ids:
+                route = accepted_routes[route_id]
+                distance_to_route_m = point_to_polyline_distance_m(
+                    (normalized["lng_gcj02"], normalized["lat_gcj02"]),
+                    route.polyline_gcj02,
                 )
+                corridor_m = (
+                    200 if route.route_mode in {"bike", "bike_assist"} else 100
+                )
+                if distance_to_route_m > corridor_m:
+                    counts["outside_corridor"] += 1
+                    continue
+                route_poi = {
+                    **normalized,
+                    "distance_to_route_m": round(distance_to_route_m, 1),
+                }
+                poi_id = route_poi["poi_id"]
+                association = {
+                    "poi_id": poi_id,
+                    "poi_type": route_poi["poi_type"],
+                    "poi_name": route_poi["poi_name"],
+                    "distance_m": route_poi["distance_to_route_m"],
+                }
+                current = associations[route_id].get(poi_id)
+                if current is None or association["distance_m"] < current["distance_m"]:
+                    associations[route_id][poi_id] = association
+                if poi_id not in pois:
+                    pois[poi_id] = {**route_poi, "route_ids": {route_id}}
+                else:
+                    pois[poi_id]["route_ids"].add(route_id)
+                    pois[poi_id]["distance_to_route_m"] = min(
+                        pois[poi_id]["distance_to_route_m"],
+                        route_poi["distance_to_route_m"],
+                    )
 
     updated_routes: list[CandidateRoute] = []
+    preference_gate_failures: dict[str, str] = {}
     for route in route_list:
         nearby = sorted(
             associations.get(route.route_id, {}).values(),
             key=lambda item: (item["distance_m"], item["poi_id"]),
         )
+        if route.validation_status != "accepted":
+            updated_routes.append(
+                route.model_copy(update={"nearby_pois": [], "amenity_ids": []})
+            )
+            continue
         preference_hits = sorted(
             {
                 PREFERENCE_BY_TYPE[item["poi_type"]]
@@ -82,25 +125,68 @@ def merge_verified_service_pois(
                 if item["poi_type"] in PREFERENCE_BY_TYPE
             }
         )
+        search_status = dict(route.preference_search_status)
+        for preference in PREFERENCE_BY_TYPE.values():
+            if preference in preference_hits:
+                search_status[preference] = "verified"
+            elif search_status.get(preference) == "verified":
+                search_status[preference] = "no_verified_match"
+            elif preference not in search_status:
+                search_status[preference] = "no_verified_match"
+        gate_reason = None
+        if len(preference_hits) < 2:
+            gate_reason = "沿线已核实偏好少于两类"
+        elif (
+            (route.route_mode == "run" and route.actual_distance_m > 5_000)
+            or (
+                route.route_mode in {"bike", "bike_assist"}
+                and route.actual_distance_m > 10_000
+            )
+        ) and not set(preference_hits) & {"toilet", "convenience"}:
+            gate_reason = "长路线缺少已核实厕所或便利店"
+        if gate_reason:
+            preference_gate_failures[route.route_id] = gate_reason
         updated_routes.append(
             route.model_copy(
                 update={
-                    "nearby_pois": nearby,
-                    "amenity_ids": [item["poi_id"] for item in nearby],
+                    "nearby_pois": [] if gate_reason else nearby,
+                    "amenity_ids": []
+                    if gate_reason
+                    else [item["poi_id"] for item in nearby],
                     "preference_hits": preference_hits,
+                    "preference_search_status": search_status,
+                    "validation_status": "needs_review"
+                    if gate_reason
+                    else route.validation_status,
+                    "review_note": f"POI 门禁失败：{gate_reason}"
+                    if gate_reason
+                    else route.review_note,
                 }
             )
         )
 
     features = []
+    final_accepted_ids = {
+        route.route_id
+        for route in updated_routes
+        if route.validation_status == "accepted"
+    }
     for poi_id in sorted(pois):
         poi = pois[poi_id]
+        route_ids = sorted(poi["route_ids"] & final_accepted_ids)
+        if not route_ids:
+            continue
         properties = {
             key: value
             for key, value in poi.items()
             if key not in {"lng_gcj02", "lat_gcj02", "lng_wgs84", "lat_wgs84"}
         }
-        properties["route_ids"] = sorted(properties["route_ids"])
+        properties["route_ids"] = route_ids
+        properties["distance_to_route_m"] = min(
+            associations[route_id][poi_id]["distance_m"]
+            for route_id in route_ids
+            if poi_id in associations[route_id]
+        )
         features.append(
             {
                 "type": "Feature",
@@ -114,15 +200,24 @@ def merge_verified_service_pois(
     report = {
         "input_record_count": counts["input"],
         "published_association_count": sum(
-            len(items) for items in associations.values()
+            len(associations.get(route_id, {})) for route_id in final_accepted_ids
         ),
         "published_unique_poi_count": len(features),
         "routes_with_verified_pois": sorted(
-            route_id for route_id, items in associations.items() if items
+            route_id
+            for route_id in final_accepted_ids
+            if associations.get(route_id)
         ),
+        "preference_gate_failures": preference_gate_failures,
         "excluded": {
             key: counts[key]
-            for key in ("unverified", "closed", "unpublished_route", "invalid")
+            for key in (
+                "unverified",
+                "closed",
+                "unpublished_route",
+                "invalid",
+                "outside_corridor",
+            )
         },
     }
     return updated_routes, {"type": "FeatureCollection", "features": features}, report

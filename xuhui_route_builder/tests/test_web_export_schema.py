@@ -110,6 +110,13 @@ def test_build_route_catalog_exports_navigation_and_preference_metadata() -> Non
         waypoint_names=["衡山路8号", "东平路", "上海音乐学院"],
         nearby_pois=[{"poi_id": "XH_POI_0001", "poi_type": "coffee", "poi_name": "咖啡", "distance_m": 80}],
         preference_hits=["coffee"],
+        popular_area_ids=["hengfu"],
+        preference_search_status={
+            "coffee": "verified",
+            "park_gate": "needs_review",
+            "toilet": "no_verified_match",
+            "convenience": "no_verified_match",
+        },
         validation_status="accepted",
         snap_ratio=0.99,
         network_source="osm-test",
@@ -125,6 +132,8 @@ def test_build_route_catalog_exports_navigation_and_preference_metadata() -> Non
     assert catalog[0]["waypoint_names"] == ["衡山路8号", "东平路", "上海音乐学院"]
     assert catalog[0]["nearby_pois"][0]["poi_type"] == "coffee"
     assert catalog[0]["preference_hits"] == ["coffee"]
+    assert catalog[0]["popular_area_ids"] == ["hengfu"]
+    assert catalog[0]["preference_search_status"]["coffee"] == "verified"
     assert catalog[0]["start_location"] == {
         "name": "衡山路8号",
         "location_type": "public_space",
@@ -134,7 +143,7 @@ def test_build_route_catalog_exports_navigation_and_preference_metadata() -> Non
     }
 
 
-def test_candidate_exports_exclude_routes_awaiting_strict_review() -> None:
+def test_candidate_exports_include_routes_awaiting_strict_review_for_map_inspection() -> None:
     start = RouteLocation(name="候选入口", location_type="public_space", lng_gcj02=121.45, lat_gcj02=31.17, source_url="https://example.com/start")
     end = RouteLocation(name="候选终点", location_type="public_space", lng_gcj02=121.46, lat_gcj02=31.16, source_url="https://example.com/end")
     route = CandidateRoute(
@@ -169,5 +178,6 @@ def test_candidate_exports_exclude_routes_awaiting_strict_review() -> None:
     catalog = build_candidate_route_catalog([route])
     features = build_candidate_route_feature_collection([route])
 
-    assert catalog == []
-    assert features["features"] == []
+    assert [item["route_id"] for item in catalog] == [route.route_id]
+    assert catalog[0]["display_status"] == "待考证"
+    assert features["features"][0]["properties"]["display_status"] == "待考证"

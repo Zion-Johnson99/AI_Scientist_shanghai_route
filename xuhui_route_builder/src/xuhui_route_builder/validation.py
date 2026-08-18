@@ -78,6 +78,19 @@ def polyline_length_m(points: Sequence[CoordinatePair | WgsPoint]) -> float:
     return sum(_distance_m(first, second) for first, second in zip(wgs_points, wgs_points[1:]))
 
 
+def point_to_polyline_distance_m(
+    point: WgsPoint, points: Sequence[CoordinatePair | WgsPoint]
+) -> float:
+    route_points = [
+        (item.lng_gcj02, item.lat_gcj02) if isinstance(item, CoordinatePair) else item
+        for item in points
+    ]
+    segments = list(zip(route_points, route_points[1:]))
+    if not segments:
+        return math.inf
+    return min(_point_segment_distance_m(point, segment) for segment in segments)
+
+
 def distance_error_ratio(route: CandidateRoute) -> float:
     if route.actual_distance_m <= 0:
         return math.inf

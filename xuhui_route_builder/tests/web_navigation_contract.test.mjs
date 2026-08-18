@@ -6,6 +6,7 @@ import {
   buildNavigationRequest,
   filterCandidateRoutes,
   filterNavigationRoutes,
+  selectBestRoute,
   startPlannedNavigation,
   resetNavigationForModeChange,
   resetPlannedNavigationForRouteChange,
@@ -18,6 +19,8 @@ const route = {
   route_id: "XH_RUN_0001",
   route_name: "徐汇滨江跑步线",
   route_mode: "run",
+  route_shape: "one_way",
+  validation_status: "accepted",
   start_location: {
     name: "星美术馆入口",
     lng_gcj02: 121.462,
@@ -29,6 +32,7 @@ const navigationCatalog = [
   { ...route, route_id: "XH_RUN_0001", route_mode: "run" },
   { ...route, route_id: "XH_WALK_0001", route_name: "衡复步行线", route_mode: "walk" },
   { ...route, route_id: "XH_BIKE_0001", route_name: "滨江骑行线", route_mode: "bike" },
+  { ...route, route_id: "XH_BIKE_0002", route_name: "待考证骑行线", route_mode: "bike", validation_status: "needs_review" },
 ];
 
 test("导航页使用独立运动类型选项卡并置于路线和用户位置之前", () => {
@@ -43,10 +47,19 @@ test("导航页使用独立运动类型选项卡并置于路线和用户位置�
   assert.ok(modeIndex < routeIndex && routeIndex < originIndex);
 });
 
-test("导航路线下拉只保留当前运动类型", () => {
+test("导航路线下拉只保留当前运动类型的严格验收路线", () => {
   const routes = filterNavigationRoutes(navigationCatalog, "bike");
 
   assert.deepEqual(routes.map((item) => item.route_id), ["XH_BIKE_0001"]);
+});
+
+test("自动推荐跳过待考证路线", () => {
+  const selected = selectBestRoute([
+    { ...route, route_id: "XH_RUN_REVIEW", validation_status: "needs_review" },
+    { ...route, route_id: "XH_RUN_ACCEPTED", validation_status: "accepted" },
+  ]);
+
+  assert.equal(selected.route_id, "XH_RUN_ACCEPTED");
 });
 
 test("切换导航运动类型会清除路线和旧接驳结果", () => {
@@ -175,8 +188,33 @@ test("路线下拉项包含名称、片区、距离和验收状态", () => {
       route_name: "东上澳塘滨水短线",
       region_zone: "康健—桂江绿廊",
       distance_m: 4338,
+      route_shape: "one_way",
       validation_status: "accepted",
     }),
-    "东上澳塘滨水短线｜康健—桂江绿廊｜4.3 km｜严格验收",
+    "东上澳塘滨水短线｜康健—桂江绿廊｜4.3 km｜单程｜严格验收",
   );
+});
+
+test("公园与补给筛选使用正式偏好字段", () => {
+  const catalog = [
+    {
+      route_id: "XH_WALK_0001",
+      route_name: "测试路线",
+      route_mode: "walk",
+      region_zone: "徐汇滨江",
+      target_distance_m: 1500,
+      tags: [],
+      preference_hits: ["park_gate", "convenience"],
+    },
+  ];
+
+  const routes = filterCandidateRoutes(catalog, {
+    zone: "all",
+    keyword: "",
+    mode: "walk",
+    distance: "all",
+    preferences: ["park_gate", "convenience"],
+  });
+
+  assert.equal(routes.length, 1);
 });

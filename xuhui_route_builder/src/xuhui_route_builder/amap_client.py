@@ -57,6 +57,26 @@ class AmapClient:
 
     def request(self, endpoint: str, params: dict[str, Any]) -> AmapRawRecord:
         url, prepared = self.prepare_request(endpoint, params)
+        params_hash = self._hash_params(endpoint, prepared)
+        raw_path = self.cache_dir / f"{endpoint}_{params_hash}.json"
+        if raw_path.exists():
+            try:
+                cached = json.loads(raw_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError) as exc:
+                raise RuntimeError(
+                    f"Amap cache invalid: endpoint={endpoint}, query_hash={params_hash}, path={raw_path}"
+                ) from exc
+            if not isinstance(cached, dict):
+                raise RuntimeError(
+                    f"Amap cache invalid: endpoint={endpoint}, query_hash={params_hash}, path={raw_path}"
+                )
+            if str(cached.get("status", "")) == "1":
+                return self._record(endpoint, params_hash, raw_path, cached)
+            if str(cached.get("infocode", "")) == "10044":
+                raise RuntimeError(
+                    f"Amap source stopped: infocode=10044, endpoint={endpoint}, query_hash={params_hash}"
+                )
+
         payload: dict[str, Any] = {}
         for attempt in range(len(self.qps_retry_delays) + 1):
             response = requests.get(url, params=prepared, timeout=self.timeout_s)
@@ -65,9 +85,19 @@ class AmapClient:
             if str(payload.get("infocode", "")) != "10021" or attempt == len(self.qps_retry_delays):
                 break
             self.sleep_fn(self.qps_retry_delays[attempt])
-        params_hash = self._hash_params(endpoint, prepared)
-        raw_path = self.cache_dir / f"{endpoint}_{params_hash}.json"
-        raw_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        raw_path.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        if str(payload.get("infocode", "")) == "10044":
+            raise RuntimeError(
+                f"Amap source stopped: infocode=10044, endpoint={endpoint}, query_hash={params_hash}"
+            )
+        return self._record(endpoint, params_hash, raw_path, payload)
+
+    @staticmethod
+    def _record(
+        endpoint: str, params_hash: str, raw_path: Path, payload: dict[str, Any]
+    ) -> AmapRawRecord:
         return AmapRawRecord(
             endpoint=endpoint,
             params_hash=params_hash,

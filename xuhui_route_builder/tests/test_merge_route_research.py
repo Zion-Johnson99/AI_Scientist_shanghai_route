@@ -2,7 +2,11 @@ import json
 
 import pytest
 
-from xuhui_route_builder.route_research import merge_research_drafts, merge_route_optimizations
+from xuhui_route_builder.route_research import (
+    PROTECTED_GEOMETRY_IDS,
+    merge_research_drafts,
+    merge_route_optimizations,
+)
 
 
 def test_merge_research_drafts_writes_one_validated_collection(tmp_path) -> None:
@@ -81,7 +85,15 @@ def test_merge_route_optimizations_normalizes_three_mode_results(tmp_path) -> No
                 "waypoint_names": [],
                 "amenities": [],
                 "amenity_ids": [],
-                "geometry_action": "regenerate",
+                "popular_area_ids": ["west_bund"],
+                "preference_search_status": {
+                    "coffee": "verified",
+                    "park_gate": "verified",
+                    "toilet": "no_verified_match",
+                    "convenience": "needs_review",
+                },
+                "preference_hits": ["coffee", "park_gate"],
+                "geometry_action": "preserve" if route_id in PROTECTED_GEOMETRY_IDS else "regenerate",
                 "geometry_source": "amap_direction",
                 "evidence_note": "新证据",
                 "access_restrictions": ["新限制"],
@@ -100,4 +112,18 @@ def test_merge_route_optimizations_normalizes_three_mode_results(tmp_path) -> No
     assert merged[0]["start_location"]["name"] == "新起点"
     assert merged[0]["ordered_nodes"][0]["node_name"] == "新起点"
     assert merged[0]["evidence_note"] == "新证据"
-    assert all(route["geometry_action"] == "regenerate" for route in merged)
+    assert merged[0]["popular_area_ids"] == ["west_bund"]
+    assert merged[0]["preference_search_status"]["park_gate"] == "verified"
+    assert merged[0]["preference_hits"] == ["coffee", "park_gate"]
+    assert merged[0]["geometry_action"] == "preserve"
+    assert {
+        route_id
+        for route_id, route in zip(
+            [
+                f"XH_{prefixes[item['route_mode']]}_{index:04d}"
+                for index, item in enumerate(merged, start=1)
+            ],
+            merged,
+        )
+        if route["geometry_action"] == "preserve"
+    } == PROTECTED_GEOMETRY_IDS

@@ -1,9 +1,10 @@
 {
   "batch_status": "partial",
-  "accepted_count": 13,
-  "review_count": 77,
+  "accepted_count": 15,
+  "review_count": 75,
   "rejected_count": 0,
-  "published_count": 13,
+  "published_count": 15,
+  "displayed_count": 90,
   "mode_counts": {
     "walk": 30,
     "run": 30,
@@ -11,31 +12,30 @@
   },
   "distance_band_counts": {
     "walk": {
-      "short": 13,
-      "medium": 4,
-      "long": 0
+      "short": 9,
+      "medium": 12,
+      "long": 7
     },
     "run": {
-      "short": 5,
-      "medium": 6,
-      "long": 1
+      "short": 9,
+      "medium": 13,
+      "long": 6
     },
     "bike": {
-      "short": 12,
-      "medium": 1,
-      "long": 0
+      "short": 11,
+      "medium": 10,
+      "long": 9
     }
   },
   "network_version": [
     "2026-08-17T14:34:57Z",
-    "2026-08-17T14:36:01Z",
+    "2026-08-18T07:34:06Z",
     "2026-08-17T14:37:00Z",
-    "2026-08-15T07:18:05Z",
-    "2026-08-17T14:38:01Z",
     "2026-08-17T14:39:02Z",
-    "2026-08-17T14:40:02Z",
+    "2026-08-18T07:35:06Z",
     "2026-08-17T14:41:06Z",
-    "2026-08-17T14:42:06Z"
+    "2026-08-17T14:42:06Z",
+    "2026-08-18T07:36:06Z"
   ],
   "duplicate_groups": {},
   "routes": [
@@ -57,7 +57,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=174c50350b782e275388fafa76c380b3484f505c18a6b34aafb94e1ceececfb9"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 0 处"
     },
     {
       "route_id": "XH_WALK_0003",
@@ -73,21 +73,21 @@
       "route_id": "XH_WALK_0004",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.926829268292683,
-      "route_inside_ratio": 1.0,
+      "snap_ratio": null,
+      "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:36:01Z",
-      "review_note": "路网贴合率 92.7% 低于 98%"
+      "network_source": "amap_walking_v2",
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 0 处"
     },
     {
       "route_id": "XH_WALK_0005",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 1.0,
-      "route_inside_ratio": 0.038461538461538464,
+      "snap_ratio": null,
+      "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:36:01Z",
-      "review_note": "起点或终点位于徐汇区外；轨迹徐汇区内比例 3.8% 低于 90%"
+      "network_source": "amap_walking_v2",
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 3 处"
     },
     {
       "route_id": "XH_WALK_0006",
@@ -97,7 +97,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=57b27d46b0b41b939573b5669f5e7f8e46c7af3199dd39855c63211bf905fa58"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 0 处"
     },
     {
       "route_id": "XH_WALK_0007",
@@ -107,37 +107,37 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=510d3f6e16fe3daff882c0b14b7e3f11cb4b43ca93f80782b5d7dd36ea1c3950"
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 2 处"
     },
     {
       "route_id": "XH_WALK_0008",
-      "mode": "walk",
-      "validation_status": "needs_review",
-      "snap_ratio": 0.6333333333333333,
-      "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:37:00Z",
-      "review_note": "路网贴合率 63.3% 低于 98%"
-    },
-    {
-      "route_id": "XH_WALK_0009",
-      "mode": "walk",
-      "validation_status": "needs_review",
-      "snap_ratio": 0.8028169014084507,
-      "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-15T07:18:05Z",
-      "review_note": "路网贴合率 80.3% 低于 98%"
-    },
-    {
-      "route_id": "XH_WALK_0010",
       "mode": "walk",
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=01b62955febd0d28c38507ba0a3f2485f9e3d8759f11d72bc6834462d09d6b6f"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 2 个，自交 2 处；轨迹存在局部回环：24 处，最长 2376.8 米"
+    },
+    {
+      "route_id": "XH_WALK_0009",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": 1.0,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-18T07:34:06Z",
+      "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0010",
+      "mode": "walk",
+      "validation_status": "needs_review",
+      "snap_ratio": 0.9181818181818182,
+      "route_inside_ratio": 0.9454545454545454,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "2026-08-18T07:34:06Z",
+      "review_note": "路网贴合率 91.8% 低于 98%"
     },
     {
       "route_id": "XH_WALK_0011",
@@ -167,17 +167,17 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 1 处"
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=f8b18394b80a123df1424884a583bff8ca1354cacb60d5c74c65d7a40b1e53dc"
     },
     {
       "route_id": "XH_WALK_0014",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9818181818181818,
-      "route_inside_ratio": 0.7454545454545455,
+      "snap_ratio": null,
+      "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:38:01Z",
-      "review_note": "起点或终点位于徐汇区外；轨迹徐汇区内比例 74.5% 低于 90%"
+      "network_source": "amap_walking_v2",
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=7e382dd6e8d24f2430ee42912d549e45aad3cc26d09741d91e6e2e9f5f76ccaa"
     },
     {
       "route_id": "XH_WALK_0015",
@@ -187,7 +187,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 2.8%，最长 26.4 米；轨迹存在分叉或自交：分叉节点 1 个，自交 4 处"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 0 处"
     },
     {
       "route_id": "XH_WALK_0016",
@@ -197,7 +197,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 1 个，自交 1 处"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 6 个，自交 3 处；轨迹存在局部回环：6 处，最长 458.9 米"
     },
     {
       "route_id": "XH_WALK_0017",
@@ -207,7 +207,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=9bd40fc727664a7d9d2742703fdd53ab59b18aa954d351d20909e67239943f12"
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 1 处"
     },
     {
       "route_id": "XH_WALK_0018",
@@ -217,7 +217,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=2497e02122811e2eb900f58094f7ae8346f10196b9d4f2a35f77a178d59accac"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 2 个，自交 2 处"
     },
     {
       "route_id": "XH_WALK_0019",
@@ -227,7 +227,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=3fe142bc798647fbac4b8d00f7d031ac9b9a492b8af6b7869c9cb744eb092afb"
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=89319646ef2ba5cd8006616bf2a435fe8afafc0fa90ecc0b163279998b268049"
     },
     {
       "route_id": "XH_WALK_0020",
@@ -237,7 +237,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 2 个，自交 0 处"
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fda664c2a1c700fc2e051412d7588d3eeb5b5ccc94f1246f765877b238634c27"
     },
     {
       "route_id": "XH_WALK_0021",
@@ -277,7 +277,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=397fd9e40687ae3050ce56c68a7259b374ce4d2d0a67f178ae5083a61ac7023a"
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 1 处；轨迹存在局部回环：5 处，最长 874.0 米"
     },
     {
       "route_id": "XH_WALK_0025",
@@ -293,21 +293,21 @@
       "route_id": "XH_WALK_0026",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
+      "snap_ratio": 0.9066666666666666,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b6dee65c57abc758ded9574e057c35144287cd4aef9249a899a4ccfc4a5a1f21"
+      "network_source": "2026-08-18T07:35:06Z",
+      "review_note": "路网贴合率 90.7% 低于 98%"
     },
     {
       "route_id": "XH_WALK_0027",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
+      "snap_ratio": 0.8785425101214575,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=761aab2eef3dac0ff4b219645c2fb85ef9d1d9c5b87eff05b05e160ccceafd2a"
+      "network_source": "2026-08-18T07:35:06Z",
+      "review_note": "路网贴合率 87.9% 低于 98%"
     },
     {
       "route_id": "XH_WALK_0028",
@@ -317,17 +317,17 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 2 处"
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 1 处"
     },
     {
       "route_id": "XH_WALK_0029",
       "mode": "walk",
       "validation_status": "needs_review",
-      "snap_ratio": 1.0,
-      "route_inside_ratio": 0.31313131313131315,
+      "snap_ratio": null,
+      "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:40:02Z",
-      "review_note": "起点或终点位于徐汇区外；轨迹徐汇区内比例 31.3% 低于 90%"
+      "network_source": "amap_walking_v2",
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 2 个，自交 4 处；轨迹存在局部回环：6 处，最长 402.0 米"
     },
     {
       "route_id": "XH_WALK_0030",
@@ -337,7 +337,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b16a042a215e1ba0be1511ace5b2d784585744d18eb9375c10ee5ecb59281bcd"
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=bc667351622ad4552ffbc7e2a33f6dd8bbcf8e9ea13d4583027df9c160bd0805"
     },
     {
       "route_id": "XH_RUN_0031",
@@ -345,7 +345,7 @@
       "validation_status": "accepted",
       "snap_ratio": 0.9923664122137404,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "2026-08-17T14:41:06Z",
       "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
     },
@@ -355,7 +355,7 @@
       "validation_status": "accepted",
       "snap_ratio": 1.0,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "2026-08-17T14:41:06Z",
       "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
     },
@@ -365,9 +365,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=655bde6cb0fffbbac843eeef02d7e58abfeb6f5ad49ed6f337619cdcf4dbf181"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 3.0%，最长 63.4 米；轨迹存在分叉或自交：分叉节点 22 个，自交 13 处；轨迹存在局部回环：59 处，最长 4823.2 米"
     },
     {
       "route_id": "XH_RUN_0034",
@@ -375,19 +375,19 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=ccbb9ace08f38cf98aec1a0036233723846a4376b530f0048b918a8691742e58"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 2.1%，最长 95.1 米；轨迹存在分叉或自交：分叉节点 14 个，自交 14 处；轨迹存在局部回环：36 处，最长 7320.2 米"
     },
     {
       "route_id": "XH_RUN_0035",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": 0.9451612903225807,
-      "route_inside_ratio": 0.9354838709677419,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:41:06Z",
-      "review_note": "路网贴合率 94.5% 低于 98%；起点或终点位于徐汇区外"
+      "snap_ratio": 0.9764957264957265,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "2026-08-18T07:35:06Z",
+      "review_note": "路网贴合率 97.6% 低于 98%"
     },
     {
       "route_id": "XH_RUN_0036",
@@ -395,9 +395,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=d196b18e8d141aec10d40a40f1e977184fb995fc559587dc2d5a681582179ca1"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 2.5%，最长 143.6 米；轨迹存在分叉或自交：分叉节点 14 个，自交 4 处；轨迹存在局部回环：15 处，最长 824.8 米"
     },
     {
       "route_id": "XH_RUN_0037",
@@ -405,7 +405,7 @@
       "validation_status": "accepted",
       "snap_ratio": 0.9876237623762376,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "2026-08-17T14:42:06Z",
       "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
     },
@@ -413,11 +413,11 @@
       "route_id": "XH_RUN_0038",
       "mode": "run",
       "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4a67a7c9c53189e38dd4131b1255e70f5db13b7e6b44eb293bd9234da94d9159"
+      "snap_ratio": 0.9655172413793104,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "2026-08-18T07:36:06Z",
+      "review_note": "路网贴合率 96.6% 低于 98%"
     },
     {
       "route_id": "XH_RUN_0039",
@@ -425,7 +425,7 @@
       "validation_status": "accepted",
       "snap_ratio": 1.0,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "2026-08-17T14:39:02Z",
       "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
     },
@@ -435,7 +435,7 @@
       "validation_status": "accepted",
       "snap_ratio": 1.0,
       "route_inside_ratio": 1.0,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "2026-08-17T14:42:06Z",
       "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
     },
@@ -445,9 +445,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=afb4395ea6551114ed6e5be1339ea3bf73346c00b064deff4440c7344dc75aba"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 4 处；轨迹存在局部回环：2 处，最长 293.7 米"
     },
     {
       "route_id": "XH_RUN_0042",
@@ -455,9 +455,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=1f70693abd9380157d797219675d1d5c07184543bc455ac9e4e0e2e31bbb5f22"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 2.4%，最长 89.8 米；轨迹存在分叉或自交：分叉节点 12 个，自交 11 处；轨迹存在局部折返：1 处，最长 67.2 米；轨迹存在局部回环：13 处，最长 6486.6 米"
     },
     {
       "route_id": "XH_RUN_0043",
@@ -465,9 +465,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 2 个，自交 4 处"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 0.8%，最长 32.7 米；轨迹存在分叉或自交：分叉节点 2 个，自交 0 处；轨迹存在局部折返：1 处，最长 65.9 米"
     },
     {
       "route_id": "XH_RUN_0044",
@@ -475,9 +475,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 2 个，自交 1 处"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 2 个，自交 4 处；轨迹存在局部回环：3 处，最长 238.0 米"
     },
     {
       "route_id": "XH_RUN_0045",
@@ -485,9 +485,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 1 个，自交 1 处；轨迹存在局部折返：1 处，最长 46.8 米；途经点 上海体育场 偏离轨迹 146.3 米"
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=08c6a968bf937398c6803dacbf78e432d3f70b18381a1c90d82d750376d33257"
     },
     {
       "route_id": "XH_RUN_0046",
@@ -495,9 +495,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 3.3%，最长 33.2 米；轨迹存在分叉或自交：分叉节点 4 个，自交 3 处；轨迹存在局部回环：2 处，最长 204.8 米"
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=2984349cb0cfd17771b210ecbf15b20150944b428c9dba89f12b6b9ac0295911"
     },
     {
       "route_id": "XH_RUN_0047",
@@ -505,9 +505,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=a3077baa4a07cdaf29e684562953d5ab52ef21e2ecb7d323911c2652025c8003"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 2.5%，最长 118.1 米；轨迹存在分叉或自交：分叉节点 12 个，自交 8 处；轨迹存在局部折返：1 处，最长 65.9 米；轨迹存在局部回环：20 处，最长 1412.0 米"
     },
     {
       "route_id": "XH_RUN_0048",
@@ -515,9 +515,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4893311ea3079a73cd45a731f587072c71a2f0d0c441cfbaae6832bfdac6d457"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 5 个，自交 2 处；轨迹存在局部回环：7 处，最长 563.6 米"
     },
     {
       "route_id": "XH_RUN_0049",
@@ -525,19 +525,19 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 2 个，自交 6 处"
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=0636643f2bec2a58938043af097deb6dededd88e402def8106abb2b5f4274543"
     },
     {
       "route_id": "XH_RUN_0050",
       "mode": "run",
-      "validation_status": "needs_review",
-      "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 2.8%，最长 11.6 米；轨迹存在分叉或自交：分叉节点 5 个，自交 8 处；轨迹存在局部回环：10 处，最长 442.5 米；单程路线曲折系数 2.76 高于 2.50"
+      "validation_status": "accepted",
+      "snap_ratio": 0.9855072463768116,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "2026-08-18T07:36:06Z",
+      "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
     },
     {
       "route_id": "XH_RUN_0051",
@@ -545,9 +545,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 1.4%，最长 34.0 米；轨迹存在分叉或自交：分叉节点 3 个，自交 1 处；轨迹存在局部回环：9 处，最长 522.5 米"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 1.4%，最长 55.3 米；轨迹存在分叉或自交：分叉节点 16 个，自交 22 处；轨迹存在局部回环：52 处，最长 8338.7 米"
     },
     {
       "route_id": "XH_RUN_0052",
@@ -555,9 +555,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 1 个，自交 1 处；轨迹存在局部折返：1 处，最长 347.3 米；轨迹存在局部回环：2 处，最长 393.5 米"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 1.7%，最长 143.6 米；轨迹存在分叉或自交：分叉节点 10 个，自交 3 处；轨迹存在局部回环：22 处，最长 994.7 米"
     },
     {
       "route_id": "XH_RUN_0053",
@@ -565,9 +565,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e6c7931403632fa8bd3a219c0c0a663ea7b27bd156654a374d51f68e69d1fde3"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 1.4%，最长 77.7 米；轨迹存在分叉或自交：分叉节点 19 个，自交 14 处；轨迹存在局部回环：14 处，最长 756.1 米"
     },
     {
       "route_id": "XH_RUN_0054",
@@ -575,9 +575,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4e0ba0b7d5a642668ac8dd96117a3187e0243b4814e95622ccb7a73f3f56d759"
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fa98c937a140f908a7d2470f873fe8e40565db4f4d5c8808507438a6629bc172"
     },
     {
       "route_id": "XH_RUN_0055",
@@ -585,9 +585,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fe3094b251d75e9be51943d3e7198d109d0bc41d32d9806ee59594889a0b8c50"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 2.4%，最长 54.9 米；轨迹存在分叉或自交：分叉节点 20 个，自交 5 处；轨迹存在局部回环：44 处，最长 2757.0 米"
     },
     {
       "route_id": "XH_RUN_0056",
@@ -595,9 +595,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fea5d1d24669007ddaf772f707780abe8288443b4b52505f8d7c35fa64fe972a"
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=acd9ae6a3c487cfe9356a674b896f8237d644361feb2527c41b2f315acdb302a"
     },
     {
       "route_id": "XH_RUN_0057",
@@ -605,9 +605,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 8 个，自交 10 处；轨迹存在局部回环：6 处，最长 245.0 米"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 0.6%，最长 46.7 米；轨迹存在分叉或自交：分叉节点 12 个，自交 7 处；轨迹存在局部回环：14 处，最长 15917.0 米"
     },
     {
       "route_id": "XH_RUN_0058",
@@ -615,9 +615,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=613d339fa0f20c1a0b05156aed078e9c14c68bb8b2492bb5cfcff76917fdd7af"
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=499c630e775032abe899f7d08dcf4c162ce9b2a175b59c79919b589aeedcab4e"
     },
     {
       "route_id": "XH_RUN_0059",
@@ -625,9 +625,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 1 个，自交 1 处"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 5 个，自交 5 处；轨迹存在局部折返：1 处，最长 347.3 米；轨迹存在局部回环：18 处，最长 13452.2 米"
     },
     {
       "route_id": "XH_RUN_0060",
@@ -635,9 +635,9 @@
       "validation_status": "needs_review",
       "snap_ratio": null,
       "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
+      "source_accessed_at": "2026-08-18",
       "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 8 个，自交 10 处；轨迹存在局部回环：6 处，最长 245.0 米"
+      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 1.4%，最长 89.9 米；轨迹存在分叉或自交：分叉节点 2 个，自交 2 处；轨迹存在局部回环：2 处，最长 369.8 米"
     },
     {
       "route_id": "XH_BIKE_0061",
@@ -647,7 +647,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=34d32d491846012d1d0a8f2932d9bcd8d52c684e04eecc9f8561f93fa6a5d841"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 2.3%，最长 50.4 米；轨迹存在分叉或自交：分叉节点 18 个，自交 15 处；轨迹存在局部回环：60 处，最长 5134.0 米"
     },
     {
       "route_id": "XH_BIKE_0062",
@@ -657,7 +657,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=8bcebf8703bb3e8913b4e6e66d3527a1b38edb9b74a91509a7e9188dc692c6cc"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 2 个，自交 1 处；轨迹存在局部回环：23 处，最长 2025.8 米"
     },
     {
       "route_id": "XH_BIKE_0063",
@@ -667,7 +667,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5c63c2ab24e7e8f194d4108b3273614302f86aca4ea97dd3b6cd3c73d710af12"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 6 个，自交 5 处；轨迹存在局部回环：15 处，最长 8790.3 米"
     },
     {
       "route_id": "XH_BIKE_0064",
@@ -677,7 +677,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=c6464da26d0714d53ef8ee8c9fe1be26aba24a114ca9d79c592548bf99cbc86f"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 3 个，自交 5 处；轨迹存在局部回环：2 处，最长 8648.2 米"
     },
     {
       "route_id": "XH_BIKE_0065",
@@ -687,7 +687,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4ca717f85495dea558edf25acc83b4b52e90c0b7aa4a602e967ca1728169a506"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 3 处；轨迹存在局部回环：3 处，最长 1321.3 米"
     },
     {
       "route_id": "XH_BIKE_0066",
@@ -697,7 +697,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=6de148e6d31110bc6a75a7e84fec6830dd61e325f5c335b0450590844a0b7a6b"
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 2 个，自交 0 处"
     },
     {
       "route_id": "XH_BIKE_0067",
@@ -707,7 +707,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 2 个，自交 1 处；轨迹存在局部回环：3 处，最长 296.3 米"
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=cda05f955adbcddac0d01b2abb6319a554db7138db213eb2d05062e68e55d36c"
     },
     {
       "route_id": "XH_BIKE_0068",
@@ -717,17 +717,17 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：单程路线曲折系数 2.76 高于 2.50"
+      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=99b67930a351c2d8e836050f1b7f243dd18d74a7b62cde4aa97664a687ce009c"
     },
     {
       "route_id": "XH_BIKE_0069",
       "mode": "bike",
       "validation_status": "needs_review",
-      "snap_ratio": 1.0,
-      "route_inside_ratio": 0.32323232323232326,
+      "snap_ratio": null,
+      "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:40:02Z",
-      "review_note": "起点或终点位于徐汇区外；轨迹徐汇区内比例 32.3% 低于 90%"
+      "network_source": "amap_bike_v2",
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 8 个，自交 8 处；轨迹存在局部回环：17 处，最长 976.2 米"
     },
     {
       "route_id": "XH_BIKE_0070",
@@ -737,7 +737,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5d45d984cc01624b7f6c9e6a165c59725c239c44440db398efcd1f2638a33b02"
+      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 0.4%，最长 31.9 米；轨迹存在分叉或自交：分叉节点 8 个，自交 3 处；轨迹存在局部回环：20 处，最长 1333.8 米"
     },
     {
       "route_id": "XH_BIKE_0071",
@@ -747,7 +747,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=6963eb32a04b4fe42cbfa80e00fd32b345ae2b75fe2ec750dd9d4c8fc19825e3"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 1 处；轨迹存在局部回环：6 处，最长 10475.9 米"
     },
     {
       "route_id": "XH_BIKE_0072",
@@ -757,7 +757,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 7 个，自交 5 处；轨迹存在局部回环：7 处，最长 314.3 米"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 0.3%，最长 31.9 米；轨迹存在分叉或自交：分叉节点 11 个，自交 6 处；轨迹存在局部回环：33 处，最长 14384.7 米"
     },
     {
       "route_id": "XH_BIKE_0073",
@@ -767,7 +767,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=8f15f6291d61e8506c1a59798f1290f6910df7b78c5f099802fa3bd816c2bd64"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 1.6%，最长 81.1 米；轨迹存在分叉或自交：分叉节点 20 个，自交 8 处；轨迹存在局部回环：54 处，最长 12458.9 米"
     },
     {
       "route_id": "XH_BIKE_0074",
@@ -777,7 +777,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=51c19b82fa16983d977ae0c54198228fe22db73561d26be0d69ffb991db99537"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 0.2%，最长 31.9 米；轨迹存在分叉或自交：分叉节点 15 个，自交 9 处；轨迹存在局部回环：30 处，最长 13542.2 米"
     },
     {
       "route_id": "XH_BIKE_0075",
@@ -787,7 +787,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e3e92d0b1d2e66bef24a0c7050fc36689182c26ca21b7f1c359d5f8c44fccfbc"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 8 个，自交 10 处；轨迹存在局部回环：41 处，最长 16247.1 米"
     },
     {
       "route_id": "XH_BIKE_0076",
@@ -797,7 +797,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=860be7a5f8cb777eae44a1cf18220e4cad3d45c8f3c1a1226204b39481fd3874"
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 1 个，自交 1 处"
     },
     {
       "route_id": "XH_BIKE_0077",
@@ -807,7 +807,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 2.7%，最长 39.4 米；轨迹存在分叉或自交：分叉节点 4 个，自交 0 处；轨迹存在局部回环：9 处，最长 1830.3 米；单程路线曲折系数 2.61 高于 2.50"
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 8 个，自交 8 处；轨迹存在局部回环：20 处，最长 1047.2 米"
     },
     {
       "route_id": "XH_BIKE_0078",
@@ -817,7 +817,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 6 个，自交 7 处；轨迹存在局部回环：16 处，最长 977.2 米"
+      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 0.2%，最长 31.9 米；轨迹存在分叉或自交：分叉节点 11 个，自交 4 处；轨迹存在局部回环：25 处，最长 4049.3 米"
     },
     {
       "route_id": "XH_BIKE_0079",
@@ -827,7 +827,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 1 处"
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 5 个，自交 4 处；轨迹存在局部回环：8 处，最长 486.3 米"
     },
     {
       "route_id": "XH_BIKE_0080",
@@ -837,7 +837,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 4.7%，最长 103.0 米；轨迹存在分叉或自交：分叉节点 6 个，自交 2 处；轨迹存在局部回环：15 处，最长 1109.9 米"
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 3 个，自交 2 处；轨迹存在局部回环：1 处，最长 2091.4 米"
     },
     {
       "route_id": "XH_BIKE_0081",
@@ -847,7 +847,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=eb9310daec6d8f506e0b1707aad78ff5cd48455eed35125119bd0173b05e2d0b"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 2 个，自交 2 处；轨迹存在局部回环：2 处，最长 27766.2 米"
     },
     {
       "route_id": "XH_BIKE_0082",
@@ -857,7 +857,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=459af8fd507e6ac57565099cf6eed5d0a975702bf47117d850bbe278d1f3ff72"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 5 处；轨迹存在局部回环：1 处，最长 634.8 米"
     },
     {
       "route_id": "XH_BIKE_0083",
@@ -867,7 +867,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=96488b5747ad6b9a57163404f584d0570b34f20ccfd1e91a888f21e8e9b85ed6"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 4.4%，最长 175.9 米；轨迹存在分叉或自交：分叉节点 11 个，自交 3 处；轨迹存在局部回环：57 处，最长 24271.7 米"
     },
     {
       "route_id": "XH_BIKE_0084",
@@ -877,7 +877,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e0a0b5a3d565360beec68c8a3f33779db905145465a1e6f066ec9227627d5b55"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 0 处；轨迹存在局部回环：1 处，最长 618.9 米"
     },
     {
       "route_id": "XH_BIKE_0085",
@@ -887,7 +887,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=86769d3ede4067fd9f706e17eeff47b8f825ad54c45ad9933eb01ad5856b1312"
+      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 2 个，自交 1 处"
     },
     {
       "route_id": "XH_BIKE_0086",
@@ -897,7 +897,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=98f82bbd49a49e091184ab9881a91c6244fbbca6054f8d72e472aadf50945c1c"
+      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 1.3%，最长 198.2 米；轨迹存在分叉或自交：分叉节点 8 个，自交 8 处；轨迹存在局部回环：16 处，最长 739.5 米；单程路线曲折系数 2.79 高于 2.50"
     },
     {
       "route_id": "XH_BIKE_0087",
@@ -907,7 +907,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=6e958d2c183c1b10b59bae0d1368104c242029a6b6ce2af67db6af48ded552e6"
+      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 0.2%，最长 35.3 米；轨迹存在分叉或自交：分叉节点 6 个，自交 5 处；轨迹存在局部回环：17 处，最长 980.0 米；单程路线曲折系数 2.74 高于 2.50"
     },
     {
       "route_id": "XH_BIKE_0088",
@@ -917,7 +917,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5350e363643f5d1b0d8e1087e379da44eda1918c22b8b23466f051db8dcc6e23"
+      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 2.8%，最长 103.0 米；轨迹存在分叉或自交：分叉节点 19 个，自交 7 处；轨迹存在局部回环：65 处，最长 3078.9 米；单程路线曲折系数 2.59 高于 2.50"
     },
     {
       "route_id": "XH_BIKE_0089",
@@ -927,7 +927,7 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=36c885c0cd3fa3a0b9c291d2668d241fd91853328fec37fa4306d17ac310d455"
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 5 个，自交 9 处；轨迹存在局部回环：10 处，最长 634.8 米；单程路线曲折系数 2.98 高于 2.50"
     },
     {
       "route_id": "XH_BIKE_0090",
@@ -937,331 +937,100 @@
       "route_inside_ratio": null,
       "source_accessed_at": "2026-08-15",
       "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=38395e298dea0f8445fd308f0e4023d1905f1a8abbf9a0be87463c30fe1a4e03"
+      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 1 个，自交 0 处；轨迹存在局部回环：1 处，最长 618.9 米；单程路线曲折系数 2.79 高于 2.50"
     }
   ],
   "failures": [
     {
-      "route_id": "XH_WALK_0002",
+      "route_id": "XH_WALK_0013",
       "mode": "walk",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=174c50350b782e275388fafa76c380b3484f505c18a6b34aafb94e1ceececfb9",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=174c50350b782e275388fafa76c380b3484f505c18a6b34aafb94e1ceececfb9\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=f8b18394b80a123df1424884a583bff8ca1354cacb60d5c74c65d7a40b1e53dc",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=f8b18394b80a123df1424884a583bff8ca1354cacb60d5c74c65d7a40b1e53dc\n"
     },
     {
-      "route_id": "XH_WALK_0006",
+      "route_id": "XH_WALK_0014",
       "mode": "walk",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=57b27d46b0b41b939573b5669f5e7f8e46c7af3199dd39855c63211bf905fa58",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=57b27d46b0b41b939573b5669f5e7f8e46c7af3199dd39855c63211bf905fa58\n"
-    },
-    {
-      "route_id": "XH_WALK_0007",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=510d3f6e16fe3daff882c0b14b7e3f11cb4b43ca93f80782b5d7dd36ea1c3950",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=510d3f6e16fe3daff882c0b14b7e3f11cb4b43ca93f80782b5d7dd36ea1c3950\n"
-    },
-    {
-      "route_id": "XH_WALK_0010",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=01b62955febd0d28c38507ba0a3f2485f9e3d8759f11d72bc6834462d09d6b6f",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=01b62955febd0d28c38507ba0a3f2485f9e3d8759f11d72bc6834462d09d6b6f\n"
-    },
-    {
-      "route_id": "XH_WALK_0017",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=9bd40fc727664a7d9d2742703fdd53ab59b18aa954d351d20909e67239943f12",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=9bd40fc727664a7d9d2742703fdd53ab59b18aa954d351d20909e67239943f12\n"
-    },
-    {
-      "route_id": "XH_WALK_0018",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=2497e02122811e2eb900f58094f7ae8346f10196b9d4f2a35f77a178d59accac",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=2497e02122811e2eb900f58094f7ae8346f10196b9d4f2a35f77a178d59accac\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=7e382dd6e8d24f2430ee42912d549e45aad3cc26d09741d91e6e2e9f5f76ccaa",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=7e382dd6e8d24f2430ee42912d549e45aad3cc26d09741d91e6e2e9f5f76ccaa\n"
     },
     {
       "route_id": "XH_WALK_0019",
       "mode": "walk",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=3fe142bc798647fbac4b8d00f7d031ac9b9a492b8af6b7869c9cb744eb092afb",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=3fe142bc798647fbac4b8d00f7d031ac9b9a492b8af6b7869c9cb744eb092afb\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=89319646ef2ba5cd8006616bf2a435fe8afafc0fa90ecc0b163279998b268049",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=89319646ef2ba5cd8006616bf2a435fe8afafc0fa90ecc0b163279998b268049\n"
     },
     {
-      "route_id": "XH_WALK_0024",
+      "route_id": "XH_WALK_0020",
       "mode": "walk",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=397fd9e40687ae3050ce56c68a7259b374ce4d2d0a67f178ae5083a61ac7023a",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=397fd9e40687ae3050ce56c68a7259b374ce4d2d0a67f178ae5083a61ac7023a\n"
-    },
-    {
-      "route_id": "XH_WALK_0026",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b6dee65c57abc758ded9574e057c35144287cd4aef9249a899a4ccfc4a5a1f21",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b6dee65c57abc758ded9574e057c35144287cd4aef9249a899a4ccfc4a5a1f21\n"
-    },
-    {
-      "route_id": "XH_WALK_0027",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=761aab2eef3dac0ff4b219645c2fb85ef9d1d9c5b87eff05b05e160ccceafd2a",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=761aab2eef3dac0ff4b219645c2fb85ef9d1d9c5b87eff05b05e160ccceafd2a\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fda664c2a1c700fc2e051412d7588d3eeb5b5ccc94f1246f765877b238634c27",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fda664c2a1c700fc2e051412d7588d3eeb5b5ccc94f1246f765877b238634c27\n"
     },
     {
       "route_id": "XH_WALK_0030",
       "mode": "walk",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b16a042a215e1ba0be1511ace5b2d784585744d18eb9375c10ee5ecb59281bcd",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=b16a042a215e1ba0be1511ace5b2d784585744d18eb9375c10ee5ecb59281bcd\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=bc667351622ad4552ffbc7e2a33f6dd8bbcf8e9ea13d4583027df9c160bd0805",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=bc667351622ad4552ffbc7e2a33f6dd8bbcf8e9ea13d4583027df9c160bd0805\n"
     },
     {
-      "route_id": "XH_RUN_0033",
+      "route_id": "XH_RUN_0045",
       "mode": "run",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=655bde6cb0fffbbac843eeef02d7e58abfeb6f5ad49ed6f337619cdcf4dbf181",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=655bde6cb0fffbbac843eeef02d7e58abfeb6f5ad49ed6f337619cdcf4dbf181\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=08c6a968bf937398c6803dacbf78e432d3f70b18381a1c90d82d750376d33257",
+      "traceback": "urllib3.exceptions.SSLError: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\adapters.py\", line 696, in send\n    resp = conn.urlopen(\n           ^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\urllib3\\connectionpool.py\", line 842, in urlopen\n    retries = retries.increment(\n              ^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\urllib3\\util\\retry.py\", line 543, in increment\n    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nurllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='overpass-api.de', port=443): Max retries exceeded with url: /api/interpreter (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)')))\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 565, in query\n    response = request(\n               ^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\api.py\", line 134, in post\n    return request(\"post\", url, data=data, json=json, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\api.py\", line 71, in request\n    return session.request(method=method, url=url, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\sessions.py\", line 651, in request\n    resp = self.send(prep, **send_kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\sessions.py\", line 784, in send\n    r = adapter.send(request, **kwargs)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\adapters.py\", line 727, in send\n    raise SSLError(e, request=request)\nrequests.exceptions.SSLError: HTTPSConnectionPool(host='overpass-api.de', port=443): Max retries exceeded with url: /api/interpreter (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)')))\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=08c6a968bf937398c6803dacbf78e432d3f70b18381a1c90d82d750376d33257\n"
     },
     {
-      "route_id": "XH_RUN_0034",
+      "route_id": "XH_RUN_0046",
       "mode": "run",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=ccbb9ace08f38cf98aec1a0036233723846a4376b530f0048b918a8691742e58",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=ccbb9ace08f38cf98aec1a0036233723846a4376b530f0048b918a8691742e58\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=2984349cb0cfd17771b210ecbf15b20150944b428c9dba89f12b6b9ac0295911",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=2984349cb0cfd17771b210ecbf15b20150944b428c9dba89f12b6b9ac0295911\n"
     },
     {
-      "route_id": "XH_RUN_0036",
+      "route_id": "XH_RUN_0049",
       "mode": "run",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=d196b18e8d141aec10d40a40f1e977184fb995fc559587dc2d5a681582179ca1",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=d196b18e8d141aec10d40a40f1e977184fb995fc559587dc2d5a681582179ca1\n"
-    },
-    {
-      "route_id": "XH_RUN_0038",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4a67a7c9c53189e38dd4131b1255e70f5db13b7e6b44eb293bd9234da94d9159",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4a67a7c9c53189e38dd4131b1255e70f5db13b7e6b44eb293bd9234da94d9159\n"
-    },
-    {
-      "route_id": "XH_RUN_0041",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=afb4395ea6551114ed6e5be1339ea3bf73346c00b064deff4440c7344dc75aba",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=afb4395ea6551114ed6e5be1339ea3bf73346c00b064deff4440c7344dc75aba\n"
-    },
-    {
-      "route_id": "XH_RUN_0042",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=1f70693abd9380157d797219675d1d5c07184543bc455ac9e4e0e2e31bbb5f22",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=1f70693abd9380157d797219675d1d5c07184543bc455ac9e4e0e2e31bbb5f22\n"
-    },
-    {
-      "route_id": "XH_RUN_0047",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=a3077baa4a07cdaf29e684562953d5ab52ef21e2ecb7d323911c2652025c8003",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=a3077baa4a07cdaf29e684562953d5ab52ef21e2ecb7d323911c2652025c8003\n"
-    },
-    {
-      "route_id": "XH_RUN_0048",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4893311ea3079a73cd45a731f587072c71a2f0d0c441cfbaae6832bfdac6d457",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4893311ea3079a73cd45a731f587072c71a2f0d0c441cfbaae6832bfdac6d457\n"
-    },
-    {
-      "route_id": "XH_RUN_0053",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e6c7931403632fa8bd3a219c0c0a663ea7b27bd156654a374d51f68e69d1fde3",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e6c7931403632fa8bd3a219c0c0a663ea7b27bd156654a374d51f68e69d1fde3\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=0636643f2bec2a58938043af097deb6dededd88e402def8106abb2b5f4274543",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=0636643f2bec2a58938043af097deb6dededd88e402def8106abb2b5f4274543\n"
     },
     {
       "route_id": "XH_RUN_0054",
       "mode": "run",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4e0ba0b7d5a642668ac8dd96117a3187e0243b4814e95622ccb7a73f3f56d759",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4e0ba0b7d5a642668ac8dd96117a3187e0243b4814e95622ccb7a73f3f56d759\n"
-    },
-    {
-      "route_id": "XH_RUN_0055",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fe3094b251d75e9be51943d3e7198d109d0bc41d32d9806ee59594889a0b8c50",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fe3094b251d75e9be51943d3e7198d109d0bc41d32d9806ee59594889a0b8c50\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fa98c937a140f908a7d2470f873fe8e40565db4f4d5c8808507438a6629bc172",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fa98c937a140f908a7d2470f873fe8e40565db4f4d5c8808507438a6629bc172\n"
     },
     {
       "route_id": "XH_RUN_0056",
       "mode": "run",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fea5d1d24669007ddaf772f707780abe8288443b4b52505f8d7c35fa64fe972a",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fea5d1d24669007ddaf772f707780abe8288443b4b52505f8d7c35fa64fe972a\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=acd9ae6a3c487cfe9356a674b896f8237d644361feb2527c41b2f315acdb302a",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=acd9ae6a3c487cfe9356a674b896f8237d644361feb2527c41b2f315acdb302a\n"
     },
     {
       "route_id": "XH_RUN_0058",
       "mode": "run",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=613d339fa0f20c1a0b05156aed078e9c14c68bb8b2492bb5cfcff76917fdd7af",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=613d339fa0f20c1a0b05156aed078e9c14c68bb8b2492bb5cfcff76917fdd7af\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=499c630e775032abe899f7d08dcf4c162ce9b2a175b59c79919b589aeedcab4e",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=499c630e775032abe899f7d08dcf4c162ce9b2a175b59c79919b589aeedcab4e\n"
     },
     {
-      "route_id": "XH_BIKE_0061",
+      "route_id": "XH_BIKE_0067",
       "mode": "bike",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=34d32d491846012d1d0a8f2932d9bcd8d52c684e04eecc9f8561f93fa6a5d841",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=34d32d491846012d1d0a8f2932d9bcd8d52c684e04eecc9f8561f93fa6a5d841\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=cda05f955adbcddac0d01b2abb6319a554db7138db213eb2d05062e68e55d36c",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=cda05f955adbcddac0d01b2abb6319a554db7138db213eb2d05062e68e55d36c\n"
     },
     {
-      "route_id": "XH_BIKE_0062",
+      "route_id": "XH_BIKE_0068",
       "mode": "bike",
       "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=8bcebf8703bb3e8913b4e6e66d3527a1b38edb9b74a91509a7e9188dc692c6cc",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=8bcebf8703bb3e8913b4e6e66d3527a1b38edb9b74a91509a7e9188dc692c6cc\n"
-    },
-    {
-      "route_id": "XH_BIKE_0063",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5c63c2ab24e7e8f194d4108b3273614302f86aca4ea97dd3b6cd3c73d710af12",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5c63c2ab24e7e8f194d4108b3273614302f86aca4ea97dd3b6cd3c73d710af12\n"
-    },
-    {
-      "route_id": "XH_BIKE_0064",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=c6464da26d0714d53ef8ee8c9fe1be26aba24a114ca9d79c592548bf99cbc86f",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=c6464da26d0714d53ef8ee8c9fe1be26aba24a114ca9d79c592548bf99cbc86f\n"
-    },
-    {
-      "route_id": "XH_BIKE_0065",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4ca717f85495dea558edf25acc83b4b52e90c0b7aa4a602e967ca1728169a506",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=4ca717f85495dea558edf25acc83b4b52e90c0b7aa4a602e967ca1728169a506\n"
-    },
-    {
-      "route_id": "XH_BIKE_0066",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=6de148e6d31110bc6a75a7e84fec6830dd61e325f5c335b0450590844a0b7a6b",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=6de148e6d31110bc6a75a7e84fec6830dd61e325f5c335b0450590844a0b7a6b\n"
-    },
-    {
-      "route_id": "XH_BIKE_0070",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5d45d984cc01624b7f6c9e6a165c59725c239c44440db398efcd1f2638a33b02",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5d45d984cc01624b7f6c9e6a165c59725c239c44440db398efcd1f2638a33b02\n"
-    },
-    {
-      "route_id": "XH_BIKE_0071",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=6963eb32a04b4fe42cbfa80e00fd32b345ae2b75fe2ec750dd9d4c8fc19825e3",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=6963eb32a04b4fe42cbfa80e00fd32b345ae2b75fe2ec750dd9d4c8fc19825e3\n"
-    },
-    {
-      "route_id": "XH_BIKE_0073",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=8f15f6291d61e8506c1a59798f1290f6910df7b78c5f099802fa3bd816c2bd64",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=8f15f6291d61e8506c1a59798f1290f6910df7b78c5f099802fa3bd816c2bd64\n"
-    },
-    {
-      "route_id": "XH_BIKE_0074",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=51c19b82fa16983d977ae0c54198228fe22db73561d26be0d69ffb991db99537",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=51c19b82fa16983d977ae0c54198228fe22db73561d26be0d69ffb991db99537\n"
-    },
-    {
-      "route_id": "XH_BIKE_0075",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e3e92d0b1d2e66bef24a0c7050fc36689182c26ca21b7f1c359d5f8c44fccfbc",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e3e92d0b1d2e66bef24a0c7050fc36689182c26ca21b7f1c359d5f8c44fccfbc\n"
-    },
-    {
-      "route_id": "XH_BIKE_0076",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=860be7a5f8cb777eae44a1cf18220e4cad3d45c8f3c1a1226204b39481fd3874",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=860be7a5f8cb777eae44a1cf18220e4cad3d45c8f3c1a1226204b39481fd3874\n"
-    },
-    {
-      "route_id": "XH_BIKE_0081",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=eb9310daec6d8f506e0b1707aad78ff5cd48455eed35125119bd0173b05e2d0b",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=eb9310daec6d8f506e0b1707aad78ff5cd48455eed35125119bd0173b05e2d0b\n"
-    },
-    {
-      "route_id": "XH_BIKE_0082",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=459af8fd507e6ac57565099cf6eed5d0a975702bf47117d850bbe278d1f3ff72",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=459af8fd507e6ac57565099cf6eed5d0a975702bf47117d850bbe278d1f3ff72\n"
-    },
-    {
-      "route_id": "XH_BIKE_0083",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=96488b5747ad6b9a57163404f584d0570b34f20ccfd1e91a888f21e8e9b85ed6",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=96488b5747ad6b9a57163404f584d0570b34f20ccfd1e91a888f21e8e9b85ed6\n"
-    },
-    {
-      "route_id": "XH_BIKE_0084",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e0a0b5a3d565360beec68c8a3f33779db905145465a1e6f066ec9227627d5b55",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=e0a0b5a3d565360beec68c8a3f33779db905145465a1e6f066ec9227627d5b55\n"
-    },
-    {
-      "route_id": "XH_BIKE_0085",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=86769d3ede4067fd9f706e17eeff47b8f825ad54c45ad9933eb01ad5856b1312",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=86769d3ede4067fd9f706e17eeff47b8f825ad54c45ad9933eb01ad5856b1312\n"
-    },
-    {
-      "route_id": "XH_BIKE_0086",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=98f82bbd49a49e091184ab9881a91c6244fbbca6054f8d72e472aadf50945c1c",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=98f82bbd49a49e091184ab9881a91c6244fbbca6054f8d72e472aadf50945c1c\n"
-    },
-    {
-      "route_id": "XH_BIKE_0087",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=6e958d2c183c1b10b59bae0d1368104c242029a6b6ce2af67db6af48ded552e6",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=6e958d2c183c1b10b59bae0d1368104c242029a6b6ce2af67db6af48ded552e6\n"
-    },
-    {
-      "route_id": "XH_BIKE_0088",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5350e363643f5d1b0d8e1087e379da44eda1918c22b8b23466f051db8dcc6e23",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=5350e363643f5d1b0d8e1087e379da44eda1918c22b8b23466f051db8dcc6e23\n"
-    },
-    {
-      "route_id": "XH_BIKE_0089",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=36c885c0cd3fa3a0b9c291d2668d241fd91853328fec37fa4306d17ac310d455",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=36c885c0cd3fa3a0b9c291d2668d241fd91853328fec37fa4306d17ac310d455\n"
-    },
-    {
-      "route_id": "XH_BIKE_0090",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=38395e298dea0f8445fd308f0e4023d1905f1a8abbf9a0be87463c30fe1a4e03",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 552, in query\n    response = request(\n               ^^^^^^^^\n  File \"<string>\", line 1, in <lambda>\n  File \"<string>\", line 1, in <genexpr>\nRuntimeError: network disabled after endpoint timeouts\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 426, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 561, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=38395e298dea0f8445fd308f0e4023d1905f1a8abbf9a0be87463c30fe1a4e03\n"
+      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=99b67930a351c2d8e836050f1b7f243dd18d74a7b62cde4aa97664a687ce009c",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=99b67930a351c2d8e836050f1b7f243dd18d74a7b62cde4aa97664a687ce009c\n"
     }
   ]
 }

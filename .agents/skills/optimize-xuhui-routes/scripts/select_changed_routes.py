@@ -18,7 +18,23 @@ GEOMETRY_FIELDS = {
     "ordered_nodes",
     "geometry_action",
 }
-AMENITY_FIELDS = {"amenity_ids"}
+AMENITY_FIELDS = {
+    "amenity_ids",
+    "nearby_pois",
+    "preference_hits",
+    "preference_search_status",
+}
+DISPLAY_FIELDS = {
+    "distance_level",
+    "display_order",
+    "feature_tags",
+    "recommendation_eligible",
+    "navigation_eligible",
+    "review_note",
+    "route_name",
+    "tags",
+    "validation_status",
+}
 VALIDATION_FIELDS = {
     "target_distance_m",
     "region_zone",
@@ -32,6 +48,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--baseline", required=True, type=Path)
     parser.add_argument("--current", required=True, type=Path)
     parser.add_argument("--report", type=Path)
+    parser.add_argument("--max-batch-size", type=int, default=5, help="Work-batch size; range 1-5")
     return parser.parse_args()
 
 
@@ -95,9 +112,17 @@ def _navigation_point(value: Any) -> Any:
 
 def classify(identifier: str, before: dict[str, Any] | None, after: dict[str, Any] | None) -> dict[str, Any]:
     if before is None:
-        return {"route_id": identifier, "change_types": ["added", "geometry_changed"], "changed_fields": sorted(after or {})}
+        return {
+            "route_id": identifier,
+            "change_types": ["added", "geometry_changed", "amenity_changed", "display_changed"],
+            "changed_fields": sorted(after or {}),
+        }
     if after is None:
-        return {"route_id": identifier, "change_types": ["removed"], "changed_fields": sorted(before)}
+        return {
+            "route_id": identifier,
+            "change_types": ["removed", "display_changed"],
+            "changed_fields": sorted(before),
+        }
 
     fields = changed_fields(before, after)
     change_types: list[str] = []
@@ -108,6 +133,9 @@ def classify(identifier: str, before: dict[str, Any] | None, after: dict[str, An
     if any(field in AMENITY_FIELDS for field in fields):
         change_types.append("amenity_changed")
         covered_fields.update(field for field in fields if field in AMENITY_FIELDS)
+    if any(field in DISPLAY_FIELDS for field in fields):
+        change_types.append("display_changed")
+        covered_fields.update(field for field in fields if field in DISPLAY_FIELDS)
     if any(field in VALIDATION_FIELDS for field in fields):
         change_types.append("validation_changed")
         covered_fields.update(field for field in fields if field in VALIDATION_FIELDS)
@@ -116,6 +144,33 @@ def classify(identifier: str, before: dict[str, Any] | None, after: dict[str, An
     if not change_types:
         change_types.append("unchanged")
     return {"route_id": identifier, "change_types": change_types, "changed_fields": fields}
+
+
+def build_work_batches(
+    routes: list[dict[str, Any]], max_batch_size: int = 5
+) -> dict[str, list[dict[str, Any]]]:
+    if not 1 <= max_batch_size <= 5:
+        raise ValueError("max_batch_size must be between 1 and 5")
+    work_batches: dict[str, list[dict[str, Any]]] = {}
+    dependencies = {
+        "geometry_changed": {"geometry_changed"},
+        "amenity_changed": {"geometry_changed", "amenity_changed"},
+        "display_changed": {"geometry_changed", "amenity_changed", "display_changed"},
+    }
+    for change_type, triggering_changes in dependencies.items():
+        identifiers = sorted(
+            route["route_id"]
+            for route in routes
+            if triggering_changes.intersection(route.get("change_types", []))
+        )
+        work_batches[change_type] = [
+            {
+                "batch_number": batch_start // max_batch_size + 1,
+                "route_ids": identifiers[batch_start : batch_start + max_batch_size],
+            }
+            for batch_start in range(0, len(identifiers), max_batch_size)
+        ]
+    return work_batches
 
 
 def write_report(path: Path, payload: dict[str, Any]) -> None:
@@ -127,6 +182,8 @@ def write_report(path: Path, payload: dict[str, Any]) -> None:
 
 def main() -> int:
     args = parse_args()
+    if not 1 <= args.max_batch_size <= 5:
+        raise ValueError("--max-batch-size must be between 1 and 5")
     baseline = load_index(args.baseline)
     current = load_index(args.current)
     identifiers = sorted(set(baseline) | set(current))
@@ -138,12 +195,19 @@ def main() -> int:
             "removed",
             "geometry_changed",
             "amenity_changed",
+            "display_changed",
             "validation_changed",
             "metadata_changed",
             "unchanged",
         )
     }
-    payload = {"routes_compared": len(routes), "summary": summary, "routes": routes}
+    payload = {
+        "routes_compared": len(routes),
+        "max_batch_size": args.max_batch_size,
+        "summary": summary,
+        "work_batches": build_work_batches(routes, args.max_batch_size),
+        "routes": routes,
+    }
     if args.report:
         write_report(args.report, payload)
     print(f"routes_compared={len(routes)} " + " ".join(f"{key}={value}" for key, value in summary.items()))

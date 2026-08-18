@@ -10,6 +10,8 @@ RouteMode = Literal["walk", "run", "bike", "bike_assist", "access"]
 AccessMode = Literal["walk", "bike", "transit", "drive"]
 RouteShape = Literal["one_way", "strict_loop"]
 GeometryAction = Literal["regenerate", "preserve"]
+PreferenceType = Literal["coffee", "park_gate", "toilet", "convenience"]
+PreferenceSearchState = Literal["verified", "no_verified_match", "needs_review", "source_failed"]
 
 
 class StrictModel(BaseModel):
@@ -112,6 +114,9 @@ class RouteSeed(StrictModel):
     evidence_note: str = ""
     access_restrictions: list[str] = Field(default_factory=list)
     amenity_ids: list[str]
+    popular_area_ids: list[str] = Field(default_factory=list)
+    preference_search_status: dict[PreferenceType, PreferenceSearchState] = Field(default_factory=dict)
+    preference_hits: list[PreferenceType] = Field(default_factory=list)
     geometry_action: GeometryAction
 
     @field_validator("source_url")
@@ -192,7 +197,9 @@ class CandidateRoute(StrictModel):
     source_level: Literal["A", "B", "C"] = "C"
     waypoint_names: list[str] = Field(default_factory=list)
     nearby_pois: list[dict[str, Any]] = Field(default_factory=list)
-    preference_hits: list[str] = Field(default_factory=list)
+    popular_area_ids: list[str] = Field(default_factory=list)
+    preference_search_status: dict[PreferenceType, PreferenceSearchState] = Field(default_factory=dict)
+    preference_hits: list[PreferenceType] = Field(default_factory=list)
 
     def is_publishable(self) -> bool:
         distinct_points = {(point.lng_gcj02, point.lat_gcj02) for point in self.polyline_gcj02}

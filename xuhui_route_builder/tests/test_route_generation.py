@@ -303,7 +303,17 @@ def test_generate_candidate_stitches_segments_and_preserves_evidence() -> None:
     ]
     client = FakeClient()
 
-    route = generate_candidate_from_seed(_seed(nodes=nodes), client, 7)
+    seed = _seed(nodes=nodes).model_copy(update={
+        "popular_area_ids": ["west_bund"],
+        "preference_search_status": {
+            "coffee": "verified",
+            "park_gate": "verified",
+            "toilet": "no_verified_match",
+            "convenience": "needs_review",
+        },
+        "preference_hits": ["coffee", "park_gate"],
+    })
+    route = generate_candidate_from_seed(seed, client, 7)
 
     assert route.route_id == "XH_RUN_0007"
     assert route.actual_distance_m == 2000
@@ -323,6 +333,9 @@ def test_generate_candidate_stitches_segments_and_preserves_evidence() -> None:
     assert route.confidence == "高"
     assert route.source_level == "A"
     assert route.waypoint_names == ["起点", "途经点", "终点"]
+    assert route.popular_area_ids == ["west_bund"]
+    assert route.preference_search_status["park_gate"] == "verified"
+    assert route.preference_hits == ["coffee", "park_gate"]
     assert "开放时间内通行" in route.review_note
     assert "官方给出地标顺序" in route.review_note
     assert [call[0] for call in client.direction_calls] == ["walking", "walking"]

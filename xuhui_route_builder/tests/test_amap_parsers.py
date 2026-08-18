@@ -1,3 +1,7 @@
+import json
+
+import pytest
+
 from xuhui_route_builder.amap_client import AmapClient
 from xuhui_route_builder.geo import parse_amap_boundary, parse_lng_lat
 from xuhui_route_builder.routes import parse_direction_path
@@ -174,3 +178,54 @@ def test_amap_client_retries_qps_limit_with_bounded_backoff(tmp_path, monkeypatc
     assert record.status == "1"
     assert len(calls) == 2
     assert sleeps == [1.0]
+
+
+def test_amap_client_reuses_successful_cached_request(tmp_path, monkeypatch) -> None:
+    calls = []
+
+    class Response:
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> dict:
+            return {"status": "1", "info": "OK", "infocode": "10000", "pois": []}
+
+    def fake_get(*args, **kwargs):
+        calls.append((args, kwargs))
+        return Response()
+
+    monkeypatch.setattr("xuhui_route_builder.amap_client.requests.get", fake_get)
+    client = AmapClient("test-key", cache_dir=tmp_path)
+
+    first = client.place_text_v5("星美术馆")
+    second = client.place_text_v5("星美术馆")
+
+    assert len(calls) == 1
+    assert first.payload == second.payload
+    assert first.raw_path == second.raw_path
+
+
+def test_amap_client_stops_on_cached_daily_limit(tmp_path, monkeypatch) -> None:
+    client = AmapClient("test-key", cache_dir=tmp_path)
+    _, prepared = client.prepare_request(
+        "walking_v2",
+        {
+            "origin": "121.44,31.18",
+            "destination": "121.45,31.19",
+            "show_fields": "cost,polyline",
+        },
+    )
+    query_hash = client._hash_params("walking_v2", prepared)
+    (tmp_path / f"walking_v2_{query_hash}.json").write_text(
+        json.dumps(
+            {"status": "0", "info": "DAILY_QUERY_OVER_LIMIT", "infocode": "10044"}
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        "xuhui_route_builder.amap_client.requests.get",
+        lambda *args, **kwargs: pytest.fail("daily-limit cache must stop network"),
+    )
+
+    with pytest.raises(RuntimeError, match=rf"10044.*{query_hash}"):
+        client.walking_v2("121.44,31.18", "121.45,31.19")

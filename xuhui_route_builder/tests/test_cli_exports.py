@@ -68,6 +68,35 @@ def test_generate_routes_with_no_success_preserves_old_candidates(tmp_path, monk
     assert report["success_count"] == 0 and report["failure_count"] == 1
 
 
+def test_generate_routes_preserves_explicitly_protected_geometry(tmp_path, monkeypatch) -> None:
+    previous_path = tmp_path / "data/processed/pilot_validated.json"
+    previous_path.parent.mkdir(parents=True)
+    previous = _candidate(1).model_copy(update={"route_id": "XH_WALK_0001"})
+    previous_path.write_text(
+        json.dumps([previous.model_dump(mode="json")], ensure_ascii=False),
+        encoding="utf-8",
+    )
+    seeds = [
+        type("Seed", (), {"seed_id": f"seed-{index}", "route_mode": "walk", "geometry_action": "preserve" if index == 0 else "regenerate"})()
+        for index in range(90)
+    ]
+    monkeypatch.setattr(cli, "validate_seeds", lambda root: seeds)
+    preserved = []
+
+    def preserve(seed, payload, index):
+        preserved.append((payload["route_id"], index))
+        return previous
+
+    monkeypatch.setattr(cli, "preserve_candidate_geometry", preserve)
+    monkeypatch.setattr(cli, "generate_candidate_from_seed", lambda seed, client, index: _candidate(index))
+
+    cli.generate_routes(tmp_path, object())
+
+    assert preserved == [("XH_WALK_0001", 1)]
+    report = json.loads((tmp_path / "data/processed/route_generation_report.json").read_text(encoding="utf-8"))
+    assert set(report["protected_geometry_hashes"]) == {"XH_WALK_0001"}
+
+
 def test_generate_routes_candidate_write_failure_records_failed_batch(tmp_path, monkeypatch) -> None:
     seeds = [type("Seed", (), {"seed_id": f"seed-{i}", "route_mode": "walk", "geometry_action": "regenerate"})() for i in range(90)]
     monkeypatch.setattr(cli, "validate_seeds", lambda root: seeds)
@@ -169,7 +198,8 @@ def test_export_candidate_routes_writes_web_data_without_overwriting_0813_baseli
 
     catalog = json.loads((tmp_path / "data/web/route_catalog.json").read_text(encoding="utf-8"))
     features = json.loads((tmp_path / "data/web/xuhui_routes.geojson").read_text(encoding="utf-8"))
-    assert len(catalog) == len(features["features"]) == 6
-    assert {route["validation_status"] for route in catalog} == {"accepted"}
+    assert len(catalog) == len(features["features"]) == 90
+    assert {route["validation_status"] for route in catalog} == {"accepted", "needs_review"}
     assert sum(route["display_status"] == "严格验收" for route in catalog) == 6
+    assert sum(route["display_status"] == "待考证" for route in catalog) == 84
     assert not (tmp_path / "0813徐汇区90条路线验收与考证清单.md").exists()

@@ -1,4 +1,4 @@
-import { loadRouteData } from "./data-loader.js?v=20260817-inline-navigation-2";
+import { loadRouteData } from "./data-loader.js?v=20260818-portfolio-1";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -12,10 +12,10 @@ import {
   showSingleRoute,
   startNavigationSession,
   updateInlineNavigation,
-} from "./map.js?v=20260817-inline-navigation-2";
-import { createNavigationController } from "./navigation-session.js?v=20260817-inline-navigation-2";
-import { createRouteDock } from "./route-dock.js?v=20260817-inline-navigation-2";
-import { renderRoutePlanner } from "./route-ui.js?v=20260817-inline-navigation-2";
+} from "./map.js?v=20260818-portfolio-1";
+import { createNavigationController } from "./navigation-session.js?v=20260818-portfolio-1";
+import { createRouteDock } from "./route-dock.js?v=20260818-portfolio-1";
+import { renderRoutePlanner } from "./route-ui.js?v=20260818-portfolio-1";
 
 async function bootstrap() {
   const map = await createMap("map");
