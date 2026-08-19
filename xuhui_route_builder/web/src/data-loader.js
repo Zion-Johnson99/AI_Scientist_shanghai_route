@@ -1,4 +1,4 @@
-const DATA_RELEASE = "20260818-portfolio-1";
+const DATA_RELEASE = "20260819-route-preview-1";
 
 export async function loadJson(path) {
   const separator = path.includes("?") ? "&" : "?";

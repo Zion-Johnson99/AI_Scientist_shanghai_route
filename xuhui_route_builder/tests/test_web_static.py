@@ -37,7 +37,7 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260818-portfolio-1"
+    release = "v=20260819-route-preview-1"
     assert f"./styles/main.css?{release}" in html
     assert f"./src/main.js?{release}" in html
     assert f'./data-loader.js?{release}' in main_js

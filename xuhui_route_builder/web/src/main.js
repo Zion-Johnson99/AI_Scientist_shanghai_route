@@ -1,4 +1,4 @@
-import { loadRouteData } from "./data-loader.js?v=20260818-portfolio-1";
+import { loadRouteData } from "./data-loader.js?v=20260819-route-preview-1";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -9,13 +9,14 @@ import {
   endNavigationSession,
   focusSportRoute,
   planNavigation,
+  showRoutePreviews,
   showSingleRoute,
   startNavigationSession,
   updateInlineNavigation,
-} from "./map.js?v=20260818-portfolio-1";
-import { createNavigationController } from "./navigation-session.js?v=20260818-portfolio-1";
-import { createRouteDock } from "./route-dock.js?v=20260818-portfolio-1";
-import { renderRoutePlanner } from "./route-ui.js?v=20260818-portfolio-1";
+} from "./map.js?v=20260819-route-preview-1";
+import { createNavigationController } from "./navigation-session.js?v=20260819-route-preview-1";
+import { createRouteDock } from "./route-dock.js?v=20260819-route-preview-1";
+import { renderRoutePlanner } from "./route-ui.js?v=20260819-route-preview-1";
 
 async function bootstrap() {
   const map = await createMap("map");
@@ -101,6 +102,19 @@ async function bootstrap() {
 
   drawBoundary(map, data.boundary);
   renderRoutePlanner(catalog, {
+    onPreviewRoutes(routes, onSelectRoute) {
+      const features = routes
+        .map((route) => routeFeaturesById.get(route.route_id))
+        .filter(Boolean);
+      if (features.length !== routes.length) {
+        console.warn("部分候选路线缺少地图路径数据", {
+          requestedCount: routes.length,
+          renderedCount: features.length,
+        });
+      }
+      showRoutePreviews(map, features, onSelectRoute);
+      routeDock.hide();
+    },
     onShowRoute(route) {
       showRouteFeature(map, routeFeaturesById, route.route_id, data);
     },

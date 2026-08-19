@@ -100,6 +100,9 @@ export async function createMap(targetId) {
     boundaryLayer: null,
     boundaryRings: [],
     routeLayers: new Map(),
+    routePreviewLayers: [],
+    routePreviewMarkers: [],
+    routePreviewZoomHandler: null,
     entryLayers: [],
     poiLayers: [],
     navigationService: null,
@@ -143,6 +146,90 @@ export function drawBoundary(mapContext, boundary) {
   const overlays = layer.getOverlays ? layer.getOverlays() : [];
   amap.setFitView(overlays.length ? overlays : undefined, false, [30, 30, 30, 30]);
   return layer;
+}
+
+export function showRoutePreviews(mapContext, routes, onSelectRoute = () => {}) {
+  clearRouteResults(mapContext);
+  const markerGroups = new Map();
+
+  for (const route of routes) {
+    const path = getLinePath(route);
+    if (path.length < 2) {
+      continue;
+    }
+
+    const properties = route.properties || {};
+    const line = new mapContext.AMap.Polyline({
+      path,
+      strokeColor: "#3d91ff",
+      strokeWeight: 4,
+      strokeOpacity: 0.34,
+      lineJoin: "round",
+      lineCap: "round",
+      showDir: false,
+      zIndex: 64,
+      extData: { routeId: properties.route_id, layerRole: "preview" },
+    });
+    mapContext.amap.add(line);
+    mapContext.routePreviewLayers.push(line);
+
+    const position = locationPosition(properties.start_location, path[0]);
+    const marker = createRoutePreviewMarker(mapContext, route, position, onSelectRoute);
+    mapContext.amap.add(marker);
+    const groupKey = `${Number(position[0]).toFixed(6)},${Number(position[1]).toFixed(6)}`;
+    const group = markerGroups.get(groupKey) || [];
+    group.push(marker);
+    markerGroups.set(groupKey, group);
+  }
+
+  for (const markers of markerGroups.values()) {
+    markers.forEach((marker, index) => {
+      mapContext.routePreviewMarkers.push({ marker, index, count: markers.length });
+    });
+  }
+  applyRoutePreviewOffsets(mapContext);
+  mapContext.routePreviewZoomHandler = () => applyRoutePreviewOffsets(mapContext);
+  mapContext.amap.on("zoomend", mapContext.routePreviewZoomHandler);
+
+  if (mapContext.routePreviewLayers.length) {
+    mapContext.amap.setFitView(mapContext.routePreviewLayers, false, [56, 56, 56, 56]);
+  }
+}
+
+export function routePreviewCardModel(route) {
+  const properties = route?.properties || route || {};
+  const fullName = String(properties.route_name || "候选路线");
+  const characters = [...fullName];
+  const shortName = characters.length > 6 ? `${characters.slice(0, 6).join("")}…` : fullName;
+  const distanceM = Number(
+    properties.actual_distance_m ?? properties.distance_m ?? properties.target_distance_m ?? 0,
+  );
+  const distanceText = `${(Math.max(0, distanceM) / 1000).toFixed(2)} 公里`;
+  return {
+    routeId: properties.route_id,
+    fullName,
+    shortName,
+    distanceText,
+    ariaLabel: `${fullName}，${distanceText}`,
+  };
+}
+
+export function previewMarkerOffset(index, count, zoom) {
+  if (count <= 1) {
+    return { x: 0, y: -8 };
+  }
+  if (zoom < 15) {
+    return {
+      x: Math.round((index - (count - 1) / 2) * 12),
+      y: -8 - index * 9,
+    };
+  }
+  const row = Math.floor(index / 2);
+  const direction = index % 2 === 0 ? -1 : 1;
+  return {
+    x: direction * (82 + row * 18),
+    y: -12 - row * 54,
+  };
 }
 
 export function showRouteResults(mapContext, routes, entries, pois, selectedRouteId, selectedPreferences = []) {
@@ -311,6 +398,45 @@ function createRouteMarker(mapContext, spec) {
   });
 }
 
+function createRoutePreviewMarker(mapContext, route, position, onSelectRoute) {
+  const model = routePreviewCardModel(route);
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "amap-route-option";
+  button.dataset.routeId = model.routeId;
+  button.title = model.fullName;
+  button.setAttribute("aria-label", model.ariaLabel);
+
+  const name = document.createElement("span");
+  name.className = "amap-route-option__name";
+  name.textContent = model.shortName;
+  const distance = document.createElement("span");
+  distance.className = "amap-route-option__distance";
+  distance.textContent = model.distanceText;
+  button.append(name, distance);
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
+    onSelectRoute(model.routeId);
+  });
+
+  return new mapContext.AMap.Marker({
+    position,
+    content: button,
+    anchor: "bottom-center",
+    offset: new mapContext.AMap.Pixel(0, -8),
+    zIndex: 92,
+    extData: { routeId: model.routeId, layerRole: "preview-option" },
+  });
+}
+
+function applyRoutePreviewOffsets(mapContext) {
+  const zoom = Number(mapContext.amap.getZoom?.() || 13);
+  for (const { marker, index, count } of mapContext.routePreviewMarkers || []) {
+    const { x, y } = previewMarkerOffset(index, count, zoom);
+    marker.setOffset(new mapContext.AMap.Pixel(x, y));
+  }
+}
+
 export function highlightRoute(mapContext, selectedRouteId) {
   for (const [routeId, layers] of mapContext.routeLayers.entries()) {
     setRouteLayerState(layers, routeId === selectedRouteId ? "active" : "inactive");
@@ -329,11 +455,19 @@ export function focusSportRoute(mapContext, selectedRouteId) {
 
 export function clearRouteResults(mapContext) {
   const routeOverlays = [...mapContext.routeLayers.values()].flatMap(({ halo, main }) => [halo, main]);
-  const overlays = [...routeOverlays, ...mapContext.entryLayers, ...mapContext.poiLayers];
+  const previewLayers = mapContext.routePreviewLayers || [];
+  const previewMarkers = (mapContext.routePreviewMarkers || []).map(({ marker }) => marker);
+  const overlays = [...routeOverlays, ...previewLayers, ...previewMarkers, ...mapContext.entryLayers, ...mapContext.poiLayers];
   if (overlays.length) {
     mapContext.amap.remove(overlays);
   }
+  if (mapContext.routePreviewZoomHandler) {
+    mapContext.amap.off("zoomend", mapContext.routePreviewZoomHandler);
+  }
   mapContext.routeLayers.clear();
+  mapContext.routePreviewLayers = [];
+  mapContext.routePreviewMarkers = [];
+  mapContext.routePreviewZoomHandler = null;
   mapContext.entryLayers = [];
   mapContext.poiLayers = [];
 }

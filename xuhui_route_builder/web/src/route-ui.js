@@ -27,7 +27,7 @@ export function renderRoutePlanner(catalog, options) {
     plannedNavigationPlan: null,
   };
 
-  bindAppTabs(state, controls, options);
+  bindAppTabs(catalog, state, controls, options);
   bindSelectionControls(catalog, state, controls, options);
   bindNavigationControls(catalog, state, controls, options);
   setNavigationControlsEnabled(controls, false);
@@ -66,14 +66,15 @@ export function filterCandidateRoutes(catalog, filters) {
 }
 
 export function filterNavigationRoutes(catalog, mode) {
-  return catalog.filter((route) => route.route_mode === mode && route.validation_status === "accepted");
+  return catalog.filter((route) => route.route_mode === mode);
 }
 
-function bindAppTabs(state, controls, options) {
+function bindAppTabs(catalog, state, controls, options) {
   controls.appTabs.forEach((tab) => {
     tab.addEventListener("click", () => {
       state.activeAppTab = tab.dataset.appTab;
       switchAppTab(state, controls);
+      renderActiveMapState(catalog, state, controls, options);
     });
   });
 }
@@ -90,6 +91,21 @@ function bindSelectionControls(catalog, state, controls, options) {
       controls.sportModeTabs.forEach((item) => item.classList.toggle("active", item === tab));
       initializeRouteSelection(catalog, state, controls, options);
     });
+  });
+
+  const refreshPreview = () => {
+    if (controls.routeSelect.value) {
+      return;
+    }
+    initializeRouteSelection(catalog, state, controls, options);
+  };
+  controls.zoneFilter.addEventListener("change", refreshPreview);
+  controls.distanceFilter.addEventListener("change", refreshPreview);
+  controls.preferences.forEach((input) => input.addEventListener("change", refreshPreview));
+  let keywordPreviewTimer = null;
+  controls.keywordInput.addEventListener("input", () => {
+    clearTimeout(keywordPreviewTimer);
+    keywordPreviewTimer = setTimeout(refreshPreview, 180);
   });
 
   controls.keywordInput.addEventListener("keydown", (event) => {
@@ -162,27 +178,19 @@ function bindNavigationControls(catalog, state, controls, options) {
       renderNavigationMode(null, controls);
       options.onClearRoutes();
       options.onRouteMetrics?.(null);
+      renderNavigationPreview(catalog, state, controls, options);
       controls.navigationStatus.textContent = "运动类型已切换，请选择该类型的目标路线。";
     });
   });
 
   controls.navigationRouteSelect.addEventListener("change", () => {
-    const route = selectNavigationRoute(catalog, controls.navigationRouteSelect.value, options);
-    if (!route) {
-      return;
-    }
-    state.selectedRouteId = route.route_id;
-    state.plannedNavigationRequest = null;
-    state.plannedNavigationPlan = null;
-    const reset = resetPlannedNavigationForRouteChange(state.navigationStatus);
-    if (reset) {
-      state.navigationStatus = reset.navigationStatus;
-      controls.navigationStatus.textContent = reset.statusText;
-    }
-    controls.startSportButton.disabled = true;
-    renderDetail(route, controls.detail);
-    renderNavigationMode(route, controls);
-    controls.navigationStatus.textContent = `已选择${route.route_name}，请设置用户位置。`;
+    applyNavigationRouteSelection(
+      catalog,
+      controls.navigationRouteSelect.value,
+      state,
+      controls,
+      options,
+    );
   });
 
   controls.navigateButton.addEventListener("click", () => {
@@ -305,8 +313,8 @@ function initializeRouteSelection(catalog, state, controls, options) {
   renderRouteSelect(state.filteredRoutes, controls, "");
   controls.summary.textContent = `当前有 ${state.filteredRoutes.length} 条候选路线，点击筛选后显示推荐路线。`;
   controls.detail.innerHTML = "";
-  options.onClearRoutes();
   options.onRouteMetrics?.(null);
+  renderSelectionPreview(state.filteredRoutes, catalog, state, controls, options);
 }
 
 function renderRouteSelect(routes, controls, selectedRouteId) {
@@ -352,6 +360,65 @@ function switchAppTab(state, controls) {
   });
   controls.selectionView.classList.toggle("active", state.activeAppTab === "selection");
   controls.navigationView.classList.toggle("active", state.activeAppTab === "navigation");
+}
+
+function renderActiveMapState(catalog, state, controls, options) {
+  if (state.activeAppTab === "selection") {
+    const route = findRoute(catalog, controls.routeSelect.value);
+    if (route) {
+      options.onShowRoute(route);
+      options.onRouteMetrics?.(route);
+      return;
+    }
+    controls.detail.innerHTML = "";
+    renderSelectionPreview(state.filteredRoutes, catalog, state, controls, options);
+    return;
+  }
+
+  const route = findRoute(catalog, controls.navigationRouteSelect.value);
+  if (route) {
+    options.onSelect(route.route_id);
+    options.onRouteMetrics?.(route);
+    return;
+  }
+  renderNavigationPreview(catalog, state, controls, options);
+}
+
+function renderSelectionPreview(routes, catalog, state, controls, options) {
+  options.onPreviewRoutes?.(routes, (routeId) => {
+    const route = findRoute(routes, routeId);
+    if (route) {
+      showRoute(route, catalog, state, controls, options, "已从地图选择路线。");
+    }
+  });
+}
+
+function renderNavigationPreview(catalog, state, controls, options) {
+  const routes = filterNavigationRoutes(catalog, state.navigationMode);
+  options.onPreviewRoutes?.(routes, (routeId) => {
+    applyNavigationRouteSelection(catalog, routeId, state, controls, options);
+  });
+}
+
+function applyNavigationRouteSelection(catalog, routeId, state, controls, options) {
+  const route = selectNavigationRoute(catalog, routeId, options);
+  if (!route) {
+    return null;
+  }
+  controls.navigationRouteSelect.value = route.route_id;
+  state.selectedRouteId = route.route_id;
+  state.plannedNavigationRequest = null;
+  state.plannedNavigationPlan = null;
+  const reset = resetPlannedNavigationForRouteChange(state.navigationStatus);
+  if (reset) {
+    state.navigationStatus = reset.navigationStatus;
+    controls.navigationStatus.textContent = reset.statusText;
+  }
+  controls.startSportButton.disabled = true;
+  renderDetail(route, controls.detail);
+  renderNavigationMode(route, controls);
+  controls.navigationStatus.textContent = `已选择${route.route_name}，请设置用户位置。`;
+  return route;
 }
 
 function readSelectionFilters(controls) {
@@ -552,7 +619,7 @@ function updateModeCounts(catalog, controls) {
   }
   for (const tab of controls.navigationModeTabs) {
     const routes = filterNavigationRoutes(catalog, tab.dataset.navigationMode);
-    tab.querySelector("span").textContent = `${routes.length} 条严格验收`;
+    tab.querySelector("span").textContent = `${routes.length} 条`;
   }
 }
 

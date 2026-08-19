@@ -47,10 +47,24 @@ test("导航页使用独立运动类型选项卡并置于路线和用户位置�
   assert.ok(modeIndex < routeIndex && routeIndex < originIndex);
 });
 
-test("导航路线下拉只保留当前运动类型的严格验收路线", () => {
+test("导航路线下拉保留当前运动类型的全部路线", () => {
   const routes = filterNavigationRoutes(navigationCatalog, "bike");
 
-  assert.deepEqual(routes.map((item) => item.route_id), ["XH_BIKE_0001"]);
+  assert.deepEqual(routes.map((item) => item.route_id), ["XH_BIKE_0001", "XH_BIKE_0002"]);
+});
+
+test("导航三种运动类型均保留30条路线", () => {
+  const catalog = Array.from({ length: 90 }, (_, index) => ({
+    route_id: `XH_${index + 1}`,
+    route_mode: ["walk", "run", "bike"][Math.floor(index / 30)],
+    validation_status: index % 2 ? "needs_review" : "accepted",
+  }));
+
+  for (const mode of ["walk", "run", "bike"]) {
+    const routes = filterNavigationRoutes(catalog, mode);
+    assert.equal(routes.length, 30);
+    assert.ok(routes.some((item) => item.validation_status === "needs_review"));
+  }
 });
 
 test("自动推荐跳过待考证路线", () => {
