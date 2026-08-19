@@ -125,11 +125,16 @@ function cleanNames(values) {
   const unique = new Set();
   for (const value of Array.isArray(values) ? values : []) {
     const name = String(value || "").trim();
-    if (name) {
+    if (isDisplayWaypointName(name)) {
       unique.add(name);
     }
   }
   return [...unique];
+}
+
+export function isDisplayWaypointName(value) {
+  const name = String(value || "").trim();
+  return Boolean(name) && !/节点\s*\d+$/i.test(name);
 }
 
 function selectDockTab(tabs, panels, selectedTab) {

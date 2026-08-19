@@ -3,15 +3,23 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, HttpUrl, field_validator, model_validator
-
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    HttpUrl,
+    field_validator,
+    model_validator,
+)
 
 RouteMode = Literal["walk", "run", "bike", "bike_assist", "access"]
 AccessMode = Literal["walk", "bike", "transit", "drive"]
 RouteShape = Literal["one_way", "strict_loop"]
 GeometryAction = Literal["regenerate", "preserve"]
 PreferenceType = Literal["coffee", "park_gate", "toilet", "convenience"]
-PreferenceSearchState = Literal["verified", "no_verified_match", "needs_review", "source_failed"]
+PreferenceSearchState = Literal[
+    "verified", "no_verified_match", "needs_review", "source_failed"
+]
 
 
 class StrictModel(BaseModel):
@@ -115,7 +123,9 @@ class RouteSeed(StrictModel):
     access_restrictions: list[str] = Field(default_factory=list)
     amenity_ids: list[str]
     popular_area_ids: list[str] = Field(default_factory=list)
-    preference_search_status: dict[PreferenceType, PreferenceSearchState] = Field(default_factory=dict)
+    preference_search_status: dict[PreferenceType, PreferenceSearchState] = Field(
+        default_factory=dict
+    )
     preference_hits: list[PreferenceType] = Field(default_factory=list)
     geometry_action: GeometryAction
 
@@ -129,7 +139,9 @@ class RouteSeed(StrictModel):
     def require_complete_structured_route(self) -> RouteSeed:
         if not self.ordered_nodes:
             if self.allowed_modes:
-                raise ValueError("partial RouteSeed cannot have allowed_modes without ordered_nodes")
+                raise ValueError(
+                    "partial RouteSeed cannot have allowed_modes without ordered_nodes"
+                )
             return self
         if len(self.ordered_nodes) < 2:
             raise ValueError("ordered_nodes must contain at least two nodes")
@@ -186,9 +198,15 @@ class CandidateRoute(StrictModel):
     loop_flag: bool = False
     feature_tags: list[str] = Field(default_factory=list)
     candidate_rank: str = "candidate"
-    geometry_source: Literal["not_generated", "amap_direction", "audited_import"] = "not_generated"
-    geometry_status: Literal["not_generated", "complete", "partial", "failed"] = "not_generated"
-    validation_status: Literal["pending", "accepted", "needs_review", "rejected"] = "pending"
+    geometry_source: Literal["not_generated", "amap_direction", "audited_import"] = (
+        "not_generated"
+    )
+    geometry_status: Literal["not_generated", "complete", "partial", "failed"] = (
+        "not_generated"
+    )
+    validation_status: Literal["pending", "accepted", "needs_review", "rejected"] = (
+        "pending"
+    )
     snap_ratio: float | None = Field(default=None, ge=0, le=1)
     network_source: str | None = None
     verified_at: datetime | None = None
@@ -198,12 +216,21 @@ class CandidateRoute(StrictModel):
     waypoint_names: list[str] = Field(default_factory=list)
     nearby_pois: list[dict[str, Any]] = Field(default_factory=list)
     popular_area_ids: list[str] = Field(default_factory=list)
-    preference_search_status: dict[PreferenceType, PreferenceSearchState] = Field(default_factory=dict)
+    preference_search_status: dict[PreferenceType, PreferenceSearchState] = Field(
+        default_factory=dict
+    )
     preference_hits: list[PreferenceType] = Field(default_factory=list)
 
     def is_publishable(self) -> bool:
-        distinct_points = {(point.lng_gcj02, point.lat_gcj02) for point in self.polyline_gcj02}
-        verified_with_timezone = self.verified_at is not None and self.verified_at.utcoffset() is not None
+        distinct_points = {
+            (point.lng_gcj02, point.lat_gcj02) for point in self.polyline_gcj02
+        }
+        verified_with_timezone = (
+            self.verified_at is not None and self.verified_at.utcoffset() is not None
+        )
+        has_road_evidence = (
+            self.snap_ratio is not None and self.snap_ratio >= 0.98
+        ) or self._has_amap_local_visual_evidence()
         has_common_evidence = (
             self.validation_status == "accepted"
             and self.geometry_source in {"amap_direction", "audited_import"}
@@ -211,8 +238,7 @@ class CandidateRoute(StrictModel):
             and len(distinct_points) >= 2
             and bool(self.waypoint_names and self.waypoint_names[0].strip())
             and self.source_accessed_at is not None
-            and self.snap_ratio is not None
-            and self.snap_ratio >= 0.98
+            and has_road_evidence
             and bool(self.network_source and self.network_source.strip())
             and verified_with_timezone
             and bool(self.review_note.strip())
@@ -229,10 +255,19 @@ class CandidateRoute(StrictModel):
             raise ValueError("accepted route requires approved geometry_source")
         if self.geometry_status != "complete":
             raise ValueError("accepted route requires geometry_status=complete")
-        if len({(point.lng_gcj02, point.lat_gcj02) for point in self.polyline_gcj02}) < 2:
-            raise ValueError("accepted route polyline_gcj02 requires two distinct coordinates")
-        if self.snap_ratio is None or self.snap_ratio < 0.98:
-            raise ValueError("accepted route requires snap_ratio >= 0.98")
+        if (
+            len({(point.lng_gcj02, point.lat_gcj02) for point in self.polyline_gcj02})
+            < 2
+        ):
+            raise ValueError(
+                "accepted route polyline_gcj02 requires two distinct coordinates"
+            )
+        if (
+            self.snap_ratio is None or self.snap_ratio < 0.98
+        ) and not self._has_amap_local_visual_evidence():
+            raise ValueError(
+                "accepted route requires OSM snap_ratio >= 0.98 or complete AMap/local/visual evidence"
+            )
         if not self.network_source or not self.network_source.strip():
             raise ValueError("accepted route requires network_source")
         if self.verified_at is None or self.verified_at.utcoffset() is None:
@@ -242,6 +277,12 @@ class CandidateRoute(StrictModel):
         if self.geometry_source == "amap_direction" and not self.raw_response_paths:
             raise ValueError("amap_direction route requires raw_response_paths")
         return self
+
+    def _has_amap_local_visual_evidence(self) -> bool:
+        source = (self.network_source or "").lower()
+        return all(
+            marker in source for marker in ("amap_", "local_topology", "visual_audit")
+        )
 
 
 def _same_location(first: RouteLocation, second: RouteLocation) -> bool:

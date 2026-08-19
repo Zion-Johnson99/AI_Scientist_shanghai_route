@@ -1,9 +1,9 @@
 {
   "batch_status": "partial",
-  "accepted_count": 15,
-  "review_count": 75,
+  "accepted_count": 35,
+  "review_count": 55,
   "rejected_count": 0,
-  "published_count": 15,
+  "published_count": 35,
   "displayed_count": 90,
   "mode_counts": {
     "walk": 30,
@@ -12,9 +12,9 @@
   },
   "distance_band_counts": {
     "walk": {
-      "short": 9,
-      "medium": 12,
-      "long": 7
+      "short": 10,
+      "medium": 10,
+      "long": 10
     },
     "run": {
       "short": 9,
@@ -28,14 +28,14 @@
     }
   },
   "network_version": [
-    "2026-08-17T14:34:57Z",
-    "2026-08-18T07:34:06Z",
-    "2026-08-17T14:37:00Z",
-    "2026-08-17T14:39:02Z",
-    "2026-08-18T07:35:06Z",
+    "amap_walking_20260819+local_topology+visual_audit_20260819",
     "2026-08-17T14:41:06Z",
+    "amap_walking_v2",
+    "2026-08-18T07:35:06Z",
     "2026-08-17T14:42:06Z",
-    "2026-08-18T07:36:06Z"
+    "2026-08-18T07:36:06Z",
+    "2026-08-17T14:39:02Z",
+    "amap_bike_v2"
   ],
   "duplicate_groups": {},
   "routes": [
@@ -43,301 +43,301 @@
       "route_id": "XH_WALK_0001",
       "mode": "walk",
       "validation_status": "accepted",
-      "snap_ratio": 1.0,
+      "snap_ratio": null,
       "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:34:57Z",
-      "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0002",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 0 处"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0003",
       "mode": "walk",
       "validation_status": "accepted",
-      "snap_ratio": 1.0,
+      "snap_ratio": null,
       "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:34:57Z",
-      "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0004",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 0 处"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0005",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 3 处"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0006",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 0 处"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0007",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 2 处"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0008",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 2 个，自交 2 处；轨迹存在局部回环：24 处，最长 2376.8 米"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0009",
       "mode": "walk",
       "validation_status": "accepted",
-      "snap_ratio": 1.0,
+      "snap_ratio": null,
       "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-18T07:34:06Z",
-      "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0010",
       "mode": "walk",
-      "validation_status": "needs_review",
-      "snap_ratio": 0.9181818181818182,
-      "route_inside_ratio": 0.9454545454545454,
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-18T07:34:06Z",
-      "review_note": "路网贴合率 91.8% 低于 98%"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0011",
       "mode": "walk",
       "validation_status": "accepted",
-      "snap_ratio": 1.0,
+      "snap_ratio": null,
       "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:37:00Z",
-      "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0012",
       "mode": "walk",
       "validation_status": "accepted",
-      "snap_ratio": 0.9879518072289156,
+      "snap_ratio": null,
       "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:37:00Z",
-      "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0013",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=f8b18394b80a123df1424884a583bff8ca1354cacb60d5c74c65d7a40b1e53dc"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0014",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=7e382dd6e8d24f2430ee42912d549e45aad3cc26d09741d91e6e2e9f5f76ccaa"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0015",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 0 处"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0016",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 6 个，自交 3 处；轨迹存在局部回环：6 处，最长 458.9 米"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0017",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 1 处"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0018",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 2 个，自交 2 处"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0019",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=89319646ef2ba5cd8006616bf2a435fe8afafc0fa90ecc0b163279998b268049"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0020",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fda664c2a1c700fc2e051412d7588d3eeb5b5ccc94f1246f765877b238634c27"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0021",
       "mode": "walk",
       "validation_status": "accepted",
-      "snap_ratio": 1.0,
+      "snap_ratio": null,
       "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:39:02Z",
-      "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0022",
       "mode": "walk",
       "validation_status": "accepted",
-      "snap_ratio": 0.9864864864864865,
+      "snap_ratio": null,
       "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:39:02Z",
-      "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0023",
       "mode": "walk",
       "validation_status": "accepted",
-      "snap_ratio": 1.0,
+      "snap_ratio": null,
       "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:39:02Z",
-      "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0024",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 1 处；轨迹存在局部回环：5 处，最长 874.0 米"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0025",
       "mode": "walk",
       "validation_status": "accepted",
-      "snap_ratio": 1.0,
+      "snap_ratio": null,
       "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-17T14:39:02Z",
-      "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0026",
       "mode": "walk",
-      "validation_status": "needs_review",
-      "snap_ratio": 0.9066666666666666,
+      "validation_status": "accepted",
+      "snap_ratio": null,
       "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-18T07:35:06Z",
-      "review_note": "路网贴合率 90.7% 低于 98%"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0027",
       "mode": "walk",
-      "validation_status": "needs_review",
-      "snap_ratio": 0.8785425101214575,
+      "validation_status": "accepted",
+      "snap_ratio": null,
       "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "2026-08-18T07:35:06Z",
-      "review_note": "路网贴合率 87.9% 低于 98%"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0028",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 0 个，自交 1 处"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0029",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 0.9954337899543378,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 2 个，自交 4 处；轨迹存在局部回环：6 处，最长 402.0 米"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_WALK_0030",
       "mode": "walk",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_walking_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=bc667351622ad4552ffbc7e2a33f6dd8bbcf8e9ea13d4583027df9c160bd0805"
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_RUN_0031",
@@ -532,12 +532,12 @@
     {
       "route_id": "XH_RUN_0050",
       "mode": "run",
-      "validation_status": "accepted",
+      "validation_status": "needs_review",
       "snap_ratio": 0.9855072463768116,
       "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-18",
       "network_source": "2026-08-18T07:36:06Z",
-      "review_note": "路线形态、OSM 贴路率和 API 距离误差检查通过"
+      "review_note": "POI 门禁失败：长路线缺少已核实厕所或便利店"
     },
     {
       "route_id": "XH_RUN_0051",
@@ -940,97 +940,5 @@
       "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 1 个，自交 0 处；轨迹存在局部回环：1 处，最长 618.9 米；单程路线曲折系数 2.79 高于 2.50"
     }
   ],
-  "failures": [
-    {
-      "route_id": "XH_WALK_0013",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=f8b18394b80a123df1424884a583bff8ca1354cacb60d5c74c65d7a40b1e53dc",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=f8b18394b80a123df1424884a583bff8ca1354cacb60d5c74c65d7a40b1e53dc\n"
-    },
-    {
-      "route_id": "XH_WALK_0014",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=7e382dd6e8d24f2430ee42912d549e45aad3cc26d09741d91e6e2e9f5f76ccaa",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=7e382dd6e8d24f2430ee42912d549e45aad3cc26d09741d91e6e2e9f5f76ccaa\n"
-    },
-    {
-      "route_id": "XH_WALK_0019",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=89319646ef2ba5cd8006616bf2a435fe8afafc0fa90ecc0b163279998b268049",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=89319646ef2ba5cd8006616bf2a435fe8afafc0fa90ecc0b163279998b268049\n"
-    },
-    {
-      "route_id": "XH_WALK_0020",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fda664c2a1c700fc2e051412d7588d3eeb5b5ccc94f1246f765877b238634c27",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fda664c2a1c700fc2e051412d7588d3eeb5b5ccc94f1246f765877b238634c27\n"
-    },
-    {
-      "route_id": "XH_WALK_0030",
-      "mode": "walk",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=bc667351622ad4552ffbc7e2a33f6dd8bbcf8e9ea13d4583027df9c160bd0805",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=bc667351622ad4552ffbc7e2a33f6dd8bbcf8e9ea13d4583027df9c160bd0805\n"
-    },
-    {
-      "route_id": "XH_RUN_0045",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=08c6a968bf937398c6803dacbf78e432d3f70b18381a1c90d82d750376d33257",
-      "traceback": "urllib3.exceptions.SSLError: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\adapters.py\", line 696, in send\n    resp = conn.urlopen(\n           ^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\urllib3\\connectionpool.py\", line 842, in urlopen\n    retries = retries.increment(\n              ^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\urllib3\\util\\retry.py\", line 543, in increment\n    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nurllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='overpass-api.de', port=443): Max retries exceeded with url: /api/interpreter (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)')))\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 565, in query\n    response = request(\n               ^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\api.py\", line 134, in post\n    return request(\"post\", url, data=data, json=json, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\api.py\", line 71, in request\n    return session.request(method=method, url=url, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\sessions.py\", line 651, in request\n    resp = self.send(prep, **send_kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\sessions.py\", line 784, in send\n    r = adapter.send(request, **kwargs)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\adapters.py\", line 727, in send\n    raise SSLError(e, request=request)\nrequests.exceptions.SSLError: HTTPSConnectionPool(host='overpass-api.de', port=443): Max retries exceeded with url: /api/interpreter (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)')))\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=08c6a968bf937398c6803dacbf78e432d3f70b18381a1c90d82d750376d33257\n"
-    },
-    {
-      "route_id": "XH_RUN_0046",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=2984349cb0cfd17771b210ecbf15b20150944b428c9dba89f12b6b9ac0295911",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=2984349cb0cfd17771b210ecbf15b20150944b428c9dba89f12b6b9ac0295911\n"
-    },
-    {
-      "route_id": "XH_RUN_0049",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=0636643f2bec2a58938043af097deb6dededd88e402def8106abb2b5f4274543",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=0636643f2bec2a58938043af097deb6dededd88e402def8106abb2b5f4274543\n"
-    },
-    {
-      "route_id": "XH_RUN_0054",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fa98c937a140f908a7d2470f873fe8e40565db4f4d5c8808507438a6629bc172",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=fa98c937a140f908a7d2470f873fe8e40565db4f4d5c8808507438a6629bc172\n"
-    },
-    {
-      "route_id": "XH_RUN_0056",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=acd9ae6a3c487cfe9356a674b896f8237d644361feb2527c41b2f315acdb302a",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=acd9ae6a3c487cfe9356a674b896f8237d644361feb2527c41b2f315acdb302a\n"
-    },
-    {
-      "route_id": "XH_RUN_0058",
-      "mode": "run",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=499c630e775032abe899f7d08dcf4c162ce9b2a175b59c79919b589aeedcab4e",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=499c630e775032abe899f7d08dcf4c162ce9b2a175b59c79919b589aeedcab4e\n"
-    },
-    {
-      "route_id": "XH_BIKE_0067",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=cda05f955adbcddac0d01b2abb6319a554db7138db213eb2d05062e68e55d36c",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=cda05f955adbcddac0d01b2abb6319a554db7138db213eb2d05062e68e55d36c\n"
-    },
-    {
-      "route_id": "XH_BIKE_0068",
-      "mode": "bike",
-      "type": "RuntimeError",
-      "message": "Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=99b67930a351c2d8e836050f1b7f243dd18d74a7b62cde4aa97664a687ce009c",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 571, in query\n    response.raise_for_status()\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\.venv\\Lib\\site-packages\\requests\\models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 504 Server Error: Gateway Timeout for url: https://overpass-api.de/api/interpreter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\cli.py\", line 482, in validate_routes\n    payload = overpass_client.query(build_overpass_query(route))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\SJTU\\交大\\揭榜挂帅\\AI_Scientist\\xuhui_route_builder\\src\\xuhui_route_builder\\validation.py\", line 574, in query\n    raise RuntimeError(\nRuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=99b67930a351c2d8e836050f1b7f243dd18d74a7b62cde4aa97664a687ce009c\n"
-    }
-  ]
+  "failures": []
 }

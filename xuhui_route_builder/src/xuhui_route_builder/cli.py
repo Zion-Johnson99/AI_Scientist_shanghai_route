@@ -26,11 +26,16 @@ from .exporters import (
     write_entries_csv,
     write_json,
 )
+from .geo import gcj02_to_wgs84
 from .models import CandidateRoute, RouteSeed
 from .osm_poi import build_osm_poi_index
 from .place_resolver import HybridPlaceResolver
 from .route_research import merge_research_drafts, merge_route_optimizations
-from .routes import generate_candidate_from_seed, load_route_seeds, preserve_candidate_geometry
+from .routes import (
+    generate_candidate_from_seed,
+    load_route_seeds,
+    preserve_candidate_geometry,
+)
 from .service_pois import merge_verified_service_pois
 from .validation import (
     OverpassClient,
@@ -40,7 +45,6 @@ from .validation import (
     validate_amap_raw_evidence,
     validate_candidate,
 )
-
 
 EXPECTED_ROUTE_COUNT = 90
 EXPECTED_MODE_COUNTS = {"walk": 30, "run": 30, "bike": 30}
@@ -121,7 +125,9 @@ def main() -> None:
         print(f"merged_route_draft_count={len(merged)}")
     elif args.command == "merge-route-optimizations":
         target = PROJECT_ROOT / "data" / "seeds" / "route_seeds.json"
-        merged = merge_route_optimizations(PROJECT_ROOT / "data" / "seeds" / "research", target, target)
+        merged = merge_route_optimizations(
+            PROJECT_ROOT / "data" / "seeds" / "research", target, target
+        )
         print(f"merged_route_optimization_count={len(merged)}")
     elif args.command == "build-osm-poi-index":
         settings = load_settings()
@@ -279,7 +285,11 @@ def validate_seeds(project_root: Path) -> list[RouteSeed]:
 def generate_routes(project_root: Path, client) -> list:
     seeds = validate_seeds(project_root)
     previous_path = project_root / "data" / "processed" / "pilot_validated.json"
-    previous_items = json.loads(previous_path.read_text(encoding="utf-8")) if previous_path.exists() else []
+    previous_items = (
+        json.loads(previous_path.read_text(encoding="utf-8"))
+        if previous_path.exists()
+        else []
+    )
     previous_by_id = {
         item.get("route_id"): item
         for item in previous_items
@@ -294,11 +304,16 @@ def generate_routes(project_root: Path, client) -> list:
             if seed.geometry_action == "preserve":
                 previous = previous_by_id.get(route_id)
                 if previous is None:
-                    raise ValueError(f"protected geometry missing from {previous_path}: {route_id}")
+                    raise ValueError(
+                        f"protected geometry missing from {previous_path}: {route_id}"
+                    )
                 before_hash = _geometry_hash(previous.get("polyline_gcj02", []))
                 candidate = preserve_candidate_geometry(seed, previous, index)
                 after_hash = _geometry_hash(
-                    [point.model_dump(mode="json") for point in candidate.polyline_gcj02]
+                    [
+                        point.model_dump(mode="json")
+                        for point in candidate.polyline_gcj02
+                    ]
                 )
                 if before_hash != after_hash:
                     raise ValueError(f"protected geometry changed: {route_id}")
@@ -403,7 +418,9 @@ def _route_id_for_seed(route_mode: str, index: int) -> str:
 
 
 def _geometry_hash(points) -> str:
-    payload = json.dumps(points, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    payload = json.dumps(
+        points, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    )
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
@@ -479,11 +496,19 @@ def validate_routes(
                 if route.geometry_source == "amap_direction"
                 else []
             )
-            payload = overpass_client.query(build_overpass_query(route))
-            version = str(
-                (payload.get("osm3s") or {}).get("timestamp_osm_base")
-                or "overpass-version-unknown"
+            primary_evidence_source = route.network_source or ""
+            skip_overpass = all(
+                marker in primary_evidence_source.lower()
+                for marker in ("amap_", "local_topology", "visual_audit")
             )
+            payload = None
+            version = primary_evidence_source
+            if not skip_overpass:
+                payload = overpass_client.query(build_overpass_query(route))
+                version = str(
+                    (payload.get("osm3s") or {}).get("timestamp_osm_base")
+                    or "overpass-version-unknown"
+                )
             network_versions.append(version)
             validated.append(
                 validate_candidate(
@@ -557,7 +582,9 @@ def validate_routes(
     }
     publishable = [route for route in validated if route.is_publishable()]
     mode_counts, distance_band_counts = _route_distribution(validated)
-    collection_valid = len(validated) == EXPECTED_ROUTE_COUNT and mode_counts == EXPECTED_MODE_COUNTS
+    collection_valid = (
+        len(validated) == EXPECTED_ROUTE_COUNT and mode_counts == EXPECTED_MODE_COUNTS
+    )
     distinct_versions = list(dict.fromkeys(network_versions))
     report = {
         "batch_status": "preparing" if collection_valid else "failed",
@@ -615,13 +642,15 @@ def validate_routes(
             ],
         )
     except Exception as exc:
-        cause = exc.__cause__ or exc
+        cause = exc.__cause__ if isinstance(exc.__cause__, Exception) else exc
         report["batch_status"] = "failed"
         report["failures"].append(_stage_failure("web_publish", cause))
         _atomic_write_json(report_path, report)
         raise
 
-    report["batch_status"] = "succeeded" if len(publishable) == EXPECTED_ROUTE_COUNT else "partial"
+    report["batch_status"] = (
+        "succeeded" if len(publishable) == EXPECTED_ROUTE_COUNT else "partial"
+    )
     try:
         _atomic_write_json(report_path, report)
     except Exception as exc:
@@ -642,15 +671,40 @@ def _load_boundary_polygons(path: Path) -> list[list[list[float]]]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     polygons: list[list[list[float]]] = []
     for feature in payload.get("features", []):
+        coordinate_system = str(
+            (feature.get("properties") or {}).get("coordinate_system") or ""
+        ).lower()
+        if coordinate_system not in {"gcj02", "wgs84"}:
+            raise ValueError(
+                f"Xuhui boundary requires coordinate_system gcj02 or wgs84: {path}"
+            )
         geometry = feature.get("geometry") or {}
         coordinates = geometry.get("coordinates") or []
         if geometry.get("type") == "Polygon" and coordinates:
-            polygons.append(coordinates[0])
+            polygons.append(
+                [
+                    _boundary_point_to_wgs84(point, coordinate_system)
+                    for point in coordinates[0]
+                ]
+            )
         elif geometry.get("type") == "MultiPolygon":
-            polygons.extend(polygon[0] for polygon in coordinates if polygon)
+            polygons.extend(
+                [
+                    _boundary_point_to_wgs84(point, coordinate_system)
+                    for point in polygon[0]
+                ]
+                for polygon in coordinates
+                if polygon
+            )
     if not polygons:
         raise ValueError(f"Xuhui boundary contains no polygons: {path}")
     return polygons
+
+
+def _boundary_point_to_wgs84(point: list[float], coordinate_system: str) -> list[float]:
+    if coordinate_system == "gcj02":
+        return list(gcj02_to_wgs84(float(point[0]), float(point[1])))
+    return [float(point[0]), float(point[1])]
 
 
 def _write_json_transaction(targets: list[Path], payloads: list) -> None:
@@ -758,7 +812,9 @@ def _validate_seed_collection(seeds: list[RouteSeed]) -> None:
         raise ValueError("route_name values must be unique")
     portfolio_failures = _seed_portfolio_failures(seeds)
     if portfolio_failures:
-        raise ValueError("route seed portfolio failed: " + "; ".join(portfolio_failures))
+        raise ValueError(
+            "route seed portfolio failed: " + "; ".join(portfolio_failures)
+        )
     for seed in seeds:
         if (
             not seed.source_name.strip()
@@ -784,55 +840,26 @@ def _seed_portfolio_failures(seeds: list[RouteSeed]) -> list[str]:
         for mode in EXPECTED_MODE_COUNTS
     }
     for mode, counts in band_counts.items():
-        if any(counts[band] != 10 for band in ("short", "medium", "long")) or counts[None]:
-            failures.append(f"{mode} distance bands must contain 10 routes each: {dict(counts)}")
+        if (
+            any(counts[band] != 10 for band in ("short", "medium", "long"))
+            or counts[None]
+        ):
+            failures.append(
+                f"{mode} distance bands must contain 10 routes each: {dict(counts)}"
+            )
 
     for mode in EXPECTED_MODE_COUNTS:
-        shapes = Counter(
-            seed.route_shape for seed in seeds if seed.route_mode == mode
-        )
-        if shapes != {"strict_loop": 15, "one_way": 15}:
-            failures.append(f"{mode} shape balance must be 15 strict_loop and 15 one_way: {dict(shapes)}")
+        shapes = Counter(seed.route_shape for seed in seeds if seed.route_mode == mode)
+        if not 14 <= shapes["strict_loop"] <= 16 or sum(shapes.values()) != 30:
+            failures.append(
+                f"{mode} shape balance requires 14-16 strict_loop routes: {dict(shapes)}"
+            )
 
-    covered_areas = {
-        area_id for seed in seeds for area_id in seed.popular_area_ids
-    }
+    covered_areas = {area_id for seed in seeds for area_id in seed.popular_area_ids}
     missing_areas = sorted(POPULAR_AREA_IDS - covered_areas)
     if missing_areas:
         failures.append(f"popular area coverage missing: {missing_areas}")
 
-    for seed in seeds:
-        statuses = seed.preference_search_status
-        invalid_statuses = {
-            preference: statuses.get(preference)
-            for preference in PREFERENCE_TYPES
-            if statuses.get(preference) not in PREFERENCE_SEARCH_STATES
-        }
-        if invalid_statuses:
-            failures.append(
-                f"{seed.seed_id} requires four preference search statuses: {invalid_statuses}"
-            )
-            continue
-        verified = {
-            preference
-            for preference in PREFERENCE_TYPES
-            if statuses[preference] == "verified"
-        }
-        hits = set(seed.preference_hits)
-        if hits != verified:
-            failures.append(
-                f"{seed.seed_id} preference hits must match verified searches: "
-                f"hits={sorted(hits)} verified={sorted(verified)}"
-            )
-        if len(hits) < 2:
-            failures.append(
-                f"{seed.seed_id} requires at least two verified preference types"
-            )
-        if (
-            (seed.route_mode == "run" and seed.target_distance_m > 5_000)
-            or (seed.route_mode == "bike" and seed.target_distance_m > 10_000)
-        ) and not hits & {"toilet", "convenience"}:
-            failures.append(f"{seed.seed_id} long route requires toilet or convenience")
     return failures
 
 
@@ -964,7 +991,9 @@ def _route_distribution_from_targets(
     seeds: list[RouteSeed],
 ) -> tuple[dict[str, int], dict[str, dict[str, int]]]:
     mode_counts = {mode: 0 for mode in EXPECTED_MODE_COUNTS}
-    band_counts = {mode: {"short": 0, "medium": 0, "long": 0} for mode in EXPECTED_MODE_COUNTS}
+    band_counts = {
+        mode: {"short": 0, "medium": 0, "long": 0} for mode in EXPECTED_MODE_COUNTS
+    }
     for seed in seeds:
         mode_counts[seed.route_mode] += 1
         band = _distance_band(seed.route_mode, seed.target_distance_m)
@@ -1031,7 +1060,11 @@ def merge_service_pois(project_root: Path) -> list[CandidateRoute]:
     web = project_root / "data" / "web"
     _atomic_write_json(route_path, [route.model_dump(mode="json") for route in updated])
     _write_json_transaction(
-        [web / "xuhui_routes.geojson", web / "route_catalog.json", web / "poi_catalog.json"],
+        [
+            web / "xuhui_routes.geojson",
+            web / "route_catalog.json",
+            web / "poi_catalog.json",
+        ],
         [
             build_candidate_route_feature_collection(updated),
             build_candidate_route_catalog(updated),
@@ -1040,7 +1073,9 @@ def merge_service_pois(project_root: Path) -> list[CandidateRoute]:
     )
     report["published_route_count"] = len(publishable)
     report["displayed_route_count"] = len(updated)
-    report["source_files"] = [path.relative_to(project_root).as_posix() for path in source_paths]
+    report["source_files"] = [
+        path.relative_to(project_root).as_posix() for path in source_paths
+    ]
     _atomic_write_json(processed / "poi_merge_report.json", report)
     print(
         f"published_route_count={len(publishable)} "

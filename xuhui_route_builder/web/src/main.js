@@ -115,8 +115,8 @@ async function bootstrap() {
       showRoutePreviews(map, features, onSelectRoute);
       routeDock.hide();
     },
-    onShowRoute(route) {
-      showRouteFeature(map, routeFeaturesById, route.route_id, data);
+    onShowRoute(route, selectedPreferences) {
+      showRouteFeature(map, routeFeaturesById, route.route_id, data, selectedPreferences);
     },
     onClearRoutes() {
       stopInlineNavigation();
@@ -231,7 +231,7 @@ function formatDuration(value) {
   return `${Math.max(0, Math.ceil(seconds / 60))} 分钟`;
 }
 
-function showRouteFeature(map, routeFeaturesById, routeId, data) {
+function showRouteFeature(map, routeFeaturesById, routeId, data, selectedPreferences = []) {
   const feature = routeFeaturesById.get(routeId);
   if (!feature) {
     clearRouteResults(map);
@@ -241,7 +241,7 @@ function showRouteFeature(map, routeFeaturesById, routeId, data) {
     console.error(message, { routeId, loadedFeatureCount: routeFeaturesById.size });
     return;
   }
-  showSingleRoute(map, feature, data.entries, data.pois);
+  showSingleRoute(map, feature, data.entries, data.pois, selectedPreferences);
 }
 
 function enrichCatalog(catalog, entries) {

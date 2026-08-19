@@ -165,7 +165,7 @@ def test_merge_service_pois_publishes_only_open_verified_records() -> None:
     }
 
 
-def test_merge_service_pois_downgrades_route_with_fewer_than_two_preferences() -> None:
+def test_merge_service_pois_keeps_route_accepted_with_one_verified_preference() -> None:
     record = {
         "route_id": "XH_WALK_0001",
         "poi_id": "B001",
@@ -184,8 +184,180 @@ def test_merge_service_pois_downgrades_route_with_fewer_than_two_preferences() -
         [_accepted_route()], [{"records": [record]}]
     )
 
-    assert routes[0].validation_status == "needs_review"
-    assert routes[0].amenity_ids == []
-    assert routes[0].nearby_pois == []
-    assert feature_collection["features"] == []
-    assert report["published_association_count"] == 0
+    assert routes[0].validation_status == "accepted"
+    assert routes[0].preference_hits == ["coffee"]
+    assert routes[0].amenity_ids == ["amap:B001"]
+    assert routes[0].nearby_pois[0]["poi_name"] == "沿线咖啡"
+    assert len(feature_collection["features"]) == 1
+    assert report["published_association_count"] == 1
+
+
+def test_merge_service_pois_recomputes_document_pois_against_all_routes_of_mode() -> (
+    None
+):
+    original = _accepted_route()
+    old_route = original.model_copy(
+        update={
+            "polyline_gcj02": [
+                point.model_copy(
+                    update={
+                        "lng_gcj02": point.lng_gcj02 + 0.02,
+                        "lng_wgs84": point.lng_wgs84 + 0.02,
+                    }
+                )
+                for point in original.polyline_gcj02
+            ]
+        }
+    )
+    new_route = original.model_copy(update={"route_id": "XH_WALK_0002"})
+    record = {
+        "route_id": "XH_WALK_0001",
+        "poi_id": "B001",
+        "source_id": "amap:B001",
+        "poi_name": "重建后沿线咖啡",
+        "poi_type": "coffee",
+        "lng": 121.445,
+        "lat": 31.185,
+        "coordinate_system": "GCJ02",
+        "source": "AMap cache",
+        "open_status": "08:00-22:00",
+        "verification_status": "verified",
+    }
+
+    routes, _, _ = merge_verified_service_pois(
+        [old_route, new_route],
+        [{"route_filter": {"route_mode": "walk"}, "records": [record]}],
+    )
+
+    by_id = {route.route_id: route for route in routes}
+    assert by_id["XH_WALK_0001"].nearby_pois == []
+    assert by_id["XH_WALK_0002"].nearby_pois[0]["poi_name"] == "重建后沿线咖啡"
+
+
+def test_verified_park_gate_cache_is_reused_across_route_modes() -> None:
+    record = {
+        "route_id": "XH_BIKE_0061",
+        "poi_id": "PARK-SHARED",
+        "source_id": "amap:PARK-SHARED",
+        "poi_name": "跨运动类型公园入口",
+        "poi_type": "park_gate",
+        "lng": 121.445,
+        "lat": 31.185,
+        "coordinate_system": "GCJ02",
+        "source": "AMap entrance cache",
+        "open_status": "07:00-21:00",
+        "verification_status": "verified",
+    }
+
+    routes, _, _ = merge_verified_service_pois(
+        [_accepted_route()],
+        [{"metadata": {"route_mode": "bike"}, "records": [record]}],
+    )
+
+    assert routes[0].nearby_pois[0]["poi_name"] == "跨运动类型公园入口"
+
+
+def test_same_physical_facility_is_deduplicated_across_source_ids() -> None:
+    common = {
+        "route_id": "XH_WALK_0001",
+        "poi_name": "同一公园入口",
+        "poi_type": "park_gate",
+        "lng": 121.445,
+        "lat": 31.185,
+        "coordinate_system": "GCJ02",
+        "source": "verified source",
+        "open_status": "07:00-21:00",
+        "verification_status": "verified",
+    }
+    first = {**common, "poi_id": "official:gate", "source_id": "official:gate"}
+    second = {**common, "poi_id": "entry:gate", "source_id": "entry:gate"}
+
+    routes, feature_collection, report = merge_verified_service_pois(
+        [_accepted_route()], [{"records": [first, second]}]
+    )
+
+    assert routes[0].amenity_ids == ["official:gate"]
+    assert len(feature_collection["features"]) == 1
+    assert report["published_association_count"] == 1
+
+
+def test_merge_service_pois_classifies_direct_and_nearby_park_gates() -> None:
+    records = [
+        {
+            "route_id": "XH_WALK_0001",
+            "poi_id": "PARK-DIRECT",
+            "source_id": "amap:PARK-DIRECT",
+            "poi_name": "沿线公园入口",
+            "poi_type": "park_gate",
+            "lng": 121.4454,
+            "lat": 31.1846,
+            "coordinate_system": "GCJ02",
+            "source": "AMap cache + 公园官方入口",
+            "source_accessed_at": "2026-08-19T08:00:00+08:00",
+            "open_status": "06:00-22:00",
+            "verification_status": "verified",
+            "evidence_path": "data/raw/amap/park-direct.json",
+        },
+        {
+            "route_id": "XH_WALK_0001",
+            "poi_id": "PARK-NEARBY",
+            "source_id": "amap:PARK-NEARBY",
+            "poi_name": "邻近公园入口",
+            "poi_type": "park_gate",
+            "lng": 121.4461,
+            "lat": 31.1839,
+            "coordinate_system": "GCJ02",
+            "source": "AMap cache + 公园官方入口",
+            "source_accessed_at": "2026-08-19T08:00:00+08:00",
+            "open_status": "06:00-22:00",
+            "verification_status": "verified",
+            "access_status": "verified_walkable",
+            "evidence_path": "data/raw/amap/park-nearby.json",
+        },
+        {
+            "route_id": "XH_WALK_0001",
+            "poi_id": "PARK-BLOCKED",
+            "source_id": "amap:PARK-BLOCKED",
+            "poi_name": "隔河公园入口",
+            "poi_type": "park_gate",
+            "lng": 121.4462,
+            "lat": 31.1838,
+            "coordinate_system": "GCJ02",
+            "source": "AMap cache + 公园官方入口",
+            "source_accessed_at": "2026-08-19T08:00:00+08:00",
+            "open_status": "06:00-22:00",
+            "verification_status": "verified",
+            "access_status": "blocked",
+            "evidence_path": "data/raw/amap/park-blocked.json",
+        },
+        {
+            "route_id": "XH_WALK_0001",
+            "poi_id": "PARK-FAR",
+            "source_id": "amap:PARK-FAR",
+            "poi_name": "远处公园入口",
+            "poi_type": "park_gate",
+            "lng": 121.447,
+            "lat": 31.183,
+            "coordinate_system": "GCJ02",
+            "source": "AMap cache + 公园官方入口",
+            "source_accessed_at": "2026-08-19T08:00:00+08:00",
+            "open_status": "06:00-22:00",
+            "verification_status": "verified",
+            "access_status": "verified_walkable",
+            "evidence_path": "data/raw/amap/park-far.json",
+        },
+    ]
+
+    routes, feature_collection, report = merge_verified_service_pois(
+        [_accepted_route()], [{"records": records}]
+    )
+
+    nearby = {item["poi_name"]: item for item in routes[0].nearby_pois}
+    assert nearby["沿线公园入口"]["route_relation"] == "along_route"
+    assert nearby["邻近公园入口"]["route_relation"] == "nearby"
+    assert 100 < nearby["邻近公园入口"]["distance_m"] <= 200
+    assert "隔河公园入口" not in nearby
+    assert "远处公园入口" not in nearby
+    assert routes[0].preference_hits == ["park_gate"]
+    assert len(feature_collection["features"]) == 2
+    assert report["excluded"]["blocked_access"] == 1

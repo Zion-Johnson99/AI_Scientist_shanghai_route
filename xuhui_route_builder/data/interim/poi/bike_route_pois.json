@@ -974,6 +974,7 @@
       "open_status": "今日 07:00-21:00",
       "distance_to_route_m": 20,
       "verification_status": "verified",
+      "access_status": "verified_walkable",
       "association_status": "planned_corridor_match_needs_generated_geometry_recheck",
       "evidence_path": "data/raw/amap/place_text_v5_5706b91e34c67d58.json",
       "related_route_ids": [
@@ -1721,6 +1722,7 @@
       "open_status": "今日 07:00-21:00",
       "distance_to_route_m": 20,
       "verification_status": "verified",
+      "access_status": "verified_walkable",
       "association_status": "planned_corridor_match_needs_generated_geometry_recheck",
       "evidence_path": "data/raw/amap/place_text_v5_5706b91e34c67d58.json",
       "related_route_ids": [

@@ -8,6 +8,7 @@
         "adcode": "310104",
         "citycode": "021",
         "level": "district",
+        "coordinate_system": "gcj02",
         "source_api": "datav.aliyun.boundary",
         "source_url": "https://geo.datav.aliyun.com/areas_v3/bound/310104.json"
       },

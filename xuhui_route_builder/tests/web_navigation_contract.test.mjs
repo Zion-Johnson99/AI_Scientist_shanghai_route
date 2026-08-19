@@ -13,7 +13,8 @@ import {
   routeOptionLabel,
   selectNavigationRoute,
 } from "../web/src/route-ui.js";
-import { navigationServiceMode } from "../web/src/map.js";
+import { navigationServiceMode, poiMarkerLabel } from "../web/src/map.js";
+import { buildRouteDockModel } from "../web/src/route-dock.js";
 
 const route = {
   route_id: "XH_RUN_0001",
@@ -209,16 +210,30 @@ test("路线下拉项包含名称、片区、距离和验收状态", () => {
   );
 });
 
-test("公园与补给筛选使用正式偏好字段", () => {
+test("途经偏好只使用真实附近POI", () => {
   const catalog = [
     {
-      route_id: "XH_WALK_0001",
-      route_name: "测试路线",
+      route_id: "XH_WALK_FALSE",
+      route_name: "虚假偏好路线",
       route_mode: "walk",
       region_zone: "徐汇滨江",
       target_distance_m: 1500,
       tags: [],
       preference_hits: ["park_gate", "convenience"],
+      nearby_pois: [],
+    },
+    {
+      route_id: "XH_WALK_REAL",
+      route_name: "真实偏好路线",
+      route_mode: "walk",
+      region_zone: "徐汇滨江",
+      target_distance_m: 1500,
+      tags: [],
+      preference_hits: [],
+      nearby_pois: [
+        { poi_id: "PARK1", poi_type: "park_gate", poi_name: "邻近公园", route_relation: "nearby", distance_m: 168 },
+        { poi_id: "STORE1", poi_type: "convenience", poi_name: "沿线便利店", route_relation: "along_route", distance_m: 20 },
+      ],
     },
   ];
 
@@ -230,5 +245,25 @@ test("公园与补给筛选使用正式偏好字段", () => {
     preferences: ["park_gate", "convenience"],
   });
 
-  assert.equal(routes.length, 1);
+  assert.deepEqual(routes.map((item) => item.route_id), ["XH_WALK_REAL"]);
+});
+
+test("POI标记显示真实类型和邻近公园距离", () => {
+  assert.equal(poiMarkerLabel({ poi_type: "coffee" }), "咖啡");
+  assert.equal(poiMarkerLabel({ poi_type: "toilet" }), "厕所");
+  assert.equal(poiMarkerLabel({ poi_type: "convenience" }), "补给");
+  assert.equal(poiMarkerLabel({ poi_type: "park_gate", route_relation: "along_route" }), "公园入口");
+  assert.equal(poiMarkerLabel({ poi_type: "park_gate", route_relation: "nearby", distance_m: 168 }), "邻近公园·约168米");
+});
+
+test("途经点清除编号占位名称并保留真实路口", () => {
+  const model = buildRouteDockModel({
+    route_name: "测试路线",
+    route_mode: "walk",
+    distance_m: 1000,
+    duration_min: 15,
+    waypoint_names: ["起点", "本地实测单环节点01", "桂林路钦州南路口", "华泾龙华实测节点02", "终点"],
+  });
+
+  assert.deepEqual(model.waypoints, ["起点", "桂林路钦州南路口", "终点"]);
 });

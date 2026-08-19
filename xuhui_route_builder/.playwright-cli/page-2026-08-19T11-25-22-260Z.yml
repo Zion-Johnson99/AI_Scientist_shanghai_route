@@ -1,0 +1,209 @@
+- main [ref=e2]:
+  - complementary [ref=e3]:
+    - generic [ref=e4]:
+      - paragraph [ref=e5]: Xuhui Route Builder
+      - heading "徐汇健康路线库" [level=1] [ref=e7]
+      - paragraph [ref=e8]: 90 条路线完整展示，严格验收路线进入推荐与导航。
+    - navigation "路线功能切换" [ref=e9]:
+      - button "路线选择" [ref=e10] [cursor=pointer]
+      - button "路线导航" [ref=e11] [cursor=pointer]
+    - region "候选路线选择" [ref=e12]:
+      - generic [ref=e13]:
+        - tablist "运动类型" [ref=e14]:
+          - tab "步行 30 条" [ref=e15] [cursor=pointer]:
+            - generic [ref=e16]: 步行
+            - generic [ref=e17]: 30 条
+          - tab "跑步 30 条" [ref=e18] [cursor=pointer]:
+            - generic [ref=e19]: 跑步
+            - generic [ref=e20]: 30 条
+          - tab "骑行 30 条" [ref=e21] [cursor=pointer]:
+            - generic [ref=e22]: 骑行
+            - generic [ref=e23]: 30 条
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - text: 片区
+            - combobox "片区" [ref=e26]:
+              - option "全部片区" [selected]
+              - option "漕河泾—蒲汇塘—南部连接区"
+              - option "漕河泾开发区"
+              - option "衡复风貌区"
+              - option "衡复历史风貌区"
+              - option "康健—桂江绿廊"
+              - option "龙华街区"
+              - option "上海植物园及周边"
+              - option "田林—漕河泾"
+              - option "徐汇滨江及龙华滨江"
+              - option "徐家汇及体育公园"
+          - generic [ref=e27]:
+            - text: 距离档
+            - combobox "距离档" [ref=e28]:
+              - option "全部距离" [selected]
+              - option "短线"
+              - option "中线"
+              - option "长线"
+        - generic [ref=e30]:
+          - text: 关键词
+          - searchbox "关键词" [ref=e31]
+        - group "途经偏好" [ref=e32]:
+          - generic [ref=e34]:
+            - checkbox "咖啡" [ref=e35]
+            - text: 咖啡
+          - generic [ref=e36]:
+            - checkbox "厕所" [ref=e37]
+            - text: 厕所
+          - generic [ref=e38]:
+            - checkbox "补给" [ref=e39]
+            - text: 补给
+          - generic [ref=e40]:
+            - checkbox "公园" [ref=e41]
+            - text: 公园
+        - generic [ref=e42]:
+          - button "筛选候选路线" [ref=e43] [cursor=pointer]
+          - button "清空" [ref=e44] [cursor=pointer]
+      - region "路线推荐结果" [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - text: Route match
+            - heading "推荐路线" [level=2] [ref=e48]
+          - generic [ref=e49]: 当前有 30 条候选路线，点击筛选后显示推荐路线。
+        - generic [ref=e50]:
+          - strong [ref=e51]: 选择一条路线
+          - generic [ref=e52]: 30 条候选路线
+        - generic [ref=e53]:
+          - generic [ref=e54]: 候选路线
+          - combobox "选择一条候选路线" [ref=e55]:
+            - option "请选择一条路线" [disabled] [selected]
+            - option "西岸北段艺术短线｜徐汇滨江及龙华滨江｜0.8 km｜单程｜严格验收"
+            - option "西岸油罐艺术短线｜徐汇滨江及龙华滨江｜1.0 km｜单程｜严格验收"
+            - option "衡复中部风貌单环线｜衡复风貌区｜2.1 km｜环线｜严格验收"
+            - option "衡复公园音乐街区单环线｜衡复风貌区｜2.5 km｜环线｜严格验收"
+            - option "康健园社区单环线｜康健—桂江绿廊｜2.0 km｜环线｜严格验收"
+            - option "西岸美术馆大道北段线｜徐汇滨江及龙华滨江｜2.7 km｜单程｜严格验收"
+            - option "徐家汇体育街区单环线｜徐家汇及体育公园｜2.6 km｜环线｜严格验收"
+            - option "衡复东部风貌长环线｜衡复历史风貌区｜4.0 km｜环线｜严格验收"
+            - option "华发龙吴路至龙耀滨江贯穿线｜龙华街区｜4.6 km｜单程｜严格验收"
+            - option "植物园温室兰室南北单环线｜上海植物园及周边｜2.8 km｜环线｜严格验收"
+            - option "植物园兰室盆景北区短线｜上海植物园及周边｜0.9 km｜单程｜严格验收"
+            - option "衡复老洋房道路线｜衡复风貌区｜1.4 km｜单程｜严格验收"
+            - option "西岸南段梦中心滨水线｜徐汇滨江及龙华滨江｜1.4 km｜单程｜严格验收"
+            - option "植物园南北贯穿线｜上海植物园及周边｜1.5 km｜单程｜严格验收"
+            - option "植物园南园主游线｜上海植物园及周边｜1.6 km｜单程｜严格验收"
+            - option "康健园北门至柳州路单程线｜康健—桂江绿廊｜0.9 km｜单程｜严格验收"
+            - option "漕河泾宜山路至田林路单程线｜漕河泾—蒲汇塘—南部连接区｜2.1 km｜单程｜严格验收"
+            - option "元界上澳塘至康健园单程线｜漕河泾—蒲汇塘—南部连接区｜2.4 km｜单程｜严格验收"
+            - option "徐家汇海派寻源至龙华单程线｜徐家汇及体育公园｜4.4 km｜单程｜严格验收"
+            - option "汾阳路—襄阳南路街区单环线｜衡复风貌区｜1.1 km｜环线｜严格验收"
+            - option "康健—华泾南向贯穿线｜康健—桂江绿廊｜4.3 km｜单程｜严格验收"
+            - option "龙华滨江北部街区单环线｜龙华街区｜1.6 km｜环线｜严格验收"
+            - option "田林宜山街区单环线｜田林—漕河泾｜2.1 km｜环线｜严格验收"
+            - option "徐家汇科学人文贯穿线｜徐家汇及体育公园｜4.3 km｜单程｜严格验收"
+            - option "漕宝路桂平路街区单环线｜漕河泾开发区｜2.9 km｜环线｜严格验收"
+            - option "衡复风貌纵贯长环线｜衡复风貌区｜4.3 km｜环线｜严格验收"
+            - option "徐家汇体育—龙华纵贯长环线｜徐家汇及体育公园｜4.4 km｜环线｜严格验收"
+            - option "龙华滨江南北长环线｜龙华街区｜4.6 km｜环线｜严格验收"
+            - option "衡复西部风貌长环线｜衡复风貌区｜4.7 km｜环线｜严格验收"
+            - option "漕河泾南部水岸至华泾单程线｜漕河泾—蒲汇塘—南部连接区｜4.9 km｜单程｜严格验收"
+    - region "地图图例" [ref=e56]:
+      - generic [ref=e57]: 跑步
+      - generic [ref=e59]: 步行
+      - generic [ref=e61]: 骑行
+      - generic [ref=e63]: 接驳
+      - generic [ref=e65]: 徐汇边界
+  - region "徐汇路线地图" [ref=e67]:
+    - generic [ref=e68]:
+      - iframe [ref=e69]:
+        
+      - generic [ref=e71]:
+        - generic:
+          - generic [ref=e73]: 徐汇区
+          - button "西岸北段艺术短线，0.76 公里" [ref=e76] [cursor=pointer]:
+            - generic [ref=e77]: 西岸北段艺术…
+            - generic [ref=e78]: 0.76 公里
+          - button "西岸油罐艺术短线，0.97 公里" [ref=e80] [cursor=pointer]:
+            - generic [ref=e81]: 西岸油罐艺术…
+            - generic [ref=e82]: 0.97 公里
+          - button "衡复中部风貌单环线，2.13 公里" [ref=e84] [cursor=pointer]:
+            - generic [ref=e85]: 衡复中部风貌…
+            - generic [ref=e86]: 2.13 公里
+          - button "衡复公园音乐街区单环线，2.48 公里" [ref=e88] [cursor=pointer]:
+            - generic [ref=e89]: 衡复公园音乐…
+            - generic [ref=e90]: 2.48 公里
+          - button "康健园社区单环线，2.00 公里" [ref=e92] [cursor=pointer]:
+            - generic [ref=e93]: 康健园社区单…
+            - generic [ref=e94]: 2.00 公里
+          - button "西岸美术馆大道北段线，2.69 公里" [ref=e96] [cursor=pointer]:
+            - generic [ref=e97]: 西岸美术馆大…
+            - generic [ref=e98]: 2.69 公里
+          - button "徐家汇体育街区单环线，2.58 公里" [ref=e100] [cursor=pointer]:
+            - generic [ref=e101]: 徐家汇体育街…
+            - generic [ref=e102]: 2.58 公里
+          - button "衡复东部风貌长环线，3.99 公里" [ref=e104] [cursor=pointer]:
+            - generic [ref=e105]: 衡复东部风貌…
+            - generic [ref=e106]: 3.99 公里
+          - button "华发龙吴路至龙耀滨江贯穿线，4.61 公里" [ref=e108] [cursor=pointer]:
+            - generic [ref=e109]: 华发龙吴路至…
+            - generic [ref=e110]: 4.61 公里
+          - button "植物园温室兰室南北单环线，2.79 公里" [ref=e112] [cursor=pointer]:
+            - generic [ref=e113]: 植物园温室兰…
+            - generic [ref=e114]: 2.79 公里
+          - button "植物园兰室盆景北区短线，0.87 公里" [ref=e116] [cursor=pointer]:
+            - generic [ref=e117]: 植物园兰室盆…
+            - generic [ref=e118]: 0.87 公里
+          - button "衡复老洋房道路线，1.42 公里" [ref=e120] [cursor=pointer]:
+            - generic [ref=e121]: 衡复老洋房道…
+            - generic [ref=e122]: 1.42 公里
+          - button "西岸南段梦中心滨水线，1.44 公里" [ref=e124] [cursor=pointer]:
+            - generic [ref=e125]: 西岸南段梦中…
+            - generic [ref=e126]: 1.44 公里
+          - button "植物园南北贯穿线，1.50 公里" [ref=e128] [cursor=pointer]:
+            - generic [ref=e129]: 植物园南北贯…
+            - generic [ref=e130]: 1.50 公里
+          - button "植物园南园主游线，1.62 公里" [ref=e132] [cursor=pointer]:
+            - generic [ref=e133]: 植物园南园主…
+            - generic [ref=e134]: 1.62 公里
+          - button "康健园北门至柳州路单程线，0.92 公里" [ref=e136] [cursor=pointer]:
+            - generic [ref=e137]: 康健园北门至…
+            - generic [ref=e138]: 0.92 公里
+          - button "漕河泾宜山路至田林路单程线，2.15 公里" [ref=e140] [cursor=pointer]:
+            - generic [ref=e141]: 漕河泾宜山路…
+            - generic [ref=e142]: 2.15 公里
+          - button "元界上澳塘至康健园单程线，2.35 公里" [ref=e144] [cursor=pointer]:
+            - generic [ref=e145]: 元界上澳塘至…
+            - generic [ref=e146]: 2.35 公里
+          - button "徐家汇海派寻源至龙华单程线，4.41 公里" [ref=e148] [cursor=pointer]:
+            - generic [ref=e149]: 徐家汇海派寻…
+            - generic [ref=e150]: 4.41 公里
+          - button "汾阳路—襄阳南路街区单环线，1.12 公里" [ref=e152] [cursor=pointer]:
+            - generic [ref=e153]: 汾阳路—襄阳…
+            - generic [ref=e154]: 1.12 公里
+          - button "康健—华泾南向贯穿线，4.32 公里" [ref=e156] [cursor=pointer]:
+            - generic [ref=e157]: 康健—华泾南…
+            - generic [ref=e158]: 4.32 公里
+          - button "龙华滨江北部街区单环线，1.63 公里" [ref=e160] [cursor=pointer]:
+            - generic [ref=e161]: 龙华滨江北部…
+            - generic [ref=e162]: 1.63 公里
+          - button "田林宜山街区单环线，2.12 公里" [ref=e164] [cursor=pointer]:
+            - generic [ref=e165]: 田林宜山街区…
+            - generic [ref=e166]: 2.12 公里
+          - button "徐家汇科学人文贯穿线，4.27 公里" [ref=e168] [cursor=pointer]:
+            - generic [ref=e169]: 徐家汇科学人…
+            - generic [ref=e170]: 4.27 公里
+          - button "漕宝路桂平路街区单环线，2.86 公里" [ref=e172] [cursor=pointer]:
+            - generic [ref=e173]: 漕宝路桂平路…
+            - generic [ref=e174]: 2.86 公里
+          - button "衡复风貌纵贯长环线，4.34 公里" [ref=e176] [cursor=pointer]:
+            - generic [ref=e177]: 衡复风貌纵贯…
+            - generic [ref=e178]: 4.34 公里
+          - button "徐家汇体育—龙华纵贯长环线，4.36 公里" [ref=e180] [cursor=pointer]:
+            - generic [ref=e181]: 徐家汇体育—…
+            - generic [ref=e182]: 4.36 公里
+          - button "龙华滨江南北长环线，4.63 公里" [ref=e184] [cursor=pointer]:
+            - generic [ref=e185]: 龙华滨江南北…
+            - generic [ref=e186]: 4.63 公里
+          - button "衡复西部风貌长环线，4.74 公里" [ref=e188] [cursor=pointer]:
+            - generic [ref=e189]: 衡复西部风貌…
+            - generic [ref=e190]: 4.74 公里
+          - button "漕河泾南部水岸至华泾单程线，4.92 公里" [ref=e192] [cursor=pointer]:
+            - generic [ref=e193]: 漕河泾南部水…
+            - generic [ref=e194]: 4.92 公里
+      - generic [ref=e195]: © 2026 AutoNavi - GS(2025)5996号

@@ -342,7 +342,7 @@ function showRoute(route, catalog, state, controls, options, summary) {
   renderDetail(route, controls.detail);
   syncNavigationRoute(route, catalog, state, controls);
   controls.summary.textContent = summary;
-  options.onShowRoute(route);
+  options.onShowRoute(route, state.filters.preferences);
   options.onRouteMetrics?.(route);
 }
 
@@ -366,7 +366,7 @@ function renderActiveMapState(catalog, state, controls, options) {
   if (state.activeAppTab === "selection") {
     const route = findRoute(catalog, controls.routeSelect.value);
     if (route) {
-      options.onShowRoute(route);
+      options.onShowRoute(route, state.filters.preferences);
       options.onRouteMetrics?.(route);
       return;
     }
@@ -536,7 +536,7 @@ function scoreRoute(route, textFilters, preferences) {
     }
   }
   for (const preference of preferences) {
-    if ((route.preference_hits || []).includes(preference)) {
+    if (routePreferenceTypes(route).has(preference)) {
       score += 12;
     }
   }
@@ -544,8 +544,12 @@ function scoreRoute(route, textFilters, preferences) {
 }
 
 function matchesPreferences(route, preferences) {
-  const hits = route.preference_hits || [];
-  return preferences.every((preference) => hits.includes(preference));
+  const hits = routePreferenceTypes(route);
+  return preferences.every((preference) => hits.has(preference));
+}
+
+function routePreferenceTypes(route) {
+  return new Set((route.nearby_pois || []).map((poi) => poi.poi_type).filter(Boolean));
 }
 
 function routePriority(route) {
@@ -564,7 +568,7 @@ function routePriority(route) {
     score += 3;
   }
   score += Math.max(0, 6000 - Number(route.distance_m || route.target_distance_m || 0)) / 1000;
-  score += (route.preference_hits || []).length;
+  score += routePreferenceTypes(route).size;
   return score;
 }
 

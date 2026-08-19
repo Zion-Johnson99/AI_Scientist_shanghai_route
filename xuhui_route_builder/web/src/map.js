@@ -1,3 +1,5 @@
+import { isDisplayWaypointName } from "./route-dock.js";
+
 const ROUTE_STYLES = {
   run: { color: "#ff5d5d", weight: 4 },
   walk: { color: "#13bfa6", weight: 4 },
@@ -321,13 +323,13 @@ export function showRouteResults(mapContext, routes, entries, pois, selectedRout
   }
 }
 
-export function showSingleRoute(mapContext, route, entries, pois) {
+export function showSingleRoute(mapContext, route, entries, pois, selectedPreferences = []) {
   const routeId = route?.properties?.route_id;
   if (!routeId) {
     clearRouteResults(mapContext);
     return;
   }
-  showRouteResults(mapContext, [route], entries, pois, routeId, []);
+  showRouteResults(mapContext, [route], entries, pois, routeId, selectedPreferences);
   const path = getLinePath(route);
   if (path.length < 2) {
     return;
@@ -341,7 +343,7 @@ export function showSingleRoute(mapContext, route, entries, pois) {
         { role: "start", label: "起点", name: properties.start_location?.name || "路线起点", position: locationPosition(properties.start_location, path[0]) },
         { role: "end", label: "终点", name: properties.end_location?.name || "路线终点", position: locationPosition(properties.end_location, path.at(-1)) },
       ];
-  markerSpecs.push(...landmarkSpecs(route, pois));
+  markerSpecs.push(...landmarkSpecs(route, pois, selectedPreferences));
   for (const spec of markerSpecs) {
     const marker = createRouteMarker(mapContext, spec);
     mapContext.amap.add(marker);
@@ -352,15 +354,22 @@ export function showSingleRoute(mapContext, route, entries, pois) {
   mapContext.amap.setFitView(focusOverlays, true, [110, 90, 180, 90], 18);
 }
 
-function landmarkSpecs(route, pois) {
+function landmarkSpecs(route, pois, selectedPreferences) {
   const specs = [];
   const properties = route.properties || {};
   const poiById = new Map((pois?.features || []).map((poi) => [poi.properties?.poi_id, poi]));
-  for (const related of properties.nearby_pois || []) {
+  const preferenceOrder = new Map(selectedPreferences.map((preference, index) => [preference, index]));
+  const nearbyPois = [...(properties.nearby_pois || [])].sort((left, right) => {
+    const fallbackRank = preferenceOrder.size;
+    const leftRank = preferenceOrder.get(left.poi_type) ?? fallbackRank;
+    const rightRank = preferenceOrder.get(right.poi_type) ?? fallbackRank;
+    return leftRank - rightRank || Number(left.distance_m || 0) - Number(right.distance_m || 0);
+  });
+  for (const related of nearbyPois) {
     const poi = poiById.get(related.poi_id);
     const position = poi?.geometry?.coordinates;
     if (Array.isArray(position) && position.length >= 2) {
-      specs.push({ role: "landmark", label: "补给", name: related.poi_name, position });
+      specs.push({ role: "landmark", label: poiMarkerLabel(related), name: related.poi_name, position });
     }
     if (specs.length >= 3) {
       return specs;
@@ -369,12 +378,34 @@ function landmarkSpecs(route, pois) {
 
   const nodes = (properties.ordered_nodes || []).slice(1, -1);
   const remaining = Math.min(3 - specs.length, nodes.length);
-  for (const node of nodes.slice(0, remaining)) {
-    if (Number.isFinite(node.lng_gcj02) && Number.isFinite(node.lat_gcj02)) {
-      specs.push({ role: "landmark", label: "途经", name: node.node_name || node.name, position: [node.lng_gcj02, node.lat_gcj02] });
+  let addedNodes = 0;
+  for (const node of nodes) {
+    const name = node.node_name || node.name;
+    if (isDisplayWaypointName(name) && Number.isFinite(node.lng_gcj02) && Number.isFinite(node.lat_gcj02)) {
+      specs.push({ role: "landmark", label: "途经", name, position: [node.lng_gcj02, node.lat_gcj02] });
+      addedNodes += 1;
+    }
+    if (addedNodes >= remaining) {
+      break;
     }
   }
   return specs;
+}
+
+export function poiMarkerLabel(properties) {
+  const labels = {
+    coffee: "咖啡",
+    toilet: "厕所",
+    convenience: "补给",
+  };
+  if (properties?.poi_type !== "park_gate") {
+    return labels[properties?.poi_type] || "途经点";
+  }
+  if (properties.route_relation !== "nearby") {
+    return "公园入口";
+  }
+  const distance = Number(properties.distance_m ?? properties.distance_to_route_m);
+  return Number.isFinite(distance) ? `邻近公园·约${Math.round(distance)}米` : "邻近公园";
 }
 
 function locationPosition(location, fallback) {
@@ -393,7 +424,7 @@ function createRouteMarker(mapContext, spec) {
     position: spec.position,
     content,
     anchor: "bottom-center",
-    offset: new mapContext.AMap.Pixel(0, -4),
+    offset: new mapContext.AMap.Pixel(0, spec.role === "landmark" ? -60 : -4),
     zIndex: spec.role === "landmark" ? 120 : 130,
   });
 }

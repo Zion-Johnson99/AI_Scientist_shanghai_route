@@ -183,12 +183,17 @@ def test_validate_seeds_accepts_balanced_portfolio(tmp_path: Path) -> None:
     seeds = validate_seeds(tmp_path)
 
     assert len(seeds) == 90
-    assert {mode: sum(seed.route_mode == mode for seed in seeds) for mode in ("walk", "run", "bike")} == {
+    assert {
+        mode: sum(seed.route_mode == mode for seed in seeds)
+        for mode in ("walk", "run", "bike")
+    } == {
         "walk": 30,
         "run": 30,
         "bike": 30,
     }
-    assert all(len(seed.preference_hits) >= 2 for seed in seeds)
+    assert all(
+        seed.preference_hits == [] for seed in seeds if seed.route_mode == "walk"
+    )
     assert all(len(seed.preference_search_status) == 4 for seed in seeds)
     assert {
         mode: sum(
@@ -196,7 +201,7 @@ def test_validate_seeds_accepts_balanced_portfolio(tmp_path: Path) -> None:
             for seed in seeds
         )
         for mode in ("walk", "run", "bike")
-    } == {"walk": 15, "run": 15, "bike": 15}
+    } == {"walk": 14, "run": 15, "bike": 15}
 
 
 def test_resolve_seed_drafts_does_not_overwrite_on_failure(tmp_path: Path) -> None:

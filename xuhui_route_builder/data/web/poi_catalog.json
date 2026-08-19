@@ -4,6 +4,66 @@
     {
       "type": "Feature",
       "properties": {
+        "poi_id": "amap:B00155M06R",
+        "poi_name": "La casbah coffee 咖啡店",
+        "poi_type": "coffee",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B00155M06R",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "09:30-21:30",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B00155M06R",
+        "distance_to_route_m": 7.7,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_WALK_0014"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.445309,
+          31.208762
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:B00156CS7I",
+        "poi_name": "徐家汇公园-公共厕所",
+        "poi_type": "toilet",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B00156CS7I",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "07:00-20:00",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B00156CS7I",
+        "distance_to_route_m": 27.6,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_RUN_0043",
+          "XH_RUN_0044",
+          "XH_RUN_0045",
+          "XH_RUN_0047",
+          "XH_RUN_0048",
+          "XH_RUN_0053",
+          "XH_RUN_0060",
+          "XH_WALK_0017",
+          "XH_WALK_0026"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.441945,
+          31.197235
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "poi_id": "amap:B00156LTS1",
         "poi_name": "上海植物园-小卖部",
         "poi_type": "convenience",
@@ -14,6 +74,7 @@
         "verification_status": "verified",
         "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B00156LTS1",
         "distance_to_route_m": 17.1,
+        "route_relation": "along_route",
         "route_ids": [
           "XH_WALK_0012"
         ]
@@ -39,6 +100,7 @@
         "verification_status": "verified",
         "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0FFF08VMK",
         "distance_to_route_m": 57.8,
+        "route_relation": "along_route",
         "route_ids": [
           "XH_WALK_0009"
         ]
@@ -64,8 +126,25 @@
         "verification_status": "verified",
         "evidence_path": "data/raw/amap/place_text_v5_3ce50feef03bd17b.json",
         "distance_to_route_m": 1.1,
+        "route_relation": "along_route",
         "route_ids": [
+          "XH_BIKE_0062",
+          "XH_BIKE_0067",
+          "XH_BIKE_0070",
+          "XH_BIKE_0072",
+          "XH_BIKE_0074",
+          "XH_BIKE_0076",
+          "XH_BIKE_0078",
+          "XH_BIKE_0084",
+          "XH_BIKE_0085",
+          "XH_BIKE_0088",
+          "XH_RUN_0036",
+          "XH_RUN_0039",
+          "XH_RUN_0041",
+          "XH_RUN_0055",
+          "XH_RUN_0057",
           "XH_WALK_0003",
+          "XH_WALK_0013",
           "XH_WALK_0023"
         ]
       },
@@ -74,6 +153,32 @@
         "coordinates": [
           121.445793,
           31.151884
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:B0FFFS8FMT",
+        "poi_name": "公共厕所",
+        "poi_type": "toilet",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B0FFFS8FMT",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "05:00-21:00",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0FFFS8FMT",
+        "distance_to_route_m": 21.3,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_WALK_0029"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.450823,
+          31.127129
         ]
       }
     },
@@ -89,10 +194,24 @@
         "open_status": "周一至周日05:30-21:30",
         "verification_status": "verified",
         "evidence_path": "data/raw/amap/place_text_v5_6f7ddd828dc5e517.json",
-        "distance_to_route_m": 69.6,
+        "distance_to_route_m": 14.3,
+        "route_relation": "along_route",
         "route_ids": [
+          "XH_BIKE_0062",
+          "XH_BIKE_0067",
+          "XH_BIKE_0072",
+          "XH_BIKE_0080",
+          "XH_BIKE_0082",
+          "XH_BIKE_0084",
+          "XH_RUN_0036",
           "XH_RUN_0039",
-          "XH_RUN_0040"
+          "XH_RUN_0040",
+          "XH_RUN_0041",
+          "XH_RUN_0049",
+          "XH_RUN_0052",
+          "XH_RUN_0055",
+          "XH_RUN_0057",
+          "XH_RUN_0059"
         ]
       },
       "geometry": {
@@ -100,6 +219,85 @@
         "coordinates": [
           121.440363,
           31.142461
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:B0FFGTHGJC",
+        "poi_name": "公共厕所",
+        "poi_type": "toilet",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B0FFGTHGJC",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "24小时营业",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0FFGTHGJC",
+        "distance_to_route_m": 38.3,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_WALK_0013"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.437221,
+          31.149542
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:B0FFJ22JWY",
+        "poi_name": "全家便利店(恒龙苑店)",
+        "poi_type": "convenience",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B0FFJ22JWY",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "24小时营业",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0FFJ22JWY",
+        "distance_to_route_m": 28.8,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_WALK_0013"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.437666,
+          31.150136
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:B0FFKT0FM2",
+        "poi_name": "星巴克(H88店)",
+        "poi_type": "coffee",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B0FFKT0FM2",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "07:00-22:00",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0FFKT0FM2",
+        "distance_to_route_m": 9.4,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_WALK_0010",
+          "XH_WALK_0020"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.410402,
+          31.171331
         ]
       }
     },
@@ -116,8 +314,10 @@
         "verification_status": "verified",
         "evidence_path": "https://www.starbucks.com.cn/stores/",
         "distance_to_route_m": 5.3,
+        "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0032"
+          "XH_RUN_0032",
+          "XH_RUN_0034"
         ]
       },
       "geometry": {
@@ -125,6 +325,59 @@
         "coordinates": [
           121.459973,
           31.159342
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:B0FFMB69I1",
+        "poi_name": "璃梦便利超市(林肯公寓店)",
+        "poi_type": "convenience",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B0FFMB69I1",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "07:30-22:30",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0FFMB69I1",
+        "distance_to_route_m": 7.8,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_WALK_0014"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.445303,
+          31.208759
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:B0GRG6MMK0",
+        "poi_name": "全家便利店(H88越虹广场店)",
+        "poi_type": "convenience",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B0GRG6MMK0",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "06:30-21:30",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0GRG6MMK0",
+        "distance_to_route_m": 30.4,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_WALK_0010",
+          "XH_WALK_0020"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.410317,
+          31.171955
         ]
       }
     },
@@ -140,8 +393,13 @@
         "open_status": "00:00-23:45",
         "verification_status": "verified",
         "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0HRSAPSIF",
-        "distance_to_route_m": 31.3,
+        "distance_to_route_m": 11.5,
+        "route_relation": "along_route",
         "route_ids": [
+          "XH_WALK_0014",
+          "XH_WALK_0015",
+          "XH_WALK_0017",
+          "XH_WALK_0024",
           "XH_WALK_0025"
         ]
       },
@@ -150,6 +408,58 @@
         "coordinates": [
           121.447158,
           31.210394
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:B0J2HSCO33",
+        "poi_name": "Manner Coffee(上海龙华会店)",
+        "poi_type": "coffee",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B0J2HSCO33",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "07:00-17:00",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0J2HSCO33",
+        "distance_to_route_m": 20.6,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_WALK_0026"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.453086,
+          31.172742
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:B0JKM9FYJM",
+        "poi_name": "瑞幸咖啡(东阔生活广场店)",
+        "poi_type": "coffee",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B0JKM9FYJM",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "07:00-18:00",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0JKM9FYJM",
+        "distance_to_route_m": 27.5,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_WALK_0029"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.450625,
+          31.127176
         ]
       }
     },
@@ -166,8 +476,10 @@
         "verification_status": "verified",
         "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0K6ZHXVZE",
         "distance_to_route_m": 18.0,
+        "route_relation": "along_route",
         "route_ids": [
           "XH_WALK_0003",
+          "XH_WALK_0013",
           "XH_WALK_0023"
         ]
       },
@@ -176,6 +488,32 @@
         "coordinates": [
           121.446195,
           31.151676
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:B0KKNKQV5Y",
+        "poi_name": "全天候便民屋(东阔生活广场店)",
+        "poi_type": "convenience",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B0KKNKQV5Y",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "24小时营业",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0KKNKQV5Y",
+        "distance_to_route_m": 22.6,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_WALK_0029"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.450127,
+          31.127111
         ]
       }
     },
@@ -191,9 +529,13 @@
         "open_status": "24小时营业",
         "verification_status": "verified",
         "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0KUNMEGLF",
-        "distance_to_route_m": 49.2,
+        "distance_to_route_m": 4.8,
+        "route_relation": "along_route",
         "route_ids": [
           "XH_RUN_0031",
+          "XH_RUN_0033",
+          "XH_RUN_0034",
+          "XH_RUN_0051",
           "XH_WALK_0001",
           "XH_WALK_0022"
         ]
@@ -219,6 +561,7 @@
         "verification_status": "verified",
         "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0L2TO44Z8",
         "distance_to_route_m": 35.7,
+        "route_relation": "along_route",
         "route_ids": [
           "XH_WALK_0001",
           "XH_WALK_0022"
@@ -235,6 +578,32 @@
     {
       "type": "Feature",
       "properties": {
+        "poi_id": "amap:B0LBTO51W7",
+        "poi_name": "星巴克上海徐家汇体育公园店",
+        "poi_type": "coffee",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B0LBTO51W7",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "10:00-18:00",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0LBTO51W7",
+        "distance_to_route_m": 12.5,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_WALK_0026"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.439075,
+          31.181725
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "poi_id": "amap:B0M6MSUF6U",
         "poi_name": "龙腾大道公共卫生间",
         "poi_type": "toilet",
@@ -245,8 +614,12 @@
         "verification_status": "verified",
         "evidence_path": "https://www.starbucks.com.cn/stores/",
         "distance_to_route_m": 4.6,
+        "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0037"
+          "XH_RUN_0035",
+          "XH_RUN_0037",
+          "XH_RUN_0038",
+          "XH_RUN_0056"
         ]
       },
       "geometry": {
@@ -254,6 +627,177 @@
         "coordinates": [
           121.454852,
           31.14222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:B0MRYOR016",
+        "poi_name": "好德便利店(龙西店)",
+        "poi_type": "convenience",
+        "source": "AMap place_around v5 same-turn successful response",
+        "source_id": "amap:B0MRYOR016",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "24小时营业",
+        "verification_status": "verified",
+        "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0MRYOR016",
+        "distance_to_route_m": 83.8,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_WALK_0026"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.451527,
+          31.171649
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:gate:B00155ILI8",
+        "poi_name": "徐家汇公园衡山路入口",
+        "poi_type": "park_gate",
+        "source": "Amap place/text cached response (navi.entr_location)",
+        "source_id": "amap:B00155ILI8:entrance",
+        "source_accessed_at": "2026-08-13T13:45:40+08:00",
+        "open_status": "今日 07:00-21:00",
+        "verification_status": "verified",
+        "evidence_path": "data/raw/amap/place_text_v5_5706b91e34c67d58.json",
+        "distance_to_route_m": 0.3,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_BIKE_0064",
+          "XH_BIKE_0069",
+          "XH_BIKE_0071",
+          "XH_BIKE_0073",
+          "XH_BIKE_0075",
+          "XH_BIKE_0076",
+          "XH_BIKE_0079",
+          "XH_BIKE_0080",
+          "XH_BIKE_0082",
+          "XH_BIKE_0083",
+          "XH_BIKE_0085",
+          "XH_BIKE_0088",
+          "XH_BIKE_0090",
+          "XH_RUN_0045",
+          "XH_WALK_0018",
+          "XH_WALK_0027"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.443374,
+          31.196741
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:gate:B00155IQRX",
+        "poi_name": "衡山公园广元路入口",
+        "poi_type": "park_gate",
+        "source": "Amap place/text cached response (navi.entr_location)",
+        "source_id": "amap:B00155IQRX:entrance",
+        "source_accessed_at": "2026-07-12T10:52:34+08:00",
+        "open_status": "今日 05:00-18:00",
+        "verification_status": "verified",
+        "evidence_path": "data/raw/amap/place_text_v5_56fdf2a5447234fe.json",
+        "distance_to_route_m": 4.3,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_BIKE_0064",
+          "XH_BIKE_0082",
+          "XH_BIKE_0087",
+          "XH_BIKE_0090",
+          "XH_RUN_0044",
+          "XH_RUN_0048",
+          "XH_WALK_0017"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.442989,
+          31.200103
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:gate:B00156NS4T",
+        "poi_name": "康健园冠生园路入口",
+        "poi_type": "park_gate",
+        "source": "Amap place/text cached response (navi.entr_location)",
+        "source_id": "amap:B00156NS4T:entrance",
+        "source_accessed_at": "2026-08-13T14:12:41+08:00",
+        "open_status": "今日 05:00-17:30",
+        "verification_status": "verified",
+        "evidence_path": "data/raw/amap/place_text_v5_189eceb113fe58c3.json",
+        "distance_to_route_m": 2.1,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_BIKE_0072",
+          "XH_BIKE_0076",
+          "XH_BIKE_0085",
+          "XH_WALK_0009"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.422467,
+          31.163034
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "amap:gate:B0FFF64RUI",
+        "poi_name": "上海植物园4号门售票处入口",
+        "poi_type": "park_gate",
+        "source": "Amap place/text cached response (navi.entr_location)",
+        "source_id": "amap:B0FFF64RUI:entrance",
+        "source_accessed_at": "2026-07-12T10:52:43+08:00",
+        "open_status": "今日 07:00-17:00",
+        "verification_status": "verified",
+        "evidence_path": "data/raw/amap/place_text_v5_3ce50feef03bd17b.json",
+        "distance_to_route_m": 0.5,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_BIKE_0062",
+          "XH_BIKE_0067",
+          "XH_BIKE_0070",
+          "XH_BIKE_0072",
+          "XH_BIKE_0074",
+          "XH_BIKE_0076",
+          "XH_BIKE_0078",
+          "XH_BIKE_0084",
+          "XH_BIKE_0085",
+          "XH_BIKE_0088",
+          "XH_RUN_0036",
+          "XH_RUN_0039",
+          "XH_RUN_0041",
+          "XH_RUN_0055",
+          "XH_RUN_0057",
+          "XH_WALK_0003",
+          "XH_WALK_0013",
+          "XH_WALK_0023"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.445819,
+          31.152306
         ]
       }
     },
@@ -270,8 +814,15 @@
         "verification_status": "verified",
         "evidence_path": "data/processed/xuhui_entry_pool.csv#XH_ENT_0006",
         "distance_to_route_m": 7.6,
+        "route_relation": "along_route",
         "route_ids": [
-          "XH_WALK_0009"
+          "XH_RUN_0042",
+          "XH_RUN_0046",
+          "XH_RUN_0055",
+          "XH_RUN_0057",
+          "XH_RUN_0060",
+          "XH_WALK_0009",
+          "XH_WALK_0019"
         ]
       },
       "geometry": {
@@ -279,6 +830,40 @@
         "coordinates": [
           121.4243,
           31.1598
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "entry:XH_ENT_0007",
+        "poi_name": "徐家汇公园衡山路入口",
+        "poi_type": "park_gate",
+        "source": "徐家汇源景区官方入口资料",
+        "source_id": "entry:XH_ENT_0007",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "公开公园入口；开放时段按现场公告",
+        "verification_status": "verified",
+        "evidence_path": "data/processed/xuhui_entry_pool.csv#XH_ENT_0007",
+        "distance_to_route_m": 0.6,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_RUN_0043",
+          "XH_RUN_0044",
+          "XH_RUN_0045",
+          "XH_RUN_0047",
+          "XH_RUN_0048",
+          "XH_RUN_0053",
+          "XH_RUN_0060",
+          "XH_WALK_0017",
+          "XH_WALK_0026"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4418,
+          31.1984
         ]
       }
     },
@@ -295,6 +880,7 @@
         "verification_status": "verified",
         "evidence_path": "https://www.7eleven-shzj.com/xuhui_binjiang_store.html",
         "distance_to_route_m": 78.9,
+        "route_relation": "along_route",
         "route_ids": [
           "XH_WALK_0011",
           "XH_WALK_0021"
@@ -311,6 +897,34 @@
     {
       "type": "Feature",
       "properties": {
+        "poi_id": "official:huajing-park-huajing-road-gate",
+        "poi_name": "华泾公园华泾路入口",
+        "poi_type": "park_gate",
+        "source": "上海市文化和旅游局徐汇滨江骑行官方线路",
+        "source_id": "official:huajing-park-huajing-road-gate",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "公开公园入口；开放时段按现场公告",
+        "verification_status": "verified",
+        "evidence_path": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
+        "distance_to_route_m": 7.2,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_RUN_0035",
+          "XH_RUN_0037",
+          "XH_RUN_0058"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.452542,
+          31.121725
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "poi_id": "official:shanghai-botanical-garden-gate-1",
         "poi_name": "上海植物园1号门",
         "poi_type": "park_gate",
@@ -321,7 +935,28 @@
         "verification_status": "verified",
         "evidence_path": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=bc3ac58b-5775-4cb6-a921-53f179926c2b",
         "distance_to_route_m": 0.2,
+        "route_relation": "along_route",
         "route_ids": [
+          "XH_BIKE_0062",
+          "XH_BIKE_0066",
+          "XH_BIKE_0070",
+          "XH_BIKE_0072",
+          "XH_BIKE_0074",
+          "XH_BIKE_0078",
+          "XH_BIKE_0080",
+          "XH_BIKE_0081",
+          "XH_BIKE_0082",
+          "XH_BIKE_0083",
+          "XH_BIKE_0084",
+          "XH_BIKE_0085",
+          "XH_BIKE_0087",
+          "XH_BIKE_0088",
+          "XH_RUN_0036",
+          "XH_RUN_0040",
+          "XH_RUN_0041",
+          "XH_RUN_0052",
+          "XH_RUN_0058",
+          "XH_RUN_0059",
           "XH_WALK_0012"
         ]
       },
@@ -336,25 +971,119 @@
     {
       "type": "Feature",
       "properties": {
-        "poi_id": "park_gate:shbg_1",
-        "poi_name": "上海植物园1号门",
+        "poi_id": "official:xujiahui-sports-park-tianyaoqiao-gate",
+        "poi_name": "徐家汇体育公园天钥桥路入口",
         "poi_type": "park_gate",
-        "source": "上海植物园官方导览",
-        "source_id": "shbg_gate_1",
-        "source_accessed_at": "2026-08-18",
-        "open_status": "5-10月07:00-18:00；11-4月07:00-17:00",
+        "source": "徐汇区政府运动徐家汇官方路线",
+        "source_id": "official:xujiahui-sports-park-tianyaoqiao-gate",
+        "source_accessed_at": "2026-08-18T00:00:00+08:00",
+        "open_status": "官方公共体育公园入口；赛事分流按现场公告",
         "verification_status": "verified",
-        "evidence_path": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=bc3ac58b-5775-4cb6-a921-53f179926c2b",
-        "distance_to_route_m": 0.2,
+        "evidence_path": "https://www.xuhui.gov.cn/xwzx_zwxx/20241115/547298.html",
+        "distance_to_route_m": 35.1,
+        "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0040"
+          "XH_BIKE_0061",
+          "XH_BIKE_0064",
+          "XH_BIKE_0068",
+          "XH_BIKE_0069",
+          "XH_BIKE_0075",
+          "XH_BIKE_0077",
+          "XH_BIKE_0079",
+          "XH_BIKE_0088",
+          "XH_WALK_0026"
         ]
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          121.450227,
-          31.146374
+          121.440734,
+          31.181297
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "osm:node:5210178421",
+        "poi_name": "罗森（复兴中路1321号）",
+        "poi_type": "convenience",
+        "source": "OpenStreetMap cached index",
+        "source_id": "osm:node:5210178421",
+        "source_accessed_at": "2026-08-15T10:48:37.606673+08:00",
+        "open_status": "24/7",
+        "verification_status": "verified",
+        "evidence_path": "data/interim/osm_poi_index.json",
+        "distance_to_route_m": 35.8,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_BIKE_0073"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.453959,
+          31.211554
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "osm:node:5239012373",
+        "poi_name": "7-Eleven（田林路132号）",
+        "poi_type": "convenience",
+        "source": "OpenStreetMap cached index",
+        "source_id": "osm:node:5239012373",
+        "source_accessed_at": "2026-08-15T10:48:37.606673+08:00",
+        "open_status": "Mo-Su 09:00-21:00",
+        "verification_status": "verified",
+        "evidence_path": "data/interim/osm_poi_index.json",
+        "distance_to_route_m": 72.2,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_BIKE_0063",
+          "XH_BIKE_0068",
+          "XH_BIKE_0075",
+          "XH_BIKE_0077",
+          "XH_BIKE_0079"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.415317,
+          31.173464
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "osm:node:5239329634",
+        "poi_name": "喜士多",
+        "poi_type": "convenience",
+        "source": "OpenStreetMap local index",
+        "source_id": "node/5239329634",
+        "source_accessed_at": "2026-08-15T10:48:37.606673+08:00",
+        "open_status": "24/7",
+        "verification_status": "verified",
+        "evidence_path": "data/interim/osm_poi_index.json",
+        "distance_to_route_m": 48.1,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_RUN_0046",
+          "XH_RUN_0049",
+          "XH_RUN_0054",
+          "XH_RUN_0057"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.415686,
+          31.174104
         ]
       }
     },
@@ -371,9 +1100,33 @@
         "verification_status": "verified",
         "evidence_path": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=bc3ac58b-5775-4cb6-a921-53f179926c2b",
         "distance_to_route_m": 5.1,
+        "route_relation": "along_route",
         "route_ids": [
+          "XH_BIKE_0062",
+          "XH_BIKE_0067",
+          "XH_BIKE_0070",
+          "XH_BIKE_0072",
+          "XH_BIKE_0074",
+          "XH_BIKE_0076",
+          "XH_BIKE_0078",
+          "XH_BIKE_0080",
+          "XH_BIKE_0082",
+          "XH_BIKE_0083",
+          "XH_BIKE_0084",
+          "XH_BIKE_0085",
+          "XH_BIKE_0087",
+          "XH_RUN_0036",
           "XH_RUN_0039",
-          "XH_RUN_0040"
+          "XH_RUN_0040",
+          "XH_RUN_0041",
+          "XH_RUN_0049",
+          "XH_RUN_0050",
+          "XH_RUN_0052",
+          "XH_RUN_0055",
+          "XH_RUN_0057",
+          "XH_RUN_0059",
+          "XH_WALK_0012",
+          "XH_WALK_0023"
         ]
       },
       "geometry": {
@@ -387,25 +1140,61 @@
     {
       "type": "Feature",
       "properties": {
-        "poi_id": "park_gate:shbg_4",
-        "poi_name": "上海植物园4号门",
-        "poi_type": "park_gate",
-        "source": "上海植物园官方导览",
-        "source_id": "shbg_gate_4",
+        "poi_id": "starbucks:18673",
+        "poi_name": "武康路店",
+        "poi_type": "coffee",
+        "source": "Starbucks China official store API",
+        "source_id": "18673",
         "source_accessed_at": "2026-08-18",
-        "open_status": "5-10月06:00-18:00；11-4月06:00-17:00",
+        "open_status": "today=06:30-23:00",
         "verification_status": "verified",
-        "evidence_path": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=bc3ac58b-5775-4cb6-a921-53f179926c2b",
-        "distance_to_route_m": 1.1,
+        "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.197&lon=121.442&limit=20&locale=ZH&features=&radius=2500",
+        "distance_to_route_m": 10.1,
+        "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0039"
+          "XH_RUN_0044",
+          "XH_RUN_0047",
+          "XH_RUN_0048",
+          "XH_RUN_0053",
+          "XH_RUN_0058"
         ]
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          121.445793,
-          31.151884
+          121.4378736013896,
+          31.20456488303203
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "starbucks:58977",
+        "poi_name": "上海龙湖华泾天街店",
+        "poi_type": "coffee",
+        "source": "Starbucks China official store API",
+        "source_id": "58977",
+        "source_accessed_at": "2026-08-18",
+        "open_status": "today=06:30-22:00",
+        "verification_status": "verified",
+        "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.120&lon=121.455&limit=20&locale=ZH&features=&radius=3500",
+        "distance_to_route_m": 82.9,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_RUN_0038",
+          "XH_RUN_0050",
+          "XH_RUN_0052",
+          "XH_RUN_0054",
+          "XH_RUN_0056",
+          "XH_RUN_0060"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.456083655357,
+          31.1195659270437
         ]
       }
     },
@@ -422,8 +1211,10 @@
         "verification_status": "verified",
         "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.159259&lon=121.460265&limit=20&locale=ZH&features=&radius=5000",
         "distance_to_route_m": 59.9,
+        "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0032"
+          "XH_RUN_0032",
+          "XH_RUN_0034"
         ]
       },
       "geometry": {
@@ -446,10 +1237,17 @@
         "open_status": "today=06:30-22:00",
         "verification_status": "verified",
         "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.184&lon=121.464&limit=50&locale=ZH&features=&radius=5000",
-        "distance_to_route_m": 13.6,
+        "distance_to_route_m": 5.4,
+        "route_relation": "along_route",
         "route_ids": [
           "XH_RUN_0031",
-          "XH_RUN_0037"
+          "XH_RUN_0033",
+          "XH_RUN_0034",
+          "XH_RUN_0035",
+          "XH_RUN_0037",
+          "XH_RUN_0038",
+          "XH_RUN_0051",
+          "XH_RUN_0056"
         ]
       },
       "geometry": {
@@ -457,6 +1255,89 @@
         "coordinates": [
           121.463512182527,
           31.1809203044196
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "starbucks:65635",
+        "poi_name": "上海徐家汇国际大厦店",
+        "poi_type": "coffee",
+        "source": "Starbucks China official store API",
+        "source_id": "65635",
+        "source_accessed_at": "2026-08-18",
+        "open_status": "today=07:00-19:00",
+        "verification_status": "verified",
+        "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.197&lon=121.442&limit=20&locale=ZH&features=&radius=2500",
+        "distance_to_route_m": 15.9,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_RUN_0043",
+          "XH_RUN_0047",
+          "XH_RUN_0058"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.44178211688995,
+          31.19507669950241
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "starbucks:79955",
+        "poi_name": "上海龙华会店",
+        "poi_type": "coffee",
+        "source": "Starbucks China official store API",
+        "source_id": "79955",
+        "source_accessed_at": "2026-08-18",
+        "open_status": "today=06:30-22:00",
+        "verification_status": "verified",
+        "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.159259&lon=121.460265&limit=20&locale=ZH&features=&radius=5000",
+        "distance_to_route_m": 16.5,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_RUN_0034",
+          "XH_RUN_0045",
+          "XH_RUN_0051",
+          "XH_RUN_0059"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45364284515382,
+          31.174457109044642
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "starbucks:82088",
+        "poi_name": "上海廿肆康健店",
+        "poi_type": "coffee",
+        "source": "Starbucks China official store API",
+        "source_id": "82088",
+        "source_accessed_at": "2026-08-18",
+        "open_status": "today=06:30-22:00",
+        "verification_status": "verified",
+        "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.171&lon=121.410&limit=20&locale=ZH&features=&radius=3000",
+        "distance_to_route_m": 21.1,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_RUN_0042"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.41241997480394,
+          31.16274214445904
         ]
       }
     },
@@ -473,7 +1354,10 @@
         "verification_status": "verified",
         "evidence_path": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/21177180.html",
         "distance_to_route_m": 15.0,
+        "route_relation": "along_route",
         "route_ids": [
+          "XH_WALK_0014",
+          "XH_WALK_0016",
           "XH_WALK_0025"
         ]
       },
@@ -498,6 +1382,7 @@
         "verification_status": "verified",
         "evidence_path": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/130000858.html",
         "distance_to_route_m": 63.9,
+        "route_relation": "along_route",
         "route_ids": [
           "XH_WALK_0011",
           "XH_WALK_0021"

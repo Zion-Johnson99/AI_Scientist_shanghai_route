@@ -15,7 +15,10 @@ def build_feature_collection(items: Iterable[EntryPoint]) -> dict[str, Any]:
             {
                 "type": "Feature",
                 "properties": item.model_dump(),
-                "geometry": {"type": "Point", "coordinates": [item.lng_gcj02, item.lat_gcj02]},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [item.lng_gcj02, item.lat_gcj02],
+                },
             }
             for item in items
         ],
@@ -31,7 +34,9 @@ def build_route_feature_collection(routes: Iterable[CandidateRoute]) -> dict[str
                 "properties": route.model_dump(mode="json", exclude={"polyline_gcj02"}),
                 "geometry": {
                     "type": "LineString",
-                    "coordinates": [point.gcj02_list() for point in route.polyline_gcj02],
+                    "coordinates": [
+                        point.gcj02_list() for point in route.polyline_gcj02
+                    ],
                 },
             }
             for route in routes
@@ -40,7 +45,9 @@ def build_route_feature_collection(routes: Iterable[CandidateRoute]) -> dict[str
     }
 
 
-def build_candidate_route_feature_collection(routes: Iterable[CandidateRoute]) -> dict[str, Any]:
+def build_candidate_route_feature_collection(
+    routes: Iterable[CandidateRoute],
+) -> dict[str, Any]:
     return {
         "type": "FeatureCollection",
         "features": [
@@ -52,7 +59,9 @@ def build_candidate_route_feature_collection(routes: Iterable[CandidateRoute]) -
                 },
                 "geometry": {
                     "type": "LineString",
-                    "coordinates": [point.gcj02_list() for point in route.polyline_gcj02],
+                    "coordinates": [
+                        point.gcj02_list() for point in route.polyline_gcj02
+                    ],
                 },
             }
             for route in routes
@@ -98,7 +107,9 @@ def build_route_catalog(routes: Iterable[CandidateRoute]) -> list[dict[str, Any]
                 "score_note": route.score_note,
                 "source_name": route.source_name,
                 "source_url": route.source_url,
-                "source_accessed_at": route.source_accessed_at.isoformat(),
+                "source_accessed_at": route.source_accessed_at.isoformat()
+                if route.source_accessed_at
+                else None,
                 "confidence": route.confidence,
                 "distance_error_m": route.distance_error_m,
                 "loop_flag": route.loop_flag,
@@ -109,7 +120,9 @@ def build_route_catalog(routes: Iterable[CandidateRoute]) -> list[dict[str, Any]
                 "validation_status": route.validation_status,
                 "snap_ratio": route.snap_ratio,
                 "network_source": route.network_source,
-                "verified_at": route.verified_at.isoformat() if route.verified_at else None,
+                "verified_at": route.verified_at.isoformat()
+                if route.verified_at
+                else None,
                 "review_note": route.review_note,
                 "raw_response_paths": route.raw_response_paths,
                 "source_level": route.source_level,
@@ -125,8 +138,12 @@ def build_route_catalog(routes: Iterable[CandidateRoute]) -> list[dict[str, Any]
     return catalog
 
 
-def build_candidate_route_catalog(routes: Iterable[CandidateRoute]) -> list[dict[str, Any]]:
-    return [_catalog_item(route) for route in routes if _is_candidate_displayable(route)]
+def build_candidate_route_catalog(
+    routes: Iterable[CandidateRoute],
+) -> list[dict[str, Any]]:
+    return [
+        _catalog_item(route) for route in routes if _is_candidate_displayable(route)
+    ]
 
 
 def _catalog_item(route: CandidateRoute) -> dict[str, Any]:
@@ -161,7 +178,9 @@ def _catalog_item(route: CandidateRoute) -> dict[str, Any]:
         "score_note": route.score_note,
         "source_name": route.source_name,
         "source_url": route.source_url,
-        "source_accessed_at": route.source_accessed_at.isoformat() if route.source_accessed_at else None,
+        "source_accessed_at": route.source_accessed_at.isoformat()
+        if route.source_accessed_at
+        else None,
         "confidence": route.confidence,
         "distance_error_m": route.distance_error_m,
         "loop_flag": route.loop_flag,
@@ -202,9 +221,10 @@ def _export_node(node) -> dict[str, Any]:
 def _is_candidate_displayable(route: CandidateRoute) -> bool:
     return (
         route.validation_status in {"accepted", "needs_review"}
-        and route.geometry_source == "amap_direction"
+        and route.geometry_source in {"amap_direction", "audited_import"}
         and route.geometry_status == "complete"
-        and len({(point.lng_gcj02, point.lat_gcj02) for point in route.polyline_gcj02}) >= 2
+        and len({(point.lng_gcj02, point.lat_gcj02) for point in route.polyline_gcj02})
+        >= 2
         and bool(route.waypoint_names and route.waypoint_names[0].strip())
         and bool(route.raw_response_paths)
     )
@@ -221,7 +241,10 @@ def build_poi_feature_collection(items: Iterable[PoiPoint]) -> dict[str, Any]:
             {
                 "type": "Feature",
                 "properties": item.model_dump(),
-                "geometry": {"type": "Point", "coordinates": [item.lng_gcj02, item.lat_gcj02]},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [item.lng_gcj02, item.lat_gcj02],
+                },
             }
             for item in items
         ],
