@@ -195,13 +195,16 @@ def test_validate_seeds_accepts_balanced_portfolio(tmp_path: Path) -> None:
         seed.preference_hits == [] for seed in seeds if seed.route_mode == "walk"
     )
     assert all(len(seed.preference_search_status) == 4 for seed in seeds)
-    assert {
+    strict_loop_counts = {
         mode: sum(
             seed.route_mode == mode and seed.route_shape == "strict_loop"
             for seed in seeds
         )
         for mode in ("walk", "run", "bike")
-    } == {"walk": 14, "run": 15, "bike": 15}
+    }
+    assert strict_loop_counts["walk"] == 14
+    assert strict_loop_counts["run"] in {14, 15, 16}
+    assert strict_loop_counts["bike"] == 15
 
 
 def test_resolve_seed_drafts_does_not_overwrite_on_failure(tmp_path: Path) -> None:

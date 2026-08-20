@@ -1,0 +1,59 @@
+{
+  "generated_at": "2026-08-20T12:40:00+08:00",
+  "route_mode": "run",
+  "rule": "actual_distance_m > 5000 且 100 米走廊内无已核实 toilet 或 convenience",
+  "validation_status_impact": "none",
+  "warning_count": 10,
+  "warnings": [
+    {
+      "route_id": "XH_RUN_0033",
+      "actual_distance_m": 5747,
+      "available_types": ["coffee"]
+    },
+    {
+      "route_id": "XH_RUN_0034",
+      "actual_distance_m": 7758,
+      "available_types": ["coffee", "park_gate"]
+    },
+    {
+      "route_id": "XH_RUN_0043",
+      "actual_distance_m": 5089,
+      "available_types": []
+    },
+    {
+      "route_id": "XH_RUN_0047",
+      "actual_distance_m": 7010,
+      "available_types": ["coffee"]
+    },
+    {
+      "route_id": "XH_RUN_0050",
+      "actual_distance_m": 5460,
+      "available_types": ["coffee", "park_gate"]
+    },
+    {
+      "route_id": "XH_RUN_0052",
+      "actual_distance_m": 10367,
+      "available_types": ["park_gate"]
+    },
+    {
+      "route_id": "XH_RUN_0053",
+      "actual_distance_m": 13384,
+      "available_types": ["park_gate"]
+    },
+    {
+      "route_id": "XH_RUN_0058",
+      "actual_distance_m": 10190,
+      "available_types": ["coffee", "park_gate"]
+    },
+    {
+      "route_id": "XH_RUN_0059",
+      "actual_distance_m": 13335,
+      "available_types": ["park_gate"]
+    },
+    {
+      "route_id": "XH_RUN_0060",
+      "actual_distance_m": 11042,
+      "available_types": ["coffee"]
+    }
+  ]
+}

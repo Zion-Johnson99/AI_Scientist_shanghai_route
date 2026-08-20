@@ -42,13 +42,7 @@
         "distance_to_route_m": 27.6,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0043",
-          "XH_RUN_0044",
           "XH_RUN_0045",
-          "XH_RUN_0047",
-          "XH_RUN_0048",
-          "XH_RUN_0053",
-          "XH_RUN_0060",
           "XH_WALK_0017",
           "XH_WALK_0026"
         ]
@@ -138,11 +132,8 @@
           "XH_BIKE_0084",
           "XH_BIKE_0085",
           "XH_BIKE_0088",
-          "XH_RUN_0036",
           "XH_RUN_0039",
           "XH_RUN_0041",
-          "XH_RUN_0055",
-          "XH_RUN_0057",
           "XH_WALK_0003",
           "XH_WALK_0013",
           "XH_WALK_0023"
@@ -206,12 +197,7 @@
           "XH_RUN_0036",
           "XH_RUN_0039",
           "XH_RUN_0040",
-          "XH_RUN_0041",
-          "XH_RUN_0049",
-          "XH_RUN_0052",
-          "XH_RUN_0055",
-          "XH_RUN_0057",
-          "XH_RUN_0059"
+          "XH_RUN_0049"
         ]
       },
       "geometry": {
@@ -316,8 +302,7 @@
         "distance_to_route_m": 5.3,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0032",
-          "XH_RUN_0034"
+          "XH_RUN_0032"
         ]
       },
       "geometry": {
@@ -529,13 +514,10 @@
         "open_status": "24小时营业",
         "verification_status": "verified",
         "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0KUNMEGLF",
-        "distance_to_route_m": 4.8,
+        "distance_to_route_m": 49.2,
         "route_relation": "along_route",
         "route_ids": [
           "XH_RUN_0031",
-          "XH_RUN_0033",
-          "XH_RUN_0034",
-          "XH_RUN_0051",
           "XH_WALK_0001",
           "XH_WALK_0022"
         ]
@@ -618,8 +600,7 @@
         "route_ids": [
           "XH_RUN_0035",
           "XH_RUN_0037",
-          "XH_RUN_0038",
-          "XH_RUN_0056"
+          "XH_RUN_0038"
         ]
       },
       "geometry": {
@@ -684,7 +665,11 @@
           "XH_BIKE_0085",
           "XH_BIKE_0088",
           "XH_BIKE_0090",
+          "XH_RUN_0034",
           "XH_RUN_0045",
+          "XH_RUN_0048",
+          "XH_RUN_0051",
+          "XH_RUN_0057",
           "XH_WALK_0018",
           "XH_WALK_0027"
         ]
@@ -716,8 +701,6 @@
           "XH_BIKE_0082",
           "XH_BIKE_0087",
           "XH_BIKE_0090",
-          "XH_RUN_0044",
-          "XH_RUN_0048",
           "XH_WALK_0017"
         ]
       },
@@ -783,11 +766,8 @@
           "XH_BIKE_0084",
           "XH_BIKE_0085",
           "XH_BIKE_0088",
-          "XH_RUN_0036",
           "XH_RUN_0039",
           "XH_RUN_0041",
-          "XH_RUN_0055",
-          "XH_RUN_0057",
           "XH_WALK_0003",
           "XH_WALK_0013",
           "XH_WALK_0023"
@@ -816,11 +796,7 @@
         "distance_to_route_m": 7.6,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0042",
           "XH_RUN_0046",
-          "XH_RUN_0055",
-          "XH_RUN_0057",
-          "XH_RUN_0060",
           "XH_WALK_0009",
           "XH_WALK_0019"
         ]
@@ -845,16 +821,10 @@
         "open_status": "公开公园入口；开放时段按现场公告",
         "verification_status": "verified",
         "evidence_path": "data/processed/xuhui_entry_pool.csv#XH_ENT_0007",
-        "distance_to_route_m": 0.6,
+        "distance_to_route_m": 0.7,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0043",
-          "XH_RUN_0044",
           "XH_RUN_0045",
-          "XH_RUN_0047",
-          "XH_RUN_0048",
-          "XH_RUN_0053",
-          "XH_RUN_0060",
           "XH_WALK_0017",
           "XH_WALK_0026"
         ]
@@ -953,8 +923,8 @@
           "XH_BIKE_0088",
           "XH_RUN_0036",
           "XH_RUN_0040",
-          "XH_RUN_0041",
           "XH_RUN_0052",
+          "XH_RUN_0053",
           "XH_RUN_0058",
           "XH_RUN_0059",
           "XH_WALK_0012"
@@ -1070,12 +1040,15 @@
         "open_status": "24/7",
         "verification_status": "verified",
         "evidence_path": "data/interim/osm_poi_index.json",
-        "distance_to_route_m": 48.1,
+        "distance_to_route_m": 47.8,
         "route_relation": "along_route",
         "route_ids": [
           "XH_RUN_0046",
           "XH_RUN_0049",
+          "XH_RUN_0051",
           "XH_RUN_0054",
+          "XH_RUN_0055",
+          "XH_RUN_0056",
           "XH_RUN_0057"
         ]
       },
@@ -1118,13 +1091,8 @@
           "XH_RUN_0036",
           "XH_RUN_0039",
           "XH_RUN_0040",
-          "XH_RUN_0041",
           "XH_RUN_0049",
           "XH_RUN_0050",
-          "XH_RUN_0052",
-          "XH_RUN_0055",
-          "XH_RUN_0057",
-          "XH_RUN_0059",
           "XH_WALK_0012",
           "XH_WALK_0023"
         ]
@@ -1149,13 +1117,10 @@
         "open_status": "today=06:30-23:00",
         "verification_status": "verified",
         "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.197&lon=121.442&limit=20&locale=ZH&features=&radius=2500",
-        "distance_to_route_m": 10.1,
+        "distance_to_route_m": 10.5,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0044",
-          "XH_RUN_0047",
-          "XH_RUN_0048",
-          "XH_RUN_0053",
+          "XH_RUN_0056",
           "XH_RUN_0058"
         ]
       },
@@ -1184,8 +1149,8 @@
         "route_ids": [
           "XH_RUN_0038",
           "XH_RUN_0050",
-          "XH_RUN_0052",
           "XH_RUN_0054",
+          "XH_RUN_0055",
           "XH_RUN_0056",
           "XH_RUN_0060"
         ]
@@ -1213,8 +1178,7 @@
         "distance_to_route_m": 59.9,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0032",
-          "XH_RUN_0034"
+          "XH_RUN_0032"
         ]
       },
       "geometry": {
@@ -1237,17 +1201,14 @@
         "open_status": "today=06:30-22:00",
         "verification_status": "verified",
         "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.184&lon=121.464&limit=50&locale=ZH&features=&radius=5000",
-        "distance_to_route_m": 5.4,
+        "distance_to_route_m": 13.6,
         "route_relation": "along_route",
         "route_ids": [
           "XH_RUN_0031",
           "XH_RUN_0033",
-          "XH_RUN_0034",
           "XH_RUN_0035",
           "XH_RUN_0037",
-          "XH_RUN_0038",
-          "XH_RUN_0051",
-          "XH_RUN_0056"
+          "XH_RUN_0038"
         ]
       },
       "geometry": {
@@ -1270,11 +1231,14 @@
         "open_status": "today=07:00-19:00",
         "verification_status": "verified",
         "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.197&lon=121.442&limit=20&locale=ZH&features=&radius=2500",
-        "distance_to_route_m": 15.9,
+        "distance_to_route_m": 9.8,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0043",
+          "XH_RUN_0034",
           "XH_RUN_0047",
+          "XH_RUN_0048",
+          "XH_RUN_0051",
+          "XH_RUN_0057",
           "XH_RUN_0058"
         ]
       },
@@ -1301,10 +1265,8 @@
         "distance_to_route_m": 16.5,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0034",
           "XH_RUN_0045",
-          "XH_RUN_0051",
-          "XH_RUN_0059"
+          "XH_RUN_0060"
         ]
       },
       "geometry": {
@@ -1318,26 +1280,26 @@
     {
       "type": "Feature",
       "properties": {
-        "poi_id": "starbucks:82088",
-        "poi_name": "上海廿肆康健店",
+        "poi_id": "starbucks:83014",
+        "poi_name": "上海百色路店",
         "poi_type": "coffee",
         "source": "Starbucks China official store API",
-        "source_id": "82088",
+        "source_id": "83014",
         "source_accessed_at": "2026-08-18",
-        "open_status": "today=06:30-22:00",
+        "open_status": "today=06:30-17:00",
         "verification_status": "verified",
-        "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.171&lon=121.410&limit=20&locale=ZH&features=&radius=3000",
-        "distance_to_route_m": 21.1,
+        "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.120&lon=121.455&limit=20&locale=ZH&features=&radius=3500",
+        "distance_to_route_m": 50.6,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_RUN_0042"
+          "XH_RUN_0036"
         ]
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          121.41241997480394,
-          31.16274214445904
+          121.448255538635,
+          31.1442669129813
         ]
       }
     },

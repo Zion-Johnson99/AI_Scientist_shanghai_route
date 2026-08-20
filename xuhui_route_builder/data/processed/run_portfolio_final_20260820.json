@@ -1,0 +1,181 @@
+{
+  "status": "pass",
+  "metrics": {
+    "scope": "run",
+    "route_count": 30,
+    "validation_status_counts": {
+      "accepted": 30
+    },
+    "mode_counts": {
+      "run": 30
+    },
+    "distance_bucket_counts": {
+      "run": {
+        "1-5km": 10,
+        "5-10km": 10,
+        "10-15km": 10
+      }
+    },
+    "shape_counts": {
+      "run": {
+        "one_way": 16,
+        "strict_loop": 14
+      }
+    },
+    "shape_target_per_mode": {
+      "strict_loop": 15,
+      "one_way": 15,
+      "strict_loop_allowed": [
+        14,
+        16
+      ]
+    },
+    "strict_loop_geometry_checked_count": 14,
+    "preference_coverage_counts": {
+      "zero": 3,
+      "one": 7,
+      "two": 14,
+      "three": 6,
+      "four": 0
+    },
+    "popular_area_counts": {
+      "west_bund": 7,
+      "longhua": 10,
+      "xujiahui": 11,
+      "hengfu": 4,
+      "shanghai_botanical_garden": 11,
+      "kangjian": 6,
+      "caohejing": 6,
+      "huajing": 7
+    },
+    "popular_area_mode_counts": {
+      "west_bund": {
+        "walk": 0,
+        "run": 7,
+        "bike": 0
+      },
+      "longhua": {
+        "walk": 0,
+        "run": 10,
+        "bike": 0
+      },
+      "xujiahui": {
+        "walk": 0,
+        "run": 11,
+        "bike": 0
+      },
+      "hengfu": {
+        "walk": 0,
+        "run": 4,
+        "bike": 0
+      },
+      "shanghai_botanical_garden": {
+        "walk": 0,
+        "run": 11,
+        "bike": 0
+      },
+      "kangjian": {
+        "walk": 0,
+        "run": 6,
+        "bike": 0
+      },
+      "caohejing": {
+        "walk": 0,
+        "run": 6,
+        "bike": 0
+      },
+      "huajing": {
+        "walk": 0,
+        "run": 7,
+        "bike": 0
+      }
+    },
+    "web_catalog": {
+      "displayed_count": 30,
+      "needs_review_count": 0,
+      "recommendation_eligible_count": 30,
+      "navigation_eligible_count": 30
+    }
+  },
+  "failures": [],
+  "poi_audit": {
+    "status": "pass",
+    "findings": [],
+    "warnings": [
+      {
+        "code": "insufficient_preference_coverage",
+        "details": [
+          {
+            "route_id": "XH_RUN_0033",
+            "verified_types": [
+              "coffee"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0041",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0042",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0043",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0044",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0047",
+            "verified_types": [
+              "coffee"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0052",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0053",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0059",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0060",
+            "verified_types": [
+              "coffee"
+            ]
+          }
+        ]
+      },
+      {
+        "code": "long_route_supply_gap",
+        "details": [
+          "XH_RUN_0033",
+          "XH_RUN_0034",
+          "XH_RUN_0043",
+          "XH_RUN_0047",
+          "XH_RUN_0050",
+          "XH_RUN_0052",
+          "XH_RUN_0053",
+          "XH_RUN_0058",
+          "XH_RUN_0059",
+          "XH_RUN_0060"
+        ]
+      }
+    ]
+  }
+}

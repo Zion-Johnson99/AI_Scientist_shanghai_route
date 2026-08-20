@@ -1,0 +1,44 @@
+{
+  "audit_date": "2026-08-20",
+  "viewport": {
+    "width": 1600,
+    "height": 1000
+  },
+  "summary": {
+    "routes_checked": 30,
+    "passed": 30,
+    "failed": 0
+  },
+  "routes": [
+    {"route_id": "XH_RUN_0031", "status": "pass", "image_path": "output/playwright/run-audit-0031.png"},
+    {"route_id": "XH_RUN_0032", "status": "pass", "image_path": "output/playwright/run-audit-0032.png"},
+    {"route_id": "XH_RUN_0033", "status": "pass", "image_path": "output/playwright/run-audit-0033.png"},
+    {"route_id": "XH_RUN_0034", "status": "pass", "image_path": "output/playwright/run-audit-0034.png"},
+    {"route_id": "XH_RUN_0035", "status": "pass", "image_path": "output/playwright/run-audit-0035.png"},
+    {"route_id": "XH_RUN_0036", "status": "pass", "image_path": "output/playwright/run-audit-0036.png"},
+    {"route_id": "XH_RUN_0037", "status": "pass", "image_path": "output/playwright/run-audit-0037.png"},
+    {"route_id": "XH_RUN_0038", "status": "pass", "image_path": "output/playwright/run-audit-0038.png"},
+    {"route_id": "XH_RUN_0039", "status": "pass", "image_path": "output/playwright/run-audit-0039.png"},
+    {"route_id": "XH_RUN_0040", "status": "pass", "image_path": "output/playwright/run-audit-0040.png"},
+    {"route_id": "XH_RUN_0041", "status": "pass", "image_path": "output/playwright/run-audit-0041.png"},
+    {"route_id": "XH_RUN_0042", "status": "pass", "image_path": "output/playwright/run-audit-0042.png"},
+    {"route_id": "XH_RUN_0043", "status": "pass", "image_path": "output/playwright/run-audit-0043.png"},
+    {"route_id": "XH_RUN_0044", "status": "pass", "image_path": "output/playwright/run-audit-0044.png"},
+    {"route_id": "XH_RUN_0045", "status": "pass", "image_path": "output/playwright/run-audit-0045.png"},
+    {"route_id": "XH_RUN_0046", "status": "pass", "image_path": "output/playwright/run-audit-0046.png"},
+    {"route_id": "XH_RUN_0047", "status": "pass", "image_path": "output/playwright/run-audit-0047.png"},
+    {"route_id": "XH_RUN_0048", "status": "pass", "image_path": "output/playwright/run-audit-0048.png"},
+    {"route_id": "XH_RUN_0049", "status": "pass", "image_path": "output/playwright/run-audit-0049.png"},
+    {"route_id": "XH_RUN_0050", "status": "pass", "image_path": "output/playwright/run-audit-0050.png"},
+    {"route_id": "XH_RUN_0051", "status": "pass", "image_path": "output/playwright/run-audit-0051.png"},
+    {"route_id": "XH_RUN_0052", "status": "pass", "image_path": "output/playwright/run-audit-0052.png"},
+    {"route_id": "XH_RUN_0053", "status": "pass", "image_path": "output/playwright/run-audit-0053.png"},
+    {"route_id": "XH_RUN_0054", "status": "pass", "image_path": "output/playwright/run-audit-0054.png"},
+    {"route_id": "XH_RUN_0055", "status": "pass", "image_path": "output/playwright/run-audit-0055.png"},
+    {"route_id": "XH_RUN_0056", "status": "pass", "image_path": "output/playwright/run-audit-0056.png"},
+    {"route_id": "XH_RUN_0057", "status": "pass", "image_path": "output/playwright/run-audit-0057.png"},
+    {"route_id": "XH_RUN_0058", "status": "pass", "image_path": "output/playwright/run-audit-0058.png"},
+    {"route_id": "XH_RUN_0059", "status": "pass", "image_path": "output/playwright/run-audit-0059.png"},
+    {"route_id": "XH_RUN_0060", "status": "pass", "image_path": "output/playwright/run-audit-0060.png"}
+  ]
+}

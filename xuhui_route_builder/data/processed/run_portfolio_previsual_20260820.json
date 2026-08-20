@@ -1,0 +1,758 @@
+{
+  "status": "fail",
+  "metrics": {
+    "scope": "run",
+    "route_count": 30,
+    "validation_status_counts": {
+      "pending": 30
+    },
+    "mode_counts": {
+      "run": 30
+    },
+    "distance_bucket_counts": {
+      "run": {
+        "1-5km": 10,
+        "5-10km": 10,
+        "10-15km": 10
+      }
+    },
+    "shape_counts": {
+      "run": {
+        "one_way": 16,
+        "strict_loop": 14
+      }
+    },
+    "shape_target_per_mode": {
+      "strict_loop": 15,
+      "one_way": 15,
+      "strict_loop_allowed": [
+        14,
+        16
+      ]
+    },
+    "strict_loop_geometry_checked_count": 14,
+    "preference_coverage_counts": {
+      "zero": 30,
+      "one": 0,
+      "two": 0,
+      "three": 0,
+      "four": 0
+    },
+    "popular_area_counts": {
+      "west_bund": 7,
+      "longhua": 10,
+      "xujiahui": 11,
+      "hengfu": 4,
+      "shanghai_botanical_garden": 11,
+      "kangjian": 6,
+      "caohejing": 6,
+      "huajing": 7
+    },
+    "popular_area_mode_counts": {
+      "west_bund": {
+        "walk": 0,
+        "run": 7,
+        "bike": 0
+      },
+      "longhua": {
+        "walk": 0,
+        "run": 10,
+        "bike": 0
+      },
+      "xujiahui": {
+        "walk": 0,
+        "run": 11,
+        "bike": 0
+      },
+      "hengfu": {
+        "walk": 0,
+        "run": 4,
+        "bike": 0
+      },
+      "shanghai_botanical_garden": {
+        "walk": 0,
+        "run": 11,
+        "bike": 0
+      },
+      "kangjian": {
+        "walk": 0,
+        "run": 6,
+        "bike": 0
+      },
+      "caohejing": {
+        "walk": 0,
+        "run": 6,
+        "bike": 0
+      },
+      "huajing": {
+        "walk": 0,
+        "run": 7,
+        "bike": 0
+      }
+    },
+    "web_catalog": null
+  },
+  "failures": [
+    {
+      "code": "invalid_validation_status",
+      "details": [
+        {
+          "route_id": "XH_RUN_0031",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0032",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0033",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0034",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0035",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0036",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0037",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0038",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0039",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0040",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0041",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0042",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0043",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0044",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0045",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0046",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0047",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0048",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0049",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0050",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0051",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0052",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0053",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0054",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0055",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0056",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0057",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0058",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0059",
+          "validation_status": "pending"
+        },
+        {
+          "route_id": "XH_RUN_0060",
+          "validation_status": "pending"
+        }
+      ]
+    }
+  ],
+  "poi_audit": {
+    "status": "fail",
+    "findings": [
+      {
+        "code": "preference_relation_mismatch",
+        "details": [
+          {
+            "route_id": "XH_RUN_0031",
+            "preference_hits": [
+              "coffee",
+              "toilet"
+            ],
+            "derived_from_nearby_pois": []
+          },
+          {
+            "route_id": "XH_RUN_0031",
+            "search_status_mismatch_types": [
+              "coffee",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0032",
+            "preference_hits": [
+              "coffee",
+              "toilet"
+            ],
+            "derived_from_nearby_pois": []
+          },
+          {
+            "route_id": "XH_RUN_0032",
+            "search_status_mismatch_types": [
+              "coffee",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0033",
+            "search_status_mismatch_types": [
+              "coffee",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0034",
+            "search_status_mismatch_types": [
+              "coffee",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0035",
+            "preference_hits": [
+              "coffee",
+              "toilet"
+            ],
+            "derived_from_nearby_pois": []
+          },
+          {
+            "route_id": "XH_RUN_0035",
+            "search_status_mismatch_types": [
+              "coffee",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0036",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet",
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0037",
+            "preference_hits": [
+              "coffee",
+              "toilet"
+            ],
+            "derived_from_nearby_pois": []
+          },
+          {
+            "route_id": "XH_RUN_0037",
+            "search_status_mismatch_types": [
+              "coffee",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0038",
+            "preference_hits": [
+              "coffee",
+              "toilet"
+            ],
+            "derived_from_nearby_pois": []
+          },
+          {
+            "route_id": "XH_RUN_0038",
+            "search_status_mismatch_types": [
+              "coffee",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0039",
+            "preference_hits": [
+              "convenience",
+              "park_gate"
+            ],
+            "derived_from_nearby_pois": []
+          },
+          {
+            "route_id": "XH_RUN_0039",
+            "search_status_mismatch_types": [
+              "park_gate",
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0040",
+            "preference_hits": [
+              "coffee",
+              "convenience",
+              "park_gate"
+            ],
+            "derived_from_nearby_pois": []
+          },
+          {
+            "route_id": "XH_RUN_0040",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0041",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet",
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0042",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0043",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0044",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0045",
+            "preference_hits": [
+              "coffee",
+              "park_gate",
+              "toilet"
+            ],
+            "derived_from_nearby_pois": []
+          },
+          {
+            "route_id": "XH_RUN_0045",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0046",
+            "preference_hits": [
+              "coffee",
+              "convenience",
+              "park_gate"
+            ],
+            "derived_from_nearby_pois": []
+          },
+          {
+            "route_id": "XH_RUN_0046",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0047",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0048",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0049",
+            "preference_hits": [
+              "coffee",
+              "convenience",
+              "park_gate"
+            ],
+            "derived_from_nearby_pois": []
+          },
+          {
+            "route_id": "XH_RUN_0049",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0050",
+            "preference_hits": [
+              "coffee",
+              "convenience",
+              "park_gate",
+              "toilet"
+            ],
+            "derived_from_nearby_pois": []
+          },
+          {
+            "route_id": "XH_RUN_0050",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet",
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0051",
+            "search_status_mismatch_types": [
+              "coffee",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0052",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet",
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0053",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0054",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0055",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet",
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0056",
+            "search_status_mismatch_types": [
+              "coffee",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0057",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0058",
+            "preference_hits": [
+              "coffee",
+              "park_gate",
+              "toilet"
+            ],
+            "derived_from_nearby_pois": []
+          },
+          {
+            "route_id": "XH_RUN_0058",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0059",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet",
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0060",
+            "search_status_mismatch_types": [
+              "coffee",
+              "park_gate",
+              "toilet",
+              "convenience"
+            ]
+          }
+        ]
+      },
+      {
+        "code": "invalid_poi_route_relation",
+        "details": [
+          {
+            "route_id": "XH_RUN_0031",
+            "issues": [
+              {
+                "index": 0,
+                "poi_type": "toilet",
+                "reason": "poi_not_verified"
+              }
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0039",
+            "issues": [
+              {
+                "index": 0,
+                "poi_type": "convenience",
+                "reason": "poi_not_verified"
+              }
+            ]
+          },
+          {
+            "route_id": "XH_RUN_0040",
+            "issues": [
+              {
+                "index": 0,
+                "poi_type": "convenience",
+                "reason": "poi_not_verified"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "warnings": [
+      {
+        "code": "insufficient_preference_coverage",
+        "details": [
+          {
+            "route_id": "XH_RUN_0031",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0032",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0033",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0034",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0035",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0036",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0037",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0038",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0039",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0040",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0041",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0042",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0043",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0044",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0045",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0046",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0047",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0048",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0049",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0050",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0051",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0052",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0053",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0054",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0055",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0056",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0057",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0058",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0059",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_RUN_0060",
+            "verified_types": []
+          }
+        ]
+      },
+      {
+        "code": "long_route_supply_gap",
+        "details": [
+          "XH_RUN_0033",
+          "XH_RUN_0034",
+          "XH_RUN_0035",
+          "XH_RUN_0036",
+          "XH_RUN_0037",
+          "XH_RUN_0038",
+          "XH_RUN_0043",
+          "XH_RUN_0047",
+          "XH_RUN_0049",
+          "XH_RUN_0050",
+          "XH_RUN_0051",
+          "XH_RUN_0052",
+          "XH_RUN_0053",
+          "XH_RUN_0054",
+          "XH_RUN_0055",
+          "XH_RUN_0056",
+          "XH_RUN_0057",
+          "XH_RUN_0058",
+          "XH_RUN_0059",
+          "XH_RUN_0060"
+        ]
+      }
+    ]
+  }
+}

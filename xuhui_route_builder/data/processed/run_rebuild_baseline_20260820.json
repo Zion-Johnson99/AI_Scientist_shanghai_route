@@ -1,0 +1,2029 @@
+{
+  "metadata": {
+    "route_mode": "run",
+    "generated_at": "2026-08-20T04:07:58.533051+00:00",
+    "candidate_source": "data/interim/pilot_candidates.json",
+    "validation_source": "data/processed/route_validation_report.json",
+    "geometry_coordinate_system": "GCJ-02",
+    "visual_audit_contract": "one full-route view per route; street-scale view for flagged segments"
+  },
+  "summary": {
+    "route_count": 30,
+    "distance_band_counts": {
+      "short": 10,
+      "medium": 11,
+      "long": 9
+    },
+    "shape_counts": {
+      "one_way": 16,
+      "strict_loop": 14
+    },
+    "validation_status_counts": {
+      "accepted": 5,
+      "needs_review": 25
+    },
+    "gate_status_counts": {
+      "pass": 29,
+      "fail": 1
+    },
+    "work_classification_counts": {
+      "unchanged_pending_visual_audit": 11,
+      "geometry_changed": 18,
+      "metadata_changed": 1
+    },
+    "placeholder_node_count": 0
+  },
+  "routes": [
+    {
+      "route_id": "XH_RUN_0031",
+      "route_name": "西岸艺术滨江短线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "west_bund"
+      ],
+      "actual_distance_m": 2557,
+      "target_distance_m": 2557,
+      "distance_band": "short",
+      "route_shape": "one_way",
+      "validation_status": "accepted",
+      "work_classification": "unchanged_pending_visual_audit",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "龙美术馆西岸馆",
+        "油罐艺术中心"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "19a14fbe0dae5f7c724157fbc97589d333fba7586c83bf9fd713b24a9bd50b5f",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 75,
+        "geometry_distance_m": 2581.9,
+        "endpoint_distance_m": 2145.5,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.203,
+        "api_geometry_distance_error": 0.0097,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 2145.5,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/walking_v2_b959bfc41954aa44.json",
+        "data/raw/amap/walking_v2_e9a5413b6f3a5926.json",
+        "data/raw/amap/walking_v2_17a19f4dca6b3e8a.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "2026-08-17T14:41:06Z",
+      "poi_audit": {
+        "verified_count": 1,
+        "verified_type_counts": {
+          "toilet": 1
+        },
+        "preference_hits_from_verified_pois": [
+          "toilet"
+        ],
+        "stored_preference_hits": [
+          "coffee",
+          "toilet"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": [
+          "unknown"
+        ]
+      }
+    },
+    {
+      "route_id": "XH_RUN_0032",
+      "route_name": "龙华滨江—传媒港短线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "longhua",
+        "west_bund"
+      ],
+      "actual_distance_m": 1141,
+      "target_distance_m": 1300,
+      "distance_band": "short",
+      "route_shape": "one_way",
+      "validation_status": "accepted",
+      "work_classification": "unchanged_pending_visual_audit",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "龙华滨江休闲广场",
+        "西岸传媒港"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "027c444fa07fcaab6eb8872f8c86d67afe7798cf210b51fee1dd1d0ca368a8e7",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 32,
+        "geometry_distance_m": 1151.5,
+        "endpoint_distance_m": 1003.3,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.148,
+        "api_geometry_distance_error": 0.0092,
+        "target_distance_error": 0.1223,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 1003.3,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/walking_v2_a65ab1a453bac533.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "2026-08-17T14:41:06Z",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "toilet"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0033",
+      "route_name": "西岸滨水—云锦路单环",
+      "region_zone": "徐汇滨江及西岸",
+      "popular_area_ids": [
+        "west_bund"
+      ],
+      "actual_distance_m": 5747,
+      "target_distance_m": 5747,
+      "distance_band": "medium",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "瑞宁路与云锦路交叉口",
+        "瑞宁路与龙腾大道交叉口",
+        "龙耀路与龙腾大道交叉口",
+        "龙耀路与云锦路交叉口",
+        "瑞宁路与云锦路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "009556ee60919a170db0863cc4efbb69f0857108245deeae2e9f0ed71814123d",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 47,
+        "geometry_distance_m": 5765.8,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0033,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0033_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0034",
+      "route_name": "龙华—徐家汇南缘内陆单环",
+      "region_zone": "龙华及徐家汇南缘",
+      "popular_area_ids": [
+        "longhua",
+        "xujiahui"
+      ],
+      "actual_distance_m": 7758,
+      "target_distance_m": 7758,
+      "distance_band": "medium",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "龙华路与云锦路交叉口",
+        "龙华西路与天钥桥路交叉口",
+        "肇嘉浜路与天钥桥路交叉口",
+        "肇嘉浜路与宛平南路交叉口",
+        "龙华路与云锦路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "9bd428620494c213c01cbc1aa902e5cb30274067a318cd1c785ea153d1a20568",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 45,
+        "geometry_distance_m": 7695.9,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.008,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0034_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0035",
+      "route_name": "日晖港—自然艺术公园滨江线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "west_bund",
+        "longhua"
+      ],
+      "actual_distance_m": 9251,
+      "target_distance_m": 8500,
+      "distance_band": "medium",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "unchanged_pending_visual_audit",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "日晖港滨江入口",
+        "西岸自然艺术公园"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "1c42ece9a3cde0704140debbbe717311931a88499ac4285a385753956c52712a",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 244,
+        "geometry_distance_m": 9327.0,
+        "endpoint_distance_m": 7881.9,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.183,
+        "api_geometry_distance_error": 0.0082,
+        "target_distance_error": 0.0884,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 7881.9,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/walking_v2_bfc42773e407b41e.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_walking_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0036",
+      "route_name": "植物园外围公共道路单环",
+      "region_zone": "上海植物园及周边",
+      "popular_area_ids": [
+        "shanghai_botanical_garden"
+      ],
+      "actual_distance_m": 6652,
+      "target_distance_m": 6652,
+      "distance_band": "medium",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "老沪闵路与百色路交叉口",
+        "百色路与龙吴路交叉口",
+        "石龙路与龙吴路交叉口",
+        "石龙路与老沪闵路交叉口",
+        "老沪闵路与百色路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "6cd96e667d0dbb0ba66dd1335ca3a8152617f48145a8fb4054b2583bf06503e0",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 34,
+        "geometry_distance_m": 6641.6,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0016,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0036_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0037",
+      "route_name": "龙美术馆—自然艺术公园滨江长线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "west_bund",
+        "longhua"
+      ],
+      "actual_distance_m": 7974,
+      "target_distance_m": 7500,
+      "distance_band": "medium",
+      "route_shape": "one_way",
+      "validation_status": "accepted",
+      "work_classification": "unchanged_pending_visual_audit",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "龙美术馆西岸馆",
+        "西岸自然艺术公园"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "957e93c1b4b10b6c4a33c00786c17023a2a8b98a7b0e9e54327b86a4c61fd2f6",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 221,
+        "geometry_distance_m": 8049.6,
+        "endpoint_distance_m": 6993.4,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.151,
+        "api_geometry_distance_error": 0.0095,
+        "target_distance_error": 0.0632,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 6993.4,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/walking_v2_454623e24563bbd3.json",
+        "data/raw/amap/walking_v2_45da26386d534a44.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "2026-08-17T14:42:06Z",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0038",
+      "route_name": "日晖港—华泾滨江贯通线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "west_bund",
+        "longhua",
+        "huajing"
+      ],
+      "actual_distance_m": 9175,
+      "target_distance_m": 9000,
+      "distance_band": "medium",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "unchanged_pending_visual_audit",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "日晖港滨江入口",
+        "华泾路龙吴路口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "06dd7a36aa11a85c4661f7375a7ed29f1b7ece1d3b00f3f1accb2f4c5b58c2ad",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 218,
+        "geometry_distance_m": 9245.9,
+        "endpoint_distance_m": 7986.7,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.158,
+        "api_geometry_distance_error": 0.0077,
+        "target_distance_error": 0.0194,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 7986.7,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/walking_v2_fecbc145034d7ddd.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_walking_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0039",
+      "route_name": "植物园北区主园路单程线",
+      "region_zone": "上海植物园及周边",
+      "popular_area_ids": [
+        "shanghai_botanical_garden"
+      ],
+      "actual_distance_m": 1499,
+      "target_distance_m": 1400,
+      "distance_band": "short",
+      "route_shape": "one_way",
+      "validation_status": "accepted",
+      "work_classification": "unchanged_pending_visual_audit",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "上海植物园4号门",
+        "上海植物园3号门"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "f9aed06d37ca3f2f88e3461f5c7f371395146d1b50da3c467bf264c1191ac4ba",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 68,
+        "geometry_distance_m": 1511.8,
+        "endpoint_distance_m": 1178.4,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.283,
+        "api_geometry_distance_error": 0.0085,
+        "target_distance_error": 0.0707,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 1178.4,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/walking_v2_d7d51579e9ce2eba.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "2026-08-17T14:39:02Z",
+      "poi_audit": {
+        "verified_count": 1,
+        "verified_type_counts": {
+          "convenience": 1
+        },
+        "preference_hits_from_verified_pois": [
+          "convenience"
+        ],
+        "stored_preference_hits": [
+          "convenience",
+          "park_gate"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": [
+          "unknown"
+        ]
+      }
+    },
+    {
+      "route_id": "XH_RUN_0040",
+      "route_name": "植物园南区花园单程线",
+      "region_zone": "上海植物园及周边",
+      "popular_area_ids": [
+        "shanghai_botanical_garden"
+      ],
+      "actual_distance_m": 1137,
+      "target_distance_m": 1300,
+      "distance_band": "short",
+      "route_shape": "one_way",
+      "validation_status": "accepted",
+      "work_classification": "unchanged_pending_visual_audit",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "上海植物园3号门",
+        "上海植物园1号门"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "7e4d893dcf1c451efb75c6f3aad11c4f38a8fe819e0a7cc4bd856d9f3a90376f",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 40,
+        "geometry_distance_m": 1141.5,
+        "endpoint_distance_m": 1095.2,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.042,
+        "api_geometry_distance_error": 0.004,
+        "target_distance_error": 0.1254,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 1095.2,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/walking_v2_8ae3d026728380e2.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "2026-08-17T14:42:06Z",
+      "poi_audit": {
+        "verified_count": 1,
+        "verified_type_counts": {
+          "convenience": 1
+        },
+        "preference_hits_from_verified_pois": [
+          "convenience"
+        ],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": [
+          "unknown"
+        ]
+      }
+    },
+    {
+      "route_id": "XH_RUN_0041",
+      "route_name": "植物园北缘公共道路短环",
+      "region_zone": "上海植物园及周边",
+      "popular_area_ids": [
+        "shanghai_botanical_garden"
+      ],
+      "actual_distance_m": 2843,
+      "target_distance_m": 2843,
+      "distance_band": "short",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "龙川北路与罗城路交叉口",
+        "龙川北路与石龙路交叉口",
+        "石龙路与东泉路交叉口",
+        "东泉路与罗城路交叉口",
+        "龙川北路与罗城路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "0856adb5f0882a22b7aafe9fabc9813ddf8f4a1eeee185a26d419e5c7b706fe4",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 16,
+        "geometry_distance_m": 2860.0,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.006,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0041_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0042",
+      "route_name": "徐家汇南侧街区短环",
+      "region_zone": "徐家汇南侧",
+      "popular_area_ids": [
+        "xujiahui"
+      ],
+      "actual_distance_m": 1947,
+      "target_distance_m": 1947,
+      "distance_band": "short",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "零陵路与宛平南路交叉口",
+        "零陵路与天钥桥路交叉口",
+        "斜土路与天钥桥路交叉口",
+        "斜土路与宛平南路交叉口",
+        "零陵路与宛平南路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "6d72c47483c97f5773dfb932214c835a7812ebf645b44c17e1d1c48ae51ed9d1",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 17,
+        "geometry_distance_m": 1967.2,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0104,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0042_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0043",
+      "route_name": "徐家汇凯旋—漕溪北路环",
+      "region_zone": "徐家汇西侧及凯旋路",
+      "popular_area_ids": [
+        "xujiahui"
+      ],
+      "actual_distance_m": 5089,
+      "target_distance_m": 5089,
+      "distance_band": "medium",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "淮海西路与凯旋路交叉口",
+        "宜山路与凯旋路交叉口",
+        "宜山路与漕溪北路交叉口",
+        "虹桥路与漕溪北路交叉口",
+        "淮海西路与凯旋路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "fe9496e1f20921c44424e3aade45297e7fcb4d666bbff5350e8e6ef65075adab",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 58,
+        "geometry_distance_m": 5140.5,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0101,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0043_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0044",
+      "route_name": "衡复西部风貌短环",
+      "region_zone": "衡复风貌区及徐家汇",
+      "popular_area_ids": [
+        "hengfu",
+        "xujiahui"
+      ],
+      "actual_distance_m": 4736,
+      "target_distance_m": 4736,
+      "distance_band": "short",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "复兴西路与乌鲁木齐中路交叉口",
+        "复兴中路与嘉善路交叉口",
+        "肇嘉浜路与嘉善路交叉口",
+        "肇嘉浜路与乌鲁木齐南路交叉口",
+        "复兴西路与乌鲁木齐中路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "79164e944156b14beafcb52e2f26c80f49deeb35cf773b35b6684c95c91a2b90",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 28,
+        "geometry_distance_m": 4789.8,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0114,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0044_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0045",
+      "route_name": "龙华会—徐家汇公园单程线",
+      "region_zone": "徐家汇及体育公园",
+      "popular_area_ids": [
+        "longhua",
+        "xujiahui"
+      ],
+      "actual_distance_m": 3439,
+      "target_distance_m": 3300,
+      "distance_band": "short",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "unchanged_pending_visual_audit",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "龙华会北侧路口",
+        "徐家汇公园衡山路入口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "4c82d8268583dd5f9af97b9c50af27259e8aaad80a70d277ba4b6ed004f855fa",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 143,
+        "geometry_distance_m": 3493.9,
+        "endpoint_distance_m": 2904.3,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.203,
+        "api_geometry_distance_error": 0.016,
+        "target_distance_error": 0.0421,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 2904.3,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/walking_v2_5d77601d18594869.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_walking_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0046",
+      "route_name": "漕河泾开发区—康健园单程线",
+      "region_zone": "徐家汇及体育公园",
+      "popular_area_ids": [
+        "caohejing",
+        "kangjian"
+      ],
+      "actual_distance_m": 3720,
+      "target_distance_m": 3100,
+      "distance_band": "short",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "metadata_changed",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "漕河泾开发区站入口",
+        "康健园北门外"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "56f62c09cf70c62a99fac6103131a72e320c3ddc4def9a5e5a90e13943196817",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "target_distance_mismatch"
+      ],
+      "gate_metrics": {
+        "point_count": 81,
+        "geometry_distance_m": 3752.7,
+        "endpoint_distance_m": 2608.3,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.439,
+        "api_geometry_distance_error": 0.0088,
+        "target_distance_error": 0.2,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 2608.3,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/walking_v2_6f85c6253fdfd176.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_walking_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0047",
+      "route_name": "徐家汇体育文化中环",
+      "region_zone": "徐家汇",
+      "popular_area_ids": [
+        "xujiahui"
+      ],
+      "actual_distance_m": 7010,
+      "target_distance_m": 7010,
+      "distance_band": "medium",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 7,
+      "ordered_node_names": [
+        "淮海西路与凯旋路交叉口",
+        "宜山路与凯旋路交叉口",
+        "中山南二路与漕溪北路交叉口",
+        "中山南二路与天钥桥路交叉口",
+        "肇嘉浜路与天平路交叉口",
+        "虹桥路与华山路交叉口",
+        "淮海西路与凯旋路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "b7d162475e8d64917973f314d718379745f7b6bc4cf11fe5b35503bb1cab3768",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 64,
+        "geometry_distance_m": 6999.4,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0015,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0047_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0048",
+      "route_name": "衡复嘉善—陕西南路环",
+      "region_zone": "衡复风貌区中东部",
+      "popular_area_ids": [
+        "hengfu",
+        "xujiahui"
+      ],
+      "actual_distance_m": 2630,
+      "target_distance_m": 2630,
+      "distance_band": "short",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "复兴中路与嘉善路交叉口",
+        "复兴中路与陕西南路交叉口",
+        "肇嘉浜路与陕西南路交叉口",
+        "肇嘉浜路与嘉善路交叉口",
+        "复兴中路与嘉善路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "af6f77958cf717943cc52e38ddba1ff048cb03d40b740644dcadf936e66e7740",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 27,
+        "geometry_distance_m": 2638.5,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0032,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0048_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0049",
+      "route_name": "植物园—康健—漕河泾绿廊单程线",
+      "region_zone": "徐家汇及体育公园",
+      "popular_area_ids": [
+        "shanghai_botanical_garden",
+        "kangjian",
+        "caohejing"
+      ],
+      "actual_distance_m": 6406,
+      "target_distance_m": 6000,
+      "distance_band": "medium",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "unchanged_pending_visual_audit",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "上海植物园3号门外",
+        "漕河泾开发区站入口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "fa00201b6582b6ab46f367c678f7021422ebe254a9c909992b9f33ea99712620",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 149,
+        "geometry_distance_m": 6462.7,
+        "endpoint_distance_m": 4972.2,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.3,
+        "api_geometry_distance_error": 0.0089,
+        "target_distance_error": 0.0677,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 4972.2,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/walking_v2_b009266e864f159f.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_walking_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0050",
+      "route_name": "华泾—上海南站生态单程线",
+      "region_zone": "龙华街区",
+      "popular_area_ids": [
+        "huajing",
+        "shanghai_botanical_garden"
+      ],
+      "actual_distance_m": 5460,
+      "target_distance_m": 5500,
+      "distance_band": "medium",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "unchanged_pending_visual_audit",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "华泾路龙吴路口",
+        "上海南站北广场外"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "6a0f3a2ad7f719aba5bf0dfa731bb6e466070e853ad2bfddfdb27d53fe4b41e4",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 130,
+        "geometry_distance_m": 5500.1,
+        "endpoint_distance_m": 4699.8,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.17,
+        "api_geometry_distance_error": 0.0073,
+        "target_distance_error": 0.0073,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 4699.8,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/walking_v2_e803e1ac8aef72b5.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_walking_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0051",
+      "route_name": "衡复—龙华中路内陆环",
+      "region_zone": "衡复风貌区—龙华中路",
+      "popular_area_ids": [
+        "hengfu",
+        "longhua"
+      ],
+      "actual_distance_m": 9129,
+      "target_distance_m": 9129,
+      "distance_band": "medium",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "复兴中路与乌鲁木齐中路交叉口",
+        "复兴中路与瑞金二路交叉口",
+        "龙华中路与瑞金南路交叉口",
+        "龙华中路与东安路交叉口",
+        "复兴中路与乌鲁木齐中路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "0e3fa9a35e98c10a45d8fdd7fa897711734ed2824cecc453aee5f3fcd20abf9e",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 51,
+        "geometry_distance_m": 9133.4,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0005,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0051_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0052",
+      "route_name": "植物园—华发南部外围长环",
+      "region_zone": "上海植物园—华泾",
+      "popular_area_ids": [
+        "shanghai_botanical_garden",
+        "huajing"
+      ],
+      "actual_distance_m": 10367,
+      "target_distance_m": 10367,
+      "distance_band": "long",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "石龙路与老沪闵路交叉口",
+        "石龙路与龙吴路交叉口",
+        "华发路与龙吴路交叉口",
+        "华发路与老沪闵路交叉口",
+        "石龙路与老沪闵路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "627884c57665fdfbc5a4e97b257392fc44529cd75fff2d6df06efb08771053bb",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 72,
+        "geometry_distance_m": 10391.0,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0023,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0052_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0053",
+      "route_name": "衡复—徐家汇—体育公园长环",
+      "region_zone": "衡复风貌区—徐家汇",
+      "popular_area_ids": [
+        "hengfu",
+        "xujiahui"
+      ],
+      "actual_distance_m": 13518,
+      "target_distance_m": 13518,
+      "distance_band": "long",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 7,
+      "ordered_node_names": [
+        "安顺路与凯旋路交叉口",
+        "延安西路与番禺路交叉口",
+        "复兴中路与嘉善路交叉口",
+        "肇嘉浜路与东安路交叉口",
+        "中山南二路与天钥桥路交叉口",
+        "宜山路与凯旋路交叉口",
+        "安顺路与凯旋路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "dc018ec7cd48d6f4fcd137c59b0cb76603c227784773c1c2ca4784dcdf78d31c",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 99,
+        "geometry_distance_m": 13644.4,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0093,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0053_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0054",
+      "route_name": "漕河泾—华泾南部单程线",
+      "region_zone": "漕河泾—华泾",
+      "popular_area_ids": [
+        "caohejing",
+        "kangjian",
+        "huajing"
+      ],
+      "actual_distance_m": 11545,
+      "target_distance_m": 11545,
+      "distance_band": "long",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 3,
+      "ordered_node_names": [
+        "虹桥路与凯旋路交叉口",
+        "桂林路与宜山路交叉口",
+        "华泾路与龙吴路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "0b5d00b8a1f3946fa7a8d48763fc4d113ab5751da8bd20eb024f7f54b5c15ccb",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 96,
+        "geometry_distance_m": 11615.3,
+        "endpoint_distance_m": 9004.0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.29,
+        "api_geometry_distance_error": 0.0061,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 9004.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0054_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0055",
+      "route_name": "漕河泾—康健—华泾南向长线",
+      "region_zone": "漕河泾—康健—华泾",
+      "popular_area_ids": [
+        "caohejing",
+        "kangjian",
+        "shanghai_botanical_garden",
+        "huajing"
+      ],
+      "actual_distance_m": 14243,
+      "target_distance_m": 14243,
+      "distance_band": "long",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "延安西路与凯旋路交叉口",
+        "桂林路与钦州南路交叉口",
+        "石龙路与老沪闵路交叉口",
+        "华发路与龙吴路交叉口",
+        "华泾路与龙吴路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "edd87e13c24372a0284d18d3e040fe4a859ddef48d108e1f991beec0ac0c8e70",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 110,
+        "geometry_distance_m": 14363.9,
+        "endpoint_distance_m": 11778.0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.22,
+        "api_geometry_distance_error": 0.0085,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 11778.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0055_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0056",
+      "route_name": "西岸—华泾龙吴路长线",
+      "region_zone": "徐汇滨江—龙华—华泾",
+      "popular_area_ids": [
+        "west_bund",
+        "longhua",
+        "huajing"
+      ],
+      "actual_distance_m": 12345,
+      "target_distance_m": 12345,
+      "distance_band": "long",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 4,
+      "ordered_node_names": [
+        "复兴中路与瑞金二路交叉口",
+        "龙华路与天钥桥南路交叉口",
+        "龙水南路与龙吴路交叉口",
+        "华泾路与龙吴路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "a7e415bee171304187aeb8c4561225f2d1636c7dca8ea5ae8dea044d8108f0f9",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 36,
+        "geometry_distance_m": 12338.2,
+        "endpoint_distance_m": 10538.2,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.171,
+        "api_geometry_distance_error": 0.0005,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 10538.2,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0056_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0057",
+      "route_name": "虹梅—凯旋东西长环",
+      "region_zone": "漕河泾—徐家汇西侧",
+      "popular_area_ids": [
+        "caohejing",
+        "xujiahui"
+      ],
+      "actual_distance_m": 14974,
+      "target_distance_m": 14974,
+      "distance_band": "long",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "延安西路与虹许路交叉口",
+        "延安西路与凯旋路交叉口",
+        "宜山路与凯旋路交叉口",
+        "宜山路与虹许路交叉口",
+        "延安西路与虹许路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "dea3ebf1c63a487c59714b129dfd0a95380b7e7cb8979c1e111658f9db640168",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 110,
+        "geometry_distance_m": 14912.9,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0041,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0057_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0058",
+      "route_name": "衡复—西岸文化长线",
+      "region_zone": "漕河泾—蒲汇塘—南部连接区",
+      "popular_area_ids": [
+        "hengfu",
+        "xujiahui",
+        "longhua",
+        "west_bund"
+      ],
+      "actual_distance_m": 10190,
+      "target_distance_m": 10500,
+      "distance_band": "long",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "unchanged_pending_visual_audit",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "武康路湖南路口",
+        "西岸自然艺术公园"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "fcde94e24c7b623bdc1736438e4975fd170d240742bd1028695ec9996c307322",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 317,
+        "geometry_distance_m": 10301.5,
+        "endpoint_distance_m": 9315.5,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.106,
+        "api_geometry_distance_error": 0.0109,
+        "target_distance_error": 0.0295,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 9315.5,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/walking_v2_8fffe9a084c66f51.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_walking_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0059",
+      "route_name": "龙华—植物园北部长环",
+      "region_zone": "龙华—上海植物园北部",
+      "popular_area_ids": [
+        "longhua",
+        "shanghai_botanical_garden"
+      ],
+      "actual_distance_m": 13335,
+      "target_distance_m": 13335,
+      "distance_band": "long",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "中山南二路与漕溪北路交叉口",
+        "罗秀路与龙吴路交叉口",
+        "罗秀路与老沪闵路交叉口",
+        "石龙路与老沪闵路交叉口",
+        "中山南二路与漕溪北路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "1b9bb707dc72584dd474c62cf88c40534305b73221f493c6ce5efa320955a286",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 108,
+        "geometry_distance_m": 13413.7,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": true,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 0,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0059,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0059_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_RUN_0060",
+      "route_name": "华泾—徐家汇南北长线",
+      "region_zone": "华泾—上海植物园—徐家汇",
+      "popular_area_ids": [
+        "huajing",
+        "shanghai_botanical_garden",
+        "kangjian",
+        "xujiahui"
+      ],
+      "actual_distance_m": 11042,
+      "target_distance_m": 11042,
+      "distance_band": "long",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "华泾路与龙吴路交叉口",
+        "复兴中路与乌鲁木齐中路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "0421f8dae8f863671cfa46ed8cc5eb92e77d14dce6f172c6b0e8c91aa070b8a2",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 82,
+        "geometry_distance_m": 11157.7,
+        "endpoint_distance_m": 10116.1,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.103,
+        "api_geometry_distance_error": 0.0105,
+        "target_distance_error": 0.0,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 10116.1,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap_js/xh_run_0060_20260820.json"
+      ],
+      "geometry_source": "audited_import",
+      "network_source": "amap_js_walking_20260820+local_topology",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    }
+  ]
+}
