@@ -1,0 +1,101 @@
+name: Xuhui Route CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-quality-gate:
+    name: Offline quality gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: xuhui_route_builder/pyproject.toml
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Python package and quality tools
+        run: |
+          python -m pip install --disable-pip-version-check uv==0.11.26
+          uv sync --directory xuhui_route_builder --frozen --extra dev
+
+      - name: Run Python tests
+        run: >-
+          uv run --directory xuhui_route_builder --frozen --extra dev
+          pytest -q
+
+      - name: Run Node.js contract tests
+        run: node --test xuhui_route_builder/tests/*.test.mjs
+
+      - name: Run route skill checks
+        run: >-
+          uv run --directory xuhui_route_builder --frozen --extra dev
+          python ../.agents/skills/optimize-xuhui-routes/scripts/test_route_tools.py
+
+      - name: Run Ruff
+        run: >-
+          uv run --directory xuhui_route_builder --frozen --extra dev
+          ruff check --config pyproject.toml
+          src tests ../.agents/skills/optimize-xuhui-routes/scripts
+
+      - name: Run Pyright
+        run: >-
+          uv run --directory xuhui_route_builder --frozen --extra dev
+          pyright src
+
+      - name: Compile Python sources
+        run: >-
+          uv run --directory xuhui_route_builder --frozen --extra dev
+          python -m compileall -q src
+          ../.agents/skills/optimize-xuhui-routes/scripts
+
+      - name: Verify published static data
+        shell: python
+        run: |
+          from collections import Counter
+          import json
+          from pathlib import Path
+
+          data_dir = Path("xuhui_route_builder/data/web")
+          required_files = {
+              "access_cases.json",
+              "poi_catalog.json",
+              "route_catalog.json",
+              "xuhui_boundary.geojson",
+              "xuhui_entries.geojson",
+              "xuhui_routes.geojson",
+          }
+
+          def require(condition: bool, message: str) -> None:
+              if not condition:
+                  raise SystemExit(message)
+
+          missing = sorted(name for name in required_files if not (data_dir / name).is_file())
+          require(not missing, f"Missing published data files: {missing}")
+
+          documents = {
+              name: json.loads((data_dir / name).read_text(encoding="utf-8"))
+              for name in required_files
+          }
+          catalog = documents["route_catalog.json"]
+
+          require(isinstance(catalog, list), "route_catalog.json must contain a list")
+          require(len(catalog) == 90, f"Expected 90 routes, found {len(catalog)}")
+          require(Counter(route.get("route_mode") for route in catalog) == Counter({"walk": 30, "run": 30, "bike": 30}), "Expected 30 routes per mode")

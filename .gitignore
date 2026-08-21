@@ -5,6 +5,7 @@
 .env
 .env.*
 !.env.example
+/xuhui_route_builder/web/local-amap-config.js
 *.key
 *.pem
 *.token
@@ -16,6 +17,7 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+*.egg-info/
 .venv/
 venv/
 env/
@@ -26,6 +28,13 @@ env/
 /data_processed/
 /outputs/
 /output/
+/.playwright-cli/
+/xuhui_route_builder/.playwright-cli/
+/xuhui_route_builder/output/
+/xuhui_route_builder/data/raw/*
+!/xuhui_route_builder/data/raw/.gitkeep
+/xuhui_route_builder/data/interim/*
+!/xuhui_route_builder/data/interim/.gitkeep
 *.sqlite
 *.db
 
