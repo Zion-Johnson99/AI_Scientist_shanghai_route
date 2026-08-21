@@ -55,33 +55,35 @@ AK、IP 白名单和本地缓存均不提交到仓库。百度接口返回 `stat
 
 ## 常用命令
 
-如果 8123 服务已经启动，直接打开地图网页：
+以下命令从仓库根目录执行。先进入路线子项目目录：
 
 ```powershell
-cd D:\SJTU\交大\揭榜挂帅\AI_Scientist\xuhui_route_builder
-Start-Process "http://127.0.0.1:8123/web/"
+cd .\xuhui_route_builder
 ```
 
-如果 8123 服务还没启动，先启动本地静态网页服务：
+启动本地静态网页服务：
 
 ```powershell
-cd D:\SJTU\交大\揭榜挂帅\AI_Scientist\xuhui_route_builder
 python -m http.server 8123
 ```
 
-这个命令会占住当前 PowerShell 窗口。服务启动后，在浏览器打开 `http://127.0.0.1:8123/web/`，或另开一个 PowerShell 窗口运行 `Start-Process "http://127.0.0.1:8123/web/"`。
+启动时，PowerShell 提示符中的当前路径应以 `xuhui_route_builder` 结尾。服务会占用当前窗口；另开一个 PowerShell 窗口打开地图网页：
+
+```powershell
+Start-Process "http://127.0.0.1:8123/web/"
+```
+
+页面出现 0 条路线，且服务日志显示 `/data/web/...` 返回 `404` 时，说明服务从仓库根目录启动。按 `Ctrl+C` 停止服务，进入 `xuhui_route_builder` 后重新执行 `python -m http.server 8123`，再按 `Ctrl+F5` 刷新页面。
 
 运行测试：
 
 ```powershell
-cd D:\SJTU\交大\揭榜挂帅\AI_Scientist\xuhui_route_builder
 python -m pytest tests -q
 ```
 
 生成并验证真实路线数据：
 
 ```powershell
-cd D:\SJTU\交大\揭榜挂帅\AI_Scientist\xuhui_route_builder
 $env:PYTHONPATH="src"
 python -m xuhui_route_builder.cli build-osm-poi-index
 python -m xuhui_route_builder.cli resolve-seeds --max-online-calls 50
