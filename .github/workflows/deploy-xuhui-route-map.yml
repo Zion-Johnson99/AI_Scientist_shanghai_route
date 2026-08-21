@@ -1,0 +1,104 @@
+name: Deploy Xuhui Route Map
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: xuhui-route-pages
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    name: Run Xuhui Route CI
+    uses: ./.github/workflows/xuhui-route-ci.yml
+    permissions:
+      contents: read
+
+  deploy:
+    name: Deploy GitHub Pages
+    needs: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Build Pages site
+        env:
+          AMAP_JS_KEY: ${{ secrets.AMAP_JS_KEY }}
+          AMAP_JS_SECURITY_CODE: ${{ secrets.AMAP_JS_SECURITY_CODE }}
+        shell: python
+        run: |
+          import json
+          import os
+          from pathlib import Path
+          import shutil
+
+          secret_names = ("AMAP_JS_KEY", "AMAP_JS_SECURITY_CODE")
+          missing = [name for name in secret_names if not os.environ.get(name, "").strip()]
+          if missing:
+              raise SystemExit(f"Missing required GitHub Actions secrets: {', '.join(missing)}")
+
+          source_web = Path("xuhui_route_builder/web")
+          source_data = Path("xuhui_route_builder/data/web")
+          if not source_web.is_dir() or not source_data.is_dir():
+              raise SystemExit("Xuhui web or published data directory is missing")
+
+          site = Path("site")
+          shutil.copytree(source_web, site / "web")
+          shutil.copytree(source_data, site / "data" / "web")
+
+          amap_config = (
+              "window.XUHUI_AMAP_JS_KEY = "
+              + json.dumps(os.environ["AMAP_JS_KEY"])
+              + ";\nwindow.XUHUI_AMAP_JS_SECURITY_CODE = "
+              + json.dumps(os.environ["AMAP_JS_SECURITY_CODE"])
+              + ";\n"
+          )
+          (site / "web" / "local-amap-config.js").write_text(amap_config, encoding="utf-8")
+
+          root_index = """<!doctype html>
+          <html lang="zh-CN">
+          <head>
+            <meta charset="utf-8">
+            <meta http-equiv="refresh" content="0; url=./web/">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>徐汇户外运动路线</title>
+          </head>
+          <body>
+            <p><a href="./web/">进入徐汇户外运动路线地图</a></p>
+            <script>window.location.replace("./web/");</script>
+          </body>
+          </html>
+          """
+          (site / "index.html").write_text(root_index, encoding="utf-8")
+          (site / ".nojekyll").touch()
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
