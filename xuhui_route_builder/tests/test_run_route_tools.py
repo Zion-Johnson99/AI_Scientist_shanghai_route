@@ -118,6 +118,10 @@ def test_run_rebuild_rejects_route_below_xuhui_boundary_ratio(monkeypatch) -> No
         def distance_m(first, second):
             return 20
 
+        @staticmethod
+        def local_return_loops(points, lengths, shape):
+            return []
+
     route = {
         "shape": "one_way",
         "target_range_m": [900, 1_100],

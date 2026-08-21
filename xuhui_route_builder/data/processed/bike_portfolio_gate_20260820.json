@@ -1,0 +1,254 @@
+{
+  "status": "pass",
+  "metrics": {
+    "scope": "bike",
+    "route_count": 30,
+    "validation_status_counts": {
+      "accepted": 30
+    },
+    "mode_counts": {
+      "bike": 30
+    },
+    "distance_bucket_counts": {
+      "bike": {
+        "5-10km": 10,
+        "10-20km": 10,
+        "20-30km": 10
+      }
+    },
+    "shape_counts": {
+      "bike": {
+        "one_way": 15,
+        "strict_loop": 15
+      }
+    },
+    "shape_target_per_mode": {
+      "strict_loop": 15,
+      "one_way": 15,
+      "strict_loop_allowed": [
+        14,
+        16
+      ]
+    },
+    "strict_loop_geometry_checked_count": 15,
+    "preference_coverage_counts": {
+      "zero": 5,
+      "one": 17,
+      "two": 6,
+      "three": 2,
+      "four": 0
+    },
+    "popular_area_counts": {
+      "west_bund": 16,
+      "longhua": 18,
+      "xujiahui": 16,
+      "hengfu": 13,
+      "shanghai_botanical_garden": 16,
+      "kangjian": 6,
+      "caohejing": 17,
+      "huajing": 12
+    },
+    "popular_area_mode_counts": {
+      "west_bund": {
+        "walk": 0,
+        "run": 0,
+        "bike": 16
+      },
+      "longhua": {
+        "walk": 0,
+        "run": 0,
+        "bike": 18
+      },
+      "xujiahui": {
+        "walk": 0,
+        "run": 0,
+        "bike": 16
+      },
+      "hengfu": {
+        "walk": 0,
+        "run": 0,
+        "bike": 13
+      },
+      "shanghai_botanical_garden": {
+        "walk": 0,
+        "run": 0,
+        "bike": 16
+      },
+      "kangjian": {
+        "walk": 0,
+        "run": 0,
+        "bike": 6
+      },
+      "caohejing": {
+        "walk": 0,
+        "run": 0,
+        "bike": 17
+      },
+      "huajing": {
+        "walk": 0,
+        "run": 0,
+        "bike": 12
+      }
+    },
+    "web_catalog": {
+      "displayed_count": 30,
+      "needs_review_count": 0,
+      "recommendation_eligible_count": 30,
+      "navigation_eligible_count": 30
+    }
+  },
+  "failures": [],
+  "poi_audit": {
+    "status": "pass",
+    "findings": [],
+    "warnings": [
+      {
+        "code": "insufficient_preference_coverage",
+        "details": [
+          {
+            "route_id": "XH_BIKE_0061",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_BIKE_0063",
+            "verified_types": [
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0065",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_BIKE_0066",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0067",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0069",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0070",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0071",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0072",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0074",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0076",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0077",
+            "verified_types": [
+              "convenience"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0078",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0079",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0081",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_BIKE_0083",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0085",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0086",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0087",
+            "verified_types": [
+              "park_gate"
+            ]
+          },
+          {
+            "route_id": "XH_BIKE_0088",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_BIKE_0089",
+            "verified_types": []
+          },
+          {
+            "route_id": "XH_BIKE_0090",
+            "verified_types": [
+              "park_gate"
+            ]
+          }
+        ]
+      },
+      {
+        "code": "long_route_supply_gap",
+        "details": [
+          "XH_BIKE_0071",
+          "XH_BIKE_0072",
+          "XH_BIKE_0073",
+          "XH_BIKE_0074",
+          "XH_BIKE_0076",
+          "XH_BIKE_0078",
+          "XH_BIKE_0079",
+          "XH_BIKE_0081",
+          "XH_BIKE_0083",
+          "XH_BIKE_0085",
+          "XH_BIKE_0086",
+          "XH_BIKE_0087",
+          "XH_BIKE_0088",
+          "XH_BIKE_0089",
+          "XH_BIKE_0090"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "audit_date": "2026-08-20",
+  "viewport": {
+    "width": 1600,
+    "height": 1000
+  },
+  "summary": {
+    "routes_checked": 30,
+    "passed": 30,
+    "failed": 0
+  },
+  "routes": [
+    {"route_id": "XH_BIKE_0061", "status": "pass", "image_path": "output/playwright/bike-audit-0061.png"},
+    {"route_id": "XH_BIKE_0062", "status": "pass", "image_path": "output/playwright/bike-audit-0062.png"},
+    {"route_id": "XH_BIKE_0063", "status": "pass", "image_path": "output/playwright/bike-audit-0063.png"},
+    {"route_id": "XH_BIKE_0064", "status": "pass", "image_path": "output/playwright/bike-audit-0064.png"},
+    {"route_id": "XH_BIKE_0065", "status": "pass", "image_path": "output/playwright/bike-audit-0065.png"},
+    {"route_id": "XH_BIKE_0066", "status": "pass", "image_path": "output/playwright/bike-audit-0066.png"},
+    {"route_id": "XH_BIKE_0067", "status": "pass", "image_path": "output/playwright/bike-audit-0067.png"},
+    {"route_id": "XH_BIKE_0068", "status": "pass", "image_path": "output/playwright/bike-audit-0068.png"},
+    {"route_id": "XH_BIKE_0069", "status": "pass", "image_path": "output/playwright/bike-audit-0069.png"},
+    {"route_id": "XH_BIKE_0070", "status": "pass", "image_path": "output/playwright/bike-audit-0070.png"},
+    {"route_id": "XH_BIKE_0071", "status": "pass", "image_path": "output/playwright/bike-audit-0071.png"},
+    {"route_id": "XH_BIKE_0072", "status": "pass", "image_path": "output/playwright/bike-audit-0072.png"},
+    {"route_id": "XH_BIKE_0073", "status": "pass", "image_path": "output/playwright/bike-audit-0073.png"},
+    {"route_id": "XH_BIKE_0074", "status": "pass", "image_path": "output/playwright/bike-audit-0074.png"},
+    {"route_id": "XH_BIKE_0075", "status": "pass", "image_path": "output/playwright/bike-audit-0075.png"},
+    {"route_id": "XH_BIKE_0076", "status": "pass", "image_path": "output/playwright/bike-audit-0076.png"},
+    {"route_id": "XH_BIKE_0077", "status": "pass", "image_path": "output/playwright/bike-audit-0077.png"},
+    {"route_id": "XH_BIKE_0078", "status": "pass", "image_path": "output/playwright/bike-audit-0078.png"},
+    {"route_id": "XH_BIKE_0079", "status": "pass", "image_path": "output/playwright/bike-audit-0079.png"},
+    {"route_id": "XH_BIKE_0080", "status": "pass", "image_path": "output/playwright/bike-audit-0080.png"},
+    {"route_id": "XH_BIKE_0081", "status": "pass", "image_path": "output/playwright/bike-audit-0081.png"},
+    {"route_id": "XH_BIKE_0082", "status": "pass", "image_path": "output/playwright/bike-audit-0082.png"},
+    {"route_id": "XH_BIKE_0083", "status": "pass", "image_path": "output/playwright/bike-audit-0083.png"},
+    {"route_id": "XH_BIKE_0084", "status": "pass", "image_path": "output/playwright/bike-audit-0084.png"},
+    {"route_id": "XH_BIKE_0085", "status": "pass", "image_path": "output/playwright/bike-audit-0085.png"},
+    {"route_id": "XH_BIKE_0086", "status": "pass", "image_path": "output/playwright/bike-audit-0086.png"},
+    {"route_id": "XH_BIKE_0087", "status": "pass", "image_path": "output/playwright/bike-audit-0087.png"},
+    {"route_id": "XH_BIKE_0088", "status": "pass", "image_path": "output/playwright/bike-audit-0088.png"},
+    {"route_id": "XH_BIKE_0089", "status": "pass", "image_path": "output/playwright/bike-audit-0089.png"},
+    {"route_id": "XH_BIKE_0090", "status": "pass", "image_path": "output/playwright/bike-audit-0090.png"}
+  ]
+}

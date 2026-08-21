@@ -15,6 +15,12 @@ from pathlib import Path
 from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+ROUTE_MODE = "run"
+AMAP_SERVICE = "Walking"
+CACHE_NAMESPACE = "Run"
+SERVICE_LABEL = "walking"
+NETWORK_SOURCE = "amap_js_walking_20260820+local_topology"
+REVIEW_NOTE = "高德 JS 跑步适用步行路径经真实路口生成，本地几何门禁通过，等待全景目视复核"
 
 ROUTE_SPECS: dict[str, dict[str, Any]] = {
     "XH_RUN_0033": {
@@ -344,41 +350,43 @@ def proxy_eval(target_id: str, expression: str) -> Any:
 
 
 def browser_batch_expression(specs: dict[str, dict[str, Any]]) -> str:
+    cache_object = f"__xuhui{CACHE_NAMESPACE}Cache"
+    batch_object = f"__xuhui{CACHE_NAMESPACE}Batch"
     expression = f"""
 (() => {{
-  window.__xuhuiRunCache ||= {{ geocodes: {{}}, segments: {{}} }};
-  window.__xuhuiRunBatch = {{ status: 'running', routes: {{}}, error: null, apiCalls: 0, cacheHits: 0 }};
+  window.{cache_object} ||= {{ geocodes: {{}}, segments: {{}} }};
+  window.{batch_object} = {{ status: 'running', routes: {{}}, error: null, apiCalls: 0, cacheHits: 0 }};
   const specs = {json.dumps(specs, ensure_ascii=False)};
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const geocode = (name) => new Promise((resolve, reject) => {{
-    const cached = window.__xuhuiRunCache.geocodes[name];
-    if (cached) {{ window.__xuhuiRunBatch.cacheHits += 1; resolve(cached); return; }}
+    const cached = window.{cache_object}.geocodes[name];
+    if (cached) {{ window.{batch_object}.cacheHits += 1; resolve(cached); return; }}
     const timeout = setTimeout(() => reject(new Error(`geocode timeout: ${{name}}`)), 15000);
     new AMap.Geocoder({{ city: '上海' }}).getLocation(`上海市徐汇区${{name}}`, (status, result) => {{
       clearTimeout(timeout);
-      window.__xuhuiRunBatch.apiCalls += 1;
+      window.{batch_object}.apiCalls += 1;
       const item = result?.geocodes?.[0];
       if (status !== 'complete' || !item) {{ reject(new Error(`geocode failed: ${{name}} status=${{status}} info=${{result?.info || ''}}`)); return; }}
       const value = {{ name, location: item.location.toArray(), address: item.formattedAddress, level: item.level }};
-      window.__xuhuiRunCache.geocodes[name] = value;
+      window.{cache_object}.geocodes[name] = value;
       resolve(value);
     }});
   }});
   const searchOnce = (origin, destination) => new Promise((resolve, reject) => {{
     const key = `${{origin.join(',')}}>${{destination.join(',')}}`;
-    const cached = window.__xuhuiRunCache.segments[key];
-    if (cached) {{ window.__xuhuiRunBatch.cacheHits += 1; resolve(cached); return; }}
-    const service = new AMap.Walking({{ city: '上海' }});
-    const timeout = setTimeout(() => reject(new Error(`walking timeout: ${{key}}`)), 20000);
+    const cached = window.{cache_object}.segments[key];
+    if (cached) {{ window.{batch_object}.cacheHits += 1; resolve(cached); return; }}
+    const service = new AMap.{AMAP_SERVICE}({{ city: '上海' }});
+    const timeout = setTimeout(() => reject(new Error(`{SERVICE_LABEL} timeout: ${{key}}`)), 20000);
     service.search(new AMap.LngLat(...origin), new AMap.LngLat(...destination), (status, result) => {{
       clearTimeout(timeout);
-      window.__xuhuiRunBatch.apiCalls += 1;
+      window.{batch_object}.apiCalls += 1;
       const route = result?.routes?.[0];
       const info = String(result?.info || '');
-      if (status !== 'complete' || !route) {{ reject(new Error(`walking failed: status=${{status}} info=${{info}}`)); return; }}
+      if (status !== 'complete' || !route) {{ reject(new Error(`{SERVICE_LABEL} failed: status=${{status}} info=${{info}}`)); return; }}
       const points = [];
       const roads = [];
-      for (const step of route.steps || []) {{
+      for (const step of route.steps || route.rides || []) {{
         if (step.road && !roads.includes(step.road)) roads.push(step.road);
         for (const point of step.path || []) {{
           const pair = point.toArray();
@@ -386,29 +394,36 @@ def browser_batch_expression(specs: dict[str, dict[str, Any]]) -> str:
         }}
       }}
       const value = {{ distance: route.distance, duration: route.time, points, roads }};
-      window.__xuhuiRunCache.segments[key] = value;
+      window.{cache_object}.segments[key] = value;
       resolve(value);
     }});
   }});
   (async () => {{
     try {{
       for (const [routeId, spec] of Object.entries(specs)) {{
-        window.__xuhuiRunBatch.status = `geocoding ${{routeId}}`;
+        window.{batch_object}.status = `geocoding ${{routeId}}`;
         const nodes = [];
-        for (const name of spec.nodes) {{ nodes.push(await geocode(name)); await wait(250); }}
+        for (const nodeValue of spec.nodes) {{
+          if (typeof nodeValue === 'string') {{
+            nodes.push(await geocode(nodeValue));
+            await wait(250);
+          }} else {{
+            nodes.push(nodeValue);
+          }}
+        }}
         const segments = [];
         const segmentCount = spec.shape === 'strict_loop' ? nodes.length : nodes.length - 1;
         for (let index = 0; index < segmentCount; index += 1) {{
-          window.__xuhuiRunBatch.status = `routing ${{routeId}} ${{index + 1}}/${{segmentCount}}`;
+          window.{batch_object}.status = `routing ${{routeId}} ${{index + 1}}/${{segmentCount}}`;
           segments.push(await searchOnce(nodes[index].location, nodes[(index + 1) % nodes.length].location));
           await wait(750);
         }}
-        window.__xuhuiRunBatch.routes[routeId] = {{ ...spec, nodes, segments }};
+        window.{batch_object}.routes[routeId] = {{ ...spec, nodes, segments }};
       }}
-      window.__xuhuiRunBatch.status = 'done';
+      window.{batch_object}.status = 'done';
     }} catch (error) {{
-      window.__xuhuiRunBatch.error = String(error?.stack || error);
-      window.__xuhuiRunBatch.status = 'error';
+      window.{batch_object}.error = String(error?.stack || error);
+      window.{batch_object}.status = 'error';
     }}
   }})();
   return 'started';
@@ -424,12 +439,13 @@ def start_batch(target_id: str, specs: dict[str, dict[str, Any]]) -> None:
 
 
 def wait_for_batch(target_id: str) -> dict[str, Any]:
+    batch_object = f"__xuhui{CACHE_NAMESPACE}Batch"
     deadline = time.monotonic() + 600
     last_status = ""
     while time.monotonic() < deadline:
         state = proxy_eval(
             target_id,
-            "JSON.stringify({status:window.__xuhuiRunBatch?.status,error:window.__xuhuiRunBatch?.error})",
+            f"JSON.stringify({{status:window.{batch_object}?.status,error:window.{batch_object}?.error}})",
         )
         summary = json.loads(state or "{}")
         status = summary.get("status", "")
@@ -439,7 +455,7 @@ def wait_for_batch(target_id: str) -> dict[str, Any]:
         if status == "done":
             raw = proxy_eval(
                 target_id,
-                "JSON.stringify({routes:window.__xuhuiRunBatch.routes,apiCalls:window.__xuhuiRunBatch.apiCalls,cacheHits:window.__xuhuiRunBatch.cacheHits})",
+                f"JSON.stringify({{routes:window.{batch_object}.routes,apiCalls:window.{batch_object}.apiCalls,cacheHits:window.{batch_object}.cacheHits}})",
             )
             return json.loads(raw)
         if status == "error":
@@ -591,7 +607,7 @@ def audit_routes(
         audit = gate.audit_route(
             {
                 "route_id": route_id,
-                "route_mode": "run",
+                "route_mode": ROUTE_MODE,
                 "route_shape": route["shape"],
                 "polyline_gcj02": points,
                 "actual_distance_m": distance,
@@ -609,8 +625,24 @@ def audit_routes(
             0,
         )
         intersection_pairs = gate.proper_segment_intersections(points, route["shape"])
+        return_loops = gate.local_return_loops(
+            points,
+            [
+                gate.distance_m(first, second)
+                for first, second in zip(points, points[1:])
+            ],
+            route["shape"],
+        )
         audit["diagnostics"] = {
             "route_inside_ratio": inside_ratio,
+            "local_return_loops": [
+                {
+                    **item,
+                    "from_point": points[item["from_index"]],
+                    "to_point": points[item["to_index"]],
+                }
+                for item in return_loops
+            ],
             "self_intersections": [
                 {
                     "first_segment": pair[0],
@@ -743,10 +775,10 @@ def apply_routes(
                 "geometry_status": "complete",
                 "validation_status": "pending",
                 "snap_ratio": None,
-                "network_source": "amap_js_walking_20260820+local_topology",
+                "network_source": NETWORK_SOURCE,
                 "source_accessed_at": "2026-08-20",
                 "verified_at": None,
-                "review_note": "高德 JS 跑步适用步行路径经真实路口生成，本地几何门禁通过，等待全景目视复核",
+                "review_note": REVIEW_NOTE,
                 "raw_response_paths": [
                     evidence_path.relative_to(project_root).as_posix()
                 ],

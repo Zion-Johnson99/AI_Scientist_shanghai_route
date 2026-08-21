@@ -1,0 +1,2472 @@
+{
+  "metadata": {
+    "route_mode": "bike",
+    "generated_at": "2026-08-20T05:13:40.883214+00:00",
+    "candidate_source": "data/interim/pilot_candidates.json",
+    "validation_source": "data/processed/route_validation_report.json",
+    "geometry_coordinate_system": "GCJ-02",
+    "visual_audit_contract": "one full-route view per route; street-scale view for flagged segments"
+  },
+  "summary": {
+    "route_count": 30,
+    "distance_band_counts": {
+      "short": 11,
+      "medium": 10,
+      "long": 9
+    },
+    "shape_counts": {
+      "strict_loop": 15,
+      "one_way": 15
+    },
+    "validation_status_counts": {
+      "needs_review": 30
+    },
+    "gate_status_counts": {
+      "fail": 29,
+      "pass": 1
+    },
+    "work_classification_counts": {
+      "geometry_changed": 29,
+      "unchanged_pending_visual_audit": 1
+    },
+    "route_inside_ratio_missing_count": 30,
+    "placeholder_node_count": 0
+  },
+  "routes": [
+    {
+      "route_id": "XH_BIKE_0061",
+      "route_name": "西岸—徐家汇体育公园骑行环线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "west_bund",
+        "longhua",
+        "xujiahui"
+      ],
+      "actual_distance_m": 7886,
+      "target_distance_m": 7800,
+      "distance_band": "short",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "龙耀路与云锦路交叉口",
+        "丰谷路与龙腾大道交叉口",
+        "徐家汇体育公园天钥桥路入口外侧道路",
+        "龙华会外侧龙华路",
+        "龙耀路与云锦路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "0fc5760f6e90ca09916e618ece73341d2c9250fd8cae6c32be7c6a927b87f320",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "retraced_edges",
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 244,
+        "geometry_distance_m": 7962.9,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 14,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 18,
+        "retrace_ratio": 0.0233,
+        "longest_retraced_edge_m": 50.4,
+        "branch_like_node_count": 18,
+        "proper_self_intersection_count": 15,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 60,
+        "api_geometry_distance_error": 0.0097,
+        "target_distance_error": 0.011,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_2bbda50a682a11ef.json",
+        "data/raw/amap/bicycling_v2_c095fb5b4e53f1a3.json",
+        "data/raw/amap/bicycling_v2_89f5cb61d5b5e91e.json",
+        "data/raw/amap/bicycling_v2_b649555617a940dc.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "toilet"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0062",
+      "route_name": "上海植物园外围骑行环线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "shanghai_botanical_garden",
+        "longhua"
+      ],
+      "actual_distance_m": 6141,
+      "target_distance_m": 8100,
+      "distance_band": "short",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "上海植物园3号门外百色路",
+        "百色路与龙吴路交叉口",
+        "龙水南路与龙腾大道交叉口",
+        "上海植物园4号门外罗城路",
+        "上海植物园3号门外百色路"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "b5bdf1b45e15a64bc83cb07405e4d6906caf8d8a5d0167772342c5aa2288e1a4",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "branch_or_self_intersection",
+        "local_return_loop",
+        "target_distance_mismatch"
+      ],
+      "gate_metrics": {
+        "point_count": 182,
+        "geometry_distance_m": 6180.0,
+        "endpoint_distance_m": 0.4,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 3,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 2,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 2,
+        "proper_self_intersection_count": 1,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 23,
+        "api_geometry_distance_error": 0.0064,
+        "target_distance_error": 0.2419,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.4,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_88d94aaf25a58dd5.json",
+        "data/raw/amap/bicycling_v2_e1c6770c1c321c77.json",
+        "data/raw/amap/bicycling_v2_deb0a8978f945293.json",
+        "data/raw/amap/bicycling_v2_343dcfcc651d7ffa.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "convenience",
+          "park_gate"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0063",
+      "route_name": "漕河泾—桂江绿廊骑行环线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "caohejing",
+        "kangjian"
+      ],
+      "actual_distance_m": 9330,
+      "target_distance_m": 9400,
+      "distance_band": "short",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "宜山路与虹梅路交叉口",
+        "桂江路与钦州南路交叉口",
+        "江安路与桂江路交叉口",
+        "蒲汇塘路与桂林路交叉口",
+        "宜山路与虹梅路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "eedac22d086763f1f70a9d9f39dc4798f24bc16fa831767730ba7c71f94c1642",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 193,
+        "geometry_distance_m": 9408.8,
+        "endpoint_distance_m": 0.4,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 5,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 7,
+        "retrace_ratio": 0.0041,
+        "longest_retraced_edge_m": 19.5,
+        "branch_like_node_count": 6,
+        "proper_self_intersection_count": 5,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 15,
+        "api_geometry_distance_error": 0.0084,
+        "target_distance_error": 0.0074,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.4,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_3f34ae4500e1e134.json",
+        "data/raw/amap/bicycling_v2_07be59b48639827c.json",
+        "data/raw/amap/bicycling_v2_9c23cd6d2d0401c7.json",
+        "data/raw/amap/bicycling_v2_cc422247e295de89.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0064",
+      "route_name": "徐家汇—衡复风貌骑行环线",
+      "region_zone": "上海植物园及周边",
+      "popular_area_ids": [
+        "xujiahui",
+        "hengfu"
+      ],
+      "actual_distance_m": 8765,
+      "target_distance_m": 8600,
+      "distance_band": "short",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 4,
+      "ordered_node_names": [
+        "徐家汇体育公园天钥桥路入口外侧道路",
+        "安顺路与淮海西路交叉口",
+        "徐家汇公园衡山路入口外侧道路",
+        "徐家汇体育公园天钥桥路入口外侧道路"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "0bc5b4195a7fe88815104d5037c38a590700f2a0db9235684be764512eafb667",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 305,
+        "geometry_distance_m": 8876.4,
+        "endpoint_distance_m": 0.4,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 4,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 3,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 3,
+        "proper_self_intersection_count": 5,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 2,
+        "api_geometry_distance_error": 0.0127,
+        "target_distance_error": 0.0192,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.4,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_35fee69d41cdd7f8.json",
+        "data/raw/amap/bicycling_v2_3dd85d928b7b46c7.json",
+        "data/raw/amap/bicycling_v2_5062aaab663ccba7.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0065",
+      "route_name": "康健—漕河泾骑行环线",
+      "region_zone": "上海植物园及周边",
+      "popular_area_ids": [
+        "kangjian",
+        "caohejing"
+      ],
+      "actual_distance_m": 6309,
+      "target_distance_m": 9400,
+      "distance_band": "short",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 4,
+      "ordered_node_names": [
+        "蒲汇塘路与桂林路交叉口",
+        "宜山路与虹漕路交叉口",
+        "桂江路与钦州南路交叉口",
+        "蒲汇塘路与桂林路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "689b957f41b67fff0450d7854f05cad08b031c48bd72eb24668915f21d6f789b",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "branch_or_self_intersection",
+        "local_return_loop",
+        "target_distance_mismatch"
+      ],
+      "gate_metrics": {
+        "point_count": 131,
+        "geometry_distance_m": 6367.2,
+        "endpoint_distance_m": 0.7,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 1,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 2,
+        "retrace_ratio": 0.003,
+        "longest_retraced_edge_m": 18.9,
+        "branch_like_node_count": 1,
+        "proper_self_intersection_count": 3,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 3,
+        "api_geometry_distance_error": 0.0092,
+        "target_distance_error": 0.3288,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.7,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_95de1676e1a0145e.json",
+        "data/raw/amap/bicycling_v2_42e96c3c6d43533c.json",
+        "data/raw/amap/bicycling_v2_469316a107ad5488.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0066",
+      "route_name": "植物园—西岸龙腾大道骑行线",
+      "region_zone": "上海植物园及周边",
+      "popular_area_ids": [
+        "shanghai_botanical_garden",
+        "longhua",
+        "west_bund"
+      ],
+      "actual_distance_m": 6298,
+      "target_distance_m": 5900,
+      "distance_band": "short",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "上海植物园1号门外龙吴路",
+        "龙华滨江休闲广场外侧道路",
+        "龙耀路与云锦路交叉口",
+        "丰谷路与龙腾大道交叉口",
+        "龙腾大道与瑞宁路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "976b970dced9dbc5fcbec85319b57e1abe9842dc7ef7e31fc322f79be9849b39",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "branch_or_self_intersection"
+      ],
+      "gate_metrics": {
+        "point_count": 174,
+        "geometry_distance_m": 6352.3,
+        "endpoint_distance_m": 4689.6,
+        "retrace_ratio": 0.0008,
+        "longest_retraced_edge_m": 5.1,
+        "branch_like_node_count": 2,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.355,
+        "api_geometry_distance_error": 0.0086,
+        "target_distance_error": 0.0675,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 4689.6,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_7bd2a824df2f1f46.json",
+        "data/raw/amap/bicycling_v2_234249911c87f1a5.json",
+        "data/raw/amap/bicycling_v2_2bbda50a682a11ef.json",
+        "data/raw/amap/bicycling_v2_58af5876aa71a587.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "toilet"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0067",
+      "route_name": "上海植物园—龙华骑行线",
+      "region_zone": "衡复风貌区",
+      "popular_area_ids": [
+        "shanghai_botanical_garden",
+        "longhua"
+      ],
+      "actual_distance_m": 6154,
+      "target_distance_m": 7800,
+      "distance_band": "short",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 4,
+      "ordered_node_names": [
+        "上海植物园3号门外百色路",
+        "上海植物园4号门外罗城路",
+        "龙华滨江休闲广场外侧道路",
+        "龙华会外侧龙华路"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "a3631b93e44c30d6e339a2a0d2bad34cc50b3c26052f9150b323cdb5957ad517",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "target_distance_mismatch"
+      ],
+      "gate_metrics": {
+        "point_count": 190,
+        "geometry_distance_m": 6214.9,
+        "endpoint_distance_m": 3675.4,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.691,
+        "api_geometry_distance_error": 0.0099,
+        "target_distance_error": 0.211,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 3675.4,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_607a9261d2044d26.json",
+        "data/raw/amap/bicycling_v2_dcdf0541b61daf35.json",
+        "data/raw/amap/bicycling_v2_cfc90af26e316158.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "convenience",
+          "park_gate"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0068",
+      "route_name": "漕河泾—徐家汇骑行线",
+      "region_zone": "徐家汇及体育公园",
+      "popular_area_ids": [
+        "caohejing",
+        "xujiahui"
+      ],
+      "actual_distance_m": 5811,
+      "target_distance_m": 6200,
+      "distance_band": "short",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "unchanged_pending_visual_audit",
+      "route_inside_ratio": null,
+      "ordered_node_count": 2,
+      "ordered_node_names": [
+        "宜山路与虹梅路交叉口",
+        "徐家汇体育公园天钥桥路入口外侧道路"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "a8c779c482d69d90e0392ee8ba3f3bdf49b3bd9ae7c15a45a5e5c14104fb16a2",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "pass",
+      "gate_failure_codes": [],
+      "gate_metrics": {
+        "point_count": 141,
+        "geometry_distance_m": 5844.8,
+        "endpoint_distance_m": 4283.7,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 0,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.364,
+        "api_geometry_distance_error": 0.0058,
+        "target_distance_error": 0.0627,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 4283.7,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_f7bd72513338923b.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0069",
+      "route_name": "衡复—西岸骑行线",
+      "region_zone": "康健—桂江绿廊",
+      "popular_area_ids": [
+        "hengfu",
+        "xujiahui",
+        "longhua",
+        "west_bund"
+      ],
+      "actual_distance_m": 8961,
+      "target_distance_m": 9800,
+      "distance_band": "short",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 6,
+      "ordered_node_names": [
+        "乌鲁木齐中路与复兴西路交叉口",
+        "徐家汇公园衡山路入口外侧道路",
+        "徐家汇体育公园天钥桥路入口外侧道路",
+        "龙华会外侧龙华路",
+        "丰谷路与龙腾大道交叉口",
+        "龙耀路与云锦路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "cb0d3872847f5787f82d7ac998943d0192f36a553736a4d2aa9d34aaeeeab15e",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 291,
+        "geometry_distance_m": 9054.4,
+        "endpoint_distance_m": 5539.3,
+        "retrace_ratio": 0.0026,
+        "longest_retraced_edge_m": 22.7,
+        "branch_like_node_count": 8,
+        "proper_self_intersection_count": 8,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 17,
+        "one_way_circuity": 1.635,
+        "api_geometry_distance_error": 0.0104,
+        "target_distance_error": 0.0856,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 5539.3,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_1354cb25ce2c4d3c.json",
+        "data/raw/amap/bicycling_v2_5062aaab663ccba7.json",
+        "data/raw/amap/bicycling_v2_89f5cb61d5b5e91e.json",
+        "data/raw/amap/bicycling_v2_8cf5590b387943b0.json",
+        "data/raw/amap/bicycling_v2_0e09c6d69623334e.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0070",
+      "route_name": "华泾—上海植物园骑行线",
+      "region_zone": "漕河泾—蒲汇塘—南部连接区",
+      "popular_area_ids": [
+        "huajing",
+        "shanghai_botanical_garden"
+      ],
+      "actual_distance_m": 8235,
+      "target_distance_m": 7000,
+      "distance_band": "short",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 3,
+      "ordered_node_names": [
+        "华展路与龙吴路交叉口",
+        "上海植物园3号门外百色路",
+        "上海植物园4号门外罗城路"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "7269d99be4d3faae6567a05cb4eeafbd19b4632e5ea0ba81909827c99305ce42",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "retraced_edges",
+        "branch_or_self_intersection",
+        "local_return_loop",
+        "target_distance_mismatch"
+      ],
+      "gate_metrics": {
+        "point_count": 210,
+        "geometry_distance_m": 8296.3,
+        "endpoint_distance_m": 4509.2,
+        "retrace_ratio": 0.0039,
+        "longest_retraced_edge_m": 31.9,
+        "branch_like_node_count": 8,
+        "proper_self_intersection_count": 3,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 20,
+        "one_way_circuity": 1.84,
+        "api_geometry_distance_error": 0.0074,
+        "target_distance_error": 0.1764,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 4509.2,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_ad7001f2daa8aa31.json",
+        "data/raw/amap/bicycling_v2_607a9261d2044d26.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "convenience",
+          "park_gate"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0071",
+      "route_name": "西岸—徐家汇—龙华骑行环线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "west_bund",
+        "longhua",
+        "xujiahui"
+      ],
+      "actual_distance_m": 12285,
+      "target_distance_m": 13500,
+      "distance_band": "medium",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "龙耀路与云锦路交叉口",
+        "龙腾大道与瑞宁路交叉口",
+        "徐家汇公园衡山路入口外侧道路",
+        "龙华会外侧龙华路",
+        "龙耀路与云锦路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "dfd6831bccc5bd5204ec4aa977c1c0d3e1013dadfea18f8fc9e89ae89c14dd66",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 329,
+        "geometry_distance_m": 12427.0,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 2,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 1,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 1,
+        "proper_self_intersection_count": 1,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 6,
+        "api_geometry_distance_error": 0.0116,
+        "target_distance_error": 0.09,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_3b0b1b5653895570.json",
+        "data/raw/amap/bicycling_v2_46887c3f416b9af5.json",
+        "data/raw/amap/bicycling_v2_17f1564fae620746.json",
+        "data/raw/amap/bicycling_v2_b649555617a940dc.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0072",
+      "route_name": "植物园—康健—漕河泾骑行环线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "shanghai_botanical_garden",
+        "kangjian",
+        "caohejing"
+      ],
+      "actual_distance_m": 18191,
+      "target_distance_m": 16000,
+      "distance_band": "medium",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 7,
+      "ordered_node_names": [
+        "上海植物园4号门外罗城路",
+        "蒲汇塘路与桂林路交叉口",
+        "宜山路与虹梅路交叉口",
+        "桂江路与钦州南路交叉口",
+        "江安路与桂江路交叉口",
+        "上海植物园3号门外百色路",
+        "上海植物园4号门外罗城路"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "6e112ff23959590c72ea24e3cd89dcefb62f3068be488fcb69eb6ebde66bdcd8",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "retraced_edges",
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 483,
+        "geometry_distance_m": 18331.2,
+        "endpoint_distance_m": 0.4,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 10,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 12,
+        "retrace_ratio": 0.0028,
+        "longest_retraced_edge_m": 31.9,
+        "branch_like_node_count": 11,
+        "proper_self_intersection_count": 6,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 33,
+        "api_geometry_distance_error": 0.0077,
+        "target_distance_error": 0.1369,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.4,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_b2416614d517cf5a.json",
+        "data/raw/amap/bicycling_v2_cc422247e295de89.json",
+        "data/raw/amap/bicycling_v2_3f34ae4500e1e134.json",
+        "data/raw/amap/bicycling_v2_07be59b48639827c.json",
+        "data/raw/amap/bicycling_v2_af3e8873d8fda135.json",
+        "data/raw/amap/bicycling_v2_607a9261d2044d26.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0073",
+      "route_name": "衡复—徐家汇—龙华—西岸骑行环线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "hengfu",
+        "xujiahui",
+        "longhua",
+        "west_bund"
+      ],
+      "actual_distance_m": 13160,
+      "target_distance_m": 13800,
+      "distance_band": "medium",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 6,
+      "ordered_node_names": [
+        "徐家汇公园衡山路入口外侧道路",
+        "上海音乐学院外侧淮海中路",
+        "龙腾大道与瑞宁路交叉口",
+        "丰谷路与龙腾大道交叉口",
+        "龙华会外侧龙华路",
+        "徐家汇公园衡山路入口外侧道路"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "e1b838f9231ebf2604c01e04afb1de87ea0db990efd909cb8ad538287cb16630",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "retraced_edges",
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 442,
+        "geometry_distance_m": 13338.9,
+        "endpoint_distance_m": 0.4,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 15,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 22,
+        "retrace_ratio": 0.016,
+        "longest_retraced_edge_m": 81.1,
+        "branch_like_node_count": 20,
+        "proper_self_intersection_count": 8,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 54,
+        "api_geometry_distance_error": 0.0136,
+        "target_distance_error": 0.0464,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.4,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_877886bbc44cf935.json",
+        "data/raw/amap/bicycling_v2_95ec10a698ee55d3.json",
+        "data/raw/amap/bicycling_v2_aa1c5b71c56482cd.json",
+        "data/raw/amap/bicycling_v2_5cb8af2819721869.json",
+        "data/raw/amap/bicycling_v2_fdb66c0250a4f29c.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0074",
+      "route_name": "华泾—植物园—西岸南段骑行环线",
+      "region_zone": "上海植物园及周边",
+      "popular_area_ids": [
+        "huajing",
+        "shanghai_botanical_garden",
+        "west_bund"
+      ],
+      "actual_distance_m": 16246,
+      "target_distance_m": 16500,
+      "distance_band": "medium",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 6,
+      "ordered_node_names": [
+        "华展路与龙吴路交叉口",
+        "上海植物园3号门外百色路",
+        "上海植物园4号门外罗城路",
+        "龙华滨江休闲广场外侧道路",
+        "龙水南路与龙腾大道交叉口",
+        "华展路与龙吴路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "721391ba2bccc4064918599ab998fcaa727e33f8decb204fdf84e0d1c3c8ae7b",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "retraced_edges",
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 372,
+        "geometry_distance_m": 16354.6,
+        "endpoint_distance_m": 0.4,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 14,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 15,
+        "retrace_ratio": 0.002,
+        "longest_retraced_edge_m": 31.9,
+        "branch_like_node_count": 15,
+        "proper_self_intersection_count": 9,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 30,
+        "api_geometry_distance_error": 0.0067,
+        "target_distance_error": 0.0154,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.4,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_ad7001f2daa8aa31.json",
+        "data/raw/amap/bicycling_v2_607a9261d2044d26.json",
+        "data/raw/amap/bicycling_v2_dcdf0541b61daf35.json",
+        "data/raw/amap/bicycling_v2_9c6ae021a3095ca6.json",
+        "data/raw/amap/bicycling_v2_ce4ed9fec309999d.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0075",
+      "route_name": "漕河泾—徐家汇—衡复骑行环线",
+      "region_zone": "上海植物园及周边",
+      "popular_area_ids": [
+        "caohejing",
+        "xujiahui",
+        "hengfu"
+      ],
+      "actual_distance_m": 16711,
+      "target_distance_m": 17000,
+      "distance_band": "medium",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 6,
+      "ordered_node_names": [
+        "宜山路与虹梅路交叉口",
+        "蒲汇塘路与桂林路交叉口",
+        "徐家汇体育公园天钥桥路入口外侧道路",
+        "徐家汇公园衡山路入口外侧道路",
+        "安顺路与淮海西路交叉口",
+        "宜山路与虹梅路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "a9986abd5a22e58837010613e5526a1af65d41bd74108538296db5e8239337f8",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 477,
+        "geometry_distance_m": 16865.6,
+        "endpoint_distance_m": 0.4,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 8,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 8,
+        "retrace_ratio": 0.0013,
+        "longest_retraced_edge_m": 22.7,
+        "branch_like_node_count": 8,
+        "proper_self_intersection_count": 10,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 41,
+        "api_geometry_distance_error": 0.0092,
+        "target_distance_error": 0.017,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.4,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_8c84784898e48d56.json",
+        "data/raw/amap/bicycling_v2_2db21429f15352fa.json",
+        "data/raw/amap/bicycling_v2_6741799f5f4a5854.json",
+        "data/raw/amap/bicycling_v2_27c26ec84027370d.json",
+        "data/raw/amap/bicycling_v2_089a2925b202afad.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0076",
+      "route_name": "衡复—徐家汇—植物园—华泾骑行线",
+      "region_zone": "衡复风貌区",
+      "popular_area_ids": [
+        "hengfu",
+        "xujiahui",
+        "kangjian",
+        "shanghai_botanical_garden",
+        "huajing"
+      ],
+      "actual_distance_m": 17210,
+      "target_distance_m": 18500,
+      "distance_band": "medium",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 6,
+      "ordered_node_names": [
+        "上海音乐学院外侧淮海中路",
+        "徐家汇公园衡山路入口外侧道路",
+        "蒲汇塘路与桂林路交叉口",
+        "上海植物园4号门外罗城路",
+        "上海植物园3号门外百色路",
+        "华展路与龙吴路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "17d79c0dc9e0d86037de4769f63462c7bd872fdbff80df7273399af428b30121",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "branch_or_self_intersection"
+      ],
+      "gate_metrics": {
+        "point_count": 510,
+        "geometry_distance_m": 17387.3,
+        "endpoint_distance_m": 11347.1,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.6,
+        "branch_like_node_count": 1,
+        "proper_self_intersection_count": 1,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "one_way_circuity": 1.532,
+        "api_geometry_distance_error": 0.0103,
+        "target_distance_error": 0.0697,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 11347.1,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_0da3c5938731c331.json",
+        "data/raw/amap/bicycling_v2_b0b1797a9ee891d1.json",
+        "data/raw/amap/bicycling_v2_a2698a95e594575c.json",
+        "data/raw/amap/bicycling_v2_343dcfcc651d7ffa.json",
+        "data/raw/amap/bicycling_v2_28f44a6b8d74280f.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0077",
+      "route_name": "漕河泾—徐家汇—龙华—西岸骑行线",
+      "region_zone": "徐家汇及体育公园",
+      "popular_area_ids": [
+        "caohejing",
+        "xujiahui",
+        "longhua",
+        "west_bund"
+      ],
+      "actual_distance_m": 9860,
+      "target_distance_m": 10800,
+      "distance_band": "short",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "宜山路与虹梅路交叉口",
+        "蒲汇塘路与桂林路交叉口",
+        "徐家汇体育公园天钥桥路入口外侧道路",
+        "龙华会外侧龙华路",
+        "龙耀路与云锦路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "4b877f47429bb22284c6c377fb9f0b0dae19f02fc6944e27c9d1dec397eef9d8",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 267,
+        "geometry_distance_m": 9940.0,
+        "endpoint_distance_m": 5988.2,
+        "retrace_ratio": 0.0051,
+        "longest_retraced_edge_m": 28.0,
+        "branch_like_node_count": 8,
+        "proper_self_intersection_count": 8,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 20,
+        "one_way_circuity": 1.66,
+        "api_geometry_distance_error": 0.0081,
+        "target_distance_error": 0.087,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 5988.2,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_8c84784898e48d56.json",
+        "data/raw/amap/bicycling_v2_2db21429f15352fa.json",
+        "data/raw/amap/bicycling_v2_89f5cb61d5b5e91e.json",
+        "data/raw/amap/bicycling_v2_b649555617a940dc.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": false,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0078",
+      "route_name": "华泾—植物园—西岸龙腾大道骑行线",
+      "region_zone": "龙华街区",
+      "popular_area_ids": [
+        "huajing",
+        "shanghai_botanical_garden",
+        "longhua",
+        "west_bund"
+      ],
+      "actual_distance_m": 14432,
+      "target_distance_m": 17200,
+      "distance_band": "medium",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 6,
+      "ordered_node_names": [
+        "华展路与龙吴路交叉口",
+        "上海植物园3号门外百色路",
+        "上海植物园4号门外罗城路",
+        "龙华滨江休闲广场外侧道路",
+        "龙耀路与云锦路交叉口",
+        "龙腾大道与瑞宁路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "a063aef95ff2e4aff1be9f277f21037ce44fc34f278a721b5b30be66ba9212e8",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "retraced_edges",
+        "branch_or_self_intersection",
+        "local_return_loop",
+        "target_distance_mismatch"
+      ],
+      "gate_metrics": {
+        "point_count": 366,
+        "geometry_distance_m": 14548.1,
+        "endpoint_distance_m": 8284.5,
+        "retrace_ratio": 0.0022,
+        "longest_retraced_edge_m": 31.9,
+        "branch_like_node_count": 11,
+        "proper_self_intersection_count": 4,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 25,
+        "one_way_circuity": 1.756,
+        "api_geometry_distance_error": 0.008,
+        "target_distance_error": 0.1609,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 8284.5,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_ad7001f2daa8aa31.json",
+        "data/raw/amap/bicycling_v2_607a9261d2044d26.json",
+        "data/raw/amap/bicycling_v2_dcdf0541b61daf35.json",
+        "data/raw/amap/bicycling_v2_234249911c87f1a5.json",
+        "data/raw/amap/bicycling_v2_3b0b1b5653895570.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0079",
+      "route_name": "衡复—徐家汇—漕河泾骑行线",
+      "region_zone": "康健—桂江绿廊",
+      "popular_area_ids": [
+        "hengfu",
+        "xujiahui",
+        "caohejing"
+      ],
+      "actual_distance_m": 10860,
+      "target_distance_m": 12100,
+      "distance_band": "medium",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "上海音乐学院外侧淮海中路",
+        "徐家汇公园衡山路入口外侧道路",
+        "徐家汇体育公园天钥桥路入口外侧道路",
+        "蒲汇塘路与桂林路交叉口",
+        "宜山路与虹梅路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "060630dd70092c389bd8e4f5d87d3a599d4d14198cf4a6dfdd1e9f1722deaf07",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 354,
+        "geometry_distance_m": 10986.2,
+        "endpoint_distance_m": 7307.6,
+        "retrace_ratio": 0.0007,
+        "longest_retraced_edge_m": 7.7,
+        "branch_like_node_count": 5,
+        "proper_self_intersection_count": 4,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 8,
+        "one_way_circuity": 1.503,
+        "api_geometry_distance_error": 0.0116,
+        "target_distance_error": 0.1025,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 7307.6,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_0da3c5938731c331.json",
+        "data/raw/amap/bicycling_v2_5062aaab663ccba7.json",
+        "data/raw/amap/bicycling_v2_2de058f39cf4bf89.json",
+        "data/raw/amap/bicycling_v2_cc422247e295de89.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0080",
+      "route_name": "植物园—龙华—西岸—衡复骑行线",
+      "region_zone": "漕河泾—蒲汇塘—南部连接区",
+      "popular_area_ids": [
+        "shanghai_botanical_garden",
+        "longhua",
+        "west_bund",
+        "xujiahui",
+        "hengfu"
+      ],
+      "actual_distance_m": 13431,
+      "target_distance_m": 14500,
+      "distance_band": "medium",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 6,
+      "ordered_node_names": [
+        "上海植物园3号门外百色路",
+        "龙华滨江休闲广场外侧道路",
+        "龙耀路与云锦路交叉口",
+        "龙腾大道与瑞宁路交叉口",
+        "徐家汇公园衡山路入口外侧道路",
+        "乌鲁木齐中路与复兴西路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "c162c25960a5140f8d488f9259c5d05007343a9568f67c1506b8ef7791a8d61a",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 336,
+        "geometry_distance_m": 13559.6,
+        "endpoint_distance_m": 7565.2,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 3,
+        "proper_self_intersection_count": 2,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 1,
+        "one_way_circuity": 1.792,
+        "api_geometry_distance_error": 0.0096,
+        "target_distance_error": 0.0737,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 7565.2,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_02726a8d4e47a9c7.json",
+        "data/raw/amap/bicycling_v2_234249911c87f1a5.json",
+        "data/raw/amap/bicycling_v2_3b0b1b5653895570.json",
+        "data/raw/amap/bicycling_v2_46887c3f416b9af5.json",
+        "data/raw/amap/bicycling_v2_648503358e8fbf8b.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0081",
+      "route_name": "徐汇全域外围骑行环线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "west_bund",
+        "longhua",
+        "xujiahui",
+        "caohejing",
+        "kangjian",
+        "shanghai_botanical_garden",
+        "huajing"
+      ],
+      "actual_distance_m": 29322,
+      "target_distance_m": 29500,
+      "distance_band": "long",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 6,
+      "ordered_node_names": [
+        "龙腾大道与瑞宁路交叉口",
+        "宜山路与虹梅路交叉口",
+        "江安路与桂江路交叉口",
+        "华展路与龙吴路交叉口",
+        "龙水南路与龙腾大道交叉口",
+        "龙腾大道与瑞宁路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "0f4a1d9d3fa1d2251b04dc41df07f5b6f0acc7fd011b9e063ff58ac15056515f",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 677,
+        "geometry_distance_m": 29573.1,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 3,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 2,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 2,
+        "proper_self_intersection_count": 2,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 2,
+        "api_geometry_distance_error": 0.0086,
+        "target_distance_error": 0.006,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_c77989f047a61b79.json",
+        "data/raw/amap/bicycling_v2_eaf682f89fbced99.json",
+        "data/raw/amap/bicycling_v2_43f442ee861cce91.json",
+        "data/raw/amap/bicycling_v2_3a2a136e8564b22d.json",
+        "data/raw/amap/bicycling_v2_29fea3e31ba4c931.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0082",
+      "route_name": "西岸—植物园—漕河泾—徐家汇骑行环线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "west_bund",
+        "longhua",
+        "shanghai_botanical_garden",
+        "kangjian",
+        "caohejing",
+        "xujiahui"
+      ],
+      "actual_distance_m": 23834,
+      "target_distance_m": 22500,
+      "distance_band": "long",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 7,
+      "ordered_node_names": [
+        "龙耀路与云锦路交叉口",
+        "上海植物园3号门外百色路",
+        "江安路与桂江路交叉口",
+        "宜山路与虹梅路交叉口",
+        "安顺路与淮海西路交叉口",
+        "徐家汇公园衡山路入口外侧道路",
+        "龙耀路与云锦路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "6a3292cd528517e3ab9ae58f8b20259099cd871ffe527a5e6fd96df4771c728d",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 645,
+        "geometry_distance_m": 24058.4,
+        "endpoint_distance_m": 0.0,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 2,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 1,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 1,
+        "proper_self_intersection_count": 5,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 1,
+        "api_geometry_distance_error": 0.0094,
+        "target_distance_error": 0.0593,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.0,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_9cd8839068421df0.json",
+        "data/raw/amap/bicycling_v2_b2628b55a91da001.json",
+        "data/raw/amap/bicycling_v2_c61f458efb1441c4.json",
+        "data/raw/amap/bicycling_v2_98dde4f6737149d0.json",
+        "data/raw/amap/bicycling_v2_3dd85d928b7b46c7.json",
+        "data/raw/amap/bicycling_v2_cdd7549334f5711e.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0083",
+      "route_name": "华泾—植物园—龙华—西岸—徐家汇骑行环线",
+      "region_zone": "徐汇滨江及龙华滨江",
+      "popular_area_ids": [
+        "huajing",
+        "shanghai_botanical_garden",
+        "longhua",
+        "west_bund",
+        "xujiahui"
+      ],
+      "actual_distance_m": 29412,
+      "target_distance_m": 28800,
+      "distance_band": "long",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 6,
+      "ordered_node_names": [
+        "华展路与龙吴路交叉口",
+        "上海植物园3号门外百色路",
+        "江安路与桂江路交叉口",
+        "徐家汇公园衡山路入口外侧道路",
+        "龙耀路与云锦路交叉口",
+        "华展路与龙吴路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "89b25d1458ae620ad54205554286fba3393f4a1dcf3ace05befb092cb5667f18",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "retraced_edges",
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 720,
+        "geometry_distance_m": 29669.7,
+        "endpoint_distance_m": 0.4,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 9,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 11,
+        "retrace_ratio": 0.0438,
+        "longest_retraced_edge_m": 175.9,
+        "branch_like_node_count": 11,
+        "proper_self_intersection_count": 3,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 57,
+        "api_geometry_distance_error": 0.0088,
+        "target_distance_error": 0.0213,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.4,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_ad7001f2daa8aa31.json",
+        "data/raw/amap/bicycling_v2_b2628b55a91da001.json",
+        "data/raw/amap/bicycling_v2_6f4970d606742d7d.json",
+        "data/raw/amap/bicycling_v2_cdd7549334f5711e.json",
+        "data/raw/amap/bicycling_v2_833cc9708c27a7fe.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0084",
+      "route_name": "衡复—徐家汇—漕河泾—植物园—龙华骑行环线",
+      "region_zone": "衡复风貌区",
+      "popular_area_ids": [
+        "hengfu",
+        "xujiahui",
+        "caohejing",
+        "kangjian",
+        "shanghai_botanical_garden",
+        "longhua"
+      ],
+      "actual_distance_m": 29572,
+      "target_distance_m": 28500,
+      "distance_band": "long",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 8,
+      "ordered_node_names": [
+        "乌鲁木齐中路与复兴西路交叉口",
+        "安顺路与淮海西路交叉口",
+        "宜山路与虹梅路交叉口",
+        "江安路与桂江路交叉口",
+        "上海植物园3号门外百色路",
+        "龙华滨江休闲广场外侧道路",
+        "龙腾大道与瑞宁路交叉口",
+        "乌鲁木齐中路与复兴西路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "c7f715d1a2483512b7374af8397683023eb512d1420ccf0b085a6170bf948ea0",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "branch_or_self_intersection",
+        "local_return_loop"
+      ],
+      "gate_metrics": {
+        "point_count": 770,
+        "geometry_distance_m": 29827.9,
+        "endpoint_distance_m": 0.4,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 2,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 1,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 1,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 1,
+        "api_geometry_distance_error": 0.0087,
+        "target_distance_error": 0.0376,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.4,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_4d2980ac66c78e8a.json",
+        "data/raw/amap/bicycling_v2_089a2925b202afad.json",
+        "data/raw/amap/bicycling_v2_eaf682f89fbced99.json",
+        "data/raw/amap/bicycling_v2_af3e8873d8fda135.json",
+        "data/raw/amap/bicycling_v2_02726a8d4e47a9c7.json",
+        "data/raw/amap/bicycling_v2_f8b2ecb6249eed53.json",
+        "data/raw/amap/bicycling_v2_5e473e621326c6b0.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0085",
+      "route_name": "西岸—龙华—植物园—华泾骑行环线",
+      "region_zone": "徐家汇及体育公园",
+      "popular_area_ids": [
+        "west_bund",
+        "longhua",
+        "shanghai_botanical_garden",
+        "huajing"
+      ],
+      "actual_distance_m": 28657,
+      "target_distance_m": 26800,
+      "distance_band": "long",
+      "route_shape": "strict_loop",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 8,
+      "ordered_node_names": [
+        "龙耀路与云锦路交叉口",
+        "龙腾大道与瑞宁路交叉口",
+        "徐家汇公园衡山路入口外侧道路",
+        "蒲汇塘路与桂林路交叉口",
+        "上海植物园3号门外百色路",
+        "华展路与龙吴路交叉口",
+        "龙华滨江休闲广场外侧道路",
+        "龙耀路与云锦路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "532f5736f66bb0d60dec7c48d86996eba72d82c8b791acb5f262339e1aa86748",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "false_loop_topology",
+        "branch_or_self_intersection"
+      ],
+      "gate_metrics": {
+        "point_count": 714,
+        "geometry_distance_m": 28908.9,
+        "endpoint_distance_m": 0.6,
+        "single_simple_cycle": false,
+        "topology_cycle_rank": 3,
+        "topology_component_count": 1,
+        "non_degree_two_node_count": 2,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.6,
+        "branch_like_node_count": 2,
+        "proper_self_intersection_count": 1,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 0,
+        "api_geometry_distance_error": 0.0088,
+        "target_distance_error": 0.0693,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 0.6,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_3b0b1b5653895570.json",
+        "data/raw/amap/bicycling_v2_46887c3f416b9af5.json",
+        "data/raw/amap/bicycling_v2_b0b1797a9ee891d1.json",
+        "data/raw/amap/bicycling_v2_dfea2e66316e42fa.json",
+        "data/raw/amap/bicycling_v2_28f44a6b8d74280f.json",
+        "data/raw/amap/bicycling_v2_aedeff7682245fd8.json",
+        "data/raw/amap/bicycling_v2_234249911c87f1a5.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0086",
+      "route_name": "漕河泾—衡复—龙华—植物园—华泾骑行线",
+      "region_zone": "龙华街区",
+      "popular_area_ids": [
+        "hengfu",
+        "xujiahui",
+        "caohejing",
+        "kangjian",
+        "huajing",
+        "west_bund"
+      ],
+      "actual_distance_m": 23579,
+      "target_distance_m": 24000,
+      "distance_band": "long",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 8,
+      "ordered_node_names": [
+        "宜山路与虹梅路交叉口",
+        "安顺路与淮海西路交叉口",
+        "乌鲁木齐中路与复兴西路交叉口",
+        "上海音乐学院外侧淮海中路",
+        "龙腾大道与瑞宁路交叉口",
+        "龙耀路与云锦路交叉口",
+        "龙华滨江休闲广场外侧道路",
+        "华展路与龙吴路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "934120f3923a3bdedefc6c8f23191ba1ed7f7a0ebd08838f5dba782889c9ebb5",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "retraced_edges",
+        "branch_or_self_intersection",
+        "local_return_loop",
+        "excessive_circuity"
+      ],
+      "gate_metrics": {
+        "point_count": 622,
+        "geometry_distance_m": 23798.4,
+        "endpoint_distance_m": 8536.5,
+        "retrace_ratio": 0.013,
+        "longest_retraced_edge_m": 198.2,
+        "branch_like_node_count": 8,
+        "proper_self_intersection_count": 8,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 16,
+        "one_way_circuity": 2.788,
+        "api_geometry_distance_error": 0.0093,
+        "target_distance_error": 0.0175,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 8536.5,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_98dde4f6737149d0.json",
+        "data/raw/amap/bicycling_v2_3e9bfd5a19ec4954.json",
+        "data/raw/amap/bicycling_v2_a1cd114774b8323b.json",
+        "data/raw/amap/bicycling_v2_95ec10a698ee55d3.json",
+        "data/raw/amap/bicycling_v2_4bfae6b9b83534fd.json",
+        "data/raw/amap/bicycling_v2_4489ee0e6255cd0f.json",
+        "data/raw/amap/bicycling_v2_17907932edb0b196.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0087",
+      "route_name": "漕河泾—衡复—西岸—华泾骑行线",
+      "region_zone": "康健—桂江绿廊",
+      "popular_area_ids": [
+        "caohejing",
+        "xujiahui",
+        "hengfu",
+        "west_bund",
+        "longhua",
+        "shanghai_botanical_garden",
+        "huajing"
+      ],
+      "actual_distance_m": 23128,
+      "target_distance_m": 22000,
+      "distance_band": "long",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 6,
+      "ordered_node_names": [
+        "宜山路与虹梅路交叉口",
+        "上海音乐学院外侧淮海中路",
+        "龙腾大道与瑞宁路交叉口",
+        "龙耀路与云锦路交叉口",
+        "上海植物园3号门外百色路",
+        "华展路与龙吴路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "490a55211b7ec4ddae21d97012eebfb5cb7e7afdbdb9bf12d0d467eb5c3e28a7",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "retraced_edges",
+        "branch_or_self_intersection",
+        "local_return_loop",
+        "excessive_circuity"
+      ],
+      "gate_metrics": {
+        "point_count": 650,
+        "geometry_distance_m": 23355.3,
+        "endpoint_distance_m": 8536.5,
+        "retrace_ratio": 0.0021,
+        "longest_retraced_edge_m": 35.3,
+        "branch_like_node_count": 6,
+        "proper_self_intersection_count": 5,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 17,
+        "one_way_circuity": 2.736,
+        "api_geometry_distance_error": 0.0098,
+        "target_distance_error": 0.0513,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 8536.5,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_eb5efac7da32fc0a.json",
+        "data/raw/amap/bicycling_v2_95ec10a698ee55d3.json",
+        "data/raw/amap/bicycling_v2_4bfae6b9b83534fd.json",
+        "data/raw/amap/bicycling_v2_9cd8839068421df0.json",
+        "data/raw/amap/bicycling_v2_28f44a6b8d74280f.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0088",
+      "route_name": "徐家汇—衡复—西岸—植物园—华泾骑行线",
+      "region_zone": "康健—桂江绿廊",
+      "popular_area_ids": [
+        "xujiahui",
+        "hengfu",
+        "west_bund",
+        "longhua",
+        "shanghai_botanical_garden",
+        "huajing"
+      ],
+      "actual_distance_m": 19975,
+      "target_distance_m": 20500,
+      "distance_band": "medium",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 7,
+      "ordered_node_names": [
+        "徐家汇体育公园天钥桥路入口外侧道路",
+        "徐家汇公园衡山路入口外侧道路",
+        "上海音乐学院外侧淮海中路",
+        "龙腾大道与瑞宁路交叉口",
+        "龙耀路与云锦路交叉口",
+        "上海植物园4号门外罗城路",
+        "华展路与龙吴路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "2df0a7147735f1f66b8034cd01659e387bb97b6ffd787873594cb1085850b9c1",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "retraced_edges",
+        "branch_or_self_intersection",
+        "local_return_loop",
+        "excessive_circuity"
+      ],
+      "gate_metrics": {
+        "point_count": 605,
+        "geometry_distance_m": 20191.6,
+        "endpoint_distance_m": 7789.3,
+        "retrace_ratio": 0.0284,
+        "longest_retraced_edge_m": 103.0,
+        "branch_like_node_count": 19,
+        "proper_self_intersection_count": 7,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 65,
+        "one_way_circuity": 2.592,
+        "api_geometry_distance_error": 0.0108,
+        "target_distance_error": 0.0256,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 7789.3,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_6741799f5f4a5854.json",
+        "data/raw/amap/bicycling_v2_877886bbc44cf935.json",
+        "data/raw/amap/bicycling_v2_95ec10a698ee55d3.json",
+        "data/raw/amap/bicycling_v2_4bfae6b9b83534fd.json",
+        "data/raw/amap/bicycling_v2_f2138756ad61be2c.json",
+        "data/raw/amap/bicycling_v2_7d7247cbcf2572fe.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0089",
+      "route_name": "华泾—漕河泾—衡复—西岸骑行线",
+      "region_zone": "漕河泾—蒲汇塘—南部连接区",
+      "popular_area_ids": [
+        "huajing",
+        "shanghai_botanical_garden",
+        "kangjian",
+        "caohejing",
+        "xujiahui",
+        "hengfu",
+        "west_bund"
+      ],
+      "actual_distance_m": 24435,
+      "target_distance_m": 25500,
+      "distance_band": "long",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 7,
+      "ordered_node_names": [
+        "华展路与龙吴路交叉口",
+        "江安路与桂江路交叉口",
+        "宜山路与虹梅路交叉口",
+        "安顺路与淮海西路交叉口",
+        "乌鲁木齐中路与复兴西路交叉口",
+        "上海音乐学院外侧淮海中路",
+        "龙腾大道与瑞宁路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "5f42cfc135ec398e1bbfa4e6af0df12533a559c8dbb9952b6112170028e2e2bf",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "branch_or_self_intersection",
+        "local_return_loop",
+        "excessive_circuity"
+      ],
+      "gate_metrics": {
+        "point_count": 647,
+        "geometry_distance_m": 24673.1,
+        "endpoint_distance_m": 8284.5,
+        "retrace_ratio": 0.0006,
+        "longest_retraced_edge_m": 14.0,
+        "branch_like_node_count": 5,
+        "proper_self_intersection_count": 9,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 10,
+        "one_way_circuity": 2.978,
+        "api_geometry_distance_error": 0.0097,
+        "target_distance_error": 0.0418,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 8284.5,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_3fb4dc1152641ac5.json",
+        "data/raw/amap/bicycling_v2_c61f458efb1441c4.json",
+        "data/raw/amap/bicycling_v2_98dde4f6737149d0.json",
+        "data/raw/amap/bicycling_v2_3e9bfd5a19ec4954.json",
+        "data/raw/amap/bicycling_v2_a1cd114774b8323b.json",
+        "data/raw/amap/bicycling_v2_95ec10a698ee55d3.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    },
+    {
+      "route_id": "XH_BIKE_0090",
+      "route_name": "西岸北段—衡复—漕河泾—华泾骑行线",
+      "region_zone": "漕河泾—蒲汇塘—南部连接区",
+      "popular_area_ids": [
+        "west_bund",
+        "hengfu",
+        "xujiahui",
+        "caohejing",
+        "kangjian",
+        "huajing",
+        "shanghai_botanical_garden",
+        "longhua"
+      ],
+      "actual_distance_m": 22889,
+      "target_distance_m": 23000,
+      "distance_band": "long",
+      "route_shape": "one_way",
+      "validation_status": "needs_review",
+      "work_classification": "geometry_changed",
+      "route_inside_ratio": null,
+      "ordered_node_count": 5,
+      "ordered_node_names": [
+        "龙腾大道与瑞宁路交叉口",
+        "安顺路与淮海西路交叉口",
+        "宜山路与虹梅路交叉口",
+        "江安路与桂江路交叉口",
+        "华展路与龙吴路交叉口"
+      ],
+      "placeholder_node_names": [],
+      "geometry_sha256": "9eb8e5c1d004c203fc6bd76f4826f46ed8f7303e805e28dc4d4c6a2e9d8324c2",
+      "geometry_coordinate_system": "GCJ-02",
+      "gate_status": "fail",
+      "gate_failure_codes": [
+        "branch_or_self_intersection",
+        "local_return_loop",
+        "excessive_circuity"
+      ],
+      "gate_metrics": {
+        "point_count": 592,
+        "geometry_distance_m": 23109.4,
+        "endpoint_distance_m": 8284.1,
+        "retrace_ratio": 0.0,
+        "longest_retraced_edge_m": 0.0,
+        "branch_like_node_count": 1,
+        "proper_self_intersection_count": 0,
+        "local_uturn_count": 0,
+        "longest_local_uturn_m": 0.0,
+        "local_return_loop_count": 1,
+        "one_way_circuity": 2.79,
+        "api_geometry_distance_error": 0.0096,
+        "target_distance_error": 0.0048,
+        "start_endpoint_offset_m": 0.0,
+        "end_endpoint_offset_m": 0.0,
+        "start_end_marker_distance_m": 8284.1,
+        "distant_waypoints": [],
+        "first_node_endpoint_offset_m": 0.0,
+        "last_node_endpoint_offset_m": 0.0
+      },
+      "visual_audit_status": "pending",
+      "visual_issue_codes": [],
+      "raw_response_paths": [
+        "data/raw/amap/bicycling_v2_1fbdc0e371af4ac2.json",
+        "data/raw/amap/bicycling_v2_089a2925b202afad.json",
+        "data/raw/amap/bicycling_v2_eaf682f89fbced99.json",
+        "data/raw/amap/bicycling_v2_43f442ee861cce91.json"
+      ],
+      "geometry_source": "amap_direction",
+      "network_source": "amap_bike_v2",
+      "poi_audit": {
+        "verified_count": 0,
+        "verified_type_counts": {},
+        "preference_hits_from_verified_pois": [],
+        "stored_preference_hits": [
+          "coffee",
+          "convenience",
+          "park_gate",
+          "toilet"
+        ],
+        "supply_warning": true,
+        "coordinate_systems": []
+      }
+    }
+  ]
+}

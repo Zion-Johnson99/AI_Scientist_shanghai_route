@@ -122,16 +122,7 @@
         "distance_to_route_m": 1.1,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_BIKE_0062",
           "XH_BIKE_0067",
-          "XH_BIKE_0070",
-          "XH_BIKE_0072",
-          "XH_BIKE_0074",
-          "XH_BIKE_0076",
-          "XH_BIKE_0078",
-          "XH_BIKE_0084",
-          "XH_BIKE_0085",
-          "XH_BIKE_0088",
           "XH_RUN_0039",
           "XH_RUN_0041",
           "XH_WALK_0003",
@@ -185,12 +176,10 @@
         "open_status": "周一至周日05:30-21:30",
         "verification_status": "verified",
         "evidence_path": "data/raw/amap/place_text_v5_6f7ddd828dc5e517.json",
-        "distance_to_route_m": 14.3,
+        "distance_to_route_m": 15.7,
         "route_relation": "along_route",
         "route_ids": [
           "XH_BIKE_0062",
-          "XH_BIKE_0067",
-          "XH_BIKE_0072",
           "XH_BIKE_0080",
           "XH_BIKE_0082",
           "XH_BIKE_0084",
@@ -649,21 +638,18 @@
         "open_status": "今日 07:00-21:00",
         "verification_status": "verified",
         "evidence_path": "data/raw/amap/place_text_v5_5706b91e34c67d58.json",
-        "distance_to_route_m": 0.3,
+        "distance_to_route_m": 2.4,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_BIKE_0064",
           "XH_BIKE_0069",
           "XH_BIKE_0071",
           "XH_BIKE_0073",
           "XH_BIKE_0075",
           "XH_BIKE_0076",
           "XH_BIKE_0079",
-          "XH_BIKE_0080",
           "XH_BIKE_0082",
           "XH_BIKE_0083",
           "XH_BIKE_0085",
-          "XH_BIKE_0088",
           "XH_BIKE_0090",
           "XH_RUN_0034",
           "XH_RUN_0045",
@@ -697,10 +683,10 @@
         "distance_to_route_m": 4.3,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_BIKE_0064",
           "XH_BIKE_0082",
+          "XH_BIKE_0084",
+          "XH_BIKE_0086",
           "XH_BIKE_0087",
-          "XH_BIKE_0090",
           "XH_WALK_0017"
         ]
       },
@@ -724,12 +710,9 @@
         "open_status": "今日 05:00-17:30",
         "verification_status": "verified",
         "evidence_path": "data/raw/amap/place_text_v5_189eceb113fe58c3.json",
-        "distance_to_route_m": 2.1,
+        "distance_to_route_m": 2.5,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_BIKE_0072",
-          "XH_BIKE_0076",
-          "XH_BIKE_0085",
           "XH_WALK_0009"
         ]
       },
@@ -753,19 +736,10 @@
         "open_status": "今日 07:00-17:00",
         "verification_status": "verified",
         "evidence_path": "data/raw/amap/place_text_v5_3ce50feef03bd17b.json",
-        "distance_to_route_m": 0.5,
+        "distance_to_route_m": 0.9,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_BIKE_0062",
           "XH_BIKE_0067",
-          "XH_BIKE_0070",
-          "XH_BIKE_0072",
-          "XH_BIKE_0074",
-          "XH_BIKE_0076",
-          "XH_BIKE_0078",
-          "XH_BIKE_0084",
-          "XH_BIKE_0085",
-          "XH_BIKE_0088",
           "XH_RUN_0039",
           "XH_RUN_0041",
           "XH_WALK_0003",
@@ -796,6 +770,7 @@
         "distance_to_route_m": 7.6,
         "route_relation": "along_route",
         "route_ids": [
+          "XH_BIKE_0075",
           "XH_RUN_0046",
           "XH_WALK_0009",
           "XH_WALK_0019"
@@ -913,14 +888,9 @@
           "XH_BIKE_0072",
           "XH_BIKE_0074",
           "XH_BIKE_0078",
-          "XH_BIKE_0080",
-          "XH_BIKE_0081",
           "XH_BIKE_0082",
-          "XH_BIKE_0083",
           "XH_BIKE_0084",
-          "XH_BIKE_0085",
-          "XH_BIKE_0087",
-          "XH_BIKE_0088",
+          "XH_BIKE_0086",
           "XH_RUN_0036",
           "XH_RUN_0040",
           "XH_RUN_0052",
@@ -953,14 +923,7 @@
         "distance_to_route_m": 35.1,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_BIKE_0061",
-          "XH_BIKE_0064",
           "XH_BIKE_0068",
-          "XH_BIKE_0069",
-          "XH_BIKE_0075",
-          "XH_BIKE_0077",
-          "XH_BIKE_0079",
-          "XH_BIKE_0088",
           "XH_WALK_0026"
         ]
       },
@@ -969,6 +932,58 @@
         "coordinates": [
           121.440734,
           31.181297
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "osm:node:12518143102",
+        "poi_name": "星巴克St",
+        "poi_type": "coffee",
+        "source": "OpenStreetMap cached index",
+        "source_id": "osm:node:12518143102",
+        "source_accessed_at": "2026-08-15T10:48:37.606673+08:00",
+        "open_status": "Mo-Su 07:00-22:00",
+        "verification_status": "verified",
+        "evidence_path": "data/interim/osm_poi_index.json",
+        "distance_to_route_m": 37.9,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_BIKE_0075"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.432944,
+          31.168778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "poi_id": "osm:node:4405321290",
+        "poi_name": "Café del Volcán（永康路80号）",
+        "poi_type": "coffee",
+        "source": "OpenStreetMap cached index",
+        "source_id": "osm:node:4405321290",
+        "source_accessed_at": "2026-08-15T10:48:37.606673+08:00",
+        "open_status": "Mo-Su 08:00-20:00",
+        "verification_status": "verified",
+        "evidence_path": "data/interim/osm_poi_index.json",
+        "distance_to_route_m": 29.0,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_BIKE_0064"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.457919,
+          31.2109
         ]
       }
     },
@@ -984,10 +999,10 @@
         "open_status": "24/7",
         "verification_status": "verified",
         "evidence_path": "data/interim/osm_poi_index.json",
-        "distance_to_route_m": 35.8,
+        "distance_to_route_m": 15.1,
         "route_relation": "along_route",
         "route_ids": [
-          "XH_BIKE_0073"
+          "XH_BIKE_0064"
         ]
       },
       "geometry": {
@@ -1016,8 +1031,7 @@
           "XH_BIKE_0063",
           "XH_BIKE_0068",
           "XH_BIKE_0075",
-          "XH_BIKE_0077",
-          "XH_BIKE_0079"
+          "XH_BIKE_0077"
         ]
       },
       "geometry": {
@@ -1063,6 +1077,33 @@
     {
       "type": "Feature",
       "properties": {
+        "poi_id": "osm:node:7409372497",
+        "poi_name": "Wagas（云锦路500号）",
+        "poi_type": "coffee",
+        "source": "OpenStreetMap cached index",
+        "source_id": "osm:node:7409372497",
+        "source_accessed_at": "2026-08-15T10:48:37.606673+08:00",
+        "open_status": "Mo-Su 08:00-22:00",
+        "verification_status": "verified",
+        "evidence_path": "data/interim/osm_poi_index.json",
+        "distance_to_route_m": 51.0,
+        "route_relation": "along_route",
+        "route_ids": [
+          "XH_BIKE_0073",
+          "XH_BIKE_0080"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.457547,
+          31.164404
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "poi_id": "park_gate:shbg_3",
         "poi_name": "上海植物园3号门",
         "poi_type": "park_gate",
@@ -1076,18 +1117,11 @@
         "route_relation": "along_route",
         "route_ids": [
           "XH_BIKE_0062",
-          "XH_BIKE_0067",
-          "XH_BIKE_0070",
-          "XH_BIKE_0072",
-          "XH_BIKE_0074",
-          "XH_BIKE_0076",
+          "XH_BIKE_0066",
           "XH_BIKE_0078",
           "XH_BIKE_0080",
           "XH_BIKE_0082",
-          "XH_BIKE_0083",
           "XH_BIKE_0084",
-          "XH_BIKE_0085",
-          "XH_BIKE_0087",
           "XH_RUN_0036",
           "XH_RUN_0039",
           "XH_RUN_0040",

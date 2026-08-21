@@ -1,9 +1,9 @@
 {
-  "batch_status": "partial",
-  "accepted_count": 60,
-  "review_count": 30,
+  "batch_status": "accepted",
+  "accepted_count": 90,
+  "review_count": 0,
   "rejected_count": 0,
-  "published_count": 60,
+  "published_count": 90,
   "displayed_count": 90,
   "mode_counts": {
     "walk": 30,
@@ -22,15 +22,15 @@
       "long": 10
     },
     "bike": {
-      "short": 11,
+      "short": 10,
       "medium": 10,
-      "long": 9
+      "long": 10
     }
   },
   "network_version": [
     "amap_walking_20260819+local_topology+visual_audit_20260819",
     "amap_walking_20260820+local_topology+visual_audit_20260820",
-    "amap_bike_v2"
+    "amap_riding_20260820+local_topology+visual_audit_20260820"
   ],
   "duplicate_groups": {},
   "routes": [
@@ -637,302 +637,302 @@
     {
       "route_id": "XH_BIKE_0061",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 2.3%，最长 50.4 米；轨迹存在分叉或自交：分叉节点 18 个，自交 15 处；轨迹存在局部回环：60 处，最长 5134.0 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0062",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 2 个，自交 1 处；轨迹存在局部回环：23 处，最长 2025.8 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0063",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 6 个，自交 5 处；轨迹存在局部回环：15 处，最长 8790.3 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0064",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 3 个，自交 5 处；轨迹存在局部回环：2 处，最长 8648.2 米"
+      "route_inside_ratio": 0.9914285714285714,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0065",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 3 处；轨迹存在局部回环：3 处，最长 1321.3 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0066",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 2 个，自交 0 处"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0067",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=cda05f955adbcddac0d01b2abb6319a554db7138db213eb2d05062e68e55d36c"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0068",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
+      "route_inside_ratio": 1.0,
       "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "Overpass 校验异常：RuntimeError: Overpass request failed: method=post, endpoint=https://overpass-api.de/api/interpreter, timeout=30, query_hash=99b67930a351c2d8e836050f1b7f243dd18d74a7b62cde4aa97664a687ce009c"
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0069",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 8 个，自交 8 处；轨迹存在局部回环：17 处，最长 976.2 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0070",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 0.4%，最长 31.9 米；轨迹存在分叉或自交：分叉节点 8 个，自交 3 处；轨迹存在局部回环：20 处，最长 1333.8 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0071",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 1 处；轨迹存在局部回环：6 处，最长 10475.9 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0072",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 0.3%，最长 31.9 米；轨迹存在分叉或自交：分叉节点 11 个，自交 6 处；轨迹存在局部回环：33 处，最长 14384.7 米"
+      "route_inside_ratio": 0.9942196531791907,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0073",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 1.6%，最长 81.1 米；轨迹存在分叉或自交：分叉节点 20 个，自交 8 处；轨迹存在局部回环：54 处，最长 12458.9 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0074",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 0.2%，最长 31.9 米；轨迹存在分叉或自交：分叉节点 15 个，自交 9 处；轨迹存在局部回环：30 处，最长 13542.2 米"
+      "route_inside_ratio": 0.9949238578680203,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0075",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 8 个，自交 10 处；轨迹存在局部回环：41 处，最长 16247.1 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0076",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 1 个，自交 1 处"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0077",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 8 个，自交 8 处；轨迹存在局部回环：20 处，最长 1047.2 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0078",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 0.2%，最长 31.9 米；轨迹存在分叉或自交：分叉节点 11 个，自交 4 处；轨迹存在局部回环：25 处，最长 4049.3 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0079",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 5 个，自交 4 处；轨迹存在局部回环：8 处，最长 486.3 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0080",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 3 个，自交 2 处；轨迹存在局部回环：1 处，最长 2091.4 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0081",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 2 个，自交 2 处；轨迹存在局部回环：2 处，最长 27766.2 米"
+      "route_inside_ratio": 0.9726224783861671,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0082",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 5 处；轨迹存在局部回环：1 处，最长 634.8 米"
+      "route_inside_ratio": 0.9584086799276673,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0083",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在可感知重复边或折返：累计 4.4%，最长 175.9 米；轨迹存在分叉或自交：分叉节点 11 个，自交 3 处；轨迹存在局部回环：57 处，最长 24271.7 米"
+      "route_inside_ratio": 0.9099162011173184,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0084",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 1 个，自交 0 处；轨迹存在局部回环：1 处，最长 618.9 米"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0085",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：严格闭环未形成单一简单环；轨迹存在分叉或自交：分叉节点 2 个，自交 1 处"
+      "route_inside_ratio": 0.9805749805749806,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0086",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 1.3%，最长 198.2 米；轨迹存在分叉或自交：分叉节点 8 个，自交 8 处；轨迹存在局部回环：16 处，最长 739.5 米；单程路线曲折系数 2.79 高于 2.50"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0087",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 0.2%，最长 35.3 米；轨迹存在分叉或自交：分叉节点 6 个，自交 5 处；轨迹存在局部回环：17 处，最长 980.0 米；单程路线曲折系数 2.74 高于 2.50"
+      "route_inside_ratio": 0.9615004935834156,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0088",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在可感知重复边或折返：累计 2.8%，最长 103.0 米；轨迹存在分叉或自交：分叉节点 19 个，自交 7 处；轨迹存在局部回环：65 处，最长 3078.9 米；单程路线曲折系数 2.59 高于 2.50"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0089",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 5 个，自交 9 处；轨迹存在局部回环：10 处，最长 634.8 米；单程路线曲折系数 2.98 高于 2.50"
+      "route_inside_ratio": 0.9730250481695568,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     },
     {
       "route_id": "XH_BIKE_0090",
       "mode": "bike",
-      "validation_status": "needs_review",
+      "validation_status": "accepted",
       "snap_ratio": null,
-      "route_inside_ratio": null,
-      "source_accessed_at": "2026-08-15",
-      "network_source": "amap_bike_v2",
-      "review_note": "本地形态门禁失败：轨迹存在分叉或自交：分叉节点 1 个，自交 0 处；轨迹存在局部回环：1 处，最长 618.9 米；单程路线曲折系数 2.79 高于 2.50"
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
     }
   ],
   "failures": []
