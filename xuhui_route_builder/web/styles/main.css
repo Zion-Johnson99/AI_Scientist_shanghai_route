@@ -491,15 +491,6 @@ select:disabled {
 .status-pill { color: #7d5a16; background: #fff4d5; }
 .status-pill[data-status="accepted"] { color: #087a65; background: #dcf8f1; }
 
-.route-review-note {
-  padding: 8px 9px;
-  border-left: 3px solid #79b8ff;
-  border-radius: 0 8px 8px 0;
-  color: #53677f;
-  background: rgba(224, 239, 255, 0.68);
-  font-size: 10px;
-}
-
 .route-card-place,
 .route-source {
   color: var(--muted);

@@ -510,7 +510,6 @@ function renderDetail(route, detail) {
     <p class="route-card-place">${escapeHtml(route.region_zone)} · ${Number(route.distance_m || 0).toFixed(0)} 米 · ${Number(route.duration_min || 0).toFixed(0)} 分钟</p>
     <div class="route-endpoints">${endpointHtml}</div>
     <p class="route-source">来源：${escapeHtml(route.source_name || "路线数据源")}</p>
-    <p class="route-review-note">${escapeHtml(reviewNoteSummary(route.review_note))}</p>
   `;
 }
 
@@ -654,14 +653,6 @@ function routeDistanceBand(route) {
   const index = bands.findIndex(([lower, upper], bandIndex) =>
     distance >= lower && (distance < upper || bandIndex === bands.length - 1 && distance === upper));
   return ["short", "medium", "long"][index] || "outside";
-}
-
-function reviewNoteSummary(note) {
-  const text = String(note || "验收说明待补充");
-  if (text.startsWith("Overpass 校验异常")) {
-    return "OSM 路网服务超时，贴路率仍待复核；完整错误记录见验收清单。";
-  }
-  return text;
 }
 
 function renderNavigationMode(route, controls) {

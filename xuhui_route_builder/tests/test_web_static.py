@@ -63,6 +63,15 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
         assert data_path in data_loader_js
 
 
+def test_route_detail_hides_internal_review_note() -> None:
+    route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
+    css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
+
+    assert 'class="route-review-note"' not in route_ui_js
+    assert "reviewNoteSummary" not in route_ui_js
+    assert ".route-review-note" not in css
+
+
 def test_main_wires_planned_access_request_to_inline_navigation() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
 
