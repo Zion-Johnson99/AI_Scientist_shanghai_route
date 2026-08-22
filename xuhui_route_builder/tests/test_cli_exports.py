@@ -1,13 +1,18 @@
 from __future__ import annotations
 
 import json
-from datetime import date, datetime, timezone
 import sys
+from datetime import date, datetime, timezone
 
 import pytest
 
 from xuhui_route_builder import cli
-from xuhui_route_builder.models import CandidateRoute, CoordinatePair, RouteLocation, RouteNode
+from xuhui_route_builder.models import (
+    CandidateRoute,
+    CoordinatePair,
+    RouteLocation,
+    RouteNode,
+)
 
 
 def _candidate(index: int) -> CandidateRoute:

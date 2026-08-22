@@ -1,5 +1,11 @@
 from xuhui_route_builder.geo import gcj02_to_wgs84, wgs84_to_gcj02
-from xuhui_route_builder.models import CandidateRoute, CoordinatePair, EntryPoint, RouteLocation, RouteNode
+from xuhui_route_builder.models import (
+    CandidateRoute,
+    CoordinatePair,
+    EntryPoint,
+    RouteLocation,
+    RouteNode,
+)
 
 
 def test_wgs84_gcj02_round_trip_stays_within_small_tolerance() -> None:

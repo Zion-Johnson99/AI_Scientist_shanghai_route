@@ -2,7 +2,12 @@ from types import SimpleNamespace
 
 import pytest
 
-from xuhui_route_builder.models import DirectionPath, RouteLocation, RouteNode, RouteSeed
+from xuhui_route_builder.models import (
+    DirectionPath,
+    RouteLocation,
+    RouteNode,
+    RouteSeed,
+)
 from xuhui_route_builder.routes import (
     candidate_from_seed,
     generate_candidate_from_seed,
