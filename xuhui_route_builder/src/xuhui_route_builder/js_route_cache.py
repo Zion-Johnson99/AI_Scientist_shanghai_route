@@ -14,7 +14,6 @@ from .amap_client import AmapClient
 from .config import PROJECT_ROOT, load_settings
 from .routes import _node_location, load_route_seeds, parse_direction_path
 
-
 MAX_ROUTE_BATCH = 5
 
 
@@ -144,7 +143,7 @@ def _fetch_browser_payload(proxy_url: str, target_id: str, expression: str) -> d
         raise RuntimeError(f"CDP route request failed: target={target_id}") from exc
     payload = wrapper.get("value") if isinstance(wrapper, dict) else None
     if not isinstance(payload, dict):
-        raise RuntimeError(f"CDP route response invalid: target={target_id}")
+        raise TypeError(f"CDP route response invalid: target={target_id}")
     return payload
 
 
@@ -160,11 +159,12 @@ def _fetch_validated_payload(
         payload = _fetch_browser_payload(proxy_url, target_id, expression)
         try:
             _validate_payload(payload, route_id, segment_index)
-            return payload
         except RuntimeError as exc:
             last_error = exc
             if attempt == 0:
                 time.sleep(1.0)
+        else:
+            return payload
     raise RuntimeError(
         f"AMap JS route failed after one retry: route_id={route_id} segment={segment_index}"
     ) from last_error
