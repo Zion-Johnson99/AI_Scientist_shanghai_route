@@ -27,6 +27,7 @@ from .exporters import (
     write_json,
 )
 from .geo import gcj02_to_wgs84
+from .js_route_cache import cache_route_batch
 from .models import CandidateRoute, RouteSeed
 from .osm_poi import build_osm_poi_index
 from .place_resolver import HybridPlaceResolver
@@ -112,9 +113,13 @@ def main() -> None:
             "validate-seeds",
             "export-candidates",
             "merge-service-pois",
+            "cache-route-batch",
         ],
     )
     parser.add_argument("--max-online-calls", type=int, default=50)
+    parser.add_argument("--target-id")
+    parser.add_argument("--route-id", action="append", default=[])
+    parser.add_argument("--proxy-url", default="http://localhost:3456")
     args = parser.parse_args()
     if args.command == "merge-research":
         merged = merge_research_drafts(
@@ -162,6 +167,20 @@ def main() -> None:
         export_candidate_routes(PROJECT_ROOT)
     elif args.command == "merge-service-pois":
         merge_service_pois(PROJECT_ROOT)
+    elif args.command == "cache-route-batch":
+        if not args.target_id:
+            parser.error("--target-id is required for cache-route-batch")
+        result = cache_route_batch(
+            PROJECT_ROOT,
+            args.target_id,
+            args.route_id,
+            args.proxy_url,
+        )
+        print(
+            f"route_count={result['route_count']} "
+            f"segment_count={result['segment_count']} "
+            f"cache_hits={result['cache_hits']} fetched={result['fetched']}"
+        )
 
 
 def resolve_seed_drafts(project_root: Path, resolver) -> list[RouteSeed]:
