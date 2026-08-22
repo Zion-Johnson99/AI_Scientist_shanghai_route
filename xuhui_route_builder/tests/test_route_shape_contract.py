@@ -68,4 +68,3 @@ def test_one_way_rejects_same_start_end_location() -> None:
 
     with pytest.raises(ValidationError, match="one_way"):
         _seed(route_shape="one_way", start=shared, end=shared)
-
