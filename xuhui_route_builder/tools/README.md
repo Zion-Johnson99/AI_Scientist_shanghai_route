@@ -20,7 +20,6 @@
 以下命令从仓库根目录执行：
 
 ```powershell
-cd D:\SJTU\交大\揭榜挂帅\AI_Scientist
 $routePython = ".\xuhui_route_builder\.venv\Scripts\python.exe"
 $env:PYTHONPATH = ".\xuhui_route_builder\src"
 ```
