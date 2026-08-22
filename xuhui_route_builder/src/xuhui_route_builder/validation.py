@@ -93,7 +93,8 @@ def compute_snap_ratio(
 def polyline_length_m(points: Sequence[CoordinatePair | WgsPoint]) -> float:
     wgs_points = _as_wgs_points(points)
     return sum(
-        _distance_m(first, second) for first, second in itertools.pairwise(wgs_points)
+        _distance_m(first, second)
+        for first, second in itertools.pairwise(wgs_points)
     )
 
 
@@ -224,8 +225,10 @@ def validate_candidate(
     )
     if (
         not valid_geometry
-        or (route.geometry_source == "amap_direction"
-        and not route.raw_response_paths)
+        or (
+            route.geometry_source == "amap_direction"
+            and not route.raw_response_paths
+        )
     ):
         failures.append("高德几何或原始响应不完整")
     if route.actual_distance_m <= 0 or route.duration_s <= 0:
@@ -482,7 +485,9 @@ def _local_uturn_metrics(points: Sequence[WgsPoint]) -> tuple[int, float]:
 def _local_return_loop_metrics(
     points: Sequence[WgsPoint], route_shape: str
 ) -> tuple[int, float]:
-    lengths = [_distance_m(first, second) for first, second in itertools.pairwise(points)]
+    lengths = [
+        _distance_m(first, second) for first, second in itertools.pairwise(points)
+    ]
     cumulative = [0.0]
     for length in lengths:
         cumulative.append(cumulative[-1] + length)

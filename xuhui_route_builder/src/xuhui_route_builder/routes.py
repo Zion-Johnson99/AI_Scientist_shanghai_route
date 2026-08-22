@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import itertools
 import json
 import unicodedata
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 
@@ -182,7 +182,9 @@ def generate_candidate_from_seed(seed: RouteSeed, client: Any, index: int) -> Ca
     mode = "bike" if seed.route_mode in {"bike", "bike_assist"} else "walking"
     paths: list[DirectionPath] = []
     raw_response_paths: list[str] = []
-    for segment_index, (origin_node, destination_node) in enumerate(itertools.pairwise(nodes), start=1):
+    for segment_index, (origin_node, destination_node) in enumerate(
+        pairwise(nodes), start=1
+    ):
         origin = _node_location(origin_node)
         destination = _node_location(destination_node)
         context = f"segment={segment_index} mode={mode} origin={origin} destination={destination}"
