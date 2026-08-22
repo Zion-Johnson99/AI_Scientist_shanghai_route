@@ -38,6 +38,25 @@ def test_merge_research_drafts_preserves_target_when_preflight_fails(tmp_path) -
     assert target.read_text(encoding="utf-8") == "old-content"
 
 
+def test_merge_research_drafts_uses_type_error_for_non_list_payload(
+    tmp_path,
+) -> None:
+    research = tmp_path / "research"
+    research.mkdir()
+    for mode in ("walk", "run", "bike"):
+        payload = {} if mode == "run" else []
+        (research / f"{mode}_route_candidates_0813.json").write_text(
+            json.dumps(payload), encoding="utf-8"
+        )
+
+    with pytest.raises(TypeError, match=r"run_route_candidates_0813\.json"):
+        merge_research_drafts(
+            research,
+            tmp_path / "route_seed_drafts.json",
+            lambda items: None,
+        )
+
+
 def test_merge_route_optimizations_normalizes_three_mode_results(tmp_path) -> None:
     research = tmp_path / "research"
     research.mkdir()

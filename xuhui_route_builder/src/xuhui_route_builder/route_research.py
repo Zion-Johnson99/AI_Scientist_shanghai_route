@@ -9,7 +9,6 @@ from typing import Any
 
 from .models import RouteSeed
 
-
 RESEARCH_FILES = tuple(f"{mode}_route_candidates_0813.json" for mode in ("walk", "run", "bike"))
 OPTIMIZATION_FILES = tuple(f"{mode}_route_optimization_0815.json" for mode in ("walk", "run", "bike"))
 PROTECTED_GEOMETRY_IDS = {
@@ -31,7 +30,7 @@ def merge_research_drafts(
     for name in RESEARCH_FILES:
         payload = json.loads((research_dir / name).read_text(encoding="utf-8"))
         if not isinstance(payload, list):
-            raise ValueError(f"research file must contain a list: {name}")
+            raise TypeError(f"research file must contain a list: {name}")
         merged.extend(payload)
     validate(merged)
     target.parent.mkdir(parents=True, exist_ok=True)
