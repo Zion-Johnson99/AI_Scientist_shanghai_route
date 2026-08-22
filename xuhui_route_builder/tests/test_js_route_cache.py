@@ -53,3 +53,28 @@ def test_browser_route_payload_retries_one_transient_invalid_response(monkeypatc
     )
 
     assert result == valid
+
+
+def test_browser_route_response_uses_type_error_for_non_object_payload(
+    monkeypatch,
+) -> None:
+    class Response:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc_value, traceback) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return b'{"value": []}'
+
+    monkeypatch.setattr(
+        js_route_cache.urllib.request,
+        "urlopen",
+        lambda *args, **kwargs: Response(),
+    )
+
+    with pytest.raises(TypeError, match="CDP route response invalid"):
+        js_route_cache._fetch_browser_payload(
+            "http://localhost:3456", "target", "expression"
+        )
