@@ -94,6 +94,12 @@ python -m xuhui_route_builder.cli generate-routes
 python -m xuhui_route_builder.cli validate-routes
 ```
 
+## 路线重建与验收源码
+
+比赛使用的正式链路为：路线种子 → 路径缓存或在线生成 → 几何验证 → 组合验收 → 真实 POI 合并 → Web 数据。各阶段源码、输入输出、失败保护和完整命令见 [`tools/README.md`](tools/README.md)。
+
+核心实现位于 `src/xuhui_route_builder`，其中 `js_route_cache.py` 负责最多 5 条一批的高德 JS 路径缓存，`routes.py` 负责候选路线生成，`validation.py` 负责边界与道路证据验证，`service_pois.py` 负责真实 POI 合并。项目级几何和组合门禁位于 `.agents/skills/optimize-xuhui-routes/scripts`。
+
 ## 验证
 
 ```powershell
