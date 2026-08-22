@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from xuhui_route_builder.baidu_client import BaiduClient
 
 
@@ -91,3 +93,22 @@ def test_failed_baidu_response_is_not_cached(tmp_path: Path, monkeypatch) -> Non
     assert first.status == second.status == 211
     assert call_count == 2
     assert list(tmp_path.glob("*.json")) == []
+
+
+def test_baidu_response_uses_type_error_for_non_object_payload(
+    tmp_path: Path, monkeypatch
+) -> None:
+    class Response:
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> list:
+            return []
+
+    monkeypatch.setattr(
+        "xuhui_route_builder.baidu_client.requests.get",
+        lambda *args, **kwargs: Response(),
+    )
+
+    with pytest.raises(TypeError, match="Baidu response invalid"):
+        BaiduClient("test-ak", tmp_path).place_region("龙华寺")

@@ -10,7 +10,6 @@ from typing import Any
 
 import requests
 
-
 ENDPOINTS = {
     "place_region": "https://api.map.baidu.com/place/v3/region",
     "geocode": "https://api.map.baidu.com/geocoding/v3/",
@@ -67,7 +66,7 @@ class BaiduClient:
                 f"Baidu request failed: endpoint={endpoint}, query_hash={params_hash}"
             ) from exc
         if not isinstance(payload, dict):
-            raise RuntimeError(
+            raise TypeError(
                 f"Baidu response invalid: endpoint={endpoint}, query_hash={params_hash}"
             )
         if payload.get("status") == 0:
@@ -116,7 +115,7 @@ class BaiduClient:
                 f"Baidu cache invalid: endpoint={endpoint}, query_hash={params_hash}, path={raw_path}"
             ) from exc
         if not isinstance(payload, dict):
-            raise RuntimeError(
+            raise TypeError(
                 f"Baidu cache invalid: endpoint={endpoint}, query_hash={params_hash}, path={raw_path}"
             )
         return payload
