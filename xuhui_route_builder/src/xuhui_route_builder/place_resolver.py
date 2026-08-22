@@ -129,7 +129,7 @@ def _load_osm_candidates(path: Path) -> list[PlaceCandidate]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     rows = payload.get("pois") if isinstance(payload, dict) else payload
     if not isinstance(rows, list):
-        raise ValueError(f"OSM POI index invalid: path={path}")
+        raise TypeError(f"OSM POI index invalid: path={path}")
     candidates: list[PlaceCandidate] = []
     for row in rows:
         try:
