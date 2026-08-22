@@ -91,6 +91,12 @@ python -m xuhui_route_builder.cli validate-routes
 
 `generate-routes` 逐段调用高德步行或骑行路径，`validate-routes` 完成 OSM 贴路检查后更新网页路线。
 
+## 路线重建与验收源码
+
+比赛使用的正式链路为：路线种子 → 路径缓存或在线生成 → 几何验证 → 组合验收 → 真实 POI 合并 → Web 数据。各阶段源码、输入输出、失败保护和完整命令见 [`tools/README.md`](tools/README.md)。
+
+核心实现位于 `src/xuhui_route_builder`，其中 `js_route_cache.py` 负责最多 5 条一批的高德 JS 路径缓存，`routes.py` 负责候选路线生成，`validation.py` 负责边界与道路证据验证，`service_pois.py` 负责真实 POI 合并。项目级几何和组合门禁位于 `.agents/skills/optimize-xuhui-routes/scripts`。
+
 ## 网页功能
 
 `http://127.0.0.1:8123/web/` 默认进入路线选择界面。页面显示徐汇边界、候选路线、入口点和路线列表，可按片区、距离档、类型、关键词和途经偏好筛选，并直接点击候选路线查看地图高亮。
