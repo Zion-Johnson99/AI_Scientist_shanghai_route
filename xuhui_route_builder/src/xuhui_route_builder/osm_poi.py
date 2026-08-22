@@ -7,7 +7,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-
 OSM_POI_QUERY = """[out:json][timeout:120];
 area["boundary"="administrative"]["name"="徐汇区"]["admin_level"="6"]->.searchArea;
 (

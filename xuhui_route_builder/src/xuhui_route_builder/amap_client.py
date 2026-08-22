@@ -10,7 +10,6 @@ import requests
 
 from .models import AmapRawRecord
 
-
 ENDPOINTS = {
     "district": "https://restapi.amap.com/v3/config/district",
     "geocode": "https://restapi.amap.com/v3/geocode/geo",
