@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import unicodedata
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 
@@ -13,7 +14,7 @@ from .scoring_placeholder import attach_score_placeholder
 def load_route_seeds(seed_path: Path) -> list[RouteSeed]:
     raw = json.loads(seed_path.read_text(encoding="utf-8"))
     if not isinstance(raw, list):
-        raise ValueError("route_seeds.json must be a list")
+        raise TypeError("route_seeds.json must be a list")
     return [RouteSeed(**item) for item in raw]
 
 
@@ -161,12 +162,12 @@ def resolve_node_query(
         try:
             resolved = _resolve_unique_poi_node(expected_name, expected_poi_id, record.payload.get("pois") or [])
             return resolved, str(record.raw_path)
-        except ValueError as poi_error:
+        except ValueError:
             if expected_poi_id is not None:
-                raise poi_error
+                raise
             geocode_record = client.geocode(f"上海市徐汇区{query}", city="上海")
             if str(geocode_record.status) != "1" or not str(geocode_record.raw_path).strip():
-                raise poi_error
+                raise
             resolved = _resolve_unique_geocode_node(expected_name, geocode_record.payload.get("geocodes") or [])
             return resolved, str(geocode_record.raw_path)
     except Exception as exc:
@@ -181,7 +182,9 @@ def generate_candidate_from_seed(seed: RouteSeed, client: Any, index: int) -> Ca
     mode = "bike" if seed.route_mode in {"bike", "bike_assist"} else "walking"
     paths: list[DirectionPath] = []
     raw_response_paths: list[str] = []
-    for segment_index, (origin_node, destination_node) in enumerate(zip(nodes, nodes[1:]), start=1):
+    for segment_index, (origin_node, destination_node) in enumerate(
+        pairwise(nodes), start=1
+    ):
         origin = _node_location(origin_node)
         destination = _node_location(destination_node)
         context = f"segment={segment_index} mode={mode} origin={origin} destination={destination}"
