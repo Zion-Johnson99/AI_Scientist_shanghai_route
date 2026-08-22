@@ -242,6 +242,32 @@ def test_resolve_seed_drafts_reports_all_node_failures(tmp_path: Path) -> None:
     assert second_query in str(caught.value)
 
 
+def test_resolve_seed_drafts_propagates_unexpected_programming_error(
+    tmp_path: Path,
+) -> None:
+    seed_dir = tmp_path / "data" / "seeds"
+    seed_dir.mkdir(parents=True)
+    _write_expanded_drafts(seed_dir)
+
+    class UnexpectedFailureClient(DraftClient):
+        def resolve(self, expected_name, query, expected_poi_id, seed_id, node_index):
+            raise AttributeError("unexpected resolver contract error")
+
+    with pytest.raises(AttributeError, match="unexpected resolver contract error"):
+        resolve_seed_drafts(tmp_path, UnexpectedFailureClient())
+
+
+@pytest.mark.parametrize("payload", [{}, None, "invalid"])
+def test_draft_collection_uses_type_error_for_non_list(payload) -> None:
+    with pytest.raises(TypeError, match="drafts must be a list"):
+        cli_module._validate_draft_collection(payload)
+
+
+def test_draft_collection_uses_type_error_for_non_mapping_item() -> None:
+    with pytest.raises(TypeError, match="item must be a dict"):
+        cli_module._validate_draft_collection([None] * 90)
+
+
 def test_validate_seeds_rejects_wrong_mode_counts_or_missing_restrictions(
     tmp_path: Path,
 ) -> None:

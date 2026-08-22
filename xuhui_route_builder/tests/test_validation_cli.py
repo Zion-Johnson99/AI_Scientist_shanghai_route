@@ -671,6 +671,39 @@ def test_validate_routes_rolls_back_web_and_records_failed_when_success_report_w
     assert report["failures"][-1]["stage"] == "success_report"
 
 
+def test_validate_routes_surfaces_failed_recovery_report_write(
+    tmp_path, monkeypatch
+) -> None:
+    candidates = _catalog_candidates()
+    _prepare(tmp_path, candidates)
+    web = tmp_path / "data/web"
+    web.mkdir(parents=True, exist_ok=True)
+    first, second = web / "xuhui_routes.geojson", web / "route_catalog.json"
+    first.write_text("old geojson", encoding="utf-8")
+    second.write_text("old catalog", encoding="utf-8")
+    real_write = cli._atomic_write_json
+
+    def fail_final_reports(path, payload):
+        status = payload.get("batch_status") if isinstance(payload, dict) else None
+        if path.name == "route_validation_report.json" and status in {
+            "succeeded",
+            "failed",
+        }:
+            raise OSError(f"{status} report disk full")
+        return real_write(path, payload)
+
+    monkeypatch.setattr(cli, "_atomic_write_json", fail_final_reports)
+    with pytest.raises(
+        RuntimeError,
+        match="failed report write also failed: OSError: failed report disk full",
+    ):
+        cli.validate_routes(
+            tmp_path, _Client(candidates), datetime(2026, 7, 12, tzinfo=timezone.utc)
+        )
+    assert first.read_text(encoding="utf-8") == "old geojson"
+    assert second.read_text(encoding="utf-8") == "old catalog"
+
+
 @pytest.mark.parametrize(
     ("payload", "message"),
     [

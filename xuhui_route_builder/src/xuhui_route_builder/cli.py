@@ -77,7 +77,7 @@ def _distance_band(route_mode: str, distance_m: int) -> str | None:
     bands = DISTANCE_BANDS_M.get(route_mode, ())
     for index, (name, lower, upper) in enumerate(bands):
         upper_included = index == len(bands) - 1
-        if lower <= distance_m < upper or upper_included and distance_m == upper:
+        if lower <= distance_m < upper or (upper_included and distance_m == upper):
             return name
     return None
 
@@ -214,7 +214,7 @@ def resolve_seed_drafts(project_root: Path, resolver) -> list[RouteSeed]:
                     str(draft.get("seed_id", "")),
                     node_index,
                 )
-            except Exception as exc:
+            except (OSError, RuntimeError, TypeError, ValueError) as exc:
                 resolution_failures.append(
                     f"draft index={draft_index} seed_id={draft['seed_id']} node_index={node_index}: {exc}"
                 )
@@ -256,7 +256,7 @@ def resolve_seed_drafts(project_root: Path, resolver) -> list[RouteSeed]:
         payload["geometry_action"] = "regenerate"
         try:
             seeds.append(RouteSeed(**payload))
-        except Exception as exc:
+        except (TypeError, ValueError) as exc:
             resolution_failures.append(
                 f"draft index={draft_index} seed_id={draft['seed_id']}: {exc}"
             )
@@ -349,7 +349,7 @@ def generate_routes(project_root: Path, client) -> list:
                     }
                 )
             )
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001 - preserve every per-route failure.
             failures.append(
                 {
                     "stage": "route_generation",
@@ -417,7 +417,7 @@ def generate_routes(project_root: Path, client) -> list:
                 _atomic_write_bytes(candidate_path, previous_candidate_bytes or b"")
             elif candidate_path.exists():
                 candidate_path.unlink()
-        except Exception as rollback_exc:
+        except OSError as rollback_exc:
             rollback_error = rollback_exc
         detail = (
             f"; candidate rollback failed: {rollback_error}"
@@ -539,7 +539,7 @@ def validate_routes(
                     boundary_polygons,
                 )
             )
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001 - preserve every per-route failure.
             failures.append(
                 {
                     "route_id": route.route_id,
@@ -676,12 +676,19 @@ def validate_routes(
         _restore_files(web_targets, web_snapshots)
         report["batch_status"] = "failed"
         report["failures"].append(_stage_failure("success_report", exc))
+        recovery_report_error: Exception | None = None
         try:
             _atomic_write_json(report_path, report)
-        except Exception:
-            pass
+        except (OSError, TypeError, ValueError) as report_exc:
+            recovery_report_error = report_exc
+        recovery_detail = (
+            "; failed report write also failed: "
+            f"{type(recovery_report_error).__name__}: {recovery_report_error}"
+            if recovery_report_error is not None
+            else ""
+        )
         raise RuntimeError(
-            "success report write failed; web files rolled back"
+            f"success report write failed; web files rolled back{recovery_detail}"
         ) from exc
     return validated
 
@@ -755,7 +762,7 @@ def _restore_files(
                 _atomic_write_bytes(path, content)
             elif path.exists():
                 path.unlink()
-        except Exception as exc:
+        except OSError as exc:
             failures.append(f"{path}: {exc}")
     return failures
 
@@ -884,7 +891,7 @@ def _seed_portfolio_failures(seeds: list[RouteSeed]) -> list[str]:
 
 def _validate_draft_collection(raw) -> None:
     if not isinstance(raw, list):
-        raise ValueError(
+        raise TypeError(
             "draft index=collection seed_id=<unknown>: drafts must be a list"
         )
     if len(raw) != EXPECTED_ROUTE_COUNT:
@@ -932,7 +939,7 @@ def _validate_draft_collection(raw) -> None:
         )
         context = f"draft index={draft_index} seed_id={seed_id or '<unknown>'}"
         if not isinstance(draft, dict):
-            raise ValueError(f"{context}: item must be a dict")
+            raise TypeError(f"{context}: item must be a dict")
         extras = set(draft) - allowed_keys
         missing = allowed_keys - set(draft)
         if extras or missing:
