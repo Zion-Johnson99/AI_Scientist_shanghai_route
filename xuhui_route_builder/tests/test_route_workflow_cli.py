@@ -48,3 +48,22 @@ def test_cache_route_batch_command_dispatches_without_network(
     assert captured["route_ids"] == ["XH_RUN_0031", "XH_RUN_0032"]
     assert captured["proxy_url"] == "http://127.0.0.1:3456"
     assert "route_count=2" in capsys.readouterr().out
+
+
+def test_merge_service_pois_command_dispatches(monkeypatch) -> None:
+    captured = {}
+
+    def fake_merge(project_root):
+        captured["project_root"] = project_root
+        return []
+
+    monkeypatch.setattr(cli, "merge_service_pois", fake_merge, raising=False)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["xuhui-route-builder", "merge-service-pois"],
+    )
+
+    cli.main()
+
+    assert captured["project_root"] == cli.PROJECT_ROOT
