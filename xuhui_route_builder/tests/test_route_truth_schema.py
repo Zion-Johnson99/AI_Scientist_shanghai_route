@@ -3,8 +3,17 @@ from datetime import datetime, timezone
 import pytest
 from pydantic import ValidationError
 
-from xuhui_route_builder.exporters import build_route_catalog, build_route_feature_collection
-from xuhui_route_builder.models import CandidateRoute, CoordinatePair, RouteLocation, RouteNode, RouteSeed
+from xuhui_route_builder.exporters import (
+    build_route_catalog,
+    build_route_feature_collection,
+)
+from xuhui_route_builder.models import (
+    CandidateRoute,
+    CoordinatePair,
+    RouteLocation,
+    RouteNode,
+    RouteSeed,
+)
 
 
 def _route(route_id: str, validation_status: str) -> CandidateRoute:

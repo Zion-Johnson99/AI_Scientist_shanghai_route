@@ -1,4 +1,9 @@
-from xuhui_route_builder.models import CandidateRoute, CoordinatePair, RouteLocation, RouteNode
+from xuhui_route_builder.models import (
+    CandidateRoute,
+    CoordinatePair,
+    RouteLocation,
+    RouteNode,
+)
 from xuhui_route_builder.validation import topology_failures
 
 
