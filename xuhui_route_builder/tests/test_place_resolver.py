@@ -4,7 +4,10 @@ from types import SimpleNamespace
 
 import pytest
 
-from xuhui_route_builder.place_resolver import HybridPlaceResolver
+from xuhui_route_builder.place_resolver import (
+    HybridPlaceResolver,
+    _load_osm_candidates,
+)
 
 
 def _write_json(path: Path, payload) -> Path:
@@ -76,6 +79,13 @@ def _resolver(
         boundary_path=boundary_path,
         max_online_calls=max_online_calls,
     )
+
+
+def test_osm_index_uses_type_error_for_non_list_payload(tmp_path: Path) -> None:
+    source = _write_json(tmp_path / "osm_poi_index.json", {"pois": {}})
+
+    with pytest.raises(TypeError, match="OSM POI index invalid"):
+        _load_osm_candidates(source)
 
 
 def test_resolver_prefers_local_then_osm_without_baidu(tmp_path: Path) -> None:
