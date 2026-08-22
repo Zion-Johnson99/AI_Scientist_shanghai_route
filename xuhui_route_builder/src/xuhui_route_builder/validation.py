@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import itertools
 import json
 import math
 import os
@@ -63,7 +64,7 @@ def parse_overpass_segments(
         ):
             continue
         way_nodes = way.get("nodes") or []
-        for first_id, second_id in zip(way_nodes, way_nodes[1:]):
+        for first_id, second_id in itertools.pairwise(way_nodes):
             first = nodes.get(int(first_id))
             second = nodes.get(int(second_id))
             if first is not None and second is not None and first != second:
@@ -92,7 +93,8 @@ def compute_snap_ratio(
 def polyline_length_m(points: Sequence[CoordinatePair | WgsPoint]) -> float:
     wgs_points = _as_wgs_points(points)
     return sum(
-        _distance_m(first, second) for first, second in zip(wgs_points, wgs_points[1:])
+        _distance_m(first, second)
+        for first, second in itertools.pairwise(wgs_points)
     )
 
 
@@ -103,7 +105,7 @@ def point_to_polyline_distance_m(
         (item.lng_gcj02, item.lat_gcj02) if isinstance(item, CoordinatePair) else item
         for item in points
     ]
-    segments = list(zip(route_points, route_points[1:]))
+    segments = list(itertools.pairwise(route_points))
     if not segments:
         return math.inf
     return min(_point_segment_distance_m(point, segment) for segment in segments)
@@ -223,8 +225,10 @@ def validate_candidate(
     )
     if (
         not valid_geometry
-        or route.geometry_source == "amap_direction"
-        and not route.raw_response_paths
+        or (
+            route.geometry_source == "amap_direction"
+            and not route.raw_response_paths
+        )
     ):
         failures.append("高德几何或原始响应不完整")
     if route.actual_distance_m <= 0 or route.duration_s <= 0:
@@ -312,7 +316,7 @@ def topology_failures(route: CandidateRoute) -> list[str]:
             f"起终点标记偏离轨迹：起点 {start_offset:.1f} 米，终点 {end_offset:.1f} 米"
         )
 
-    segments = list(zip(points, points[1:]))
+    segments = list(itertools.pairwise(points))
     total_m = sum(_distance_m(first, second) for first, second in segments)
     repeated_m = 0.0
     longest_repeated_m = 0.0
@@ -389,7 +393,7 @@ def _is_single_simple_cycle(points: Sequence[WgsPoint]) -> bool:
 
     adjacency: dict[WgsPoint, set[WgsPoint]] = {}
     edges: set[tuple[WgsPoint, WgsPoint]] = set()
-    for first, second in zip(keys, keys[1:]):
+    for first, second in itertools.pairwise(keys):
         if first == second:
             continue
         adjacency.setdefault(first, set()).add(second)
@@ -414,7 +418,7 @@ def _is_single_simple_cycle(points: Sequence[WgsPoint]) -> bool:
 
 def _branch_like_node_count(points: Sequence[WgsPoint]) -> int:
     adjacency: dict[WgsPoint, set[WgsPoint]] = {}
-    for first, second in zip(points, points[1:]):
+    for first, second in itertools.pairwise(points):
         first_key, second_key = _rounded_point(first), _rounded_point(second)
         if first_key == second_key:
             continue
@@ -481,7 +485,9 @@ def _local_uturn_metrics(points: Sequence[WgsPoint]) -> tuple[int, float]:
 def _local_return_loop_metrics(
     points: Sequence[WgsPoint], route_shape: str
 ) -> tuple[int, float]:
-    lengths = [_distance_m(first, second) for first, second in zip(points, points[1:])]
+    lengths = [
+        _distance_m(first, second) for first, second in itertools.pairwise(points)
+    ]
     cumulative = [0.0]
     for length in lengths:
         cumulative.append(cumulative[-1] + length)
@@ -691,7 +697,7 @@ class OverpassClient:
         if not isinstance(payload, dict) or not isinstance(
             payload.get("elements"), list
         ):
-            raise RuntimeError(
+            raise TypeError(
                 f"Overpass response invalid: endpoint={self.endpoint}, query_hash={digest}"
             )
         self.cache_dir.mkdir(parents=True, exist_ok=True)
@@ -783,7 +789,7 @@ def _sample_polyline(points: Sequence[WgsPoint], spacing_m: float) -> list[WgsPo
     samples: list[WgsPoint] = []
     travelled = 0.0
     target_index = 0
-    for first, second in zip(points, points[1:]):
+    for first, second in itertools.pairwise(points):
         segment_length = _distance_m(first, second)
         while (
             target_index < len(targets)
@@ -837,8 +843,8 @@ def _bidirectional_overlap(
 ) -> float:
     first_points = _as_wgs_points(first.polyline_gcj02)
     second_points = _as_wgs_points(second.polyline_gcj02)
-    first_segments = list(zip(first_points, first_points[1:]))
-    second_segments = list(zip(second_points, second_points[1:]))
+    first_segments = list(itertools.pairwise(first_points))
+    second_segments = list(itertools.pairwise(second_points))
     if not first_segments or not second_segments:
         return 0.0
     first_samples = _sample_polyline(first_points, 20)

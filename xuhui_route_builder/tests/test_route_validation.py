@@ -530,6 +530,22 @@ def test_overpass_client_caches_and_wraps_request_errors(tmp_path) -> None:
     ).query("get-query") == {"elements": []}
 
 
+def test_overpass_client_uses_type_error_for_invalid_response(tmp_path) -> None:
+    class Response:
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> list:
+            return []
+
+    class Session:
+        def post(self, *args, **kwargs):
+            return Response()
+
+    with pytest.raises(TypeError, match="Overpass response invalid"):
+        OverpassClient(cache_dir=tmp_path, session=Session()).query("invalid")
+
+
 def test_overpass_client_sends_meaningful_user_agent(tmp_path) -> None:
     class Response:
         def raise_for_status(self) -> None:
