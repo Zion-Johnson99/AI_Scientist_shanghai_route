@@ -27,6 +27,7 @@ from .exporters import (
     write_json,
 )
 from .geo import gcj02_to_wgs84
+from .js_route_cache import cache_route_batch
 from .models import CandidateRoute, RouteSeed
 from .osm_poi import build_osm_poi_index
 from .place_resolver import HybridPlaceResolver
@@ -36,6 +37,7 @@ from .routes import (
     load_route_seeds,
     preserve_candidate_geometry,
 )
+from .service_pois import merge_verified_service_pois
 from .validation import (
     OverpassClient,
     build_overpass_query,
@@ -110,9 +112,14 @@ def main() -> None:
             "validate-routes",
             "validate-seeds",
             "export-candidates",
+            "merge-service-pois",
+            "cache-route-batch",
         ],
     )
     parser.add_argument("--max-online-calls", type=int, default=50)
+    parser.add_argument("--target-id")
+    parser.add_argument("--route-id", action="append", default=[])
+    parser.add_argument("--proxy-url", default="http://localhost:3456")
     args = parser.parse_args()
     if args.command == "merge-research":
         merged = merge_research_drafts(
@@ -158,6 +165,22 @@ def main() -> None:
         print(f"route_seed_count={len(seeds)}")
     elif args.command == "export-candidates":
         export_candidate_routes(PROJECT_ROOT)
+    elif args.command == "merge-service-pois":
+        merge_service_pois(PROJECT_ROOT)
+    elif args.command == "cache-route-batch":
+        if not args.target_id:
+            parser.error("--target-id is required for cache-route-batch")
+        result = cache_route_batch(
+            PROJECT_ROOT,
+            args.target_id,
+            args.route_id,
+            args.proxy_url,
+        )
+        print(
+            f"route_count={result['route_count']} "
+            f"segment_count={result['segment_count']} "
+            f"cache_hits={result['cache_hits']} fetched={result['fetched']}"
+        )
 
 
 def resolve_seed_drafts(project_root: Path, resolver) -> list[RouteSeed]:
@@ -1042,6 +1065,51 @@ def export_candidate_routes(project_root: Path) -> list[CandidateRoute]:
         f"needs_review={sum(route.validation_status == 'needs_review' for route in routes)}"
     )
     return routes
+
+
+def merge_service_pois(project_root: Path) -> list[CandidateRoute]:
+    processed = project_root / "data" / "processed"
+    route_path = processed / "pilot_validated.json"
+    routes = [
+        CandidateRoute.model_validate(item)
+        for item in json.loads(route_path.read_text(encoding="utf-8"))
+    ]
+    poi_dir = project_root / "data" / "interim" / "poi"
+    source_paths = [
+        poi_dir / "walk_route_pois.json",
+        poi_dir / "run_route_pois.json",
+        poi_dir / "bike_route_pois.json",
+    ]
+    documents = [json.loads(path.read_text(encoding="utf-8")) for path in source_paths]
+    updated, poi_catalog, report = merge_verified_service_pois(routes, documents)
+    publishable = [route for route in updated if route.is_publishable()]
+    web = project_root / "data" / "web"
+    _atomic_write_json(route_path, [route.model_dump(mode="json") for route in updated])
+    _write_json_transaction(
+        [
+            web / "xuhui_routes.geojson",
+            web / "route_catalog.json",
+            web / "poi_catalog.json",
+        ],
+        [
+            build_candidate_route_feature_collection(updated),
+            build_candidate_route_catalog(updated),
+            poi_catalog,
+        ],
+    )
+    report["published_route_count"] = len(publishable)
+    report["displayed_route_count"] = len(updated)
+    report["source_files"] = [
+        path.relative_to(project_root).as_posix() for path in source_paths
+    ]
+    _atomic_write_json(processed / "poi_merge_report.json", report)
+    print(
+        f"published_route_count={len(publishable)} "
+        f"displayed_route_count={len(updated)} "
+        f"published_poi_count={report['published_unique_poi_count']} "
+        f"published_association_count={report['published_association_count']}"
+    )
+    return updated
 
 
 def export_demo(project_root: Path) -> None:
