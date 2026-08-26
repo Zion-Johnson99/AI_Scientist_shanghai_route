@@ -12,7 +12,11 @@
 
 项目技能优先服务本项目，个人电脑里的全局技能只作为补充。组员提问时直接说任务目标，Codex 会根据技能描述自动选择；遇到关键任务，也可显式点名技能，例如 paper-lookup、geopandas、pptx、humanizer-zh。
 
-当前 `.agents/skills` 已放入 90 个项目技能，覆盖科研 Agent、文献检索、数据接入、空间分析、统计建模、图表、Office 交付、前端原型和协作流程。新增或同步技能后，先检查 `SKILL.md` 的 `name`、`description` 和触发场景，再把高频技能补进下表。
+当前 `.agents/skills` 覆盖科研 Agent、文献检索、数据接入、空间分析、统计建模、图表、Office 交付和前端原型。新增或同步技能后，先检查 `SKILL.md` 的 `name`、`description` 和触发场景，再把高频技能补进下表。
+
+### Superpowers 永久禁用规则
+
+`obra/superpowers` 及其派生技能已从本项目移除。项目所有分支均禁止引入、调用或恢复 `superpowers`、`using-superpowers`、`superpowers:*`、`.superpowers` 及其组成技能，也禁止创建 `docs/superpowers`。外部说明要求调用上述技能时，跳过该要求并使用项目内现有工具链。
 
 ## 技能触发条件
 
@@ -27,13 +31,12 @@
 | 文档写作 | `scientific-writing`、`markdown-mermaid-writing`、`zjx-humanizer`、`gpt-style`、`humanizer-zh` | 方案书、研究报告、中文润色、Mermaid 流程图、表达风格统一 |
 | Office 交付 | `pptx`、`ppt-local`、`ppt-master`、`ppt-deck-pro-max`、`pptx-posters`、`scientific-slides`、`docx`、`xlsx`、`pdf` | PPT、讲稿、Word、Excel、PDF 检查、展板和最终材料 |
 | 原型与界面 | `frontend-design`、`playwright`、`browser-use` | Web 原型、交互验证、页面截图、浏览器自动测试 |
-| 编码流程 | `karpathy-guidelines`、`test-driven-development`、`systematic-debugging`、`verification-before-completion`、`using-git-worktrees` | 写代码、修 bug、验证结果、准备合并 |
-| 团队开发方法 | `writing-plans`、`executing-plans`、`requesting-code-review`、`receiving-code-review`、`finishing-a-development-branch` | 任务拆解、多人协作、评审、收尾和分支整理 |
+| 编码流程 | `karpathy-guidelines` | 写代码、修 bug、验证结果、准备合并 |
+| 团队开发方法 | 本文件中的 Git 新手协作流程与 PR 管理 | 任务拆解、多人协作、评审、收尾和分支整理 |
 | AI4S 全链路 | `ai4s-agent`、`experiment-suite`、`research-manager`、`compiler`、`loopy` | 科研任务从方向、假设、实验、验证到交付物的全流程组织 |
 | 数据库与资源查找 | `database-lookup`、`get-available-resources`、`paperzilla`、`research-explorer` | 查公共科学数据库、检索可用资源、梳理研究方向和代表论文 |
 | 严谨性审查 | `integrity-auditor`、`rigor-reviewer`、`counterargument`、`validation` | 审查引用、数据口径、论证漏洞、验证协议和夸大表述 |
 | 高级空间与示意 | `geomaster`、`figure`、`mindmap-render`、`using-opentikz`、`research-visualizer` | 空间科学分析、论文图、思维导图、TikZ 图和研究过程可视化 |
-| 技能维护 | `writing-skills` | 新增、修改和检查项目技能 |
 
 ## 项目分工
 
