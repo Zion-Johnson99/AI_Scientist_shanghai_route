@@ -24,6 +24,9 @@ env/
 
 # Data and generated outputs
 /tmp/
+/docs/superpowers/
+/.superpowers/
+/tmp/skill_sources/superpowers/
 /data_raw/
 /data_processed/
 /outputs/

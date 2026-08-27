@@ -1,0 +1,24 @@
+# 本地凭据与运行环境
+.env
+.venv/
+
+# 本地数据、缓存、日志与数据库
+runtime/
+logs/
+*.log
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db
+
+# Python 工具缓存
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyright/
+*.egg-info/
+
+# 含旧凭据的本地调用说明
+相关文档/华风爱科API调用规范说明.pdf
