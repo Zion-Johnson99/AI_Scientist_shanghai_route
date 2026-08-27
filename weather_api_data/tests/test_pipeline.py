@@ -394,6 +394,27 @@ def test_refresh_updates_current_aqi_when_cache_is_about_to_expire(
     }
 
 
+def test_refresh_updates_hourly_aqi_when_cache_is_about_to_expire(
+    bundle: Sequence[PipelineBundle],
+) -> None:
+    value = _only(bundle)
+    value.pipeline.refresh()
+    cache = json.loads(value.cache_path.read_text(encoding="utf-8"))
+    for key, entry in cache["entries"].items():
+        if key.startswith("hourly_air_quality_24|"):
+            entry["valid_until"] = (UTC_NOW + timedelta(seconds=4)).isoformat()
+    value.cache_path.write_text(json.dumps(cache), encoding="utf-8")
+    value.provider.calls.clear()
+
+    report = value.pipeline.refresh()
+
+    assert report["call_count"] == 12
+    assert report["cache_hits"] == 16
+    assert Counter(endpoint for endpoint, _source_id in value.provider.calls) == {
+        "hourly_air_quality_24": 12,
+    }
+
+
 def test_refresh_weather_only_updates_reference_weather_and_preserves_full_export(
     bundle: Sequence[PipelineBundle],
 ) -> None:

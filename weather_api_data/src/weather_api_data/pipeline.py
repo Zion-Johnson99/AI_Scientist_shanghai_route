@@ -455,7 +455,9 @@ class WeatherPipeline:
             for endpoint, request in self._refresh_requests(location, reference_source_id):
                 cache_key = _cache_key(endpoint, location.location_key)
                 refresh_margin = (
-                    timedelta(minutes=5) if endpoint == "current_air_quality" else timedelta(0)
+                    timedelta(minutes=5)
+                    if endpoint in {"current_air_quality", "hourly_air_quality_24"}
+                    else timedelta(0)
                 )
                 cached = _unexpired_records(
                     entries.get(cache_key),
