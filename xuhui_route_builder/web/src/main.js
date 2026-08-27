@@ -1,4 +1,8 @@
-import { loadRouteData } from "./data-loader.js?v=20260819-route-preview-1";
+import { loadRouteData } from "./data-loader.js?v=20260827-health-map-1";
+import {
+  buildRouteExposureModel,
+  createEnvironmentPanel,
+} from "./environment-ui.js?v=20260827-health-map-1";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -7,16 +11,14 @@ import {
   drawBoundary,
   enablePointPicker,
   endNavigationSession,
-  focusSportRoute,
   planNavigation,
   showRoutePreviews,
   showSingleRoute,
   startNavigationSession,
-  updateInlineNavigation,
-} from "./map.js?v=20260819-route-preview-1";
-import { createNavigationController } from "./navigation-session.js?v=20260819-route-preview-1";
-import { createRouteDock } from "./route-dock.js?v=20260819-route-preview-1";
-import { renderRoutePlanner } from "./route-ui.js?v=20260819-route-preview-1";
+} from "./map.js?v=20260827-health-map-1";
+import { createNavigationController } from "./navigation-session.js?v=20260827-health-map-1";
+import { createRouteDock } from "./route-dock.js?v=20260827-health-map-1";
+import { renderRoutePlanner } from "./route-ui.js?v=20260827-health-map-1";
 
 async function bootstrap() {
   const map = await createMap("map");
@@ -25,83 +27,37 @@ async function bootstrap() {
   const routeFeaturesById = new Map(data.routes.features.map((feature) => [feature.properties.route_id, feature]));
   const catalog = enrichCatalog(data.catalog, data.entries);
   const guide = inlineNavigationGuideControls();
+  createEnvironmentPanel(document.querySelector("#environmentPanel"), data.environmentDashboard);
+  let planner = null;
   let activeNavigation = null;
-  let reroutePending = false;
-  let lastRerouteAt = 0;
 
   const navigationController = createNavigationController({
-    geolocation: navigator.geolocation,
     onProgress(progress) {
-      updateInlineNavigation(map, progress);
       renderInlineNavigationProgress(guide, progress);
       document.querySelector("#navigationStatus").textContent = navigationStatusText(progress);
-
-      if (progress.status === "arrived") {
-        focusSportRoute(map, activeNavigation.request.routeId);
-        return;
-      }
-      if (progress.shouldReroute) {
-        void rerouteFrom(progress);
-      }
-    },
-    onError(error) {
-      renderInlineNavigationError(guide, error.message);
-      document.querySelector("#navigationStatus").textContent = error.message;
-      console.error("网页内导航定位失败", {
-        routeId: activeNavigation?.request?.routeId,
-        state: map.navigation.state,
-        error,
-      });
     },
   });
 
-  async function rerouteFrom(progress) {
-    const now = Date.now();
-    if (!activeNavigation || reroutePending || now - lastRerouteAt < 15000) {
-      return;
-    }
-    reroutePending = true;
-    lastRerouteAt = now;
-    guide.state.textContent = "正在重算路线";
-    try {
-      const plan = await planNavigation(map, {
-        ...activeNavigation.request,
-        origin: {
-          lng_gcj02: progress.position.lng,
-          lat_gcj02: progress.position.lat,
-          name: "实时位置",
-        },
-      });
-      activeNavigation.plan = plan;
-      navigationController.replacePlan(plan);
-      beginInlineNavigation(map, plan);
-      guide.state.textContent = "路线已更新";
-    } catch (error) {
-      renderInlineNavigationError(guide, `偏航重算失败：${error.message}`);
-      console.error("网页内导航偏航重算失败", {
-        routeId: activeNavigation.request.routeId,
-        position: progress.position,
-        error,
-      });
-    } finally {
-      reroutePending = false;
-    }
-  }
-
   function stopInlineNavigation() {
-    navigationController.stop();
+    if (navigationController.getSession()?.status === "previewing") {
+      navigationController.stop();
+    }
     clearInlineNavigation(map);
     hideInlineNavigationGuide(guide);
     activeNavigation = null;
-    reroutePending = false;
   }
 
+  guide.previousButton.addEventListener("click", () => navigationController.previous());
+  guide.nextButton.addEventListener("click", () => navigationController.next());
   guide.endButton.addEventListener("click", () => {
-    document.querySelector("#endNavigationButton").click();
+    if (!planner?.endNavigationPreview()) {
+      stopInlineNavigation();
+      endNavigationSession(map);
+    }
   });
 
   drawBoundary(map, data.boundary);
-  renderRoutePlanner(catalog, {
+  planner = renderRoutePlanner(catalog, {
     onPreviewRoutes(routes, onSelectRoute) {
       const features = routes
         .map((route) => routeFeaturesById.get(route.route_id))
@@ -116,38 +72,52 @@ async function bootstrap() {
       routeDock.hide();
     },
     onShowRoute(route, selectedPreferences) {
+      stopInlineNavigation();
+      endNavigationSession(map);
       showRouteFeature(map, routeFeaturesById, route.route_id, data, selectedPreferences);
     },
     onClearRoutes() {
       stopInlineNavigation();
+      endNavigationSession(map);
       clearRouteResults(map);
       routeDock.hide();
     },
     onSelect(routeId) {
-      showRouteFeature(map, routeFeaturesById, routeId, data);
-    },
-    onStartNavigation(onPick) {
-      startNavigationSession(map, onPick);
-    },
-    onEndNavigation() {
       stopInlineNavigation();
       endNavigationSession(map);
+      showRouteFeature(map, routeFeaturesById, routeId, data);
     },
-    onPickNavigationPoint(role) {
+    onPickNavigationPoint(role, onPicked) {
+      startNavigationSession(map, onPicked);
       enablePointPicker(map, role);
     },
     onNavigate(request) {
       return planNavigation(map, request);
     },
     onStartInlineNavigation(payload) {
-      activeNavigation = payload;
-      showInlineNavigationGuide(guide, payload.plan);
-      navigationController.start(payload.plan);
-      beginInlineNavigation(map, payload.plan);
+      stopInlineNavigation();
+      try {
+        beginInlineNavigation(map, payload.plan);
+        activeNavigation = payload;
+        showInlineNavigationGuide(guide, payload.plan);
+        navigationController.start(payload.plan);
+      } catch (error) {
+        clearInlineNavigation(map);
+        hideInlineNavigationGuide(guide);
+        activeNavigation = null;
+        throw error;
+      }
+    },
+    onEndInlineNavigation() {
+      stopInlineNavigation();
+      endNavigationSession(map);
     },
     onRouteMetrics(route) {
       if (route) {
-        routeDock.show(route);
+        routeDock.show(
+          route,
+          buildRouteExposureModel(data.environmentDashboard, route.route_id),
+        );
       } else {
         routeDock.hide();
       }
@@ -162,8 +132,9 @@ function inlineNavigationGuideControls() {
     instruction: document.querySelector("#inlineNavigationInstruction"),
     remaining: document.querySelector("#inlineNavigationRemaining"),
     duration: document.querySelector("#inlineNavigationDuration"),
-    accuracy: document.querySelector("#inlineNavigationAccuracy"),
     progress: document.querySelector("#inlineNavigationProgress"),
+    previousButton: document.querySelector("#inlineNavigationPreviousButton"),
+    nextButton: document.querySelector("#inlineNavigationNextButton"),
     endButton: document.querySelector("#inlineNavigationEndButton"),
   };
 }
@@ -171,37 +142,24 @@ function inlineNavigationGuideControls() {
 function showInlineNavigationGuide(guide, plan) {
   guide.root.hidden = false;
   guide.root.parentElement.classList.add("inline-navigation-active");
-  guide.root.dataset.status = "locating";
-  guide.state.textContent = "正在定位";
+  guide.root.dataset.status = "previewing";
+  guide.state.textContent = "导航预览";
   guide.instruction.textContent = plan.steps?.[0]?.instruction || "沿接驳路线前往运动路线起点";
   guide.remaining.textContent = formatDistance(plan.distance);
   guide.duration.textContent = formatDuration(plan.duration);
-  guide.accuracy.textContent = "等待定位";
   guide.progress.style.width = "0%";
 }
 
 function renderInlineNavigationProgress(guide, progress) {
   guide.root.hidden = false;
   guide.root.dataset.status = progress.status;
-  guide.state.textContent = {
-    navigating: "实时导航中",
-    off_route: "已偏离路线",
-    arrived: "已到达起点",
-  }[progress.status] || "实时接驳";
+  guide.state.textContent = `第 ${progress.stepNumber} / ${progress.stepCount} 步`;
   guide.instruction.textContent = progress.instruction;
-  guide.remaining.textContent = formatDistance(progress.remainingDistanceM);
-  guide.duration.textContent = formatDuration(progress.remainingDurationS);
-  guide.accuracy.textContent = progress.position.accuracy
-    ? `±${Math.round(progress.position.accuracy)} 米`
-    : "精度未知";
+  guide.remaining.textContent = formatDistance(progress.totalDistanceM);
+  guide.duration.textContent = formatDuration(progress.totalDurationS);
   guide.progress.style.width = `${Math.round(progress.progressRatio * 100)}%`;
-}
-
-function renderInlineNavigationError(guide, message) {
-  guide.root.hidden = false;
-  guide.root.dataset.status = "error";
-  guide.state.textContent = "定位异常";
-  guide.instruction.textContent = message;
+  guide.previousButton.disabled = !progress.canGoPrevious;
+  guide.nextButton.disabled = !progress.canGoNext;
 }
 
 function hideInlineNavigationGuide(guide) {
@@ -209,16 +167,12 @@ function hideInlineNavigationGuide(guide) {
   guide.root.parentElement.classList.remove("inline-navigation-active");
   delete guide.root.dataset.status;
   guide.progress.style.width = "0%";
+  guide.previousButton.disabled = true;
+  guide.nextButton.disabled = true;
 }
 
 function navigationStatusText(progress) {
-  if (progress.status === "arrived") {
-    return "已到达所选运动路线起点，可以开始运动。";
-  }
-  if (progress.status === "off_route") {
-    return "检测到偏航，正在网页内重新规划接驳路线。";
-  }
-  return `${progress.instruction}，剩余 ${formatDistance(progress.remainingDistanceM)}。`;
+  return `第 ${progress.stepNumber}/${progress.stepCount} 步 · ${progress.instruction}`;
 }
 
 function formatDistance(value) {

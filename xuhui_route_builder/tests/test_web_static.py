@@ -38,12 +38,76 @@ def test_index_declares_inline_favicon_to_avoid_404() -> None:
     assert 'rel="icon"' in html
 
 
+def test_index_presents_the_health_map_product_shell() -> None:
+    html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+
+    assert "<title>徐汇户外健康地图</title>" in html
+    assert "<h1>徐汇户外健康地图</h1>" in html
+    assert "qweather-icons@1.8.0/font/qweather-icons.css" in html
+    assert 'id="environmentPanel"' in html
+    assert 'class="environment-panel"' in html
+    for internal_copy in [
+        "Xuhui Route Builder",
+        "严格验收",
+        "Route match",
+        "已切换",
+        "数据待接入",
+        "待评估",
+    ]:
+        assert internal_copy not in html
+
+
+def test_navigation_shell_uses_a_short_manual_start_flow() -> None:
+    html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+
+    for element_id in [
+        "navigationRouteSelect",
+        "startInput",
+        "startPickButton",
+        "navigateButton",
+        "startSportButton",
+        "inlineNavigationGuide",
+        "inlineNavigationPreviousButton",
+        "inlineNavigationNextButton",
+        "inlineNavigationEndButton",
+    ]:
+        assert f'id="{element_id}"' in html
+
+    assert "搜索上海地点" in html
+    assert "规划接驳路线" in html
+    assert "进入导航预览" in html
+    assert 'id="startNavigationButton"' not in html
+    assert 'id="endNavigationButton"' not in html
+    assert "实时接驳" not in html
+    assert "定位精度" not in html
+
+
+def test_glass_shell_keeps_primary_controls_touch_friendly_and_responsive() -> None:
+    css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
+
+    primary_actions = css[
+        css.index(".primary-action,") : css.index(".primary-action {")
+    ]
+    assert "min-height: 44px;" in primary_actions
+    assert ".environment-panel" in css
+    assert ".route-dock__exposure-grid" in css
+    assert ".route-dock__exposure-card" in css
+    assert ".route-dock__exposure-reading" in css
+    assert '.route-dock__exposure-card[data-status="partial"]' in css
+    assert '.route-dock__exposure-card[data-status="stale"]' in css
+    assert '.route-dock__exposure-card[data-status="no_data"]' in css
+    assert "backdrop-filter" in css
+    assert "@media (min-width: 981px) and (max-width: 1180px)" in css
+    assert "@media (max-width: 980px)" in css
+    assert "@media (max-width: 520px)" in css
+
+
 def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260819-route-preview-1"
+    release = "v=20260827-health-map-1"
     assert f"./styles/main.css?{release}" in html
     assert f"./src/main.js?{release}" in html
     assert f"./data-loader.js?{release}" in main_js
@@ -81,7 +145,18 @@ def test_main_wires_planned_access_request_to_inline_navigation() -> None:
     )
     assert "onStartInlineNavigation" in main_js
     assert "beginInlineNavigation" in main_js
-    assert "updateInlineNavigation" in main_js
+    assert "createEnvironmentPanel" in main_js
+    assert "buildRouteExposureModel" in main_js
+    assert "onEndInlineNavigation" in main_js
+    assert "inlineNavigationPreviousButton" in main_js
+    assert "inlineNavigationNextButton" in main_js
+    assert "navigationController.previous()" in main_js
+    assert "navigationController.next()" in main_js
+    assert "updateInlineNavigation" not in main_js
+    assert "navigator.geolocation" not in main_js
+    assert "watchPosition" not in main_js
+    assert "rerouteFrom" not in main_js
+    assert "shouldReroute" not in main_js
     assert "launchAmapNavigation" not in main_js
 
 
@@ -251,27 +326,28 @@ def test_selected_route_layer_stays_above_the_xuhui_boundary() -> None:
     assert "zIndex: active ? 100 : 70" in route_block
 
 
-def test_web_loads_pois_and_supports_navigation_session_controls() -> None:
+def test_web_loads_pois_and_supports_manual_navigation_controls() -> None:
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
     route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
     map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
 
     for element_id in [
-        "startNavigationButton",
-        "endNavigationButton",
         "startPickButton",
         "navigationModeSummary",
         "startSportButton",
         "inlineNavigationGuide",
         "inlineNavigationInstruction",
         "inlineNavigationRemaining",
-        "inlineNavigationAccuracy",
+        "inlineNavigationPreviousButton",
+        "inlineNavigationNextButton",
         "inlineNavigationEndButton",
     ]:
         assert f'id="{element_id}"' in html
 
     for removed_element_id in [
+        "startNavigationButton",
+        "endNavigationButton",
         "waypointInput",
         "waypointPickButton",
         "endInput",
@@ -283,17 +359,12 @@ def test_web_loads_pois_and_supports_navigation_session_controls() -> None:
     assert "poi_catalog.json" in data_loader_js
     assert "nearby_pois" in route_ui_js
     assert "preference_hits" not in route_ui_js
-    assert "startNavigationSession" in map_js
-    assert "endNavigationSession" in map_js
     assert "enablePointPicker" in map_js
     assert "setNavigationPoint" in map_js
-    assert "isPointInsideXuhui" in map_js
     assert "navigationServiceMode" in map_js
     assert "focusSportRoute" in map_js
     assert "previewSportRoute" in map_js
     assert "navigationPlanFromResult" in map_js
-    assert "beginInlineNavigation" in map_js
-    assert "updateInlineNavigation" in map_js
     assert "AMap.Driving" not in html
     assert 'addEventListener("click"' in map_js
     assert "containerToLngLat" in map_js

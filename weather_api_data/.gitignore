@@ -4,12 +4,19 @@
 
 # 本地数据、缓存、日志与数据库
 runtime/
+tmp/
 logs/
 *.log
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
 *.db
+
+# 外部 PM2.5 下载数据
+wjx_data/chap/
+wjx_data/tap/
+pm2.5_data/xuhui_pm2.5_2025_1km/origin_data/
+noise_data/xuhui_noise_monitoring/origin_data/
 
 # Python 工具缓存
 __pycache__/
@@ -22,3 +29,4 @@ __pycache__/
 
 # 含旧凭据的本地调用说明
 相关文档/华风爱科API调用规范说明.pdf
+相关文档/Java demo.docx

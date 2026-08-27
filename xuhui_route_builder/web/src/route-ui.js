@@ -5,10 +5,6 @@ const MODE_LABELS = {
   access: "接驳",
 };
 
-const NAVIGATION_POINT_LABELS = {
-  origin: "用户位置",
-};
-
 export function renderRoutePlanner(catalog, options) {
   const controls = getControls();
   updateModeCounts(catalog, controls);
@@ -21,17 +17,26 @@ export function renderRoutePlanner(catalog, options) {
     filters: readSelectionFilters(controls),
     filteredRoutes: [],
     navigationMode: "walk",
-    navigationStatus: "idle",
+    navigationStatus: "ready",
     navigationPoints: { origin: null },
     plannedNavigationRequest: null,
     plannedNavigationPlan: null,
+    planningRevision: 0,
   };
 
   bindAppTabs(catalog, state, controls, options);
   bindSelectionControls(catalog, state, controls, options);
   bindNavigationControls(catalog, state, controls, options);
-  setNavigationControlsEnabled(controls, false);
+  renderNavigationPrimaryAction(state.navigationStatus, controls);
   initializeRouteSelection(catalog, state, controls, options);
+
+  return {
+    endNavigationPreview() {
+      const wasPreviewing = state.navigationStatus === "previewing";
+      invalidateNavigationPlan(state, controls, options, "");
+      return wasPreviewing;
+    },
+  };
 }
 
 export function filterCandidateRoutes(catalog, filters) {
@@ -72,7 +77,11 @@ export function filterNavigationRoutes(catalog, mode) {
 function bindAppTabs(catalog, state, controls, options) {
   controls.appTabs.forEach((tab) => {
     tab.addEventListener("click", () => {
-      state.activeAppTab = tab.dataset.appTab;
+      const nextTab = tab.dataset.appTab;
+      if (nextTab !== state.activeAppTab && state.activeAppTab === "navigation") {
+        invalidateNavigationPlan(state, controls, options, "");
+      }
+      state.activeAppTab = nextTab;
       switchAppTab(state, controls);
       renderActiveMapState(catalog, state, controls, options);
     });
@@ -82,6 +91,7 @@ function bindAppTabs(catalog, state, controls, options) {
 function bindSelectionControls(catalog, state, controls, options) {
   controls.planButton.addEventListener("click", () => runSearch(catalog, state, controls, options));
   controls.resetButton.addEventListener("click", () => {
+    resetNavigationFlow(state, controls, options);
     resetSelectionControls(controls);
     initializeRouteSelection(catalog, state, controls, options);
   });
@@ -118,46 +128,38 @@ function bindSelectionControls(catalog, state, controls, options) {
   controls.routeSelect.addEventListener("change", () => {
     const route = findRoute(state.filteredRoutes, controls.routeSelect.value);
     if (route) {
-      showRoute(route, catalog, state, controls, options, "已切换到所选路线。");
+      showRoute(route, catalog, state, controls, options);
     }
   });
 }
 
 function bindNavigationControls(catalog, state, controls, options) {
   const handleMapPick = (result) => {
-    if (result.error) {
+    if (result?.error) {
       controls.navigationStatus.textContent = result.error;
       return;
     }
-    const point = result.point;
+    const point = result?.point;
+    if (!point) {
+      controls.navigationStatus.textContent = "地图选点未返回有效出发地。";
+      return;
+    }
+    invalidateNavigationPlan(state, controls, options, "");
     state.navigationPoints.origin = point;
     controls.startInput.value = formatPoint(point);
-    controls.navigationStatus.textContent = `${NAVIGATION_POINT_LABELS[result.role]}已选：${formatPoint(point)}`;
+    controls.navigationStatus.textContent = "出发地已选择。";
   };
 
-  controls.startNavigationButton.addEventListener("click", () => {
-    state.navigationStatus = "editing";
-    state.navigationPoints = { origin: null };
-    state.plannedNavigationRequest = null;
-    state.plannedNavigationPlan = null;
-    options.onStartNavigation(handleMapPick);
-    setNavigationControlsEnabled(controls, true);
-    controls.startSportButton.disabled = true;
-    controls.navigationStatus.textContent = "可输入地点，或点击点选后在地图设置用户位置。";
-  });
-
-  controls.endNavigationButton.addEventListener("click", () => {
-    resetNavigationState(state, controls);
-    options.onEndNavigation();
-  });
-
   controls.startPickButton.addEventListener("click", () => {
+    if (!options.onPickNavigationPoint) {
+      controls.navigationStatus.textContent = "地图选点暂不可用。";
+      return;
+    }
     try {
-      ensureNavigationEditing(state);
-      options.onPickNavigationPoint("origin");
-      controls.navigationStatus.textContent = "请在徐汇区内点击用户位置。";
+      options.onPickNavigationPoint("origin", handleMapPick);
+      controls.navigationStatus.textContent = "在地图选择出发地";
     } catch (error) {
-      controls.navigationStatus.textContent = error.message;
+      controls.navigationStatus.textContent = errorMessage(error);
     }
   });
 
@@ -165,12 +167,13 @@ function bindNavigationControls(catalog, state, controls, options) {
     tab.addEventListener("click", () => {
       state.navigationMode = tab.dataset.navigationMode;
       controls.navigationModeTabs.forEach((item) => item.classList.toggle("active", item === tab));
-      const reset = resetNavigationForModeChange(state.navigationStatus);
+      invalidateNavigationPlan(state, controls, options, "");
+      const reset = resetNavigationForModeChange();
       state.navigationStatus = reset.navigationStatus;
       state.selectedRouteId = reset.selectedRouteId;
       state.plannedNavigationRequest = reset.plannedRequest;
-      state.plannedNavigationPlan = null;
-      controls.startSportButton.disabled = reset.launchDisabled;
+      state.plannedNavigationPlan = reset.plannedPlan;
+      renderNavigationPrimaryAction(state.navigationStatus, controls);
       populateNavigationRoutes(
         controls.navigationRouteSelect,
         filterNavigationRoutes(catalog, state.navigationMode),
@@ -179,7 +182,8 @@ function bindNavigationControls(catalog, state, controls, options) {
       options.onClearRoutes();
       options.onRouteMetrics?.(null);
       renderNavigationPreview(catalog, state, controls, options);
-      controls.navigationStatus.textContent = "运动类型已切换，请选择该类型的目标路线。";
+      const modeLabel = MODE_LABELS[state.navigationMode] || "运动";
+      controls.navigationStatus.textContent = `请选择一条${modeLabel}路线。`;
     });
   });
 
@@ -197,28 +201,43 @@ function bindNavigationControls(catalog, state, controls, options) {
     const route = findRoute(catalog, controls.navigationRouteSelect.value);
     let request;
     try {
-      ensureNavigationEditing(state);
       const origin = navigationValue(controls.startInput.value, state.navigationPoints.origin);
       request = buildNavigationRequest(route, origin);
     } catch (error) {
-      controls.navigationStatus.textContent = error.message;
+      controls.navigationStatus.textContent = errorMessage(error);
       return;
     }
-    controls.navigationStatus.textContent = "正在调用高德路线导航...";
-    options.onNavigate(request)
+    if (!options.onNavigate) {
+      controls.navigationStatus.textContent = "接驳规划暂不可用。";
+      return;
+    }
+
+    const planningRevision = beginNavigationPlanning(state, controls, options);
+    controls.navigationStatus.textContent = "正在规划接驳路线…";
+    Promise.resolve()
+      .then(() => options.onNavigate(request))
       .then((plan) => {
-        state.navigationStatus = "planned";
-        state.plannedNavigationRequest = request;
-        state.plannedNavigationPlan = plan;
-        controls.navigationStatus.textContent = `${plan.summary} 可以开始网页内导航。`;
-        controls.startSportButton.disabled = false;
+        if (!commitNavigationPlan(state, planningRevision, plan, request)) {
+          return;
+        }
+        controls.navigationStatus.textContent = plan.summary || "接驳路线已规划。";
+        renderNavigationPrimaryAction(state.navigationStatus, controls);
       })
       .catch((error) => {
+        if (!isCurrentPlanningRevision(state, planningRevision)) {
+          return;
+        }
+        state.navigationStatus = "ready";
         state.plannedNavigationRequest = null;
         state.plannedNavigationPlan = null;
-        controls.startSportButton.disabled = true;
-        controls.navigationStatus.textContent = error.message;
+        renderNavigationPrimaryAction(state.navigationStatus, controls);
+        controls.navigationStatus.textContent = errorMessage(error);
       });
+  });
+
+  controls.startInput.addEventListener("input", () => {
+    state.navigationPoints.origin = null;
+    invalidateNavigationPlan(state, controls, options, "");
   });
 
   controls.startInput.addEventListener("keydown", (event) => {
@@ -239,11 +258,11 @@ function bindNavigationControls(catalog, state, controls, options) {
         controls.navigationStatus.textContent = "请先完成到路线起点的接驳规划。";
         return;
       }
-      state.navigationStatus = "navigating";
-      controls.startSportButton.disabled = true;
-      controls.navigationStatus.textContent = "网页内导航已启动，正在获取实时位置。";
+      state.navigationStatus = "previewing";
+      renderNavigationPrimaryAction(state.navigationStatus, controls);
+      controls.navigationStatus.textContent = "导航预览已打开。";
     } catch (error) {
-      controls.navigationStatus.textContent = error.message;
+      controls.navigationStatus.textContent = errorMessage(error);
     }
   });
 }
@@ -269,23 +288,48 @@ export function startPlannedNavigation(navigationStatus, plan, request, options)
   return true;
 }
 
-export function resetNavigationForModeChange(navigationStatus) {
+export function resetNavigationForModeChange() {
   return {
-    navigationStatus: navigationStatus === "idle" ? "idle" : "editing",
+    navigationStatus: "ready",
     selectedRouteId: "",
     plannedRequest: null,
-    launchDisabled: true,
+    plannedPlan: null,
   };
 }
 
-export function resetPlannedNavigationForRouteChange(navigationStatus) {
-  if (!new Set(["planned", "sporting"]).has(navigationStatus)) {
-    return null;
-  }
+export function resetPlannedNavigationForRouteChange() {
   return {
-    navigationStatus: "editing",
-    statusText: "目标路线已切换，请重新规划到新路线起点的接驳。",
-    startSportDisabled: true,
+    navigationStatus: "ready",
+    statusText: "路线已更新，请重新规划接驳路线。",
+  };
+}
+
+export function advancePlanningRevision(state) {
+  state.planningRevision += 1;
+  return state.planningRevision;
+}
+
+export function isCurrentPlanningRevision(state, revision) {
+  return state.planningRevision === revision;
+}
+
+export function commitNavigationPlan(state, revision, plan, request) {
+  if (!isCurrentPlanningRevision(state, revision)) {
+    return false;
+  }
+  state.navigationStatus = "planned";
+  state.plannedNavigationRequest = request;
+  state.plannedNavigationPlan = plan;
+  return true;
+}
+
+export function navigationPrimaryActionState(status) {
+  const showPreview = status === "planned" || status === "previewing";
+  return {
+    showPlan: !showPreview,
+    planDisabled: status === "planning",
+    showPreview,
+    previewDisabled: status !== "planned",
   };
 }
 
@@ -299,7 +343,7 @@ function runSearch(catalog, state, controls, options) {
     renderEmptySelection(controls, options, "无推荐路线，请调整片区、类型、距离或关键词。");
     return;
   }
-  showRoute(route, catalog, state, controls, options, `已从 ${state.filteredRoutes.length} 条匹配路线中推荐最优路线。`);
+  showRoute(route, catalog, state, controls, options);
 }
 
 export function selectBestRoute(routes) {
@@ -311,7 +355,7 @@ function initializeRouteSelection(catalog, state, controls, options) {
   state.filteredRoutes = filterCandidateRoutes(catalog, state.filters);
   state.selectedRouteId = "";
   renderRouteSelect(state.filteredRoutes, controls, "");
-  controls.summary.textContent = `当前有 ${state.filteredRoutes.length} 条候选路线，点击筛选后显示推荐路线。`;
+  controls.summary.textContent = "";
   controls.detail.innerHTML = "";
   options.onRouteMetrics?.(null);
   renderSelectionPreview(state.filteredRoutes, catalog, state, controls, options);
@@ -336,12 +380,13 @@ function renderRouteSelect(routes, controls, selectedRouteId) {
   controls.routeOptionCount.textContent = `${routes.length} 条候选路线`;
 }
 
-function showRoute(route, catalog, state, controls, options, summary) {
+function showRoute(route, catalog, state, controls, options) {
   state.selectedRouteId = route.route_id;
   controls.routeSelect.value = route.route_id;
   renderDetail(route, controls.detail);
+  invalidateNavigationPlan(state, controls, options, "");
   syncNavigationRoute(route, catalog, state, controls);
-  controls.summary.textContent = summary;
+  controls.summary.textContent = "";
   options.onShowRoute(route, state.filters.preferences);
   options.onRouteMetrics?.(route);
 }
@@ -388,7 +433,7 @@ function renderSelectionPreview(routes, catalog, state, controls, options) {
   options.onPreviewRoutes?.(routes, (routeId) => {
     const route = findRoute(routes, routeId);
     if (route) {
-      showRoute(route, catalog, state, controls, options, "已从地图选择路线。");
+      showRoute(route, catalog, state, controls, options);
     }
   });
 }
@@ -407,17 +452,18 @@ function applyNavigationRouteSelection(catalog, routeId, state, controls, option
   }
   controls.navigationRouteSelect.value = route.route_id;
   state.selectedRouteId = route.route_id;
-  state.plannedNavigationRequest = null;
-  state.plannedNavigationPlan = null;
-  const reset = resetPlannedNavigationForRouteChange(state.navigationStatus);
-  if (reset) {
-    state.navigationStatus = reset.navigationStatus;
-    controls.navigationStatus.textContent = reset.statusText;
-  }
-  controls.startSportButton.disabled = true;
+  const hadPlan = state.navigationStatus !== "ready"
+    || state.plannedNavigationRequest
+    || state.plannedNavigationPlan;
+  const reset = resetPlannedNavigationForRouteChange();
+  invalidateNavigationPlan(state, controls, options, hadPlan ? reset.statusText : "");
   renderDetail(route, controls.detail);
   renderNavigationMode(route, controls);
-  controls.navigationStatus.textContent = `已选择${route.route_name}，请设置用户位置。`;
+  if (!hadPlan) {
+    controls.navigationStatus.textContent = state.navigationPoints.origin || controls.startInput.value.trim()
+      ? "可以规划接驳路线。"
+      : "选择出发地后即可规划接驳路线。";
+  }
   return route;
 }
 
@@ -433,14 +479,14 @@ function readSelectionFilters(controls) {
 
 export function buildNavigationRequest(route, origin) {
   if (!origin) {
-    throw new Error("请先选择或输入用户位置。");
+    throw new Error("请先输入上海地点或在地图选择出发地。");
   }
   if (!route) {
-    throw new Error("请先选择一条正式路线。");
+    throw new Error("请先选择一条路线。");
   }
   const destination = route.start_location;
   if (!destination || !Number.isFinite(destination.lng_gcj02) || !Number.isFinite(destination.lat_gcj02)) {
-    throw new Error(`路线 ${route.route_id || "未知"} 缺少正式起点数据。`);
+    throw new Error(`路线 ${route.route_id || "未知"} 缺少起点数据。`);
   }
   return {
     origin,
@@ -458,38 +504,59 @@ function navigationValue(text, point) {
   return trimmed ? { text: trimmed } : null;
 }
 
-function ensureNavigationEditing(state) {
-  if (state.navigationStatus === "idle") {
-    throw new Error("请先点击开始导航。");
-  }
+function resetNavigationFlow(state, controls, options) {
+  invalidateNavigationPlan(state, controls, options, "");
+  state.navigationPoints = { origin: null };
+  state.selectedRouteId = "";
+  controls.startInput.value = "";
+  controls.navigationRouteSelect.value = "";
+  renderNavigationMode(null, controls);
+  options.onRouteMetrics?.(null);
 }
 
-function resetNavigationState(state, controls) {
-  state.navigationStatus = "idle";
-  state.navigationPoints = { origin: null };
+function beginNavigationPlanning(state, controls, options) {
+  const hadPlan = state.navigationStatus !== "ready"
+    || state.plannedNavigationRequest
+    || state.plannedNavigationPlan;
+  const revision = advancePlanningRevision(state);
+  state.navigationStatus = "planning";
   state.plannedNavigationRequest = null;
   state.plannedNavigationPlan = null;
-  controls.startInput.value = "";
-  controls.startSportButton.disabled = true;
-  setNavigationControlsEnabled(controls, false);
-  controls.navigationStatus.textContent = "先选择运动类型和目标路线，再设置用户位置。";
+  if (hadPlan) {
+    options.onEndInlineNavigation?.();
+  }
+  renderNavigationPrimaryAction(state.navigationStatus, controls);
+  return revision;
 }
 
-function setNavigationControlsEnabled(controls, enabled) {
-  for (const control of [
-    controls.startInput,
-    controls.navigateButton,
-    controls.startPickButton,
-  ]) {
-    control.disabled = !enabled;
+function invalidateNavigationPlan(state, controls, options, statusText) {
+  const hadPlan = state.navigationStatus !== "ready"
+    || state.plannedNavigationRequest
+    || state.plannedNavigationPlan;
+  advancePlanningRevision(state);
+  state.navigationStatus = "ready";
+  state.plannedNavigationRequest = null;
+  state.plannedNavigationPlan = null;
+  renderNavigationPrimaryAction(state.navigationStatus, controls);
+  if (statusText !== undefined) {
+    controls.navigationStatus.textContent = statusText;
   }
-  controls.endNavigationButton.disabled = !enabled;
+  if (hadPlan) {
+    options.onEndInlineNavigation?.();
+  }
+}
+
+function renderNavigationPrimaryAction(status, controls) {
+  const action = navigationPrimaryActionState(status);
+  controls.navigateButton.hidden = !action.showPlan;
+  controls.navigateButton.disabled = action.planDisabled;
+  controls.startSportButton.hidden = !action.showPreview;
+  controls.startSportButton.disabled = action.previewDisabled;
 }
 
 export function routeOptionLabel(route) {
-  const status = route.validation_status === "accepted" ? "严格验收" : "待考证";
   const shape = route.route_shape === "strict_loop" ? "环线" : "单程";
-  return `${route.route_name}｜${route.region_zone}｜${(Number(route.distance_m || 0) / 1000).toFixed(1)} km｜${shape}｜${status}`;
+  return `${route.route_name}｜${route.region_zone}｜${(Number(route.distance_m || 0) / 1000).toFixed(1)} km｜${shape}`;
 }
 
 function renderDetail(route, detail) {
@@ -498,18 +565,15 @@ function renderDetail(route, detail) {
   const endpointHtml = route.route_shape === "strict_loop"
     ? `<span><b>起终</b>${escapeHtml(startName)}</span>`
     : `<span><b>起</b>${escapeHtml(startName)}</span><i></i><span><b>终</b>${escapeHtml(endName)}</span>`;
-  const status = route.validation_status === "accepted" ? "严格验收" : "待考证";
   const shape = route.route_shape === "strict_loop" ? "环线" : "单程";
   detail.innerHTML = `
     <div class="route-card-topline">
       <span class="mode-pill" data-mode="${escapeHtml(route.route_mode)}">${MODE_LABELS[route.route_mode] || route.route_mode}</span>
       <span class="shape-pill" data-shape="${escapeHtml(route.route_shape)}">${shape}</span>
-      <span class="status-pill" data-status="${escapeHtml(route.validation_status)}">${escapeHtml(status)}</span>
     </div>
     <h2>${escapeHtml(route.route_name)}</h2>
     <p class="route-card-place">${escapeHtml(route.region_zone)} · ${Number(route.distance_m || 0).toFixed(0)} 米 · ${Number(route.duration_min || 0).toFixed(0)} 分钟</p>
     <div class="route-endpoints">${endpointHtml}</div>
-    <p class="route-source">来源：${escapeHtml(route.source_name || "路线数据源")}</p>
   `;
 }
 
@@ -588,8 +652,6 @@ function getControls() {
     detail: document.querySelector("#routeDetail"),
     navigationModeTabs: [...document.querySelectorAll("#navigationSportModeTabs [data-navigation-mode]")],
     navigationRouteSelect: document.querySelector("#navigationRouteSelect"),
-    startNavigationButton: document.querySelector("#startNavigationButton"),
-    endNavigationButton: document.querySelector("#endNavigationButton"),
     startInput: document.querySelector("#startInput"),
     startPickButton: document.querySelector("#startPickButton"),
     navigationModeSummary: document.querySelector("#navigationModeSummary"),
@@ -630,14 +692,14 @@ function populateNavigationRoutes(select, catalog) {
   select.innerHTML = "";
   const placeholder = document.createElement("option");
   placeholder.value = "";
-  placeholder.textContent = catalog.length ? "请选择目标路线" : "该类型暂无路线";
+  placeholder.textContent = catalog.length ? "请选择一条路线" : "该类型暂无路线";
   placeholder.disabled = catalog.length > 0;
   placeholder.selected = true;
   select.appendChild(placeholder);
   for (const route of catalog) {
     const option = document.createElement("option");
     option.value = route.route_id;
-    option.textContent = `${route.route_name} · ${route.distance_level}`;
+    option.textContent = routeOptionLabel(route);
     select.appendChild(option);
   }
   select.disabled = catalog.length === 0;
@@ -656,9 +718,7 @@ function routeDistanceBand(route) {
 }
 
 function renderNavigationMode(route, controls) {
-  controls.navigationModeSummary.textContent = route
-    ? `${MODE_LABELS[route.route_mode] || route.route_mode}接驳 · 终点为路线起点`
-    : "接驳方式随所选路线自动确定";
+  controls.navigationModeSummary.textContent = route?.route_mode === "bike" ? "骑行" : "步行";
 }
 
 function syncNavigationRoute(route, catalog, state, controls) {
@@ -693,6 +753,10 @@ function formatPoint(point) {
 
 function normalizeText(value) {
   return String(value || "").trim().toLowerCase();
+}
+
+function errorMessage(error) {
+  return error instanceof Error ? error.message : "操作失败，请重试。";
 }
 
 function escapeHtml(value) {

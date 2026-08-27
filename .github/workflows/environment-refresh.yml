@@ -1,0 +1,89 @@
+name: Environment Refresh
+
+on:
+  workflow_dispatch:
+    inputs:
+      tier:
+        description: Refresh tier
+        required: true
+        default: hourly
+        type: choice
+        options:
+          - weather
+          - hourly
+          - daily
+      deploy_pages:
+        description: Deploy the generated artifact to GitHub Pages
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: environment-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh-and-build:
+    name: Refresh environment data and build Pages artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      QWEATHER_ENABLED: "true"
+      QWEATHER_API_KEY: ${{ secrets.QWEATHER_API_KEY }}
+      QWEATHER_API_HOST: ${{ secrets.QWEATHER_API_HOST }}
+      POLLEN_ENABLED: ${{ secrets.POLLEN_API_KEY != '' && 'true' || 'false' }}
+      POLLEN_API_KEY: ${{ secrets.POLLEN_API_KEY }}
+      SHANGHAI_NOISE_ENABLED: ${{ secrets.SHANGHAI_NOISE_TOKEN != '' && 'true' || 'false' }}
+      SHANGHAI_NOISE_TOKEN: ${{ secrets.SHANGHAI_NOISE_TOKEN }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install frozen environment
+        run: |
+          python -m pip install --disable-pip-version-check uv==0.11.26
+          uv sync --directory weather_api_data --frozen --extra chap
+
+      - name: Run selected refresh tier
+        run: >-
+          uv run --directory weather_api_data --frozen --extra chap
+          weather-api-data --root "$GITHUB_WORKSPACE/weather_api_data"
+          scheduled-refresh --tier "${{ inputs.tier }}"
+
+      - name: Build Pages artifact tree
+        shell: bash
+        run: |
+          test -f xuhui_route_builder/web/index.html
+          test -f xuhui_route_builder/data/web/environment_dashboard.json
+          mkdir -p pages-artifact/web pages-artifact/data/web
+          cp -R xuhui_route_builder/web/. pages-artifact/web/
+          cp -R xuhui_route_builder/data/web/. pages-artifact/data/web/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: pages-artifact
+
+  deploy:
+    name: Deploy Pages artifact
+    if: ${{ inputs.deploy_pages }}
+    needs: refresh-and-build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

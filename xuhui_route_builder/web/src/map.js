@@ -82,7 +82,7 @@ const NAVIGATION_LABELS = {
 };
 
 const NAVIGATION_POINT_LABELS = {
-  origin: "用户位置",
+  origin: "出发地",
   destination: "路线起点",
 };
 
@@ -110,6 +110,8 @@ export async function createMap(targetId) {
     navigationService: null,
     navigation: {
       state: "idle",
+      planRevision: 0,
+      serviceRevision: 0,
       pickRole: "",
       onPick: null,
       clickHandler: null,
@@ -475,6 +477,7 @@ export function highlightRoute(mapContext, selectedRouteId) {
 }
 
 export function focusSportRoute(mapContext, selectedRouteId) {
+  invalidateNavigationPlan(mapContext);
   clearNavigationService(mapContext);
   clearInlineNavigation(mapContext);
   clearNavigationPoints(mapContext);
@@ -485,6 +488,14 @@ export function focusSportRoute(mapContext, selectedRouteId) {
 }
 
 export function clearRouteResults(mapContext) {
+  if (mapContext.navigation) {
+    invalidateNavigationPlan(mapContext);
+    clearNavigationService(mapContext);
+    clearNavigationPoints(mapContext);
+    if (mapContext.navigation.state !== "idle") {
+      mapContext.navigation.state = "editing";
+    }
+  }
   const routeOverlays = [...mapContext.routeLayers.values()].flatMap(({ halo, main }) => [halo, main]);
   const previewLayers = mapContext.routePreviewLayers || [];
   const previewMarkers = (mapContext.routePreviewMarkers || []).map(({ marker }) => marker);
@@ -508,10 +519,6 @@ export function startNavigationSession(mapContext, onPick) {
   mapContext.navigation.state = "editing";
   mapContext.navigation.onPick = onPick;
   const handlePickedPoint = (role, point) => {
-    if (!isPointInsideXuhui(mapContext, point)) {
-      onPick?.({ role, error: "点位不在徐汇区范围内，请重新选择。" });
-      return;
-    }
     setNavigationPoint(mapContext, role, point);
     mapContext.navigation.pickRole = "";
     onPick?.({ role, point });
@@ -539,6 +546,7 @@ export function startNavigationSession(mapContext, onPick) {
 }
 
 export function endNavigationSession(mapContext) {
+  invalidateNavigationPlan(mapContext);
   clearNavigationService(mapContext);
   clearInlineNavigation(mapContext);
   clearNavigationPoints(mapContext);
@@ -567,7 +575,10 @@ export function enablePointPicker(mapContext, role) {
 
 export function setNavigationPoint(mapContext, role, point) {
   const normalized = normalizePoint(point);
-  if (!isPointInsideXuhui(mapContext, normalized)) {
+  if (!normalized) {
+    throw new Error("无效导航点。");
+  }
+  if (role !== "origin" && !isPointInsideXuhui(mapContext, normalized)) {
     throw new Error("点位不在徐汇区范围内。");
   }
 
@@ -592,31 +603,50 @@ export function isPointInsideXuhui(mapContext, point) {
 }
 
 export async function planNavigation(mapContext, request) {
-  const origin = await resolveNavigationValue(mapContext, request.origin);
-  const destination = await resolveNavigationValue(mapContext, request.destination);
-
-  for (const [role, point] of [
-    ["origin", origin],
-    ["destination", destination],
-  ]) {
-    setNavigationPoint(mapContext, role, lngLatToPoint(point, NAVIGATION_POINT_LABELS[role]));
-  }
-  const mode = navigationServiceMode(request.routeMode);
-  const service = navigationServiceForMode(mapContext, mode);
+  const planRevision = beginNavigationPlan(mapContext);
   clearNavigationService(mapContext);
-  mapContext.navigationService = service;
-  mapContext.navigation.state = "planned";
-  previewSportRoute(mapContext, request.routeId);
+  mapContext.navigation.state = "planning";
 
-  const result = await searchNavigationPath(service, origin, destination);
-  const distanceText = result.distance ? `${result.distance.toFixed(0)} 米` : "距离待确认";
-  const durationText = result.duration ? `${Math.round(result.duration / 60)} 分钟` : "时间待确认";
-  return {
-    ...result,
-    routeId: request.routeId,
-    routeMode: request.routeMode,
-    summary: `${NAVIGATION_LABELS[request.routeMode] || "接驳导航"}：${distanceText}，约 ${durationText}。`,
-  };
+  try {
+    const origin = await resolveNavigationValue(mapContext, request.origin, "origin");
+    assertCurrentNavigationPlan(mapContext, planRevision);
+    const destination = await resolveNavigationValue(mapContext, request.destination, "destination");
+    assertCurrentNavigationPlan(mapContext, planRevision);
+
+    for (const [role, point] of [
+      ["origin", origin],
+      ["destination", destination],
+    ]) {
+      setNavigationPoint(mapContext, role, lngLatToPoint(point, NAVIGATION_POINT_LABELS[role]));
+    }
+    const mode = navigationServiceMode(request.routeMode);
+    const service = navigationServiceForMode(mapContext, mode);
+    mapContext.navigationService = service;
+    mapContext.navigation.serviceRevision = planRevision;
+    previewSportRoute(mapContext, request.routeId);
+
+    const result = await searchNavigationPath(service, origin, destination);
+    assertCurrentNavigationPlan(mapContext, planRevision);
+    mapContext.navigation.state = "planned";
+    const distanceText = result.distance ? `${result.distance.toFixed(0)} 米` : "距离待确认";
+    const durationText = result.duration ? `${Math.round(result.duration / 60)} 分钟` : "时间待确认";
+    return {
+      ...result,
+      routeId: request.routeId,
+      routeMode: request.routeMode,
+      summary: `${NAVIGATION_LABELS[request.routeMode] || "接驳导航"}：${distanceText}，约 ${durationText}。`,
+    };
+  } catch (error) {
+    if (!isCurrentNavigationPlan(mapContext, planRevision)) {
+      throw navigationPlanCancelledError();
+    }
+    clearNavigationService(mapContext, planRevision);
+    clearNavigationPoints(mapContext);
+    if (mapContext.navigation.state !== "idle") {
+      mapContext.navigation.state = "editing";
+    }
+    throw error;
+  }
 }
 
 export function beginInlineNavigation(mapContext, plan) {
@@ -635,7 +665,7 @@ export function beginInlineNavigation(mapContext, plan) {
     lineCap: "round",
     zIndex: 139,
   });
-  const remaining = new mapContext.AMap.Polyline({
+  const route = new mapContext.AMap.Polyline({
     path: plan.path,
     strokeColor: ROUTE_STYLES.access.color,
     strokeWeight: 6,
@@ -645,44 +675,10 @@ export function beginInlineNavigation(mapContext, plan) {
     showDir: true,
     zIndex: 140,
   });
-  const traveled = new mapContext.AMap.Polyline({
-    path: [plan.path[0], plan.path[0]],
-    strokeColor: "#7f918c",
-    strokeWeight: 5,
-    strokeOpacity: 0.8,
-    lineJoin: "round",
-    lineCap: "round",
-    zIndex: 141,
-  });
-  const user = new mapContext.AMap.Marker({
-    position: plan.path[0],
-    content: '<span class="amap-navigation-user"><i></i></span>',
-    anchor: "center",
-    zIndex: 150,
-  });
-  mapContext.amap.add([halo, remaining, traveled, user]);
-  mapContext.navigation.inlineLayers = { halo, remaining, traveled, user };
-  mapContext.navigation.state = "navigating";
-  mapContext.amap.setFitView([remaining], false, [110, 90, 180, 90]);
-}
-
-export function updateInlineNavigation(mapContext, progress) {
-  const layers = mapContext.navigation.inlineLayers;
-  if (!layers) {
-    throw new Error("网页内导航图层尚未初始化。");
-  }
-  layers.traveled.setPath(progress.traveledPath);
-  layers.remaining.setPath(progress.remainingPath);
-  layers.remaining.setOptions({
-    strokeColor: progress.status === "off_route" ? "#e14f3d" : ROUTE_STYLES.access.color,
-  });
-  const position = [progress.position.lng, progress.position.lat];
-  layers.user.setPosition(position);
-  if (Number.isFinite(progress.position.heading)) {
-    layers.user.setAngle(progress.position.heading);
-  }
-  mapContext.navigation.state = progress.status;
-  mapContext.amap.panTo(position, 280);
+  mapContext.amap.add([halo, route]);
+  mapContext.navigation.inlineLayers = { halo, route };
+  mapContext.navigation.state = "previewing";
+  mapContext.amap.setFitView([route], false, [110, 90, 180, 90]);
 }
 
 export function clearInlineNavigation(mapContext) {
@@ -690,15 +686,45 @@ export function clearInlineNavigation(mapContext) {
   if (!layers) {
     return;
   }
-  mapContext.amap.remove([layers.halo, layers.remaining, layers.traveled, layers.user]);
+  mapContext.amap.remove([layers.halo, layers.route]);
   mapContext.navigation.inlineLayers = null;
 }
 
-function clearNavigationService(mapContext) {
+function clearNavigationService(mapContext, expectedRevision) {
+  if (
+    expectedRevision !== undefined
+    && mapContext.navigation.serviceRevision !== expectedRevision
+  ) {
+    return;
+  }
   if (mapContext.navigationService?.clear) {
     mapContext.navigationService.clear();
   }
   mapContext.navigationService = null;
+  mapContext.navigation.serviceRevision = 0;
+}
+
+function beginNavigationPlan(mapContext) {
+  mapContext.navigation.planRevision = Number(mapContext.navigation.planRevision || 0) + 1;
+  return mapContext.navigation.planRevision;
+}
+
+function invalidateNavigationPlan(mapContext) {
+  mapContext.navigation.planRevision = Number(mapContext.navigation.planRevision || 0) + 1;
+}
+
+function isCurrentNavigationPlan(mapContext, planRevision) {
+  return mapContext.navigation.planRevision === planRevision;
+}
+
+function assertCurrentNavigationPlan(mapContext, planRevision) {
+  if (!isCurrentNavigationPlan(mapContext, planRevision)) {
+    throw navigationPlanCancelledError();
+  }
+}
+
+function navigationPlanCancelledError() {
+  return new Error("规划已取消，请重新规划。");
 }
 
 function clearNavigationPoints(mapContext) {
@@ -836,10 +862,10 @@ function dedupePath(path) {
   });
 }
 
-function resolveNavigationValue(mapContext, value) {
+function resolveNavigationValue(mapContext, value, role) {
   const point = normalizePoint(value);
   if (point) {
-    if (!isPointInsideXuhui(mapContext, point)) {
+    if (role !== "origin" && !isPointInsideXuhui(mapContext, point)) {
       return Promise.reject(new Error("导航点不在徐汇区范围内。"));
     }
     return Promise.resolve(new mapContext.AMap.LngLat(point.lng_gcj02, point.lat_gcj02));
@@ -851,7 +877,7 @@ function resolveNavigationValue(mapContext, value) {
   }
   return geocodeToLngLat(mapContext, text).then((lnglat) => {
     const resolved = lngLatToPoint(lnglat, text);
-    if (!isPointInsideXuhui(mapContext, resolved)) {
+    if (role !== "origin" && !isPointInsideXuhui(mapContext, resolved)) {
       throw new Error(`地点不在徐汇区范围内：${text}`);
     }
     return lnglat;

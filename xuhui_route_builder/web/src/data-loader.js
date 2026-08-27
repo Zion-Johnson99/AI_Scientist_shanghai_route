@@ -1,4 +1,4 @@
-const DATA_RELEASE = "20260819-route-preview-1";
+const DATA_RELEASE = "20260827-health-map-1";
 
 export async function loadJson(path) {
   const separator = path.includes("?") ? "&" : "?";
@@ -10,12 +10,13 @@ export async function loadJson(path) {
 }
 
 export async function loadRouteData() {
-  const [boundary, entries, routes, catalog, pois] = await Promise.all([
+  const [boundary, entries, routes, catalog, pois, environmentDashboard] = await Promise.all([
     loadJson("../data/web/xuhui_boundary.geojson"),
     loadJson("../data/web/xuhui_entries.geojson"),
     loadJson("../data/web/xuhui_routes.geojson"),
     loadJson("../data/web/route_catalog.json"),
     loadJson("../data/web/poi_catalog.json"),
+    loadJson("../data/web/environment_dashboard.json"),
   ]);
-  return { boundary, entries, routes, catalog, pois };
+  return { boundary, entries, routes, catalog, pois, environmentDashboard };
 }

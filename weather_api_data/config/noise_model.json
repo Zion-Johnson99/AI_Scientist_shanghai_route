@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "model_version": "xuhui_observation_anchored_noise_proxy_v2",
+  "feature_weights": {
+    "road_class": 0.3,
+    "distance_pressure": 0.25,
+    "poi_transport": 0.15,
+    "intersection": 0.1,
+    "acoustic_zone": 0.1,
+    "green_water": 0.1
+  },
+  "scenario_multipliers": {
+    "weekday_peak": 1.1,
+    "weekday_offpeak": 0.95,
+    "daytime": 1.0,
+    "night": 0.75
+  },
+  "risk_thresholds": {
+    "low_max": 33.0,
+    "medium_max": 66.0
+  },
+  "missing_data_baseline_score": 50.0,
+  "observation_calibration": {
+    "weight": 0.2,
+    "laeq_risk_min_db": 40.0,
+    "laeq_risk_max_db": 80.0,
+    "minimum_samples": 365
+  },
+  "output_semantics": {
+    "score_range": [0, 100],
+    "estimated": true,
+    "calibration_status": "historical_observation_anchored",
+    "field_measurement_required_for_sound_level": true
+  }
+}

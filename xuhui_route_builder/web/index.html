@@ -3,18 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>徐汇路线构建器</title>
+    <title>徐汇户外健康地图</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%231677ff'/%3E%3Cpath d='M4 9h8M8 4v8' stroke='white' stroke-width='2'/%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="./styles/main.css?v=20260819-route-preview-1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/qweather-icons@1.8.0/font/qweather-icons.css" />
+    <link rel="stylesheet" href="./styles/main.css?v=20260827-health-map-1" />
     <script src="./local-amap-config.js"></script>
   </head>
   <body>
     <main class="app-shell">
       <aside class="sidebar">
         <header class="panel-header">
-          <p class="eyebrow"><span></span>Xuhui Route Builder</p>
-          <h1>徐汇健康路线库</h1>
-          <p class="panel-subtitle">90 条路线完整展示，严格验收路线进入推荐与导航。</p>
+          <p class="eyebrow"><span></span>健康路线</p>
+          <h1>徐汇户外健康地图</h1>
+          <p class="panel-subtitle">选一条适合当下环境的城市运动路线。</p>
         </header>
 
         <nav class="mode-tabs" aria-label="路线功能切换">
@@ -70,16 +71,13 @@
 
           <section class="result-panel" aria-label="路线推荐结果">
             <div class="result-heading">
-              <div>
-                <span class="section-kicker">Route match</span>
-                <h2>推荐路线</h2>
-              </div>
-              <div id="routeSummary" class="route-summary" aria-live="polite">填写条件后筛选一条路线。</div>
+              <h2>推荐路线</h2>
+              <div id="routeSummary" class="route-summary" aria-live="polite"></div>
             </div>
             <div id="routeDetail" class="detail" aria-live="polite"></div>
             <div class="route-tab-heading">
               <strong>选择一条路线</strong>
-              <span id="routeOptionCount">当前类型 0 条候选路线</span>
+              <span id="routeOptionCount"></span>
             </div>
             <label class="route-picker">
               <span class="visually-hidden">候选路线</span>
@@ -96,26 +94,25 @@
               <button type="button" role="tab" data-navigation-mode="bike"><b>骑行</b><span>0 条</span></button>
             </div>
             <label>
-              选择目标路线
+              前往哪条路线
               <select id="navigationRouteSelect"></select>
             </label>
             <label>
-              用户位置
+              从哪里出发
               <span class="point-input-row">
-                <input id="startInput" type="search" placeholder="输入地点或在地图点选" autocomplete="off" />
-                <button id="startPickButton" class="secondary-action point-pick-action" type="button">点选</button>
+                <input id="startInput" type="search" placeholder="搜索上海地点" autocomplete="off" />
+                <button id="startPickButton" class="secondary-action point-pick-action" type="button">地图选点</button>
               </span>
             </label>
-            <div class="command-row navigation-session-row">
-              <button id="startNavigationButton" class="primary-action" type="button">设置用户位置</button>
-              <button id="endNavigationButton" class="secondary-action" type="button">结束接驳</button>
+            <div class="navigation-mode-summary" aria-label="接驳方式">
+              <span>接驳方式</span>
+              <strong id="navigationModeSummary">步行</strong>
             </div>
-            <div class="field-grid two-columns">
-              <div id="navigationModeSummary" class="navigation-mode-summary">接驳方式随所选路线自动确定</div>
-              <button id="navigateButton" class="primary-action inline-action" type="button">规划路径</button>
+            <div class="navigation-primary-actions">
+              <button id="navigateButton" class="primary-action" type="button">规划接驳路线</button>
+              <button id="startSportButton" class="primary-action" type="button" disabled hidden>进入导航预览</button>
             </div>
-            <button id="startSportButton" class="primary-action" type="button" disabled>开始网页内导航</button>
-            <div id="navigationStatus" class="navigation-status" aria-live="polite">先选择运动类型和目标路线，再设置用户位置。</div>
+            <div id="navigationStatus" class="navigation-status" aria-live="polite"></div>
           </div>
         </section>
 
@@ -130,24 +127,27 @@
 
       <section class="map-wrap" aria-label="徐汇路线地图">
         <div id="map"></div>
-        <aside id="inlineNavigationGuide" class="inline-navigation-guide" aria-label="实时接驳导航" aria-live="polite" hidden>
+        <aside id="environmentPanel" class="environment-panel" aria-label="徐汇区环境信息" aria-live="polite"></aside>
+        <aside id="inlineNavigationGuide" class="inline-navigation-guide" aria-label="接驳导航预览" aria-live="polite" hidden>
           <header class="inline-navigation-guide__head">
-            <span id="inlineNavigationState" class="inline-navigation-guide__state">实时接驳</span>
-            <button id="inlineNavigationEndButton" type="button">结束导航</button>
+            <span id="inlineNavigationState" class="inline-navigation-guide__state">导航预览</span>
+            <button id="inlineNavigationEndButton" type="button">结束预览</button>
           </header>
           <div class="inline-navigation-guide__maneuver">
-            <span class="inline-navigation-guide__arrow" aria-hidden="true">↗</span>
             <div>
-              <small>下一步</small>
-              <strong id="inlineNavigationInstruction">正在获取当前位置</strong>
+              <small>当前步骤</small>
+              <strong id="inlineNavigationInstruction">从起点出发</strong>
             </div>
           </div>
           <div class="inline-navigation-guide__metrics">
-            <div><small>剩余距离</small><strong id="inlineNavigationRemaining">--</strong></div>
+            <div><small>接驳距离</small><strong id="inlineNavigationRemaining">--</strong></div>
             <div><small>预计时间</small><strong id="inlineNavigationDuration">--</strong></div>
-            <div><small>定位精度</small><strong id="inlineNavigationAccuracy">等待定位</strong></div>
           </div>
           <div class="inline-navigation-guide__progress" aria-hidden="true"><i id="inlineNavigationProgress"></i></div>
+          <footer class="inline-navigation-guide__actions">
+            <button id="inlineNavigationPreviousButton" class="secondary-action" type="button">上一步</button>
+            <button id="inlineNavigationNextButton" class="primary-action" type="button">下一步</button>
+          </footer>
         </aside>
       </section>
     </main>
@@ -180,6 +180,6 @@
         });
       })();
     </script>
-    <script type="module" src="./src/main.js?v=20260819-route-preview-1"></script>
+    <script type="module" src="./src/main.js?v=20260827-health-map-1"></script>
   </body>
 </html>

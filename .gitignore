@@ -38,6 +38,7 @@ env/
 !/xuhui_route_builder/data/raw/.gitkeep
 /xuhui_route_builder/data/interim/*
 !/xuhui_route_builder/data/interim/.gitkeep
+/xuhui_route_builder/data/web/environment_dashboard.json
 *.sqlite
 *.db
 

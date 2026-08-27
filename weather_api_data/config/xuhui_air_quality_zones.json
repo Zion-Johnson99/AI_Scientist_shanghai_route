@@ -1,0 +1,188 @@
+{
+  "probe_points": [
+    {
+      "point_id": "AQ_PROBE_MINHANG_WEST",
+      "name": "闵行漕河泾西侧空气质量探针",
+      "longitude": 121.386,
+      "latitude": 31.177,
+      "district": "闵行区"
+    },
+    {
+      "point_id": "AQ_PROBE_MINHANG_SOUTH",
+      "name": "闵行华泾南侧空气质量探针",
+      "longitude": 121.433,
+      "latitude": 31.096,
+      "district": "闵行区"
+    }
+  ],
+  "zones": [
+  {
+    "zone_id": "hengfu_northwest_blend",
+    "name": "衡复西北边界（徐汇+长宁）",
+    "anchor": {
+      "longitude": 121.4235,
+      "latitude": 31.2115,
+      "crs": "WGS84"
+    },
+    "source_strategy": "district_blend",
+    "blend_components": [
+      {
+        "district": "徐汇区",
+        "point_id": "XH_ENT_0011",
+        "weight": 0.5
+      },
+      {
+        "district": "长宁区",
+        "point_id": "XH_ENT_0012",
+        "weight": 0.5
+      }
+    ]
+  },
+  {
+    "zone_id": "hengfu_central_east",
+    "name": "衡复中东",
+    "anchor": {
+      "longitude": 121.443,
+      "latitude": 31.207,
+      "crs": "WGS84"
+    },
+    "source_strategy": "qweather_direct",
+    "probe_point_ids": [
+      "XH_ENT_0011"
+    ]
+  },
+  {
+    "zone_id": "xujiahui_sports_station",
+    "name": "徐家汇—体育公园",
+    "anchor": {
+      "longitude": 121.438,
+      "latitude": 31.19,
+      "crs": "WGS84"
+    },
+    "source_strategy": "shanghai_station",
+    "station_id": 80
+  },
+  {
+    "zone_id": "tianlin_guilin_kangjian_station",
+    "name": "田林—桂林—康健",
+    "anchor": {
+      "longitude": 121.421,
+      "latitude": 31.169,
+      "crs": "WGS84"
+    },
+    "source_strategy": "shanghai_station",
+    "station_id": 207
+  },
+  {
+    "zone_id": "caohejing_west_blend",
+    "name": "漕河泾西缘（徐汇+闵行）",
+    "anchor": {
+      "longitude": 121.3975,
+      "latitude": 31.178,
+      "crs": "WGS84"
+    },
+    "source_strategy": "district_blend",
+    "blend_components": [
+      {
+        "district": "徐汇区",
+        "point_id": "XH_ENT_0013",
+        "weight": 0.5
+      },
+      {
+        "district": "闵行区",
+        "point_id": "AQ_PROBE_MINHANG_WEST",
+        "weight": 0.5
+      }
+    ]
+  },
+  {
+    "zone_id": "caohejing_east_puhuitang",
+    "name": "漕河泾东—蒲汇塘",
+    "anchor": {
+      "longitude": 121.407,
+      "latitude": 31.175,
+      "crs": "WGS84"
+    },
+    "source_strategy": "qweather_direct",
+    "probe_point_ids": [
+      "XH_ENT_0014"
+    ]
+  },
+  {
+    "zone_id": "botanical_north_south_station",
+    "name": "植物园北—上海南站",
+    "anchor": {
+      "longitude": 121.427,
+      "latitude": 31.158,
+      "crs": "WGS84"
+    },
+    "source_strategy": "qweather_direct",
+    "probe_point_ids": [
+      "XH_ENT_0004"
+    ]
+  },
+  {
+    "zone_id": "botanical_south_huajing_north",
+    "name": "植物园南—华泾北",
+    "anchor": {
+      "longitude": 121.435,
+      "latitude": 31.15,
+      "crs": "WGS84"
+    },
+    "source_strategy": "qweather_direct",
+    "probe_point_ids": [
+      "XH_ENT_0003"
+    ]
+  },
+  {
+    "zone_id": "huajing_south_blend",
+    "name": "华泾南缘（徐汇+闵行）",
+    "anchor": {
+      "longitude": 121.414,
+      "latitude": 31.14,
+      "crs": "WGS84"
+    },
+    "source_strategy": "district_blend",
+    "blend_components": [
+      {
+        "district": "徐汇区",
+        "point_id": "XH_ENT_0003",
+        "weight": 0.5
+      },
+      {
+        "district": "闵行区",
+        "point_id": "AQ_PROBE_MINHANG_SOUTH",
+        "weight": 0.5
+      }
+    ]
+  },
+  {
+    "zone_id": "longhua_westbund_north",
+    "name": "龙华—西岸北",
+    "anchor": {
+      "longitude": 121.452,
+      "latitude": 31.179,
+      "crs": "WGS84"
+    },
+    "source_strategy": "qweather_direct",
+    "probe_point_ids": [
+      "XH_ENT_0009",
+      "XH_ENT_0010"
+    ]
+  },
+  {
+    "zone_id": "westbund_south_longyao",
+    "name": "西岸南—龙耀滨江",
+    "anchor": {
+      "longitude": 121.457,
+      "latitude": 31.163,
+      "crs": "WGS84"
+    },
+    "source_strategy": "qweather_direct",
+    "probe_point_ids": [
+      "XH_ENT_0001",
+      "XH_ENT_0002"
+    ]
+  }
+  ]
+}
