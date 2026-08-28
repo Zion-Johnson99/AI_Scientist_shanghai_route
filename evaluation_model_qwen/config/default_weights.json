@@ -1,0 +1,52 @@
+{
+  "goal_weights": {
+    "balanced": [35, 25, 20, 10, 10],
+    "health_environment": [45, 20, 15, 10, 10],
+    "distance_training": [25, 40, 15, 10, 10],
+    "relax": [35, 20, 15, 10, 20],
+    "scenery": [25, 20, 15, 10, 30],
+    "family": [35, 25, 15, 10, 15],
+    "nearby": [25, 20, 35, 10, 10]
+  },
+  "environment_weights": {
+    "pm2_5": 45,
+    "noise": 35,
+    "pollen": 20
+  },
+  "sensitivity_boost": 30,
+  "status_reliability": {
+    "ok": 1.0,
+    "partial": 0.7,
+    "stale": 0.0,
+    "no_data": 0.0,
+    "error": 0.0
+  },
+  "confidence_reliability": {
+    "high": 1.0,
+    "高": 1.0,
+    "medium_high": 0.9,
+    "中高": 0.9,
+    "medium": 0.8,
+    "中": 0.8,
+    "medium_low": 0.65,
+    "中低": 0.65,
+    "low": 0.5,
+    "低": 0.5
+  },
+  "estimated_reliability": 0.9,
+  "risk_thresholds": {
+    "warning_precipitation_mm": 2.5,
+    "pause_precipitation_mm": 10.0,
+    "warning_real_feel_c": 35.0,
+    "pause_real_feel_c": 40.0,
+    "warning_wind_gust_kmh": 40.0,
+    "pause_wind_gust_kmh": 62.0,
+    "warning_aqi": 100.0,
+    "sensitive_pause_aqi": 150.0,
+    "pause_aqi": 200.0
+  },
+  "alert_penalties": {
+    "blue": 8.0,
+    "yellow": 15.0
+  }
+}
