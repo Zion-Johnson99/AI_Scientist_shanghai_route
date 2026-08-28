@@ -415,6 +415,29 @@ def test_refresh_updates_hourly_aqi_when_cache_is_about_to_expire(
     }
 
 
+def test_refresh_updates_weather_when_cache_is_about_to_expire(
+    bundle: Sequence[PipelineBundle],
+) -> None:
+    value = _only(bundle)
+    value.pipeline.refresh()
+    cache = json.loads(value.cache_path.read_text(encoding="utf-8"))
+    for endpoint in ("current_conditions", "hourly_weather_24"):
+        cache["entries"][f"{endpoint}|{REFERENCE_SOURCE_ID}"]["valid_until"] = (
+            UTC_NOW + timedelta(minutes=4)
+        ).isoformat()
+    value.cache_path.write_text(json.dumps(cache), encoding="utf-8")
+    value.provider.calls.clear()
+
+    report = value.pipeline.refresh()
+
+    assert report["call_count"] == 2
+    assert report["cache_hits"] == 26
+    assert Counter(endpoint for endpoint, _source_id in value.provider.calls) == {
+        "current_conditions": 1,
+        "hourly_weather_24": 1,
+    }
+
+
 def test_refresh_weather_only_updates_reference_weather_and_preserves_full_export(
     bundle: Sequence[PipelineBundle],
 ) -> None:
@@ -459,6 +482,29 @@ def test_refresh_weather_only_updates_reference_weather_and_preserves_full_expor
     assert second["cache_hits"] == 3
     assert value.provider.calls == []
     assert value.station.calls == station_calls
+
+
+def test_refresh_weather_updates_near_expiry_weather_cache(
+    bundle: Sequence[PipelineBundle],
+) -> None:
+    value = _only(bundle)
+    value.pipeline.refresh()
+    cache = json.loads(value.cache_path.read_text(encoding="utf-8"))
+    for endpoint in ("current_conditions", "hourly_weather_24"):
+        cache["entries"][f"{endpoint}|{REFERENCE_SOURCE_ID}"]["valid_until"] = (
+            UTC_NOW + timedelta(minutes=4)
+        ).isoformat()
+    value.cache_path.write_text(json.dumps(cache), encoding="utf-8")
+    value.provider.calls.clear()
+
+    report = value.pipeline.refresh_weather()
+
+    assert report["call_count"] == 2
+    assert report["cache_hits"] == 1
+    assert value.provider.calls == [
+        ("current_conditions", REFERENCE_SOURCE_ID),
+        ("hourly_weather_24", REFERENCE_SOURCE_ID),
+    ]
 
 
 def test_refresh_weather_failure_is_partial_and_keeps_stale_snapshot(tmp_path: Path) -> None:

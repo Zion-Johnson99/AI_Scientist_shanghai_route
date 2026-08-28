@@ -107,7 +107,7 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260827-health-map-1"
+    release = "v=20260828-health-map-2"
     assert f"./styles/main.css?{release}" in html
     assert f"./src/main.js?{release}" in html
     assert f"./data-loader.js?{release}" in main_js
@@ -147,6 +147,7 @@ def test_main_wires_planned_access_request_to_inline_navigation() -> None:
     assert "beginInlineNavigation" in main_js
     assert "createEnvironmentPanel" in main_js
     assert "buildRouteExposureModel" in main_js
+    assert "startEnvironmentDashboardPolling" in main_js
     assert "onEndInlineNavigation" in main_js
     assert "inlineNavigationPreviousButton" in main_js
     assert "inlineNavigationNextButton" in main_js

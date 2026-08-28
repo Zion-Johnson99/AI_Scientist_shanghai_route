@@ -1,8 +1,11 @@
-import { loadRouteData } from "./data-loader.js?v=20260827-health-map-1";
+import {
+  loadRouteData,
+  startEnvironmentDashboardPolling,
+} from "./data-loader.js?v=20260828-health-map-2";
 import {
   buildRouteExposureModel,
   createEnvironmentPanel,
-} from "./environment-ui.js?v=20260827-health-map-1";
+} from "./environment-ui.js?v=20260828-health-map-2";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -15,10 +18,10 @@ import {
   showRoutePreviews,
   showSingleRoute,
   startNavigationSession,
-} from "./map.js?v=20260827-health-map-1";
-import { createNavigationController } from "./navigation-session.js?v=20260827-health-map-1";
-import { createRouteDock } from "./route-dock.js?v=20260827-health-map-1";
-import { renderRoutePlanner } from "./route-ui.js?v=20260827-health-map-1";
+} from "./map.js?v=20260828-health-map-2";
+import { createNavigationController } from "./navigation-session.js?v=20260828-health-map-2";
+import { createRouteDock } from "./route-dock.js?v=20260828-health-map-2";
+import { renderRoutePlanner } from "./route-ui.js?v=20260828-health-map-2";
 
 async function bootstrap() {
   const map = await createMap("map");
@@ -27,7 +30,19 @@ async function bootstrap() {
   const routeFeaturesById = new Map(data.routes.features.map((feature) => [feature.properties.route_id, feature]));
   const catalog = enrichCatalog(data.catalog, data.entries);
   const guide = inlineNavigationGuideControls();
-  createEnvironmentPanel(document.querySelector("#environmentPanel"), data.environmentDashboard);
+  const environmentContainer = document.querySelector("#environmentPanel");
+  let environmentGeneratedAt = data.environmentDashboard?.metadata?.generated_at || null;
+  let environmentPanel = createEnvironmentPanel(environmentContainer, data.environmentDashboard);
+  startEnvironmentDashboardPolling((nextDashboard) => {
+    const nextGeneratedAt = nextDashboard?.metadata?.generated_at || null;
+    if (nextGeneratedAt && nextGeneratedAt === environmentGeneratedAt) return;
+    const wasOpen = environmentContainer.classList.contains("is-expanded");
+    data.environmentDashboard = nextDashboard;
+    environmentGeneratedAt = nextGeneratedAt;
+    environmentPanel.destroy();
+    environmentPanel = createEnvironmentPanel(environmentContainer, nextDashboard);
+    environmentPanel.setOpen(wasOpen);
+  });
   let planner = null;
   let activeNavigation = null;
 

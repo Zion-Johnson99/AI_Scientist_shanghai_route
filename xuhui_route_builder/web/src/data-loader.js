@@ -1,4 +1,6 @@
-const DATA_RELEASE = "20260827-health-map-1";
+const DATA_RELEASE = "20260828-health-map-2";
+const ENVIRONMENT_DASHBOARD_PATH = "../data/web/environment_dashboard.json";
+const ENVIRONMENT_POLL_INTERVAL_MS = 60_000;
 
 export async function loadJson(path) {
   const separator = path.includes("?") ? "&" : "?";
@@ -9,6 +11,10 @@ export async function loadJson(path) {
   return response.json();
 }
 
+export function loadEnvironmentDashboard() {
+  return loadJson(ENVIRONMENT_DASHBOARD_PATH);
+}
+
 export async function loadRouteData() {
   const [boundary, entries, routes, catalog, pois, environmentDashboard] = await Promise.all([
     loadJson("../data/web/xuhui_boundary.geojson"),
@@ -16,7 +22,21 @@ export async function loadRouteData() {
     loadJson("../data/web/xuhui_routes.geojson"),
     loadJson("../data/web/route_catalog.json"),
     loadJson("../data/web/poi_catalog.json"),
-    loadJson("../data/web/environment_dashboard.json"),
+    loadEnvironmentDashboard(),
   ]);
   return { boundary, entries, routes, catalog, pois, environmentDashboard };
+}
+
+export function startEnvironmentDashboardPolling(onDashboard) {
+  return setInterval(async () => {
+    try {
+      onDashboard(await loadEnvironmentDashboard());
+    } catch (error) {
+      console.error("环境数据自动更新失败", {
+        path: ENVIRONMENT_DASHBOARD_PATH,
+        intervalMs: ENVIRONMENT_POLL_INTERVAL_MS,
+        error,
+      });
+    }
+  }, ENVIRONMENT_POLL_INTERVAL_MS);
 }
