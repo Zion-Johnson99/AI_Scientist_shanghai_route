@@ -107,6 +107,7 @@ export async function createMap(targetId) {
     routePreviewZoomHandler: null,
     entryLayers: [],
     poiLayers: [],
+    userLocationMarker: null,
     navigationService: null,
     navigation: {
       state: "idle",
@@ -592,6 +593,45 @@ export function setNavigationPoint(mapContext, role, point) {
   mapContext.navigation.markers.set(role, marker);
   mapContext.navigation.points[role] = normalized;
   return normalized;
+}
+
+export async function resolveUserLocation(mapContext, value) {
+  const point = normalizePoint(value);
+  if (point) {
+    return {
+      lng_gcj02: point.lng_gcj02,
+      lat_gcj02: point.lat_gcj02,
+      label: point.label || "已选位置",
+      source: point.source || "point",
+    };
+  }
+  const text = String(value?.text || value || "").trim();
+  if (!text) {
+    throw new Error("请输入上海地点或在地图选择位置。");
+  }
+  const lnglat = await geocodeToLngLat(mapContext, text);
+  return lngLatToPoint(lnglat, text);
+}
+
+export function showUserLocation(mapContext, value) {
+  const point = normalizePoint(value);
+  if (!point) {
+    throw new Error("无效用户位置。");
+  }
+  if (mapContext.userLocationMarker) {
+    mapContext.amap.remove(mapContext.userLocationMarker);
+  }
+  const marker = new mapContext.AMap.Marker({
+    position: [point.lng_gcj02, point.lat_gcj02],
+    content: '<span class="amap-user-location" aria-label="已选位置"><i></i></span>',
+    anchor: "center",
+    offset: new mapContext.AMap.Pixel(0, 0),
+    zIndex: 125,
+  });
+  mapContext.amap.add(marker);
+  mapContext.userLocationMarker = marker;
+  mapContext.amap.setZoomAndCenter?.(14, [point.lng_gcj02, point.lat_gcj02]);
+  return point;
 }
 
 export function isPointInsideXuhui(mapContext, point) {

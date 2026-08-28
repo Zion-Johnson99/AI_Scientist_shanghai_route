@@ -106,26 +106,23 @@ test("清理路线时同步移除预览折线、卡片和缩放监听", () => {
   }
 });
 
-test("路线选择与路线导航共用地图预览回调", () => {
+test("浏览路线保留地图预览，推荐结果使用单路线聚焦", () => {
   const routeUi = readFileSync(new URL("../web/src/route-ui.js", import.meta.url), "utf8");
   const main = readFileSync(new URL("../web/src/main.js", import.meta.url), "utf8");
 
   assert.ok(routeUi.includes("options.onPreviewRoutes"));
-  assert.ok(routeUi.includes("renderActiveMapState"));
-  assert.ok(routeUi.includes('addEventListener("input"'));
-  assert.ok(routeUi.includes("180"));
+  assert.ok(routeUi.includes("renderSelectionPreview"));
+  assert.ok(routeUi.includes("openNavigation(routeId, origin = null)"));
   assert.ok(main.includes("showRoutePreviews"));
   assert.ok(main.includes("onPreviewRoutes"));
+  assert.ok(main.includes("showSingleRoute"));
 });
 
-test("从导航页返回未选路的路线选择页时清理旧详情", () => {
+test("接驳导航返回时退出内嵌导航视图", () => {
   const routeUi = readFileSync(new URL("../web/src/route-ui.js", import.meta.url), "utf8");
-  const activeMapBlock = routeUi.slice(
-    routeUi.indexOf("function renderActiveMapState"),
-    routeUi.indexOf("function renderSelectionPreview"),
-  );
 
-  assert.ok(activeMapBlock.includes('controls.detail.innerHTML = "";'));
+  assert.ok(routeUi.includes("controls.navigationBackButton.addEventListener"));
+  assert.ok(routeUi.includes("options.onNavigationViewChange?.(false)"));
 });
 
 function createDocumentStub() {

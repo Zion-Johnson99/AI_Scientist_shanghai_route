@@ -4,41 +4,68 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>徐汇户外健康地图</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%231677ff'/%3E%3Cpath d='M4 9h8M8 4v8' stroke='white' stroke-width='2'/%3E%3C/svg%3E" />
+    <link rel="icon" href="./xh-logo.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/qweather-icons@1.8.0/font/qweather-icons.css" />
-    <link rel="stylesheet" href="./styles/main.css?v=20260828-health-map-2" />
+    <link rel="stylesheet" href="./styles/main.css?v=20260828-recommendation-1" />
     <script src="./local-amap-config.js"></script>
   </head>
   <body>
     <main class="app-shell">
       <aside class="sidebar">
         <header class="panel-header">
-          <p class="eyebrow"><span></span>健康路线</p>
-          <h1>徐汇户外健康地图</h1>
-          <p class="panel-subtitle">选一条适合当下环境的城市运动路线。</p>
+          <div class="brand-row">
+            <img class="brand-logo" src="./xh-logo.svg" alt="" width="32" height="32" />
+            <div class="brand-copy">
+              <h1>徐汇户外健康地图</h1>
+              <p>选一条适合当下环境的城市运动路线</p>
+            </div>
+            <button id="profileSettingsButton" class="icon-action" type="button" aria-label="修改个人档案" title="修改个人档案">
+              <span aria-hidden="true">⚙</span>
+            </button>
+          </div>
+
+          <button id="locationButton" class="location-pill" type="button" aria-expanded="false" aria-controls="locationEditor">
+            <span aria-hidden="true">●</span>
+            <span id="locationLabel">选择当前位置</span>
+            <span aria-hidden="true">⌄</span>
+          </button>
+          <div id="locationEditor" class="location-editor" hidden>
+            <label for="locationInput">搜索上海地点</label>
+            <input id="locationInput" type="search" placeholder="例如：徐家汇地铁站" autocomplete="off" />
+            <div class="location-editor__actions">
+              <button id="locationSearchButton" class="primary-action" type="button">确认地点</button>
+              <button id="locationPickButton" class="secondary-action" type="button">地图选点</button>
+            </div>
+            <div id="locationStatus" class="field-status" aria-live="polite"></div>
+          </div>
         </header>
 
-        <nav class="mode-tabs" aria-label="路线功能切换">
-          <button id="routeSelectionTab" class="active" type="button" data-app-tab="selection">路线选择</button>
-          <button id="routeNavigationTab" type="button" data-app-tab="navigation">路线导航</button>
+        <nav class="mode-tabs" role="tablist" aria-label="路线入口">
+          <button id="recommendationTab" class="active" type="button" role="tab" aria-selected="true" aria-controls="recommendationView" data-product-view="recommendation">帮我推荐</button>
+          <button id="browseTab" type="button" role="tab" aria-selected="false" aria-controls="routeSelectionView" tabindex="-1" data-product-view="browse">浏览路线</button>
         </nav>
 
-        <section id="routeSelectionView" class="tab-view route-selection-view active" aria-label="候选路线选择">
-          <div class="controls">
-            <div id="sportModeTabs" class="sport-mode-tabs" role="tablist" aria-label="运动类型">
-              <button class="active" type="button" role="tab" data-route-mode="walk"><b>步行</b><span>0 条</span></button>
-              <button type="button" role="tab" data-route-mode="run"><b>跑步</b><span>0 条</span></button>
-              <button type="button" role="tab" data-route-mode="bike"><b>骑行</b><span>0 条</span></button>
+        <section id="recommendationView" class="tab-view recommendation-view active" role="tabpanel" aria-labelledby="recommendationTab"></section>
+
+        <section id="routeSelectionView" class="tab-view route-selection-view" role="tabpanel" aria-labelledby="browseTab" hidden>
+          <div class="browse-intro">
+            <div>
+              <span class="section-kicker">自由探索</span>
+              <h2>浏览 90 条徐汇路线</h2>
+            </div>
+            <button id="resetButton" class="text-action" type="button">清除筛选</button>
+          </div>
+          <div class="controls browse-controls">
+            <div id="sportModeTabs" class="sport-mode-tabs" role="group" aria-label="运动类型筛选">
+              <button class="active" type="button" aria-pressed="true" data-route-mode="walk"><b>步行</b><span>0 条</span></button>
+              <button type="button" aria-pressed="false" data-route-mode="run"><b>跑步</b><span>0 条</span></button>
+              <button type="button" aria-pressed="false" data-route-mode="bike"><b>骑行</b><span>0 条</span></button>
             </div>
             <div class="field-grid two-columns">
-              <label>
-                片区
-                <select id="zoneFilter">
-                  <option value="all">全部片区</option>
-                </select>
+              <label>片区
+                <select id="zoneFilter"><option value="all">全部片区</option></select>
               </label>
-              <label>
-                距离档
+              <label>距离
                 <select id="distanceFilter">
                   <option value="all">全部距离</option>
                   <option value="short">短线</option>
@@ -47,66 +74,37 @@
                 </select>
               </label>
             </div>
-
-            <div class="field-grid two-columns">
-              <label>
-                关键词
-                <input id="keywordInput" type="search" placeholder="滨江、植物园、衡复" autocomplete="off" />
-              </label>
-            </div>
-
-            <fieldset class="preference-group">
-              <legend>途经偏好</legend>
-              <label><input id="preferCoffee" type="checkbox" value="coffee" /> 咖啡</label>
-              <label><input id="preferToilet" type="checkbox" value="toilet" /> 厕所</label>
-              <label><input id="preferStore" type="checkbox" value="convenience" /> 补给</label>
-              <label><input id="preferPark" type="checkbox" value="park_gate" /> 公园</label>
-            </fieldset>
-
-            <div class="command-row">
-              <button id="planButton" class="primary-action" type="button">筛选候选路线</button>
-              <button id="resetButton" class="secondary-action" type="button">清空</button>
-            </div>
           </div>
-
-          <section class="result-panel" aria-label="路线推荐结果">
-            <div class="result-heading">
-              <h2>推荐路线</h2>
-              <div id="routeSummary" class="route-summary" aria-live="polite"></div>
-            </div>
-            <div id="routeDetail" class="detail" aria-live="polite"></div>
+          <section class="result-panel browse-result" aria-label="路线浏览结果">
             <div class="route-tab-heading">
-              <strong>选择一条路线</strong>
+              <strong>地图中的路线</strong>
               <span id="routeOptionCount"></span>
             </div>
             <label class="route-picker">
-              <span class="visually-hidden">候选路线</span>
-              <select id="routeSelect" aria-label="选择一条候选路线"></select>
+              <span class="visually-hidden">选择路线</span>
+              <select id="routeSelect" aria-label="选择路线"></select>
             </label>
+            <div id="routeSummary" class="route-summary" aria-live="polite"></div>
+            <div id="routeDetail" class="detail" aria-live="polite"></div>
           </section>
         </section>
 
-        <section id="routeNavigationView" class="tab-view route-navigation-view" aria-label="前往运动路线起点">
-          <div class="controls">
-            <div id="navigationSportModeTabs" class="sport-mode-tabs" role="tablist" aria-label="导航运动类型">
-              <button class="active" type="button" role="tab" data-navigation-mode="walk"><b>步行</b><span>0 条</span></button>
-              <button type="button" role="tab" data-navigation-mode="run"><b>跑步</b><span>0 条</span></button>
-              <button type="button" role="tab" data-navigation-mode="bike"><b>骑行</b><span>0 条</span></button>
-            </div>
-            <label>
-              前往哪条路线
-              <select id="navigationRouteSelect"></select>
-            </label>
-            <label>
-              从哪里出发
+        <section id="routeNavigationView" class="tab-view route-navigation-view" aria-label="前往路线起点" hidden>
+          <button id="navigationBackButton" class="navigation-back" type="button">← 返回路线</button>
+          <div class="navigation-heading">
+            <span class="section-kicker">前往起点</span>
+            <h2 id="navigationRouteName">已选路线</h2>
+          </div>
+          <div id="navigationRouteDetail" class="detail navigation-route-detail"></div>
+          <div class="controls navigation-controls">
+            <label>从哪里出发
               <span class="point-input-row">
                 <input id="startInput" type="search" placeholder="搜索上海地点" autocomplete="off" />
                 <button id="startPickButton" class="secondary-action point-pick-action" type="button">地图选点</button>
               </span>
             </label>
             <div class="navigation-mode-summary" aria-label="接驳方式">
-              <span>接驳方式</span>
-              <strong id="navigationModeSummary">步行</strong>
+              <span>接驳方式</span><strong id="navigationModeSummary">步行</strong>
             </div>
             <div class="navigation-primary-actions">
               <button id="navigateButton" class="primary-action" type="button">规划接驳路线</button>
@@ -115,30 +113,23 @@
             <div id="navigationStatus" class="navigation-status" aria-live="polite"></div>
           </div>
         </section>
-
-        <section class="legend" aria-label="地图图例">
-          <span><i class="legend-run"></i>跑步</span>
-          <span><i class="legend-walk"></i>步行</span>
-          <span><i class="legend-bike"></i>骑行</span>
-          <span><i class="legend-access"></i>接驳</span>
-          <span><i class="legend-boundary"></i>徐汇边界</span>
-        </section>
       </aside>
 
       <section class="map-wrap" aria-label="徐汇路线地图">
         <div id="map"></div>
         <aside id="environmentPanel" class="environment-panel" aria-label="徐汇区环境信息" aria-live="polite"></aside>
+        <button id="mapLayerButton" class="map-layer-button" type="button" aria-expanded="false" aria-controls="mapLegend">图层</button>
+        <section id="mapLegend" class="map-legend" aria-label="地图图例" hidden>
+          <span><i class="legend-run"></i>跑步</span><span><i class="legend-walk"></i>步行</span>
+          <span><i class="legend-bike"></i>骑行</span><span><i class="legend-access"></i>接驳</span>
+          <span><i class="legend-boundary"></i>徐汇边界</span>
+        </section>
         <aside id="inlineNavigationGuide" class="inline-navigation-guide" aria-label="接驳导航预览" aria-live="polite" hidden>
           <header class="inline-navigation-guide__head">
             <span id="inlineNavigationState" class="inline-navigation-guide__state">导航预览</span>
             <button id="inlineNavigationEndButton" type="button">结束预览</button>
           </header>
-          <div class="inline-navigation-guide__maneuver">
-            <div>
-              <small>当前步骤</small>
-              <strong id="inlineNavigationInstruction">从起点出发</strong>
-            </div>
-          </div>
+          <div class="inline-navigation-guide__maneuver"><div><small>当前步骤</small><strong id="inlineNavigationInstruction">从起点出发</strong></div></div>
           <div class="inline-navigation-guide__metrics">
             <div><small>接驳距离</small><strong id="inlineNavigationRemaining">--</strong></div>
             <div><small>预计时间</small><strong id="inlineNavigationDuration">--</strong></div>
@@ -152,34 +143,30 @@
       </section>
     </main>
 
+    <div id="profileModalHost" class="profile-modal-host"></div>
+
     <script>
       (() => {
         const params = new URLSearchParams(window.location.search);
         const key = params.get("amapKey") || window.XUHUI_AMAP_JS_KEY;
         const security = params.get("amapSecurity") || window.XUHUI_AMAP_JS_SECURITY_CODE;
         const plugins = ["AMap.GeoJSON", "AMap.Geocoder", "AMap.Walking", "AMap.Riding"];
-
         window._AMapSecurityConfig = { securityJsCode: security };
         window.XUHUI_AMAP_READY = new Promise((resolve, reject) => {
           if (!key || !security) {
             reject(new Error("缺少本地高德 Key 配置，请检查 web/local-amap-config.js。"));
             return;
           }
-
           const script = document.createElement("script");
           script.src = `https://webapi.amap.com/maps?v=2.0&key=${encodeURIComponent(key)}&plugin=${plugins.join(",")}`;
-          script.onload = () => {
-            if (!window.AMap) {
-              reject(new Error("高德地图对象未初始化，请检查 Key、安全密钥和域名白名单。"));
-              return;
-            }
-            resolve(window.AMap);
-          };
+          script.onload = () => window.AMap
+            ? resolve(window.AMap)
+            : reject(new Error("高德地图对象未初始化，请检查 Key、安全密钥和域名白名单。"));
           script.onerror = () => reject(new Error("高德地图脚本加载失败，请检查网络或 Key 配置。"));
           document.head.appendChild(script);
         });
       })();
     </script>
-    <script type="module" src="./src/main.js?v=20260828-health-map-2"></script>
+    <script type="module" src="./src/main.js?v=20260828-recommendation-1"></script>
   </body>
 </html>

@@ -17,7 +17,11 @@ import {
   routeOptionLabel,
   selectNavigationRoute,
 } from "../web/src/route-ui.js";
-import { navigationServiceMode, poiMarkerLabel } from "../web/src/map.js";
+import {
+  navigationServiceMode,
+  poiMarkerLabel,
+  resolveUserLocation,
+} from "../web/src/map.js";
 import { buildRouteDockModel } from "../web/src/route-dock.js";
 
 const route = {
@@ -40,16 +44,16 @@ const navigationCatalog = [
   { ...route, route_id: "XH_BIKE_0002", route_name: "待考证骑行线", route_mode: "bike", validation_status: "needs_review" },
 ];
 
-test("导航页使用独立运动类型选项卡并置于路线和出发地之前", () => {
+test("路线选定后进入精简接驳面板且不重复选择运动类型和路线", () => {
   const html = readFileSync(new URL("../web/index.html", import.meta.url), "utf8");
-  const modeIndex = html.indexOf('id="navigationSportModeTabs"');
-  const routeIndex = html.indexOf('id="navigationRouteSelect"');
+  const backIndex = html.indexOf('id="navigationBackButton"');
+  const routeIndex = html.indexOf('id="navigationRouteName"');
   const originIndex = html.indexOf('id="startInput"');
 
-  assert.ok(modeIndex >= 0);
-  assert.ok(html.includes('data-navigation-mode="walk"'));
-  assert.equal(html.match(/data-navigation-mode=/g)?.length, 3);
-  assert.ok(modeIndex < routeIndex && routeIndex < originIndex);
+  assert.ok(backIndex >= 0);
+  assert.ok(backIndex < routeIndex && routeIndex < originIndex);
+  assert.equal(html.includes('id="navigationSportModeTabs"'), false);
+  assert.equal(html.includes('id="navigationRouteSelect"'), false);
 });
 
 test("导航路线下拉保留当前运动类型的全部路线", () => {
@@ -166,6 +170,24 @@ test("跑步和步行使用步行服务，骑行使用骑行服务", () => {
   assert.equal(navigationServiceMode("run"), "walk");
   assert.equal(navigationServiceMode("bike"), "bike");
   assert.throws(() => navigationServiceMode("drive"), /运动类型/);
+});
+
+test("推荐位置接受用户主动选择的坐标且不请求设备定位", async () => {
+  const location = await resolveUserLocation({}, {
+    lng_gcj02: 121.437,
+    lat_gcj02: 31.195,
+    label: "徐家汇",
+  });
+
+  assert.deepEqual(location, {
+    lng_gcj02: 121.437,
+    lat_gcj02: 31.195,
+    label: "徐家汇",
+    source: "point",
+  });
+  const mapSource = readFileSync(new URL("../web/src/map.js", import.meta.url), "utf8");
+  assert.doesNotMatch(mapSource, /navigator\.geolocation/);
+  assert.match(mapSource, /showUserLocation/);
 });
 
 test("切换目标路线后清除旧接驳完成状态", () => {

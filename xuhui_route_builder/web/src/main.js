@@ -1,11 +1,11 @@
 import {
   loadRouteData,
   startEnvironmentDashboardPolling,
-} from "./data-loader.js?v=20260828-health-map-2";
+} from "./data-loader.js?v=20260828-recommendation-1";
 import {
   buildRouteExposureModel,
   createEnvironmentPanel,
-} from "./environment-ui.js?v=20260828-health-map-2";
+} from "./environment-ui.js?v=20260828-recommendation-1";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -15,22 +15,46 @@ import {
   enablePointPicker,
   endNavigationSession,
   planNavigation,
+  resolveUserLocation,
+  showUserLocation,
   showRoutePreviews,
   showSingleRoute,
   startNavigationSession,
-} from "./map.js?v=20260828-health-map-2";
-import { createNavigationController } from "./navigation-session.js?v=20260828-health-map-2";
-import { createRouteDock } from "./route-dock.js?v=20260828-health-map-2";
-import { renderRoutePlanner } from "./route-ui.js?v=20260828-health-map-2";
+} from "./map.js?v=20260828-recommendation-1";
+import { createNavigationController } from "./navigation-session.js?v=20260828-recommendation-1";
+import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260828-recommendation-1";
+import { createRecommendationApi } from "./recommendation-api.js?v=20260828-recommendation-1";
+import { createProfileDialog, createRecommendationUI } from "./recommendation-ui.js?v=20260828-recommendation-1";
+import { createRouteDock } from "./route-dock.js?v=20260828-recommendation-1";
+import { renderRoutePlanner } from "./route-ui.js?v=20260828-recommendation-1";
 
 async function bootstrap() {
   const map = await createMap("map");
   const data = await loadRouteData();
+  const recommendationApi = createRecommendationApi();
+  let questionnaire = null;
+  let questionnaireError = null;
+  try {
+    questionnaire = await recommendationApi.questionnaire();
+  } catch (error) {
+    questionnaireError = error;
+    console.error("推荐问卷加载失败", { error });
+  }
   const routeDock = createRouteDock();
   const routeFeaturesById = new Map(data.routes.features.map((feature) => [feature.properties.route_id, feature]));
   const catalog = enrichCatalog(data.catalog, data.entries);
   const guide = inlineNavigationGuideControls();
   const environmentContainer = document.querySelector("#environmentPanel");
+  const recommendationContainer = document.querySelector("#recommendationView");
+  const selectionView = document.querySelector("#routeSelectionView");
+  const navigationView = document.querySelector("#routeNavigationView");
+  const modeTabs = [...document.querySelectorAll("[data-product-view]")];
+  const locationControls = getLocationControls();
+  const hadSavedProfile = Boolean(globalThis.localStorage?.getItem?.(HEALTH_PROFILE_STORAGE_KEY));
+  let healthProfile = loadHealthProfile();
+  let currentLocation = null;
+  let currentProductView = "recommendation";
+  let pendingLocationResolver = null;
   let environmentGeneratedAt = data.environmentDashboard?.metadata?.generated_at || null;
   let environmentPanel = createEnvironmentPanel(environmentContainer, data.environmentDashboard);
   startEnvironmentDashboardPolling((nextDashboard) => {
@@ -45,6 +69,7 @@ async function bootstrap() {
   });
   let planner = null;
   let activeNavigation = null;
+  let recommendationUI = null;
 
   const navigationController = createNavigationController({
     onProgress(progress) {
@@ -106,6 +131,9 @@ async function bootstrap() {
       startNavigationSession(map, onPicked);
       enablePointPicker(map, role);
     },
+    onLocationChange(point) {
+      commitLocation({ ...point, label: point.label || "地图点" });
+    },
     onNavigate(request) {
       return planNavigation(map, request);
     },
@@ -137,7 +165,178 @@ async function bootstrap() {
         routeDock.hide();
       }
     },
+    onNavigationViewChange(open) {
+      if (open) {
+        recommendationContainer.hidden = true;
+        recommendationContainer.classList.remove("active");
+        selectionView.hidden = true;
+        navigationView.hidden = false;
+        document.querySelector(".mode-tabs").hidden = true;
+        return;
+      }
+      document.querySelector(".mode-tabs").hidden = false;
+      setProductView(currentProductView);
+    },
   });
+
+  const profileDialog = createProfileDialog({
+    host: document.querySelector("#profileModalHost"),
+    profile: healthProfile,
+    onSave(nextProfile) {
+      healthProfile = saveHealthProfile(nextProfile);
+      recommendationUI?.setProfile(healthProfile);
+    },
+  });
+
+  recommendationUI = createRecommendationUI({
+    container: recommendationContainer,
+    questionnaire,
+    profile: healthProfile,
+    location: currentLocation,
+    onPickLocation: requestLocation,
+    onRecommend: (profile) => recommendationApi.recommend(profile),
+    onReloadQuestionnaire: () => recommendationApi.questionnaire(),
+    shouldSelectRoute: () => currentProductView === "recommendation",
+    onSelectRoute(routeId) {
+      planner.selectRoute(routeId);
+    },
+    async onNavigate(routeId) {
+      const origin = currentLocation || await requestLocation();
+      if (origin) planner.openNavigation(routeId, origin);
+    },
+    onOpenProfile: () => profileDialog.open(),
+  });
+  if (questionnaireError) recommendationUI.showError(questionnaireError);
+
+  document.querySelector("#profileSettingsButton").addEventListener("click", () => profileDialog.open());
+  if (!hadSavedProfile) profileDialog.open();
+
+  modeTabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => setProductView(tab.dataset.productView));
+    tab.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+      event.preventDefault();
+      const direction = event.key === "ArrowRight" ? 1 : -1;
+      const nextTab = modeTabs[(index + direction + modeTabs.length) % modeTabs.length];
+      nextTab.focus();
+      setProductView(nextTab.dataset.productView);
+    });
+  });
+  bindLocationControls();
+  bindLayerControls();
+  setProductView("recommendation");
+
+  function setProductView(view) {
+    currentProductView = view === "browse" ? "browse" : "recommendation";
+    modeTabs.forEach((tab) => {
+      const active = tab.dataset.productView === currentProductView;
+      tab.classList.toggle("active", active);
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+    });
+    navigationView.hidden = true;
+    recommendationContainer.hidden = currentProductView !== "recommendation";
+    recommendationContainer.classList.toggle("active", currentProductView === "recommendation");
+    selectionView.hidden = currentProductView !== "browse";
+    selectionView.classList.toggle("active", currentProductView === "browse");
+    if (currentProductView === "browse") {
+      planner.showBrowse();
+    } else {
+      const routeId = recommendationUI.getCurrentRouteId();
+      if (routeId) planner.selectRoute(routeId);
+    }
+  }
+
+  function requestLocation() {
+    if (pendingLocationResolver) return Promise.resolve(null);
+    setLocationEditorOpen(true);
+    locationControls.input.focus();
+    return new Promise((resolve) => {
+      pendingLocationResolver = resolve;
+    });
+  }
+
+  function finishLocationRequest(value) {
+    const resolve = pendingLocationResolver;
+    pendingLocationResolver = null;
+    setLocationEditorOpen(false);
+    resolve?.(value);
+  }
+
+  function commitLocation(location) {
+    currentLocation = location;
+    locationControls.label.textContent = location.label || "已选位置";
+    locationControls.status.textContent = "位置已用于路线推荐和前往起点。";
+    showUserLocation(map, location);
+    recommendationUI.setLocation(location);
+    finishLocationRequest(location);
+    return location;
+  }
+
+  function bindLocationControls() {
+    locationControls.toggle.addEventListener("click", () => {
+      const open = locationControls.editor.hidden;
+      if (!open && pendingLocationResolver) finishLocationRequest(null);
+      else setLocationEditorOpen(open);
+    });
+    locationControls.search.addEventListener("click", async () => {
+      locationControls.status.textContent = "正在查找地点…";
+      try {
+        commitLocation(await resolveUserLocation(map, { text: locationControls.input.value }));
+      } catch (error) {
+        locationControls.status.textContent = errorMessage(error);
+      }
+    });
+    locationControls.input.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        locationControls.search.click();
+      }
+    });
+    locationControls.pick.addEventListener("click", () => {
+      startNavigationSession(map, (result) => {
+        if (result?.error) {
+          locationControls.status.textContent = result.error;
+          return;
+        }
+        if (result?.point) {
+          const point = { ...result.point, label: "地图点" };
+          showUserLocation(map, point);
+          endNavigationSession(map);
+          commitLocation(point);
+        }
+      });
+      enablePointPicker(map, "origin");
+      locationControls.status.textContent = "请在地图上点击出发位置。";
+    });
+  }
+
+  function setLocationEditorOpen(open) {
+    locationControls.editor.hidden = !open;
+    locationControls.toggle.setAttribute("aria-expanded", String(open));
+  }
+
+  function bindLayerControls() {
+    const button = document.querySelector("#mapLayerButton");
+    const legend = document.querySelector("#mapLegend");
+    button.addEventListener("click", () => {
+      const open = legend.hidden;
+      legend.hidden = !open;
+      button.setAttribute("aria-expanded", String(open));
+    });
+  }
+}
+
+function getLocationControls() {
+  return {
+    toggle: document.querySelector("#locationButton"),
+    label: document.querySelector("#locationLabel"),
+    editor: document.querySelector("#locationEditor"),
+    input: document.querySelector("#locationInput"),
+    search: document.querySelector("#locationSearchButton"),
+    pick: document.querySelector("#locationPickButton"),
+    status: document.querySelector("#locationStatus"),
+  };
 }
 
 function inlineNavigationGuideControls() {
@@ -237,6 +436,10 @@ function entryLocation(entry) {
     return "";
   }
   return `${lng},${lat}`;
+}
+
+function errorMessage(error) {
+  return error instanceof Error ? error.message : "操作失败，请重试。";
 }
 
 bootstrap().catch((error) => {

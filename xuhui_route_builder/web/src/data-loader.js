@@ -1,4 +1,4 @@
-const DATA_RELEASE = "20260828-health-map-2";
+const DATA_RELEASE = "20260828-recommendation-1";
 const ENVIRONMENT_DASHBOARD_PATH = "../data/web/environment_dashboard.json";
 const ENVIRONMENT_POLL_INTERVAL_MS = 60_000;
 

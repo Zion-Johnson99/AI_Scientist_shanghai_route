@@ -9,10 +9,8 @@ export function renderRoutePlanner(catalog, options) {
   const controls = getControls();
   updateModeCounts(catalog, controls);
   populateZoneFilter(controls.zoneFilter, catalog);
-  populateNavigationRoutes(controls.navigationRouteSelect, filterNavigationRoutes(catalog, "walk"));
 
   const state = {
-    activeAppTab: "selection",
     selectedRouteId: "",
     filters: readSelectionFilters(controls),
     filteredRoutes: [],
@@ -24,13 +22,43 @@ export function renderRoutePlanner(catalog, options) {
     planningRevision: 0,
   };
 
-  bindAppTabs(catalog, state, controls, options);
   bindSelectionControls(catalog, state, controls, options);
   bindNavigationControls(catalog, state, controls, options);
   renderNavigationPrimaryAction(state.navigationStatus, controls);
   initializeRouteSelection(catalog, state, controls, options);
 
   return {
+    showBrowse() {
+      controls.selectionView.hidden = false;
+      controls.navigationView.hidden = true;
+      renderSelectionPreview(state.filteredRoutes, catalog, state, controls, options);
+    },
+    selectRoute(routeId) {
+      const route = findRoute(catalog, routeId);
+      if (!route) return null;
+      showRoute(route, catalog, state, controls, options);
+      return route;
+    },
+    openNavigation(routeId, origin = null) {
+      const route = findRoute(catalog, routeId);
+      if (!route) return null;
+      state.selectedRouteId = route.route_id;
+      state.navigationMode = route.route_mode;
+      state.navigationPoints.origin = origin;
+      controls.startInput.value = origin ? formatOrigin(origin) : "";
+      controls.navigationRouteName.textContent = route.route_name;
+      renderNavigationMode(route, controls);
+      renderDetail(route, controls.navigationRouteDetail);
+      invalidateNavigationPlan(state, controls, options, origin
+        ? "已沿用当前选择的位置。"
+        : "请选择出发地后规划接驳路线。");
+      options.onSelect(route.route_id);
+      options.onRouteMetrics?.(route);
+      controls.selectionView.hidden = true;
+      controls.navigationView.hidden = false;
+      options.onNavigationViewChange?.(true);
+      return route;
+    },
     endNavigationPreview() {
       const wasPreviewing = state.navigationStatus === "previewing";
       invalidateNavigationPlan(state, controls, options, "");
@@ -74,22 +102,7 @@ export function filterNavigationRoutes(catalog, mode) {
   return catalog.filter((route) => route.route_mode === mode);
 }
 
-function bindAppTabs(catalog, state, controls, options) {
-  controls.appTabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      const nextTab = tab.dataset.appTab;
-      if (nextTab !== state.activeAppTab && state.activeAppTab === "navigation") {
-        invalidateNavigationPlan(state, controls, options, "");
-      }
-      state.activeAppTab = nextTab;
-      switchAppTab(state, controls);
-      renderActiveMapState(catalog, state, controls, options);
-    });
-  });
-}
-
 function bindSelectionControls(catalog, state, controls, options) {
-  controls.planButton.addEventListener("click", () => runSearch(catalog, state, controls, options));
   controls.resetButton.addEventListener("click", () => {
     resetNavigationFlow(state, controls, options);
     resetSelectionControls(controls);
@@ -98,32 +111,20 @@ function bindSelectionControls(catalog, state, controls, options) {
 
   controls.sportModeTabs.forEach((tab) => {
     tab.addEventListener("click", () => {
-      controls.sportModeTabs.forEach((item) => item.classList.toggle("active", item === tab));
+      controls.sportModeTabs.forEach((item) => {
+        const active = item === tab;
+        item.classList.toggle("active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
       initializeRouteSelection(catalog, state, controls, options);
     });
   });
 
   const refreshPreview = () => {
-    if (controls.routeSelect.value) {
-      return;
-    }
     initializeRouteSelection(catalog, state, controls, options);
   };
   controls.zoneFilter.addEventListener("change", refreshPreview);
   controls.distanceFilter.addEventListener("change", refreshPreview);
-  controls.preferences.forEach((input) => input.addEventListener("change", refreshPreview));
-  let keywordPreviewTimer = null;
-  controls.keywordInput.addEventListener("input", () => {
-    clearTimeout(keywordPreviewTimer);
-    keywordPreviewTimer = setTimeout(refreshPreview, 180);
-  });
-
-  controls.keywordInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      runSearch(catalog, state, controls, options);
-    }
-  });
 
   controls.routeSelect.addEventListener("change", () => {
     const route = findRoute(state.filteredRoutes, controls.routeSelect.value);
@@ -134,6 +135,12 @@ function bindSelectionControls(catalog, state, controls, options) {
 }
 
 function bindNavigationControls(catalog, state, controls, options) {
+  controls.navigationBackButton.addEventListener("click", () => {
+    invalidateNavigationPlan(state, controls, options, "");
+    controls.navigationView.hidden = true;
+    options.onNavigationViewChange?.(false);
+  });
+
   const handleMapPick = (result) => {
     if (result?.error) {
       controls.navigationStatus.textContent = result.error;
@@ -148,6 +155,7 @@ function bindNavigationControls(catalog, state, controls, options) {
     state.navigationPoints.origin = point;
     controls.startInput.value = formatPoint(point);
     controls.navigationStatus.textContent = "出发地已选择。";
+    options.onLocationChange?.(point);
   };
 
   controls.startPickButton.addEventListener("click", () => {
@@ -163,42 +171,8 @@ function bindNavigationControls(catalog, state, controls, options) {
     }
   });
 
-  controls.navigationModeTabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      state.navigationMode = tab.dataset.navigationMode;
-      controls.navigationModeTabs.forEach((item) => item.classList.toggle("active", item === tab));
-      invalidateNavigationPlan(state, controls, options, "");
-      const reset = resetNavigationForModeChange();
-      state.navigationStatus = reset.navigationStatus;
-      state.selectedRouteId = reset.selectedRouteId;
-      state.plannedNavigationRequest = reset.plannedRequest;
-      state.plannedNavigationPlan = reset.plannedPlan;
-      renderNavigationPrimaryAction(state.navigationStatus, controls);
-      populateNavigationRoutes(
-        controls.navigationRouteSelect,
-        filterNavigationRoutes(catalog, state.navigationMode),
-      );
-      renderNavigationMode(null, controls);
-      options.onClearRoutes();
-      options.onRouteMetrics?.(null);
-      renderNavigationPreview(catalog, state, controls, options);
-      const modeLabel = MODE_LABELS[state.navigationMode] || "运动";
-      controls.navigationStatus.textContent = `请选择一条${modeLabel}路线。`;
-    });
-  });
-
-  controls.navigationRouteSelect.addEventListener("change", () => {
-    applyNavigationRouteSelection(
-      catalog,
-      controls.navigationRouteSelect.value,
-      state,
-      controls,
-      options,
-    );
-  });
-
   controls.navigateButton.addEventListener("click", () => {
-    const route = findRoute(catalog, controls.navigationRouteSelect.value);
+    const route = findRoute(catalog, state.selectedRouteId);
     let request;
     try {
       const origin = navigationValue(controls.startInput.value, state.navigationPoints.origin);
@@ -333,19 +307,6 @@ export function navigationPrimaryActionState(status) {
   };
 }
 
-function runSearch(catalog, state, controls, options) {
-  state.filters = readSelectionFilters(controls);
-  state.filteredRoutes = filterCandidateRoutes(catalog, state.filters);
-  const route = selectBestRoute(state.filteredRoutes);
-  renderRouteSelect(state.filteredRoutes, controls, route?.route_id || "");
-  if (!route) {
-    state.selectedRouteId = "";
-    renderEmptySelection(controls, options, "无推荐路线，请调整片区、类型、距离或关键词。");
-    return;
-  }
-  showRoute(route, catalog, state, controls, options);
-}
-
 export function selectBestRoute(routes) {
   return routes.find((route) => route.validation_status === "accepted") || null;
 }
@@ -382,10 +343,10 @@ function renderRouteSelect(routes, controls, selectedRouteId) {
 
 function showRoute(route, catalog, state, controls, options) {
   state.selectedRouteId = route.route_id;
+  state.navigationMode = route.route_mode;
   controls.routeSelect.value = route.route_id;
   renderDetail(route, controls.detail);
   invalidateNavigationPlan(state, controls, options, "");
-  syncNavigationRoute(route, catalog, state, controls);
   controls.summary.textContent = "";
   options.onShowRoute(route, state.filters.preferences);
   options.onRouteMetrics?.(route);
@@ -399,36 +360,6 @@ function renderEmptySelection(controls, options, message) {
   options.onRouteMetrics?.(null);
 }
 
-function switchAppTab(state, controls) {
-  controls.appTabs.forEach((tab) => {
-    tab.classList.toggle("active", tab.dataset.appTab === state.activeAppTab);
-  });
-  controls.selectionView.classList.toggle("active", state.activeAppTab === "selection");
-  controls.navigationView.classList.toggle("active", state.activeAppTab === "navigation");
-}
-
-function renderActiveMapState(catalog, state, controls, options) {
-  if (state.activeAppTab === "selection") {
-    const route = findRoute(catalog, controls.routeSelect.value);
-    if (route) {
-      options.onShowRoute(route, state.filters.preferences);
-      options.onRouteMetrics?.(route);
-      return;
-    }
-    controls.detail.innerHTML = "";
-    renderSelectionPreview(state.filteredRoutes, catalog, state, controls, options);
-    return;
-  }
-
-  const route = findRoute(catalog, controls.navigationRouteSelect.value);
-  if (route) {
-    options.onSelect(route.route_id);
-    options.onRouteMetrics?.(route);
-    return;
-  }
-  renderNavigationPreview(catalog, state, controls, options);
-}
-
 function renderSelectionPreview(routes, catalog, state, controls, options) {
   options.onPreviewRoutes?.(routes, (routeId) => {
     const route = findRoute(routes, routeId);
@@ -438,19 +369,11 @@ function renderSelectionPreview(routes, catalog, state, controls, options) {
   });
 }
 
-function renderNavigationPreview(catalog, state, controls, options) {
-  const routes = filterNavigationRoutes(catalog, state.navigationMode);
-  options.onPreviewRoutes?.(routes, (routeId) => {
-    applyNavigationRouteSelection(catalog, routeId, state, controls, options);
-  });
-}
-
 function applyNavigationRouteSelection(catalog, routeId, state, controls, options) {
   const route = selectNavigationRoute(catalog, routeId, options);
   if (!route) {
     return null;
   }
-  controls.navigationRouteSelect.value = route.route_id;
   state.selectedRouteId = route.route_id;
   const hadPlan = state.navigationStatus !== "ready"
     || state.plannedNavigationRequest
@@ -470,10 +393,10 @@ function applyNavigationRouteSelection(catalog, routeId, state, controls, option
 function readSelectionFilters(controls) {
   return {
     zone: controls.zoneFilter.value,
-    keyword: controls.keywordInput.value.trim(),
+    keyword: "",
     mode: controls.sportModeTabs.find((tab) => tab.classList.contains("active"))?.dataset.routeMode || "walk",
     distance: controls.distanceFilter.value,
-    preferences: controls.preferences.filter((input) => input.checked).map((input) => input.value),
+    preferences: [],
   };
 }
 
@@ -509,7 +432,6 @@ function resetNavigationFlow(state, controls, options) {
   state.navigationPoints = { origin: null };
   state.selectedRouteId = "";
   controls.startInput.value = "";
-  controls.navigationRouteSelect.value = "";
   renderNavigationMode(null, controls);
   options.onRouteMetrics?.(null);
 }
@@ -637,33 +559,25 @@ function routePriority(route) {
 
 function getControls() {
   return {
-    appTabs: [...document.querySelectorAll("[data-app-tab]")],
     selectionView: document.querySelector("#routeSelectionView"),
     navigationView: document.querySelector("#routeNavigationView"),
     zoneFilter: document.querySelector("#zoneFilter"),
-    keywordInput: document.querySelector("#keywordInput"),
     sportModeTabs: [...document.querySelectorAll("#sportModeTabs [data-route-mode]")],
     distanceFilter: document.querySelector("#distanceFilter"),
-    planButton: document.querySelector("#planButton"),
     resetButton: document.querySelector("#resetButton"),
     summary: document.querySelector("#routeSummary"),
     routeSelect: document.querySelector("#routeSelect"),
     routeOptionCount: document.querySelector("#routeOptionCount"),
     detail: document.querySelector("#routeDetail"),
-    navigationModeTabs: [...document.querySelectorAll("#navigationSportModeTabs [data-navigation-mode]")],
-    navigationRouteSelect: document.querySelector("#navigationRouteSelect"),
+    navigationBackButton: document.querySelector("#navigationBackButton"),
+    navigationRouteName: document.querySelector("#navigationRouteName"),
+    navigationRouteDetail: document.querySelector("#navigationRouteDetail"),
     startInput: document.querySelector("#startInput"),
     startPickButton: document.querySelector("#startPickButton"),
     navigationModeSummary: document.querySelector("#navigationModeSummary"),
     navigateButton: document.querySelector("#navigateButton"),
     startSportButton: document.querySelector("#startSportButton"),
     navigationStatus: document.querySelector("#navigationStatus"),
-    preferences: [
-      document.querySelector("#preferCoffee"),
-      document.querySelector("#preferToilet"),
-      document.querySelector("#preferStore"),
-      document.querySelector("#preferPark"),
-    ],
   };
 }
 
@@ -682,27 +596,6 @@ function updateModeCounts(catalog, controls) {
     const routes = catalog.filter((route) => route.route_mode === tab.dataset.routeMode);
     tab.querySelector("span").textContent = `${routes.length} 条`;
   }
-  for (const tab of controls.navigationModeTabs) {
-    const routes = filterNavigationRoutes(catalog, tab.dataset.navigationMode);
-    tab.querySelector("span").textContent = `${routes.length} 条`;
-  }
-}
-
-function populateNavigationRoutes(select, catalog) {
-  select.innerHTML = "";
-  const placeholder = document.createElement("option");
-  placeholder.value = "";
-  placeholder.textContent = catalog.length ? "请选择一条路线" : "该类型暂无路线";
-  placeholder.disabled = catalog.length > 0;
-  placeholder.selected = true;
-  select.appendChild(placeholder);
-  for (const route of catalog) {
-    const option = document.createElement("option");
-    option.value = route.route_id;
-    option.textContent = routeOptionLabel(route);
-    select.appendChild(option);
-  }
-  select.disabled = catalog.length === 0;
 }
 
 function routeDistanceBand(route) {
@@ -721,26 +614,14 @@ function renderNavigationMode(route, controls) {
   controls.navigationModeSummary.textContent = route?.route_mode === "bike" ? "骑行" : "步行";
 }
 
-function syncNavigationRoute(route, catalog, state, controls) {
-  state.navigationMode = route.route_mode;
-  controls.navigationModeTabs.forEach((tab) => {
-    tab.classList.toggle("active", tab.dataset.navigationMode === route.route_mode);
-  });
-  populateNavigationRoutes(
-    controls.navigationRouteSelect,
-    filterNavigationRoutes(catalog, route.route_mode),
-  );
-  controls.navigationRouteSelect.value = route.route_id;
-}
-
 function resetSelectionControls(controls) {
   controls.zoneFilter.value = "all";
-  controls.keywordInput.value = "";
-  controls.sportModeTabs.forEach((tab, index) => tab.classList.toggle("active", index === 0));
-  controls.distanceFilter.value = "all";
-  controls.preferences.forEach((input) => {
-    input.checked = false;
+  controls.sportModeTabs.forEach((tab, index) => {
+    const active = index === 0;
+    tab.classList.toggle("active", active);
+    tab.setAttribute("aria-pressed", String(active));
   });
+  controls.distanceFilter.value = "all";
 }
 
 function findRoute(catalog, routeId) {
@@ -749,6 +630,10 @@ function findRoute(catalog, routeId) {
 
 function formatPoint(point) {
   return `${Number(point.lng_gcj02).toFixed(6)},${Number(point.lat_gcj02).toFixed(6)}`;
+}
+
+function formatOrigin(point) {
+  return point.label || formatPoint(point);
 }
 
 function normalizeText(value) {

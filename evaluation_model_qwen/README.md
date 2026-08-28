@@ -1,4 +1,4 @@
-# 徐汇健康路线评价与千问 CLI
+# 徐汇健康路线评价与千问服务
 
 本模块从徐汇区 90 条已验收路线中执行硬约束筛选、五维基础评分和千问个性化审核，输出首选路线与备选路线。首版覆盖当前至未来 24 小时，读取兄弟目录中的路线与环境网页数据包。
 
@@ -50,6 +50,30 @@ Copy-Item .env.example .env
 追加 `--json` 可向标准输出打印完整结果。每次推荐同时写入 `runtime/recommendations/<run_id>.json`。
 
 `api-check` 成功时返回退出码 0，配置缺失或 API 异常时返回 1。`recommend` 默认调用千问；鉴权、限流、超时、网络或响应校验失败时，结果标记为 `degraded` 并回退到 Python 基础排序。
+
+## 本地推荐 API
+
+静态网页运行在 `127.0.0.1:8123` 时，可另开一个 PowerShell 窗口启动推荐服务：
+
+```powershell
+cd D:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\evaluation_model_qwen
+.\.venv\Scripts\evaluation-model-qwen-api.exe --host 127.0.0.1 --port 8124
+```
+
+服务提供三个接口：
+
+- `GET http://127.0.0.1:8124/api/v1/health`：数据包时间、状态、路线数和千问配置状态。
+- `GET http://127.0.0.1:8124/api/v1/questionnaire`：前端可直接渲染的中文问卷选项。
+- `POST http://127.0.0.1:8124/api/v1/recommendations`：接收 `UserProfile` 并返回 `RecommendationResult`。
+
+本地测试与浏览器验收使用离线模式：
+
+```powershell
+$env:EVALUATION_MODEL_QWEN_OFFLINE = "1"
+.\.venv\Scripts\evaluation-model-qwen-api.exe --host 127.0.0.1 --port 8124
+```
+
+离线模式只执行 Python 筛选和排序，不消耗千问额度。审计文件默认写入 `runtime/recommendations`；测试可通过 `EVALUATION_MODEL_QWEN_AUDIT_ROOT` 指定隔离目录。跨域来源限定为 `http://127.0.0.1:8123` 和 `http://localhost:8123`。
 
 ## 数据边界
 

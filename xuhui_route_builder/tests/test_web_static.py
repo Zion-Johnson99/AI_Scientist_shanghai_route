@@ -61,7 +61,8 @@ def test_navigation_shell_uses_a_short_manual_start_flow() -> None:
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
 
     for element_id in [
-        "navigationRouteSelect",
+        "navigationBackButton",
+        "navigationRouteName",
         "startInput",
         "startPickButton",
         "navigateButton",
@@ -76,6 +77,8 @@ def test_navigation_shell_uses_a_short_manual_start_flow() -> None:
     assert "搜索上海地点" in html
     assert "规划接驳路线" in html
     assert "进入导航预览" in html
+    assert 'id="navigationRouteSelect"' not in html
+    assert 'id="navigationSportModeTabs"' not in html
     assert 'id="startNavigationButton"' not in html
     assert 'id="endNavigationButton"' not in html
     assert "实时接驳" not in html
@@ -107,7 +110,7 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260828-health-map-2"
+    release = "v=20260828-recommendation-1"
     assert f"./styles/main.css?{release}" in html
     assert f"./src/main.js?{release}" in html
     assert f"./data-loader.js?{release}" in main_js
@@ -115,6 +118,9 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     assert f"./map.js?{release}" in main_js
     assert f"./route-dock.js?{release}" in main_js
     assert f"./route-ui.js?{release}" in main_js
+    assert f"./recommendation-api.js?{release}" in main_js
+    assert f"./recommendation-ui.js?{release}" in main_js
+    assert f"./profile-store.js?{release}" in main_js
     assert "DATA_RELEASE" in data_loader_js
     assert 'cache: "no-store"' in data_loader_js
     for data_path in [
@@ -189,29 +195,32 @@ def test_startup_does_not_draw_full_route_or_entry_layers() -> None:
     assert "showSingleRoute" in main_js
 
 
-def test_route_controls_support_local_candidate_search_and_preferences() -> None:
+def test_product_shell_separates_recommendation_from_compact_route_browsing() -> None:
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
 
     for element_id in [
-        "routeSelectionTab",
-        "routeNavigationTab",
-        "keywordInput",
+        "recommendationTab",
+        "browseTab",
+        "recommendationView",
         "zoneFilter",
         "sportModeTabs",
         "distanceFilter",
+        "routeSelect",
+    ]:
+        assert f'id="{element_id}"' in html
+
+    for removed_id in [
+        "routeSelectionTab",
+        "routeNavigationTab",
+        "keywordInput",
         "preferCoffee",
         "preferToilet",
         "preferStore",
         "preferPark",
         "planButton",
-        "routeSelect",
     ]:
-        assert f'id="{element_id}"' in html
-
-    assert 'id="preferMetro"' not in html
-    assert 'id="preferStore" type="checkbox" value="convenience"' in html
-    assert 'id="preferPark" type="checkbox" value="park_gate"' in html
+        assert f'id="{removed_id}"' not in html
     assert "metro:" not in route_ui_js
 
     assert "route-selection-view" in html
@@ -239,6 +248,37 @@ def test_route_controls_support_local_candidate_search_and_preferences() -> None
     assert "90 条城市运动候选路线" not in html
 
 
+def test_product_tabs_and_sport_filters_expose_complete_accessibility_state() -> None:
+    html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+    main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
+    route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
+
+    assert 'class="mode-tabs" role="tablist"' in html
+    assert 'aria-controls="recommendationView"' in html
+    assert 'aria-controls="routeSelectionView"' in html
+    assert 'role="tabpanel"' in html
+    assert 'class="sport-mode-tabs" role="group"' in html
+    assert 'aria-pressed="true"' in html
+    assert "aria-selected" in main_js
+    assert 'event.key === "ArrowRight"' in main_js
+    assert 'setAttribute("aria-pressed"' in route_ui_js
+    assert 'element("h2", "recommendation-panel__title"' in (
+        WEB_ROOT / "src" / "recommendation-ui.js"
+    ).read_text(encoding="utf-8")
+
+
+def test_small_screen_uses_full_map_with_overlay_drawer_and_visible_action() -> None:
+    css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
+
+    mobile_css = css[css.rindex("@media (max-width: 980px)") :]
+    assert "position: fixed" in mobile_css
+    assert "height: 100dvh" in mobile_css
+    assert "inset: 0" in mobile_css
+    assert "max-height: min(56dvh, 520px)" in mobile_css
+    assert ".recommendation-route__navigate" in mobile_css
+    assert "position: sticky" in mobile_css
+
+
 def test_preference_filters_use_real_nearby_pois_only() -> None:
     route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
 
@@ -248,7 +288,7 @@ def test_preference_filters_use_real_nearby_pois_only() -> None:
     assert "route.preference_hits" not in route_ui_js
 
 
-def test_route_picker_uses_single_select_and_waits_for_explicit_search() -> None:
+def test_route_browser_uses_single_select_and_updates_preview_with_filters() -> None:
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
@@ -256,19 +296,17 @@ def test_route_picker_uses_single_select_and_waits_for_explicit_search() -> None
     assert 'id="routeSelect"' in html
     assert 'id="routeTabs"' not in html
     assert 'id="resultTabs"' not in html
-    assert "选择一条路线" in html
+    assert "地图中的路线" in html
     assert "selectBestRoute" in route_ui_js
-    assert "无推荐路线" in route_ui_js
     assert "options.onShowRoute(route, state.filters.preferences)" in route_ui_js
     assert "renderRouteSelect" in route_ui_js
     assert "initializeRouteSelection" in route_ui_js
     assert (
-        "runSearch(catalog, state, controls, options);"
-        not in route_ui_js[
-            route_ui_js.index("export function renderRoutePlanner") : route_ui_js.index(
-                "export function filterCandidateRoutes"
-            )
-        ]
+        'controls.zoneFilter.addEventListener("change", refreshPreview)' in route_ui_js
+    )
+    assert (
+        'controls.distanceFilter.addEventListener("change", refreshPreview)'
+        in route_ui_js
     )
     assert "onShowRoute(route, selectedPreferences)" in main_js
     assert (
