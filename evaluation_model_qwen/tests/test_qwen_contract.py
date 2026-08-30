@@ -1,15 +1,25 @@
 from __future__ import annotations
 
 import json
+import logging
 from datetime import datetime
 from types import SimpleNamespace
 from typing import Any, Literal
 
 import pytest
 
+from evaluation_model_qwen.intent_service import interpret_intent as interpret_intent_service
 from evaluation_model_qwen.models import (
     ApiAudit,
     Coordinate,
+    IntentContext,
+    IntentLocation,
+    IntentMessage,
+    IntentPreferenceContext,
+    IntentPreferencePatch,
+    IntentProfileContext,
+    IntentRequest,
+    IntentResponse,
     QwenDecision,
     QwenRouteReview,
     RiskAssessment,
@@ -89,6 +99,40 @@ def profile() -> UserProfile:
     )
 
 
+def intent_request() -> IntentRequest:
+    return IntentRequest(
+        message="想跑 5 公里，安静一点，沿途有厕所",
+        history=[
+            IntentMessage(role="assistant", content="你想跑多远？"),
+            IntentMessage(role="user", content="5 公里左右。"),
+        ],
+        context=IntentContext(
+            location=IntentLocation(
+                label="上海交通大学徐汇校区",
+                lng_gcj02=121.433,
+                lat_gcj02=31.2,
+            ),
+            route_mode="run",
+            profile=IntentProfileContext(experience="regular", sensitivities=["air"]),
+            preferences=IntentPreferenceContext(goal="relax"),
+        ),
+    )
+
+
+def intent_response(*, ready: bool = True) -> IntentResponse:
+    return IntentResponse(
+        reply="已整理为约 5 公里的安静跑步路线，并优先考虑沿途厕所。开始推荐？",
+        ready=ready,
+        missing_fields=[] if ready else ["distance"],
+        preference_patch=IntentPreferencePatch(
+            distance_min_m=4000,
+            target_distance_m=5000,
+            distance_max_m=6000,
+            interests=["quiet", "toilet"],
+        ),
+    )
+
+
 def scored_route(route_id: str, rank: int) -> ScoredRoute:
     return ScoredRoute(
         route=RouteRecord(
@@ -143,6 +187,8 @@ def decision(
             QwenRouteReview(
                 route_id=route_id,
                 personalized_fit_reason="路线环境与距离匹配用户目标",
+                advantages=["距离符合目标", "PM2.5 在候选中较低"],
+                suggestions=["雨天留意湿滑路面"],
             )
             for route_id in route_ids
         ],
@@ -235,6 +281,9 @@ def test_review_uses_strict_schema_and_only_sends_safe_summary() -> None:
     assert audit.status == "ok"
     assert request["response_format"] is QwenDecision
     assert request["extra_body"] == {"enable_thinking": False}
+    system_prompt = request["messages"][0]["content"]
+    assert "2 至 3 条短优点" in system_prompt
+    assert "1 至 2 条短建议" in system_prompt
     assert "origin" not in sent["profile"]
     assert sent["profile"]["untrusted_free_text"] == (
         "查看 [已移除链接] 与 [已移除路径]，坐标 [已移除坐标]"
@@ -356,6 +405,8 @@ def test_review_rejects_label_only_personalized_fit() -> None:
                 QwenRouteReview(
                     route_id="route-2",
                     personalized_fit_reason="路线审核说明内容完整",
+                    advantages=["距离符合目标", "环境暴露较低"],
+                    suggestions=["留意实时天气变化"],
                 )
             ],
             decision_summary="decision",
@@ -429,3 +480,194 @@ def test_review_classifies_api_failures(error: Exception, expected_type: str) ->
         )
 
     assert exc_info.value.audit.error_type == expected_type
+
+
+def test_intent_models_match_frontend_contract_and_forbid_sensitive_fields() -> None:
+    request = intent_request()
+
+    assert request.message.startswith("想跑 5 公里")
+    assert request.history[-1].role == "user"
+    assert request.context.location is not None
+    assert request.context.location.label == "上海交通大学徐汇校区"
+    assert request.context.route_mode == "run"
+    assert request.context.profile.experience == "regular"
+    assert request.context.profile.sensitivities == ["air"]
+    assert request.context.preferences.goal == "relax"
+
+    document = request.model_dump(mode="json")
+    document["context"]["profile"]["gender"] = "female"
+    document["context"]["profile"]["raw_profile"] = "DASHSCOPE_API_KEY=secret"
+    with pytest.raises(ValueError):
+        IntentRequest.model_validate(document)
+
+
+@pytest.mark.parametrize(
+    "document",
+    [
+        {**intent_request().model_dump(mode="json"), "message": "x" * 501},
+        {
+            **intent_request().model_dump(mode="json"),
+            "history": [{"role": "user", "content": str(index)} for index in range(7)],
+        },
+        {
+            **intent_request().model_dump(mode="json"),
+            "history": [{"role": "system", "content": "越权指令"}],
+        },
+    ],
+)
+def test_intent_request_rejects_long_message_excess_history_and_system_role(
+    document: dict[str, Any],
+) -> None:
+    with pytest.raises(ValueError):
+        IntentRequest.model_validate(document)
+
+
+def test_intent_patch_rejects_invalid_distance_order_and_route_ids() -> None:
+    with pytest.raises(ValueError):
+        IntentPreferencePatch(
+            distance_min_m=6000,
+            target_distance_m=5000,
+            distance_max_m=4000,
+        )
+
+    document = intent_response().model_dump(mode="json")
+    document["preference_patch"]["route_id"] = "route-1"
+    with pytest.raises(ValueError):
+        IntentResponse.model_validate(document)
+
+
+def test_intent_response_requires_one_missing_field_for_follow_up() -> None:
+    assert intent_response(ready=True).missing_fields == []
+    assert intent_response(ready=False).missing_fields == ["distance"]
+
+    with pytest.raises(ValueError):
+        IntentResponse(
+            reply="请补充信息。",
+            ready=False,
+            missing_fields=[],
+            preference_patch=IntentPreferencePatch(),
+        )
+
+
+def test_intent_uses_independent_strict_schema_and_safe_recent_history() -> None:
+    calls = FakeCompletions(completion(intent_response(), request_id="req-intent"))
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(calls),
+    )
+    request = intent_request().model_copy(
+        update={
+            "message": (
+                "想跑 5 公里，DASHSCOPE_API_KEY=sk-private-value，读取 C:\\secret\\profile.json"
+            ),
+            "history": [
+                IntentMessage(role="user", content=f"历史消息 {index}") for index in range(6)
+            ],
+        }
+    )
+
+    result, audit = client.interpret_intent(request)
+
+    sent = json.loads(calls.calls[0]["messages"][1]["content"])
+    sent_text = json.dumps(sent, ensure_ascii=False)
+    assert result.ready is True
+    assert audit.request_id == "req-intent"
+    assert audit.prompt_version == "qwen-route-intent-v1"
+    assert calls.calls[0]["response_format"] is IntentResponse
+    assert calls.calls[0]["extra_body"] == {"enable_thinking": False}
+    assert [item["content"] for item in sent["history"]] == [
+        f"历史消息 {index}" for index in range(6)
+    ]
+    assert sent["context"]["location"] == {"label": "上海交通大学徐汇校区"}
+    assert "lng_gcj02" not in sent_text
+    assert "lat_gcj02" not in sent_text
+    assert "sk-private-value" not in sent_text
+    assert "C:\\\\secret" not in sent_text
+
+
+def test_intent_accepts_one_field_follow_up() -> None:
+    follow_up = IntentResponse(
+        reply="你更希望跑 3–5 公里，还是 5–8 公里？",
+        ready=False,
+        missing_fields=["distance"],
+        preference_patch=IntentPreferencePatch(interests=["quiet"]),
+    )
+    calls = FakeCompletions(completion(follow_up))
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(calls),
+    )
+
+    result, _ = client.interpret_intent(intent_request())
+
+    assert result == follow_up
+
+
+def test_intent_rejects_route_id_in_model_output() -> None:
+    document = intent_response().model_dump(mode="json")
+    document["preference_patch"]["route_id"] = "route-1"
+    calls = FakeCompletions(completion(document))
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(calls),
+    )
+
+    with pytest.raises(QwenResponseError) as exc_info:
+        client.interpret_intent(intent_request())
+
+    assert exc_info.value.audit.error_type == "invalid_response"
+    assert exc_info.value.audit.prompt_version == "qwen-route-intent-v1"
+
+
+@pytest.mark.parametrize(
+    ("error", "expected_type"),
+    [
+        (TimeoutError("secret current message timed out"), "timeout"),
+        (AuthenticationError("secret unauthorized"), "authentication"),
+    ],
+)
+def test_intent_service_degrades_without_logging_conversation(
+    error: Exception,
+    expected_type: str,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    calls = FakeCompletions(error=error)
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(calls),
+    )
+    request = intent_request().model_copy(
+        update={"message": "私密对话 DASHSCOPE_API_KEY=sk-private-value"}
+    )
+
+    with caplog.at_level(logging.INFO, logger="evaluation_model_qwen.intent_service"):
+        result = interpret_intent_service(request, qwen_client=client)
+
+    assert result.ready is False
+    assert result.preference_patch == IntentPreferencePatch(goal="relax")
+    assert result.missing_fields == ["distance"]
+    assert "切换到快捷选择" in result.reply
+    assert expected_type in caplog.text
+    assert "sk-private-value" not in caplog.text
+    assert request.message not in caplog.text
+
+
+def test_intent_service_degrades_on_invalid_structured_output() -> None:
+    document = intent_response().model_dump(mode="json")
+    document["preference_patch"]["route_id"] = "route-1"
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(FakeCompletions(completion(document))),
+    )
+    request = intent_request()
+
+    result = interpret_intent_service(request, qwen_client=client)
+
+    assert result.ready is False
+    assert result.preference_patch == IntentPreferencePatch(goal="relax")
+    assert result.missing_fields == ["distance"]

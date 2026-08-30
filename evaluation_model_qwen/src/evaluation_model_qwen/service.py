@@ -111,6 +111,8 @@ def recommend(
                 route=by_id[route_id],
                 final_rank=index,
                 personalized_fit=reviews[route_id].personalized_fit_reason,
+                advantages=reviews[route_id].advantages,
+                suggestions=reviews[route_id].suggestions,
                 cautions=reviews[route_id].cautions,
             )
             for index, route_id in enumerate(decision.ranked_route_ids, start=1)
@@ -178,6 +180,8 @@ def _fallback_result(
             route=item,
             final_rank=index,
             personalized_fit="依据硬约束、五维基础评分和数据可信度形成该顺序。",
+            advantages=_fallback_advantages(item, profile, candidates),
+            suggestions=_fallback_suggestions(item, risk),
             cautions=item.risk_notes,
         )
         for index, item in enumerate(candidates, start=1)
@@ -202,3 +206,44 @@ def _fallback_result(
 def _run_id() -> str:
     now = datetime.now(SHANGHAI_TZ).strftime("%Y%m%dT%H%M%S")
     return f"{now}-{uuid4().hex[:8]}"
+
+
+def _fallback_advantages(
+    candidate: ScoredRoute,
+    profile: UserProfile,
+    candidates: list[ScoredRoute],
+) -> list[str]:
+    advantages = ["距离符合目标"]
+    pm25_value = _metric_value(candidate, "pm2_5")
+    comparable_pm25 = [
+        value for item in candidates if (value := _metric_value(item, "pm2_5")) is not None
+    ]
+    if pm25_value is not None and comparable_pm25 and pm25_value <= min(comparable_pm25):
+        advantages.append("PM2.5 在候选中较低")
+    if candidate.matched_preferences:
+        advantages.append("符合已选路线偏好")
+    if len(advantages) < 2 and candidate.data_confidence >= 0.7:
+        advantages.append("路线数据可信度较高")
+    if len(advantages) < 2:
+        advantages.append("基础评分在候选中靠前")
+    if profile.goal == "nearby" and candidate.access_distance_m is not None:
+        advantages.append("到路线起点接驳较短")
+    return advantages[:3]
+
+
+def _fallback_suggestions(candidate: ScoredRoute, risk: RiskAssessment) -> list[str]:
+    suggestions: list[str] = []
+    if candidate.risk_notes:
+        suggestions.append("查看详情中的环境数据限制")
+    if risk.status == "warning" or risk.reasons:
+        suggestions.append("出发前复核天气与空气提醒")
+    if not suggestions:
+        suggestions.append("出发前查看实时天气与预警")
+    return suggestions[:2]
+
+
+def _metric_value(candidate: ScoredRoute, metric_name: str) -> float | None:
+    raw_value = candidate.environment_summary.get(metric_name, {}).get("value")
+    if isinstance(raw_value, (int, float)):
+        return float(raw_value)
+    return None

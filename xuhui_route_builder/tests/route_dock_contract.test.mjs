@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { buildRouteDockModel, createRouteDock } from "../web/src/route-dock.js";
+import {
+  buildRouteDockModel,
+  buildRouteDockSource,
+  createRouteDock,
+} from "../web/src/route-dock.js";
 import { clearRouteResults, showRouteResults, showSingleRoute } from "../web/src/map.js";
 
 const sampleRoute = {
@@ -96,15 +101,34 @@ test("dock 对缺失、过期和 partial 环境状态使用稳定文案", () => 
   assert.equal(degraded.exposures.pollen.statusLabel, "估计数据");
 });
 
-test("createRouteDock.show 接收路线环境并保留隐藏行为", () => {
+test("推荐详情把评分结果中的距离时间合并到地图路线", () => {
+  const source = buildRouteDockSource(sampleRoute, {
+    source: {
+      route: {
+        route: { distance_m: 868, duration_min: 12 },
+      },
+    },
+  });
+  const model = buildRouteDockModel(source);
+
+  assert.equal(model.journeyText, "0.9 km · 12 分钟");
+});
+
+test("createRouteDock.show 在统一右侧详情列展示千问短优点与建议", () => {
   const previousDocument = globalThis.document;
   const { document, root, nodes } = createDockDocumentStub();
   globalThis.document = document;
   try {
     const container = { appendChild(element) { this.child = element; } };
-    const dock = createRouteDock(container);
+    const navigationTargets = [];
+    const dock = createRouteDock(container, {
+      onNavigate: (route) => navigationTargets.push(route.properties.route_id),
+    });
 
-    dock.show(sampleRoute, sampleEnvironment);
+    dock.show(sampleRoute, sampleEnvironment, {
+      advantages: ["距离符合目标", "PM2.5 在候选中较低"],
+      suggestions: ["雨天留意湿滑路面"],
+    });
 
     assert.equal(container.child, root);
     assert.equal(root.hidden, false);
@@ -116,6 +140,17 @@ test("createRouteDock.show 接收路线环境并保留隐藏行为", () => {
     assert.equal(nodes["[data-dock-noise-detail]"].textContent, sampleEnvironment.details.noise);
     assert.equal(nodes["[data-dock-exposure=\"noise\"]"].dataset.status, "partial");
     assert.equal(nodes["[data-dock-waypoint-list]"].children.length, 2);
+    assert.equal(nodes["[data-dock-recommendation]"].hidden, false);
+    assert.deepEqual(
+      nodes["[data-dock-advantage-list]"].children.map((item) => item.textContent),
+      ["距离符合目标", "PM2.5 在候选中较低"],
+    );
+    assert.deepEqual(
+      nodes["[data-dock-suggestion-list]"].children.map((item) => item.textContent),
+      ["雨天留意湿滑路面"],
+    );
+    nodes["[data-dock-navigate]"].listeners.click();
+    assert.deepEqual(navigationTargets, ["XH_RUN_0001"]);
 
     dock.hide();
     assert.equal(root.hidden, true);
@@ -129,6 +164,12 @@ test("dock 在 waypoint_names 缺失时回退到 ordered_nodes 的中间节点",
   const model = buildRouteDockModel(properties);
 
   assert.deepEqual(model.waypoints, ["龙美术馆"]);
+});
+
+test("右侧详情列切换页签时隐藏其余内容面板", () => {
+  const css = readFileSync(new URL("../web/styles/recommendation.css", import.meta.url), "utf8");
+
+  assert.match(css, /\.route-dock--detail \.route-dock__panel\[hidden\]\s*\{\s*display:\s*none;/);
 });
 
 function createDockDocumentStub() {
@@ -156,6 +197,11 @@ function createDockDocumentStub() {
     replaceChildren() { this.children = []; },
     appendChild(child) { this.children.push(child); },
   };
+  nodes["[data-dock-recommendation]"] = elementStub();
+  nodes["[data-dock-advantage-list]"] = listStub();
+  nodes["[data-dock-suggestion-list]"] = listStub();
+  nodes["[data-dock-close]"] = elementStub();
+  nodes["[data-dock-navigate]"] = elementStub();
 
   const tabs = ["overview", "environment", "waypoints"].map((dockTab) => (
     elementStub({ dockTab })
@@ -196,7 +242,16 @@ function elementStub(dataset = {}) {
     attributes: {},
     classList: { toggle() {} },
     setAttribute(name, value) { this.attributes[name] = value; },
-    addEventListener() {},
+    listeners: {},
+    addEventListener(name, listener) { this.listeners[name] = listener; },
+    append(...children) { this.children.push(...children); },
+  };
+}
+
+function listStub() {
+  return {
+    children: [],
+    replaceChildren() { this.children = []; },
     append(...children) { this.children.push(...children); },
   };
 }

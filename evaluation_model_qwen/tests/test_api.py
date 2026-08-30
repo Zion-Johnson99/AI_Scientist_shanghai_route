@@ -11,7 +11,13 @@ from fastapi.testclient import TestClient
 
 from evaluation_model_qwen import api
 from evaluation_model_qwen.loaders import LoaderError, load_data
-from evaluation_model_qwen.models import RecommendationResult, UserProfile
+from evaluation_model_qwen.models import (
+    IntentPreferencePatch,
+    IntentRequest,
+    IntentResponse,
+    RecommendationResult,
+    UserProfile,
+)
 from evaluation_model_qwen.service import recommend, write_audit_result
 
 
@@ -227,3 +233,91 @@ def test_cors_rejects_other_origins(client: Any) -> None:
 
     assert response.status_code == 400
     assert "access-control-allow-origin" not in response.headers
+
+
+def intent_document() -> dict[str, Any]:
+    return {
+        "message": "想跑 5 公里，安静一点，沿途有厕所",
+        "history": [
+            {"role": "assistant", "content": "你想跑多远？"},
+            {"role": "user", "content": "5 公里左右。"},
+        ],
+        "context": {
+            "location": {
+                "label": "上海交通大学徐汇校区",
+                "lng_gcj02": 121.433,
+                "lat_gcj02": 31.2,
+            },
+            "route_mode": "run",
+            "profile": {"experience": "regular", "sensitivities": ["air"]},
+            "preferences": {
+                "route_mode": "run",
+                "target_time": "now",
+                "distance_range": "4000_6000_5000",
+                "goal": "relax",
+                "search_scope": "nearby_5000",
+                "area_id": "xuhui-riverside",
+                "route_shape": "strict_loop",
+                "interests": ["quiet", "toilet"],
+                "free_text": "希望安静",
+            },
+        },
+    }
+
+
+def test_recommendation_intent_matches_frontend_contract(
+    client: Any,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls: list[IntentRequest] = []
+    result = IntentResponse(
+        reply="已整理为约 5 公里的安静跑步路线，并优先考虑沿途厕所。开始推荐？",
+        ready=True,
+        missing_fields=[],
+        preference_patch=IntentPreferencePatch(
+            distance_min_m=4000,
+            target_distance_m=5000,
+            distance_max_m=6000,
+            interests=["quiet", "toilet"],
+        ),
+    )
+
+    def fake_interpret_intent(request: IntentRequest) -> IntentResponse:
+        calls.append(request)
+        return result
+
+    monkeypatch.setattr(api, "interpret_intent", fake_interpret_intent)
+
+    response = client.post("/api/v1/recommendation-intent", json=intent_document())
+
+    assert response.status_code == 200
+    assert response.json() == result.model_dump(mode="json")
+    assert len(calls) == 1
+    assert calls[0].context.route_mode == "run"
+    assert calls[0].history[-1].content == "5 公里左右。"
+
+
+@pytest.mark.parametrize(
+    "variant",
+    ["long_message", "excess_history", "gender", "api_key"],
+)
+def test_recommendation_intent_rejects_invalid_or_sensitive_input(
+    client: Any,
+    variant: str,
+) -> None:
+    document = intent_document()
+    context = cast(dict[str, Any], document["context"])
+    profile_context = cast(dict[str, Any], context["profile"])
+    if variant == "long_message":
+        document["message"] = "x" * 501
+    elif variant == "excess_history":
+        document["history"] = [{"role": "user", "content": str(index)} for index in range(7)]
+    elif variant == "gender":
+        profile_context["gender"] = "female"
+    else:
+        context["api_key"] = "secret-value"
+
+    response = client.post("/api/v1/recommendation-intent", json=document)
+
+    assert response.status_code == 422
+    assert "secret-value" not in response.text

@@ -3,9 +3,11 @@ import test from "node:test";
 
 import {
   DEFAULT_RECOMMENDATION_API_BASE_URL,
+  DEFAULT_RECOMMENDATION_INTENT_TIMEOUT_MS,
   DEFAULT_RECOMMENDATION_TIMEOUT_MS,
   RecommendationApiError,
   createRecommendationApi,
+  toRecommendationIntentPayload,
   toRecommendationPayload,
 } from "../web/src/recommendation-api.js";
 
@@ -81,6 +83,43 @@ test("推荐载荷只保留 UserProfile 允许的字段", () => {
   ]);
 });
 
+test("千问意图请求使用独立接口和较短超时", async () => {
+  const calls = [];
+  const api = createRecommendationApi({
+    fetchImpl: async (url, options) => {
+      calls.push({ url, options });
+      return jsonResponse({ reply: "已整理偏好。", ready: true, missing_fields: [], preference_patch: {} });
+    },
+  });
+
+  await api.interpretIntent(intentFixture());
+
+  assert.equal(DEFAULT_RECOMMENDATION_INTENT_TIMEOUT_MS, 15000);
+  assert.equal(calls[0].url, `${DEFAULT_RECOMMENDATION_API_BASE_URL}/recommendation-intent`);
+  assert.equal(calls[0].options.method, "POST");
+});
+
+test("千问意图载荷限制消息、历史并排除档案敏感字段", () => {
+  const payload = toRecommendationIntentPayload({
+    ...intentFixture(),
+    history: Array.from({ length: 8 }, (_, index) => ({ role: index % 2 ? "assistant" : "user", content: `消息${index}` })),
+    context: {
+      ...intentFixture().context,
+      profile: { version: 1, gender: "female", age_group: "18_39", experience: "regular", sensitivities: ["air"] },
+      secret: "browser-only",
+    },
+  });
+
+  assert.equal(payload.history.length, 6);
+  assert.deepEqual(payload.context.profile, { experience: "regular", sensitivities: ["air"] });
+  assert.equal(payload.context.secret, undefined);
+  assert.equal(payload.context.profile.gender, undefined);
+  assert.throws(
+    () => toRecommendationIntentPayload({ ...intentFixture(), message: "长".repeat(501) }),
+    (error) => error instanceof RecommendationApiError && error.code === "invalid_intent",
+  );
+});
+
 test("422 与 503 统一映射为带状态和业务代码的错误", async () => {
   for (const [status, expectedCode] of [[422, "invalid_request"], [503, "service_unavailable"]]) {
     const api = createRecommendationApi({
@@ -134,5 +173,18 @@ function profileFixture() {
     route_shape: "any",
     interests: ["park"],
     free_text: "梧桐树多",
+  };
+}
+
+function intentFixture() {
+  return {
+    message: "想跑 5 公里，安静一点，沿途有厕所",
+    history: [],
+    context: {
+      location: { label: "上海交通大学徐汇校区", lng_gcj02: 121.433, lat_gcj02: 31.2 },
+      route_mode: "run",
+      profile: { experience: "regular", sensitivities: ["air"] },
+      preferences: { interests: ["quiet", "toilet"] },
+    },
   };
 }

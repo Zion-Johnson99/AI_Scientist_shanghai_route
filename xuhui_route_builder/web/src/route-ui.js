@@ -33,6 +33,9 @@ export function renderRoutePlanner(catalog, options) {
       controls.navigationView.hidden = true;
       renderSelectionPreview(state.filteredRoutes, catalog, state, controls, options);
     },
+    showBrowsePreviews() {
+      renderSelectionPreview(state.filteredRoutes, catalog, state, controls, options);
+    },
     selectRoute(routeId) {
       const route = findRoute(catalog, routeId);
       if (!route) return null;

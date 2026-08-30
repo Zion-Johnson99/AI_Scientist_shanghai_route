@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -81,5 +82,19 @@ test("本地存储写入失败时给出明确错误", () => {
   assert.throws(
     () => saveHealthProfile(DEFAULT_HEALTH_PROFILE, storage),
     /无法保存健康档案/,
+  );
+});
+
+test("已保存档案跳过自动弹层且顶部入口仍可手动打开", () => {
+  const mainSource = readFileSync(
+    new URL("../web/src/main.js", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(mainSource, /const hadSavedProfile = Boolean\(/);
+  assert.match(mainSource, /if \(!hadSavedProfile\) profileDialog\.open\(\);/);
+  assert.match(
+    mainSource,
+    /#profileSettingsButton"\)\.addEventListener\("click", \(\) => profileDialog\.open\(\)\)/,
   );
 });

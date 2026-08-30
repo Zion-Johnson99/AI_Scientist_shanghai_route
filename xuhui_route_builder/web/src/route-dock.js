@@ -49,13 +49,33 @@ export function buildRouteDockModel(route, routeEnvironment) {
   };
 }
 
-export function createRouteDock(container = document.querySelector(".map-wrap")) {
+export function buildRouteDockSource(routeFeature, recommendationRoute) {
+  const routeRecord = recommendationRoute?.source?.route?.route;
+  if (!routeRecord) return routeFeature;
+  return {
+    ...routeFeature,
+    properties: {
+      ...(routeFeature?.properties || {}),
+      distance_m: routeRecord.distance_m ?? routeFeature?.properties?.distance_m,
+      duration_min: routeRecord.duration_min ?? routeFeature?.properties?.duration_min,
+      route_shape: routeRecord.route_shape ?? routeFeature?.properties?.route_shape,
+      waypoint_names: routeRecord.waypoint_names ?? routeFeature?.properties?.waypoint_names,
+      ordered_nodes: routeRecord.ordered_nodes ?? routeFeature?.properties?.ordered_nodes,
+    },
+  };
+}
+
+export function createRouteDock(
+  container = document.querySelector(".map-wrap"),
+  { onNavigate } = {},
+) {
   if (!container) {
     throw new Error("缺少地图容器，无法初始化路线信息条。");
   }
 
   const root = document.createElement("section");
-  root.className = "route-dock";
+  let activeRoute = null;
+  root.className = "route-dock route-dock--detail";
   root.hidden = true;
   root.setAttribute("aria-label", "当前路线信息");
   root.innerHTML = `
@@ -64,25 +84,34 @@ export function createRouteDock(container = document.querySelector(".map-wrap"))
         <span class="route-dock__mode" data-dock-mode></span>
         <strong data-dock-route-name></strong>
       </div>
-      <div class="route-dock__tabs" role="tablist" aria-label="路线数据切换">
-        <button class="active" type="button" role="tab" aria-selected="true" data-dock-tab="overview">概览</button>
-        <button type="button" role="tab" aria-selected="false" data-dock-tab="environment">环境</button>
-        <button type="button" role="tab" aria-selected="false" data-dock-tab="waypoints">途经点</button>
-      </div>
+      <button class="route-dock__close" type="button" aria-label="关闭路线详情" data-dock-close>×</button>
     </header>
+    <div class="route-dock__tabs" role="tablist" aria-label="路线数据切换">
+      <button class="active" type="button" role="tab" aria-selected="true" data-dock-tab="overview">概览</button>
+      <button type="button" role="tab" aria-selected="false" data-dock-tab="environment">环境</button>
+      <button type="button" role="tab" aria-selected="false" data-dock-tab="waypoints">途经点</button>
+    </div>
     <div class="route-dock__panel active" role="tabpanel" data-dock-panel="overview">
-      <div class="route-dock__metric route-dock__metric--journey">
-        <span>距离 · 时间</span><strong data-dock-journey></strong>
+      <div class="route-dock__overview-grid">
+        <div class="route-dock__metric route-dock__metric--journey">
+          <span>距离 · 时间</span><strong data-dock-journey></strong>
+        </div>
+        <div class="route-dock__metric route-dock__metric--environment">
+          <span>PM2.5</span><strong data-dock-overview-pm25></strong>
+        </div>
+        <div class="route-dock__metric route-dock__metric--environment">
+          <span>花粉</span><strong data-dock-overview-pollen></strong>
+        </div>
+        <div class="route-dock__metric route-dock__metric--environment">
+          <span>噪声</span><strong data-dock-overview-noise></strong>
+        </div>
       </div>
-      <div class="route-dock__metric route-dock__metric--environment">
-        <span>PM2.5</span><strong data-dock-overview-pm25></strong>
-      </div>
-      <div class="route-dock__metric route-dock__metric--environment">
-        <span>花粉</span><strong data-dock-overview-pollen></strong>
-      </div>
-      <div class="route-dock__metric route-dock__metric--environment">
-        <span>噪声</span><strong data-dock-overview-noise></strong>
-      </div>
+      <section class="route-dock__recommendation" data-dock-recommendation hidden>
+        <h3>推荐亮点</h3>
+        <ul class="route-dock__bullet-list" data-dock-advantage-list></ul>
+        <h3>出行建议</h3>
+        <ul class="route-dock__bullet-list route-dock__bullet-list--suggestion" data-dock-suggestion-list></ul>
+      </section>
     </div>
     <div class="route-dock__panel route-dock__environment" role="tabpanel" data-dock-panel="environment" hidden>
       <div class="route-dock__exposure-grid">
@@ -94,6 +123,9 @@ export function createRouteDock(container = document.querySelector(".map-wrap"))
     <div class="route-dock__panel route-dock__waypoints" role="tabpanel" data-dock-panel="waypoints" hidden>
       <ol data-dock-waypoint-list></ol>
     </div>
+    <footer class="route-dock__actions">
+      <button type="button" class="route-dock__navigate" data-dock-navigate>前往起点</button>
+    </footer>
   `;
   container.appendChild(root);
 
@@ -102,12 +134,26 @@ export function createRouteDock(container = document.querySelector(".map-wrap"))
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => selectDockTab(tabs, panels, tab.dataset.dockTab));
   });
+  root.querySelector("[data-dock-close]").addEventListener("click", () => {
+    root.hidden = true;
+  });
+  root.querySelector("[data-dock-navigate]").addEventListener("click", () => {
+    if (!activeRoute || !onNavigate) return;
+    try {
+      const pending = onNavigate(activeRoute);
+      pending?.catch?.((error) => console.error("打开路线接驳失败", { error }));
+    } catch (error) {
+      console.error("打开路线接驳失败", { error });
+    }
+  });
 
   return {
     element: root,
-    show(route, routeEnvironment) {
+    show(route, routeEnvironment, recommendationSummary = null) {
+      activeRoute = route;
       const model = buildRouteDockModel(route, routeEnvironment);
-      renderRouteDock(root, model);
+      renderRouteDock(root, model, recommendationSummary);
+      selectDockTab(tabs, panels, "overview");
       root.hidden = false;
     },
     hide() {
@@ -116,7 +162,7 @@ export function createRouteDock(container = document.querySelector(".map-wrap"))
   };
 }
 
-function renderRouteDock(root, model) {
+function renderRouteDock(root, model, recommendationSummary) {
   root.dataset.mode = model.routeMode;
   setText(root, "[data-dock-mode]", model.modeLabel);
   setText(root, "[data-dock-route-name]", model.routeName);
@@ -132,6 +178,7 @@ function renderRouteDock(root, model) {
 
   const list = root.querySelector("[data-dock-waypoint-list]");
   list.replaceChildren();
+  renderRecommendationSummary(root, recommendationSummary);
   if (!model.waypoints.length) {
     const item = document.createElement("li");
     item.className = "route-dock__empty-waypoint";
@@ -145,6 +192,30 @@ function renderRouteDock(root, model) {
     item.append(document.createTextNode(name));
     list.appendChild(item);
   });
+}
+
+function renderRecommendationSummary(root, summary) {
+  const section = root.querySelector("[data-dock-recommendation]");
+  const advantages = cleanSummaryItems(summary?.advantages, 3);
+  const suggestions = cleanSummaryItems(summary?.suggestions, 2);
+  section.hidden = !advantages.length && !suggestions.length;
+  renderSummaryList(root.querySelector("[data-dock-advantage-list]"), advantages);
+  renderSummaryList(root.querySelector("[data-dock-suggestion-list]"), suggestions);
+}
+
+function renderSummaryList(list, values) {
+  list.replaceChildren();
+  values.forEach((value) => {
+    const item = document.createElement("li");
+    item.textContent = value;
+    list.append(item);
+  });
+}
+
+function cleanSummaryItems(values, limit) {
+  return [...new Set((Array.isArray(values) ? values : [])
+    .map((value) => String(value || "").trim())
+    .filter(Boolean))].slice(0, limit);
 }
 
 function buildExposureModel(key, exposure, detail) {

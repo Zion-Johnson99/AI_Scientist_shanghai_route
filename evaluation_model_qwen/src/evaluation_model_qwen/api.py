@@ -8,12 +8,20 @@ from typing import Any, Sequence
 
 import uvicorn
 from dotenv import dotenv_values
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from .intent_service import interpret_intent
 from .loaders import load_data
-from .models import QuestionnaireConfig, RecommendationResult, UserProfile
+from .models import (
+    IntentRequest,
+    IntentResponse,
+    QuestionnaireConfig,
+    RecommendationResult,
+    UserProfile,
+)
 from .service import evaluation_root, recommend, write_audit_result
 
 LOGGER = logging.getLogger(__name__)
@@ -46,6 +54,7 @@ def create_app() -> FastAPI:
         allow_methods=["GET", "POST"],
         allow_headers=["Content-Type"],
     )
+    application.add_exception_handler(RequestValidationError, _validation_error)
 
     application.add_api_route(
         "/api/v1/health",
@@ -60,6 +69,13 @@ def create_app() -> FastAPI:
         response_model=None,
     )
     application.add_api_route(
+        "/api/v1/recommendation-intent",
+        recommendation_intent,
+        methods=["POST"],
+        response_model=IntentResponse,
+        responses={503: {"description": "意图解析服务暂不可用"}},
+    )
+    application.add_api_route(
         "/api/v1/recommendations",
         recommendations,
         methods=["POST"],
@@ -67,6 +83,20 @@ def create_app() -> FastAPI:
         responses={503: {"description": "推荐服务或数据包暂不可用"}},
     )
     return application
+
+
+async def _validation_error(request: Request, exc: Exception) -> JSONResponse:
+    del request
+    LOGGER.warning("request_validation_failed error_type=%s", type(exc).__name__)
+    return JSONResponse(
+        status_code=422,
+        content={
+            "error": {
+                "code": "validation_error",
+                "message": "请求参数未通过校验。",
+            }
+        },
+    )
 
 
 def health() -> dict[str, Any] | JSONResponse:
@@ -94,6 +124,13 @@ def questionnaire() -> dict[str, Any] | JSONResponse:
     except Exception as exc:  # noqa: BLE001
         return _service_unavailable("questionnaire", exc)
     return _questionnaire_document(config)
+
+
+def recommendation_intent(request: IntentRequest) -> IntentResponse | JSONResponse:
+    try:
+        return interpret_intent(request)
+    except Exception as exc:  # noqa: BLE001
+        return _service_unavailable("recommendation_intent", exc)
 
 
 def recommendations(profile: UserProfile) -> RecommendationResult | JSONResponse:

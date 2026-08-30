@@ -1,17 +1,5 @@
 import { normalizeHealthProfile } from "./profile-store.js";
 
-const ROUTE_SHAPE_LABELS = {
-  any: "形态不限",
-  one_way: "单程",
-  strict_loop: "环线",
-};
-
-const MODE_LABELS = {
-  walk: "步行",
-  run: "跑步",
-  bike: "骑行",
-};
-
 export function buildUserProfile({ questionnaire, answers, profile, location, now = () => new Date() }) {
   const distance = distanceOption(questionnaire, answers?.route_mode, answers?.distance_range);
   const targetTime = resolveTargetTime(answers, now);
@@ -149,7 +137,15 @@ export function createProfileDialog({ host, profile, onSave } = {}) {
 
 export function buildRecommendationViewModel(result, currentRouteId = null) {
   if (result?.view === "loading") {
-    return { kind: "loading", title: "正在筛选徐汇路线", message: "正在比较距离、环境与兴趣匹配。" };
+    return {
+      kind: "loading",
+      title: "正在为你匹配",
+      steps: [
+        { label: "汇总偏好", state: "done" },
+        { label: "匹配路线", state: "active" },
+        { label: "准备结果", state: "pending" },
+      ],
+    };
   }
   if (result?.view === "error") {
     return { kind: "error", title: "暂时没有完成推荐", message: String(result.message || "请稍后重试。") };
@@ -161,7 +157,11 @@ export function buildRecommendationViewModel(result, currentRouteId = null) {
       message: result?.risk?.reasons?.join("；") || "当前环境风险较高，请稍后再看。",
     };
   }
-  const routes = (result?.final_routes || []).slice(0, 3).map(normalizeFinalRoute).filter(Boolean);
+  const routes = [...(result?.final_routes || [])]
+    .sort((left, right) => Number(left?.final_rank || 999) - Number(right?.final_rank || 999))
+    .slice(0, 3)
+    .map(normalizeFinalRoute)
+    .filter(Boolean);
   if (result?.status === "no_candidates" || !routes.length) {
     return {
       kind: "no_candidates",
@@ -169,18 +169,19 @@ export function buildRecommendationViewModel(result, currentRouteId = null) {
       message: "试试扩大范围、调整距离或放宽路线形态。",
     };
   }
-  const selectedIndex = Math.max(0, routes.findIndex((route) => route.routeId === currentRouteId));
-  const primary = routes[selectedIndex];
-  const alternatives = routes.filter((_, index) => index !== selectedIndex).slice(0, 2);
-  alternatives.forEach((route) => {
-    route.differenceLabel = routeDifference(primary, route);
-  });
+  const selectedRouteId = routes.some((route) => route.routeId === currentRouteId) ? currentRouteId : null;
+  const stableRoutes = routes.map((route, index) => ({
+    ...route,
+    isPrimary: index === 0,
+    isSelected: route.routeId === selectedRouteId,
+  }));
   return {
     kind: result.status === "degraded" ? "degraded" : "result",
     notice: result.status === "degraded" ? "个性化解释已简化，路线排序由本地评分完成。" : "",
     summary: String(result.decision_summary || ""),
-    primary,
-    alternatives,
+    routes: stableRoutes,
+    selectedRouteId,
+    selectedRoute: stableRoutes.find((route) => route.isSelected) || null,
   };
 }
 
@@ -189,12 +190,14 @@ export function createRecommendationUI({
   questionnaire,
   profile,
   location = null,
-  onPickLocation,
   onRecommend,
   onReloadQuestionnaire,
+  onInterpretIntent,
+  onShowRoutes,
+  onPreviewRoute,
   onSelectRoute,
-  onNavigate,
-  onOpenProfile,
+  onReturnRouteOverview,
+  onRestartRecommendation,
   shouldSelectRoute = () => true,
 } = {}) {
   if (!container) {
@@ -205,16 +208,48 @@ export function createRecommendationUI({
   let currentLocation = location;
   let currentResult = null;
   let currentRouteId = null;
+  let hoveredRouteId = null;
   let viewState = "questionnaire";
   let errorMessage = "";
   let requestRevision = 0;
+  let intentRevision = 0;
+  let chatBusy = false;
+  let chatDraft = "";
+  let chatHistory = [];
+  let intentPatch = {};
+  let intentReady = false;
+  let chatError = "";
   const answers = defaultAnswers(questionnaire);
 
   const controller = {
     showQuestionnaire() {
       requestRevision += 1;
       viewState = "questionnaire";
+      currentRouteId = null;
+      onReturnRouteOverview?.();
       render();
+    },
+    restartRecommendation() {
+      const routeMode = answers.route_mode;
+      const reset = defaultAnswers(currentQuestionnaire);
+      reset.route_mode = routeMode;
+      reset.distance_range = currentQuestionnaire?.distance_ranges?.[routeMode]?.[0]?.value || "";
+      Object.assign(answers, reset);
+      requestRevision += 1;
+      intentRevision += 1;
+      currentResult = null;
+      currentRouteId = null;
+      hoveredRouteId = null;
+      viewState = "questionnaire";
+      errorMessage = "";
+      chatBusy = false;
+      chatDraft = "";
+      chatHistory = [];
+      intentPatch = {};
+      intentReady = false;
+      chatError = "";
+      render();
+      onRestartRecommendation?.();
     },
     showLoading() {
       viewState = "loading";
@@ -222,16 +257,12 @@ export function createRecommendationUI({
     },
     showResult(result) {
       currentResult = result;
-      currentRouteId = routeIdOf(result?.final_routes?.[0]) || null;
+      currentRouteId = null;
       viewState = "result";
       render();
-      if (
-        currentRouteId
-        && result?.status !== "paused"
-        && result?.status !== "no_candidates"
-        && shouldSelectRoute()
-      ) {
-        onSelectRoute?.(currentRouteId, result.final_routes[0]);
+      const model = buildRecommendationViewModel(result);
+      if (["result", "degraded"].includes(model.kind) && shouldSelectRoute()) {
+        onShowRoutes?.(model.routes.map((route) => route.source));
       }
     },
     showError(error) {
@@ -252,20 +283,73 @@ export function createRecommendationUI({
       currentLocation = value;
       render();
     },
+    setRouteMode(value) {
+      if (!(currentQuestionnaire?.route_modes || []).some((option) => option.value === value)) return;
+      answers.route_mode = value;
+      const available = currentQuestionnaire?.distance_ranges?.[value] || [];
+      if (!available.some((option) => option.value === answers.distance_range)) {
+        answers.distance_range = available[0]?.value || "";
+      }
+      render();
+    },
+    setHoveredRoute(routeId) {
+      hoveredRouteId = routeId || null;
+      if (viewState === "result") render();
+    },
+    selectRoute(routeId) {
+      const model = buildRecommendationViewModel(currentResult, routeId);
+      if (!["result", "degraded"].includes(model.kind) || !model.selectedRoute) return;
+      currentRouteId = routeId;
+      hoveredRouteId = null;
+      viewState = "result";
+      render();
+      onSelectRoute?.(routeId, model.selectedRoute);
+    },
     getCurrentRouteId() {
       return currentRouteId;
+    },
+    getResultRoutes() {
+      const model = buildRecommendationViewModel(currentResult, currentRouteId);
+      return ["result", "degraded"].includes(model.kind) ? model.routes.map((route) => route.source) : [];
     },
     getAnswers() {
       return { ...answers, interests: [...answers.interests] };
     },
   };
 
+  container.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !currentRouteId) return;
+    event.preventDefault();
+    returnToOverview();
+  });
+
+  function returnToOverview() {
+    currentRouteId = null;
+    hoveredRouteId = null;
+    render();
+    onReturnRouteOverview?.();
+  }
+
   function render() {
     const root = element("section", "recommendation-panel");
     root.setAttribute("aria-label", "个性化路线推荐");
-    root.append(panelHeader(onOpenProfile));
+    root.append(panelHeader({
+      isChat: viewState === "chat",
+      onOpenChat: () => {
+        viewState = "chat";
+        render();
+      },
+      onCloseChat: () => {
+        intentRevision += 1;
+        chatBusy = false;
+        viewState = "questionnaire";
+        render();
+      },
+    }));
     if (viewState === "questionnaire") {
       root.append(renderQuestionnaire());
+    } else if (viewState === "chat") {
+      root.append(renderChat());
     } else {
       const state = viewState === "loading"
         ? { view: "loading" }
@@ -279,23 +363,7 @@ export function createRecommendationUI({
 
   function renderQuestionnaire() {
     const form = element("form", "recommendation-form");
-    form.append(locationPicker(currentLocation, async () => {
-      try {
-        const picked = await onPickLocation?.();
-        if (picked) {
-          currentLocation = picked;
-          render();
-        }
-      } catch (error) {
-        controller.showError(error);
-      }
-    }));
     form.append(
-      segmentedField("运动方式", currentQuestionnaire?.route_modes, answers.route_mode, (value) => {
-        answers.route_mode = value;
-        answers.distance_range = currentQuestionnaire?.distance_ranges?.[value]?.[0]?.value || "";
-        render();
-      }),
       segmentedField("计划时间", currentQuestionnaire?.target_times, answers.target_time, (value) => {
         answers.target_time = value;
         render();
@@ -315,17 +383,19 @@ export function createRecommendationUI({
         answers.goal = value;
         render();
       }),
-      segmentedField("搜索范围", currentQuestionnaire?.search_scopes, answers.search_scope, (value) => {
-        answers.search_scope = value;
-        render();
-      }),
     );
+    const advanced = element("details", "recommendation-advanced");
+    advanced.append(element("summary", "recommendation-advanced__summary", "更多偏好"));
+    advanced.append(segmentedField("搜索范围", currentQuestionnaire?.search_scopes, answers.search_scope, (value) => {
+      answers.search_scope = value;
+      render();
+    }));
     if (answers.search_scope === "area") {
-      form.append(selectField("指定片区", currentQuestionnaire?.areas, answers.area_id, (value) => {
+      advanced.append(selectField("指定片区", currentQuestionnaire?.areas, answers.area_id, (value) => {
         answers.area_id = value;
       }));
     }
-    form.append(
+    advanced.append(
       segmentedField("路线形态", currentQuestionnaire?.route_shapes, answers.route_shape, (value) => {
         answers.route_shape = value;
         render();
@@ -334,11 +404,13 @@ export function createRecommendationUI({
         answers.interests = toggleValue(answers.interests, value);
         render();
       }, true),
-      textAreaField(answers.free_text, (value) => {
-        answers.free_text = value;
-      }),
     );
-    const submit = element("button", "recommendation-form__submit", "生成路线推荐");
+    form.append(advanced);
+    form.append(textAreaField(answers.free_text, (value) => {
+      answers.free_text = value;
+    }));
+    form.append(element("p", "recommendation-form__summary", preferenceSummary()));
+    const submit = element("button", "recommendation-form__submit", "为我推荐路线");
     submit.type = "submit";
     form.append(submit);
     form.addEventListener("submit", async (event) => {
@@ -351,13 +423,7 @@ export function createRecommendationUI({
           profile: currentProfile,
           location: currentLocation,
         });
-        controller.showLoading();
-        const result = await onRecommend?.(payload);
-        if (!result) {
-          throw new Error("推荐服务未返回结果。");
-        }
-        if (revision !== requestRevision) return;
-        controller.showResult(result);
+        await runRecommendation(payload, revision);
       } catch (error) {
         if (revision !== requestRevision) return;
         controller.showError(error);
@@ -366,9 +432,128 @@ export function createRecommendationUI({
     return form;
   }
 
+  function renderChat() {
+    const workspace = element("section", "recommendation-chat");
+    if (!chatHistory.length) {
+      workspace.append(element("p", "recommendation-chat__prompt", "告诉千问，你今天想走一条怎样的路线？"));
+      const examples = element("div", "recommendation-chat__examples");
+      chatExamples().forEach((example) => {
+        const button = element("button", "recommendation-chat__example", example);
+        button.type = "button";
+        button.addEventListener("click", () => {
+          chatDraft = example;
+          render();
+        });
+        examples.append(button);
+      });
+      workspace.append(examples);
+    } else {
+      const messages = element("div", "recommendation-chat__messages");
+      chatHistory.forEach((message) => {
+        messages.append(element("p", `recommendation-chat__message recommendation-chat__message--${message.role}`, message.content));
+      });
+      workspace.append(messages);
+    }
+    if (chatError) {
+      const warning = element("p", "recommendation-chat__error", chatError);
+      warning.setAttribute("role", "alert");
+      workspace.append(warning);
+    }
+    if (intentReady) {
+      const confirm = element("button", "recommendation-chat__confirm", "开始推荐");
+      confirm.type = "button";
+      confirm.addEventListener("click", async () => {
+        const revision = ++requestRevision;
+        try {
+          const base = buildUserProfile({ questionnaire: currentQuestionnaire, answers, profile: currentProfile, location: currentLocation });
+          await runRecommendation(applyIntentPatch(base, intentPatch), revision);
+        } catch (error) {
+          controller.showError(error);
+        }
+      });
+      workspace.append(confirm);
+    }
+    const form = element("form", "recommendation-chat__composer");
+    const input = element("textarea", "recommendation-chat__input");
+    input.setAttribute("aria-label", "描述路线需求");
+    input.setAttribute("maxlength", "500");
+    input.setAttribute("placeholder", "例如：想跑 5 公里，安静一点，沿途有厕所");
+    input.value = chatDraft;
+    input.addEventListener("input", (event) => { chatDraft = event.target.value; });
+    const send = element("button", "recommendation-chat__send", chatBusy ? "整理中…" : "发送");
+    send.type = "submit";
+    send.disabled = chatBusy;
+    form.append(input, send);
+    form.addEventListener("submit", handleIntentSubmit);
+    workspace.append(form);
+    return workspace;
+  }
+
+  async function handleIntentSubmit(event) {
+    event.preventDefault();
+    const message = chatDraft.trim();
+    if (!message || chatBusy) return;
+    const revision = ++intentRevision;
+    const priorHistory = chatHistory.slice(-6);
+    chatHistory.push({ role: "user", content: message });
+    chatDraft = "";
+    chatBusy = true;
+    chatError = "";
+    intentReady = false;
+    render();
+    try {
+      const response = await onInterpretIntent?.({
+        message,
+        history: priorHistory,
+        context: {
+          location: currentLocation,
+          route_mode: answers.route_mode,
+          profile: {
+            experience: currentProfile?.experience || "regular",
+            sensitivities: [...(currentProfile?.sensitivities || [])],
+          },
+          preferences: { ...answers, interests: [...answers.interests], ...intentPatch },
+        },
+      });
+      if (!response) throw new Error("千问服务未返回内容。");
+      if (revision !== intentRevision) return;
+      chatHistory.push({ role: "assistant", content: String(response.reply || "已整理你的偏好。") });
+      intentPatch = { ...intentPatch, ...(response.preference_patch || {}) };
+      applyPatchToAnswers(intentPatch);
+      intentReady = Boolean(response.ready);
+    } catch (error) {
+      if (revision !== intentRevision) return;
+      chatError = `${String(error?.message || "千问暂时不可用。")} 已填写的条件仍会保留。`;
+    } finally {
+      if (revision === intentRevision) {
+        chatBusy = false;
+        render();
+      }
+    }
+  }
+
+  async function runRecommendation(payload, revision) {
+    controller.showLoading();
+    const result = await onRecommend?.(payload);
+    if (!result) throw new Error("推荐服务未返回结果。");
+    if (revision !== requestRevision) return;
+    controller.showResult(result);
+  }
+
   function renderRecommendationState(model) {
     const region = element("div", `recommendation-state recommendation-state--${model.kind}`);
     region.setAttribute("aria-live", "polite");
+    if (model.kind === "loading") {
+      region.append(element("h2", "recommendation-state__title", model.title));
+      const steps = element("ol", "recommendation-progress");
+      model.steps.forEach((step) => {
+        const item = element("li", `recommendation-progress__step is-${step.state}`, step.label);
+        item.setAttribute("aria-current", step.state === "active" ? "step" : "false");
+        steps.append(item);
+      });
+      region.append(steps, element("p", "recommendation-state__summary", preferenceSummary()));
+      return region;
+    }
     if (!["result", "degraded"].includes(model.kind)) {
       region.append(element("h2", "recommendation-state__title", model.title));
       region.append(element("p", "recommendation-state__message", model.message));
@@ -404,71 +589,106 @@ export function createRecommendationUI({
       notice.setAttribute("role", "status");
       region.append(notice);
     }
-    region.append(element("h2", "recommendation-results__title", "首选路线"));
-    region.append(primaryRouteCard(model.primary));
-    if (model.alternatives.length) {
-      const alternatives = element("div", "recommendation-alternatives");
-      alternatives.append(element("h3", "recommendation-alternatives__title", "两条备选"));
-      model.alternatives.forEach((route) => alternatives.append(alternativeRouteCard(route)));
-      region.append(alternatives);
-    }
+    const bar = element("div", "recommendation-results__bar");
+    bar.append(element("h2", "recommendation-results__title", "为你推荐"));
+    const restart = element("button", "recommendation-results__restart", "重新推荐");
+    restart.type = "button";
+    restart.addEventListener("click", () => controller.restartRecommendation());
+    bar.append(restart);
+    region.append(bar);
+    model.routes.forEach((route, index) => {
+      if (index === 0) region.append(element("h3", "recommendation-results__group", "首选路线"));
+      if (index === 1) region.append(element("h3", "recommendation-results__group", "备选路线"));
+      region.append(routeCard(route, index));
+    });
     return region;
   }
 
-  function primaryRouteCard(route) {
-    const card = element("article", "recommendation-route recommendation-route--primary");
-    const head = element("div", "recommendation-route__head");
-    const placeholder = element("span", "recommendation-route__photo-placeholder");
-    placeholder.setAttribute("aria-hidden", "true");
-    placeholder.setAttribute("style", "width:48px;height:48px");
-    const identity = element("div", "recommendation-route__identity");
-    identity.append(element("h3", "recommendation-route__name", route.routeName));
-    identity.append(element("p", "recommendation-route__journey", `${route.distanceText} · ${route.durationText} · ${route.shapeText}`));
-    head.append(placeholder, identity);
-    card.append(head);
-    card.append(element("p", "recommendation-route__reason", route.reason));
-    const tags = element("div", "recommendation-route__tags");
-    tags.append(
-      element("span", "recommendation-route__action", route.actionText),
-      element("span", "recommendation-route__confidence", route.confidenceText),
-    );
-    card.append(tags);
-    const navigate = element("button", "recommendation-route__navigate", "前往起点");
-    navigate.type = "button";
-    navigate.addEventListener("click", () => onNavigate?.(route.routeId, route.source));
-    card.append(navigate);
+  function routeCard(route, index) {
+    const isHovered = route.routeId === hoveredRouteId;
+    const card = element("article", `recommendation-route${route.isSelected ? " is-selected" : ""}${isHovered ? " is-hovered" : ""}`);
+    card.tabIndex = 0;
+    card.setAttribute("aria-label", `查看路线 ${route.routeName}`);
+    const media = element("span", "recommendation-route__media");
+    media.setAttribute("aria-label", "路线图片区域");
+    const body = element("span", "recommendation-route__body");
+    const head = element("span", "recommendation-route__head");
+    const name = element("strong", "recommendation-route__name", route.routeName);
+    if (index === 0) {
+      head.append(element("span", "recommendation-route__badge", "首选"));
+    }
+    head.append(name);
+    body.append(head, element("span", "recommendation-route__journey", `${route.durationText} · ${route.distanceText} · ${route.pm25Text}`));
+    const selector = element("button", "recommendation-route__selector");
+    selector.type = "button";
+    selector.setAttribute("role", "radio");
+    selector.setAttribute("aria-checked", String(route.isSelected));
+    selector.setAttribute("aria-label", `选择路线 ${route.routeName}`);
+    card.append(media, body, selector);
+    card.addEventListener("mouseenter", () => {
+      hoveredRouteId = route.routeId;
+      onPreviewRoute?.(route.routeId, route.source);
+    });
+    card.addEventListener("mouseleave", () => {
+      if (hoveredRouteId === route.routeId) hoveredRouteId = null;
+      onPreviewRoute?.(null, route.source);
+    });
+    card.addEventListener("focus", () => {
+      hoveredRouteId = route.routeId;
+      onPreviewRoute?.(route.routeId, route.source);
+    });
+    card.addEventListener("blur", () => {
+      if (hoveredRouteId === route.routeId) hoveredRouteId = null;
+      onPreviewRoute?.(null, route.source);
+    });
+    const selectRoute = () => controller.selectRoute(route.routeId);
+    card.addEventListener("click", selectRoute);
+    card.addEventListener("keydown", (event) => {
+      if (!["Enter", " "].includes(event.key)) return;
+      event.preventDefault();
+      selectRoute();
+    });
+    selector.addEventListener("click", (event) => {
+      event.stopPropagation();
+      selectRoute();
+    });
     return card;
   }
 
-  function alternativeRouteCard(route) {
-    const button = element("button", "recommendation-alternative");
-    button.type = "button";
-    button.setAttribute("aria-label", `选择备选路线 ${route.routeName}`);
-    const content = element("span", "recommendation-alternative__content");
-    content.append(element("strong", "recommendation-alternative__name", route.routeName));
-    content.append(element("small", "recommendation-alternative__journey", `${route.distanceText} · ${route.durationText}`));
-    button.append(content, element("span", "recommendation-alternative__difference", route.differenceLabel));
-    button.addEventListener("click", () => {
-      currentRouteId = route.routeId;
-      render();
-      onSelectRoute?.(route.routeId, route.source);
-    });
-    return button;
+  function preferenceSummary() {
+    const mode = optionLabel(currentQuestionnaire?.route_modes, answers.route_mode);
+    const time = optionLabel(currentQuestionnaire?.target_times, answers.target_time);
+    const distance = optionLabel(currentQuestionnaire?.distance_ranges?.[answers.route_mode], answers.distance_range);
+    const goal = optionLabel(currentQuestionnaire?.goals, answers.goal);
+    return [currentLocation?.label, mode, time, distance, goal].filter(Boolean).join(" · ");
+  }
+
+  function applyPatchToAnswers(patch) {
+    if ((currentQuestionnaire?.goals || []).some((option) => option.value === patch.goal)) {
+      answers.goal = patch.goal;
+    }
+    if ((currentQuestionnaire?.route_shapes || []).some((option) => option.value === patch.route_shape)) {
+      answers.route_shape = patch.route_shape;
+    }
+    if (Array.isArray(patch.interests)) {
+      answers.interests = cleanSelections(patch.interests, currentQuestionnaire?.interests);
+    }
+    if (typeof patch.free_text === "string") answers.free_text = patch.free_text.slice(0, 500);
   }
 
   render();
   return controller;
 }
 
-function panelHeader(onOpenProfile) {
+function panelHeader({ isChat, onOpenChat, onCloseChat }) {
   const header = element("header", "recommendation-panel__header");
-  const title = element("div", "recommendation-panel__heading");
-  title.append(element("span", "recommendation-panel__eyebrow", "XH ROUTE MATCH"));
-  title.append(element("h2", "recommendation-panel__title", "帮我推荐"));
-  const settings = element("button", "recommendation-panel__profile", "档案设置");
-  settings.type = "button";
-  settings.addEventListener("click", () => onOpenProfile?.());
-  header.append(title, settings);
+  header.append(element("h2", "recommendation-panel__title", isChat ? "问问千问" : "帮我推荐"));
+  const action = element("button", isChat ? "recommendation-panel__close" : "recommendation-panel__qwen", isChat ? "×" : "千");
+  action.type = "button";
+  action.setAttribute("aria-label", isChat ? "关闭千问聊天" : "问问千问");
+  action.setAttribute("title", isChat ? "关闭千问聊天" : "问问千问");
+  action.addEventListener("click", isChat ? onCloseChat : onOpenChat);
+  header.append(action);
   return header;
 }
 
@@ -486,18 +706,6 @@ function profileChoiceGroup({ label, options, selected, onChange, multiple = fal
   }
   fieldset.append(choices);
   return fieldset;
-}
-
-function locationPicker(location, onPick) {
-  const row = element("div", "recommendation-location");
-  const text = element("div", "recommendation-location__text");
-  text.append(element("span", "recommendation-location__label", "出发位置"));
-  text.append(element("strong", "recommendation-location__value", location?.label || "未选择"));
-  const button = element("button", "recommendation-location__pick", location ? "更换" : "选择位置");
-  button.type = "button";
-  button.addEventListener("click", onPick);
-  row.append(text, button);
-  return row;
 }
 
 function segmentedField(label, options, selected, onChange, multiple = false) {
@@ -582,39 +790,65 @@ function normalizeFinalRoute(finalRoute) {
   if (!routeId) {
     return null;
   }
-  const confidence = Number(scored?.data_confidence);
-  const caution = finalRoute?.cautions?.[0] || scored?.risk_notes?.[0] || "";
   return {
     source: finalRoute,
     routeId,
     routeName: String(route.route_name || "未命名路线"),
-    routeMode: String(route.route_mode || "walk"),
-    modeText: MODE_LABELS[route.route_mode] || "户外运动",
-    distanceM: Number(route.distance_m || 0),
     distanceText: formatDistance(route.distance_m),
     durationText: formatDuration(route.duration_min),
-    shapeText: ROUTE_SHAPE_LABELS[route.route_shape] || "形态待确认",
-    reason: String(finalRoute.personalized_fit || "距离与当前偏好匹配。"),
-    actionText: caution || "适合出发",
-    confidence,
-    confidenceText: Number.isFinite(confidence) ? `${Math.round(confidence * 100)}% 数据可信度` : "可信度待更新",
-    placeholderSizePx: 48,
-    differenceLabel: "备选",
+    pm25Text: compactPm25(scored?.environment_summary?.pm2_5),
+    advantages: uniqueTextValues(finalRoute?.advantages).slice(0, 3),
+    suggestions: uniqueTextValues(finalRoute?.suggestions).slice(0, 2),
   };
 }
 
-function routeDifference(primary, alternative) {
-  const difference = alternative.distanceM - primary.distanceM;
-  if (difference <= -200) {
-    return "更近";
-  }
-  if (difference >= 200) {
-    return "更长";
-  }
-  if (alternative.confidence > primary.confidence) {
-    return "数据更完整";
-  }
-  return "不同风景";
+function compactPm25(metric) {
+  const value = Number(metric?.value);
+  if (!Number.isFinite(value)) return "PM2.5 暂无数据";
+  const formatted = Number.isInteger(value) ? String(value) : value.toFixed(1);
+  return `PM2.5 ${formatted}`;
+}
+
+function chatExamples() {
+  return [
+    "从交大徐汇校区出发，散步一小时，想走安静、有树荫的环线",
+    "帮我找一条 5 公里左右的跑步路线，空气好一点，沿途有厕所",
+    "周末骑行 10 公里左右，想看滨江风景，最后回到出发点",
+  ];
+}
+
+function applyIntentPatch(profile, patch) {
+  const allowed = [
+    "distance_min_m",
+    "target_distance_m",
+    "distance_max_m",
+    "search_radius_m",
+    "area_ids",
+    "goal",
+    "route_shape",
+    "interests",
+    "free_text",
+    "target_time",
+  ];
+  const next = { ...profile };
+  allowed.forEach((field) => {
+    if (patch?.[field] !== undefined) next[field] = cloneValue(patch[field]);
+  });
+  return next;
+}
+
+function uniqueTextValues(values) {
+  return [...new Set((values || []).map((value) => String(value || "").trim()).filter(Boolean))];
+}
+
+function cloneValue(value) {
+  if (Array.isArray(value)) return [...value];
+  if (value && typeof value === "object") return { ...value };
+  return value;
+}
+
+function optionLabel(options, value) {
+  return (options || []).find((option) => option.value === value)?.label || "";
 }
 
 function resolveTargetTime(answers, now) {

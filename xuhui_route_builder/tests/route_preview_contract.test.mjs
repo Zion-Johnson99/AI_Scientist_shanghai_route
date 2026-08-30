@@ -118,6 +118,14 @@ test("浏览路线保留地图预览，推荐结果使用单路线聚焦", () =>
   assert.ok(main.includes("showSingleRoute"));
 });
 
+test("推荐初始态复用浏览路线选项卡，已有推荐结果才切换为推荐路线", () => {
+  const routeUi = readFileSync(new URL("../web/src/route-ui.js", import.meta.url), "utf8");
+  const main = readFileSync(new URL("../web/src/main.js", import.meta.url), "utf8");
+
+  assert.ok(routeUi.includes("showBrowsePreviews()"));
+  assert.match(main, /else\s*\{\s*recommendationFeatures = \[\];\s*planner\.showBrowsePreviews\(\);/s);
+});
+
 test("接驳导航返回时退出内嵌导航视图", () => {
   const routeUi = readFileSync(new URL("../web/src/route-ui.js", import.meta.url), "utf8");
 

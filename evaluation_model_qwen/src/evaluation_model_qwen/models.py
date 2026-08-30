@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -21,6 +21,15 @@ AgeGroup = Literal["under_18", "18_39", "40_59", "60_plus", "undisclosed"]
 Sensitivity = Literal["air", "pollen", "heat", "noise"]
 Interest = Literal["waterfront", "park", "quiet", "coffee", "toilet", "convenience"]
 DataStatus = Literal["ok", "partial", "stale", "no_data", "error"]
+IntentMissingField = Literal["location", "distance", "target_time", "goal"]
+IntentTargetTime = Literal["now", "plus_2h", "custom"]
+IntentSearchScope = Literal[
+    "nearby_3000",
+    "nearby_5000",
+    "nearby_8000",
+    "area",
+    "all_xuhui",
+]
 
 
 class StrictModel(BaseModel):
@@ -55,6 +64,118 @@ class UserProfile(StrictModel):
             raise ValueError("目标距离需位于距离上下限之间")
         if self.origin is None and self.search_radius_m is not None:
             raise ValueError("设置搜索半径时需提供 GCJ-02 出发坐标")
+        return self
+
+
+class IntentMessage(StrictModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(min_length=1, max_length=500)
+
+    @model_validator(mode="after")
+    def validate_content(self) -> IntentMessage:
+        if not self.content.strip():
+            raise ValueError("对话内容不得为空")
+        return self
+
+
+class IntentLocation(StrictModel):
+    label: str = Field(min_length=1, max_length=120)
+    lng_gcj02: float = Field(ge=-180, le=180)
+    lat_gcj02: float = Field(ge=-90, le=90)
+
+
+class IntentProfileContext(StrictModel):
+    experience: Experience
+    sensitivities: list[Sensitivity] = Field(max_length=4)
+
+
+class IntentPreferencePatch(StrictModel):
+    target_time: datetime | None = None
+    distance_min_m: int | None = Field(default=None, gt=0)
+    target_distance_m: int | None = Field(default=None, gt=0)
+    distance_max_m: int | None = Field(default=None, gt=0)
+    search_radius_m: int | None = Field(default=None, gt=0)
+    area_ids: list[str] | None = Field(default=None, max_length=20)
+    goal: Goal | None = None
+    route_shape: RouteShapePreference | None = None
+    interests: list[Interest] | None = Field(default=None, max_length=6)
+
+    @model_validator(mode="after")
+    def validate_distance_order(self) -> IntentPreferencePatch:
+        low = self.distance_min_m
+        target = self.target_distance_m
+        high = self.distance_max_m
+        if low is not None and target is not None and low > target:
+            raise ValueError("目标距离需不小于距离下限")
+        if target is not None and high is not None and target > high:
+            raise ValueError("目标距离需不大于距离上限")
+        if low is not None and high is not None and low > high:
+            raise ValueError("距离下限需不大于上限")
+        return self
+
+
+class IntentPreferenceContext(StrictModel):
+    route_mode: RouteMode | None = None
+    target_time: datetime | IntentTargetTime | None = None
+    custom_time: str | None = Field(default=None, max_length=40)
+    distance_range: str | None = Field(default=None, max_length=80)
+    distance_min_m: int | None = Field(default=None, gt=0)
+    target_distance_m: int | None = Field(default=None, gt=0)
+    distance_max_m: int | None = Field(default=None, gt=0)
+    search_scope: IntentSearchScope | None = None
+    search_radius_m: int | None = Field(default=None, gt=0)
+    area_id: str | None = Field(default=None, max_length=100)
+    area_ids: list[str] | None = Field(default=None, max_length=20)
+    goal: Goal | None = None
+    route_shape: RouteShapePreference | None = None
+    interests: list[Interest] | None = Field(default=None, max_length=6)
+    free_text: str | None = Field(default=None, max_length=500)
+
+    @model_validator(mode="after")
+    def validate_distance_order(self) -> IntentPreferenceContext:
+        low = self.distance_min_m
+        target = self.target_distance_m
+        high = self.distance_max_m
+        if low is not None and target is not None and low > target:
+            raise ValueError("目标距离需不小于距离下限")
+        if target is not None and high is not None and target > high:
+            raise ValueError("目标距离需不大于距离上限")
+        if low is not None and high is not None and low > high:
+            raise ValueError("距离下限需不大于上限")
+        return self
+
+
+class IntentContext(StrictModel):
+    location: IntentLocation | None
+    route_mode: RouteMode
+    profile: IntentProfileContext
+    preferences: IntentPreferenceContext
+
+
+class IntentRequest(StrictModel):
+    message: str = Field(min_length=1, max_length=500)
+    history: list[IntentMessage] = Field(max_length=6)
+    context: IntentContext
+
+    @model_validator(mode="after")
+    def validate_message(self) -> IntentRequest:
+        if not self.message.strip():
+            raise ValueError("当前消息不得为空")
+        return self
+
+
+class IntentResponse(StrictModel):
+    reply: str = Field(min_length=1, max_length=240)
+    ready: bool
+    missing_fields: list[IntentMissingField] = Field(max_length=1)
+    preference_patch: IntentPreferencePatch
+
+    @model_validator(mode="after")
+    def validate_ready_state(self) -> IntentResponse:
+        if self.ready and self.missing_fields:
+            raise ValueError("偏好已齐全时不应标记缺失字段")
+        if not self.ready and len(self.missing_fields) != 1:
+            raise ValueError("偏好未齐全时每轮只追问一个字段")
         return self
 
 
@@ -188,6 +309,16 @@ class QwenRouteReview(StrictModel):
         default_factory=list,
         description="只列出输入数据能支持的环境或安全提醒",
     )
+    advantages: list[Annotated[str, Field(min_length=2, max_length=30)]] = Field(
+        min_length=2,
+        max_length=3,
+        description="详情页展示的二至三条短优点，每条只表达一个事实",
+    )
+    suggestions: list[Annotated[str, Field(min_length=2, max_length=30)]] = Field(
+        min_length=1,
+        max_length=2,
+        description="详情页展示的一至两条短建议，依据输入风险或通用出行准备",
+    )
 
 
 class QwenDecision(StrictModel):
@@ -215,6 +346,8 @@ class FinalRoute(StrictModel):
     route: ScoredRoute
     final_rank: int
     personalized_fit: str
+    advantages: list[str] = Field(min_length=2, max_length=3)
+    suggestions: list[str] = Field(min_length=1, max_length=2)
     cautions: list[str] = Field(default_factory=list)
 
 

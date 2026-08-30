@@ -6,40 +6,59 @@
     <title>徐汇户外健康地图</title>
     <link rel="icon" href="./xh-logo.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/qweather-icons@1.8.0/font/qweather-icons.css" />
-    <link rel="stylesheet" href="./styles/main.css?v=20260828-recommendation-1" />
+    <link rel="stylesheet" href="./styles/main.css?v=20260830-ui-4" />
+    <link rel="stylesheet" href="./styles/recommendation.css?v=20260830-ui-4" />
     <script src="./local-amap-config.js"></script>
   </head>
   <body>
     <main class="app-shell">
-      <aside class="sidebar">
-        <header class="panel-header">
-          <div class="brand-row">
-            <img class="brand-logo" src="./xh-logo.svg" alt="" width="32" height="32" />
-            <div class="brand-copy">
-              <h1>徐汇户外健康地图</h1>
-              <p>选一条适合当下环境的城市运动路线</p>
+      <header class="product-toolbar" aria-label="路线规划工具栏">
+        <div class="brand-lockup">
+          <img class="brand-logo" src="./xh-logo.svg" alt="" width="34" height="34" />
+          <h1>徐汇户外健康地图</h1>
+        </div>
+        <div class="product-toolbar__actions">
+          <div class="toolbar-location">
+            <button id="locationButton" class="location-pill" type="button" aria-expanded="false" aria-controls="locationEditor">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-6.1 7-12A7 7 0 1 0 5 9c0 5.9 7 12 7 12Zm0-9.4A2.6 2.6 0 1 1 12 6a2.6 2.6 0 0 1 0 5.2Z" /></svg>
+              <span id="locationLabel">选择当前位置</span>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5" /></svg>
+            </button>
+            <div id="locationEditor" class="location-editor" hidden>
+              <label for="locationInput">搜索上海地点</label>
+              <input id="locationInput" type="search" placeholder="例如：徐家汇地铁站" autocomplete="off" />
+              <div class="location-editor__actions">
+                <button id="locationSearchButton" class="primary-action" type="button">确认地点</button>
+                <button id="locationPickButton" class="secondary-action" type="button">地图选点</button>
+              </div>
+              <div id="locationStatus" class="field-status" aria-live="polite"></div>
             </div>
-            <button id="profileSettingsButton" class="icon-action" type="button" aria-label="修改个人档案" title="修改个人档案">
-              <span aria-hidden="true">⚙</span>
+          </div>
+
+          <div id="sportModeTabs" class="sport-mode-tabs" role="group" aria-label="运动方式">
+            <button id="toolbarWalkMode" class="active" type="button" aria-pressed="true" data-route-mode="walk">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M13.4 5.2a2 2 0 1 0-4 0 2 2 0 0 0 4 0ZM10.7 8l-2.1 4.1-2.8 1.4m4.9-5.5 3.1 2.3 3.6.5m-6.7 1.7-1.4 3.2-2.6 3.1m4-6.3 3.2 2.9 1.3 3.8" /></svg>
+              <b>步行</b><span>0 条</span>
+            </button>
+            <button id="toolbarRunMode" type="button" aria-pressed="false" data-route-mode="run">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M15.5 5.1a2 2 0 1 0-4 0 2 2 0 0 0 4 0ZM11.8 8l-2.9 3.4-3.2.9m6.1-4.3 3 2.6 3.7.6m-7.1.1-2.2 3.2-3 3m6.6-4.4 2.5 2.1 1.1 3.7" /></svg>
+              <b>跑步</b><span>0 条</span>
+            </button>
+            <button id="toolbarBikeMode" type="button" aria-pressed="false" data-route-mode="bike">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.5 18.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm11 0a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM8 15l3-6h3l3.5 6M9.5 12h5.8M11 9 9.8 6.8H8" /></svg>
+              <b>骑行</b><span>0 条</span>
             </button>
           </div>
 
-          <button id="locationButton" class="location-pill" type="button" aria-expanded="false" aria-controls="locationEditor">
-            <span aria-hidden="true">●</span>
-            <span id="locationLabel">选择当前位置</span>
-            <span aria-hidden="true">⌄</span>
+          <aside id="environmentPanel" class="environment-panel" aria-label="徐汇区环境信息" aria-live="polite"></aside>
+          <button id="profileSettingsButton" class="profile-action" type="button" aria-label="修改个人档案" title="修改个人档案">
+            <span class="profile-action__label">个人档案</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Zm7.1-1.7 1.2.9-2 3.5-1.5-.6a7.8 7.8 0 0 1-2.1 1.2l-.3 1.6h-4l-.3-1.6A7.8 7.8 0 0 1 8 17.3l-1.5.6-2-3.5 1.2-.9a7.6 7.6 0 0 1 0-2.9l-1.2-.9 2-3.5 1.5.6a7.8 7.8 0 0 1 2.1-1.2l.3-1.6h4l.3 1.6a7.8 7.8 0 0 1 2.1 1.2l1.5-.6 2 3.5-1.2.9a7.6 7.6 0 0 1 0 2.9Z" /></svg>
           </button>
-          <div id="locationEditor" class="location-editor" hidden>
-            <label for="locationInput">搜索上海地点</label>
-            <input id="locationInput" type="search" placeholder="例如：徐家汇地铁站" autocomplete="off" />
-            <div class="location-editor__actions">
-              <button id="locationSearchButton" class="primary-action" type="button">确认地点</button>
-              <button id="locationPickButton" class="secondary-action" type="button">地图选点</button>
-            </div>
-            <div id="locationStatus" class="field-status" aria-live="polite"></div>
-          </div>
-        </header>
+        </div>
+      </header>
 
+      <aside class="sidebar">
         <nav class="mode-tabs" role="tablist" aria-label="路线入口">
           <button id="recommendationTab" class="active" type="button" role="tab" aria-selected="true" aria-controls="recommendationView" data-product-view="recommendation">帮我推荐</button>
           <button id="browseTab" type="button" role="tab" aria-selected="false" aria-controls="routeSelectionView" tabindex="-1" data-product-view="browse">浏览路线</button>
@@ -56,11 +75,6 @@
             <button id="resetButton" class="text-action" type="button">清除筛选</button>
           </div>
           <div class="controls browse-controls">
-            <div id="sportModeTabs" class="sport-mode-tabs" role="group" aria-label="运动类型筛选">
-              <button class="active" type="button" aria-pressed="true" data-route-mode="walk"><b>步行</b><span>0 条</span></button>
-              <button type="button" aria-pressed="false" data-route-mode="run"><b>跑步</b><span>0 条</span></button>
-              <button type="button" aria-pressed="false" data-route-mode="bike"><b>骑行</b><span>0 条</span></button>
-            </div>
             <div class="field-grid two-columns">
               <label>片区
                 <select id="zoneFilter"><option value="all">全部片区</option></select>
@@ -117,8 +131,10 @@
 
       <section class="map-wrap" aria-label="徐汇路线地图">
         <div id="map"></div>
-        <aside id="environmentPanel" class="environment-panel" aria-label="徐汇区环境信息" aria-live="polite"></aside>
-        <button id="mapLayerButton" class="map-layer-button" type="button" aria-expanded="false" aria-controls="mapLegend">图层</button>
+        <button id="mapLayerButton" class="map-layer-button" type="button" aria-expanded="false" aria-controls="mapLegend">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m12 3 8 4.5-8 4.5-8-4.5L12 3Zm-8 9 8 4.5 8-4.5M4 16.5 12 21l8-4.5" /></svg>
+          <span class="map-layer-button__label">图层</span>
+        </button>
         <section id="mapLegend" class="map-legend" aria-label="地图图例" hidden>
           <span><i class="legend-run"></i>跑步</span><span><i class="legend-walk"></i>步行</span>
           <span><i class="legend-bike"></i>骑行</span><span><i class="legend-access"></i>接驳</span>
@@ -167,6 +183,6 @@
         });
       })();
     </script>
-    <script type="module" src="./src/main.js?v=20260828-recommendation-1"></script>
+    <script type="module" src="./src/main.js?v=20260830-ui-4"></script>
   </body>
 </html>

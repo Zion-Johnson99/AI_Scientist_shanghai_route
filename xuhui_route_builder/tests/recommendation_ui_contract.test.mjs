@@ -136,14 +136,22 @@ test("推荐结果模型覆盖加载、暂停、无候选、降级和正常状�
   assert.equal(buildRecommendationViewModel({ view: "error", message: "服务不可用" }).kind, "error");
 });
 
-test("结果只取一条当前路线和两条备选，保留 48px 空白圆形占位", () => {
-  const model = buildRecommendationViewModel(resultFixture("ok"));
+test("结果保持接口顺序，选中备选时首选位置不变", () => {
+  const model = buildRecommendationViewModel(resultFixture("ok"), "route-2");
 
-  assert.equal(model.primary.routeId, "route-1");
-  assert.deepEqual(model.alternatives.map((route) => route.routeId), ["route-2", "route-3"]);
-  assert.equal(model.primary.placeholderSizePx, 48);
-  assert.equal(model.primary.reason, "滨江环境与步行距离匹配");
-  assert.equal(model.primary.confidenceText, "90% 数据可信度");
+  assert.deepEqual(model.routes.map((route) => route.routeId), ["route-1", "route-2", "route-3"]);
+  assert.equal(model.selectedRouteId, "route-2");
+  assert.equal(model.routes[0].isPrimary, true);
+  assert.equal(model.routes[1].isSelected, true);
+  assert.equal(model.routes[0].confidenceText, undefined);
+  assert.equal(model.routes[0].placeholderSizePx, undefined);
+});
+
+test("加载模型使用真实阶段名称且不伪造百分比", () => {
+  const model = buildRecommendationViewModel({ view: "loading" });
+
+  assert.deepEqual(model.steps.map((step) => step.label), ["汇总偏好", "匹配路线", "准备结果"]);
+  assert.equal(JSON.stringify(model).includes("%"), false);
 });
 
 test("纯 DOM 控制器初始化问卷，并对外暴露结果切换方法", () => {
@@ -162,10 +170,138 @@ test("纯 DOM 控制器初始化问卷，并对外暴露结果切换方法", () 
 
     assert.equal(container.children[0].className, "recommendation-panel");
     assert.match(container.textContent, /帮我推荐/);
+    assert.equal(findByAttribute(container, "aria-label", "问问千问")?.tagName, "BUTTON");
+    assert.equal(container.textContent.includes("档案设置"), false);
+    assert.equal(container.textContent.includes("出发位置"), false);
     controller.showResult(resultFixture("ok"));
     assert.match(container.textContent, /首选路线/);
     assert.match(container.textContent, /滨江慢行/);
-    assert.equal(selected[0], "route-1");
+    assert.deepEqual(selected, []);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("Komoot 式路线卡只显示图片框、名称、时间、距离、PM2.5 与单选控件", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const result = resultFixture("ok");
+    result.final_routes[1].route.environment_summary = {
+      pm2_5: {
+        value: 12.4,
+        unit: "μg/m³",
+        business_time: "2026-08-30T06:00:00+08:00",
+        spatial_scale: "1km_grid_estimate",
+        estimated: true,
+      },
+      noise: {
+        value: 47.139,
+        unit: "0-100 risk index",
+        spatial_scale: "about_100m_road_segment_proxy",
+        estimated: true,
+      },
+    };
+    const controller = createRecommendationUI({ container, questionnaire, profile: localProfile, location });
+
+    controller.showResult(result);
+    const second = findByAttribute(container, "aria-label", "查看路线 公园小环线");
+    assert.ok(findByClass(second, "recommendation-route__media"));
+    assert.ok(findByClass(second, "recommendation-route__selector"));
+    assert.equal(findByClass(second, "recommendation-route__selector").attributes.role, "radio");
+    assert.match(second.textContent, /14 分钟/);
+    assert.match(second.textContent, /0.9 km/);
+    assert.match(second.textContent, /PM2.5 12.4/);
+    assert.equal(second.textContent.includes("距离更近"), false);
+    assert.equal(second.textContent.includes("路线优势"), false);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("千问图标进入独立聊天，叉号返回并保留已填偏好", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({ container, questionnaire, profile: localProfile, location });
+    const note = findByClass(container, "recommendation-note__control");
+    note.listeners.input({ target: { value: "想走安静一点的路线" } });
+
+    findByAttribute(container, "aria-label", "问问千问").listeners.click();
+    assert.match(container.textContent, /问问千问/);
+    assert.match(container.textContent, /从交大徐汇校区出发/);
+
+    findByAttribute(container, "aria-label", "关闭千问聊天").listeners.click();
+    assert.match(container.textContent, /帮我推荐/);
+    assert.equal(controller.getAnswers().free_text, "想走安静一点的路线");
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("路线悬停只预览，点击后由统一右侧详情列接管", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const previewed = [];
+    const selected = [];
+    let returned = 0;
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onPreviewRoute: (routeId) => previewed.push(routeId),
+      onSelectRoute: (routeId) => selected.push(routeId),
+      onReturnRouteOverview: () => { returned += 1; },
+    });
+    controller.showResult(resultFixture("ok"));
+
+    const second = findByAttribute(container, "aria-label", "查看路线 公园小环线");
+    second.listeners.mouseenter();
+    second.listeners.mouseleave();
+    assert.deepEqual(previewed, ["route-2", null]);
+    second.listeners.click();
+    assert.equal(controller.getCurrentRouteId(), "route-2");
+    assert.deepEqual(selected, ["route-2"]);
+    assert.equal(findByAttribute(container, "aria-label", "公园小环线路线详情"), null);
+
+    let prevented = false;
+    container.listeners.keydown({ key: "Escape", preventDefault: () => { prevented = true; } });
+    assert.equal(controller.getCurrentRouteId(), null);
+    assert.equal(returned, 1);
+    assert.equal(prevented, true);
+
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("重新推荐清空旧结果并通知地图恢复初始路线选项卡", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    let restartCount = 0;
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onRestartRecommendation: () => { restartCount += 1; },
+    });
+    controller.showResult(resultFixture("ok"));
+
+    findByText(container, "重新推荐").listeners.click();
+
+    assert.equal(restartCount, 1);
+    assert.deepEqual(controller.getResultRoutes(), []);
+    assert.equal(controller.getCurrentRouteId(), null);
+    assert.match(container.textContent, /为我推荐路线/);
+    assert.equal(container.textContent.includes("滨江慢行"), false);
   } finally {
     globalThis.document = previousDocument;
   }
@@ -188,7 +324,7 @@ test("推荐页失活时保存迟到结果但不切换地图", () => {
 
     controller.showResult(resultFixture("ok"));
 
-    assert.equal(controller.getCurrentRouteId(), "route-1");
+    assert.equal(controller.getCurrentRouteId(), null);
     assert.deepEqual(selected, []);
   } finally {
     globalThis.document = previousDocument;
@@ -218,7 +354,7 @@ test("问卷首次加载失败后可重新拉取并恢复表单", async () => {
     await retry.listeners.click();
 
     assert.equal(reloadCount, 1);
-    assert.match(container.textContent, /生成路线推荐/);
+    assert.match(container.textContent, /为我推荐路线/);
   } finally {
     globalThis.document = previousDocument;
   }
@@ -300,6 +436,8 @@ function finalRoute(routeId, routeName, distanceM, durationMin, confidence, reas
   return {
     final_rank: Number(routeId.at(-1)),
     personalized_fit: reason,
+    advantages: ["距离符合目标", "PM2.5 在候选中较低"],
+    suggestions: ["雨天留意湿滑路面"],
     cautions: [],
     route: {
       data_confidence: confidence,
@@ -387,6 +525,24 @@ function findByText(node, text) {
     if (found) {
       return found;
     }
+  }
+  return null;
+}
+
+function findByAttribute(node, name, value) {
+  if (node.attributes?.[name] === value) return node;
+  for (const child of node.children || []) {
+    const found = findByAttribute(child, name, value);
+    if (found) return found;
+  }
+  return null;
+}
+
+function findByClass(node, className) {
+  if (String(node.className || "").split(/\s+/).includes(className)) return node;
+  for (const child of node.children || []) {
+    const found = findByClass(child, className);
+    if (found) return found;
   }
   return null;
 }

@@ -175,6 +175,8 @@ test("有效预警映射标题和正文，过期预警被过滤", () => {
     text: "局部将出现强降水",
     severity: "Moderate",
   }]);
+  assert.equal(model.updatedAt, "2099-08-27T10:00:00+08:00");
+  assert.equal(model.validUntil, FUTURE);
 });
 
 test("未来模型只包含 24 小时天气、AQI 和三天六类生活指数", () => {
@@ -228,6 +230,8 @@ test("环境面板自行管理展开、页签和指数日期切换", () => {
   assert.ok(container.innerHTML.includes("data-environment-tab=\"now\""));
   assert.ok(container.innerHTML.includes("data-environment-tab=\"hourly\""));
   assert.ok(container.innerHTML.includes("data-environment-tab=\"indices\""));
+  assert.ok(container.innerHTML.includes('aria-haspopup="dialog"'));
+  assert.ok(container.innerHTML.includes('class="environment-details" role="dialog"'));
   assert.equal(container.innerHTML.includes("environment-alerts"), false);
   assert.equal(container.innerHTML.includes("PM2.5"), false);
   assert.equal(container.innerHTML.includes("未来花粉"), false);
@@ -250,6 +254,56 @@ test("环境面板自行管理展开、页签和指数日期切换", () => {
   assert.equal(container.innerHTML, "");
 });
 
+test("环境弹层支持外部点击、Escape、焦点返回和同层入口互斥", () => {
+  const documentRoot = createDocumentStub();
+  const container = createPanelStub();
+  const panel = createEnvironmentPanel(container, dashboardFixture(), { documentRoot });
+
+  container.toggle.click();
+  assert.equal(container.details.hidden, false);
+  documentRoot.keydown("Escape");
+  assert.equal(container.details.hidden, true);
+  assert.equal(container.toggle.focusCount, 1);
+
+  container.toggle.click();
+  documentRoot.click(outsideTarget());
+  assert.equal(container.details.hidden, true);
+
+  documentRoot.legend.hidden = false;
+  documentRoot.layerButton.setAttribute("aria-expanded", "true");
+  documentRoot.profileDialog.open = true;
+  container.toggle.click();
+  assert.equal(documentRoot.legend.hidden, true);
+  assert.equal(documentRoot.layerButton.attributes["aria-expanded"], "false");
+  assert.equal(documentRoot.profileDialog.closeCount, 1);
+
+  documentRoot.click(controlTarget("#profileSettingsButton"));
+  assert.equal(container.details.hidden, true);
+
+  panel.destroy();
+  assert.equal(documentRoot.listenerCount(), 0);
+});
+
+test("预警只在按钮显示状态点，详情不展示状态和时间元数据", () => {
+  const dashboard = dashboardFixture();
+  dashboard.current.alerts = [
+    record({ summary: "上海市暴雨蓝色预警", text: "局部将出现强降水", level: "Moderate" }),
+  ];
+  const container = createPanelStub();
+  createEnvironmentPanel(container, dashboard);
+
+  const summary = panelSummary(container.innerHTML);
+  const details = container.innerHTML.slice(container.innerHTML.indexOf('class="environment-details"'));
+  assert.match(summary, /environment-summary__primary" aria-hidden="true"/);
+  assert.match(summary, /environment-summary__metrics" aria-hidden="true"/);
+  assert.match(summary, /environment-alert-dot/);
+  assert.doesNotMatch(summary, /上海市暴雨蓝色预警/);
+  assert.match(details, /上海市暴雨蓝色预警/);
+  assert.doesNotMatch(details, /数据状态/);
+  assert.doesNotMatch(details, /业务时间/);
+  assert.doesNotMatch(details, /有效期/);
+});
+
 test("摘要缺值使用短横线，明确状态留在主条件和展开卡片", () => {
   const missingDashboard = dashboardFixture();
   missingDashboard.current.aqi = { status: "no_data", values: {} };
@@ -264,7 +318,7 @@ test("摘要缺值使用短横线，明确状态留在主条件和展开卡片",
   const staleContainer = createPanelStub();
   createEnvironmentPanel(staleContainer, staleDashboard);
   const staleSummary = panelSummary(staleContainer.innerHTML);
-  assert.equal(occurrences(staleSummary, "数据更新中"), 1);
+  assert.equal(occurrences(staleSummary, "数据更新中"), 2);
   assert.match(staleSummary, /environment-summary__temperature">—<\/div>/);
   assert.equal(occurrences(staleSummary, "<strong>—</strong>"), 4);
   assert.match(staleContainer.innerHTML, /<span>湿度<\/span><strong>数据更新中<\/strong>/);
@@ -392,6 +446,7 @@ function createPanelStub() {
     dayButtons,
     dayPanels,
     classList: classList(),
+    contains(target) { return target === this || target === toggle || target === details; },
     querySelector(selector) {
       return selector === ".environment-toggle" ? toggle
         : selector === ".environment-details" ? details
@@ -413,11 +468,51 @@ function interactiveElement(dataset = {}, active = false) {
     attributes: {},
     classList: classList(active),
     listeners: {},
+    focusCount: 0,
     addEventListener(type, handler) { this.listeners[type] = handler; },
     removeEventListener(type) { delete this.listeners[type]; },
     setAttribute(name, value) { this.attributes[name] = String(value); },
+    focus() { this.focusCount += 1; },
     click() { this.listeners.click?.(); },
   };
+}
+
+function createDocumentStub() {
+  const listeners = new Map();
+  const layerButton = interactiveElement();
+  const legend = { hidden: true };
+  const profileDialog = {
+    open: false,
+    closeCount: 0,
+    close() {
+      this.open = false;
+      this.closeCount += 1;
+    },
+  };
+  return {
+    layerButton,
+    legend,
+    profileDialog,
+    addEventListener(type, handler) { listeners.set(type, handler); },
+    removeEventListener(type) { listeners.delete(type); },
+    querySelector(selector) {
+      return selector === "#mapLayerButton" ? layerButton
+        : selector === "#mapLegend" ? legend
+          : selector === ".profile-dialog[open]" && profileDialog.open ? profileDialog
+            : null;
+    },
+    click(target) { listeners.get("click")?.({ target }); },
+    keydown(key) { listeners.get("keydown")?.({ key }); },
+    listenerCount() { return listeners.size; },
+  };
+}
+
+function outsideTarget() {
+  return { closest() { return null; } };
+}
+
+function controlTarget(selector) {
+  return { closest(candidate) { return candidate === selector ? this : null; } };
 }
 
 function classList(active = false) {

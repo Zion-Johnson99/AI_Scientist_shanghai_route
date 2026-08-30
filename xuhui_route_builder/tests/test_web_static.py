@@ -122,6 +122,64 @@ def test_index_presents_the_health_map_product_shell() -> None:
         assert internal_copy not in html
 
 
+def test_product_toolbar_owns_the_single_location_mode_environment_and_profile_entries() -> None:
+    html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+    toolbar = html[
+        html.index('<header class="product-toolbar"') : html.index("</header>") + len("</header>")
+    ]
+
+    for element_id in [
+        "locationButton",
+        "sportModeTabs",
+        "environmentPanel",
+        "profileSettingsButton",
+    ]:
+        assert f'id="{element_id}"' in toolbar
+        assert html.count(f'id="{element_id}"') == 1
+
+    assert "选一条适合当下环境的城市运动路线" not in html
+    assert 'class="profile-action__label">个人档案</span>' in toolbar
+    assert 'class="map-layer-button__label">图层</span>' in html
+    assert './styles/recommendation.css?v=20260830-ui-4' in html
+    for mode_id, route_mode in [
+        ("toolbarWalkMode", "walk"),
+        ("toolbarRunMode", "run"),
+        ("toolbarBikeMode", "bike"),
+    ]:
+        assert f'id="{mode_id}"' in toolbar
+        assert f'data-route-mode="{route_mode}"' in toolbar
+
+
+def test_environment_and_profile_form_the_right_aligned_toolbar_group() -> None:
+    css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
+    environment_start = css.index(".product-toolbar .environment-panel {")
+    environment_block = css[environment_start : css.index("}", environment_start)]
+    profile_start = css.index(".profile-action {")
+    profile_block = css[profile_start : css.index("}", profile_start)]
+
+    assert "margin-left: auto;" in environment_block
+    assert "margin-left: auto;" not in profile_block
+
+
+def test_product_toolbar_and_layer_menu_use_the_planned_visual_shell() -> None:
+    css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
+
+    for token in [
+        "--surface-main: #ffffff;",
+        "--surface-page: #f4f7fa;",
+        "--brand-blue: #1477f8;",
+        "--health-green: #168b64;",
+    ]:
+        assert token in css.lower()
+    assert ".product-toolbar" in css
+    assert ".product-toolbar__actions" in css
+    assert ".product-toolbar .environment-panel .environment-summary" in css
+    assert ".environment-alert-dot" in css
+    assert ".profile-action__label" in css
+    assert ".map-layer-button__label" in css
+    assert ".map-legend" in css
+
+
 def test_navigation_shell_uses_a_short_manual_start_flow() -> None:
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
 
@@ -175,8 +233,9 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260828-recommendation-1"
+    release = "v=20260830-ui-4"
     assert f"./styles/main.css?{release}" in html
+    assert f"./styles/recommendation.css?{release}" in html
     assert f"./src/main.js?{release}" in html
     assert f"./data-loader.js?{release}" in main_js
     assert f"./navigation-session.js?{release}" in main_js
@@ -258,6 +317,13 @@ def test_startup_does_not_draw_full_route_or_entry_layers() -> None:
     assert "drawEntries(map, data.entries)" not in main_js
     assert "drawRoutes(map, data.routes)" not in main_js
     assert "showSingleRoute" in main_js
+
+
+def test_recommendation_home_keeps_browse_route_previews() -> None:
+    main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
+
+    assert "if (resultRoutes.length)" in main_js
+    assert "planner.showBrowsePreviews();" in main_js
 
 
 def test_product_shell_separates_recommendation_from_compact_route_browsing() -> None:

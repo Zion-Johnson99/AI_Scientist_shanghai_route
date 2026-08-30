@@ -8,6 +8,14 @@ const ROUTE_STYLES = {
 };
 
 const ROUTE_LAYER_STATES = {
+  overview: {
+    mainOpacity: 0.78,
+    mainWeightOffset: 1,
+    mainZIndex: 84,
+    haloOpacity: 0.62,
+    haloWeightOffset: 6,
+    haloZIndex: 83,
+  },
   active: {
     mainOpacity: 0.98,
     mainWeightOffset: 2,
@@ -23,6 +31,14 @@ const ROUTE_LAYER_STATES = {
     haloOpacity: 0.34,
     haloWeightOffset: 5,
     haloZIndex: 69,
+  },
+  "preview-muted": {
+    mainOpacity: 0.2,
+    mainWeightOffset: -1,
+    mainZIndex: 66,
+    haloOpacity: 0.18,
+    haloWeightOffset: 3,
+    haloZIndex: 65,
   },
   preview: {
     mainOpacity: 0.3,
@@ -102,6 +118,7 @@ export async function createMap(targetId) {
     boundaryLayer: null,
     boundaryRings: [],
     routeLayers: new Map(),
+    recommendationMapState: createRecommendationMapState(),
     routePreviewLayers: [],
     routePreviewMarkers: [],
     routePreviewZoomHandler: null,
@@ -237,7 +254,15 @@ export function previewMarkerOffset(index, count, zoom) {
   };
 }
 
-export function showRouteResults(mapContext, routes, entries, pois, selectedRouteId, selectedPreferences = []) {
+export function showRouteResults(
+  mapContext,
+  routes,
+  entries,
+  pois,
+  selectedRouteId,
+  selectedPreferences = [],
+  routeInteractions = {},
+) {
   clearRouteResults(mapContext);
 
   const relatedEntryIds = new Set();
@@ -281,7 +306,19 @@ export function showRouteResults(mapContext, routes, entries, pois, selectedRout
       zIndex: active ? 100 : 70,
       extData: { ...sharedExtData, layerRole: "main" },
     });
-    main.on("click", () => openRouteInfo(mapContext, main, route));
+    main.on("click", () => {
+      if (routeInteractions.onSelectRoute) {
+        routeInteractions.onSelectRoute(properties.route_id);
+        return;
+      }
+      openRouteInfo(mapContext, main, route);
+    });
+    if (routeInteractions.onPreviewRoute) {
+      main.on("mouseover", () => routeInteractions.onPreviewRoute(properties.route_id));
+    }
+    if (routeInteractions.onClearPreview) {
+      main.on("mouseout", () => routeInteractions.onClearPreview(properties.route_id));
+    }
     mapContext.amap.add(halo);
     mapContext.amap.add(main);
     mapContext.routeLayers.set(properties.route_id, {
@@ -321,9 +358,115 @@ export function showRouteResults(mapContext, routes, entries, pois, selectedRout
     }
   }
 
-  if (boundsOverlays.length) {
+  if (boundsOverlays.length && routeInteractions.fitView !== false) {
     mapContext.amap.setFitView(boundsOverlays, false, [44, 44, 44, 44]);
   }
+}
+
+export function createRecommendationMapController(mapContext, callbacks = {}) {
+  const state = ensureRecommendationMapState(mapContext);
+
+  function getState() {
+    return recommendationMapSnapshot(state);
+  }
+
+  function emitStateChange() {
+    const snapshot = getState();
+    callbacks.onStateChange?.(snapshot);
+    return snapshot;
+  }
+
+  function showRoutes(routes, entries = { features: [] }, pois = { features: [] }, selectedPreferences = []) {
+    showRouteResults(
+      mapContext,
+      routes,
+      entries,
+      pois,
+      null,
+      selectedPreferences,
+      {
+        fitView: false,
+        onPreviewRoute(routeId) {
+          previewRoute(routeId);
+          callbacks.onRouteHover?.(routeId);
+        },
+        onClearPreview(routeId) {
+          if (state.hoveredRouteId !== routeId) {
+            return;
+          }
+          clearPreview(routeId);
+          callbacks.onRouteHover?.(null);
+        },
+        onSelectRoute(routeId) {
+          focusRoute(routeId);
+          callbacks.onRouteSelect?.(routeId);
+        },
+      },
+    );
+    state.recommendedRouteIds = [...mapContext.routeLayers.keys()];
+    state.hoveredRouteId = null;
+    state.selectedRouteId = null;
+    state.mapMode = "overview";
+    applyRecommendationOverview(mapContext, state, true);
+    return emitStateChange();
+  }
+
+  function previewRoute(routeId) {
+    if (!hasRecommendedRoute(state, routeId) || state.mapMode === "focused") {
+      return getState();
+    }
+    state.hoveredRouteId = routeId;
+    state.selectedRouteId = null;
+    state.mapMode = "preview";
+    for (const [candidateRouteId, layers] of mapContext.routeLayers.entries()) {
+      setRouteLayerState(layers, candidateRouteId === routeId ? "active" : "preview-muted");
+    }
+    return emitStateChange();
+  }
+
+  function clearPreview(routeId) {
+    if (state.mapMode !== "preview" || state.hoveredRouteId !== routeId) {
+      return getState();
+    }
+    state.hoveredRouteId = null;
+    state.mapMode = "overview";
+    applyRecommendationOverview(mapContext, state, false);
+    return emitStateChange();
+  }
+
+  function focusRoute(routeId) {
+    if (!hasRecommendedRoute(state, routeId)) {
+      return getState();
+    }
+    state.hoveredRouteId = null;
+    state.selectedRouteId = routeId;
+    state.mapMode = "focused";
+    for (const [candidateRouteId, layers] of mapContext.routeLayers.entries()) {
+      setRouteLayerState(layers, candidateRouteId === routeId ? "sporting" : "muted");
+    }
+    const selectedLayer = mapContext.routeLayers.get(routeId)?.main;
+    if (selectedLayer) {
+      mapContext.amap.setFitView([selectedLayer], true, [110, 90, 180, 90], 18);
+    }
+    return emitStateChange();
+  }
+
+  function showOverview() {
+    state.hoveredRouteId = null;
+    state.selectedRouteId = null;
+    state.mapMode = "overview";
+    applyRecommendationOverview(mapContext, state, true);
+    return emitStateChange();
+  }
+
+  return {
+    showRoutes,
+    previewRoute,
+    clearPreview,
+    focusRoute,
+    showOverview,
+    getState,
+  };
 }
 
 export function showSingleRoute(mapContext, route, entries, pois, selectedPreferences = []) {
@@ -513,6 +656,7 @@ export function clearRouteResults(mapContext) {
   mapContext.routePreviewZoomHandler = null;
   mapContext.entryLayers = [];
   mapContext.poiLayers = [];
+  resetRecommendationMapState(mapContext.recommendationMapState);
 }
 
 export function startNavigationSession(mapContext, onPick) {
@@ -1102,6 +1246,60 @@ function setRouteLayerState(layers, stateName) {
     zIndex: state.mainZIndex,
   });
   layers.state = stateName;
+}
+
+function createRecommendationMapState() {
+  return {
+    recommendedRouteIds: [],
+    hoveredRouteId: null,
+    selectedRouteId: null,
+    mapMode: "overview",
+  };
+}
+
+function ensureRecommendationMapState(mapContext) {
+  mapContext.recommendationMapState ||= createRecommendationMapState();
+  return mapContext.recommendationMapState;
+}
+
+function resetRecommendationMapState(state) {
+  if (!state) {
+    return;
+  }
+  state.recommendedRouteIds = [];
+  state.hoveredRouteId = null;
+  state.selectedRouteId = null;
+  state.mapMode = "overview";
+}
+
+function recommendationMapSnapshot(state) {
+  return {
+    recommendedRouteIds: [...state.recommendedRouteIds],
+    hoveredRouteId: state.hoveredRouteId,
+    selectedRouteId: state.selectedRouteId,
+    mapMode: state.mapMode,
+  };
+}
+
+function hasRecommendedRoute(state, routeId) {
+  return Boolean(routeId) && state.recommendedRouteIds.includes(routeId);
+}
+
+function applyRecommendationOverview(mapContext, state, fitView) {
+  const routeLayers = state.recommendedRouteIds
+    .map((routeId) => mapContext.routeLayers.get(routeId))
+    .filter(Boolean);
+  for (const layers of routeLayers) {
+    setRouteLayerState(layers, "overview");
+  }
+  if (fitView && routeLayers.length) {
+    mapContext.amap.setFitView(
+      routeLayers.map(({ main }) => main),
+      false,
+      [72, 72, 72, 72],
+      18,
+    );
+  }
 }
 
 function extractBoundaryRings(boundary) {

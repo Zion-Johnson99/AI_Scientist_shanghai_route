@@ -65,4 +65,6 @@ def test_service_falls_back_and_audit_omits_full_free_text(
         item.route.route_id for item in result.base_candidates
     ]
     assert result.api_audit.error_type == "rate_limit"
+    assert all(2 <= len(item.advantages) <= 3 for item in result.final_routes)
+    assert all(1 <= len(item.suggestions) <= 2 for item in result.final_routes)
     assert audit_document["profile"]["free_text"] == "[已省略]"

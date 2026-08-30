@@ -52,6 +52,7 @@ export function buildCurrentEnvironmentModel(dashboard) {
     aqiLevel: aqi === null ? statusText(aqiStatus) : aqiLevel(aqi),
     alerts: normalizeAlerts(dashboard?.current?.alerts),
     updatedAt: weather?.business_time || weather?.fetched_at || null,
+    validUntil: weather?.valid_until || aqiRecord?.valid_until || null,
   };
 }
 
@@ -156,7 +157,11 @@ export function buildRouteExposureModel(dashboard, routeId) {
   };
 }
 
-export function createEnvironmentPanel(container, dashboard) {
+export function createEnvironmentPanel(
+  container,
+  dashboard,
+  { documentRoot = globalThis.document } = {},
+) {
   if (!container) {
     throw new Error("环境面板缺少挂载容器。");
   }
@@ -179,15 +184,46 @@ export function createEnvironmentPanel(container, dashboard) {
     listeners.push([element, type, handler]);
   }
 
-  function setOpen(open) {
+  function closeLayerMenu() {
+    const legend = documentRoot?.querySelector?.("#mapLegend");
+    const button = documentRoot?.querySelector?.("#mapLayerButton");
+    if (legend) legend.hidden = true;
+    button?.setAttribute?.("aria-expanded", "false");
+  }
+
+  function closeProfileDialog() {
+    documentRoot?.querySelector?.(".profile-dialog[open]")?.close?.();
+  }
+
+  function setOpen(open, { restoreFocus = false } = {}) {
     if (!details || !toggle) return;
+    if (open) {
+      closeLayerMenu();
+      closeProfileDialog();
+    }
     details.hidden = !open;
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "收起环境详情" : "展开环境详情");
     container.classList.toggle("is-expanded", open);
+    if (!open && restoreFocus) toggle.focus?.();
   }
 
   listen(toggle, "click", () => setOpen(Boolean(details?.hidden)));
+  listen(documentRoot, "click", (event) => {
+    const target = event?.target;
+    if (!target) return;
+    const layerControl = target.closest?.("#mapLayerButton") || target.closest?.("#mapLegend");
+    const profileControl = target.closest?.("#profileSettingsButton");
+    if (profileControl) closeLayerMenu();
+    if (layerControl) closeProfileDialog();
+    if (!container.contains?.(target)) setOpen(false);
+    if (!layerControl && !target.closest?.("#mapLegend")) closeLayerMenu();
+  });
+  listen(documentRoot, "keydown", (event) => {
+    if (event?.key === "Escape" && !details?.hidden) {
+      setOpen(false, { restoreFocus: true });
+    }
+  });
   tabButtons.forEach((button) => listen(button, "click", () => {
     const selected = button.dataset.environmentTab;
     tabButtons.forEach((item) => {
@@ -239,27 +275,35 @@ function renderPanel(current, forecast) {
       }</div>`
     )).join("")}</div>`
     : "";
+  const alertDot = current.alerts.length
+    ? '<span class="environment-alert-dot" aria-label="当前有环境预警"></span>'
+    : "";
   return `
     <section class="environment-summary" aria-label="徐汇区当前环境">
-      <div class="environment-summary__primary">
+      <div class="environment-summary__primary" aria-hidden="true">
         <div>
           <div class="environment-summary__location">${escapeHtml(current.location)}</div>
           <div class="environment-summary__condition">${icon}<span>${escapeHtml(current.weatherText)}</span></div>
         </div>
         <div class="environment-summary__temperature">${escapeHtml(summaryTemperature)}</div>
       </div>
-      <div class="environment-summary__metrics">
+      <div class="environment-summary__metrics" aria-hidden="true">
         ${summaryMetric("湿度", summaryHumidity)}
         ${summaryMetric("风", summaryWind)}
         ${summaryMetric("降水", summaryPrecipitation)}
         ${summaryAqiMetric(current)}
       </div>
-      ${alerts}
-      <button class="environment-toggle" type="button" aria-expanded="false" aria-label="展开环境详情">
-        <span>环境详情</span>
+      <button class="environment-toggle" type="button" aria-expanded="false" aria-haspopup="dialog" aria-controls="environmentDetails" aria-label="展开环境详情">
+        <span class="environment-toggle__summary">
+          <span>${escapeHtml(current.weatherText)}</span>
+          <strong>${escapeHtml(summaryTemperature)} · AQI ${escapeHtml(current.aqiText)}</strong>
+        </span>
+        ${alertDot}
+        <span class="environment-toggle__chevron" aria-hidden="true">⌄</span>
       </button>
     </section>
-    <section class="environment-details" hidden>
+    <section id="environmentDetails" class="environment-details" role="dialog" aria-label="环境详情" hidden>
+      ${alerts}
       <div class="environment-tabs" role="tablist" aria-label="环境数据">
         ${tabButton("now", "现在", true)}
         ${tabButton("hourly", "24 小时", false)}

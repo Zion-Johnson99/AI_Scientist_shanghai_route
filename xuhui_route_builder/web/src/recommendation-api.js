@@ -1,5 +1,6 @@
 export const DEFAULT_RECOMMENDATION_API_BASE_URL = "http://127.0.0.1:8124/api/v1";
 export const DEFAULT_RECOMMENDATION_TIMEOUT_MS = 35000;
+export const DEFAULT_RECOMMENDATION_INTENT_TIMEOUT_MS = 15000;
 
 const USER_PROFILE_FIELDS = [
   "route_mode",
@@ -33,6 +34,7 @@ export function createRecommendationApi({
   baseUrl = DEFAULT_RECOMMENDATION_API_BASE_URL,
   fetchImpl = globalThis.fetch,
   timeoutMs = DEFAULT_RECOMMENDATION_TIMEOUT_MS,
+  intentTimeoutMs = DEFAULT_RECOMMENDATION_INTENT_TIMEOUT_MS,
 } = {}) {
   if (typeof fetchImpl !== "function") {
     throw new Error("当前环境缺少 fetch，无法连接推荐服务。");
@@ -52,6 +54,11 @@ export function createRecommendationApi({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(toRecommendationPayload(profile)),
     }, timeoutMs),
+    interpretIntent: (request) => requestJson(fetchImpl, `${normalizedBaseUrl}/recommendation-intent`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(toRecommendationIntentPayload(request)),
+    }, intentTimeoutMs),
   };
 }
 
@@ -60,6 +67,40 @@ export function toRecommendationPayload(profile) {
     throw new RecommendationApiError("推荐条件格式无效。", { code: "invalid_profile" });
   }
   return Object.fromEntries(USER_PROFILE_FIELDS.map((field) => [field, cloneField(profile[field])]));
+}
+
+export function toRecommendationIntentPayload(request) {
+  if (!request || typeof request !== "object" || Array.isArray(request)) {
+    throw invalidIntent("千问请求格式无效。");
+  }
+  const message = String(request.message || "").trim();
+  if (!message || message.length > 500) {
+    throw invalidIntent("请将需求控制在 500 字以内。");
+  }
+  const history = Array.isArray(request.history)
+    ? request.history.slice(-6).map(normalizeHistoryMessage)
+    : [];
+  const context = request.context && typeof request.context === "object" && !Array.isArray(request.context)
+    ? request.context
+    : {};
+  const profile = context.profile && typeof context.profile === "object" && !Array.isArray(context.profile)
+    ? context.profile
+    : {};
+  return {
+    message,
+    history,
+    context: {
+      location: cloneLocation(context.location),
+      route_mode: String(context.route_mode || ""),
+      profile: {
+        experience: String(profile.experience || "regular"),
+        sensitivities: Array.isArray(profile.sensitivities) ? [...profile.sensitivities] : [],
+      },
+      preferences: context.preferences && typeof context.preferences === "object" && !Array.isArray(context.preferences)
+        ? { ...context.preferences }
+        : {},
+    },
+  };
 }
 
 async function requestJson(fetchImpl, url, options, timeoutMs) {
@@ -134,4 +175,29 @@ function cloneField(value) {
     return { ...value };
   }
   return value;
+}
+
+function normalizeHistoryMessage(item) {
+  const role = item?.role === "assistant" ? "assistant" : item?.role === "user" ? "user" : null;
+  const content = String(item?.content || "").trim();
+  if (!role || !content || content.length > 500) {
+    throw invalidIntent("千问对话历史格式无效。");
+  }
+  return { role, content };
+}
+
+function cloneLocation(location) {
+  if (!location || typeof location !== "object" || Array.isArray(location)) return null;
+  const lng = Number(location.lng_gcj02);
+  const lat = Number(location.lat_gcj02);
+  if (!Number.isFinite(lng) || !Number.isFinite(lat)) return null;
+  return {
+    label: String(location.label || "当前位置"),
+    lng_gcj02: lng,
+    lat_gcj02: lat,
+  };
+}
+
+function invalidIntent(message) {
+  return new RecommendationApiError(message, { code: "invalid_intent" });
 }
