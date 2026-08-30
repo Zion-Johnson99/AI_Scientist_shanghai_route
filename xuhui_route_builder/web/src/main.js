@@ -1,11 +1,11 @@
 import {
   loadRouteData,
   startEnvironmentDashboardPolling,
-} from "./data-loader.js?v=20260830-ui-4";
+} from "./data-loader.js?v=20260830-ui-6";
 import {
   buildRouteExposureModel,
   createEnvironmentPanel,
-} from "./environment-ui.js?v=20260830-ui-4";
+} from "./environment-ui.js?v=20260830-ui-6";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -15,24 +15,35 @@ import {
   drawBoundary,
   enablePointPicker,
   endNavigationSession,
+  highlightRoutePreview,
   planNavigation,
   resolveUserLocation,
   showUserLocation,
   showRoutePreviews,
   showSingleRoute,
   startNavigationSession,
-} from "./map.js?v=20260830-ui-4";
-import { createNavigationController } from "./navigation-session.js?v=20260830-ui-4";
-import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260830-ui-4";
-import { createRecommendationApi } from "./recommendation-api.js?v=20260830-ui-4";
-import { createProfileDialog, createRecommendationUI } from "./recommendation-ui.js?v=20260830-ui-4";
-import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260830-ui-4";
-import { renderRoutePlanner } from "./route-ui.js?v=20260830-ui-4";
+} from "./map.js?v=20260830-ui-6";
+import { createNavigationController } from "./navigation-session.js?v=20260830-ui-6";
+import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260830-ui-6";
+import { createRecommendationApi } from "./recommendation-api.js?v=20260830-ui-6";
+import { createProfileDialog, createRecommendationUI } from "./recommendation-ui.js?v=20260830-ui-6";
+import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260830-ui-6";
+import { renderRoutePlanner } from "./route-ui.js?v=20260830-ui-6";
+
+const RECOMMENDATION_MAP_CARDS_ENABLED = false;
 
 async function bootstrap() {
   const map = await createMap("map");
   const data = await loadRouteData();
   const recommendationApi = createRecommendationApi();
+  const uiState = {
+    productView: "recommendation",
+    chatOpen: false,
+    sidebarCollapsed: false,
+    detailSource: null,
+  };
+  let planner = null;
+  let recommendationUI = null;
   let questionnaire = null;
   let questionnaireError = null;
   try {
@@ -51,6 +62,22 @@ async function bootstrap() {
       const origin = currentLocation || await requestLocation();
       if (origin) planner.openNavigation(routeId, origin);
     },
+    onClose({ source, routeId }) {
+      uiState.detailSource = null;
+      if (source === "recommendation") {
+        uiState.productView = "recommendation";
+        uiState.chatOpen = false;
+        renderProductView();
+        if (recommendationUI?.returnToOverview) recommendationUI.returnToOverview();
+        else recommendationMap.showOverview();
+      } else if (source === "browse") {
+        planner.restoreBrowseOverview();
+      } else {
+        console.warn("路线详情关闭来源未知", { source, routeId });
+      }
+      document.querySelector(`[data-route-id="${routeId}"]`)?.focus?.();
+      syncWorkbench();
+    },
   });
   const routeFeaturesById = new Map(data.routes.features.map((feature) => [feature.properties.route_id, feature]));
   const catalog = enrichCatalog(data.catalog, data.entries);
@@ -60,11 +87,11 @@ async function bootstrap() {
   const selectionView = document.querySelector("#routeSelectionView");
   const navigationView = document.querySelector("#routeNavigationView");
   const modeTabs = [...document.querySelectorAll("[data-product-view]")];
+  const workbench = getWorkbenchControls();
   const locationControls = getLocationControls();
   const hadSavedProfile = Boolean(globalThis.localStorage?.getItem?.(HEALTH_PROFILE_STORAGE_KEY));
   let healthProfile = loadHealthProfile();
   let currentLocation = null;
-  let currentProductView = "recommendation";
   let pendingLocationResolver = null;
   let environmentGeneratedAt = data.environmentDashboard?.metadata?.generated_at || null;
   let environmentPanel = createEnvironmentPanel(environmentContainer, data.environmentDashboard);
@@ -78,9 +105,7 @@ async function bootstrap() {
     environmentPanel = createEnvironmentPanel(environmentContainer, nextDashboard);
     environmentPanel.setOpen(wasOpen);
   });
-  let planner = null;
   let activeNavigation = null;
-  let recommendationUI = null;
   let recommendationFeatures = [];
 
   const recommendationMap = createRecommendationMapController(map, {
@@ -119,9 +144,16 @@ async function bootstrap() {
 
   drawBoundary(map, data.boundary);
   planner = renderRoutePlanner(catalog, {
-    onPreviewRoutes(routes, onSelectRoute) {
+    getRouteEnvironment(routeId) {
+      return buildRouteExposureModel(data.environmentDashboard, routeId);
+    },
+    onPreviewRoute(routeId) {
+      highlightRoutePreview(map, routeId);
+    },
+    onPreviewRoutes(routes, onSelectRoute, onPreviewRoute) {
       const features = routes
         .map((route) => routeFeaturesById.get(route.route_id))
+        .map((feature) => featureWithEnvironment(feature, data.environmentDashboard))
         .filter(Boolean);
       if (features.length !== routes.length) {
         console.warn("部分候选路线缺少地图路径数据", {
@@ -129,7 +161,8 @@ async function bootstrap() {
           renderedCount: features.length,
         });
       }
-      showRoutePreviews(map, features, onSelectRoute);
+      showRoutePreviews(map, features, onSelectRoute, onPreviewRoute);
+      uiState.detailSource = null;
       routeDock.hide();
     },
     onShowRoute(route, selectedPreferences) {
@@ -141,6 +174,7 @@ async function bootstrap() {
       stopInlineNavigation();
       endNavigationSession(map);
       clearRouteResults(map);
+      uiState.detailSource = null;
       routeDock.hide();
     },
     onSelect(routeId) {
@@ -178,11 +212,18 @@ async function bootstrap() {
     },
     onRouteMetrics(route) {
       if (route) {
-        routeDock.show(
+        uiState.detailSource = "browse";
+        routeDock.show({
           route,
-          buildRouteExposureModel(data.environmentDashboard, route.route_id),
-        );
+          environment: buildRouteExposureModel(data.environmentDashboard, route.route_id),
+          source: "browse",
+          objectiveHighlights: [],
+          qwenAdvantages: [],
+          qwenSuggestions: [],
+          explanationSource: "route_data",
+        });
       } else {
+        uiState.detailSource = null;
         routeDock.hide();
       }
     },
@@ -196,7 +237,7 @@ async function bootstrap() {
         return;
       }
       document.querySelector(".mode-tabs").hidden = false;
-      setProductView(currentProductView);
+      setProductView(uiState.productView);
     },
   });
 
@@ -217,11 +258,21 @@ async function bootstrap() {
     onRecommend: (profile) => recommendationApi.recommend(profile),
     onInterpretIntent: (request) => recommendationApi.interpretIntent(request),
     onReloadQuestionnaire: () => recommendationApi.questionnaire(),
-    shouldSelectRoute: () => currentProductView === "recommendation",
+    shouldSelectRoute: () => uiState.productView === "recommendation" || uiState.chatOpen,
+    onChatStateChange(open) {
+      uiState.chatOpen = Boolean(open);
+      renderProductView();
+      syncWorkbench();
+    },
     onShowRoutes(routes) {
+      uiState.productView = "recommendation";
+      uiState.chatOpen = false;
       recommendationFeatures = recommendationFeaturesFromResult(routes, routeFeaturesById);
       recommendationMap.showRoutes(recommendationFeatures, data.entries, data.pois, recommendationUI.getAnswers().interests);
+      uiState.detailSource = null;
       routeDock.hide();
+      renderProductView();
+      syncWorkbench();
     },
     onPreviewRoute(routeId, route) {
       if (routeId) recommendationMap.previewRoute(routeId);
@@ -235,23 +286,26 @@ async function bootstrap() {
         routeDock.hide();
         return;
       }
-      routeDock.show(
-        buildRouteDockSource(routeFeature, route),
-        buildRouteExposureModel(data.environmentDashboard, routeId),
-        {
-          advantages: route?.advantages,
-          suggestions: route?.suggestions,
-        },
-      );
+      uiState.detailSource = "recommendation";
+      routeDock.show({
+        route: buildRouteDockSource(routeFeature, route),
+        environment: buildRouteExposureModel(data.environmentDashboard, routeId),
+        source: "recommendation",
+        objectiveHighlights: [],
+        qwenAdvantages: route?.advantages,
+        qwenSuggestions: route?.suggestions,
+        explanationSource: route?.explanationSource,
+      });
+      syncWorkbench();
     },
     onReturnRouteOverview() {
       if (recommendationFeatures.length) recommendationMap.showOverview();
       routeDock.hide();
     },
     onRestartRecommendation() {
-      recommendationFeatures = [];
+      uiState.detailSource = null;
       routeDock.hide();
-      planner.showBrowsePreviews();
+      showRecommendationIdleMap();
     },
   });
   if (questionnaireError) recommendationUI.showError(questionnaireError);
@@ -270,25 +324,24 @@ async function bootstrap() {
       setProductView(nextTab.dataset.productView);
     });
   });
+  workbench.qwenButton.addEventListener("click", () => {
+    if (uiState.sidebarCollapsed) setSidebarCollapsed(false);
+    if (uiState.chatOpen) recommendationUI.closeChat();
+    else recommendationUI.openChat();
+  });
+  workbench.collapseButton.addEventListener("click", () => {
+    setSidebarCollapsed(!uiState.sidebarCollapsed);
+  });
   bindLocationControls();
   bindRouteModeControls();
   bindLayerControls();
   setProductView("recommendation");
 
   function setProductView(view) {
-    currentProductView = view === "browse" ? "browse" : "recommendation";
-    modeTabs.forEach((tab) => {
-      const active = tab.dataset.productView === currentProductView;
-      tab.classList.toggle("active", active);
-      tab.setAttribute("aria-selected", String(active));
-      tab.tabIndex = active ? 0 : -1;
-    });
-    navigationView.hidden = true;
-    recommendationContainer.hidden = currentProductView !== "recommendation";
-    recommendationContainer.classList.toggle("active", currentProductView === "recommendation");
-    selectionView.hidden = currentProductView !== "browse";
-    selectionView.classList.toggle("active", currentProductView === "browse");
-    if (currentProductView === "browse") {
+    uiState.productView = view === "browse" ? "browse" : "recommendation";
+    if (uiState.chatOpen) recommendationUI.closeChat();
+    renderProductView();
+    if (uiState.productView === "browse") {
       planner.showBrowse();
     } else {
       const resultRoutes = recommendationUI.getResultRoutes();
@@ -296,12 +349,58 @@ async function bootstrap() {
         recommendationFeatures = recommendationFeaturesFromResult(resultRoutes, routeFeaturesById);
         recommendationMap.showRoutes(recommendationFeatures, data.entries, data.pois, recommendationUI.getAnswers().interests);
       } else {
-        recommendationFeatures = [];
-        planner.showBrowsePreviews();
+        showRecommendationIdleMap();
       }
       const routeId = recommendationUI.getCurrentRouteId();
       if (routeId) recommendationMap.focusRoute(routeId);
     }
+    syncWorkbench();
+  }
+
+  function showRecommendationIdleMap() {
+    recommendationFeatures = [];
+    if (RECOMMENDATION_MAP_CARDS_ENABLED) {
+      planner.showBrowsePreviews();
+      return;
+    }
+    clearRouteResults(map);
+  }
+
+  function renderProductView() {
+    const visibleView = uiState.chatOpen ? "recommendation" : uiState.productView;
+    modeTabs.forEach((tab) => {
+      const active = tab.dataset.productView === uiState.productView;
+      tab.classList.toggle("active", active);
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+    });
+    navigationView.hidden = true;
+    recommendationContainer.hidden = visibleView !== "recommendation";
+    recommendationContainer.classList.toggle("active", visibleView === "recommendation");
+    selectionView.hidden = visibleView !== "browse";
+    selectionView.classList.toggle("active", visibleView === "browse");
+    document.querySelector(".mode-tabs").hidden = uiState.chatOpen;
+  }
+
+  function syncWorkbench() {
+    workbench.title.textContent = uiState.chatOpen
+      ? "千问路线助手"
+      : uiState.productView === "browse" ? "浏览路线" : "帮我推荐";
+    workbench.qwenButton.setAttribute("aria-expanded", String(uiState.chatOpen));
+    workbench.qwenButton.setAttribute("aria-label", uiState.chatOpen ? "关闭千问路线助手" : "打开千问路线助手");
+    workbench.qwenButton.title = uiState.chatOpen ? "关闭千问路线助手" : "千问路线助手";
+    workbench.sidebar.classList.toggle("is-collapsed", uiState.sidebarCollapsed);
+    workbench.sidebar.dataset.collapsed = String(uiState.sidebarCollapsed);
+    workbench.collapseButton.setAttribute("aria-expanded", String(!uiState.sidebarCollapsed));
+    workbench.collapseButton.setAttribute("aria-label", uiState.sidebarCollapsed ? "展开路线工作台" : "折叠路线工作台");
+    workbench.collapseButton.title = uiState.sidebarCollapsed ? "展开工作台" : "折叠工作台";
+  }
+
+  function setSidebarCollapsed(collapsed) {
+    uiState.sidebarCollapsed = Boolean(collapsed);
+    syncWorkbench();
+    globalThis.requestAnimationFrame?.(() => map.amap.resize?.());
+    globalThis.setTimeout?.(() => map.amap.resize?.(), 200);
   }
 
   function requestLocation() {
@@ -410,6 +509,15 @@ function getLocationControls() {
   };
 }
 
+function getWorkbenchControls() {
+  return {
+    sidebar: document.querySelector("#workbenchSidebar"),
+    title: document.querySelector("#workbenchTitle"),
+    qwenButton: document.querySelector("#workbenchQwenButton"),
+    collapseButton: document.querySelector("#workbenchCollapseButton"),
+  };
+}
+
 function inlineNavigationGuideControls() {
   return {
     root: document.querySelector("#inlineNavigationGuide"),
@@ -511,6 +619,18 @@ function recommendationFeaturesFromResult(routes, routeFeaturesById) {
     });
   }
   return features;
+}
+
+function featureWithEnvironment(feature, dashboard) {
+  if (!feature) return null;
+  const routeId = feature.properties?.route_id;
+  return {
+    ...feature,
+    properties: {
+      ...feature.properties,
+      route_environment: buildRouteExposureModel(dashboard, routeId),
+    },
+  };
 }
 
 function recommendationRouteId(route) {

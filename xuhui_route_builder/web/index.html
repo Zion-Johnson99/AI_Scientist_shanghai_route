@@ -6,8 +6,8 @@
     <title>徐汇户外健康地图</title>
     <link rel="icon" href="./xh-logo.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/qweather-icons@1.8.0/font/qweather-icons.css" />
-    <link rel="stylesheet" href="./styles/main.css?v=20260830-ui-4" />
-    <link rel="stylesheet" href="./styles/recommendation.css?v=20260830-ui-4" />
+    <link rel="stylesheet" href="./styles/main.css?v=20260830-ui-6" />
+    <link rel="stylesheet" href="./styles/recommendation.css?v=20260830-ui-6" />
     <script src="./local-amap-config.js"></script>
   </head>
   <body>
@@ -58,15 +58,49 @@
         </div>
       </header>
 
-      <aside class="sidebar">
-        <nav class="mode-tabs" role="tablist" aria-label="路线入口">
+      <aside id="workbenchSidebar" class="sidebar" data-collapsed="false">
+        <header id="workbenchHeader" class="workbench-header" aria-label="路线工作台">
+          <h2 id="workbenchTitle" aria-live="polite">帮我推荐</h2>
+          <div class="workbench-header__actions">
+            <button
+              id="workbenchQwenButton"
+              class="workbench-qwen-button"
+              type="button"
+              data-workbench-qwen
+              aria-label="打开千问路线助手"
+              aria-controls="recommendationView"
+              aria-expanded="false"
+              title="千问路线助手"
+            >
+              <img src="./assets/qwen-color.png" alt="" width="36" height="36" />
+            </button>
+            <button
+              id="workbenchCollapseButton"
+              class="workbench-collapse-button"
+              type="button"
+              data-workbench-collapse
+              aria-label="折叠路线工作台"
+              aria-controls="workbenchBody"
+              aria-expanded="true"
+              title="折叠工作台"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <rect x="3.5" y="4" width="17" height="16" rx="2.5" />
+                <path d="M9 4v16m6-10-3 2 3 2" />
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <div id="workbenchBody" class="workbench-body">
+          <nav class="mode-tabs" role="tablist" aria-label="路线入口">
           <button id="recommendationTab" class="active" type="button" role="tab" aria-selected="true" aria-controls="recommendationView" data-product-view="recommendation">帮我推荐</button>
           <button id="browseTab" type="button" role="tab" aria-selected="false" aria-controls="routeSelectionView" tabindex="-1" data-product-view="browse">浏览路线</button>
-        </nav>
+          </nav>
 
-        <section id="recommendationView" class="tab-view recommendation-view active" role="tabpanel" aria-labelledby="recommendationTab"></section>
+          <section id="recommendationView" class="tab-view recommendation-view active" role="tabpanel" aria-labelledby="recommendationTab"></section>
 
-        <section id="routeSelectionView" class="tab-view route-selection-view" role="tabpanel" aria-labelledby="browseTab" hidden>
+          <section id="routeSelectionView" class="tab-view route-selection-view" role="tabpanel" aria-labelledby="browseTab" hidden>
           <div class="browse-intro">
             <div>
               <span class="section-kicker">自由探索</span>
@@ -92,18 +126,14 @@
           <section class="result-panel browse-result" aria-label="路线浏览结果">
             <div class="route-tab-heading">
               <strong>地图中的路线</strong>
-              <span id="routeOptionCount"></span>
+              <span id="routeOptionCount" aria-live="polite"></span>
             </div>
-            <label class="route-picker">
-              <span class="visually-hidden">选择路线</span>
-              <select id="routeSelect" aria-label="选择路线"></select>
-            </label>
-            <div id="routeSummary" class="route-summary" aria-live="polite"></div>
-            <div id="routeDetail" class="detail" aria-live="polite"></div>
+            <p id="browseRouteEmpty" class="empty-state" role="status" hidden>当前筛选暂无路线</p>
+            <div id="browseRouteList" class="browse-route-list" aria-label="筛选后的路线"></div>
           </section>
-        </section>
+          </section>
 
-        <section id="routeNavigationView" class="tab-view route-navigation-view" aria-label="前往路线起点" hidden>
+          <section id="routeNavigationView" class="tab-view route-navigation-view" aria-label="前往路线起点" hidden>
           <button id="navigationBackButton" class="navigation-back" type="button">← 返回路线</button>
           <div class="navigation-heading">
             <span class="section-kicker">前往起点</span>
@@ -126,7 +156,8 @@
             </div>
             <div id="navigationStatus" class="navigation-status" aria-live="polite"></div>
           </div>
-        </section>
+          </section>
+        </div>
       </aside>
 
       <section class="map-wrap" aria-label="徐汇路线地图">
@@ -183,6 +214,6 @@
         });
       })();
     </script>
-    <script type="module" src="./src/main.js?v=20260830-ui-4"></script>
+    <script type="module" src="./src/main.js?v=20260830-ui-6"></script>
   </body>
 </html>

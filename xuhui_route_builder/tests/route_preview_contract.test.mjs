@@ -17,6 +17,9 @@ const previewRoutes = [
       route_name: "植物园北区园路单环线",
       route_mode: "walk",
       distance_m: 2113,
+      route_environment: {
+        pm25: { value: 11.34, status: "ok", unit: "µg/m³" },
+      },
       start_location: { lng_gcj02: 121.440378, lat_gcj02: 31.208333 },
     },
     geometry: {
@@ -40,7 +43,7 @@ const previewRoutes = [
   },
 ];
 
-test("预览卡片截断长名称并保留两位公里数和完整无障碍文本", () => {
+test("预览卡片恢复为截断名称和两位小数公里数", () => {
   assert.deepEqual(routePreviewCardModel(previewRoutes[0]), {
     routeId: "XH_WALK_0001",
     fullName: "植物园北区园路单环线",
@@ -56,9 +59,18 @@ test("共起点卡片低倍局部堆叠，高倍放大后展开为可点击间�
   const compact = [0, 1, 2, 3].map((index) => previewMarkerOffset(index, 4, 13));
   const expanded = [0, 1, 2, 3].map((index) => previewMarkerOffset(index, 4, 15));
 
-  assert.ok(Math.max(...compact.map(({ x }) => x)) - Math.min(...compact.map(({ x }) => x)) < 60);
-  assert.ok(Math.max(...expanded.map(({ x }) => x)) - Math.min(...expanded.map(({ x }) => x)) >= 150);
-  assert.ok(new Set(expanded.map(({ x, y }) => `${x},${y}`)).size === expanded.length);
+  assert.deepEqual(compact, [
+    { x: -18, y: -8 },
+    { x: -6, y: -17 },
+    { x: 6, y: -26 },
+    { x: 18, y: -35 },
+  ]);
+  assert.deepEqual(expanded, [
+    { x: -82, y: -12 },
+    { x: 82, y: -12 },
+    { x: -100, y: -66 },
+    { x: 100, y: -66 },
+  ]);
 });
 
 test("地图预览使用统一淡蓝连续线、无方向箭头，卡片点击回传路线", () => {
@@ -72,8 +84,12 @@ test("地图预览使用统一淡蓝连续线、无方向箭头，卡片点击�
 
     const lines = added.filter((overlay) => overlay instanceof mapContext.AMap.Polyline);
     const markers = added.filter((overlay) => overlay instanceof mapContext.AMap.Marker);
-    assert.equal(lines.length, 2);
-    assert.equal(markers.length, 2);
+    assert.equal(lines.length, previewRoutes.length);
+    assert.equal(markers.length, previewRoutes.length);
+    assert.deepEqual(markers.map((marker) => marker.options.position.map(roundCoordinate)), [
+      [121.440378, 31.208333],
+      [121.440378, 31.208333],
+    ]);
     assert.ok(lines.every((line) => line.options.strokeColor === "#3d91ff"));
     assert.ok(lines.every((line) => line.options.strokeWeight === 4));
     assert.ok(lines.every((line) => line.options.strokeOpacity === 0.34));
@@ -82,7 +98,15 @@ test("地图预览使用统一淡蓝连续线、无方向箭头，卡片点击�
     markers[0].options.content.click();
     assert.deepEqual(selected, ["XH_WALK_0001"]);
     assert.equal(markers[0].options.content.title, "植物园北区园路单环线");
-    assert.equal(markers[0].options.content.attributes["aria-label"], "植物园北区园路单环线，2.11 公里");
+    assert.equal(
+      markers[0].options.content.attributes["aria-label"],
+      "植物园北区园路单环线，2.11 公里",
+    );
+    assert.equal(markers[0].options.content.children[0].textContent, "植物园北区园…");
+    assert.equal(
+      markers[0].options.content.children[1].textContent,
+      "2.11 公里",
+    );
   } finally {
     globalThis.document = previousDocument;
   }
@@ -118,12 +142,32 @@ test("浏览路线保留地图预览，推荐结果使用单路线聚焦", () =>
   assert.ok(main.includes("showSingleRoute"));
 });
 
-test("推荐初始态复用浏览路线选项卡，已有推荐结果才切换为推荐路线", () => {
+test("推荐模式默认关闭浏览地图卡，并保留可恢复开关", () => {
   const routeUi = readFileSync(new URL("../web/src/route-ui.js", import.meta.url), "utf8");
   const main = readFileSync(new URL("../web/src/main.js", import.meta.url), "utf8");
 
   assert.ok(routeUi.includes("showBrowsePreviews()"));
-  assert.match(main, /else\s*\{\s*recommendationFeatures = \[\];\s*planner\.showBrowsePreviews\(\);/s);
+  assert.ok(main.includes("const RECOMMENDATION_MAP_CARDS_ENABLED = false;"));
+  assert.match(
+    main,
+    /if\s*\(RECOMMENDATION_MAP_CARDS_ENABLED\)\s*\{\s*planner\.showBrowsePreviews\(\);\s*return;\s*\}\s*clearRouteResults\(map\);/s,
+  );
+});
+
+test("地图路线卡恢复原始尺寸、字体和距离行", () => {
+  const css = readFileSync(new URL("../web/styles/main.css", import.meta.url), "utf8");
+  const cardRule = css.match(/\.amap-route-option\s*\{[^}]+\}/s)?.[0] || "";
+  const nameRule = css.match(/\.amap-route-option__name\s*\{[^}]+\}/s)?.[0] || "";
+  const distanceRule = css.match(/\.amap-route-option__distance\s*\{[^}]+\}/s)?.[0] || "";
+
+  assert.match(cardRule, /min-width:\s*126px/);
+  assert.match(cardRule, /max-width:\s*148px/);
+  assert.match(cardRule, /border:\s*1px solid rgba\(61, 145, 255, 0\.38\)/);
+  assert.match(nameRule, /font-family:\s*"STZhongsong"/);
+  assert.match(nameRule, /text-overflow:\s*ellipsis/);
+  assert.match(distanceRule, /font-size:\s*11px/);
+  assert.match(distanceRule, /color:\s*var\(--teal\)/);
+  assert.doesNotMatch(css, /\.amap-route-option__meta\s*\{/);
 });
 
 test("接驳导航返回时退出内嵌导航视图", () => {
@@ -186,4 +230,8 @@ function createMapContext() {
     poiLayers: [],
   };
   return { mapContext, added, removed, events };
+}
+
+function roundCoordinate(value) {
+  return Number(Number(value).toFixed(7));
 }

@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -169,8 +170,8 @@ test("纯 DOM 控制器初始化问卷，并对外暴露结果切换方法", () 
     });
 
     assert.equal(container.children[0].className, "recommendation-panel");
-    assert.match(container.textContent, /帮我推荐/);
-    assert.equal(findByAttribute(container, "aria-label", "问问千问")?.tagName, "BUTTON");
+    assert.ok(findByClass(container, "recommendation-form"));
+    assert.equal(findByAttribute(container, "aria-label", "问问千问"), null);
     assert.equal(container.textContent.includes("档案设置"), false);
     assert.equal(container.textContent.includes("出发位置"), false);
     controller.showResult(resultFixture("ok"));
@@ -182,7 +183,7 @@ test("纯 DOM 控制器初始化问卷，并对外暴露结果切换方法", () 
   }
 });
 
-test("Komoot 式路线卡只显示图片框、名称、时间、距离、PM2.5 与单选控件", () => {
+test("Komoot 式路线卡以整卡交互，不再创建单独 radio", () => {
   const previousDocument = globalThis.document;
   globalThis.document = createDocumentStub();
   try {
@@ -207,12 +208,11 @@ test("Komoot 式路线卡只显示图片框、名称、时间、距离、PM2.5 �
 
     controller.showResult(result);
     const second = findByAttribute(container, "aria-label", "查看路线 公园小环线");
-    assert.ok(findByClass(second, "recommendation-route__media"));
-    assert.ok(findByClass(second, "recommendation-route__selector"));
-    assert.equal(findByClass(second, "recommendation-route__selector").attributes.role, "radio");
+    assert.ok(findByClass(second, "route-card--text-only"));
+    assert.equal(findByClass(second, "route-card__media"), null);
+    assert.equal(findByAttribute(second, "role", "radio"), null);
     assert.match(second.textContent, /14 分钟/);
     assert.match(second.textContent, /0.9 km/);
-    assert.match(second.textContent, /PM2.5 12.4/);
     assert.equal(second.textContent.includes("距离更近"), false);
     assert.equal(second.textContent.includes("路线优势"), false);
   } finally {
@@ -220,25 +220,95 @@ test("Komoot 式路线卡只显示图片框、名称、时间、距离、PM2.5 �
   }
 });
 
-test("千问图标进入独立聊天，叉号返回并保留已填偏好", () => {
+test("推荐左栏路线卡的 PM2.5 始终带 µg/m³", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const result = resultFixture("ok");
+    result.final_routes[1].route.environment_summary = {
+      pm2_5: { value: 12.4, status: "ok", unit: "μg/m³" },
+    };
+    const controller = createRecommendationUI({ container, questionnaire, profile: localProfile, location });
+
+    controller.showResult(result);
+    const second = findByAttribute(container, "aria-label", "查看路线 公园小环线");
+    assert.match(second.textContent, /PM2.5 12.4 µg\/m³/);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("关闭千问聊天恢复进入前的推荐结果、选中路线与滚动位置", () => {
   const previousDocument = globalThis.document;
   globalThis.document = createDocumentStub();
   try {
     const container = globalThis.document.createElement("div");
     const controller = createRecommendationUI({ container, questionnaire, profile: localProfile, location });
-    const note = findByClass(container, "recommendation-note__control");
-    note.listeners.input({ target: { value: "想走安静一点的路线" } });
+    controller.showResult(resultFixture("ok"));
+    controller.selectRoute("route-2");
+    container.scrollTop = 184;
 
-    findByAttribute(container, "aria-label", "问问千问").listeners.click();
-    assert.match(container.textContent, /问问千问/);
+    controller.openChat();
+    assert.ok(findByClass(container, "recommendation-chat"));
     assert.match(container.textContent, /从交大徐汇校区出发/);
+    container.scrollTop = 0;
 
     findByAttribute(container, "aria-label", "关闭千问聊天").listeners.click();
-    assert.match(container.textContent, /帮我推荐/);
-    assert.equal(controller.getAnswers().free_text, "想走安静一点的路线");
+    assert.match(container.textContent, /为你推荐/);
+    assert.match(container.textContent, /公园小环线/);
+    assert.equal(controller.getCurrentRouteId(), "route-2");
+    assert.equal(container.scrollTop, 184);
   } finally {
     globalThis.document = previousDocument;
   }
+});
+
+test("千问空态使用顶部说明与底部交互区，并保留可提交输入框", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({ container, questionnaire, profile: localProfile, location });
+
+    controller.openChat();
+
+    const chat = findByClass(container, "recommendation-chat");
+    const notice = findByClass(chat, "recommendation-chat__notice");
+    const starter = findByClass(chat, "recommendation-chat__starter");
+    const composer = findByClass(chat, "recommendation-chat__composer");
+    assert.ok(notice, "缺少顶部轻量说明");
+    assert.ok(starter, "缺少靠底的问题与建议区");
+    assert.match(starter.textContent, /你今天想走一条怎样的路线/);
+    assert.equal(composer.tagName, "FORM");
+    assert.ok(findByAttribute(composer, "aria-label", "描述路线需求"));
+    assert.ok(findByAttribute(composer, "aria-label", "发送路线需求"));
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("千问样式契约固定全高留白、底部起始区与纯白简约表面", () => {
+  const css = readFileSync(new URL("../web/styles/recommendation.css", import.meta.url), "utf8");
+
+  assert.match(css, /\.recommendation-view\.active:has\(\.recommendation-chat\)\s*\{[^}]*grid-template-rows:\s*minmax\(0,\s*1fr\)/s);
+  assert.match(css, /\.recommendation-chat\s*\{[^}]*height:\s*100%/s);
+  assert.match(css, /\.recommendation-chat__starter\s*\{[^}]*margin-top:\s*auto/s);
+  assert.match(css, /\.recommendation-chat__composer\s*\{[^}]*background:\s*#fff(?:fff)?/s);
+  assert.match(css, /\.recommendation-chat__example\s*\{[^}]*border:\s*0/s);
+});
+
+test("公共标题栏让千问入口在推荐、浏览、结果和折叠态持续可见", () => {
+  const html = readFileSync(new URL("../web/index.html", import.meta.url), "utf8");
+  const headerStart = html.indexOf('id="workbenchHeader"');
+  const qwenStart = html.indexOf('id="workbenchQwenButton"');
+  const bodyStart = html.indexOf('id="workbenchBody"');
+
+  assert.ok(headerStart >= 0, "缺少公共工作台标题栏");
+  assert.ok(qwenStart > headerStart, "千问入口应位于公共标题栏中");
+  assert.ok(bodyStart > qwenStart, "千问入口应位于可折叠正文之外");
+  assert.match(html, /id="workbenchQwenButton"[^>]*data-workbench-qwen[^>]*aria-expanded="false"/);
+  assert.match(html, /id="workbenchCollapseButton"[^>]*data-workbench-collapse[^>]*aria-controls="workbenchBody"/);
 });
 
 test("路线悬停只预览，点击后由统一右侧详情列接管", () => {

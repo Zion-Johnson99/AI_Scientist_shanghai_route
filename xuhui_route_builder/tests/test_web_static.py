@@ -140,7 +140,7 @@ def test_product_toolbar_owns_the_single_location_mode_environment_and_profile_e
     assert "选一条适合当下环境的城市运动路线" not in html
     assert 'class="profile-action__label">个人档案</span>' in toolbar
     assert 'class="map-layer-button__label">图层</span>' in html
-    assert './styles/recommendation.css?v=20260830-ui-4' in html
+    assert './styles/recommendation.css?v=20260830-ui-6' in html
     for mode_id, route_mode in [
         ("toolbarWalkMode", "walk"),
         ("toolbarRunMode", "run"),
@@ -148,6 +148,41 @@ def test_product_toolbar_owns_the_single_location_mode_environment_and_profile_e
     ]:
         assert f'id="{mode_id}"' in toolbar
         assert f'data-route-mode="{route_mode}"' in toolbar
+
+
+def test_sidebar_exposes_a_persistent_workbench_header_outside_its_body() -> None:
+    html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+    sidebar = html[
+        html.index('<aside id="workbenchSidebar"') : html.index(
+            '<section class="map-wrap"'
+        )
+    ]
+    header = sidebar[
+        sidebar.index('<header id="workbenchHeader"') : sidebar.index("</header>")
+        + len("</header>")
+    ]
+    body = sidebar[
+        sidebar.index('<div id="workbenchBody"') : sidebar.rindex("</div>")
+        + len("</div>")
+    ]
+
+    assert 'data-collapsed="false"' in sidebar
+    assert 'id="workbenchTitle"' in header
+    assert 'aria-live="polite"' in header
+    assert '>帮我推荐</h2>' in header
+    assert 'id="workbenchQwenButton"' in header
+    assert 'data-workbench-qwen' in header
+    assert 'aria-controls="recommendationView"' in header
+    assert 'aria-expanded="false"' in header
+    assert 'src="./assets/qwen-color.png"' in header
+    assert 'id="workbenchCollapseButton"' in header
+    assert 'data-workbench-collapse' in header
+    assert 'aria-controls="workbenchBody"' in header
+    assert 'aria-expanded="true"' in header
+    assert 'class="mode-tabs"' in body
+    assert 'id="recommendationView"' in body
+    assert 'id="routeSelectionView"' in body
+    assert 'id="routeNavigationView"' in body
 
 
 def test_environment_and_profile_form_the_right_aligned_toolbar_group() -> None:
@@ -161,23 +196,73 @@ def test_environment_and_profile_form_the_right_aligned_toolbar_group() -> None:
     assert "margin-left: auto;" not in profile_block
 
 
-def test_product_toolbar_and_layer_menu_use_the_planned_visual_shell() -> None:
+def test_product_toolbar_and_workbench_use_the_komoot_visual_shell() -> None:
     css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
 
     for token in [
+        "--surface-toolbar: #f5f3ec;",
         "--surface-main: #ffffff;",
-        "--surface-page: #f4f7fa;",
-        "--brand-blue: #1477f8;",
-        "--health-green: #168b64;",
+        "--surface-brand-soft: #e8edf4;",
+        "--brand-blue: #0b2856;",
+        "--ink: #10233f;",
+        "--muted: #607089;",
+        "--line: rgba(16, 35, 63, 0.12);",
+        "--focus: #197cff;",
     ]:
         assert token in css.lower()
     assert ".product-toolbar" in css
     assert ".product-toolbar__actions" in css
+    assert ".workbench-header" in css
+    assert ".workbench-header__actions" in css
+    assert ".workbench-qwen-button" in css
+    assert ".workbench-collapse-button" in css
+    assert ".sidebar.is-collapsed .workbench-body" in css
+    assert "height: 66px;" in css
+    assert "border-radius: 24px;" in css
     assert ".product-toolbar .environment-panel .environment-summary" in css
     assert ".environment-alert-dot" in css
     assert ".profile-action__label" in css
     assert ".map-layer-button__label" in css
     assert ".map-legend" in css
+    assert "[hidden]" in css
+    assert "display: none !important;" in css
+
+    shell_start = css.index("/* 0830 unified route workspace shell */")
+    shell_css = css[shell_start:]
+    sidebar_start = shell_css.index(".sidebar {")
+    sidebar_block = shell_css[sidebar_start : shell_css.index("}", sidebar_start)]
+    collapsed_map = shell_css.index(".app-shell:has(.sidebar.is-collapsed) .map-wrap")
+    map_start = shell_css.index("\n.map-wrap {", collapsed_map) + 1
+    map_block = shell_css[map_start : shell_css.index("}", map_start)]
+
+    assert "grid-template-columns: minmax(0, 1fr);" in shell_css
+    assert "position: absolute;" in sidebar_block
+    assert "left: 16px;" in sidebar_block
+    assert "border: 0;" in sidebar_block
+    assert "margin: 0;" in map_block
+    assert "border-radius: 0;" in map_block
+
+
+def test_route_detail_uses_a_vertical_shell_with_the_action_at_the_bottom() -> None:
+    css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
+    dock_start = css.index(".route-dock.route-dock--detail {")
+    dock_block = css[dock_start : css.index("}", dock_start)]
+    head_start = css.index(".route-dock--detail .route-dock__head {")
+    head_block = css[head_start : css.index("}", head_start)]
+    action_start = css.index(".route-dock__actions {")
+    action_block = css[action_start : css.index("}", action_start)]
+    mobile_start = css.index("@media (max-width: 980px)", dock_start)
+    mobile_end = css.index("@media (max-width: 500px)", mobile_start)
+    mobile_detail = css[mobile_start:mobile_end]
+
+    assert "display: flex;" in dock_block
+    assert "flex-direction: column;" in dock_block
+    assert "left: 436px;" in dock_block
+    assert "right: auto;" in dock_block
+    assert "border: 0;" in dock_block
+    assert "flex-direction: row;" in head_block
+    assert "bottom: 0;" in action_block
+    assert "z-index: 460;" in mobile_detail
 
 
 def test_navigation_shell_uses_a_short_manual_start_flow() -> None:
@@ -208,7 +293,7 @@ def test_navigation_shell_uses_a_short_manual_start_flow() -> None:
     assert "定位精度" not in html
 
 
-def test_glass_shell_keeps_primary_controls_touch_friendly_and_responsive() -> None:
+def test_workbench_shell_keeps_primary_controls_touch_friendly_and_responsive() -> None:
     css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
 
     primary_actions = css[
@@ -222,7 +307,8 @@ def test_glass_shell_keeps_primary_controls_touch_friendly_and_responsive() -> N
     assert '.route-dock__exposure-card[data-status="partial"]' in css
     assert '.route-dock__exposure-card[data-status="stale"]' in css
     assert '.route-dock__exposure-card[data-status="no_data"]' in css
-    assert "backdrop-filter" in css
+    assert ".sidebar.is-collapsed" in css
+    assert ".app-shell:has(.sidebar.is-collapsed)" in css
     assert "@media (min-width: 981px) and (max-width: 1180px)" in css
     assert "@media (max-width: 980px)" in css
     assert "@media (max-width: 520px)" in css
@@ -233,7 +319,7 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260830-ui-4"
+    release = "v=20260830-ui-6"
     assert f"./styles/main.css?{release}" in html
     assert f"./styles/recommendation.css?{release}" in html
     assert f"./src/main.js?{release}" in html
@@ -319,11 +405,13 @@ def test_startup_does_not_draw_full_route_or_entry_layers() -> None:
     assert "showSingleRoute" in main_js
 
 
-def test_recommendation_home_keeps_browse_route_previews() -> None:
+def test_recommendation_home_disables_browse_route_previews_by_default() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
 
     assert "if (resultRoutes.length)" in main_js
+    assert "const RECOMMENDATION_MAP_CARDS_ENABLED = false;" in main_js
     assert "planner.showBrowsePreviews();" in main_js
+    assert "clearRouteResults(map);" in main_js
 
 
 def test_product_shell_separates_recommendation_from_compact_route_browsing() -> None:
@@ -337,7 +425,8 @@ def test_product_shell_separates_recommendation_from_compact_route_browsing() ->
         "zoneFilter",
         "sportModeTabs",
         "distanceFilter",
-        "routeSelect",
+        "browseRouteList",
+        "browseRouteEmpty",
     ]:
         assert f'id="{element_id}"' in html
 
@@ -362,12 +451,11 @@ def test_product_shell_separates_recommendation_from_compact_route_browsing() ->
     assert "navigationModeSummary" in html
     assert "startSportButton" in html
     assert "filterCandidateRoutes" in route_ui_js
-    assert "onShowRoute" in route_ui_js
     assert "onNavigate" in route_ui_js
     assert "selectBestRoute" in route_ui_js
-    assert "renderRouteSelect" in route_ui_js
+    assert "renderBrowseRouteList" in route_ui_js
     assert "data-route-mode" in html
-    assert "onShowRoute" in route_ui_js
+    assert "createRouteCard" in route_ui_js
     assert "updateModeCounts(catalog, controls)" in route_ui_js
     assert (
         'tab.querySelector("span").textContent = `${routes.length} 条`;' in route_ui_js
@@ -393,9 +481,8 @@ def test_product_tabs_and_sport_filters_expose_complete_accessibility_state() ->
     assert "aria-selected" in main_js
     assert 'event.key === "ArrowRight"' in main_js
     assert 'setAttribute("aria-pressed"' in route_ui_js
-    assert 'element("h2", "recommendation-panel__title"' in (
-        WEB_ROOT / "src" / "recommendation-ui.js"
-    ).read_text(encoding="utf-8")
+    assert 'id="workbenchTitle"' in html
+    assert 'id="workbenchQwenButton"' in html
 
 
 def test_small_screen_uses_full_map_with_overlay_drawer_and_visible_action() -> None:
@@ -405,8 +492,9 @@ def test_small_screen_uses_full_map_with_overlay_drawer_and_visible_action() -> 
     assert "position: fixed" in mobile_css
     assert "height: 100dvh" in mobile_css
     assert "inset: 0" in mobile_css
-    assert "max-height: min(56dvh, 520px)" in mobile_css
-    assert ".recommendation-route__navigate" in mobile_css
+    assert "max-height: min(76dvh, 680px)" in mobile_css
+    assert ".browse-controls .two-columns" in mobile_css
+    assert ".route-dock__navigate" in css
     assert "position: sticky" in mobile_css
 
 
@@ -419,18 +507,21 @@ def test_preference_filters_use_real_nearby_pois_only() -> None:
     assert "route.preference_hits" not in route_ui_js
 
 
-def test_route_browser_uses_single_select_and_updates_preview_with_filters() -> None:
+def test_route_browser_uses_shared_cards_and_updates_preview_with_filters() -> None:
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
 
-    assert 'id="routeSelect"' in html
+    assert 'id="routeSelect"' not in html
+    assert 'id="browseRouteList"' in html
+    assert 'id="browseRouteEmpty"' in html
     assert 'id="routeTabs"' not in html
     assert 'id="resultTabs"' not in html
     assert "地图中的路线" in html
-    assert "selectBestRoute" in route_ui_js
-    assert "options.onShowRoute(route, state.filters.preferences)" in route_ui_js
-    assert "renderRouteSelect" in route_ui_js
+    assert "createRouteCard" in route_ui_js
+    assert "options.onRouteMetrics?.(route)" in route_ui_js
+    assert "restoreBrowseOverview()" in route_ui_js
+    assert "renderBrowseRouteList" in route_ui_js
     assert "initializeRouteSelection" in route_ui_js
     assert (
         'controls.zoneFilter.addEventListener("change", refreshPreview)' in route_ui_js
@@ -439,7 +530,8 @@ def test_route_browser_uses_single_select_and_updates_preview_with_filters() -> 
         'controls.distanceFilter.addEventListener("change", refreshPreview)'
         in route_ui_js
     )
-    assert "onShowRoute(route, selectedPreferences)" in main_js
+    assert "onPreviewRoutes(routes, onSelectRoute, onPreviewRoute)" in main_js
+    assert "planner.restoreBrowseOverview()" in main_js
     assert (
         "showSingleRoute(map, feature, data.entries, data.pois, selectedPreferences)"
         in main_js
@@ -458,7 +550,7 @@ def test_map_draws_a_thin_single_route_with_landmark_markers() -> None:
     assert "Math.min(3" in map_js
     assert "weight: 4" in map_js
     assert ".amap-route-marker" in css
-    assert ".route-picker" in css
+    assert ".amap-route-option" in css
 
 
 def test_map_uses_route_shape_and_real_waypoint_coordinates() -> None:
@@ -494,6 +586,18 @@ def test_selected_route_layer_stays_above_the_xuhui_boundary() -> None:
     ]
     assert "zIndex: 30" in boundary_block
     assert "zIndex: active ? 100 : 70" in route_block
+
+
+def test_xuhui_boundary_uses_the_logo_blue_with_a_lighter_line_weight() -> None:
+    map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
+    boundary_block = map_js[
+        map_js.index("export function drawBoundary") : map_js.index(
+            "export function showRouteResults"
+        )
+    ]
+
+    assert 'strokeColor: "#0b2856"' in boundary_block
+    assert "strokeWeight: 4" in boundary_block
 
 
 def test_web_loads_pois_and_supports_manual_navigation_controls() -> None:
@@ -540,15 +644,19 @@ def test_web_loads_pois_and_supports_manual_navigation_controls() -> None:
     assert "containerToLngLat" in map_js
 
 
-def test_sidebar_route_picker_does_not_depend_on_an_internal_scrolling_route_list() -> (
-    None
-):
+def test_sidebar_route_picker_uses_an_independent_scrolling_route_list() -> None:
     css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
     selection_block = css[
         css.index(".route-selection-view.active {") : css.index(".field-grid {")
     ]
+    list_start = css.index(".browse-route-list {")
+    list_block = css[list_start : css.index("}", list_start)]
 
-    assert "minmax(190px, 1fr)" not in selection_block
+    assert "grid-template-rows: max-content max-content minmax(0, 1fr);" in selection_block
+    assert "overflow: hidden;" in selection_block
+    assert "min-height: 0;" in list_block
+    assert "grid-row: 2;" in list_block
+    assert "overflow-y: auto;" in list_block
 
 
 def test_mobile_inline_navigation_expands_map_to_avoid_route_dock_overlap() -> None:
@@ -574,8 +682,8 @@ def test_route_selection_preserves_content_rows_before_scrolling() -> None:
     ]
 
     assert "flex: 1 1 0;" in selection_block
-    assert "grid-template-rows: max-content max-content;" in selection_block
-    assert "overflow-y: auto;" in selection_block
+    assert "grid-template-rows: max-content max-content minmax(0, 1fr);" in selection_block
+    assert "overflow: hidden;" in selection_block
 
 
 def test_map_module_uses_amap_and_keeps_community_nodes_result_scoped() -> None:

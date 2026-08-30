@@ -153,8 +153,8 @@ export function drawBoundary(mapContext, boundary) {
     getPolygon: (_feature, lnglats) =>
       new AMap.Polygon({
         path: lnglats,
-        strokeColor: "#1677ff",
-        strokeWeight: 5,
+        strokeColor: "#0b2856",
+        strokeWeight: 4,
         strokeOpacity: 0.96,
         fillColor: "#dcecff",
         fillOpacity: 0.16,
@@ -170,7 +170,12 @@ export function drawBoundary(mapContext, boundary) {
   return layer;
 }
 
-export function showRoutePreviews(mapContext, routes, onSelectRoute = () => {}) {
+export function showRoutePreviews(
+  mapContext,
+  routes,
+  onSelectRoute = () => {},
+  onPreviewRoute = () => {},
+) {
   clearRouteResults(mapContext);
   const markerGroups = new Map();
 
@@ -193,10 +198,13 @@ export function showRoutePreviews(mapContext, routes, onSelectRoute = () => {}) 
       extData: { routeId: properties.route_id, layerRole: "preview" },
     });
     mapContext.amap.add(line);
+    line.__routeId = properties.route_id;
+    line.on?.("mouseover", () => onPreviewRoute(properties.route_id));
+    line.on?.("mouseout", () => onPreviewRoute(null));
     mapContext.routePreviewLayers.push(line);
 
     const position = locationPosition(properties.start_location, path[0]);
-    const marker = createRoutePreviewMarker(mapContext, route, position, onSelectRoute);
+    const marker = createRoutePreviewMarker(mapContext, route, position, onSelectRoute, onPreviewRoute);
     mapContext.amap.add(marker);
     const groupKey = `${Number(position[0]).toFixed(6)},${Number(position[1]).toFixed(6)}`;
     const group = markerGroups.get(groupKey) || [];
@@ -206,7 +214,13 @@ export function showRoutePreviews(mapContext, routes, onSelectRoute = () => {}) 
 
   for (const markers of markerGroups.values()) {
     markers.forEach((marker, index) => {
-      mapContext.routePreviewMarkers.push({ marker, index, count: markers.length });
+      mapContext.routePreviewMarkers.push({
+        marker,
+        index,
+        count: markers.length,
+        routeId: marker.__routeId,
+        content: marker.__routePreviewContent,
+      });
     });
   }
   applyRoutePreviewOffsets(mapContext);
@@ -575,7 +589,7 @@ function createRouteMarker(mapContext, spec) {
   });
 }
 
-function createRoutePreviewMarker(mapContext, route, position, onSelectRoute) {
+function createRoutePreviewMarker(mapContext, route, position, onSelectRoute, onPreviewRoute) {
   const model = routePreviewCardModel(route);
   const button = document.createElement("button");
   button.type = "button";
@@ -595,8 +609,12 @@ function createRoutePreviewMarker(mapContext, route, position, onSelectRoute) {
     event.stopPropagation();
     onSelectRoute(model.routeId);
   });
+  button.addEventListener("mouseenter", () => onPreviewRoute(model.routeId));
+  button.addEventListener("mouseleave", () => onPreviewRoute(null));
+  button.addEventListener("focus", () => onPreviewRoute(model.routeId));
+  button.addEventListener("blur", () => onPreviewRoute(null));
 
-  return new mapContext.AMap.Marker({
+  const marker = new mapContext.AMap.Marker({
     position,
     content: button,
     anchor: "bottom-center",
@@ -604,6 +622,9 @@ function createRoutePreviewMarker(mapContext, route, position, onSelectRoute) {
     zIndex: 92,
     extData: { routeId: model.routeId, layerRole: "preview-option" },
   });
+  marker.__routeId = model.routeId;
+  marker.__routePreviewContent = button;
+  return marker;
 }
 
 function applyRoutePreviewOffsets(mapContext) {
@@ -657,6 +678,32 @@ export function clearRouteResults(mapContext) {
   mapContext.entryLayers = [];
   mapContext.poiLayers = [];
   resetRecommendationMapState(mapContext.recommendationMapState);
+}
+
+export function highlightRoutePreview(mapContext, routeId = null) {
+  const activeRouteId = String(routeId || "");
+  for (const line of mapContext.routePreviewLayers || []) {
+    const active = line.__routeId === activeRouteId;
+    const muted = Boolean(activeRouteId) && !active;
+    setPreviewLineOptions(line, {
+      strokeWeight: active ? 6 : muted ? 3 : 4,
+      strokeOpacity: active ? 0.9 : muted ? 0.12 : 0.34,
+      zIndex: active ? 90 : muted ? 60 : 64,
+    });
+  }
+  for (const preview of mapContext.routePreviewMarkers || []) {
+    const active = preview.routeId === activeRouteId;
+    preview.content?.classList?.toggle("is-previewed", active);
+    preview.content?.setAttribute("aria-current", active ? "true" : "false");
+  }
+}
+
+function setPreviewLineOptions(line, options) {
+  if (typeof line.setOptions === "function") {
+    line.setOptions(options);
+    return;
+  }
+  Object.assign(line.options || {}, options);
 }
 
 export function startNavigationSession(mapContext, onPick) {

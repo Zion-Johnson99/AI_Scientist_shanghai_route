@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { createRecommendationMapController } from "../web/src/map.js";
+import { createRecommendationMapController, routePreviewCardModel } from "../web/src/map.js";
 
 const routes = [
   createRoute("XH_WALK_0001", 121.42),
@@ -60,7 +61,7 @@ test("快速移过多条路线时，迟到的离开事件不会清除最后路�
   assert.deepEqual(routeStates(mapContext), ["overview", "overview", "overview"]);
 });
 
-test("点击路线聚焦单线，返回总览后恢复全部路线视野", () => {
+test("关闭推荐详情后恢复原三路线顺序与总览视野", () => {
   const { mapContext, fitViews } = createMapContext();
   const controller = createRecommendationMapController(mapContext);
   controller.showRoutes(routes);
@@ -76,8 +77,40 @@ test("点击路线聚焦单线，返回总览后恢复全部路线视野", () =>
   const overview = controller.showOverview();
   assert.equal(overview.mapMode, "overview");
   assert.equal(overview.selectedRouteId, null);
+  assert.deepEqual(overview.recommendedRouteIds, routes.map((route) => route.properties.route_id));
   assert.deepEqual(routeStates(mapContext), ["overview", "overview", "overview"]);
   assert.deepEqual(fitViews.at(-1).overlays, routeMainLayers(mapContext));
+});
+
+test("浏览和推荐公用的地图小卡只显示名称和公里数", () => {
+  const model = routePreviewCardModel({
+    ...routes[0],
+    properties: {
+      ...routes[0].properties,
+      route_name: "滨江慢行",
+      distance_m: 868,
+    },
+  });
+
+  assert.equal(model.distanceText, "0.87 公里");
+  assert.equal(model.ariaLabel, "滨江慢行，0.87 公里");
+  assert.equal("pm25Text" in model, false);
+  assert.equal("metaText" in model, false);
+});
+
+test("详情关闭按来源恢复推荐总览或当前浏览筛选总览", () => {
+  const routeUiSource = readFileSync(new URL("../web/src/route-ui.js", import.meta.url), "utf8");
+  const mainSource = readFileSync(new URL("../web/src/main.js", import.meta.url), "utf8");
+
+  assert.ok(routeUiSource.includes("restoreBrowseOverview("), "浏览控制器缺少 restoreBrowseOverview()");
+  assert.match(mainSource, /onClose\s*\(\s*\{\s*source\s*,\s*routeId\s*\}\s*\)/, "详情关闭回调缺少 source/routeId");
+  assert.match(
+    mainSource,
+    /if\s*\(source === "recommendation"\)\s*\{\s*uiState\.productView = "recommendation";\s*uiState\.chatOpen = false;\s*renderProductView\(\);/s,
+    "推荐详情关闭后未显式恢复推荐结果界面",
+  );
+  assert.ok(mainSource.includes("recommendationMap.showOverview("), "推荐详情关闭未恢复三路线总览");
+  assert.ok(mainSource.includes("planner.restoreBrowseOverview("), "浏览详情关闭未恢复当前筛选总览");
 });
 
 test("地图路线事件通过明确回调同步卡片状态", () => {

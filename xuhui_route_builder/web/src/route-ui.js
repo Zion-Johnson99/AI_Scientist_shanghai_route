@@ -1,3 +1,5 @@
+import { createRouteCard, routeCardModel } from "./route-card.js";
+
 const MODE_LABELS = {
   run: "跑步",
   walk: "步行",
@@ -12,6 +14,8 @@ export function renderRoutePlanner(catalog, options) {
 
   const state = {
     selectedRouteId: "",
+    hoveredRouteId: null,
+    listScrollTop: 0,
     filters: readSelectionFilters(controls),
     filteredRoutes: [],
     navigationMode: "walk",
@@ -31,6 +35,7 @@ export function renderRoutePlanner(catalog, options) {
     showBrowse() {
       controls.selectionView.hidden = false;
       controls.navigationView.hidden = true;
+      renderBrowseRouteList(state, controls, options);
       renderSelectionPreview(state.filteredRoutes, catalog, state, controls, options);
     },
     showBrowsePreviews() {
@@ -39,8 +44,18 @@ export function renderRoutePlanner(catalog, options) {
     selectRoute(routeId) {
       const route = findRoute(catalog, routeId);
       if (!route) return null;
-      showRoute(route, catalog, state, controls, options);
+      showRoute(route, state, controls, options);
       return route;
+    },
+    restoreBrowseOverview() {
+      controls.selectionView.hidden = false;
+      controls.navigationView.hidden = true;
+      renderBrowseRouteList(state, controls, options);
+      renderSelectionPreview(state.filteredRoutes, catalog, state, controls, options);
+      return [...state.filteredRoutes];
+    },
+    setHoveredRoute(routeId) {
+      setHoveredRoute(state, controls, routeId);
     },
     openNavigation(routeId, origin = null) {
       const route = findRoute(catalog, routeId);
@@ -128,12 +143,8 @@ function bindSelectionControls(catalog, state, controls, options) {
   };
   controls.zoneFilter.addEventListener("change", refreshPreview);
   controls.distanceFilter.addEventListener("change", refreshPreview);
-
-  controls.routeSelect.addEventListener("change", () => {
-    const route = findRoute(state.filteredRoutes, controls.routeSelect.value);
-    if (route) {
-      showRoute(route, catalog, state, controls, options);
-    }
+  controls.routeList.addEventListener("scroll", () => {
+    state.listScrollTop = controls.routeList.scrollTop;
   });
 }
 
@@ -318,57 +329,65 @@ function initializeRouteSelection(catalog, state, controls, options) {
   state.filters = readSelectionFilters(controls);
   state.filteredRoutes = filterCandidateRoutes(catalog, state.filters);
   state.selectedRouteId = "";
-  renderRouteSelect(state.filteredRoutes, controls, "");
-  controls.summary.textContent = "";
-  controls.detail.innerHTML = "";
+  state.hoveredRouteId = null;
+  state.listScrollTop = 0;
+  renderBrowseRouteList(state, controls, options);
   options.onRouteMetrics?.(null);
   renderSelectionPreview(state.filteredRoutes, catalog, state, controls, options);
 }
 
-function renderRouteSelect(routes, controls, selectedRouteId) {
-  controls.routeSelect.innerHTML = "";
-  const placeholder = document.createElement("option");
-  placeholder.value = "";
-  placeholder.textContent = routes.length ? "请选择一条路线" : "无匹配路线";
-  placeholder.disabled = routes.length > 0;
-  placeholder.selected = !selectedRouteId;
-  controls.routeSelect.appendChild(placeholder);
-  for (const route of routes) {
-    const option = document.createElement("option");
-    option.value = route.route_id;
-    option.textContent = routeOptionLabel(route);
-    option.selected = route.route_id === selectedRouteId;
-    controls.routeSelect.appendChild(option);
+function renderBrowseRouteList(state, controls, options) {
+  controls.routeList.replaceChildren();
+  controls.routeOptionCount.textContent = `${state.filteredRoutes.length} 条路线`;
+  controls.routeEmpty.hidden = state.filteredRoutes.length > 0;
+  controls.routeList.hidden = state.filteredRoutes.length === 0;
+  for (const route of state.filteredRoutes) {
+    const model = routeCardModel(route, {
+      environment: options.getRouteEnvironment?.(route.route_id),
+      selected: route.route_id === state.selectedRouteId,
+    });
+    const card = createRouteCard(model, {
+      onSelect(routeId) {
+        const selected = findRoute(state.filteredRoutes, routeId);
+        if (selected) showRoute(selected, state, controls, options);
+      },
+      onPreview(routeId) {
+        setHoveredRoute(state, controls, routeId);
+        options.onPreviewRoute?.(routeId);
+      },
+    });
+    if (route.route_id === state.hoveredRouteId) card.classList.add("is-previewed");
+    controls.routeList.append(card);
   }
-  controls.routeSelect.disabled = routes.length === 0;
-  controls.routeOptionCount.textContent = `${routes.length} 条候选路线`;
+  controls.routeList.scrollTop = state.listScrollTop;
 }
 
-function showRoute(route, catalog, state, controls, options) {
+function showRoute(route, state, controls, options) {
+  state.listScrollTop = controls.routeList.scrollTop;
   state.selectedRouteId = route.route_id;
   state.navigationMode = route.route_mode;
-  controls.routeSelect.value = route.route_id;
-  renderDetail(route, controls.detail);
+  renderBrowseRouteList(state, controls, options);
   invalidateNavigationPlan(state, controls, options, "");
-  controls.summary.textContent = "";
-  options.onShowRoute(route, state.filters.preferences);
+  options.onSelect?.(route.route_id);
   options.onRouteMetrics?.(route);
 }
 
-function renderEmptySelection(controls, options, message) {
-  controls.summary.textContent = message;
-  controls.detail.innerHTML = `<div class="empty-state">${escapeHtml(message)}</div>`;
-  controls.routeSelect.value = "";
-  options.onClearRoutes();
-  options.onRouteMetrics?.(null);
+function setHoveredRoute(state, controls, routeId) {
+  state.hoveredRouteId = findRoute(state.filteredRoutes, routeId) ? routeId : null;
+  for (const card of controls.routeList.children) {
+    card.classList.toggle("is-previewed", card.dataset.routeId === state.hoveredRouteId);
+  }
 }
 
 function renderSelectionPreview(routes, catalog, state, controls, options) {
   options.onPreviewRoutes?.(routes, (routeId) => {
     const route = findRoute(routes, routeId);
     if (route) {
-      showRoute(route, catalog, state, controls, options);
+      showRoute(route, state, controls, options);
     }
+  }, (routeId) => {
+    setHoveredRoute(state, controls, routeId);
+    options.onPreviewRoute?.(routeId);
   });
 }
 
@@ -383,7 +402,7 @@ function applyNavigationRouteSelection(catalog, routeId, state, controls, option
     || state.plannedNavigationPlan;
   const reset = resetPlannedNavigationForRouteChange();
   invalidateNavigationPlan(state, controls, options, hadPlan ? reset.statusText : "");
-  renderDetail(route, controls.detail);
+  renderDetail(route, controls.navigationRouteDetail);
   renderNavigationMode(route, controls);
   if (!hadPlan) {
     controls.navigationStatus.textContent = state.navigationPoints.origin || controls.startInput.value.trim()
@@ -479,11 +498,6 @@ function renderNavigationPrimaryAction(status, controls) {
   controls.startSportButton.disabled = action.previewDisabled;
 }
 
-export function routeOptionLabel(route) {
-  const shape = route.route_shape === "strict_loop" ? "环线" : "单程";
-  return `${route.route_name}｜${route.region_zone}｜${(Number(route.distance_m || 0) / 1000).toFixed(1)} km｜${shape}`;
-}
-
 function renderDetail(route, detail) {
   const startName = route.start_location?.name || "路线起点";
   const endName = route.end_location?.name || "路线终点";
@@ -568,10 +582,9 @@ function getControls() {
     sportModeTabs: [...document.querySelectorAll("#sportModeTabs [data-route-mode]")],
     distanceFilter: document.querySelector("#distanceFilter"),
     resetButton: document.querySelector("#resetButton"),
-    summary: document.querySelector("#routeSummary"),
-    routeSelect: document.querySelector("#routeSelect"),
     routeOptionCount: document.querySelector("#routeOptionCount"),
-    detail: document.querySelector("#routeDetail"),
+    routeList: document.querySelector("#browseRouteList"),
+    routeEmpty: document.querySelector("#browseRouteEmpty"),
     navigationBackButton: document.querySelector("#navigationBackButton"),
     navigationRouteName: document.querySelector("#navigationRouteName"),
     navigationRouteDetail: document.querySelector("#navigationRouteDetail"),

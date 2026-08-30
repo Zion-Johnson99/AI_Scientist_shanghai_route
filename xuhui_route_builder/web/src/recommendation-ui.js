@@ -1,4 +1,5 @@
 import { normalizeHealthProfile } from "./profile-store.js";
+import { createRouteCard, routeCardModel } from "./route-card.js";
 
 export function buildUserProfile({ questionnaire, answers, profile, location, now = () => new Date() }) {
   const distance = distanceOption(questionnaire, answers?.route_mode, answers?.distance_range);
@@ -170,10 +171,14 @@ export function buildRecommendationViewModel(result, currentRouteId = null) {
     };
   }
   const selectedRouteId = routes.some((route) => route.routeId === currentRouteId) ? currentRouteId : null;
+  const explanationSource = String(
+    result?.decision_source || (result?.status === "degraded" ? "python_fallback" : "qwen"),
+  );
   const stableRoutes = routes.map((route, index) => ({
     ...route,
     isPrimary: index === 0,
     isSelected: route.routeId === selectedRouteId,
+    explanationSource,
   }));
   return {
     kind: result.status === "degraded" ? "degraded" : "result",
@@ -198,6 +203,7 @@ export function createRecommendationUI({
   onSelectRoute,
   onReturnRouteOverview,
   onRestartRecommendation,
+  onChatStateChange,
   shouldSelectRoute = () => true,
 } = {}) {
   if (!container) {
@@ -219,12 +225,13 @@ export function createRecommendationUI({
   let intentPatch = {};
   let intentReady = false;
   let chatError = "";
+  let preChatState = null;
   const answers = defaultAnswers(questionnaire);
 
   const controller = {
     showQuestionnaire() {
       requestRevision += 1;
-      viewState = "questionnaire";
+      switchProductView("questionnaire");
       currentRouteId = null;
       onReturnRouteOverview?.();
       render();
@@ -240,7 +247,7 @@ export function createRecommendationUI({
       currentResult = null;
       currentRouteId = null;
       hoveredRouteId = null;
-      viewState = "questionnaire";
+      switchProductView("questionnaire");
       errorMessage = "";
       chatBusy = false;
       chatDraft = "";
@@ -252,13 +259,13 @@ export function createRecommendationUI({
       onRestartRecommendation?.();
     },
     showLoading() {
-      viewState = "loading";
+      switchProductView("loading");
       render();
     },
     showResult(result) {
       currentResult = result;
       currentRouteId = null;
-      viewState = "result";
+      switchProductView("result");
       render();
       const model = buildRecommendationViewModel(result);
       if (["result", "degraded"].includes(model.kind) && shouldSelectRoute()) {
@@ -267,7 +274,7 @@ export function createRecommendationUI({
     },
     showError(error) {
       errorMessage = String(error?.message || error || "推荐服务暂时不可用。");
-      viewState = "error";
+      switchProductView("error");
       render();
     },
     setQuestionnaire(value) {
@@ -315,6 +322,12 @@ export function createRecommendationUI({
     getAnswers() {
       return { ...answers, interests: [...answers.interests] };
     },
+    openChat,
+    closeChat,
+    isChatOpen() {
+      return viewState === "chat";
+    },
+    returnToOverview,
   };
 
   container.addEventListener("keydown", (event) => {
@@ -325,27 +338,53 @@ export function createRecommendationUI({
 
   function returnToOverview() {
     currentRouteId = null;
+    if (preChatState) preChatState.currentRouteId = null;
     hoveredRouteId = null;
     render();
     onReturnRouteOverview?.();
   }
 
+  function openChat() {
+    if (viewState === "chat") return;
+    preChatState = {
+      viewState,
+      currentRouteId,
+      scrollTop: Number(container.scrollTop || 0),
+    };
+    viewState = "chat";
+    render();
+    container.scrollTop = 0;
+    onChatStateChange?.(true);
+  }
+
+  function closeChat() {
+    if (viewState !== "chat") return;
+    intentRevision += 1;
+    chatBusy = false;
+    const previous = preChatState || {
+      viewState: "questionnaire",
+      currentRouteId: null,
+      scrollTop: 0,
+    };
+    preChatState = null;
+    viewState = previous.viewState;
+    currentRouteId = previous.currentRouteId;
+    render();
+    container.scrollTop = previous.scrollTop;
+    onChatStateChange?.(false);
+  }
+
+  function switchProductView(nextView) {
+    const chatWasOpen = viewState === "chat";
+    viewState = nextView;
+    if (!chatWasOpen) return;
+    preChatState = null;
+    onChatStateChange?.(false);
+  }
+
   function render() {
     const root = element("section", "recommendation-panel");
     root.setAttribute("aria-label", "个性化路线推荐");
-    root.append(panelHeader({
-      isChat: viewState === "chat",
-      onOpenChat: () => {
-        viewState = "chat";
-        render();
-      },
-      onCloseChat: () => {
-        intentRevision += 1;
-        chatBusy = false;
-        viewState = "questionnaire";
-        render();
-      },
-    }));
     if (viewState === "questionnaire") {
       root.append(renderQuestionnaire());
     } else if (viewState === "chat") {
@@ -434,8 +473,24 @@ export function createRecommendationUI({
 
   function renderChat() {
     const workspace = element("section", "recommendation-chat");
+    const close = element("button", "recommendation-chat__close", "×");
+    close.type = "button";
+    close.setAttribute("aria-label", "关闭千问聊天");
+    close.setAttribute("title", "关闭千问聊天");
+    close.addEventListener("click", closeChat);
+    workspace.append(close);
+
+    const scroll = element("div", "recommendation-chat__scroll");
+    scroll.append(element(
+      "p",
+      "recommendation-chat__notice",
+      "请避免填写敏感个人信息，路线细节请结合地图与现场情况确认。",
+    ));
     if (!chatHistory.length) {
-      workspace.append(element("p", "recommendation-chat__prompt", "告诉千问，你今天想走一条怎样的路线？"));
+      workspace.className += " is-empty";
+      const starter = element("div", "recommendation-chat__starter");
+      starter.append(element("p", "recommendation-chat__prompt", "你今天想走一条怎样的路线？"));
+      starter.append(element("p", "recommendation-chat__suggestions-label", "推荐提问"));
       const examples = element("div", "recommendation-chat__examples");
       chatExamples().forEach((example) => {
         const button = element("button", "recommendation-chat__example", example);
@@ -446,18 +501,20 @@ export function createRecommendationUI({
         });
         examples.append(button);
       });
-      workspace.append(examples);
+      starter.append(examples);
+      scroll.append(starter);
     } else {
       const messages = element("div", "recommendation-chat__messages");
+      messages.setAttribute("aria-live", "polite");
       chatHistory.forEach((message) => {
         messages.append(element("p", `recommendation-chat__message recommendation-chat__message--${message.role}`, message.content));
       });
-      workspace.append(messages);
+      scroll.append(messages);
     }
     if (chatError) {
       const warning = element("p", "recommendation-chat__error", chatError);
       warning.setAttribute("role", "alert");
-      workspace.append(warning);
+      scroll.append(warning);
     }
     if (intentReady) {
       const confirm = element("button", "recommendation-chat__confirm", "开始推荐");
@@ -471,8 +528,10 @@ export function createRecommendationUI({
           controller.showError(error);
         }
       });
-      workspace.append(confirm);
+      scroll.append(confirm);
     }
+    workspace.append(scroll);
+
     const form = element("form", "recommendation-chat__composer");
     const input = element("textarea", "recommendation-chat__input");
     input.setAttribute("aria-label", "描述路线需求");
@@ -483,6 +542,7 @@ export function createRecommendationUI({
     const send = element("button", "recommendation-chat__send", chatBusy ? "整理中…" : "发送");
     send.type = "submit";
     send.disabled = chatBusy;
+    send.setAttribute("aria-label", chatBusy ? "正在整理路线需求" : "发送路线需求");
     form.append(input, send);
     form.addEventListener("submit", handleIntentSubmit);
     workspace.append(form);
@@ -599,59 +659,25 @@ export function createRecommendationUI({
     model.routes.forEach((route, index) => {
       if (index === 0) region.append(element("h3", "recommendation-results__group", "首选路线"));
       if (index === 1) region.append(element("h3", "recommendation-results__group", "备选路线"));
-      region.append(routeCard(route, index));
+      region.append(renderRouteCard(route, index));
     });
     return region;
   }
 
-  function routeCard(route, index) {
-    const isHovered = route.routeId === hoveredRouteId;
-    const card = element("article", `recommendation-route${route.isSelected ? " is-selected" : ""}${isHovered ? " is-hovered" : ""}`);
-    card.tabIndex = 0;
-    card.setAttribute("aria-label", `查看路线 ${route.routeName}`);
-    const media = element("span", "recommendation-route__media");
-    media.setAttribute("aria-label", "路线图片区域");
-    const body = element("span", "recommendation-route__body");
-    const head = element("span", "recommendation-route__head");
-    const name = element("strong", "recommendation-route__name", route.routeName);
-    if (index === 0) {
-      head.append(element("span", "recommendation-route__badge", "首选"));
-    }
-    head.append(name);
-    body.append(head, element("span", "recommendation-route__journey", `${route.durationText} · ${route.distanceText} · ${route.pm25Text}`));
-    const selector = element("button", "recommendation-route__selector");
-    selector.type = "button";
-    selector.setAttribute("role", "radio");
-    selector.setAttribute("aria-checked", String(route.isSelected));
-    selector.setAttribute("aria-label", `选择路线 ${route.routeName}`);
-    card.append(media, body, selector);
-    card.addEventListener("mouseenter", () => {
-      hoveredRouteId = route.routeId;
-      onPreviewRoute?.(route.routeId, route.source);
+  function renderRouteCard(route, index) {
+    const model = routeCardModel(route.source, {
+      preferredLabel: route.isPrimary ? "首选" : "",
+      selected: route.isSelected,
     });
-    card.addEventListener("mouseleave", () => {
-      if (hoveredRouteId === route.routeId) hoveredRouteId = null;
-      onPreviewRoute?.(null, route.source);
+    const card = createRouteCard(model, {
+      onSelect: (routeId) => controller.selectRoute(routeId),
+      onPreview: (routeId) => {
+        hoveredRouteId = routeId || null;
+        onPreviewRoute?.(routeId, route.source);
+      },
     });
-    card.addEventListener("focus", () => {
-      hoveredRouteId = route.routeId;
-      onPreviewRoute?.(route.routeId, route.source);
-    });
-    card.addEventListener("blur", () => {
-      if (hoveredRouteId === route.routeId) hoveredRouteId = null;
-      onPreviewRoute?.(null, route.source);
-    });
-    const selectRoute = () => controller.selectRoute(route.routeId);
-    card.addEventListener("click", selectRoute);
-    card.addEventListener("keydown", (event) => {
-      if (!["Enter", " "].includes(event.key)) return;
-      event.preventDefault();
-      selectRoute();
-    });
-    selector.addEventListener("click", (event) => {
-      event.stopPropagation();
-      selectRoute();
-    });
+    card.dataset.recommendationRank = String(index + 1);
+    if (route.routeId === hoveredRouteId) card.className += " is-hovered";
     return card;
   }
 
@@ -678,18 +704,6 @@ export function createRecommendationUI({
 
   render();
   return controller;
-}
-
-function panelHeader({ isChat, onOpenChat, onCloseChat }) {
-  const header = element("header", "recommendation-panel__header");
-  header.append(element("h2", "recommendation-panel__title", isChat ? "问问千问" : "帮我推荐"));
-  const action = element("button", isChat ? "recommendation-panel__close" : "recommendation-panel__qwen", isChat ? "×" : "千");
-  action.type = "button";
-  action.setAttribute("aria-label", isChat ? "关闭千问聊天" : "问问千问");
-  action.setAttribute("title", isChat ? "关闭千问聊天" : "问问千问");
-  action.addEventListener("click", isChat ? onCloseChat : onOpenChat);
-  header.append(action);
-  return header;
 }
 
 function profileChoiceGroup({ label, options, selected, onChange, multiple = false }) {
@@ -803,10 +817,11 @@ function normalizeFinalRoute(finalRoute) {
 }
 
 function compactPm25(metric) {
+  if (metric?.status === "stale") return "PM2.5 数据更新中";
   const value = Number(metric?.value);
   if (!Number.isFinite(value)) return "PM2.5 暂无数据";
   const formatted = Number.isInteger(value) ? String(value) : value.toFixed(1);
-  return `PM2.5 ${formatted}`;
+  return `PM2.5 ${formatted} µg/m³`;
 }
 
 function chatExamples() {

@@ -14,7 +14,6 @@ import {
   startPlannedNavigation,
   resetNavigationForModeChange,
   resetPlannedNavigationForRouteChange,
-  routeOptionLabel,
   selectNavigationRoute,
 } from "../web/src/route-ui.js";
 import {
@@ -267,17 +266,13 @@ test("未勾选途经偏好时保留当前运动类型的全部候选路线", ()
   assert.ok(routes.every((item) => item.route_mode === "run"));
 });
 
-test("路线下拉项只包含名称、片区、距离和路线形态", () => {
-  assert.equal(
-    routeOptionLabel({
-      route_name: "东上澳塘滨水短线",
-      region_zone: "康健—桂江绿廊",
-      distance_m: 4338,
-      route_shape: "one_way",
-      validation_status: "accepted",
-    }),
-    "东上澳塘滨水短线｜康健—桂江绿廊｜4.3 km｜单程",
-  );
+test("普通浏览使用共享路线卡列表并保留筛选总览恢复接口", () => {
+  const source = readFileSync(new URL("../web/src/route-ui.js", import.meta.url), "utf8");
+
+  assert.match(source, /createRouteCard/);
+  assert.match(source, /browseRouteList/);
+  assert.match(source, /restoreBrowseOverview\(\)/);
+  assert.doesNotMatch(source, /routeSelect\b/);
 });
 
 test("路线界面使用手动出发地与导航预览回调", () => {

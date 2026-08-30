@@ -1,21 +1,18 @@
-const MODE_LABELS = {
-  walk: "步行",
-  run: "跑步",
-  bike: "骑行",
-};
+import { routeMediaFor } from "./route-media.js";
 
-const EXPOSURE_LABELS = {
-  pm25: "PM2.5",
-  pollen: "花粉",
-  noise: "噪声",
+const MODE_LABELS = { walk: "步行", run: "跑步", bike: "骑行" };
+const SHAPE_LABELS = {
+  strict_loop: "闭环路线",
+  loop: "环线路线",
+  one_way: "单向路线",
+  out_and_back: "折返路线",
 };
-
+const EXPOSURE_LABELS = { pm25: "PM2.5", pollen: "花粉", noise: "噪声" };
 const EXPOSURE_DETAILS = {
   pm25: "PM2.5 为沿路线汇总的 1 km 网格估计值。",
   pollen: "花粉为约 1 km 网格采样形成的当天风险指数。",
   noise: "噪声为约 100 m 路段的 0–100 风险代理。",
 };
-
 const STATUS_LABELS = {
   ok: "已更新",
   partial: "估计数据",
@@ -37,15 +34,23 @@ export function buildRouteDockModel(route, routeEnvironment) {
     key,
     buildExposureModel(key, routeEnvironment?.[key], routeEnvironment?.details?.[key]),
   ]));
+  const routeId = String(properties.route_id || "");
   return {
+    routeId,
     routeName: properties.route_name || "已选路线",
     routeMode: properties.route_mode || "walk",
     modeLabel: MODE_LABELS[properties.route_mode] || "户外运动",
     distanceText,
     durationText,
     journeyText: `${distanceText} · ${durationText}`,
+    shapeText: SHAPE_LABELS[properties.route_shape] || "路线形态待确认",
+    regionText: String(properties.region_zone || properties.area_name || "所在片区待确认"),
+    startName: routeEndpoint(properties, "start"),
+    endName: routeEndpoint(properties, "end"),
     exposures,
     waypoints: routeWaypoints(properties),
+    objectiveHighlights: buildObjectiveHighlights(properties),
+    media: routeMediaFor(routeId),
   };
 }
 
@@ -59,148 +64,240 @@ export function buildRouteDockSource(routeFeature, recommendationRoute) {
       distance_m: routeRecord.distance_m ?? routeFeature?.properties?.distance_m,
       duration_min: routeRecord.duration_min ?? routeFeature?.properties?.duration_min,
       route_shape: routeRecord.route_shape ?? routeFeature?.properties?.route_shape,
+      region_zone: routeRecord.region_zone ?? routeFeature?.properties?.region_zone,
+      start_location: routeRecord.start_location ?? routeFeature?.properties?.start_location,
+      end_location: routeRecord.end_location ?? routeFeature?.properties?.end_location,
       waypoint_names: routeRecord.waypoint_names ?? routeFeature?.properties?.waypoint_names,
       ordered_nodes: routeRecord.ordered_nodes ?? routeFeature?.properties?.ordered_nodes,
+      tags: routeRecord.tags ?? routeFeature?.properties?.tags,
+      nearby_pois: routeRecord.nearby_pois ?? routeFeature?.properties?.nearby_pois,
     },
   };
 }
 
+export function buildObjectiveHighlights(route) {
+  const properties = route?.properties || route || {};
+  const highlights = [];
+  const shape = SHAPE_LABELS[properties.route_shape];
+  if (shape) highlights.push(`路线形态：${shape}`);
+  const tags = cleanNames(properties.tags).slice(0, 3);
+  if (tags.length) highlights.push(`路线标签：${tags.join("、")}`);
+  const verifiedPois = cleanNames((properties.nearby_pois || [])
+    .filter((poi) => poi?.verification_status === "verified" && poi?.route_relation === "along_route")
+    .map((poi) => poi?.poi_name))
+    .slice(0, 3);
+  if (verifiedPois.length) highlights.push(`沿途已核验：${verifiedPois.join("、")}`);
+  return highlights.slice(0, 3);
+}
+
 export function createRouteDock(
   container = document.querySelector(".map-wrap"),
-  { onNavigate } = {},
+  { onNavigate, onClose } = {},
 ) {
-  if (!container) {
-    throw new Error("缺少地图容器，无法初始化路线信息条。");
-  }
+  if (!container) throw new Error("缺少地图容器，无法初始化路线详情。");
 
   const root = document.createElement("section");
   let activeRoute = null;
+  let activeSource = "browse";
+  let returnFocusTo = null;
   root.className = "route-dock route-dock--detail";
   root.hidden = true;
-  root.setAttribute("aria-label", "当前路线信息");
+  root.tabIndex = -1;
+  root.setAttribute("aria-label", "当前路线详情");
   root.innerHTML = `
-    <header class="route-dock__head">
-      <div class="route-dock__identity">
-        <span class="route-dock__mode" data-dock-mode></span>
-        <strong data-dock-route-name></strong>
-      </div>
-      <button class="route-dock__close" type="button" aria-label="关闭路线详情" data-dock-close>×</button>
-    </header>
-    <div class="route-dock__tabs" role="tablist" aria-label="路线数据切换">
-      <button class="active" type="button" role="tab" aria-selected="true" data-dock-tab="overview">概览</button>
-      <button type="button" role="tab" aria-selected="false" data-dock-tab="environment">环境</button>
-      <button type="button" role="tab" aria-selected="false" data-dock-tab="waypoints">途经点</button>
-    </div>
-    <div class="route-dock__panel active" role="tabpanel" data-dock-panel="overview">
-      <div class="route-dock__overview-grid">
-        <div class="route-dock__metric route-dock__metric--journey">
-          <span>距离 · 时间</span><strong data-dock-journey></strong>
+    <div class="route-dock__scroll">
+      <div class="route-dock__gallery" data-dock-gallery aria-label="路线图片"></div>
+      <header class="route-dock__head">
+        <div class="route-dock__identity">
+          <span class="route-dock__mode" data-dock-mode></span>
+          <strong data-dock-route-name></strong>
         </div>
-        <div class="route-dock__metric route-dock__metric--environment">
-          <span>PM2.5</span><strong data-dock-overview-pm25></strong>
-        </div>
-        <div class="route-dock__metric route-dock__metric--environment">
-          <span>花粉</span><strong data-dock-overview-pollen></strong>
-        </div>
-        <div class="route-dock__metric route-dock__metric--environment">
-          <span>噪声</span><strong data-dock-overview-noise></strong>
-        </div>
-      </div>
-      <section class="route-dock__recommendation" data-dock-recommendation hidden>
-        <h3>推荐亮点</h3>
-        <ul class="route-dock__bullet-list" data-dock-advantage-list></ul>
-        <h3>出行建议</h3>
-        <ul class="route-dock__bullet-list route-dock__bullet-list--suggestion" data-dock-suggestion-list></ul>
+        <button class="route-dock__close" type="button" aria-label="关闭路线详情" data-dock-close>×</button>
+      </header>
+      <section class="route-dock__facts" aria-label="路线数据">
+        ${factRow("时间", "duration")}
+        ${factRow("距离", "distance")}
+        ${factRow("路线形态", "shape")}
+        ${factRow("所在片区", "region")}
       </section>
-    </div>
-    <div class="route-dock__panel route-dock__environment" role="tabpanel" data-dock-panel="environment" hidden>
-      <div class="route-dock__exposure-grid">
-        ${exposureCard("pm25", "PM2.5")}
-        ${exposureCard("pollen", "花粉")}
-        ${exposureCard("noise", "噪声")}
-      </div>
-    </div>
-    <div class="route-dock__panel route-dock__waypoints" role="tabpanel" data-dock-panel="waypoints" hidden>
-      <ol data-dock-waypoint-list></ol>
+      <p class="route-dock__journey" data-dock-journey></p>
+      <section class="route-dock__path" aria-label="路线节点">
+        <dl class="route-dock__endpoints">
+          <div><dt>起点</dt><dd data-dock-start></dd></div>
+          <div><dt>终点</dt><dd data-dock-end></dd></div>
+        </dl>
+        <div class="route-dock__waypoints">
+          <h3>途经点</h3>
+          <ol data-dock-waypoint-list></ol>
+        </div>
+      </section>
+      <section class="route-dock__exposures" aria-label="环境数据">
+        <h3>沿途环境</h3>
+        <div class="route-dock__exposure-list">
+          ${exposureRow("pm25", "PM2.5")}
+          ${exposureRow("pollen", "花粉")}
+          ${exposureRow("noise", "噪声")}
+        </div>
+      </section>
+      <section class="route-dock__highlights" data-dock-objective hidden>
+        <h3>路线亮点</h3>
+        <ul class="route-dock__bullet-list" data-dock-objective-list></ul>
+      </section>
+      <p class="route-dock__degraded" data-dock-degraded role="status" hidden>千问解释暂未返回，当前展示已验证的客观路线信息。</p>
+      <section class="route-dock__recommendation" data-dock-recommendation hidden>
+        <div data-dock-advantages hidden>
+          <h3>推荐优点</h3>
+          <ul class="route-dock__bullet-list" data-dock-advantage-list></ul>
+        </div>
+        <div data-dock-suggestions hidden>
+          <h3>出行建议</h3>
+          <ul class="route-dock__bullet-list route-dock__bullet-list--suggestion" data-dock-suggestion-list></ul>
+        </div>
+      </section>
     </div>
     <footer class="route-dock__actions">
       <button type="button" class="route-dock__navigate" data-dock-navigate>前往起点</button>
-    </footer>
-  `;
+    </footer>`;
   container.appendChild(root);
 
-  const tabs = [...root.querySelectorAll("[data-dock-tab]")];
-  const panels = [...root.querySelectorAll("[data-dock-panel]")];
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => selectDockTab(tabs, panels, tab.dataset.dockTab));
-  });
-  root.querySelector("[data-dock-close]").addEventListener("click", () => {
+  function closeFromUser() {
+    if (root.hidden || !activeRoute) return;
+    const detail = { source: activeSource, routeId: routeIdOf(activeRoute) };
     root.hidden = true;
+    onClose?.(detail);
+    returnFocusTo?.focus?.();
+    returnFocusTo = null;
+  }
+
+  root.querySelector("[data-dock-close]").addEventListener("click", closeFromUser);
+  root.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || root.hidden) return;
+    event.preventDefault();
+    closeFromUser();
   });
   root.querySelector("[data-dock-navigate]").addEventListener("click", () => {
     if (!activeRoute || !onNavigate) return;
     try {
       const pending = onNavigate(activeRoute);
-      pending?.catch?.((error) => console.error("打开路线接驳失败", { error }));
+      pending?.catch?.((error) => console.error("打开路线接驳失败", {
+        routeId: routeIdOf(activeRoute),
+        error,
+      }));
     } catch (error) {
-      console.error("打开路线接驳失败", { error });
+      console.error("打开路线接驳失败", { routeId: routeIdOf(activeRoute), error });
     }
   });
 
   return {
     element: root,
-    show(route, routeEnvironment, recommendationSummary = null) {
+    show({
+      route,
+      environment,
+      source,
+      objectiveHighlights,
+      qwenAdvantages,
+      qwenSuggestions,
+      explanationSource,
+    } = {}) {
+      if (!route) throw new Error("缺少路线数据，无法打开路线详情。");
       activeRoute = route;
-      const model = buildRouteDockModel(route, routeEnvironment);
-      renderRouteDock(root, model, recommendationSummary);
-      selectDockTab(tabs, panels, "overview");
+      activeSource = source === "recommendation" ? "recommendation" : "browse";
+      returnFocusTo = document.activeElement || null;
+      renderRouteDock(root, buildRouteDockModel(route, environment), {
+        source: activeSource,
+        objectiveHighlights,
+        qwenAdvantages,
+        qwenSuggestions,
+        explanationSource,
+      });
       root.hidden = false;
+      root.focus?.();
     },
     hide() {
       root.hidden = true;
+      returnFocusTo = null;
     },
   };
 }
 
-function renderRouteDock(root, model, recommendationSummary) {
+function renderRouteDock(root, model, detail) {
   root.dataset.mode = model.routeMode;
+  root.dataset.source = detail.source;
   setText(root, "[data-dock-mode]", model.modeLabel);
   setText(root, "[data-dock-route-name]", model.routeName);
   setText(root, "[data-dock-journey]", model.journeyText);
+  setText(root, "[data-dock-duration]", model.durationText);
+  setText(root, "[data-dock-distance]", model.distanceText);
+  setText(root, "[data-dock-shape]", model.shapeText);
+  setText(root, "[data-dock-region]", model.regionText);
+  setText(root, "[data-dock-start]", model.startName);
+  setText(root, "[data-dock-end]", model.endName);
+  renderGallery(root.querySelector("[data-dock-gallery]"), model.media, model.routeName);
   for (const [key, exposure] of Object.entries(model.exposures)) {
-    setText(root, `[data-dock-overview-${key}]`, exposure.compactText);
     setText(root, `[data-dock-${key}-value]`, exposure.valueText);
     setText(root, `[data-dock-${key}-risk]`, exposure.riskLevel);
     setText(root, `[data-dock-${key}-status]`, exposure.statusLabel);
     setText(root, `[data-dock-${key}-detail]`, exposure.detail);
     root.querySelector(`[data-dock-exposure="${key}"]`).dataset.status = exposure.status;
   }
+  renderWaypointList(root.querySelector("[data-dock-waypoint-list]"), model.waypoints);
+  const objective = cleanSummaryItems(
+    detail.objectiveHighlights?.length ? detail.objectiveHighlights : model.objectiveHighlights,
+    3,
+  );
+  renderSectionList(root, "[data-dock-objective]", "[data-dock-objective-list]", objective);
+  renderRecommendation(root, detail);
+}
 
-  const list = root.querySelector("[data-dock-waypoint-list]");
+function renderRecommendation(root, detail) {
+  const recommendation = root.querySelector("[data-dock-recommendation]");
+  const degraded = root.querySelector("[data-dock-degraded]");
+  const qwenAvailable = detail.source === "recommendation" && detail.explanationSource === "qwen";
+  const advantages = qwenAvailable ? cleanSummaryItems(detail.qwenAdvantages, 3) : [];
+  const suggestions = qwenAvailable ? cleanSummaryItems(detail.qwenSuggestions, 2) : [];
+  const advantageGroup = root.querySelector("[data-dock-advantages]");
+  const suggestionGroup = root.querySelector("[data-dock-suggestions]");
+  renderSummaryList(root.querySelector("[data-dock-advantage-list]"), advantages);
+  renderSummaryList(root.querySelector("[data-dock-suggestion-list]"), suggestions);
+  advantageGroup.hidden = !advantages.length;
+  suggestionGroup.hidden = !suggestions.length;
+  recommendation.hidden = !advantages.length && !suggestions.length;
+  degraded.hidden = detail.source !== "recommendation" || qwenAvailable;
+}
+
+function renderGallery(container, media, routeName) {
+  container.replaceChildren();
+  const paths = [...new Set([...(media?.gallery || []), media?.cover].filter(Boolean))].slice(0, 3);
+  container.hidden = paths.length === 0;
+  paths.forEach((path, index) => {
+    const image = document.createElement("img");
+    image.src = path;
+    image.alt = `${routeName} 路线照片 ${index + 1}`;
+    image.loading = "lazy";
+    container.append(image);
+  });
+}
+
+function renderWaypointList(list, values) {
   list.replaceChildren();
-  renderRecommendationSummary(root, recommendationSummary);
-  if (!model.waypoints.length) {
+  if (!values.length) {
     const item = document.createElement("li");
     item.className = "route-dock__empty-waypoint";
     item.textContent = "暂无明确途经点";
     list.appendChild(item);
     return;
   }
-  model.waypoints.forEach((name, index) => {
+  values.forEach((name) => {
     const item = document.createElement("li");
-    item.innerHTML = `<span>${index + 1}</span>`;
-    item.append(document.createTextNode(name));
+    item.textContent = name;
     list.appendChild(item);
   });
 }
 
-function renderRecommendationSummary(root, summary) {
-  const section = root.querySelector("[data-dock-recommendation]");
-  const advantages = cleanSummaryItems(summary?.advantages, 3);
-  const suggestions = cleanSummaryItems(summary?.suggestions, 2);
-  section.hidden = !advantages.length && !suggestions.length;
-  renderSummaryList(root.querySelector("[data-dock-advantage-list]"), advantages);
-  renderSummaryList(root.querySelector("[data-dock-suggestion-list]"), suggestions);
+function renderSectionList(root, sectionSelector, listSelector, values) {
+  const section = root.querySelector(sectionSelector);
+  renderSummaryList(root.querySelector(listSelector), values);
+  section.hidden = !values.length;
 }
 
 function renderSummaryList(list, values) {
@@ -213,9 +310,7 @@ function renderSummaryList(list, values) {
 }
 
 function cleanSummaryItems(values, limit) {
-  return [...new Set((Array.isArray(values) ? values : [])
-    .map((value) => String(value || "").trim())
-    .filter(Boolean))].slice(0, limit);
+  return cleanNames(values).slice(0, limit);
 }
 
 function buildExposureModel(key, exposure, detail) {
@@ -225,7 +320,7 @@ function buildExposureModel(key, exposure, detail) {
   const riskLevel = available && exposure?.riskLevel ? String(exposure.riskLevel) : "";
   const valueText = available
     ? key === "pm25"
-      ? `${displayValue} ${exposure.unit || "µg/m³"}`
+      ? `${displayValue} ${normalizePm25Unit(exposure.unit)}`
       : `${displayValue} / 100`
     : displayValue;
   return {
@@ -241,32 +336,42 @@ function buildExposureModel(key, exposure, detail) {
   };
 }
 
-function exposureCard(key, label) {
-  return `<article class="route-dock__exposure-card" data-dock-exposure="${key}">
-    <header><strong>${label}</strong><span data-dock-${key}-status></span></header>
-    <div class="route-dock__exposure-reading">
-      <strong data-dock-${key}-value></strong><span data-dock-${key}-risk></span>
-    </div>
+function normalizePm25Unit(unit) {
+  return String(unit || "µg/m³").replace(/^μg\//, "µg/");
+}
+
+function factRow(label, key) {
+  return `<div><span>${label}</span><strong data-dock-${key}></strong></div>`;
+}
+
+function exposureRow(key, label) {
+  return `<article class="route-dock__exposure-row" data-dock-exposure="${key}">
+    <div class="route-dock__exposure-label"><strong>${label}</strong><span data-dock-${key}-status></span></div>
+    <div class="route-dock__exposure-reading"><strong data-dock-${key}-value></strong><span data-dock-${key}-risk></span></div>
     <p data-dock-${key}-detail></p>
   </article>`;
 }
 
+function routeEndpoint(properties, role) {
+  const direct = String(properties?.[`${role}_location`]?.name || "").trim();
+  if (direct) return direct;
+  const nodes = Array.isArray(properties?.ordered_nodes) ? properties.ordered_nodes : [];
+  const node = role === "start" ? nodes[0] : nodes.at(-1);
+  return String(node?.node_name || node?.name || `${role === "start" ? "起" : "终"}点待确认`);
+}
+
 function routeWaypoints(properties) {
   const explicit = cleanNames(properties.waypoint_names);
-  if (explicit.length) {
-    return explicit;
-  }
+  if (explicit.length) return explicit.slice(0, 4);
   const nodes = Array.isArray(properties.ordered_nodes) ? properties.ordered_nodes.slice(1, -1) : [];
-  return cleanNames(nodes.map((node) => node?.node_name || node?.name));
+  return cleanNames(nodes.map((node) => node?.node_name || node?.name)).slice(0, 4);
 }
 
 function cleanNames(values) {
   const unique = new Set();
   for (const value of Array.isArray(values) ? values : []) {
     const name = String(value || "").trim();
-    if (isDisplayWaypointName(name)) {
-      unique.add(name);
-    }
+    if (isDisplayWaypointName(name)) unique.add(name);
   }
   return [...unique];
 }
@@ -276,17 +381,8 @@ export function isDisplayWaypointName(value) {
   return Boolean(name) && !/节点\s*\d+$/i.test(name);
 }
 
-function selectDockTab(tabs, panels, selectedTab) {
-  tabs.forEach((tab) => {
-    const active = tab.dataset.dockTab === selectedTab;
-    tab.classList.toggle("active", active);
-    tab.setAttribute("aria-selected", String(active));
-  });
-  panels.forEach((panel) => {
-    const active = panel.dataset.dockPanel === selectedTab;
-    panel.classList.toggle("active", active);
-    panel.hidden = !active;
-  });
+function routeIdOf(route) {
+  return String(route?.properties?.route_id || route?.route_id || "");
 }
 
 function setText(root, selector, value) {
