@@ -19,6 +19,7 @@ const DATA_STATE_TEXT = {
 };
 const HOUR_MS = 60 * 60 * 1000;
 const FORECAST_POINT_COUNT = 4;
+const KEY_POI_TYPES = new Set(["toilet", "convenience", "coffee", "park_gate"]);
 
 export function buildRouteDockModel(route, routeEnvironment) {
   const properties = route?.properties || route || {};
@@ -287,6 +288,8 @@ function renderRecommendation(root, detail) {
   const recommendation = root.querySelector("[data-dock-recommendation]");
   const degraded = root.querySelector("[data-dock-degraded]");
   const qwenAvailable = detail.source === "recommendation" && detail.explanationSource === "qwen";
+  const explanationDegraded = detail.source === "recommendation"
+    && ["degraded", "python_fallback"].includes(detail.explanationSource);
   const advantages = qwenAvailable ? cleanSummaryItems(detail.qwenAdvantages, 3) : [];
   const suggestions = qwenAvailable ? cleanSummaryItems(detail.qwenSuggestions, 2) : [];
   const advantageGroup = root.querySelector("[data-dock-advantages]");
@@ -296,7 +299,7 @@ function renderRecommendation(root, detail) {
   advantageGroup.hidden = !advantages.length;
   suggestionGroup.hidden = !suggestions.length;
   recommendation.hidden = !advantages.length && !suggestions.length;
-  degraded.hidden = detail.source !== "recommendation" || qwenAvailable;
+  degraded.hidden = !explanationDegraded;
 }
 
 function renderGallery(container, media, routeName) {
@@ -499,10 +502,60 @@ function routeEndpoint(properties, role) {
 }
 
 function routeWaypoints(properties) {
-  const explicit = cleanNames(properties.waypoint_names);
-  if (explicit.length) return explicit.slice(0, 4);
-  const nodes = Array.isArray(properties.ordered_nodes) ? properties.ordered_nodes.slice(1, -1) : [];
-  return cleanNames(nodes.map((node) => node?.node_name || node?.name)).slice(0, 4);
+  return routeSemanticWaypoints(properties).map(({ name }) => name);
+}
+
+export function routeSemanticWaypoints(
+  properties,
+  { pois = { features: [] }, selectedPreferences = [], requireCoordinates = false } = {},
+) {
+  const result = [];
+  const seenNames = new Set([
+    normalizeOverviewName(routeEndpoint(properties, "start")),
+    normalizeOverviewName(routeEndpoint(properties, "end")),
+  ]);
+  const poiById = new Map((pois?.features || []).map((poi) => [poi?.properties?.poi_id, poi]));
+  const preferenceOrder = new Map(selectedPreferences.map((preference, index) => [preference, index]));
+  const nearbyPois = [...(properties?.nearby_pois || [])]
+    .filter((poi) => poi?.route_relation === "along_route")
+    .filter((poi) => poi?.verification_status === "verified")
+    .filter((poi) => KEY_POI_TYPES.has(poi?.poi_type))
+    .sort((left, right) => {
+      const fallbackRank = preferenceOrder.size;
+      const leftRank = preferenceOrder.get(left.poi_type) ?? fallbackRank;
+      const rightRank = preferenceOrder.get(right.poi_type) ?? fallbackRank;
+      return leftRank - rightRank || Number(left.distance_m || 0) - Number(right.distance_m || 0);
+    });
+
+  for (const related of nearbyPois) {
+    const feature = poiById.get(related.poi_id);
+    const position = validPosition(feature?.geometry?.coordinates);
+    const name = String(feature?.properties?.poi_name || related.poi_name || "").trim();
+    const normalized = normalizeOverviewName(name);
+    if (!normalized || seenNames.has(normalized)) continue;
+    if (requireCoordinates && !position) continue;
+    seenNames.add(normalized);
+    result.push({ name, poiType: related.poi_type, position });
+    if (result.length >= 3) return result;
+  }
+
+  const nodes = Array.isArray(properties?.ordered_nodes) ? properties.ordered_nodes.slice(1, -1) : [];
+  for (const node of nodes) {
+    const name = String(node?.node_name || node?.name || "").trim();
+    const normalized = normalizeOverviewName(name);
+    const position = validPosition([node?.lng_gcj02, node?.lat_gcj02]);
+    if (!isDisplayWaypointName(name) || !position || seenNames.has(normalized)) continue;
+    seenNames.add(normalized);
+    result.push({ name, poiType: null, position });
+    if (result.length >= 3) break;
+  }
+  return result;
+}
+
+function validPosition(value) {
+  if (!Array.isArray(value) || value.length < 2) return null;
+  const position = [Number(value[0]), Number(value[1])];
+  return position.every(Number.isFinite) ? position : null;
 }
 
 function cleanNames(values) {
@@ -516,7 +569,9 @@ function cleanNames(values) {
 
 export function isDisplayWaypointName(value) {
   const name = String(value || "").trim();
-  return Boolean(name) && !/节点\s*\d+$/i.test(name);
+  return Boolean(name)
+    && !/^(?:路线)?(?:起点|终点|起终点)$/i.test(name)
+    && !/(?:实测)?节点\s*\d+$/i.test(name);
 }
 
 function routeIdOf(route) {

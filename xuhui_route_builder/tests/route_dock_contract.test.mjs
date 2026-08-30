@@ -21,7 +21,12 @@ const sampleRoute = {
     distance_m: 4820,
     duration_min: 31.6,
     waypoint_names: ["龙美术馆", "滨江滑板公园"],
-    ordered_nodes: [{ node_name: "起点" }, { node_name: "龙美术馆" }, { node_name: "终点" }],
+    ordered_nodes: [
+      { node_name: "起点", lng_gcj02: 121.45, lat_gcj02: 31.18 },
+      { node_name: "龙美术馆", lng_gcj02: 121.455, lat_gcj02: 31.185 },
+      { node_name: "滨江滑板公园", lng_gcj02: 121.458, lat_gcj02: 31.188 },
+      { node_name: "终点", lng_gcj02: 121.46, lat_gcj02: 31.19 },
+    ],
   },
   geometry: {
     type: "LineString",
@@ -291,10 +296,11 @@ test("Overview 自动移除与起终点重复的途经点", () => {
     });
 
     const overview = nodes["[data-dock-overview-list]"].children;
-    assert.deepEqual(overview.map((item) => item.children[0].textContent), ["A", "1", "B"]);
+    assert.deepEqual(overview.map((item) => item.children[0].textContent), ["A", "1", "2", "B"]);
     assert.deepEqual(overview.map((item) => item.children[1].children[1].textContent), [
       "起点",
       "龙美术馆",
+      "滨江滑板公园",
       "终点",
     ]);
   } finally {
@@ -302,11 +308,34 @@ test("Overview 自动移除与起终点重复的途经点", () => {
   }
 });
 
+test("Overview 优先显示最多三个已核验沿途 POI，再用真实命名路口补齐", () => {
+  const model = buildRouteDockModel({
+    ...sampleRoute.properties,
+    start_location: { name: "交大徐汇校区" },
+    end_location: { name: "徐家汇公园" },
+    nearby_pois: [
+      { poi_id: "P1", poi_type: "coffee", poi_name: "校门咖啡", distance_m: 16, route_relation: "along_route", verification_status: "verified" },
+      { poi_id: "P2", poi_type: "toilet", poi_name: "汇师公共厕所", distance_m: 22, route_relation: "along_route", verification_status: "verified" },
+      { poi_id: "P3", poi_type: "metro", poi_name: "地铁站", distance_m: 8, route_relation: "along_route", verification_status: "verified" },
+      { poi_id: "P4", poi_type: "park_gate", poi_name: "远处公园", distance_m: 10, route_relation: "nearby", verification_status: "verified" },
+    ],
+    waypoint_names: ["交大徐汇校区", "无坐标景点", "徐家汇公园"],
+    ordered_nodes: [
+      { name: "交大徐汇校区", lng_gcj02: 121.43, lat_gcj02: 31.2 },
+      { name: "华山路广元西路口", lng_gcj02: 121.432, lat_gcj02: 31.201 },
+      { name: "本地实测节点02", lng_gcj02: 121.434, lat_gcj02: 31.202 },
+      { name: "徐家汇公园", lng_gcj02: 121.436, lat_gcj02: 31.203 },
+    ],
+  });
+
+  assert.deepEqual(model.waypoints, ["校门咖啡", "汇师公共厕所", "华山路广元西路口"]);
+});
+
 test("dock 在 waypoint_names 缺失时回退到 ordered_nodes 的中间节点", () => {
   const properties = { ...sampleRoute.properties, waypoint_names: [] };
   const model = buildRouteDockModel(properties);
 
-  assert.deepEqual(model.waypoints, ["龙美术馆"]);
+  assert.deepEqual(model.waypoints, ["龙美术馆", "滨江滑板公园"]);
 });
 
 test("客观亮点只使用路线标签、形态和已核验沿途 POI", () => {
@@ -359,6 +388,26 @@ test("浏览详情隐藏千问内容，降级推荐显示轻提示且隐藏建�
     assert.equal(nodes["[data-dock-recommendation]"].hidden, true);
     assert.equal(nodes["[data-dock-suggestions]"].hidden, true);
     assert.equal(nodes["[data-dock-objective]"].hidden, false);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("首屏本地附近路线不显示千问降级提示", () => {
+  const previousDocument = globalThis.document;
+  const { document, nodes } = createDockDocumentStub();
+  globalThis.document = document;
+  try {
+    const dock = createRouteDock({ appendChild() {} });
+    dock.show({
+      route: sampleRoute,
+      environment: sampleEnvironment,
+      source: "recommendation",
+      explanationSource: "local_nearby",
+    });
+
+    assert.equal(nodes["[data-dock-degraded]"].hidden, true);
+    assert.equal(nodes["[data-dock-recommendation]"].hidden, true);
   } finally {
     globalThis.document = previousDocument;
   }
@@ -589,7 +638,7 @@ test("路线使用外描边和主色双层，清理时不留残层", () => {
   const added = [];
   const removed = [];
   const mapContext = {
-    AMap: { Polyline },
+    AMap: { Polyline, Marker: Polyline, Pixel: class {} },
     amap: {
       add(overlay) { added.push(overlay); },
       remove(overlays) { removed.push(...overlays); },
@@ -611,7 +660,7 @@ test("路线使用外描边和主色双层，清理时不留残层", () => {
   assert.equal(halo.options.showDir, false);
 
   clearRouteResults(mapContext);
-  assert.deepEqual(removed, [halo, main]);
+  assert.deepEqual(removed, added);
   assert.equal(mapContext.routeLayers.size, 0);
 });
 
@@ -636,7 +685,7 @@ test("单路线在端点标记完成后重新聚焦自身范围", () => {
   showSingleRoute(mapContext, sampleRoute, { features: [] }, { features: [] });
 
   assert.equal(fitCalls.length, 2);
-  assert.equal(fitCalls.at(-1)[0].length, 3);
+  assert.equal(fitCalls.at(-1)[0].length, 5);
   assert.equal(fitCalls.at(-1)[1], true);
   assert.equal(fitCalls.at(-1)[3], 18);
 });

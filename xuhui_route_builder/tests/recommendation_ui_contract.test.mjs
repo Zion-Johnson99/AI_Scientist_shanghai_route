@@ -3,6 +3,8 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
+  DEFAULT_RECOMMENDATION_LOCATION,
+  buildInitialRecommendationResult,
   buildRecommendationViewModel,
   buildUserProfile,
   createProfileDialog,
@@ -153,6 +155,274 @@ test("加载模型使用真实阶段名称且不伪造百分比", () => {
 
   assert.deepEqual(model.steps.map((step) => step.label), ["汇总偏好", "匹配路线", "准备结果"]);
   assert.equal(JSON.stringify(model).includes("%"), false);
+});
+
+test("首屏默认从交大徐汇校区筛选步行短线并按接驳距离稳定排序", () => {
+  const routes = [
+    localRoute("route-far", 121.45, 31.2015, 1000),
+    localRoute("route-near-a", 121.434, 31.2015, 900),
+    localRoute("route-near-b", 121.434, 31.2015, 1100),
+    localRoute("route-too-long", 121.4331, 31.2015, 2000),
+    { ...localRoute("route-run", 121.4331, 31.2015, 1000), route_mode: "run" },
+  ];
+  const result = buildInitialRecommendationResult({
+    catalog: routes,
+    questionnaire,
+    answers: baseAnswers({ search_scope: "nearby_5000" }),
+    location: DEFAULT_RECOMMENDATION_LOCATION,
+  });
+
+  assert.deepEqual(DEFAULT_RECOMMENDATION_LOCATION, {
+    label: "上海交通大学徐汇校区",
+    lng_gcj02: 121.433,
+    lat_gcj02: 31.2015,
+  });
+  assert.deepEqual(
+    result.final_routes.map((route) => route.route.route.route_id),
+    ["route-near-a", "route-near-b", "route-far"],
+  );
+  assert.ok(result.final_routes[0].route.start_access_distance_m < result.final_routes[2].route.start_access_distance_m);
+});
+
+test("首屏本地路线卡使用与详情同源的路线环境数据", () => {
+  const result = buildInitialRecommendationResult({
+    catalog: [localRoute("route-near", 121.434, 31.2015, 900)],
+    questionnaire,
+    answers: baseAnswers({ search_scope: "nearby_5000" }),
+    location: DEFAULT_RECOMMENDATION_LOCATION,
+    getRouteEnvironment: (routeId) => ({
+      routeId,
+      pm25: { value: 11.2, status: "ok", unit: "µg/m³" },
+      pollen: { value: 22.1, status: "ok" },
+      noise: { value: 35.4, status: "partial" },
+    }),
+  });
+
+  assert.equal(result.final_routes[0].route.environment_summary.pm2_5.value, 11.2);
+  assert.equal(buildRecommendationViewModel(result).routes[0].pm25Text, "PM2.5 11.2 µg/m³");
+});
+
+test("Komoot 式顶部筛选轨承载默认值、弹层与横向箭头", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const filterHost = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({ container, filterHost, questionnaire, profile: localProfile, location });
+
+    const filters = findByClass(filterHost, "recommendation-filters");
+    assert.ok(filters);
+    assert.match(filters.textContent, /现在/);
+    assert.match(filters.textContent, /1 km/);
+    assert.match(filters.textContent, /综合均衡/);
+    assert.match(filters.textContent, /5 km 附近/);
+    assert.match(filters.textContent, /不限/);
+
+    const goalChip = findByAttribute(filters, "aria-label", "设置运动目标");
+    goalChip.listeners.click();
+    assert.equal(goalChip.attributes["aria-expanded"], "true");
+    assert.ok(findByClass(filterHost, "recommendation-filter__popover"));
+
+    const viewport = findByClass(filterHost, "recommendation-filters__viewport");
+    const track = findByClass(filterHost, "recommendation-filters__track");
+    findByAttribute(filterHost, "aria-label", "向右浏览筛选项").listeners.click();
+    assert.equal(viewport.scrollCalls.length, 0);
+    assert.ok(track.scrollCalls[0].left > 0);
+    controller.setDetailOpen(true);
+    assert.ok(String(findByClass(filterHost, "recommendation-filters").className).includes("is-detail-open"));
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("移动端重建筛选轨保留滚动位置且弹层不写入桌面坐标", () => {
+  const previousDocument = globalThis.document;
+  const previousMatchMedia = globalThis.matchMedia;
+  globalThis.document = createDocumentStub();
+  globalThis.matchMedia = () => ({ matches: true });
+  try {
+    const container = globalThis.document.createElement("div");
+    const filterHost = globalThis.document.createElement("div");
+    createRecommendationUI({ container, filterHost, questionnaire, profile: localProfile, location });
+    const firstTrack = findByClass(filterHost, "recommendation-filters__track");
+    firstTrack.scrollLeft = 420;
+
+    findByAttribute(filterHost, "aria-label", "设置景观与环境").listeners.click();
+
+    const nextTrack = findByClass(filterHost, "recommendation-filters__track");
+    const popover = findByClass(filterHost, "recommendation-filter__popover");
+    assert.equal(nextTrack.scrollLeft, 420);
+    assert.equal(popover.style.left || "", "");
+    assert.equal(popover.style.top || "", "");
+  } finally {
+    globalThis.document = previousDocument;
+    globalThis.matchMedia = previousMatchMedia;
+  }
+});
+
+test("筛选弹层支持 Escape、外部点击、焦点进入与返回 chip", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const filterHost = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({ container, filterHost, questionnaire, profile: localProfile, location });
+    findByAttribute(filterHost, "aria-label", "设置运动目标").listeners.click();
+    const popover = findByClass(filterHost, "recommendation-filter__popover");
+    assert.equal(globalThis.document.activeElement, popover);
+
+    findByClass(filterHost, "recommendation-filters").listeners.keydown({ key: "Escape", preventDefault() {} });
+    assert.equal(findByClass(filterHost, "recommendation-filter__popover"), null);
+    assert.equal(globalThis.document.activeElement.attributes["aria-label"], "设置运动目标");
+
+    findByAttribute(filterHost, "aria-label", "设置运动目标").listeners.click();
+    globalThis.document.listeners.pointerdown({ target: globalThis.document.createElement("div") });
+    assert.equal(findByClass(filterHost, "recommendation-filter__popover"), null);
+
+    findByAttribute(filterHost, "aria-label", "设置运动目标").listeners.click();
+    controller.setDetailOpen(true);
+    assert.equal(findByClass(filterHost, "recommendation-filter__popover"), null);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("左栏只保留三张卡、补充需求和底部推荐按钮", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({ container, questionnaire, profile: localProfile, location });
+    controller.showResult(resultFixture("ok"));
+
+    assert.ok(findByClass(container, "recommendation-workspace"));
+    assert.equal(findAllByClass(container, "route-card").length, 3);
+    assert.ok(findByClass(container, "recommendation-results-list"));
+    assert.ok(findByClass(container, "recommendation-workspace__footer"));
+    assert.ok(findByClass(container, "recommendation-note__control"));
+    assert.ok(findByText(container, "为我推荐路线"));
+    assert.equal(findByClass(container, "recommendation-question"), null);
+    assert.equal(findByClass(container, "recommendation-form__summary"), null);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("三种运动方式默认采用各自第二档距离，其余筛选保持不变", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const configured = {
+      ...questionnaire,
+      route_modes: [
+        { value: "run", label: "跑步" },
+        { value: "walk", label: "步行" },
+        { value: "bike", label: "骑行" },
+      ],
+      distance_ranges: {
+        ...questionnaire.distance_ranges,
+        walk: [
+          { value: "walk_short", label: "0.7–1.5 公里", distance_min_m: 700, target_distance_m: 1000, distance_max_m: 1500 },
+          { value: "walk_standard", label: "1.5–3 公里", distance_min_m: 1500, target_distance_m: 2500, distance_max_m: 3000 },
+          { value: "walk_long", label: "3–5 公里", distance_min_m: 3000, target_distance_m: 4000, distance_max_m: 5000 },
+        ],
+        run: [
+          { value: "run_short", label: "1–3 公里", distance_min_m: 1000, target_distance_m: 2000, distance_max_m: 3000 },
+          { value: "run_standard", label: "3–6 公里", distance_min_m: 3000, target_distance_m: 5000, distance_max_m: 6000 },
+          { value: "run_long", label: "6–10 公里", distance_min_m: 6000, target_distance_m: 8000, distance_max_m: 10000 },
+        ],
+        bike: [
+          { value: "bike_short", label: "5–10 公里", distance_min_m: 5000, target_distance_m: 8000, distance_max_m: 10000 },
+          { value: "bike_standard", label: "10–20 公里", distance_min_m: 10000, target_distance_m: 15000, distance_max_m: 20000 },
+          { value: "bike_long", label: "20–30 公里", distance_min_m: 20000, target_distance_m: 25000, distance_max_m: 30000 },
+        ],
+      },
+    };
+    const controller = createRecommendationUI({ container, questionnaire: configured, profile: localProfile, location });
+
+    assert.equal(controller.getAnswers().route_mode, "walk");
+    assert.equal(controller.getAnswers().distance_range, "walk_standard");
+    assert.equal(controller.getAnswers().search_scope, "nearby_5000");
+
+    controller.setRouteMode("run");
+    assert.equal(controller.getAnswers().distance_range, "run_standard");
+    assert.equal(controller.getAnswers().search_scope, "nearby_5000");
+
+    controller.setRouteMode("bike");
+    assert.equal(controller.getAnswers().distance_range, "bike_standard");
+    assert.equal(controller.getAnswers().goal, "balanced");
+
+    controller.setRouteMode("walk");
+    assert.equal(controller.getAnswers().distance_range, "walk_standard");
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("提交时保留旧卡并在原按钮显示正在推荐，且阻止重复请求", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    let resolveRecommendation;
+    let requestCount = 0;
+    const recommendation = new Promise((resolve) => { resolveRecommendation = resolve; });
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onRecommend: async () => {
+        requestCount += 1;
+        return recommendation;
+      },
+    });
+    controller.showResult(resultFixture("ok"));
+    const form = findByClass(container, "recommendation-form");
+    const firstRequest = form.listeners.submit({ preventDefault() {} });
+    const secondRequest = form.listeners.submit({ preventDefault() {} });
+
+    assert.equal(requestCount, 1);
+    assert.match(container.textContent, /滨江慢行/);
+    const loadingButton = findByText(container, "正在推荐中");
+    assert.equal(loadingButton.attributes["aria-busy"], "true");
+    assert.equal(loadingButton.disabled, true);
+
+    resolveRecommendation(resultFixture("ok"));
+    await Promise.all([firstRequest, secondRequest]);
+    assert.ok(findByText(container, "为我推荐路线"));
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("推荐失败时有旧结果保留三卡和行内提示，无旧结果才显示整页错误", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const withRoutes = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({
+      container: withRoutes,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onRecommend: async () => { throw new Error("服务断开"); },
+    });
+    controller.showResult(resultFixture("ok"));
+    await findByClass(withRoutes, "recommendation-form").listeners.submit({ preventDefault() {} });
+    assert.equal(findAllByClass(withRoutes, "route-card").length, 3);
+    assert.match(findByClass(withRoutes, "recommendation-workspace__error").textContent, /服务断开/);
+    assert.equal(findByClass(withRoutes, "recommendation-state--error"), null);
+
+    const empty = globalThis.document.createElement("div");
+    const emptyController = createRecommendationUI({ container: empty, questionnaire, profile: localProfile, location });
+    emptyController.showError(new Error("初始加载失败"));
+    assert.ok(findByClass(empty, "recommendation-state--error"));
+    assert.equal(findAllByClass(empty, "route-card").length, 0);
+  } finally {
+    globalThis.document = previousDocument;
+  }
 });
 
 test("纯 DOM 控制器初始化问卷，并对外暴露结果切换方法", () => {
@@ -354,7 +624,7 @@ test("路线悬停只预览，点击后由统一右侧详情列接管", () => {
   }
 });
 
-test("重新推荐清空旧结果并通知地图恢复初始路线选项卡", () => {
+test("控制器仍支持清空旧结果并通知地图恢复初始状态", () => {
   const previousDocument = globalThis.document;
   globalThis.document = createDocumentStub();
   try {
@@ -369,7 +639,7 @@ test("重新推荐清空旧结果并通知地图恢复初始路线选项卡", ()
     });
     controller.showResult(resultFixture("ok"));
 
-    findByText(container, "重新推荐").listeners.click();
+    controller.restartRecommendation();
 
     assert.equal(restartCount, 1);
     assert.deepEqual(controller.getResultRoutes(), []);
@@ -530,7 +800,23 @@ function finalRoute(routeId, routeName, distanceM, durationMin, confidence, reas
   };
 }
 
+function localRoute(routeId, lng, lat, distanceM) {
+  return {
+    route_id: routeId,
+    route_name: routeId,
+    route_mode: "walk",
+    route_shape: "one_way",
+    distance_m: distanceM,
+    duration_min: Math.round(distanceM / 75),
+    start_location: { name: `${routeId} 起点`, lng_gcj02: lng, lat_gcj02: lat },
+    end_location: { name: `${routeId} 终点`, lng_gcj02: lng + 0.001, lat_gcj02: lat },
+    validation_status: "accepted",
+    popular_area_ids: [],
+  };
+}
+
 function createDocumentStub() {
+  let documentStub;
   class NodeStub {
     constructor(tagName = "") {
       this.tagName = tagName.toUpperCase();
@@ -541,19 +827,35 @@ function createDocumentStub() {
       this.hidden = false;
       this._text = "";
       this.listeners = {};
+      this.disabled = false;
+      this.clientWidth = 600;
+      this.scrollCalls = [];
+      this.scrollLeft = 0;
+      this.style = {};
+      this.classList = {
+        add: (...names) => this.#setClasses(names, true),
+        remove: (...names) => this.#setClasses(names, false),
+        toggle: (name, force) => this.#setClasses([name], force),
+        contains: (name) => String(this.className).split(/\s+/).includes(name),
+      };
     }
 
     append(...children) {
-      this.children.push(...children.filter(Boolean));
+      children.filter(Boolean).forEach((child) => {
+        child.parentElement = this;
+        this.children.push(child);
+      });
     }
 
     appendChild(child) {
+      child.parentElement = this;
       this.children.push(child);
       return child;
     }
 
     replaceChildren(...children) {
-      this.children = children;
+      this.children = [];
+      this.append(...children);
       this._text = "";
     }
 
@@ -563,6 +865,31 @@ function createDocumentStub() {
 
     addEventListener(name, callback) {
       this.listeners[name] = callback;
+    }
+
+    scrollBy(options) {
+      this.scrollCalls.push(options);
+      this.scrollLeft += Number(options?.left || 0);
+      this.listeners.scroll?.({ target: this });
+    }
+
+    focus() {
+      documentStub.activeElement = this;
+    }
+
+    contains(target) {
+      return this === target || this.children.some((child) => child.contains?.(target));
+    }
+
+    getBoundingClientRect() {
+      return { left: 20, right: 320, top: 20, bottom: 60, width: 300, height: 40 };
+    }
+
+    #setClasses(names, enabled) {
+      const classes = new Set(String(this.className || "").split(/\s+/).filter(Boolean));
+      names.forEach((name) => enabled ? classes.add(name) : classes.delete(name));
+      this.className = [...classes].join(" ");
+      return enabled;
     }
 
     showModal() {
@@ -583,11 +910,20 @@ function createDocumentStub() {
     }
   }
 
-  return {
+  documentStub = {
+    activeElement: null,
+    listeners: {},
     createElement(tagName) {
       return new NodeStub(tagName);
     },
+    addEventListener(name, callback) {
+      this.listeners[name] = callback;
+    },
+    removeEventListener(name, callback) {
+      if (this.listeners[name] === callback) delete this.listeners[name];
+    },
   };
+  return documentStub;
 }
 
 function findByText(node, text) {
@@ -619,4 +955,10 @@ function findByClass(node, className) {
     if (found) return found;
   }
   return null;
+}
+
+function findAllByClass(node, className, matches = []) {
+  if (String(node.className || "").split(/\s+/).includes(className)) matches.push(node);
+  for (const child of node.children || []) findAllByClass(child, className, matches);
+  return matches;
 }

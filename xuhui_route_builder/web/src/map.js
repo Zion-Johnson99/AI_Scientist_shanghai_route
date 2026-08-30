@@ -1,4 +1,4 @@
-import { isDisplayWaypointName } from "./route-dock.js";
+import { routeSemanticWaypoints } from "./route-dock.js";
 
 const ROUTE_STYLES = {
   run: { color: "#ff5d5d", weight: 4 },
@@ -66,30 +66,7 @@ const ROUTE_LAYER_STATES = {
   },
 };
 
-const ENTRY_COLORS = {
-  metro_exit: "#256db3",
-  park_gate: "#25734f",
-  scenic_node: "#a66f1d",
-  community_node: "#717b84",
-  riverside_access: "#25734f",
-  office_cluster: "#384247",
-};
-
-const POI_COLORS = {
-  coffee: "#8a5a2b",
-  toilet: "#516070",
-  convenience: "#b06a20",
-  metro: "#256db3",
-  park_gate: "#25734f",
-};
-
-const POI_TYPES_BY_PREFERENCE = {
-  coffee: ["coffee"],
-  toilet: ["toilet"],
-  convenience: ["convenience"],
-  metro: ["metro"],
-  park_gate: ["park_gate"],
-};
+const ROUTE_REVEAL_DURATION_MS = 1200;
 
 const NAVIGATION_LABELS = {
   walk: "步行接驳",
@@ -130,6 +107,8 @@ export async function createMap(targetId) {
     routePreviewZoomHandler: null,
     entryLayers: [],
     poiLayers: [],
+    semanticMarkerLayers: [],
+    routeRevealAnimation: null,
     userLocationMarker: null,
     navigationService: null,
     navigation: {
@@ -164,13 +143,13 @@ export function drawBoundary(mapContext, boundary) {
         strokeOpacity: 0.96,
         fillColor: "#dcecff",
         fillOpacity: 0.16,
+        bubble: true,
         zIndex: 30,
       }),
   });
 
   amap.add(layer);
   mapContext.boundaryLayer = layer;
-  addBoundaryLabel(mapContext);
   fitBoundaryView(mapContext);
   return layer;
 }
@@ -289,14 +268,10 @@ export function showRouteResults(
 ) {
   clearRouteResults(mapContext);
 
-  const relatedEntryIds = new Set();
-  const relatedPoiIds = new Set();
   const boundsOverlays = [];
 
   for (const route of routes) {
     const properties = route.properties || {};
-    addRelatedEntryIds(relatedEntryIds, properties);
-    addRelatedPoiIds(relatedPoiIds, properties, selectedPreferences);
     const path = getLinePath(route);
     if (path.length < 2) {
       continue;
@@ -354,34 +329,6 @@ export function showRouteResults(
     boundsOverlays.push(main);
   }
 
-  for (const entry of entries.features || []) {
-    const props = entry.properties || {};
-    const entryId = props.entry_id;
-    if (!relatedEntryIds.has(entryId)) {
-      continue;
-    }
-
-    const marker = createEntryMarker(mapContext, entry);
-    if (marker) {
-      mapContext.amap.add(marker);
-      mapContext.entryLayers.push(marker);
-      boundsOverlays.push(marker);
-    }
-  }
-
-  for (const poi of pois?.features || []) {
-    const props = poi.properties || {};
-    if (!relatedPoiIds.has(props.poi_id)) {
-      continue;
-    }
-    const marker = createPoiMarker(mapContext, poi);
-    if (marker) {
-      mapContext.amap.add(marker);
-      mapContext.poiLayers.push(marker);
-      boundsOverlays.push(marker);
-    }
-  }
-
   if (boundsOverlays.length && routeInteractions.fitView !== false) {
     mapContext.amap.setFitView(boundsOverlays, false, [44, 44, 44, 44]);
   }
@@ -389,6 +336,9 @@ export function showRouteResults(
 
 export function createRecommendationMapController(mapContext, callbacks = {}) {
   const state = ensureRecommendationMapState(mapContext);
+  let routeById = new Map();
+  let availablePois = { features: [] };
+  let activePreferences = [];
 
   function getState() {
     return recommendationMapSnapshot(state);
@@ -401,6 +351,9 @@ export function createRecommendationMapController(mapContext, callbacks = {}) {
   }
 
   function showRoutes(routes, entries = { features: [] }, pois = { features: [] }, selectedPreferences = []) {
+    routeById = new Map(routes.map((route) => [route?.properties?.route_id, route]));
+    availablePois = pois;
+    activePreferences = [...selectedPreferences];
     showRouteResults(
       mapContext,
       routes,
@@ -432,6 +385,7 @@ export function createRecommendationMapController(mapContext, callbacks = {}) {
     state.selectedRouteId = null;
     state.mapMode = "overview";
     applyRecommendationOverview(mapContext, state, true);
+    clearSemanticMarkers(mapContext);
     return emitStateChange();
   }
 
@@ -445,6 +399,7 @@ export function createRecommendationMapController(mapContext, callbacks = {}) {
     for (const [candidateRouteId, layers] of mapContext.routeLayers.entries()) {
       setRouteLayerState(layers, candidateRouteId === routeId ? "active" : "preview-muted");
     }
+    clearSemanticMarkers(mapContext);
     return emitStateChange();
   }
 
@@ -455,6 +410,7 @@ export function createRecommendationMapController(mapContext, callbacks = {}) {
     state.hoveredRouteId = null;
     state.mapMode = "overview";
     applyRecommendationOverview(mapContext, state, false);
+    clearSemanticMarkers(mapContext);
     return emitStateChange();
   }
 
@@ -462,25 +418,43 @@ export function createRecommendationMapController(mapContext, callbacks = {}) {
     if (!hasRecommendedRoute(state, routeId)) {
       return getState();
     }
+    if (state.mapMode === "focused" && state.selectedRouteId === routeId) {
+      return getState();
+    }
+    cancelRouteReveal(mapContext, false);
     state.hoveredRouteId = null;
     state.selectedRouteId = routeId;
     state.mapMode = "focused";
     for (const [candidateRouteId, layers] of mapContext.routeLayers.entries()) {
       setRouteLayerState(layers, candidateRouteId === routeId ? "sporting" : "muted");
     }
+    showSemanticRoute(routeId, true);
     const selectedLayer = mapContext.routeLayers.get(routeId)?.main;
     if (selectedLayer) {
       mapContext.amap.setFitView([selectedLayer], true, [110, 90, 180, 90], 18);
     }
+    startRouteReveal(mapContext, routeById.get(routeId), mapContext.routeLayers.get(routeId));
     return emitStateChange();
   }
 
   function showOverview() {
+    cancelRouteReveal(mapContext, false);
     state.hoveredRouteId = null;
     state.selectedRouteId = null;
     state.mapMode = "overview";
     applyRecommendationOverview(mapContext, state, true);
+    clearSemanticMarkers(mapContext);
     return emitStateChange();
+  }
+
+  function showSemanticRoute(routeId, includeLandmarks) {
+    renderRouteSemanticMarkers(
+      mapContext,
+      routeById.get(routeId),
+      availablePois,
+      activePreferences,
+      includeLandmarks,
+    );
   }
 
   return {
@@ -505,61 +479,211 @@ export function showSingleRoute(mapContext, route, entries, pois, selectedPrefer
     return;
   }
 
-  const properties = route.properties || {};
-  const isLoop = properties.route_shape === "strict_loop";
-  const markerSpecs = isLoop
-    ? [{ role: "start", label: "起终点", name: properties.start_location?.name || "路线起终点", position: locationPosition(properties.start_location, path[0]) }]
-    : [
-        { role: "start", label: "起点", name: properties.start_location?.name || "路线起点", position: locationPosition(properties.start_location, path[0]) },
-        { role: "end", label: "终点", name: properties.end_location?.name || "路线终点", position: locationPosition(properties.end_location, path.at(-1)) },
-      ];
-  markerSpecs.push(...landmarkSpecs(route, pois, selectedPreferences));
-  for (const spec of markerSpecs) {
-    const marker = createRouteMarker(mapContext, spec);
-    mapContext.amap.add(marker);
-    mapContext.entryLayers.push(marker);
-  }
+  renderRouteSemanticMarkers(mapContext, route, pois, selectedPreferences, true);
   const activeRoute = mapContext.routeLayers.get(routeId)?.main;
-  const focusOverlays = [activeRoute, ...mapContext.entryLayers].filter(Boolean);
+  const focusOverlays = [activeRoute, ...mapContext.semanticMarkerLayers].filter(Boolean);
   mapContext.amap.setFitView(focusOverlays, true, [110, 90, 180, 90], 18);
 }
 
-function landmarkSpecs(route, pois, selectedPreferences) {
-  const specs = [];
+function renderRouteSemanticMarkers(mapContext, route, pois, selectedPreferences, includeLandmarks) {
+  clearSemanticMarkers(mapContext);
+  if (!route) return;
+  const path = getLinePath(route);
+  if (path.length < 2) return;
   const properties = route.properties || {};
-  const poiById = new Map((pois?.features || []).map((poi) => [poi.properties?.poi_id, poi]));
-  const preferenceOrder = new Map(selectedPreferences.map((preference, index) => [preference, index]));
-  const nearbyPois = [...(properties.nearby_pois || [])].sort((left, right) => {
-    const fallbackRank = preferenceOrder.size;
-    const leftRank = preferenceOrder.get(left.poi_type) ?? fallbackRank;
-    const rightRank = preferenceOrder.get(right.poi_type) ?? fallbackRank;
-    return leftRank - rightRank || Number(left.distance_m || 0) - Number(right.distance_m || 0);
+  const isLoop = ["strict_loop", "loop"].includes(properties.route_shape)
+    && positionsMatch(path[0], path.at(-1));
+  const start = {
+    role: isLoop ? "start-end" : "start",
+    label: isLoop ? "A/B" : "A",
+    name: properties.start_location?.name || "路线起点",
+    position: locationPosition(properties.start_location, path[0]),
+  };
+  const end = {
+    role: "end",
+    label: "B",
+    name: properties.end_location?.name || "路线终点",
+    position: locationPosition(properties.end_location, path.at(-1)),
+  };
+  const landmarks = includeLandmarks
+    ? routeSemanticWaypoints(properties, {
+        pois,
+        selectedPreferences,
+        requireCoordinates: true,
+      }).map((point) => ({
+        role: "landmark",
+        label: point.poiType ? poiMarkerLabel({ poi_type: point.poiType }) : "途经",
+        name: point.name,
+        position: point.position,
+      }))
+    : [];
+  const specs = isLoop ? [start, ...landmarks] : [start, ...landmarks, end];
+  mapContext.semanticMarkerLayers = specs.map((spec) => {
+    const marker = createRouteMarker(mapContext, spec);
+    mapContext.amap.add(marker);
+    return marker;
   });
-  for (const related of nearbyPois) {
-    const poi = poiById.get(related.poi_id);
-    const position = poi?.geometry?.coordinates;
-    if (Array.isArray(position) && position.length >= 2) {
-      specs.push({ role: "landmark", label: poiMarkerLabel(related), name: related.poi_name, position });
-    }
-    if (specs.length >= 3) {
-      return specs;
-    }
+}
+
+function clearSemanticMarkers(mapContext) {
+  const markers = mapContext.semanticMarkerLayers || [];
+  if (markers.length) mapContext.amap.remove(markers);
+  mapContext.semanticMarkerLayers = [];
+}
+
+function startRouteReveal(mapContext, route, sourceLayers) {
+  const path = getLinePath(route);
+  const motion = routeRevealMotion(mapContext);
+  if (path.length < 2 || !sourceLayers || motion.prefersReducedMotion || !motion.requestFrame) {
+    return;
   }
 
-  const nodes = (properties.ordered_nodes || []).slice(1, -1);
-  const remaining = Math.min(3 - specs.length, nodes.length);
-  let addedNodes = 0;
-  for (const node of nodes) {
-    const name = node.node_name || node.name;
-    if (isDisplayWaypointName(name) && Number.isFinite(node.lng_gcj02) && Number.isFinite(node.lat_gcj02)) {
-      specs.push({ role: "landmark", label: "途经", name, position: [node.lng_gcj02, node.lat_gcj02] });
-      addedNodes += 1;
+  const properties = route.properties || {};
+  const style = routeStyle(properties.route_mode);
+  const startPath = [path[0], path[0]];
+  const sharedExtData = { routeId: properties.route_id, routeMode: properties.route_mode };
+  const halo = new mapContext.AMap.Polyline({
+    path: startPath,
+    strokeColor: "#ffffff",
+    strokeWeight: style.weight + 9,
+    strokeOpacity: 0.9,
+    lineJoin: "round",
+    lineCap: "round",
+    showDir: false,
+    zIndex: 113,
+    extData: { ...sharedExtData, layerRole: "reveal-halo" },
+  });
+  const main = new mapContext.AMap.Polyline({
+    path: startPath,
+    strokeColor: style.color,
+    strokeWeight: style.weight + 3,
+    strokeOpacity: 1,
+    lineJoin: "round",
+    lineCap: "round",
+    showDir: true,
+    zIndex: 114,
+    extData: { ...sharedExtData, layerRole: "reveal-main" },
+  });
+  mapContext.amap.add(halo);
+  mapContext.amap.add(main);
+  sourceLayers.halo.setOptions({ strokeOpacity: 0 });
+  sourceLayers.main.setOptions({ strokeOpacity: 0 });
+
+  const metrics = routePathMetrics(path);
+  const animation = {
+    frameId: null,
+    startedAt: null,
+    layers: [halo, main],
+    sourceLayers,
+  };
+  mapContext.routeRevealAnimation = animation;
+
+  const advance = (timestamp) => {
+    if (mapContext.routeRevealAnimation !== animation) return;
+    if (animation.startedAt === null) animation.startedAt = timestamp;
+    const elapsed = Math.max(0, timestamp - animation.startedAt);
+    const progress = Math.min(1, elapsed / ROUTE_REVEAL_DURATION_MS);
+    const revealedPath = routePathAtProgress(path, metrics, smoothProgress(progress));
+    setOverlayPath(halo, revealedPath);
+    setOverlayPath(main, revealedPath);
+    if (progress >= 1) {
+      finishRouteReveal(mapContext, animation);
+      return;
     }
-    if (addedNodes >= remaining) {
-      break;
-    }
+    animation.frameId = motion.requestFrame(advance);
+  };
+  animation.frameId = motion.requestFrame(advance);
+}
+
+function finishRouteReveal(mapContext, animation) {
+  if (mapContext.routeRevealAnimation !== animation) return;
+  removeRevealLayers(mapContext, animation.layers);
+  setRouteLayerState(animation.sourceLayers, "sporting");
+  mapContext.routeRevealAnimation = null;
+}
+
+function cancelRouteReveal(mapContext, restoreSource = true) {
+  const animation = mapContext.routeRevealAnimation;
+  if (!animation) return;
+  const motion = routeRevealMotion(mapContext);
+  if (animation.frameId !== null && motion.cancelFrame) {
+    motion.cancelFrame(animation.frameId);
   }
-  return specs;
+  removeRevealLayers(mapContext, animation.layers);
+  if (restoreSource) setRouteLayerState(animation.sourceLayers, "sporting");
+  mapContext.routeRevealAnimation = null;
+}
+
+function removeRevealLayers(mapContext, layers) {
+  layers.forEach((layer) => mapContext.amap.remove(layer));
+}
+
+function routeRevealMotion(mapContext) {
+  const configured = mapContext.routeRevealMotion;
+  return {
+    prefersReducedMotion: configured?.prefersReducedMotion
+      ?? globalThis.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches
+      ?? false,
+    requestFrame: configured?.requestFrame
+      ?? globalThis.requestAnimationFrame?.bind(globalThis)
+      ?? null,
+    cancelFrame: configured?.cancelFrame
+      ?? globalThis.cancelAnimationFrame?.bind(globalThis)
+      ?? null,
+  };
+}
+
+function routePathMetrics(path) {
+  const cumulative = [0];
+  for (let index = 1; index < path.length; index += 1) {
+    cumulative.push(cumulative.at(-1) + coordinateDistance(path[index - 1], path[index]));
+  }
+  return { cumulative, total: cumulative.at(-1) };
+}
+
+function routePathAtProgress(path, metrics, progress) {
+  if (progress <= 0 || metrics.total <= 0) return [path[0], path[0]];
+  if (progress >= 1) return [...path];
+  const target = metrics.total * progress;
+  let endIndex = 1;
+  while (endIndex < metrics.cumulative.length && metrics.cumulative[endIndex] < target) {
+    endIndex += 1;
+  }
+  const segmentStart = metrics.cumulative[endIndex - 1];
+  const segmentLength = metrics.cumulative[endIndex] - segmentStart;
+  const segmentProgress = segmentLength > 0 ? (target - segmentStart) / segmentLength : 1;
+  const start = path[endIndex - 1];
+  const end = path[endIndex];
+  const head = [
+    start[0] + (end[0] - start[0]) * segmentProgress,
+    start[1] + (end[1] - start[1]) * segmentProgress,
+  ];
+  return [...path.slice(0, endIndex), head];
+}
+
+function coordinateDistance(left, right) {
+  const meanLatitude = ((left[1] + right[1]) / 2) * Math.PI / 180;
+  const longitude = (right[0] - left[0]) * Math.cos(meanLatitude);
+  const latitude = right[1] - left[1];
+  return Math.hypot(longitude, latitude);
+}
+
+function smoothProgress(progress) {
+  return progress * progress * (3 - 2 * progress);
+}
+
+function setOverlayPath(overlay, path) {
+  if (typeof overlay.setPath === "function") {
+    overlay.setPath(path);
+    return;
+  }
+  overlay.setOptions({ path });
+}
+
+function positionsMatch(left, right) {
+  return Array.isArray(left) && Array.isArray(right)
+    && Number(left[0]) === Number(right[0])
+    && Number(left[1]) === Number(right[1]);
 }
 
 export function poiMarkerLabel(properties) {
@@ -596,6 +720,7 @@ function createRouteMarker(mapContext, spec) {
     anchor: "bottom-center",
     offset: new mapContext.AMap.Pixel(0, spec.role === "landmark" ? -60 : -4),
     zIndex: spec.role === "landmark" ? 120 : 130,
+    extData: { role: spec.role, name: spec.name },
   });
 }
 
@@ -663,6 +788,7 @@ export function focusSportRoute(mapContext, selectedRouteId) {
 }
 
 export function clearRouteResults(mapContext) {
+  cancelRouteReveal(mapContext, false);
   if (mapContext.navigation) {
     invalidateNavigationPlan(mapContext);
     clearNavigationService(mapContext);
@@ -674,7 +800,8 @@ export function clearRouteResults(mapContext) {
   const routeOverlays = [...mapContext.routeLayers.values()].flatMap(({ halo, main }) => [halo, main]);
   const previewLayers = mapContext.routePreviewLayers || [];
   const previewMarkers = (mapContext.routePreviewMarkers || []).map(({ marker }) => marker);
-  const overlays = [...routeOverlays, ...previewLayers, ...previewMarkers, ...mapContext.entryLayers, ...mapContext.poiLayers];
+  const semanticMarkers = mapContext.semanticMarkerLayers || [];
+  const overlays = [...routeOverlays, ...previewLayers, ...previewMarkers, ...mapContext.entryLayers, ...mapContext.poiLayers, ...semanticMarkers];
   if (overlays.length) {
     mapContext.amap.remove(overlays);
   }
@@ -687,6 +814,7 @@ export function clearRouteResults(mapContext) {
   mapContext.routePreviewZoomHandler = null;
   mapContext.entryLayers = [];
   mapContext.poiLayers = [];
+  mapContext.semanticMarkerLayers = [];
   resetRecommendationMapState(mapContext.recommendationMapState);
 }
 
@@ -1156,63 +1284,6 @@ function parseLngLat(text) {
   return { lng_gcj02: parts[0], lat_gcj02: parts[1], label: text, source: "text" };
 }
 
-function addRelatedEntryIds(relatedEntryIds, properties) {
-  for (const key of ["start_entry_id", "end_entry_id"]) {
-    if (properties[key]) {
-      relatedEntryIds.add(properties[key]);
-    }
-  }
-}
-
-function addRelatedPoiIds(relatedPoiIds, properties, selectedPreferences) {
-  const allowedTypes = new Set(selectedPreferences.flatMap((preference) => POI_TYPES_BY_PREFERENCE[preference] || []));
-  for (const poi of properties.nearby_pois || []) {
-    if (!allowedTypes.size || allowedTypes.has(poi.poi_type)) {
-      relatedPoiIds.add(poi.poi_id);
-    }
-  }
-}
-
-function createEntryMarker(mapContext, entry) {
-  const props = entry.properties || {};
-  const coordinates = entry.geometry?.coordinates;
-  if (!Array.isArray(coordinates) || coordinates.length < 2) {
-    return null;
-  }
-
-  const color = ENTRY_COLORS[props.entry_type] || "#384247";
-  const content = `<span class="amap-entry-dot" style="background:${color}"></span>`;
-  const marker = new mapContext.AMap.Marker({
-    position: coordinates,
-    content,
-    anchor: "center",
-    offset: new mapContext.AMap.Pixel(0, 0),
-    zIndex: props.entry_type === "community_node" ? 45 : 60,
-  });
-  marker.on("click", () => openEntryInfo(mapContext, marker, entry));
-  return marker;
-}
-
-function createPoiMarker(mapContext, poi) {
-  const props = poi.properties || {};
-  const coordinates = poi.geometry?.coordinates;
-  if (!Array.isArray(coordinates) || coordinates.length < 2) {
-    return null;
-  }
-
-  const color = POI_COLORS[props.poi_type] || "#384247";
-  const content = `<span class="amap-poi-dot" style="background:${color}"></span>`;
-  const marker = new mapContext.AMap.Marker({
-    position: coordinates,
-    content,
-    anchor: "center",
-    offset: new mapContext.AMap.Pixel(0, 0),
-    zIndex: 75,
-  });
-  marker.on("click", () => openPoiInfo(mapContext, marker, poi));
-  return marker;
-}
-
 function createNavigationMarker(mapContext, role, point) {
   const label = NAVIGATION_POINT_LABELS[role] || "导航点";
   const content = `<span class="amap-navigation-dot" data-role="${role}">${escapeHtml(label.slice(0, 1))}</span>`;
@@ -1225,21 +1296,6 @@ function createNavigationMarker(mapContext, role, point) {
   });
 }
 
-function addBoundaryLabel(mapContext) {
-  const ring = mapContext.boundaryRings[0];
-  if (!ring?.length) {
-    return;
-  }
-  const center = ringCenter(ring);
-  const marker = new mapContext.AMap.Marker({
-    position: center,
-    content: `<span class="amap-boundary-label">徐汇区</span>`,
-    anchor: "center",
-    zIndex: 35,
-  });
-  mapContext.amap.add(marker);
-}
-
 function openRouteInfo(mapContext, layer, route) {
   const props = route.properties || {};
   const info = new mapContext.AMap.InfoWindow({
@@ -1248,24 +1304,6 @@ function openRouteInfo(mapContext, layer, route) {
   });
   const path = layer.getPath();
   info.open(mapContext.amap, path[Math.floor(path.length / 2)]);
-}
-
-function openEntryInfo(mapContext, marker, entry) {
-  const props = entry.properties || {};
-  const info = new mapContext.AMap.InfoWindow({
-    content: `<strong>${escapeHtml(props.entry_name || "运动入口")}</strong><br>${escapeHtml(props.region_zone || "徐汇区")}<br>${escapeHtml(props.entry_type || "entry")}`,
-    offset: new mapContext.AMap.Pixel(0, -18),
-  });
-  info.open(mapContext.amap, marker.getPosition());
-}
-
-function openPoiInfo(mapContext, marker, poi) {
-  const props = poi.properties || {};
-  const info = new mapContext.AMap.InfoWindow({
-    content: `<strong>${escapeHtml(props.poi_name || "POI")}</strong><br>${escapeHtml(props.region_zone || "徐汇区")}<br>${escapeHtml(props.poi_type || "")}`,
-    offset: new mapContext.AMap.Pixel(0, -18),
-  });
-  info.open(mapContext.amap, marker.getPosition());
 }
 
 function getLinePath(route) {
@@ -1376,18 +1414,6 @@ function extractBoundaryRings(boundary) {
     }
   }
   return rings;
-}
-
-function ringCenter(ring) {
-  const total = ring.reduce(
-    (acc, point) => {
-      acc.lng += Number(point[0]);
-      acc.lat += Number(point[1]);
-      return acc;
-    },
-    { lng: 0, lat: 0 },
-  );
-  return [total.lng / ring.length, total.lat / ring.length];
 }
 
 function pointInRing(point, ring) {

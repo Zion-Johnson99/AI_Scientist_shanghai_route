@@ -23,8 +23,49 @@ test("推荐结果以三路线总览显示，并用一次 fitView 容纳现有�
     mapMode: "overview",
   });
   assert.deepEqual(routeStates(mapContext), ["overview", "overview", "overview"]);
+  assert.deepEqual(semanticMarkerRoles(mapContext), []);
   assert.equal(fitViews.length, 1);
   assert.deepEqual(fitViews[0].overlays, routeMainLayers(mapContext));
+});
+
+test("三路线总览不再绘制原始 entry 和 POI 彩点", () => {
+  const { mapContext, added } = createMapContext();
+  const controller = createRecommendationMapController(mapContext);
+  const entries = {
+    features: [{
+      properties: { entry_id: "ENTRY-1", entry_name: "公园入口", entry_type: "park_gate" },
+      geometry: { type: "Point", coordinates: [121.421, 31.181] },
+    }],
+  };
+  const pois = {
+    features: [{
+      properties: { poi_id: "POI-1", poi_name: "公共厕所", poi_type: "toilet" },
+      geometry: { type: "Point", coordinates: [121.422, 31.182] },
+    }],
+  };
+  const route = {
+    ...routes[0],
+    properties: {
+      ...routes[0].properties,
+      start_entry_id: "ENTRY-1",
+      nearby_pois: [{
+        poi_id: "POI-1",
+        poi_name: "公共厕所",
+        poi_type: "toilet",
+        route_relation: "along_route",
+        verification_status: "verified",
+      }],
+    },
+  };
+
+  controller.showRoutes([route], entries, pois);
+
+  assert.equal(mapContext.entryLayers.length, 0);
+  assert.equal(mapContext.poiLayers.length, 0);
+  assert.deepEqual(semanticMarkerRoles(mapContext), []);
+  assert.equal(added.some((overlay) => String(overlay.options?.content || "").includes("amap-entry-dot")), false);
+  assert.equal(added.some((overlay) => String(overlay.options?.content || "").includes("amap-poi-dot")), false);
+  assert.doesNotMatch(added.map((overlay) => overlay.options?.content || "").join(""), /toilet/);
 });
 
 test("悬停只改变强调层级，不缩放或打开聚焦状态", () => {
@@ -39,6 +80,7 @@ test("悬停只改变强调层级，不缩放或打开聚焦状态", () => {
   assert.equal(state.hoveredRouteId, "XH_WALK_0002");
   assert.equal(state.selectedRouteId, null);
   assert.deepEqual(routeStates(mapContext), ["preview-muted", "active", "preview-muted"]);
+  assert.deepEqual(semanticMarkerPositions(mapContext), []);
   assert.equal(fitViews.length, fitViewCount);
 });
 
@@ -59,6 +101,98 @@ test("快速移过多条路线时，迟到的离开事件不会清除最后路�
   assert.equal(finalState.mapMode, "overview");
   assert.equal(finalState.hoveredRouteId, null);
   assert.deepEqual(routeStates(mapContext), ["overview", "overview", "overview"]);
+  assert.deepEqual(semanticMarkerPositions(mapContext), []);
+});
+
+test("聚焦路线仅显示 A B 和最多三个已核验沿途关键点", () => {
+  const { mapContext } = createMapContext();
+  const controller = createRecommendationMapController(mapContext);
+  const route = {
+    ...routes[0],
+    properties: {
+      ...routes[0].properties,
+      nearby_pois: [
+        verifiedPoi("COFFEE", "交大咖啡", "coffee", 18),
+        verifiedPoi("TOILET", "汇师公共厕所", "toilet", 24),
+        verifiedPoi("STORE", "天平路便利店", "convenience", 31),
+        { ...verifiedPoi("NEARBY", "附近公园", "park_gate", 12), route_relation: "nearby" },
+      ],
+      ordered_nodes: [
+        { name: "默认起点", lng_gcj02: 121.42, lat_gcj02: 31.18 },
+        { name: "华山路广元西路口", lng_gcj02: 121.423, lat_gcj02: 31.183 },
+        { name: "默认终点", lng_gcj02: 121.425, lat_gcj02: 31.185 },
+      ],
+    },
+  };
+  const pois = {
+    features: [
+      poiFeature("COFFEE", "交大咖啡", "coffee", [121.421, 31.181]),
+      poiFeature("TOILET", "汇师公共厕所", "toilet", [121.422, 31.182]),
+      poiFeature("STORE", "天平路便利店", "convenience", [121.423, 31.183]),
+      poiFeature("NEARBY", "附近公园", "park_gate", [121.424, 31.184]),
+    ],
+  };
+
+  controller.showRoutes([route], { features: [] }, pois);
+  controller.focusRoute("XH_WALK_0001");
+
+  assert.deepEqual(semanticMarkerRoles(mapContext), ["start", "landmark", "landmark", "landmark", "end"]);
+  assert.deepEqual(semanticMarkerNames(mapContext), ["默认起点", "交大咖啡", "汇师公共厕所", "天平路便利店", "默认终点"]);
+  assert.doesNotMatch(mapContext.semanticMarkerLayers.map((marker) => marker.options.content).join(""), /coffee|toilet|convenience/);
+});
+
+test("聚焦路线使用临时图层从起点逐段揭示到终点", () => {
+  const { mapContext, added, removedCalls, flushFrame, pendingFrameCount } = createMapContext();
+  const controller = createRecommendationMapController(mapContext);
+  controller.showRoutes([routes[0]]);
+  const sourceLayers = mapContext.routeLayers.get("XH_WALK_0001");
+
+  controller.focusRoute("XH_WALK_0001");
+
+  const revealMain = added.find((overlay) => overlay.options.extData?.layerRole === "reveal-main");
+  assert.ok(revealMain);
+  assert.equal(sourceLayers.main.options.strokeOpacity, 0);
+  assert.deepEqual(revealMain.options.path, [[121.42, 31.18], [121.42, 31.18]]);
+  assert.equal(pendingFrameCount(), 1);
+
+  flushFrame(0);
+  flushFrame(600);
+  assert.deepEqual(revealMain.options.path[0], [121.42, 31.18]);
+  assert.ok(revealMain.options.path.at(-1)[0] > 121.42);
+  assert.ok(revealMain.options.path.at(-1)[0] < 121.425);
+
+  flushFrame(1200);
+  assert.deepEqual(sourceLayers.main.options.path, routes[0].geometry.coordinates);
+  assert.equal(sourceLayers.main.options.strokeOpacity, 1);
+  assert.equal(removedCalls.every((overlays) => !Array.isArray(overlays)), true);
+  assert.equal(pendingFrameCount(), 0);
+});
+
+test("返回总览会取消尚未完成的路线揭示动画", () => {
+  const { mapContext, removed, pendingFrameCount } = createMapContext();
+  const controller = createRecommendationMapController(mapContext);
+  controller.showRoutes([routes[0]]);
+  const sourceLayers = mapContext.routeLayers.get("XH_WALK_0001");
+  controller.focusRoute("XH_WALK_0001");
+
+  controller.showOverview();
+
+  assert.equal(pendingFrameCount(), 0);
+  assert.equal(removed.some((overlay) => overlay.options.extData?.layerRole === "reveal-main"), true);
+  assert.equal(sourceLayers.main.options.strokeOpacity, 0.78);
+  assert.deepEqual(semanticMarkerRoles(mapContext), []);
+});
+
+test("低动态偏好下详情直接显示完整路线", () => {
+  const { mapContext, added, pendingFrameCount } = createMapContext({ reducedMotion: true });
+  const controller = createRecommendationMapController(mapContext);
+  controller.showRoutes([routes[0]]);
+
+  controller.focusRoute("XH_WALK_0001");
+
+  assert.equal(added.some((overlay) => overlay.options.extData?.layerRole === "reveal-main"), false);
+  assert.equal(pendingFrameCount(), 0);
+  assert.deepEqual(semanticMarkerRoles(mapContext), ["start", "end"]);
 });
 
 test("关闭推荐详情后恢复原三路线顺序与总览视野", () => {
@@ -96,6 +230,19 @@ test("浏览和推荐公用的地图小卡只显示名称和公里数", () => {
   assert.equal(model.ariaLabel, "滨江慢行，0.87 公里");
   assert.equal("pm25Text" in model, false);
   assert.equal("metaText" in model, false);
+});
+
+test("徐汇区边界保留边界线且不再叠加竖排区名", () => {
+  const source = readFileSync(new URL("../web/src/map.js", import.meta.url), "utf8");
+  const drawBoundarySource = source.slice(
+    source.indexOf("export function drawBoundary"),
+    source.indexOf("export function fitBoundaryView"),
+  );
+
+  assert.match(drawBoundarySource, /strokeColor:\s*"#0b2856"/);
+  assert.match(drawBoundarySource, /bubble:\s*true/);
+  assert.doesNotMatch(drawBoundarySource, /addBoundaryLabel/);
+  assert.doesNotMatch(source, /amap-boundary-label/);
 });
 
 test("详情关闭按来源恢复推荐总览或当前浏览筛选总览", () => {
@@ -153,6 +300,8 @@ function createRoute(routeId, startLng) {
       route_id: routeId,
       route_name: routeId,
       route_mode: "walk",
+      start_location: { name: "默认起点", lng_gcj02: startLng, lat_gcj02: 31.18 },
+      end_location: { name: "默认终点", lng_gcj02: startLng + 0.005, lat_gcj02: 31.185 },
     },
     geometry: {
       type: "LineString",
@@ -161,7 +310,7 @@ function createRoute(routeId, startLng) {
   };
 }
 
-function createMapContext() {
+function createMapContext({ reducedMotion = false } = {}) {
   class Overlay {
     constructor(options) {
       this.options = options;
@@ -179,16 +328,32 @@ function createMapContext() {
     setOptions(options) {
       Object.assign(this.options, options);
     }
+
+    setPath(path) {
+      this.options.path = path;
+    }
   }
 
   const fitViews = [];
+  const added = [];
+  const removed = [];
+  const removedCalls = [];
+  const pendingFrames = new Map();
+  let nextFrameId = 1;
   const mapContext = {
     AMap: {
       Polyline: class Polyline extends Overlay {},
+      Marker: class Marker extends Overlay {},
+      Pixel: class Pixel {
+        constructor(x, y) { this.x = x; this.y = y; }
+      },
     },
     amap: {
-      add() {},
-      remove() {},
+      add(overlay) { added.push(overlay); },
+      remove(overlays) {
+        removedCalls.push(overlays);
+        removed.push(...(Array.isArray(overlays) ? overlays : [overlays]));
+      },
       setFitView(overlays, immediately, padding, maxZoom) {
         fitViews.push({ overlays, immediately, padding, maxZoom });
       },
@@ -199,8 +364,33 @@ function createMapContext() {
     routePreviewZoomHandler: null,
     entryLayers: [],
     poiLayers: [],
+    semanticMarkerLayers: [],
+    routeRevealMotion: {
+      prefersReducedMotion: reducedMotion,
+      requestFrame(callback) {
+        const frameId = nextFrameId;
+        nextFrameId += 1;
+        pendingFrames.set(frameId, callback);
+        return frameId;
+      },
+      cancelFrame(frameId) {
+        pendingFrames.delete(frameId);
+      },
+    },
   };
-  return { mapContext, fitViews };
+  return {
+    mapContext,
+    fitViews,
+    added,
+    removed,
+    removedCalls,
+    flushFrame(timestamp) {
+      const callbacks = [...pendingFrames.values()];
+      pendingFrames.clear();
+      callbacks.forEach((callback) => callback(timestamp));
+    },
+    pendingFrameCount: () => pendingFrames.size,
+  };
 }
 
 function routeStates(mapContext) {
@@ -209,4 +399,35 @@ function routeStates(mapContext) {
 
 function routeMainLayers(mapContext) {
   return [...mapContext.routeLayers.values()].map(({ main }) => main);
+}
+
+function semanticMarkerRoles(mapContext) {
+  return mapContext.semanticMarkerLayers.map((marker) => marker.options.extData.role);
+}
+
+function semanticMarkerNames(mapContext) {
+  return mapContext.semanticMarkerLayers.map((marker) => marker.options.extData.name);
+}
+
+function semanticMarkerPositions(mapContext) {
+  return mapContext.semanticMarkerLayers.map((marker) => marker.options.position);
+}
+
+function verifiedPoi(poiId, poiName, poiType, distanceM) {
+  return {
+    poi_id: poiId,
+    poi_name: poiName,
+    poi_type: poiType,
+    distance_m: distanceM,
+    route_relation: "along_route",
+    verification_status: "verified",
+  };
+}
+
+function poiFeature(poiId, poiName, poiType, coordinates) {
+  return {
+    type: "Feature",
+    properties: { poi_id: poiId, poi_name: poiName, poi_type: poiType },
+    geometry: { type: "Point", coordinates },
+  };
 }

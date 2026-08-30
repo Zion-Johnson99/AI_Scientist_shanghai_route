@@ -128,19 +128,23 @@ def test_product_toolbar_owns_the_single_location_mode_environment_and_profile_e
         html.index('<header class="product-toolbar"') : html.index("</header>") + len("</header>")
     ]
 
-    for element_id in [
-        "locationButton",
-        "sportModeTabs",
-        "environmentPanel",
-        "profileSettingsButton",
-    ]:
+    for element_id in ["locationInput", "sportModeTabs", "environmentPanel", "profileSettingsButton"]:
         assert f'id="{element_id}"' in toolbar
         assert html.count(f'id="{element_id}"') == 1
 
     assert "选一条适合当下环境的城市运动路线" not in html
+    assert 'class="route-search-shell"' in toolbar
+    assert '<summary class="sport-mode-trigger"' in toolbar
+    assert 'class="sport-mode-trigger__label">步行</span>' in toolbar
+    assert 'class="sport-mode-menu"' in toolbar
+    assert 'id="locationInput" type="search" placeholder="搜索地点"' in toolbar
+    assert 'id="locationCurrentButton"' in toolbar
+    assert 'id="locationSuggestions"' in toolbar
+    for plugin in ["AMap.AutoComplete", "AMap.Geolocation"]:
+        assert plugin in html
     assert 'class="profile-action__label">个人档案</span>' in toolbar
     assert 'class="map-layer-button__label">图层</span>' in html
-    assert './styles/recommendation.css?v=20260830-ui-8' in html
+    assert './styles/recommendation.css?v=20260830-ui-10' in html
     for mode_id, route_mode in [
         ("toolbarWalkMode", "walk"),
         ("toolbarRunMode", "run"),
@@ -196,11 +200,70 @@ def test_environment_and_profile_form_the_right_aligned_toolbar_group() -> None:
     assert "margin-left: auto;" not in profile_block
 
 
+def test_toolbar_controls_share_a_48px_alignment_grid() -> None:
+    css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
+
+    for selector in [
+        ".route-search-shell {",
+        ".product-toolbar .environment-toggle {",
+        ".profile-action {",
+    ]:
+        start = css.index(selector)
+        block = css[start : css.index("}", start)]
+        assert "height: 48px;" in block
+
+    search_start = css.index(".route-search-shell {")
+    search_block = css[search_start : css.index("}", search_start)]
+    assert "flex: 0 1 640px;" in search_block
+    assert "background: #ffffff;" in search_block
+
+    sport_start = css.index(".product-toolbar .sport-mode-tabs {")
+    sport_block = css[sport_start : css.index("}", sport_start)]
+    assert "display: block;" in sport_block
+    assert "padding: 0;" in sport_block
+    assert "border: 0;" in sport_block
+
+
+def test_location_search_uses_autocomplete_geolocation_and_immediate_nearby_refresh() -> None:
+    html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+    main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
+
+    assert "AMap.AutoComplete" in html
+    assert "AMap.Geolocation" in html
+    assert "createAmapLocationServices" in main_js
+    assert "createLocationController" in main_js
+    assert "locationControls.current" in main_js
+    assert "locationServices.suggest" in main_js
+    assert "locationServices.locate" in main_js
+    assert "refreshNearbyRoutes" in main_js
+    assert "createMapPointSelection" in main_js
+    assert 'map.amap.on("click"' in main_js
+    assert "event.target !== map.amap" not in main_js
+    assert "从这里出发" in main_js
+    assert "locationSearchButton" not in html + main_js
+    assert "locationPickButton" not in html + main_js
+
+
+def test_toolbar_environment_suggestions_and_start_pin_have_product_styles() -> None:
+    css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
+
+    assert ".environment-toggle__item" in css
+    assert ".environment-toggle__aqi-level" in css
+    assert ".location-suggestion" in css
+    assert ".location-suggestion.is-active" in css
+    assert ".amap-location-candidate" in css
+    assert ".map-location-confirmation" in css
+    assert ".map-location-confirmation__confirm" in css
+    marker_start = css.index(".amap-user-location {")
+    marker_block = css[marker_start : css.index("}", marker_start)]
+    assert "background: #e5483f;" in marker_block
+
+
 def test_product_toolbar_and_workbench_use_the_komoot_visual_shell() -> None:
     css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
 
     for token in [
-        "--surface-toolbar: #f5f3ec;",
+        "--surface-toolbar: #ffffff;",
         "--surface-main: #ffffff;",
         "--surface-brand-soft: #e8edf4;",
         "--brand-blue: #0b2856;",
@@ -319,7 +382,7 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260830-ui-8"
+    release = "v=20260830-ui-10"
     assert f"./styles/main.css?{release}" in html
     assert f"./styles/recommendation.css?{release}" in html
     assert f"./src/main.js?{release}" in html
@@ -476,7 +539,8 @@ def test_product_tabs_and_sport_filters_expose_complete_accessibility_state() ->
     assert 'aria-controls="recommendationView"' in html
     assert 'aria-controls="routeSelectionView"' in html
     assert 'role="tabpanel"' in html
-    assert 'class="sport-mode-tabs" role="group"' in html
+    assert 'id="sportModeTabs" class="sport-mode-tabs"' in html
+    assert 'class="sport-mode-menu" role="group"' in html
     assert 'aria-pressed="true"' in html
     assert "aria-selected" in main_js
     assert 'event.key === "ArrowRight"' in main_js
@@ -544,10 +608,10 @@ def test_map_draws_a_thin_single_route_with_landmark_markers() -> None:
     css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
 
     assert "export function showSingleRoute" in map_js
-    assert 'role: "start"' in map_js
+    assert '"start-end" : "start"' in map_js
     assert 'role: "end"' in map_js
     assert 'role: "landmark"' in map_js
-    assert "Math.min(3" in map_js
+    assert "routeSemanticWaypoints" in map_js
     assert "weight: 4" in map_js
     assert ".amap-route-marker" in css
     assert ".amap-route-option" in css
@@ -555,12 +619,13 @@ def test_map_draws_a_thin_single_route_with_landmark_markers() -> None:
 
 def test_map_uses_route_shape_and_real_waypoint_coordinates() -> None:
     map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
+    dock_js = (WEB_ROOT / "src" / "route-dock.js").read_text(encoding="utf-8")
 
     assert 'bike: { color: "#7C3AED"' in map_js
-    assert 'route_shape === "strict_loop"' in map_js
-    assert 'label: "起终点"' in map_js
-    assert "ordered_nodes" in map_js
-    assert "node.node_name || node.name" in map_js
+    assert '["strict_loop", "loop"].includes(properties.route_shape)' in map_js
+    assert 'label: isLoop ? "A/B" : "A"' in map_js
+    assert "ordered_nodes" in dock_js
+    assert "node?.node_name || node?.name" in dock_js
     assert "Math.round(((index + 1) * (path.length - 1))" not in map_js
 
 
@@ -686,14 +751,15 @@ def test_route_selection_preserves_content_rows_before_scrolling() -> None:
     assert "overflow: hidden;" in selection_block
 
 
-def test_map_module_uses_amap_and_keeps_community_nodes_result_scoped() -> None:
+def test_map_module_uses_amap_and_hides_raw_entry_and_poi_points() -> None:
     map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
 
     assert "AMap.Map" in map_js
     assert "AMap.GeoJSON" in map_js
     assert "AMap.Polyline" in map_js
     assert "L." not in map_js
-    assert "community_node" in map_js
-    assert "relatedEntryIds" in map_js
+    assert "amap-entry-dot" not in map_js
+    assert "amap-poi-dot" not in map_js
+    assert "relatedEntryIds" not in map_js
     for route_mode in ["run", "walk", "bike", "access"]:
         assert route_mode in map_js

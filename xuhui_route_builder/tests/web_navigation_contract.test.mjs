@@ -346,7 +346,14 @@ test("途经点清除编号占位名称并保留真实路口", () => {
     distance_m: 1000,
     duration_min: 15,
     waypoint_names: ["起点", "本地实测单环节点01", "桂林路钦州南路口", "华泾龙华实测节点02", "终点"],
+    ordered_nodes: [
+      { name: "起点", lng_gcj02: 121.43, lat_gcj02: 31.18 },
+      { name: "本地实测单环节点01", lng_gcj02: 121.431, lat_gcj02: 31.181 },
+      { name: "桂林路钦州南路口", lng_gcj02: 121.432, lat_gcj02: 31.182 },
+      { name: "华泾龙华实测节点02", lng_gcj02: 121.433, lat_gcj02: 31.183 },
+      { name: "终点", lng_gcj02: 121.434, lat_gcj02: 31.184 },
+    ],
   });
 
-  assert.deepEqual(model.waypoints, ["起点", "桂林路钦州南路口", "终点"]);
+  assert.deepEqual(model.waypoints, ["桂林路钦州南路口"]);
 });

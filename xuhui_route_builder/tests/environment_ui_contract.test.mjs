@@ -318,9 +318,10 @@ test("摘要缺值使用短横线，明确状态留在主条件和展开卡片",
   const staleContainer = createPanelStub();
   createEnvironmentPanel(staleContainer, staleDashboard);
   const staleSummary = panelSummary(staleContainer.innerHTML);
-  assert.equal(occurrences(staleSummary, "数据更新中"), 2);
-  assert.match(staleSummary, /environment-summary__temperature">—<\/div>/);
-  assert.equal(occurrences(staleSummary, "<strong>—</strong>"), 4);
+  const staticSummary = staleSummary.slice(0, staleSummary.indexOf('<button class="environment-toggle"'));
+  assert.equal(occurrences(staticSummary, "数据更新中"), 1);
+  assert.match(staticSummary, /environment-summary__temperature">—<\/div>/);
+  assert.equal(occurrences(staticSummary, "<strong>—</strong>"), 4);
   assert.match(staleContainer.innerHTML, /<span>湿度<\/span><strong>数据更新中<\/strong>/);
   assert.match(staleContainer.innerHTML, /<span>AQI<\/span><strong>暂无数据<\/strong>/);
 
@@ -345,6 +346,38 @@ test("AQI 摘要分开展示数值和空气质量等级", () => {
   assert.match(summary, /environment-summary__metric--aqi/);
   assert.match(summary, /environment-summary__aqi-number">42<\/span>/);
   assert.match(summary, /environment-summary__aqi-level environment-summary__aqi-level--excellent">优<\/span>/);
+});
+
+test("横条摘要以图标和文字完整展示天气、温度、湿度及 AQI 等级", () => {
+  const container = createPanelStub();
+  createEnvironmentPanel(container, dashboardFixture());
+  const toggle = environmentToggleHtml(container.innerHTML);
+
+  assert.match(toggle, /aria-label="当前环境：多云，温度 26\.4°，湿度 68%，AQI 42 优。展开环境详情"/);
+  assert.match(toggle, /environment-toggle__item--weather[\s\S]*qi-101[\s\S]*<span[^>]*>天气<\/span>[\s\S]*<strong>多云<\/strong>/);
+  assert.match(toggle, /environment-toggle__item--temperature[\s\S]*data-environment-icon="temperature"[\s\S]*<span[^>]*>温度<\/span>[\s\S]*<strong>26\.4°<\/strong>/);
+  assert.match(toggle, /environment-toggle__item--humidity[\s\S]*data-environment-icon="humidity"[\s\S]*<span[^>]*>湿度<\/span>[\s\S]*<strong>68%<\/strong>/);
+  assert.match(toggle, /environment-toggle__item--aqi[\s\S]*data-environment-icon="aqi"[\s\S]*<span[^>]*>AQI<\/span>[\s\S]*environment-toggle__aqi-number">42<\/span>[\s\S]*environment-toggle__aqi-level environment-toggle__aqi-level--excellent">优<\/span>/);
+  assert.equal(container.toggle.attributes["aria-label"], "当前环境：多云，温度 26.4°，湿度 68%，AQI 42 优。展开环境详情");
+
+  container.toggle.click();
+  assert.equal(container.toggle.attributes["aria-label"], "当前环境：多云，温度 26.4°，湿度 68%，AQI 42 优。收起环境详情");
+});
+
+test("横条摘要如实区分过期天气和缺失 AQI", () => {
+  const dashboard = dashboardFixture();
+  dashboard.current.weather.valid_until = "2000-01-01T00:00:00+08:00";
+  dashboard.current.aqi = { status: "no_data", values: {} };
+  const container = createPanelStub();
+  createEnvironmentPanel(container, dashboard);
+  const toggle = environmentToggleHtml(container.innerHTML);
+
+  assert.match(toggle, /aria-label="当前环境：数据更新中，温度 数据更新中，湿度 数据更新中，AQI 暂无数据。展开环境详情"/);
+  assert.match(toggle, /environment-toggle__item--weather[\s\S]*<strong>数据更新中<\/strong>/);
+  assert.match(toggle, /environment-toggle__item--temperature[\s\S]*<strong>数据更新中<\/strong>/);
+  assert.match(toggle, /environment-toggle__item--humidity[\s\S]*<strong>数据更新中<\/strong>/);
+  assert.match(toggle, /environment-toggle__item--aqi[\s\S]*<strong>暂无数据<\/strong>/);
+  assert.doesNotMatch(toggle, /environment-toggle__aqi-level/);
 });
 
 test("24 小时全量不可用时聚合为空态，混合数据以短横线保留时间轴", () => {
@@ -401,6 +434,12 @@ test("24 小时全量不可用时聚合为空态，混合数据以短横线保�
 
 function panelSummary(html) {
   return html.slice(0, html.indexOf("</section>") + "</section>".length);
+}
+
+function environmentToggleHtml(html) {
+  const match = html.match(/<button class="environment-toggle"[\s\S]*?<\/button>/);
+  assert.ok(match, "未找到横条环境摘要按钮");
+  return match[0];
 }
 
 function occurrences(value, pattern) {

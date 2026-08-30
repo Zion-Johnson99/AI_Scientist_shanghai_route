@@ -203,7 +203,7 @@ export function createEnvironmentPanel(
     }
     details.hidden = !open;
     toggle.setAttribute("aria-expanded", String(open));
-    toggle.setAttribute("aria-label", open ? "收起环境详情" : "展开环境详情");
+    toggle.setAttribute("aria-label", environmentToggleLabel(current, open));
     container.classList.toggle("is-expanded", open);
     if (!open && restoreFocus) toggle.focus?.();
   }
@@ -293,10 +293,24 @@ function renderPanel(current, forecast) {
         ${summaryMetric("降水", summaryPrecipitation)}
         ${summaryAqiMetric(current)}
       </div>
-      <button class="environment-toggle" type="button" aria-expanded="false" aria-haspopup="dialog" aria-controls="environmentDetails" aria-label="展开环境详情">
+      <button class="environment-toggle" type="button" aria-expanded="false" aria-haspopup="dialog" aria-controls="environmentDetails" aria-label="${escapeHtml(environmentToggleLabel(current, false))}">
         <span class="environment-toggle__summary">
-          <span>${escapeHtml(current.weatherText)}</span>
-          <strong>${escapeHtml(summaryTemperature)} · AQI ${escapeHtml(current.aqiText)}</strong>
+          <span class="environment-toggle__item environment-toggle__item--weather">
+            <span class="environment-toggle__icon" aria-hidden="true">${icon}</span>
+            <span class="environment-toggle__label">天气</span>
+            <strong>${escapeHtml(current.weatherText)}</strong>
+          </span>
+          <span class="environment-toggle__item environment-toggle__item--temperature">
+            ${environmentIconMarkup("temperature")}
+            <span class="environment-toggle__label">温度</span>
+            <strong>${escapeHtml(current.temperatureText)}</strong>
+          </span>
+          <span class="environment-toggle__item environment-toggle__item--humidity">
+            ${environmentIconMarkup("humidity")}
+            <span class="environment-toggle__label">湿度</span>
+            <strong>${escapeHtml(current.humidityText)}</strong>
+          </span>
+          ${environmentToggleAqi(current)}
         </span>
         ${alertDot}
         <span class="environment-toggle__chevron" aria-hidden="true">⌄</span>
@@ -398,6 +412,42 @@ function summaryAqiMetric(current) {
       <span class="environment-summary__aqi-level environment-summary__aqi-level--${tone}">${escapeHtml(current.aqiLevel)}</span>
     </strong>
   </div>`;
+}
+
+function environmentToggleAqi(current) {
+  if (current.aqi === null) {
+    return `<span class="environment-toggle__item environment-toggle__item--aqi">
+      ${environmentIconMarkup("aqi")}
+      <span class="environment-toggle__label">AQI</span>
+      <strong>${escapeHtml(current.aqiText)}</strong>
+    </span>`;
+  }
+  const tone = aqiTone(current.aqi);
+  return `<span class="environment-toggle__item environment-toggle__item--aqi">
+    ${environmentIconMarkup("aqi")}
+    <span class="environment-toggle__label">AQI</span>
+    <strong class="environment-toggle__aqi">
+      <span class="environment-toggle__aqi-number">${escapeHtml(current.aqiText)}</span>
+      <span class="environment-toggle__aqi-level environment-toggle__aqi-level--${tone}">${escapeHtml(current.aqiLevel)}</span>
+    </strong>
+  </span>`;
+}
+
+function environmentToggleLabel(current, open) {
+  const aqi = current.aqi === null
+    ? current.aqiText
+    : `${current.aqiText} ${current.aqiLevel}`;
+  const action = open ? "收起环境详情" : "展开环境详情";
+  return `当前环境：${current.weatherText}，温度 ${current.temperatureText}，湿度 ${current.humidityText}，AQI ${aqi}。${action}`;
+}
+
+function environmentIconMarkup(type) {
+  const paths = {
+    temperature: '<path d="M10 14.76V5a2 2 0 0 1 4 0v9.76a4 4 0 1 1-4 0Z"></path><path d="M12 9v7"></path>',
+    humidity: '<path d="M12 2.7S6 9.25 6 14a6 6 0 0 0 12 0c0-4.75-6-11.3-6-11.3Z"></path><path d="M9.5 15.5c.7 1 1.55 1.5 2.5 1.5"></path>',
+    aqi: '<path d="M4 8h10a2 2 0 1 0-2-2"></path><path d="M4 12h15a2 2 0 1 1-2 2"></path><path d="M4 16h7"></path>',
+  };
+  return `<svg class="environment-toggle__icon" data-environment-icon="${type}" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[type]}</svg>`;
 }
 
 function nowCard(label, value, description, status) {

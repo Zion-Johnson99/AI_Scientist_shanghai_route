@@ -1,11 +1,11 @@
 import {
   loadRouteData,
   startEnvironmentDashboardPolling,
-} from "./data-loader.js?v=20260830-ui-8";
+} from "./data-loader.js?v=20260830-ui-10";
 import {
   buildRouteExposureModel,
   createEnvironmentPanel,
-} from "./environment-ui.js?v=20260830-ui-8";
+} from "./environment-ui.js?v=20260830-ui-10";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -23,13 +23,23 @@ import {
   showRoutePreviews,
   showSingleRoute,
   startNavigationSession,
-} from "./map.js?v=20260830-ui-8";
-import { createNavigationController } from "./navigation-session.js?v=20260830-ui-8";
-import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260830-ui-8";
-import { createRecommendationApi } from "./recommendation-api.js?v=20260830-ui-8";
-import { createProfileDialog, createRecommendationUI } from "./recommendation-ui.js?v=20260830-ui-8";
-import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260830-ui-8";
-import { renderRoutePlanner } from "./route-ui.js?v=20260830-ui-8";
+} from "./map.js?v=20260830-ui-10";
+import { createNavigationController } from "./navigation-session.js?v=20260830-ui-10";
+import {
+  createAmapLocationServices,
+  createLocationController,
+  createMapPointSelection,
+} from "./location-control.js?v=20260830-ui-10";
+import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260830-ui-10";
+import { createRecommendationApi } from "./recommendation-api.js?v=20260830-ui-10";
+import {
+  DEFAULT_RECOMMENDATION_LOCATION,
+  buildInitialRecommendationResult,
+  createProfileDialog,
+  createRecommendationUI,
+} from "./recommendation-ui.js?v=20260830-ui-10";
+import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260830-ui-10";
+import { renderRoutePlanner } from "./route-ui.js?v=20260830-ui-10";
 
 const RECOMMENDATION_MAP_CARDS_ENABLED = false;
 
@@ -65,6 +75,7 @@ async function bootstrap() {
     },
     onClose({ source, routeId }) {
       uiState.detailSource = null;
+      recommendationUI?.setDetailOpen(false);
       if (source !== uiState.productView) {
         routeDock.hide();
         renderProductView();
@@ -95,8 +106,23 @@ async function bootstrap() {
   const locationControls = getLocationControls();
   const hadSavedProfile = Boolean(globalThis.localStorage?.getItem?.(HEALTH_PROFILE_STORAGE_KEY));
   let healthProfile = loadHealthProfile();
-  let currentLocation = null;
+  let currentLocation = { ...DEFAULT_RECOMMENDATION_LOCATION };
   let pendingLocationResolver = null;
+  let locationCandidates = [];
+  let activeLocationCandidateIndex = 0;
+  let locationSearchRevision = 0;
+  let locationSearchTimer = null;
+  const locationServices = createAmapLocationServices(map);
+  const locationController = createLocationController({
+    initialLocation: currentLocation,
+    onCommit: (location) => commitLocation(location),
+  });
+  let mapLocationCandidateMarker = null;
+  let mapLocationInfoWindow = null;
+  let mapLocationRevision = 0;
+  const mapPointSelection = createMapPointSelection({
+    onConfirm: (location) => locationController.commitCandidate(location),
+  });
   let environmentGeneratedAt = data.environmentDashboard?.metadata?.generated_at || null;
   let environmentPanel = createEnvironmentPanel(environmentContainer, data.environmentDashboard);
   startEnvironmentDashboardPolling((nextDashboard) => {
@@ -191,7 +217,7 @@ async function bootstrap() {
       enablePointPicker(map, role);
     },
     onLocationChange(point) {
-      commitLocation({ ...point, label: point.label || "地图点" });
+      locationController.commitCandidate({ ...point, label: point.label || "地图点" });
     },
     onNavigate(request) {
       return planNavigation(map, request);
@@ -235,6 +261,7 @@ async function bootstrap() {
     },
     onNavigationViewChange(open) {
       if (open) {
+        recommendationUI?.setFiltersVisible(false);
         recommendationContainer.hidden = true;
         recommendationContainer.classList.remove("active");
         selectionView.hidden = true;
@@ -258,6 +285,7 @@ async function bootstrap() {
 
   recommendationUI = createRecommendationUI({
     container: recommendationContainer,
+    filterHost: document.querySelector(".map-wrap"),
     questionnaire,
     profile: healthProfile,
     location: currentLocation,
@@ -276,6 +304,7 @@ async function bootstrap() {
       recommendationFeatures = recommendationFeaturesFromResult(routes, routeFeaturesById);
       recommendationMap.showRoutes(recommendationFeatures, data.entries, data.pois, recommendationUI.getAnswers().interests);
       uiState.detailSource = null;
+      recommendationUI.setDetailOpen(false);
       routeDock.hide();
       renderProductView();
       syncWorkbench();
@@ -293,6 +322,7 @@ async function bootstrap() {
         return;
       }
       uiState.detailSource = "recommendation";
+      recommendationUI.setDetailOpen(true);
       routeDock.show({
         route: buildRouteDockSource(routeFeature, route),
         environment: buildRouteExposureModel(data.environmentDashboard, routeId),
@@ -309,14 +339,28 @@ async function bootstrap() {
     onReturnRouteOverview() {
       if (recommendationFeatures.length) recommendationMap.showOverview();
       routeDock.hide();
+      recommendationUI.setDetailOpen(false);
     },
     onRestartRecommendation() {
       uiState.detailSource = null;
       routeDock.hide();
+      recommendationUI.setDetailOpen(false);
       showRecommendationIdleMap();
     },
   });
-  if (questionnaireError) recommendationUI.showError(questionnaireError);
+  commitLocation(currentLocation, { refreshRoutes: false });
+  if (questionnaireError) {
+    recommendationUI.showError(questionnaireError);
+  } else {
+    const initialResult = buildInitialRecommendationResult({
+      catalog,
+      questionnaire,
+      answers: recommendationUI.getAnswers(),
+      location: currentLocation,
+      getRouteEnvironment: (routeId) => buildRouteExposureModel(data.environmentDashboard, routeId),
+    });
+    recommendationUI.showResult(initialResult);
+  }
 
   document.querySelector("#profileSettingsButton").addEventListener("click", () => profileDialog.open());
   if (!hadSavedProfile) profileDialog.open();
@@ -341,6 +385,7 @@ async function bootstrap() {
     setSidebarCollapsed(!uiState.sidebarCollapsed);
   });
   bindLocationControls();
+  bindMapLocationPicker();
   bindRouteModeControls();
   bindLayerControls();
   setProductView("recommendation");
@@ -392,12 +437,14 @@ async function bootstrap() {
     navigationView.hidden = true;
     recommendationContainer.hidden = visibleView !== "recommendation";
     recommendationContainer.classList.toggle("active", visibleView === "recommendation");
+    recommendationUI?.setFiltersVisible(visibleView === "recommendation" && !uiState.chatOpen);
     selectionView.hidden = visibleView !== "browse";
     selectionView.classList.toggle("active", visibleView === "browse");
     document.querySelector(".mode-tabs").hidden = uiState.chatOpen;
   }
 
   function syncWorkbench() {
+    recommendationUI?.setDetailOpen(uiState.detailSource === "recommendation");
     workbench.title.textContent = uiState.chatOpen
       ? "千问路线助手"
       : uiState.productView === "browse" ? "浏览路线" : "帮我推荐";
@@ -438,13 +485,18 @@ async function bootstrap() {
     resolve?.(value);
   }
 
-  function commitLocation(location) {
+  function commitLocation(location, { refreshRoutes = true } = {}) {
     currentLocation = location;
-    locationControls.label.textContent = location.label || "已选位置";
+    locationControls.input.value = "";
+    locationCandidates = [];
+    activeLocationCandidateIndex = 0;
+    renderLocationSuggestions();
+    clearMapLocationCandidate();
     locationControls.status.textContent = "";
     showUserLocation(map, location);
     recommendationUI.setLocation(location);
     finishLocationRequest(location);
+    if (refreshRoutes) refreshNearbyRoutes();
     return location;
   }
 
@@ -454,36 +506,202 @@ async function bootstrap() {
       if (!open && pendingLocationResolver) finishLocationRequest(null);
       else setLocationEditorOpen(open);
     });
-    locationControls.search.addEventListener("click", async () => {
-      locationControls.status.textContent = "正在查找地点…";
-      try {
-        commitLocation(await resolveUserLocation(map, { text: locationControls.input.value }));
-      } catch (error) {
-        locationControls.status.textContent = errorMessage(error);
-      }
+    locationControls.input.addEventListener("focus", () => setLocationEditorOpen(true));
+    locationControls.input.addEventListener("input", () => {
+      const query = locationControls.input.value;
+      locationController.setQuery(query);
+      setLocationEditorOpen(true);
+      queueLocationSuggestions(query);
     });
     locationControls.input.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        if (!locationCandidates.length) return;
+        event.preventDefault();
+        const offset = event.key === "ArrowDown" ? 1 : -1;
+        activeLocationCandidateIndex = (
+          activeLocationCandidateIndex + offset + locationCandidates.length
+        ) % locationCandidates.length;
+        renderLocationSuggestions();
+        return;
+      }
       if (event.key === "Enter") {
         event.preventDefault();
-        locationControls.search.click();
+        submitLocationInput();
+        return;
       }
+      if (event.key === "Escape") setLocationEditorOpen(false);
     });
-    locationControls.pick.addEventListener("click", () => {
-      startNavigationSession(map, (result) => {
-        if (result?.error) {
-          locationControls.status.textContent = result.error;
-          return;
-        }
-        if (result?.point) {
-          const point = { ...result.point, label: "地图点" };
-          showUserLocation(map, point);
-          endNavigationSession(map);
-          commitLocation(point);
-        }
+    locationControls.current.addEventListener("click", locateCurrentPosition);
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest?.(".route-search-shell")) setLocationEditorOpen(false);
+    });
+  }
+
+  function bindMapLocationPicker() {
+    map.amap.on("click", (event) => {
+      if (map.navigation.state !== "idle") return;
+      const lng = Number(event?.lnglat?.getLng?.() ?? event?.lnglat?.lng);
+      const lat = Number(event?.lnglat?.getLat?.() ?? event?.lnglat?.lat);
+      if (!Number.isFinite(lng) || !Number.isFinite(lat)) return;
+      showMapLocationCandidate({ label: "已选位置", lng_gcj02: lng, lat_gcj02: lat });
+    });
+  }
+
+  function showMapLocationCandidate(point) {
+    clearMapLocationCandidate();
+    const candidate = mapPointSelection.preview(point);
+    const revision = ++mapLocationRevision;
+    const card = document.createElement("section");
+    card.className = "map-location-confirmation";
+    card.setAttribute("aria-label", "确认路线起点");
+    const close = document.createElement("button");
+    close.type = "button";
+    close.className = "map-location-confirmation__close";
+    close.setAttribute("aria-label", "取消地图选点");
+    close.textContent = "×";
+    const title = document.createElement("strong");
+    title.textContent = candidate.label;
+    const confirm = document.createElement("button");
+    confirm.type = "button";
+    confirm.className = "map-location-confirmation__confirm";
+    confirm.textContent = "从这里出发";
+    card.append(close, title, confirm);
+    close.addEventListener("click", (event) => {
+      event.stopPropagation();
+      clearMapLocationCandidate();
+    });
+    confirm.addEventListener("click", (event) => {
+      event.stopPropagation();
+      mapPointSelection.confirm();
+    });
+
+    mapLocationCandidateMarker = new map.AMap.Marker({
+      position: [candidate.lng_gcj02, candidate.lat_gcj02],
+      content: '<span class="amap-location-candidate" aria-hidden="true"><i></i></span>',
+      anchor: "bottom-center",
+      zIndex: 130,
+    });
+    mapLocationInfoWindow = new map.AMap.InfoWindow({
+      isCustom: true,
+      content: card,
+      closeWhenClickMap: false,
+      offset: new map.AMap.Pixel(0, -42),
+    });
+    map.amap.add(mapLocationCandidateMarker);
+    mapLocationInfoWindow.open(map.amap, [candidate.lng_gcj02, candidate.lat_gcj02]);
+    locationServices.reverse(candidate).then((resolved) => {
+      if (revision !== mapLocationRevision || !mapPointSelection.getCandidate()) return;
+      mapPointSelection.preview(resolved);
+      title.textContent = resolved.label;
+    }).catch((error) => {
+      console.warn("地图选点地址解析失败", { point: candidate, error });
+    });
+  }
+
+  function clearMapLocationCandidate() {
+    mapLocationRevision += 1;
+    if (mapLocationCandidateMarker) map.amap.remove(mapLocationCandidateMarker);
+    mapLocationInfoWindow?.close?.();
+    mapLocationCandidateMarker = null;
+    mapLocationInfoWindow = null;
+    mapPointSelection.cancel();
+  }
+
+  function queueLocationSuggestions(query) {
+    globalThis.clearTimeout?.(locationSearchTimer);
+    const keyword = String(query || "").trim();
+    const revision = ++locationSearchRevision;
+    if (!keyword) {
+      locationCandidates = [];
+      locationControls.status.textContent = "";
+      renderLocationSuggestions();
+      return;
+    }
+    locationControls.status.textContent = "正在查找地点…";
+    locationSearchTimer = globalThis.setTimeout?.(async () => {
+      try {
+        const candidates = await locationServices.suggest(keyword);
+        if (revision !== locationSearchRevision) return;
+        locationCandidates = candidates;
+        activeLocationCandidateIndex = 0;
+        locationControls.status.textContent = candidates.length ? "" : "没有找到匹配地点。";
+        renderLocationSuggestions();
+      } catch (error) {
+        if (revision !== locationSearchRevision) return;
+        locationCandidates = [];
+        locationControls.status.textContent = errorMessage(error);
+        renderLocationSuggestions();
+        console.error("地点联想搜索失败", { query: keyword, error });
+      }
+    }, 220);
+  }
+
+  async function submitLocationInput() {
+    if (locationCandidates.length) {
+      locationController.commitActiveCandidate(locationCandidates, activeLocationCandidateIndex);
+      return;
+    }
+    const query = String(locationControls.input.value || "").trim();
+    if (!query) return;
+    locationControls.status.textContent = "正在确定地点…";
+    try {
+      locationController.commitCandidate(await resolveUserLocation(map, { text: query }));
+    } catch (error) {
+      locationControls.status.textContent = errorMessage(error);
+      console.error("地点搜索失败", { query, error });
+    }
+  }
+
+  async function locateCurrentPosition() {
+    locationController.beginLocating();
+    locationControls.current.disabled = true;
+    locationControls.status.textContent = "正在定位…";
+    try {
+      locationController.commitGeolocation(await locationServices.locate());
+    } catch (error) {
+      const state = locationController.failGeolocation(error);
+      locationControls.status.textContent = state.error;
+      console.error("设备定位失败", { error });
+    } finally {
+      locationControls.current.disabled = false;
+    }
+  }
+
+  function renderLocationSuggestions() {
+    locationControls.suggestions.replaceChildren(...locationCandidates.map((candidate, index) => {
+      const option = document.createElement("button");
+      option.type = "button";
+      option.className = `location-suggestion${index === activeLocationCandidateIndex ? " is-active" : ""}`;
+      option.setAttribute("role", "option");
+      option.setAttribute("aria-selected", String(index === activeLocationCandidateIndex));
+      const name = document.createElement("strong");
+      name.textContent = candidate.label;
+      const address = document.createElement("small");
+      address.textContent = candidate.address || "上海";
+      option.append(name, address);
+      option.addEventListener("mouseenter", () => {
+        activeLocationCandidateIndex = index;
+        [...locationControls.suggestions.children].forEach((child, childIndex) => {
+          const active = childIndex === index;
+          child.classList.toggle("is-active", active);
+          child.setAttribute("aria-selected", String(active));
+        });
       });
-      enablePointPicker(map, "origin");
-      locationControls.status.textContent = "请在地图上点击出发位置。";
+      option.addEventListener("click", () => locationController.commitCandidate(candidate));
+      return option;
+    }));
+  }
+
+  function refreshNearbyRoutes() {
+    if (questionnaireError || !questionnaire || !recommendationUI) return;
+    const result = buildInitialRecommendationResult({
+      catalog,
+      questionnaire,
+      answers: recommendationUI.getAnswers(),
+      location: currentLocation,
+      getRouteEnvironment: (routeId) => buildRouteExposureModel(data.environmentDashboard, routeId),
     });
+    recommendationUI.showResult(result);
   }
 
   function bindRouteModeControls() {
@@ -492,10 +710,21 @@ async function bootstrap() {
       button.addEventListener("click", () => {
         buttons.forEach((candidate) => {
           const active = candidate === button;
+          candidate.classList.toggle("active", active);
           candidate.classList.toggle("is-selected", active);
           candidate.setAttribute("aria-pressed", String(active));
         });
-        recommendationUI.setRouteMode(button.dataset.routeMode);
+        const mode = button.dataset.routeMode;
+        recommendationUI.setRouteMode(mode);
+        locationController.setMode(mode);
+        locationControls.modeLabel.textContent = button.querySelector("b")?.textContent || "步行";
+        const icon = button.querySelector("svg")?.cloneNode(true);
+        if (icon && locationControls.modeIcon) {
+          locationControls.modeIcon.replaceWith(icon);
+          locationControls.modeIcon = icon;
+        }
+        locationControls.modeDetails.open = false;
+        refreshNearbyRoutes();
       });
     });
   }
@@ -517,14 +746,19 @@ async function bootstrap() {
 }
 
 function getLocationControls() {
+  const modeDetails = document.querySelector("#sportModeTabs");
+  const modeTrigger = modeDetails.querySelector(".sport-mode-trigger");
   return {
     toggle: document.querySelector("#locationButton"),
-    label: document.querySelector("#locationLabel"),
     editor: document.querySelector("#locationEditor"),
     input: document.querySelector("#locationInput"),
-    search: document.querySelector("#locationSearchButton"),
-    pick: document.querySelector("#locationPickButton"),
+    current: document.querySelector("#locationCurrentButton"),
+    suggestions: document.querySelector("#locationSuggestions"),
     status: document.querySelector("#locationStatus"),
+    modeDetails,
+    modeTrigger,
+    modeLabel: modeTrigger.querySelector(".sport-mode-trigger__label"),
+    modeIcon: modeTrigger.querySelector("svg:not(.sport-mode-trigger__chevron)"),
   };
 }
 
