@@ -111,10 +111,16 @@ export async function createMap(targetId) {
     viewMode: "2D",
     mapStyle: "amap://styles/normal",
   });
+  const scaleControl = new AMap.Scale({
+    position: "RB",
+    offset: new AMap.Pixel(20, 38),
+  });
+  amap.addControl(scaleControl);
 
   return {
     AMap,
     amap,
+    scaleControl,
     boundaryLayer: null,
     boundaryRings: [],
     routeLayers: new Map(),
@@ -165,9 +171,13 @@ export function drawBoundary(mapContext, boundary) {
   amap.add(layer);
   mapContext.boundaryLayer = layer;
   addBoundaryLabel(mapContext);
-  const overlays = layer.getOverlays ? layer.getOverlays() : [];
-  amap.setFitView(overlays.length ? overlays : undefined, false, [30, 30, 30, 30]);
+  fitBoundaryView(mapContext);
   return layer;
+}
+
+export function fitBoundaryView(mapContext) {
+  const overlays = mapContext.boundaryLayer?.getOverlays?.() || [];
+  mapContext.amap.setFitView(overlays.length ? overlays : undefined, false, [30, 30, 30, 30]);
 }
 
 export function showRoutePreviews(

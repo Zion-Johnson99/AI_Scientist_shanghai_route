@@ -656,17 +656,13 @@ export function createRecommendationUI({
     restart.addEventListener("click", () => controller.restartRecommendation());
     bar.append(restart);
     region.append(bar);
-    model.routes.forEach((route, index) => {
-      if (index === 0) region.append(element("h3", "recommendation-results__group", "首选路线"));
-      if (index === 1) region.append(element("h3", "recommendation-results__group", "备选路线"));
-      region.append(renderRouteCard(route, index));
-    });
+    model.routes.forEach((route, index) => region.append(renderRouteCard(route, index)));
     return region;
   }
 
   function renderRouteCard(route, index) {
     const model = routeCardModel(route.source, {
-      preferredLabel: route.isPrimary ? "首选" : "",
+      preferredLabel: ["首选", "备选 1", "备选 2"][index] || "",
       selected: route.isSelected,
     });
     const card = createRouteCard(model, {

@@ -1,11 +1,11 @@
 import {
   loadRouteData,
   startEnvironmentDashboardPolling,
-} from "./data-loader.js?v=20260830-ui-6";
+} from "./data-loader.js?v=20260830-ui-8";
 import {
   buildRouteExposureModel,
   createEnvironmentPanel,
-} from "./environment-ui.js?v=20260830-ui-6";
+} from "./environment-ui.js?v=20260830-ui-8";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -15,6 +15,7 @@ import {
   drawBoundary,
   enablePointPicker,
   endNavigationSession,
+  fitBoundaryView,
   highlightRoutePreview,
   planNavigation,
   resolveUserLocation,
@@ -22,13 +23,13 @@ import {
   showRoutePreviews,
   showSingleRoute,
   startNavigationSession,
-} from "./map.js?v=20260830-ui-6";
-import { createNavigationController } from "./navigation-session.js?v=20260830-ui-6";
-import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260830-ui-6";
-import { createRecommendationApi } from "./recommendation-api.js?v=20260830-ui-6";
-import { createProfileDialog, createRecommendationUI } from "./recommendation-ui.js?v=20260830-ui-6";
-import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260830-ui-6";
-import { renderRoutePlanner } from "./route-ui.js?v=20260830-ui-6";
+} from "./map.js?v=20260830-ui-8";
+import { createNavigationController } from "./navigation-session.js?v=20260830-ui-8";
+import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260830-ui-8";
+import { createRecommendationApi } from "./recommendation-api.js?v=20260830-ui-8";
+import { createProfileDialog, createRecommendationUI } from "./recommendation-ui.js?v=20260830-ui-8";
+import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260830-ui-8";
+import { renderRoutePlanner } from "./route-ui.js?v=20260830-ui-8";
 
 const RECOMMENDATION_MAP_CARDS_ENABLED = false;
 
@@ -64,10 +65,13 @@ async function bootstrap() {
     },
     onClose({ source, routeId }) {
       uiState.detailSource = null;
-      if (source === "recommendation") {
-        uiState.productView = "recommendation";
-        uiState.chatOpen = false;
+      if (source !== uiState.productView) {
+        routeDock.hide();
         renderProductView();
+        syncWorkbench();
+        return;
+      }
+      if (source === "recommendation") {
         if (recommendationUI?.returnToOverview) recommendationUI.returnToOverview();
         else recommendationMap.showOverview();
       } else if (source === "browse") {
@@ -216,6 +220,8 @@ async function bootstrap() {
         routeDock.show({
           route,
           environment: buildRouteExposureModel(data.environmentDashboard, route.route_id),
+          dashboard: data.environmentDashboard,
+          targetTime: "now",
           source: "browse",
           objectiveHighlights: [],
           qwenAdvantages: [],
@@ -290,6 +296,8 @@ async function bootstrap() {
       routeDock.show({
         route: buildRouteDockSource(routeFeature, route),
         environment: buildRouteExposureModel(data.environmentDashboard, routeId),
+        dashboard: data.environmentDashboard,
+        targetTime: recommendationUI.getAnswers(),
         source: "recommendation",
         objectiveHighlights: [],
         qwenAdvantages: route?.advantages,
@@ -338,8 +346,14 @@ async function bootstrap() {
   setProductView("recommendation");
 
   function setProductView(view) {
-    uiState.productView = view === "browse" ? "browse" : "recommendation";
+    const nextView = view === "browse" ? "browse" : "recommendation";
+    const viewChanged = nextView !== uiState.productView;
+    uiState.productView = nextView;
     if (uiState.chatOpen) recommendationUI.closeChat();
+    if (viewChanged) {
+      uiState.detailSource = null;
+      routeDock.hide();
+    }
     renderProductView();
     if (uiState.productView === "browse") {
       planner.showBrowse();
@@ -364,6 +378,7 @@ async function bootstrap() {
       return;
     }
     clearRouteResults(map);
+    fitBoundaryView(map);
   }
 
   function renderProductView() {
@@ -397,7 +412,11 @@ async function bootstrap() {
   }
 
   function setSidebarCollapsed(collapsed) {
-    uiState.sidebarCollapsed = Boolean(collapsed);
+    const nextCollapsed = Boolean(collapsed);
+    uiState.sidebarCollapsed = nextCollapsed;
+    if (nextCollapsed && uiState.detailSource) {
+      routeDock.dismiss();
+    }
     syncWorkbench();
     globalThis.requestAnimationFrame?.(() => map.amap.resize?.());
     globalThis.setTimeout?.(() => map.amap.resize?.(), 200);

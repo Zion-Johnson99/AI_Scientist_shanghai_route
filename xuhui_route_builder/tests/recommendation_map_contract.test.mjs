@@ -106,8 +106,8 @@ test("详情关闭按来源恢复推荐总览或当前浏览筛选总览", () =>
   assert.match(mainSource, /onClose\s*\(\s*\{\s*source\s*,\s*routeId\s*\}\s*\)/, "详情关闭回调缺少 source/routeId");
   assert.match(
     mainSource,
-    /if\s*\(source === "recommendation"\)\s*\{\s*uiState\.productView = "recommendation";\s*uiState\.chatOpen = false;\s*renderProductView\(\);/s,
-    "推荐详情关闭后未显式恢复推荐结果界面",
+    /if\s*\(source !== uiState\.productView\)\s*\{\s*routeDock\.hide\(\);\s*renderProductView\(\);\s*syncWorkbench\(\);\s*return;/s,
+    "过期详情来源仍可能恢复另一功能的界面",
   );
   assert.ok(mainSource.includes("recommendationMap.showOverview("), "推荐详情关闭未恢复三路线总览");
   assert.ok(mainSource.includes("planner.restoreBrowseOverview("), "浏览详情关闭未恢复当前筛选总览");

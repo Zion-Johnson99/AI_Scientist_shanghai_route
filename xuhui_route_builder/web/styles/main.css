@@ -2116,6 +2116,25 @@ select:disabled {
   background: #ebe8e0;
 }
 
+.route-dock__gallery-placeholder {
+  display: grid;
+  place-items: center;
+  color: #a6a196;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 54%), transparent 52%),
+    #ebe8e0;
+}
+
+.route-dock__gallery-placeholder svg {
+  width: 38px;
+  height: 38px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
 .route-dock__gallery-placeholder:nth-child(2) { background: #e2dfd7; }
 .route-dock__gallery-placeholder:nth-child(3) { background: #d9d6ce; }
 
@@ -2173,6 +2192,47 @@ select:disabled {
 
 .route-dock__close:hover { background: var(--surface-brand-soft); }
 
+.route-dock__metrics {
+  display: flex;
+  min-width: 0;
+  margin-top: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  color: #6f685e;
+  font-family: var(--font-numeric);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.route-dock__metrics .route-dock__metric {
+  position: static;
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+}
+
+.route-dock__metrics .route-dock__metric::before { display: none; }
+
+.route-dock__metrics .route-dock__metric i {
+  color: #786f61;
+  font-family: var(--font-ui);
+  font-size: 17px;
+  font-style: normal;
+  line-height: 1;
+}
+
+.route-dock__metrics .route-dock__metric strong {
+  overflow: visible;
+  font-size: 13px;
+  font-weight: 720;
+  line-height: 1.35;
+}
+
 .route-dock__facts {
   display: grid;
   margin-top: 6px;
@@ -2206,6 +2266,8 @@ select:disabled {
 
 .route-dock__path,
 .route-dock__exposures,
+.route-dock__forecast,
+.route-dock__overview,
 .route-dock__highlights,
 .route-dock__recommendation {
   margin-top: 22px;
@@ -2213,10 +2275,13 @@ select:disabled {
 
 .route-dock__path h3,
 .route-dock__exposures h3,
+.route-dock__forecast h3,
+.route-dock__overview h3,
 .route-dock__highlights h3,
 .route-dock__recommendation h3 {
   margin: 0 0 10px;
-  font-size: 14px;
+  font-size: 15px;
+  letter-spacing: -0.01em;
 }
 
 .route-dock__endpoints {
@@ -2318,6 +2383,8 @@ select:disabled {
   gap: 6px;
 }
 
+.route-dock__exposure-reading { justify-content: flex-end; }
+
 .route-dock__exposure-label > strong,
 .route-dock__exposure-reading > strong { font-size: 13px; }
 
@@ -2334,6 +2401,139 @@ select:disabled {
   color: var(--muted);
   font-size: 11px;
   line-height: 1.5;
+}
+
+.route-dock__forecast-list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  overflow: hidden;
+  padding: 13px 6px 12px;
+  border: 1px solid #dce7cc;
+  border-radius: 14px;
+  background:
+    linear-gradient(to top, rgb(139 188 65 / 15%), transparent 72%),
+    #fafcf7;
+}
+
+.route-dock__forecast-list::before {
+  position: absolute;
+  top: 55px;
+  right: 9%;
+  left: 9%;
+  height: 2px;
+  background: #8fbd43;
+  content: "";
+}
+
+.route-dock__forecast-point {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+  padding-inline: 3px;
+  text-align: center;
+}
+
+.route-dock__forecast-point::after {
+  width: 7px;
+  height: 7px;
+  margin: 2px auto 4px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #78aa2d;
+  box-shadow: 0 0 0 1px #78aa2d;
+  content: "";
+  grid-row: 3;
+}
+
+.route-dock__forecast-point time {
+  color: var(--muted);
+  font-family: var(--font-numeric);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.route-dock__forecast-point strong {
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.route-dock__forecast-point span {
+  color: var(--muted);
+  font-size: 9.5px;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+.route-dock__overview-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.route-dock__overview-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 62px;
+  padding-bottom: 12px;
+}
+
+.route-dock__overview-item:not(:last-child)::after {
+  position: absolute;
+  top: 34px;
+  bottom: 0;
+  left: 16px;
+  border-left: 1px dashed #cec9bf;
+  content: "";
+}
+
+.route-dock__overview-marker {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: #22201d;
+  font-family: var(--font-numeric);
+  font-size: 13px;
+  font-weight: 780;
+}
+
+.route-dock__overview-content {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 3px;
+  padding-top: 1px;
+}
+
+.route-dock__overview-content small {
+  color: var(--muted);
+  font-size: 10.5px;
+}
+
+.route-dock__overview-content strong {
+  font-size: 13px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.route-dock__highlights p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 .route-dock__bullet-list {
@@ -2375,6 +2575,21 @@ select:disabled {
   background: var(--surface-toolbar);
   font-size: 12px;
   line-height: 1.5;
+}
+
+.route-dock__environment-notes {
+  display: grid;
+  gap: 5px;
+  margin-top: 24px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.route-dock__environment-notes p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10.5px;
+  line-height: 1.45;
 }
 
 .route-dock__actions {
@@ -2657,7 +2872,7 @@ select:disabled {
 .map-layer-button {
   position: absolute;
   right: 20px;
-  bottom: 20px;
+  bottom: 78px;
   z-index: 13;
   min-height: 42px;
   padding: 0 16px;
@@ -2672,7 +2887,7 @@ select:disabled {
 .map-legend {
   position: absolute;
   right: 20px;
-  bottom: 70px;
+  bottom: 128px;
   z-index: 13;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2992,32 +3207,34 @@ select:disabled {
 .workbench-qwen-button,
 .workbench-collapse-button {
   display: grid;
-  flex: 0 0 42px;
-  width: 42px;
-  height: 42px;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
   place-items: center;
   padding: 0;
-  border: 1px solid var(--line);
-  border-radius: 12px;
+  border: 0;
+  border-radius: 50%;
   color: var(--brand-blue);
-  background: var(--surface-main);
+  background: transparent;
 }
 
 .workbench-qwen-button:hover,
-.workbench-collapse-button:hover {
+.workbench-collapse-button:hover,
+.workbench-qwen-button:focus-visible,
+.workbench-collapse-button:focus-visible {
   background: var(--surface-brand-soft);
 }
 
 .workbench-qwen-button img {
   display: block;
-  width: 36px;
-  height: 36px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
 }
 
 .workbench-collapse-button svg {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.7;
@@ -3076,6 +3293,27 @@ select:disabled {
 }
 
 #map { height: 100%; }
+
+#map .amap-scalecontrol {
+  right: 20px !important;
+  bottom: 38px !important;
+  left: auto !important;
+}
+
+#map .amap-logo {
+  right: 12px !important;
+  bottom: 4px !important;
+  left: auto !important;
+}
+
+#map .amap-copyright {
+  right: 90px !important;
+  bottom: 4px !important;
+  left: auto !important;
+  max-width: calc(100% - 110px);
+  overflow: visible;
+  white-space: nowrap;
+}
 
 .product-toolbar .environment-panel {
   position: relative;
@@ -3330,8 +3568,11 @@ select:disabled {
   }
 
   .environment-panel:not(.is-expanded) { min-width: 0; max-width: calc(100% - 20px); }
-  .map-layer-button { right: 12px; bottom: 12px; }
-  .map-legend { right: 12px; bottom: 62px; }
+  .map-layer-button { right: 12px; bottom: 132px; }
+  .map-legend { right: 12px; bottom: 182px; }
+  #map .amap-scalecontrol { right: 12px !important; bottom: 96px !important; }
+  #map .amap-logo { right: 8px !important; bottom: 70px !important; }
+  #map .amap-copyright { right: 86px !important; bottom: 70px !important; }
 }
 
 @media (max-width: 520px) {

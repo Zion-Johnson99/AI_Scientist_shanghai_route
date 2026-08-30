@@ -4,6 +4,7 @@ import test from "node:test";
 
 import {
   clearRouteResults,
+  fitBoundaryView,
   previewMarkerOffset,
   routePreviewCardModel,
   showRoutePreviews,
@@ -77,7 +78,7 @@ test("地图预览使用统一淡蓝连续线、无方向箭头，卡片点击�
   const previousDocument = globalThis.document;
   globalThis.document = createDocumentStub();
   try {
-    const { mapContext, added } = createMapContext();
+    const { mapContext, added, fitViews } = createMapContext();
     const selected = [];
 
     showRoutePreviews(mapContext, previewRoutes, (routeId) => selected.push(routeId));
@@ -94,6 +95,7 @@ test("地图预览使用统一淡蓝连续线、无方向箭头，卡片点击�
     assert.ok(lines.every((line) => line.options.strokeWeight === 4));
     assert.ok(lines.every((line) => line.options.strokeOpacity === 0.34));
     assert.ok(lines.every((line) => line.options.showDir === false));
+    assert.deepEqual(fitViews.at(-1)?.overlays, lines);
 
     markers[0].options.content.click();
     assert.deepEqual(selected, ["XH_WALK_0001"]);
@@ -142,6 +144,27 @@ test("浏览路线保留地图预览，推荐结果使用单路线聚焦", () =>
   assert.ok(main.includes("showSingleRoute"));
 });
 
+test("推荐入口重新适配徐汇边界标准视野", () => {
+  const overlays = [{ id: "xuhui-boundary" }];
+  const fitViews = [];
+  const mapContext = {
+    boundaryLayer: { getOverlays: () => overlays },
+    amap: {
+      setFitView(nextOverlays, immediately, padding) {
+        fitViews.push({ overlays: nextOverlays, immediately, padding });
+      },
+    },
+  };
+
+  fitBoundaryView(mapContext);
+
+  assert.deepEqual(fitViews, [{
+    overlays,
+    immediately: false,
+    padding: [30, 30, 30, 30],
+  }]);
+});
+
 test("推荐模式默认关闭浏览地图卡，并保留可恢复开关", () => {
   const routeUi = readFileSync(new URL("../web/src/route-ui.js", import.meta.url), "utf8");
   const main = readFileSync(new URL("../web/src/main.js", import.meta.url), "utf8");
@@ -150,8 +173,20 @@ test("推荐模式默认关闭浏览地图卡，并保留可恢复开关", () =>
   assert.ok(main.includes("const RECOMMENDATION_MAP_CARDS_ENABLED = false;"));
   assert.match(
     main,
-    /if\s*\(RECOMMENDATION_MAP_CARDS_ENABLED\)\s*\{\s*planner\.showBrowsePreviews\(\);\s*return;\s*\}\s*clearRouteResults\(map\);/s,
+    /if\s*\(RECOMMENDATION_MAP_CARDS_ENABLED\)\s*\{\s*planner\.showBrowsePreviews\(\);\s*return;\s*\}\s*clearRouteResults\(map\);\s*fitBoundaryView\(map\);/s,
   );
+});
+
+test("推荐与浏览切换时关闭详情并保留各自入口状态", () => {
+  const main = readFileSync(new URL("../web/src/main.js", import.meta.url), "utf8");
+
+  assert.match(main, /const nextView = view === "browse" \? "browse" : "recommendation";/);
+  assert.match(main, /const viewChanged = nextView !== uiState\.productView;/);
+  assert.match(
+    main,
+    /if\s*\(viewChanged\)\s*\{\s*uiState\.detailSource = null;\s*routeDock\.hide\(\);\s*\}/s,
+  );
+  assert.doesNotMatch(main, /if\s*\(viewChanged\)[\s\S]*?restartRecommendation\(\)/);
 });
 
 test("地图路线卡恢复原始尺寸、字体和距离行", () => {
@@ -205,6 +240,7 @@ function createMapContext() {
   }
   const added = [];
   const removed = [];
+  const fitViews = [];
   const events = { on: [], off: [] };
   const mapContext = {
     AMap: {
@@ -217,7 +253,9 @@ function createMapContext() {
     amap: {
       add(overlay) { added.push(overlay); },
       remove(overlays) { removed.push(...overlays); },
-      setFitView() {},
+      setFitView(overlays, immediately, padding) {
+        fitViews.push({ overlays, immediately, padding });
+      },
       getZoom() { return 13; },
       on(type) { events.on.push(type); },
       off(type) { events.off.push(type); },
@@ -229,7 +267,7 @@ function createMapContext() {
     entryLayers: [],
     poiLayers: [],
   };
-  return { mapContext, added, removed, events };
+  return { mapContext, added, removed, events, fitViews };
 }
 
 function roundCoordinate(value) {

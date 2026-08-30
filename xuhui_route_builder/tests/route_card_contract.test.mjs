@@ -102,20 +102,21 @@ test("整张卡承担点击与键盘选择，不创建 radio", () => {
   }
 });
 
-test("有封面时渲染图片，缺图时收起媒体区并标记纯文字卡", () => {
+test("有封面时渲染图片，缺图时保留方形媒体占位", () => {
   const previousDocument = globalThis.document;
   globalThis.document = createDocumentStub();
   try {
-    const textOnlyCard = createRouteCard(routeCardModel(browseRoute));
-    assert.ok(findByClass(textOnlyCard, "route-card--text-only"));
-    assert.equal(findByClass(textOnlyCard, "route-card__media"), null);
-    assert.equal(findByClass(textOnlyCard, "route-card__placeholder"), null);
-    assert.equal(findByTag(textOnlyCard, "IMG"), null);
+    const placeholderCard = createRouteCard(routeCardModel(browseRoute));
+    assert.ok(findByClass(placeholderCard, "route-card--placeholder"));
+    assert.ok(findByClass(placeholderCard, "route-card__media"));
+    assert.ok(findByClass(placeholderCard, "route-card__placeholder"));
+    assert.equal(findByTag(placeholderCard, "IMG"), null);
 
     const imageCard = createRouteCard(routeCardModel(browseRoute, {
       mediaMap: { XH_WALK_0001: { cover: "/route.webp", gallery: [] } },
     }));
-    assert.equal(findByClass(imageCard, "route-card--text-only"), null);
+    assert.ok(findByClass(imageCard, "route-card--has-cover"));
+    assert.equal(findByClass(imageCard, "route-card--placeholder"), null);
     assert.ok(findByClass(imageCard, "route-card__media"));
     const image = findByTag(imageCard, "IMG");
     assert.equal(image.attributes.src, "/route.webp");

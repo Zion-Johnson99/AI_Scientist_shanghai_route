@@ -175,7 +175,10 @@ test("纯 DOM 控制器初始化问卷，并对外暴露结果切换方法", () 
     assert.equal(container.textContent.includes("档案设置"), false);
     assert.equal(container.textContent.includes("出发位置"), false);
     controller.showResult(resultFixture("ok"));
-    assert.match(container.textContent, /首选路线/);
+    assert.match(container.textContent, /首选/);
+    assert.match(container.textContent, /备选 1/);
+    assert.match(container.textContent, /备选 2/);
+    assert.equal(container.textContent.includes("首选路线"), false);
     assert.match(container.textContent, /滨江慢行/);
     assert.deepEqual(selected, []);
   } finally {
@@ -208,8 +211,9 @@ test("Komoot 式路线卡以整卡交互，不再创建单独 radio", () => {
 
     controller.showResult(result);
     const second = findByAttribute(container, "aria-label", "查看路线 公园小环线");
-    assert.ok(findByClass(second, "route-card--text-only"));
-    assert.equal(findByClass(second, "route-card__media"), null);
+    assert.ok(findByClass(second, "route-card--placeholder"));
+    assert.ok(findByClass(second, "route-card__media"));
+    assert.ok(findByClass(second, "route-card__placeholder"));
     assert.equal(findByAttribute(second, "role", "radio"), null);
     assert.match(second.textContent, /14 分钟/);
     assert.match(second.textContent, /0.9 km/);

@@ -445,27 +445,21 @@
   font-weight: 740;
 }
 
-.recommendation-results__group {
-  margin: 5px 0 -5px;
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 700;
-}
-
 .route-card {
   display: grid;
-  grid-template-columns: 112px minmax(0, 1fr);
-  align-items: stretch;
-  gap: 12px;
+  grid-template-columns: 104px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
   width: 100%;
   min-width: 0;
   padding: 10px;
   border: 0;
-  border-radius: 17px;
+  border-radius: 16px;
   color: var(--ink);
   background: var(--surface-main);
   text-align: left;
-  transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+  cursor: pointer;
+  transition: background 150ms ease, box-shadow 150ms ease, transform 150ms ease;
 }
 
 .route-card:hover,
@@ -476,10 +470,7 @@
 
 .route-card.is-selected {
   background: var(--surface-brand-soft);
-}
-
-.route-card--text-only {
-  grid-template-columns: minmax(0, 1fr);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand-blue) 13%, transparent);
 }
 
 .route-card:focus-visible {
@@ -489,12 +480,19 @@
 
 .route-card__media {
   display: grid;
-  width: 112px;
-  aspect-ratio: 4 / 3;
+  width: 104px;
+  height: 104px;
   place-items: center;
   overflow: hidden;
   border-radius: 12px;
-  background: #e7e4dc;
+  background: #eceae4;
+}
+
+.route-card__media--placeholder {
+  color: #aaa69b;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 58%), transparent 48%),
+    #eceae4;
 }
 
 .route-card__image {
@@ -504,37 +502,140 @@
   object-fit: cover;
 }
 
+.route-card__placeholder {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+}
+
+.route-card__placeholder svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
 .route-card__body {
   display: grid;
-  align-content: center;
-  gap: 6px;
+  align-content: stretch;
+  align-self: stretch;
+  gap: 5px;
   min-width: 0;
 }
 
-.route-card__label {
-  width: fit-content;
-  padding: 3px 7px;
+.route-card__topline {
+  display: flex;
+  min-width: 0;
+  min-height: 22px;
+  align-items: center;
+  gap: 9px;
+}
+
+.route-card__rank {
+  flex: 0 0 auto;
+  padding: 3px 8px;
   border-radius: 999px;
-  color: var(--brand-blue);
-  background: var(--surface-brand-soft);
-  font-size: 10px;
-  font-weight: 760;
+  color: #ffffff;
+  background: #183858;
+  font-size: 10.5px;
+  font-weight: 780;
+  line-height: 1.35;
+}
+
+.route-card__mode {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+  color: #6d685f;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.route-card__sport-icon,
+.route-card__air-icon {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #dc6428;
+}
+
+.route-card__sport-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.route-card__sport-icon svg,
+.route-card__air-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
 }
 
 .route-card__name {
+  display: -webkit-box;
   min-width: 0;
   overflow: hidden;
-  font-size: 15px;
-  line-height: 1.35;
-  text-overflow: ellipsis;
+  font-size: 15.5px;
+  font-weight: 720;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.route-card__metrics {
+  display: flex;
+  min-width: 0;
+  margin-top: auto;
+  align-items: center;
+  overflow: hidden;
+  color: var(--muted);
+  font-family: var(--font-numeric);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 560;
+  line-height: 1.45;
   white-space: nowrap;
 }
 
-.route-card__journey {
-  color: var(--muted);
-  font-family: var(--font-numeric);
-  font-size: 12px;
-  line-height: 1.5;
+.route-card__metric {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 3px;
+}
+
+.route-card__metric--pm25 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.route-card__metric-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.route-card__metric-separator {
+  flex: 0 0 auto;
+  color: #aaa59b;
+}
+
+.route-card__air-icon {
+  width: 15px;
+  height: 15px;
+  color: #8b8170;
 }
 
 @media (max-width: 760px) {
@@ -547,12 +648,13 @@
     gap: 10px;
   }
 
-  .route-card--text-only {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .route-card__media {
     width: 96px;
+    height: 96px;
+  }
+
+  .route-card__metrics {
+    font-size: 11px;
   }
 }
 

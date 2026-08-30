@@ -9,16 +9,16 @@ const SHAPE_LABELS = {
 };
 const EXPOSURE_LABELS = { pm25: "PM2.5", pollen: "花粉", noise: "噪声" };
 const EXPOSURE_DETAILS = {
-  pm25: "PM2.5 为沿路线汇总的 1 km 网格估计值。",
+  pm25: "PM2.5：沿路线汇总的 1 km 网格值。",
   pollen: "花粉为约 1 km 网格采样形成的当天风险指数。",
-  noise: "噪声为约 100 m 路段的 0–100 风险代理。",
+  noise: "噪声：沿路线分段汇总的 0–100 风险指数。",
 };
-const STATUS_LABELS = {
-  ok: "已更新",
-  partial: "估计数据",
+const DATA_STATE_TEXT = {
   stale: "数据更新中",
   no_data: "暂无数据",
 };
+const HOUR_MS = 60 * 60 * 1000;
+const FORECAST_POINT_COUNT = 4;
 
 export function buildRouteDockModel(route, routeEnvironment) {
   const properties = route?.properties || route || {};
@@ -32,7 +32,7 @@ export function buildRouteDockModel(route, routeEnvironment) {
     : "时间待确认";
   const exposures = Object.fromEntries(Object.keys(EXPOSURE_LABELS).map((key) => [
     key,
-    buildExposureModel(key, routeEnvironment?.[key], routeEnvironment?.details?.[key]),
+    buildExposureModel(key, routeEnvironment?.[key]),
   ]));
   const routeId = String(properties.route_id || "");
   return {
@@ -75,6 +75,34 @@ export function buildRouteDockSource(routeFeature, recommendationRoute) {
   };
 }
 
+export function buildRouteForecastModel(dashboard, targetTime, now = () => new Date()) {
+  const startTime = resolveForecastStart(targetTime, now);
+  const weatherRecords = [dashboard?.current?.weather, ...(dashboard?.forecast?.weather_hourly || [])]
+    .filter(Boolean);
+  const aqiRecords = [dashboard?.current?.aqi, ...(dashboard?.forecast?.aqi_hourly || [])]
+    .filter(Boolean);
+  const points = Array.from({ length: FORECAST_POINT_COUNT }, (_, index) => {
+    const time = new Date(startTime.valueOf() + index * HOUR_MS);
+    const weather = nearestHourlyRecord(weatherRecords, time);
+    const aqi = nearestHourlyRecord(aqiRecords, time);
+    const temperature = availableNumber(weather, "temperature_c");
+    const precipitationProbability = availableNumber(weather, "precipitation_probability_pct");
+    const precipitation = availableNumber(weather, "precipitation_mm");
+    const aqiValue = availableNumber(aqi, "aqi");
+    return {
+      time: time.toISOString(),
+      timeLabel: formatHour(time),
+      weatherText: availableText(weather, "weather_text") || "天气暂无",
+      temperatureText: temperature === null ? "—" : `${formatNumber(temperature)}°`,
+      precipitationText: precipitationProbability !== null
+        ? `降水 ${formatNumber(precipitationProbability)}%`
+        : precipitation !== null ? `降水 ${formatNumber(precipitation)} mm` : "降水 —",
+      aqiText: aqiValue === null ? "AQI —" : `AQI ${formatNumber(aqiValue)} · ${aqiLevel(aqiValue)}`,
+    };
+  });
+  return { startTime: startTime.toISOString(), points };
+}
+
 export function buildObjectiveHighlights(route) {
   const properties = route?.properties || route || {};
   const highlights = [];
@@ -114,22 +142,10 @@ export function createRouteDock(
         </div>
         <button class="route-dock__close" type="button" aria-label="关闭路线详情" data-dock-close>×</button>
       </header>
-      <section class="route-dock__facts" aria-label="路线数据">
-        ${factRow("时间", "duration")}
-        ${factRow("距离", "distance")}
-        ${factRow("路线形态", "shape")}
-        ${factRow("所在片区", "region")}
-      </section>
-      <p class="route-dock__journey" data-dock-journey></p>
-      <section class="route-dock__path" aria-label="路线节点">
-        <dl class="route-dock__endpoints">
-          <div><dt>起点</dt><dd data-dock-start></dd></div>
-          <div><dt>终点</dt><dd data-dock-end></dd></div>
-        </dl>
-        <div class="route-dock__waypoints">
-          <h3>途经点</h3>
-          <ol data-dock-waypoint-list></ol>
-        </div>
+      <section class="route-dock__metrics" aria-label="路线核心数据">
+        ${metricItem("⏱", "duration", "时间")}
+        ${metricItem("↔", "distance", "距离")}
+        ${metricItem("◌", "pm25-core", "PM2.5")}
       </section>
       <section class="route-dock__exposures" aria-label="环境数据">
         <h3>沿途环境</h3>
@@ -139,9 +155,17 @@ export function createRouteDock(
           ${exposureRow("noise", "噪声")}
         </div>
       </section>
+      <section class="route-dock__forecast" aria-label="未来三小时环境">
+        <h3>未来 3 小时</h3>
+        <div class="route-dock__forecast-list" data-dock-forecast-list></div>
+      </section>
+      <section class="route-dock__overview" aria-label="路线概览">
+        <h3>Overview</h3>
+        <ol class="route-dock__overview-list" data-dock-overview-list></ol>
+      </section>
       <section class="route-dock__highlights" data-dock-objective hidden>
         <h3>路线亮点</h3>
-        <ul class="route-dock__bullet-list" data-dock-objective-list></ul>
+        <p data-dock-objective-text></p>
       </section>
       <p class="route-dock__degraded" data-dock-degraded role="status" hidden>千问解释暂未返回，当前展示已验证的客观路线信息。</p>
       <section class="route-dock__recommendation" data-dock-recommendation hidden>
@@ -154,6 +178,11 @@ export function createRouteDock(
           <ul class="route-dock__bullet-list route-dock__bullet-list--suggestion" data-dock-suggestion-list></ul>
         </div>
       </section>
+      <div class="route-dock__environment-notes" aria-label="环境数据说明">
+        <p data-dock-pm25-detail></p>
+        <p data-dock-pollen-detail></p>
+        <p data-dock-noise-detail></p>
+      </div>
     </div>
     <footer class="route-dock__actions">
       <button type="button" class="route-dock__navigate" data-dock-navigate>前往起点</button>
@@ -163,10 +192,12 @@ export function createRouteDock(
   function closeFromUser() {
     if (root.hidden || !activeRoute) return;
     const detail = { source: activeSource, routeId: routeIdOf(activeRoute) };
+    const focusTarget = returnFocusTo;
     root.hidden = true;
-    onClose?.(detail);
-    returnFocusTo?.focus?.();
+    activeRoute = null;
     returnFocusTo = null;
+    onClose?.(detail);
+    focusTarget?.focus?.();
   }
 
   root.querySelector("[data-dock-close]").addEventListener("click", closeFromUser);
@@ -198,6 +229,8 @@ export function createRouteDock(
       qwenAdvantages,
       qwenSuggestions,
       explanationSource,
+      dashboard,
+      targetTime,
     } = {}) {
       if (!route) throw new Error("缺少路线数据，无法打开路线详情。");
       activeRoute = route;
@@ -209,14 +242,17 @@ export function createRouteDock(
         qwenAdvantages,
         qwenSuggestions,
         explanationSource,
+        forecast: buildRouteForecastModel(dashboard, targetTime),
       });
       root.hidden = false;
       root.focus?.();
     },
     hide() {
       root.hidden = true;
+      activeRoute = null;
       returnFocusTo = null;
     },
+    dismiss: closeFromUser,
   };
 }
 
@@ -225,27 +261,25 @@ function renderRouteDock(root, model, detail) {
   root.dataset.source = detail.source;
   setText(root, "[data-dock-mode]", model.modeLabel);
   setText(root, "[data-dock-route-name]", model.routeName);
-  setText(root, "[data-dock-journey]", model.journeyText);
   setText(root, "[data-dock-duration]", model.durationText);
   setText(root, "[data-dock-distance]", model.distanceText);
-  setText(root, "[data-dock-shape]", model.shapeText);
-  setText(root, "[data-dock-region]", model.regionText);
-  setText(root, "[data-dock-start]", model.startName);
-  setText(root, "[data-dock-end]", model.endName);
+  setText(root, "[data-dock-pm25-core]", model.exposures.pm25.compactText);
   renderGallery(root.querySelector("[data-dock-gallery]"), model.media, model.routeName);
   for (const [key, exposure] of Object.entries(model.exposures)) {
     setText(root, `[data-dock-${key}-value]`, exposure.valueText);
     setText(root, `[data-dock-${key}-risk]`, exposure.riskLevel);
-    setText(root, `[data-dock-${key}-status]`, exposure.statusLabel);
     setText(root, `[data-dock-${key}-detail]`, exposure.detail);
     root.querySelector(`[data-dock-exposure="${key}"]`).dataset.status = exposure.status;
   }
-  renderWaypointList(root.querySelector("[data-dock-waypoint-list]"), model.waypoints);
+  renderForecast(root.querySelector("[data-dock-forecast-list]"), detail.forecast);
+  renderOverview(root.querySelector("[data-dock-overview-list]"), model);
   const objective = cleanSummaryItems(
     detail.objectiveHighlights?.length ? detail.objectiveHighlights : model.objectiveHighlights,
-    3,
+    1,
   );
-  renderSectionList(root, "[data-dock-objective]", "[data-dock-objective-list]", objective);
+  const objectiveSection = root.querySelector("[data-dock-objective]");
+  setText(root, "[data-dock-objective-text]", objective[0] || "");
+  objectiveSection.hidden = objective.length === 0;
   renderRecommendation(root, detail);
 }
 
@@ -268,36 +302,79 @@ function renderRecommendation(root, detail) {
 function renderGallery(container, media, routeName) {
   container.replaceChildren();
   const paths = [...new Set([...(media?.gallery || []), media?.cover].filter(Boolean))].slice(0, 3);
-  container.hidden = paths.length === 0;
-  paths.forEach((path, index) => {
-    const image = document.createElement("img");
-    image.src = path;
-    image.alt = `${routeName} 路线照片 ${index + 1}`;
-    image.loading = "lazy";
-    container.append(image);
-  });
+  container.hidden = false;
+  Array.from({ length: 3 }, (_, index) => {
+    const path = paths[index];
+    if (path) {
+      const image = document.createElement("img");
+      image.src = path;
+      image.alt = `${routeName} 路线照片 ${index + 1}`;
+      image.loading = "lazy";
+      return image;
+    }
+    const placeholder = document.createElement("div");
+    placeholder.className = "route-dock__gallery-placeholder";
+    placeholder.setAttribute("role", "img");
+    placeholder.setAttribute("aria-label", "路线图片待补充");
+    placeholder.innerHTML = '<svg aria-hidden="true" viewBox="0 0 48 48"><circle cx="33" cy="15" r="3.5"/><path d="M8 36.5 18.5 25l6.5 6 5-5 10 10.5M8 10.5h32v28H8z"/></svg>';
+    return placeholder;
+  }).forEach((item) => container.append(item));
 }
 
-function renderWaypointList(list, values) {
+function renderOverview(list, model) {
   list.replaceChildren();
-  if (!values.length) {
+  const endpointNames = new Set([model.startName, model.endName].map(normalizeOverviewName));
+  const seenWaypoints = new Set();
+  const waypoints = model.waypoints.filter((name) => {
+    const normalized = normalizeOverviewName(name);
+    if (!normalized || endpointNames.has(normalized) || seenWaypoints.has(normalized)) return false;
+    seenWaypoints.add(normalized);
+    return true;
+  });
+  const nodes = [
+    { marker: "A", label: "起点", name: model.startName },
+    ...waypoints.map((name, index) => ({ marker: String(index + 1), label: "途经点", name })),
+    { marker: "B", label: "终点", name: model.endName },
+  ];
+  nodes.forEach(({ marker, label, name }) => {
     const item = document.createElement("li");
-    item.className = "route-dock__empty-waypoint";
-    item.textContent = "暂无明确途经点";
-    list.appendChild(item);
-    return;
-  }
-  values.forEach((name) => {
-    const item = document.createElement("li");
-    item.textContent = name;
-    list.appendChild(item);
+    item.className = "route-dock__overview-item";
+    const markerElement = document.createElement("span");
+    markerElement.className = "route-dock__overview-marker";
+    markerElement.textContent = marker;
+    const content = document.createElement("span");
+    content.className = "route-dock__overview-content";
+    const labelElement = document.createElement("small");
+    labelElement.textContent = label;
+    const nameElement = document.createElement("strong");
+    nameElement.textContent = name;
+    content.append(labelElement, nameElement);
+    item.append(markerElement, content);
+    list.append(item);
   });
 }
 
-function renderSectionList(root, sectionSelector, listSelector, values) {
-  const section = root.querySelector(sectionSelector);
-  renderSummaryList(root.querySelector(listSelector), values);
-  section.hidden = !values.length;
+function normalizeOverviewName(value) {
+  return String(value || "").trim().toLocaleLowerCase("zh-CN");
+}
+
+function renderForecast(container, forecast) {
+  container.replaceChildren();
+  (forecast?.points || []).forEach((point) => {
+    const item = document.createElement("article");
+    item.className = "route-dock__forecast-point";
+    const time = document.createElement("time");
+    time.dateTime = point.time;
+    time.textContent = point.timeLabel;
+    const weather = document.createElement("strong");
+    weather.textContent = `${point.weatherText} ${point.temperatureText}`;
+    const precipitation = document.createElement("span");
+    precipitation.textContent = point.precipitationText;
+    const aqi = document.createElement("span");
+    aqi.textContent = point.aqiText;
+    item.append(time, weather, precipitation, aqi);
+    container.append(item);
+  });
 }
 
 function renderSummaryList(list, values) {
@@ -313,9 +390,9 @@ function cleanSummaryItems(values, limit) {
   return cleanNames(values).slice(0, limit);
 }
 
-function buildExposureModel(key, exposure, detail) {
+function buildExposureModel(key, exposure) {
   const status = String(exposure?.status || "no_data");
-  const displayValue = String(exposure?.displayValue || STATUS_LABELS.no_data);
+  const displayValue = String(exposure?.displayValue || DATA_STATE_TEXT.no_data);
   const available = status === "ok" || status === "partial";
   const riskLevel = available && exposure?.riskLevel ? String(exposure.riskLevel) : "";
   const valueText = available
@@ -326,13 +403,12 @@ function buildExposureModel(key, exposure, detail) {
   return {
     label: EXPOSURE_LABELS[key],
     status,
-    statusLabel: STATUS_LABELS[status] || STATUS_LABELS.no_data,
     valueText,
     compactText: available && key !== "pm25" && riskLevel
       ? `${riskLevel} · ${displayValue}`
       : valueText,
     riskLevel,
-    detail: String(detail || EXPOSURE_DETAILS[key]),
+    detail: EXPOSURE_DETAILS[key],
   };
 }
 
@@ -340,16 +416,78 @@ function normalizePm25Unit(unit) {
   return String(unit || "µg/m³").replace(/^μg\//, "µg/");
 }
 
-function factRow(label, key) {
-  return `<div><span>${label}</span><strong data-dock-${key}></strong></div>`;
+function metricItem(icon, key, label) {
+  return `<span class="route-dock__metric" title="${label}"><i aria-hidden="true">${icon}</i><strong data-dock-${key}></strong></span>`;
 }
 
 function exposureRow(key, label) {
   return `<article class="route-dock__exposure-row" data-dock-exposure="${key}">
-    <div class="route-dock__exposure-label"><strong>${label}</strong><span data-dock-${key}-status></span></div>
+    <div class="route-dock__exposure-label"><strong>${label}</strong></div>
     <div class="route-dock__exposure-reading"><strong data-dock-${key}-value></strong><span data-dock-${key}-risk></span></div>
-    <p data-dock-${key}-detail></p>
   </article>`;
+}
+
+function resolveForecastStart(targetTime, now) {
+  const current = now();
+  const fallback = current instanceof Date && Number.isFinite(current.valueOf()) ? current : new Date();
+  const mode = targetTime?.target_time ?? targetTime;
+  if (mode === "plus_2h") return new Date(fallback.valueOf() + 2 * HOUR_MS);
+  if (mode === "custom") {
+    const custom = new Date(targetTime?.custom_time || "");
+    return Number.isFinite(custom.valueOf()) ? custom : fallback;
+  }
+  if (!mode || mode === "now") return fallback;
+  const parsed = new Date(mode);
+  return Number.isFinite(parsed.valueOf()) ? parsed : fallback;
+}
+
+function nearestHourlyRecord(records, target) {
+  let nearest = null;
+  let distance = Number.POSITIVE_INFINITY;
+  records.forEach((record) => {
+    const businessTime = new Date(record?.business_time || "");
+    const nextDistance = Math.abs(businessTime.valueOf() - target.valueOf());
+    if (Number.isFinite(nextDistance) && nextDistance < distance) {
+      nearest = record;
+      distance = nextDistance;
+    }
+  });
+  return distance <= HOUR_MS ? nearest : null;
+}
+
+function availableNumber(record, key) {
+  if (!["ok", "partial"].includes(record?.status)) return null;
+  const rawValue = record?.values?.[key];
+  if (rawValue === null || rawValue === undefined || rawValue === "") return null;
+  const value = Number(rawValue);
+  return Number.isFinite(value) ? value : null;
+}
+
+function availableText(record, key) {
+  if (!["ok", "partial"].includes(record?.status)) return "";
+  return String(record?.values?.[key] || "").trim();
+}
+
+function formatHour(value) {
+  return new Intl.DateTimeFormat("zh-CN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Shanghai",
+  }).format(value);
+}
+
+function formatNumber(value) {
+  return Number.isInteger(value) ? String(value) : value.toFixed(1);
+}
+
+function aqiLevel(value) {
+  if (value <= 50) return "优";
+  if (value <= 100) return "良";
+  if (value <= 150) return "轻度污染";
+  if (value <= 200) return "中度污染";
+  if (value <= 300) return "重度污染";
+  return "严重污染";
 }
 
 function routeEndpoint(properties, role) {

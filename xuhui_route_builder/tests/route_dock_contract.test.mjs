@@ -4,6 +4,7 @@ import test from "node:test";
 
 import {
   buildObjectiveHighlights,
+  buildRouteForecastModel,
   buildRouteDockModel,
   buildRouteDockSource,
   createRouteDock,
@@ -72,11 +73,10 @@ test("dock 概览使用真实路线信息和三类路线暴露，不生成综合
   assert.equal(model.exposures.pm25.compactText, "15.3 µg/m³");
   assert.equal(model.exposures.pollen.compactText, "低 · 31.5");
   assert.equal(model.exposures.noise.compactText, "中 · 36.8");
-  assert.equal(model.exposures.pollen.statusLabel, "估计数据");
-  assert.match(model.exposures.pm25.detail, /1 km.*估计/);
+  assert.match(model.exposures.pm25.detail, /1 km/);
   assert.match(model.exposures.pollen.detail, /当天/);
-  assert.match(model.exposures.noise.detail, /约 100 m.*0–100.*风险代理/);
-  assert.doesNotMatch(JSON.stringify(model), /分贝|实测/);
+  assert.match(model.exposures.noise.detail, /沿路线分段.*0–100.*风险指数/);
+  assert.doesNotMatch(JSON.stringify(model), /分贝|实测|已更新|估计数据|约 100 m 路段的 0–100 风险代理/);
   assert.deepEqual(model.waypoints, ["龙美术馆", "滨江滑板公园"]);
   assert.equal("healthScore" in model, false);
   assert.equal("recommendation" in model, false);
@@ -84,7 +84,7 @@ test("dock 概览使用真实路线信息和三类路线暴露，不生成综合
   assert.equal(JSON.stringify(model).includes("未来花粉"), false);
 });
 
-test("dock 对缺失、过期和 partial 环境状态使用稳定文案", () => {
+test("dock 对缺失、过期和 partial 环境状态使用稳定读数", () => {
   const missing = buildRouteDockModel(sampleRoute.properties);
   assert.equal(missing.exposures.pm25.compactText, "暂无数据");
   assert.equal(missing.exposures.pollen.compactText, "暂无数据");
@@ -96,10 +96,39 @@ test("dock 对缺失、过期和 partial 环境状态使用稳定文案", () => 
     noise: { displayValue: "暂无数据", status: "no_data" },
   });
   assert.equal(degraded.exposures.pm25.compactText, "数据更新中");
-  assert.equal(degraded.exposures.pm25.statusLabel, "数据更新中");
   assert.equal(degraded.exposures.noise.compactText, "暂无数据");
-  assert.equal(degraded.exposures.noise.statusLabel, "暂无数据");
-  assert.equal(degraded.exposures.pollen.statusLabel, "估计数据");
+  assert.equal("statusLabel" in degraded.exposures.pollen, false);
+});
+
+test("未来 3 小时从推荐计划时间起展示四个真实天气与 AQI 点", () => {
+  const dashboard = forecastDashboard();
+  const forecast = buildRouteForecastModel(
+    dashboard,
+    { target_time: "plus_2h" },
+    () => new Date("2026-08-30T08:00:00+08:00"),
+  );
+
+  assert.equal(forecast.startTime, "2026-08-30T02:00:00.000Z");
+  assert.deepEqual(forecast.points.map((point) => point.timeLabel), ["10:00", "11:00", "12:00", "13:00"]);
+  assert.equal(forecast.points[0].weatherText, "多云");
+  assert.equal(forecast.points[0].temperatureText, "27°");
+  assert.equal(forecast.points[0].precipitationText, "降水 20%");
+  assert.equal(forecast.points[0].aqiText, "AQI 45 · 优");
+  assert.doesNotMatch(JSON.stringify(forecast), /pm25|PM2\.5|µg\/m³/);
+});
+
+test("浏览路线和无法解析的推荐时间都从当前时刻开始", () => {
+  const dashboard = forecastDashboard();
+  const now = () => new Date("2026-08-30T08:00:00+08:00");
+  const browse = buildRouteForecastModel(dashboard, undefined, now);
+  const invalidRecommendation = buildRouteForecastModel(
+    dashboard,
+    { target_time: "custom", custom_time: "" },
+    now,
+  );
+
+  assert.equal(browse.startTime, "2026-08-30T00:00:00.000Z");
+  assert.equal(invalidRecommendation.startTime, browse.startTime);
 });
 
 test("推荐详情把评分结果中的距离时间合并到地图路线", () => {
@@ -141,22 +170,21 @@ test("createRouteDock.show 以单页参数展示千问短优点与建议", () =>
     assert.equal(container.child, root);
     assert.equal(root.hidden, false);
     assert.equal(nodes["[data-dock-route-name]"].textContent, "徐汇滨江跑步线");
-    assert.equal(nodes["[data-dock-journey]"].textContent, "4.8 km · 32 分钟");
     assert.equal(nodes["[data-dock-duration]"].textContent, "32 分钟");
     assert.equal(nodes["[data-dock-distance]"].textContent, "4.8 km");
-    assert.equal(nodes["[data-dock-shape]"].textContent, "单向路线");
+    assert.equal(nodes["[data-dock-pm25-core]"].textContent, "15.3 µg/m³");
     assert.equal(nodes["[data-dock-pm25-value]"].textContent, "15.3 µg/m³");
     assert.equal(nodes["[data-dock-noise-risk]"].textContent, "中");
-    assert.equal(nodes["[data-dock-noise-detail]"].textContent, sampleEnvironment.details.noise);
+    assert.equal(nodes["[data-dock-noise-detail]"].textContent, "噪声：沿路线分段汇总的 0–100 风险指数。");
     assert.equal(nodes["[data-dock-exposure=\"noise\"]"].dataset.status, "partial");
-    assert.equal(nodes["[data-dock-waypoint-list]"].children.length, 2);
-    assert.equal(nodes["[data-dock-gallery]"].hidden, true);
-    assert.equal(nodes["[data-dock-gallery]"].children.length, 0);
+    assert.equal(nodes["[data-dock-overview-list]"].children.length, 4);
+    assert.equal(nodes["[data-dock-overview-list]"].children[0].children[0].textContent, "A");
+    assert.equal(nodes["[data-dock-overview-list]"].children.at(-1).children[0].textContent, "B");
+    assert.equal(nodes["[data-dock-gallery]"].hidden, false);
+    assert.equal(nodes["[data-dock-gallery]"].children.length, 3);
+    assert.equal(nodes["[data-dock-forecast-list]"].children.length, 4);
     assert.equal(nodes["[data-dock-objective]"].hidden, false);
-    assert.deepEqual(
-      nodes["[data-dock-objective-list]"].children.map((item) => item.textContent),
-      ["滨江步道连续"],
-    );
+    assert.equal(nodes["[data-dock-objective-text]"].textContent, "滨江步道连续");
     assert.equal(nodes["[data-dock-recommendation]"].hidden, false);
     assert.equal(nodes["[data-dock-degraded]"].hidden, true);
     assert.deepEqual(
@@ -201,6 +229,14 @@ test("圆形叉号触发带来源信息的关闭流程", () => {
     dock.show(detail);
     dock.hide();
     assert.deepEqual(closed, [{ source: "browse", routeId: "XH_RUN_0001" }]);
+
+    dock.show(detail);
+    dock.dismiss();
+    assert.deepEqual(closed, [
+      { source: "browse", routeId: "XH_RUN_0001" },
+      { source: "browse", routeId: "XH_RUN_0001" },
+    ]);
+    assert.equal(root.hidden, true);
   } finally {
     globalThis.document = previousDocument;
   }
@@ -222,6 +258,45 @@ test("Escape 与圆形叉号共用带来源信息的关闭流程", () => {
     assert.deepEqual(closed, [{ source: "browse", routeId: "XH_RUN_0001" }]);
     assert.equal(prevented, true);
     assert.equal(root.hidden, true);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("工作台收起时通过详情关闭语义恢复对应路线总览", () => {
+  const mainSource = readFileSync(new URL("../web/src/main.js", import.meta.url), "utf8");
+
+  assert.match(
+    mainSource,
+    /function setSidebarCollapsed\(collapsed\)\s*\{[\s\S]*?if \(nextCollapsed && uiState\.detailSource\)\s*\{[\s\S]*?routeDock\.dismiss\(\);[\s\S]*?\}/,
+  );
+});
+
+test("Overview 自动移除与起终点重复的途经点", () => {
+  const previousDocument = globalThis.document;
+  const { document, nodes } = createDockDocumentStub();
+  globalThis.document = document;
+  try {
+    const dock = createRouteDock({ appendChild() {} });
+    dock.show({
+      route: {
+        ...sampleRoute,
+        properties: {
+          ...sampleRoute.properties,
+          waypoint_names: ["起点", "龙美术馆", "终点"],
+        },
+      },
+      environment: sampleEnvironment,
+      source: "browse",
+    });
+
+    const overview = nodes["[data-dock-overview-list]"].children;
+    assert.deepEqual(overview.map((item) => item.children[0].textContent), ["A", "1", "B"]);
+    assert.deepEqual(overview.map((item) => item.children[1].children[1].textContent), [
+      "起点",
+      "龙美术馆",
+      "终点",
+    ]);
   } finally {
     globalThis.document = previousDocument;
   }
@@ -334,6 +409,26 @@ test("详情只渲染一个底部前往起点操作", () => {
   }
 });
 
+test("详情保留三类环境读数，状态字移除且三行口径位于滚动区底部", () => {
+  const previousDocument = globalThis.document;
+  const { document, root } = createDockDocumentStub();
+  globalThis.document = document;
+  try {
+    createRouteDock({ appendChild() {} });
+
+    assert.match(root.innerHTML, /data-dock-exposure="pm25"/);
+    assert.match(root.innerHTML, /data-dock-exposure="pollen"/);
+    assert.match(root.innerHTML, /data-dock-exposure="noise"/);
+    assert.doesNotMatch(root.innerHTML, /data-dock-(?:pm25|pollen|noise)-status|已更新|估计数据/);
+    assert.match(
+      root.innerHTML,
+      /route-dock__environment-notes[\s\S]*data-dock-pm25-detail[\s\S]*data-dock-pollen-detail[\s\S]*data-dock-noise-detail[\s\S]*<\/div>\s*<\/div>\s*<footer/,
+    );
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
 test("右侧详情采用单页信息流，不再渲染概览、环境和途经点页签", () => {
   const previousDocument = globalThis.document;
   const { document, root } = createDockDocumentStub();
@@ -362,32 +457,24 @@ function createDockDocumentStub() {
   const textSelectors = [
     "[data-dock-mode]",
     "[data-dock-route-name]",
-    "[data-dock-journey]",
     "[data-dock-duration]",
     "[data-dock-distance]",
-    "[data-dock-shape]",
-    "[data-dock-region]",
-    "[data-dock-start]",
-    "[data-dock-end]",
+    "[data-dock-pm25-core]",
+    "[data-dock-objective-text]",
   ];
   for (const key of ["pm25", "pollen", "noise"]) {
     textSelectors.push(
       `[data-dock-${key}-value]`,
       `[data-dock-${key}-risk]`,
-      `[data-dock-${key}-status]`,
       `[data-dock-${key}-detail]`,
     );
     nodes[`[data-dock-exposure="${key}"]`] = elementStub();
   }
   textSelectors.forEach((selector) => { nodes[selector] = elementStub(); });
-  nodes["[data-dock-waypoint-list]"] = {
-    children: [],
-    replaceChildren() { this.children = []; },
-    appendChild(child) { this.children.push(child); },
-  };
   nodes["[data-dock-gallery]"] = listStub();
+  nodes["[data-dock-forecast-list]"] = listStub();
+  nodes["[data-dock-overview-list]"] = listStub();
   nodes["[data-dock-objective]"] = elementStub();
-  nodes["[data-dock-objective-list]"] = listStub();
   nodes["[data-dock-degraded]"] = elementStub();
   nodes["[data-dock-recommendation]"] = elementStub();
   nodes["[data-dock-advantages]"] = elementStub();
@@ -450,6 +537,32 @@ function listStub() {
     children: [],
     replaceChildren() { this.children = []; },
     append(...children) { this.children.push(...children); },
+  };
+}
+
+function forecastDashboard() {
+  const hourlyRecord = (hour, values, status = "ok") => ({
+    business_time: `2026-08-30T${String(hour).padStart(2, "0")}:00:00+08:00`,
+    status,
+    values,
+  });
+  return {
+    current: {
+      weather: hourlyRecord(8, {
+        weather_text: "晴",
+        temperature_c: 25,
+        precipitation_probability_pct: 0,
+      }),
+      aqi: hourlyRecord(8, { aqi: 36 }),
+    },
+    forecast: {
+      weather_hourly: [9, 10, 11, 12, 13, 14].map((hour) => hourlyRecord(hour, {
+        weather_text: "多云",
+        temperature_c: hour + 17,
+        precipitation_probability_pct: hour * 2,
+      })),
+      aqi_hourly: [9, 10, 11, 12, 13, 14].map((hour) => hourlyRecord(hour, { aqi: hour + 35 }, "partial")),
+    },
   };
 }
 
