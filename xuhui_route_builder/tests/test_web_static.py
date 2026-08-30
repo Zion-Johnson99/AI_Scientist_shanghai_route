@@ -3,6 +3,7 @@ from pathlib import Path
 
 WEB_ROOT = Path(__file__).resolve().parents[1] / "web"
 DATA_ROOT = Path(__file__).resolve().parents[1] / "data" / "web"
+REPOSITORY_ROOT = WEB_ROOT.parents[1]
 
 
 def test_default_web_data_contains_all_90_status_labelled_routes() -> None:
@@ -30,6 +31,70 @@ def test_default_web_data_contains_all_90_status_labelled_routes() -> None:
     assert all(
         route["validation_status"] in {"accepted", "needs_review"} for route in catalog
     )
+
+
+def test_windows_launcher_starts_the_complete_local_application() -> None:
+    launcher_path = REPOSITORY_ROOT / "start-local-app.ps1"
+    launcher = launcher_path.read_text(encoding="utf-8-sig")
+    readme = (REPOSITORY_ROOT / "README.md").read_text(encoding="utf-8")
+
+    assert launcher_path.read_bytes().startswith(b"\xef\xbb\xbf")
+    assert "[switch]$UseQwen" in launcher
+    assert '$offlineMode = if ($UseQwen) { "0" } else { "1" }' in launcher
+    assert "$env:EVALUATION_MODEL_QWEN_OFFLINE = $offlineMode" in launcher
+    assert "evaluation-model-qwen-api.exe" in launcher
+    assert '-m", "http.server", "8123' in launcher
+    assert "http://127.0.0.1:8124/api/v1/health" in launcher
+    assert "http://127.0.0.1:8123/web/" in launcher
+    assert "-WindowStyle Hidden" in launcher
+    assert "Stop-Process" in launcher
+    assert "Get-EnvironmentRefreshTier" in launcher
+    assert "scheduled-refresh" in launcher
+    assert '"weather", "hourly", "daily"' in launcher
+    assert "current.aqi" in launcher
+    assert "current.life_indices" in launcher
+    assert "routes.items" in launcher
+    assert "Get-Content -LiteralPath $Path -Raw -Encoding UTF8" in launcher
+    assert "Get-Content -LiteralPath $dashboardPath -Raw -Encoding UTF8" in launcher
+    assert 'PSObject.Properties["expires_at"]' in launcher
+    assert "$existingHealth.qwen.offline" in launcher
+    assert "请先在原命令窗口按 Ctrl+C" in launcher
+    assert "$nextEnvironmentCheck" in launcher
+    assert "运行期间环境数据刷新失败" in launcher
+    assert "AddMinutes(30)" in launcher
+    assert "AddMinutes(1)" not in launcher
+    assert "环境数据已更新，更新时间：" in launcher
+    assert "环境数据未更新，上次更新时间：" in launcher
+    assert "AQI 状态" not in launcher
+    assert "数值 $aqiValue" not in launcher
+    assert ".\\start-local-app.ps1" in readme
+    assert ".\\start-local-app.ps1 -UseQwen" in readme
+    assert "启动时按数据新鲜度" in readme
+    assert "运行期间每 30 分钟复查" in readme
+
+
+def test_macos_linux_launcher_starts_the_complete_local_application() -> None:
+    launcher_path = REPOSITORY_ROOT / "start-local-app.sh"
+    launcher = launcher_path.read_text(encoding="utf-8")
+    readme = (REPOSITORY_ROOT / "README.md").read_text(encoding="utf-8")
+
+    assert launcher.startswith("#!/usr/bin/env bash")
+    assert "--use-qwen" in launcher
+    assert ".venv/bin/evaluation-model-qwen-api" in launcher
+    assert ".venv/bin/weather-api-data" in launcher
+    assert ".venv/bin/python" in launcher
+    assert "EVALUATION_MODEL_QWEN_OFFLINE" in launcher
+    assert "python -m http.server" not in launcher
+    assert '"-m" "http.server" "8123"' in launcher
+    assert "http://127.0.0.1:8124/api/v1/health" in launcher
+    assert "http://127.0.0.1:8123/web/" in launcher
+    assert "trap cleanup EXIT INT TERM" in launcher
+    assert "environment_check_interval_seconds=1800" in launcher
+    assert "环境数据已更新，更新时间：" in launcher
+    assert "环境数据未更新，上次更新时间：" in launcher
+    assert "AQI 状态" not in launcher
+    assert "bash ./start-local-app.sh" in readme
+    assert "bash ./start-local-app.sh --use-qwen" in readme
 
 
 def test_index_declares_inline_favicon_to_avoid_404() -> None:
