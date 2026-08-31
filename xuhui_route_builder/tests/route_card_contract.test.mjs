@@ -102,6 +102,29 @@ test("整张卡承担点击与键盘选择，不创建 radio", () => {
   }
 });
 
+test("三种运动方式使用统一的本地填充 SVG 图标", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const icons = ["walk", "run", "bike"].map((routeMode, index) => {
+      const card = createRouteCard(routeCardModel({
+        ...browseRoute,
+        route_id: `XH_${routeMode.toUpperCase()}_${index + 1}`,
+        route_mode: routeMode,
+      }));
+      const icon = findByClass(card, `route-card__sport-icon--${routeMode}`);
+      assert.ok(icon);
+      assert.match(icon.innerHTML, /viewBox="0 0 24 24"/);
+      assert.match(icon.innerHTML, new RegExp(`sport-icons\\.svg#sport-${routeMode}`));
+      return icon.innerHTML;
+    });
+
+    assert.equal(new Set(icons).size, 3);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
 test("有封面时渲染图片，缺图时保留方形媒体占位", () => {
   const previousDocument = globalThis.document;
   globalThis.document = createDocumentStub();

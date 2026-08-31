@@ -567,8 +567,9 @@
 }
 
 .route-card__sport-icon {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
+  color: var(--brand-blue);
 }
 
 .route-card__sport-icon svg,
@@ -581,6 +582,11 @@
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1.7;
+}
+
+.route-card__sport-icon svg {
+  fill: currentcolor;
+  stroke: none;
 }
 
 .route-card__name {
@@ -644,14 +650,13 @@
   position: fixed;
   z-index: 300;
   top: 82px;
-  right: 16px;
+  right: auto;
   left: var(--recommendation-filter-left);
-  display: grid;
-  grid-template-columns: 38px minmax(0, 1fr) 38px;
-  align-items: center;
-  gap: 7px;
+  display: block;
+  width: fit-content;
+  max-width: calc(100vw - var(--recommendation-filter-left) - 16px);
   min-width: 0;
-  height: 54px;
+  height: 50px;
   transition: left 180ms ease;
 }
 
@@ -659,69 +664,29 @@
   --recommendation-filter-left: 842px;
 }
 
-.has-route-detail .recommendation-filters {
-  --recommendation-filter-left: 842px;
-}
-
 .recommendation-filters__viewport {
   min-width: 0;
+  max-width: 100%;
   overflow: hidden;
   border-radius: 999px;
-  mask-image: linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 12px), transparent);
 }
 
 .recommendation-filters__track {
   display: flex;
+  width: max-content;
+  max-width: 100%;
   min-width: 0;
   align-items: center;
-  gap: 8px;
-  padding: 5px 12px;
+  gap: 6px;
+  padding: 5px 0;
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-inline: contain;
-  scroll-behavior: smooth;
   scrollbar-width: none;
 }
 
 .recommendation-filters__track::-webkit-scrollbar {
   display: none;
-}
-
-.recommendation-filters__arrow {
-  display: grid;
-  width: 38px;
-  height: 38px;
-  place-items: center;
-  padding: 0;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  color: var(--brand-blue);
-  background: var(--surface-main);
-  box-shadow: 0 6px 16px rgba(16, 35, 63, 0.12);
-  transition: color 150ms ease, background 150ms ease, transform 150ms ease;
-}
-
-.recommendation-filters__arrow:hover {
-  color: var(--surface-main);
-  background: var(--brand-blue);
-  transform: translateY(-1px);
-}
-
-.recommendation-filters__arrow:disabled {
-  color: #9aa5b4;
-  background: rgba(255, 255, 255, 0.78);
-  box-shadow: none;
-  opacity: 0.72;
-}
-
-.recommendation-filters__arrow svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: currentcolor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2;
 }
 
 .recommendation-filter {
@@ -951,25 +916,20 @@
 
 @media (max-width: 980px) {
   .recommendation-filters,
-  .recommendation-filters.is-detail-open,
-  .has-route-detail .recommendation-filters {
+  .recommendation-filters.is-detail-open {
     --recommendation-filter-left: 8px;
     z-index: 410;
     top: 74px;
     right: 8px;
     left: 8px;
-    grid-template-columns: 34px minmax(0, 1fr) 34px;
+    width: auto;
+    max-width: none;
     height: 48px;
-  }
-
-  .recommendation-filters__arrow {
-    width: 34px;
-    height: 34px;
   }
 
   .recommendation-filters__track {
     gap: 6px;
-    padding: 4px 10px;
+    padding: 4px 0;
   }
 
   .recommendation-filter__chip {

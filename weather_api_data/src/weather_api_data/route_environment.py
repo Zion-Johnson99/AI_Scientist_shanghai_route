@@ -159,17 +159,29 @@ def _aggregate_pm25(
 
     quality = _optional_mapping(document.get("quality")) if document is not None else None
     confidence = _confidence(quality.get("confidence") if quality is not None else None)
+    calibration = _optional_mapping(document.get("calibration")) if document is not None else None
+    active_station_count = calibration.get("active_station_count") if calibration is not None else 2
+    uses_station_correction = (
+        isinstance(active_station_count, int)
+        and not isinstance(active_station_count, bool)
+        and active_station_count >= 2
+    )
+    fusion_status = _status(document.get("status", "ok")) if document is not None else "no_data"
+    metric_status: Status = "ok" if coverage == 1.0 and fusion_status == "ok" else "partial"
+    sources = (
+        ("qweather", "shanghai_sthj", "CHAP") if uses_station_correction else ("qweather", "CHAP")
+    )
     return RouteExposureMetric(
         value=_weighted_mean(weighted),
         unit="ug/m3",
-        source=("qweather", "shanghai_sthj", "CHAP"),
+        source=sources,
         business_time=_optional_document_string(document, "target_time"),
         fetched_at=_optional_document_string(document, "generated_at"),
         expires_at=_optional_document_string(document, "expires_at"),
         spatial_scale=str(document.get("spatial_basis", "about_1km_grid_estimate"))
         if document is not None
         else "about_1km_grid_estimate",
-        status="ok" if coverage == 1.0 else "partial",
+        status=metric_status,
         confidence=confidence if coverage == 1.0 else "low",
         estimated=any(estimated),
         coverage_ratio=coverage,

@@ -114,10 +114,41 @@ def _source_tree(tmp_path: Path) -> tuple[Path, Path, Path]:
     _write_json(
         exports / "pm25_grid_latest.json",
         {
+            "status": "partial",
             "generated_at": "2026-08-27T14:02:00+08:00",
             "target_time": "2026-08-27T14:00:00+08:00",
             "spatial_basis": "grid_1km",
             "provider": "multi_source",
+            "warnings": ["station_207_age_exceeds_3_hours"],
+            "calibration": {
+                "active_station_count": 2,
+                "station_warn_age_minutes": 180,
+                "station_max_age_minutes": 1440,
+            },
+            "stations": [
+                {
+                    "station_id": "80",
+                    "observed_at": "2026-08-27T14:00:00+08:00",
+                    "age_minutes": 0.0,
+                    "included": True,
+                    "exclusion_reason": None,
+                    "temporal_weight_factor": 1.0,
+                    "grid_weight_min": 0.2,
+                    "grid_weight_mean": 0.5,
+                    "grid_weight_max": 0.8,
+                },
+                {
+                    "station_id": "207",
+                    "observed_at": "2026-08-27T10:00:00+08:00",
+                    "age_minutes": 240.0,
+                    "included": True,
+                    "exclusion_reason": None,
+                    "temporal_weight_factor": 0.952381,
+                    "grid_weight_min": 0.1,
+                    "grid_weight_mean": 0.5,
+                    "grid_weight_max": 0.9,
+                },
+            ],
             "grids": grids,
         },
     )
@@ -259,6 +290,9 @@ def test_publish_web_dashboard_builds_valid_sanitized_contract(tmp_path: Path) -
     assert dashboard["metadata"]["pm2_5_route_method"]["grid_count"] == 54
     assert dashboard["metadata"]["pm2_5_route_method"]["weight"] == "segment_length_m"
     assert dashboard["metadata"]["pm2_5_route_method"]["recomputed_by_web_export"] is True
+    assert dashboard["metadata"]["pm2_5_fusion"]["status"] == "partial"
+    assert dashboard["metadata"]["pm2_5_fusion"]["stations"][1]["station_id"] == "207"
+    assert dashboard["metadata"]["pm2_5_fusion"]["stations"][1]["age_minutes"] == 240.0
     assert dashboard["metadata"]["status"] == "partial"
     assert dashboard["metadata"]["future_pm2_5"]["concentration_inferred_from_aqi"] is False
     assert all(not item["values"] for item in dashboard["forecast"]["pm2_5_hourly"])

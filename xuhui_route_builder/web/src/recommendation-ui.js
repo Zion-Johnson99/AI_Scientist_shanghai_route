@@ -601,8 +601,6 @@ export function createRecommendationUI({
     }
     filterRoot.className = `recommendation-filters${detailOpen ? " is-detail-open" : ""}`;
     filterRoot.hidden = !filtersVisible || viewState === "chat";
-    const previous = filterArrow("上一组筛选项", "prev");
-    const next = filterArrow("向右浏览筛选项", "next");
     const viewport = element("div", "recommendation-filters__viewport");
     const track = element("div", "recommendation-filters__track");
     viewport.append(track);
@@ -635,9 +633,7 @@ export function createRecommendationUI({
       item.append(chip);
       track.append(item);
     });
-    previous.addEventListener("click", () => scrollFilters(track, -1));
-    next.addEventListener("click", () => scrollFilters(track, 1));
-    filterRoot.replaceChildren(previous, viewport, next);
+    filterRoot.replaceChildren(viewport);
     track.scrollLeft = filterScrollLeft;
     track.addEventListener("scroll", () => {
       filterScrollLeft = Number(track.scrollLeft || 0);
@@ -737,18 +733,6 @@ export function createRecommendationUI({
       render();
     });
     return button;
-  }
-
-  function filterArrow(label, direction) {
-    const button = element("button", `recommendation-filters__arrow recommendation-filters__arrow--${direction}`, direction === "prev" ? "‹" : "›");
-    button.type = "button";
-    button.setAttribute("aria-label", direction === "prev" ? "向左浏览筛选项" : label);
-    return button;
-  }
-
-  function scrollFilters(viewport, direction) {
-    const distance = Math.max(240, Number(viewport.clientWidth || 0) * 0.7);
-    viewport.scrollBy?.({ left: distance * direction, behavior: "smooth" });
   }
 
   function positionFilterPopover(popover, chip, root) {

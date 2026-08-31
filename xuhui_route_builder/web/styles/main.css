@@ -3028,7 +3028,6 @@ select:disabled {
 .environment-panel:not(.is-expanded) .environment-toggle {
   flex: 0 0 auto;
   min-height: 32px;
-  padding: 0 0 0 12px;
   border-top: 0;
   border-left: 1px solid var(--line);
 }
@@ -3039,9 +3038,6 @@ select:disabled {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.environment-panel:not(.is-expanded) .environment-toggle span { font-size: 0; }
-.environment-panel:not(.is-expanded) .environment-toggle span::after { content: "详情"; font-size: 12px; }
 
 /* 0830 unified route workspace shell */
 .app-shell {
@@ -3095,13 +3091,13 @@ select:disabled {
 .route-search-shell {
   position: relative;
   display: flex;
-  flex: 0 1 640px;
+  flex: 0 1 520px;
   align-items: stretch;
-  width: clamp(480px, 46vw, 720px);
-  min-width: 420px;
-  height: 48px;
+  width: clamp(400px, 36vw, 560px);
+  min-width: 360px;
+  height: 46px;
   border: 1px solid var(--line-strong);
-  border-radius: 14px;
+  border-radius: 999px;
   background: #ffffff;
   box-shadow: 0 1px 3px rgba(16, 35, 63, 0.05);
   transition: border-color 160ms ease, box-shadow 160ms ease;
@@ -3149,6 +3145,10 @@ select:disabled {
 .toolbar-location input[type="search"]::placeholder {
   color: #78879b;
   opacity: 1;
+}
+
+.toolbar-location input[type="search"]:focus {
+  box-shadow: none;
 }
 
 .location-button {
@@ -3219,6 +3219,7 @@ select:disabled {
 .location-current-option strong { font-size: 14px; }
 .location-current-option small { color: var(--muted); font-size: 12px; }
 .location-suggestions:empty { display: none; }
+.location-editor .field-status:empty { display: none; }
 
 .location-suggestions {
   display: grid;
@@ -3260,13 +3261,13 @@ select:disabled {
 .product-toolbar .sport-mode-tabs {
   position: relative;
   display: block;
-  flex: 0 0 116px;
-  width: 116px;
+  flex: 0 0 112px;
+  width: 112px;
   height: 46px;
   padding: 0;
   border: 0;
   border-right: 1px solid var(--line);
-  border-radius: 13px 0 0 13px;
+  border-radius: 999px 0 0 999px;
   background: transparent;
 }
 
@@ -3283,25 +3284,35 @@ select:disabled {
   white-space: nowrap;
   list-style: none;
   cursor: pointer;
+  border-radius: 999px 0 0 999px;
 }
 
 .sport-mode-trigger::-webkit-details-marker { display: none; }
 .sport-mode-trigger:hover { background: rgba(232, 237, 244, 0.72); }
 .sport-mode-trigger > svg {
-  width: 19px;
-  height: 19px;
+  width: 24px;
+  height: 24px;
   flex: 0 0 auto;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  fill: currentColor;
+  stroke: none;
 }
 .sport-mode-trigger > .sport-mode-trigger__chevron {
   width: 14px;
   height: 14px;
   margin-left: auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
   transition: transform 160ms ease;
+}
+
+.sport-icon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  stroke: none;
 }
 .sport-mode-tabs[open] .sport-mode-trigger__chevron { transform: rotate(180deg); }
 
@@ -3311,11 +3322,11 @@ select:disabled {
   top: calc(100% + 10px);
   left: 0;
   display: grid;
-  width: 236px;
+  width: 286px;
   gap: 3px;
   padding: 7px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 18px;
   background: var(--surface-main);
   box-shadow: 0 14px 36px rgba(16, 35, 63, 0.16);
   animation: toolbar-menu-enter 160ms ease-out both;
@@ -3328,12 +3339,12 @@ select:disabled {
 
 .product-toolbar .sport-mode-menu button {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-columns: 44px minmax(0, 1fr);
   grid-template-rows: auto auto;
   align-items: center;
   gap: 1px 10px;
-  min-height: 56px;
-  padding: 8px 10px;
+  min-height: 64px;
+  padding: 7px 9px;
   border: 0;
   border-radius: 11px;
   color: var(--ink);
@@ -3351,30 +3362,38 @@ select:disabled {
 
 .product-toolbar .sport-mode-menu svg {
   grid-row: 1 / -1;
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   margin: auto;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  padding: 10px;
+  border-radius: 8px;
+  fill: currentColor;
+  stroke: none;
+  color: #736554;
+  background: #ede9de;
 }
 
-.product-toolbar .sport-mode-menu b { font-size: 14px; }
-.product-toolbar .sport-mode-menu span { color: var(--muted); font-size: 11px; }
-
+.product-toolbar .sport-mode-menu b { font-size: 15px; }
+.product-toolbar .sport-mode-menu span,
+.product-toolbar .sport-mode-menu small { color: #746d63; font-size: 12px; }
 .profile-action {
   position: relative;
   display: grid;
-  flex: 0 0 48px;
-  width: 48px;
-  height: 48px;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
   place-items: center;
-  border: 1px solid var(--line);
-  border-radius: 13px;
+  border: 0;
+  border-radius: 50%;
   color: var(--brand-blue);
-  background: var(--surface-main);
+  background: transparent;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.profile-action:hover,
+.profile-action:focus-visible {
+  color: #071d3f;
+  background: var(--surface-brand-soft);
 }
 
 .profile-action svg {
@@ -3609,41 +3628,49 @@ select:disabled {
   display: flex;
   align-items: center;
   gap: 7px;
-  height: 48px;
-  padding: 0 11px;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  color: var(--brand-blue);
-  background: var(--surface-main);
+  height: 46px;
+  padding: 0 24px 0 12px;
+  border: 0;
+  border-radius: 16px;
+  color: #fff;
+  background: var(--brand-blue);
   white-space: nowrap;
+  box-shadow: 0 5px 14px rgba(11, 40, 86, 0.16);
+  transition: background 160ms ease, box-shadow 160ms ease;
 }
 
-.product-toolbar .environment-panel .environment-toggle span { font-size: inherit; }
-.product-toolbar .environment-panel .environment-toggle span::after { content: none; }
+.product-toolbar .environment-toggle:hover,
+.product-toolbar .environment-toggle:focus-visible {
+  background: #071f45;
+  box-shadow: 0 7px 18px rgba(11, 40, 86, 0.22);
+}
 
 .environment-toggle__summary {
   display: flex;
   align-items: center;
-  font-size: 12px;
+  font-size: 13px;
+  line-height: 1;
 }
 
 .environment-toggle__item {
   display: flex;
   align-items: center;
-  gap: 5px;
+  height: 24px;
+  gap: 7px;
   min-width: 0;
-  padding: 0 10px;
+  padding: 0 13px;
 }
 
 .environment-toggle__item + .environment-toggle__item {
-  border-left: 1px solid var(--line);
+  border-left: 1px solid rgba(255, 255, 255, 0.28);
 }
 
 .environment-toggle__icon {
-  flex: 0 0 16px;
-  width: 16px;
-  height: 16px;
-  color: var(--brand-blue);
+  align-self: center;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  color: #fff;
 }
 
 .environment-toggle__icon > i {
@@ -3652,40 +3679,78 @@ select:disabled {
   line-height: 1;
 }
 
+span.environment-toggle__icon {
+  display: inline-grid;
+  place-items: center;
+}
+
 .environment-toggle__label {
-  color: var(--muted);
-  font-size: 10px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
   font-weight: 650;
+  line-height: 1;
 }
 
 .environment-toggle__item strong {
-  color: #10233f;
+  display: inline-flex;
+  align-items: center;
+  color: #fff;
   font-family: var(--font-numeric);
-  font-size: 13px;
-  font-weight: 650;
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
   white-space: nowrap;
+}
+
+.environment-toggle__label,
+.environment-toggle__item > strong {
+  display: inline-flex;
+  height: 24px;
+  align-items: center;
+  line-height: 24px;
+  transform: none;
+}
+
+.environment-toggle__item--temperature > strong,
+.environment-toggle__item--humidity > strong,
+.environment-toggle__aqi-number {
+  transform: translateY(1px);
 }
 
 .environment-toggle__aqi {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 7px;
+}
+
+.environment-toggle__aqi-number {
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1;
 }
 
 .environment-toggle__aqi-level {
-  padding: 2px 5px;
-  border-radius: 999px;
+  display: inline-grid;
+  align-self: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  place-items: center;
+  border-radius: 7px;
   font-family: var(--font-sans);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
+  line-height: 1;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22), 0 1px 3px rgba(5, 22, 48, 0.2);
 }
 
-.environment-toggle__aqi-level--excellent { color: #14784f; background: #e4f6ed; }
-.environment-toggle__aqi-level--good { color: #6a6700; background: #f8f2c8; }
-.environment-toggle__aqi-level--light,
-.environment-toggle__aqi-level--moderate { color: #a34f16; background: #fff0dc; }
-.environment-toggle__aqi-level--heavy,
-.environment-toggle__aqi-level--severe { color: #a83b36; background: #fde8e6; }
+.environment-toggle__aqi-level--excellent { color: #fff; background: #22a06b; }
+.environment-toggle__aqi-level--good { color: #10213b; background: #f2c94c; }
+.environment-toggle__aqi-level--light { color: #fff; background: #f2994a; }
+.environment-toggle__aqi-level--moderate { color: #fff; background: #e45656; }
+.environment-toggle__aqi-level--heavy { color: #fff; background: #8e4b8f; }
+.environment-toggle__aqi-level--severe { color: #fff; background: #6f2537; }
 
 @media (max-width: 1540px) {
   .environment-toggle__label { display: none; }
@@ -3701,7 +3766,15 @@ select:disabled {
 }
 
 .environment-toggle__chevron {
-  color: #607089;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: rgba(255, 255, 255, 0.86);
   transition: transform 180ms ease;
 }
 
@@ -3802,9 +3875,9 @@ select:disabled {
     scrollbar-width: none;
   }
   .route-search-shell {
-    flex-basis: 560px;
-    width: min(560px, calc(100vw - 102px));
-    min-width: 400px;
+    flex-basis: 520px;
+    width: min(520px, calc(100vw - 102px));
+    min-width: 360px;
   }
   .product-toolbar .environment-panel { flex-shrink: 0; }
   .location-editor {
@@ -3897,7 +3970,7 @@ select:disabled {
 @media (max-width: 520px) {
   .brand-logo { width: 28px; height: 28px; }
   .brand-lockup { flex-basis: 28px; }
-  .route-search-shell { min-width: 350px; }
+  .route-search-shell { min-width: 330px; }
   .product-toolbar .sport-mode-tabs { flex-basis: 104px; width: 104px; }
   .sport-mode-trigger { padding-inline: 9px; }
   .browse-controls .two-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }

@@ -129,6 +129,7 @@ export function createRouteDock(
   let activeRoute = null;
   let activeSource = "browse";
   let returnFocusTo = null;
+  let navigationPending = false;
   root.className = "route-dock route-dock--detail";
   root.hidden = true;
   root.tabIndex = -1;
@@ -207,16 +208,29 @@ export function createRouteDock(
     event.preventDefault();
     closeFromUser();
   });
-  root.querySelector("[data-dock-navigate]").addEventListener("click", () => {
-    if (!activeRoute || !onNavigate) return;
+  const navigateButton = root.querySelector("[data-dock-navigate]");
+  navigateButton.addEventListener("click", async () => {
+    if (!activeRoute || !onNavigate || navigationPending) return;
+    const route = activeRoute;
+    const routeId = routeIdOf(route);
+    navigationPending = true;
+    navigateButton.disabled = true;
+    navigateButton.setAttribute("aria-busy", "true");
+    navigateButton.textContent = "正在规划…";
+    let failed = false;
     try {
-      const pending = onNavigate(activeRoute);
-      pending?.catch?.((error) => console.error("打开路线接驳失败", {
-        routeId: routeIdOf(activeRoute),
-        error,
-      }));
+      await onNavigate(route);
     } catch (error) {
-      console.error("打开路线接驳失败", { routeId: routeIdOf(activeRoute), error });
+      failed = true;
+      console.error("启动路线导航失败", {
+        routeId,
+        error,
+      });
+    } finally {
+      navigationPending = false;
+      navigateButton.disabled = false;
+      navigateButton.setAttribute("aria-busy", "false");
+      navigateButton.textContent = failed ? "重试前往起点" : "前往起点";
     }
   });
 

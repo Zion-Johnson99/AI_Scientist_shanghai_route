@@ -1,11 +1,11 @@
 import {
   loadRouteData,
   startEnvironmentDashboardPolling,
-} from "./data-loader.js?v=20260830-ui-10";
+} from "./data-loader.js?v=20260831-ui-12";
 import {
   buildRouteExposureModel,
   createEnvironmentPanel,
-} from "./environment-ui.js?v=20260830-ui-10";
+} from "./environment-ui.js?v=20260831-ui-12";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -13,7 +13,6 @@ import {
   createMap,
   createRecommendationMapController,
   drawBoundary,
-  enablePointPicker,
   endNavigationSession,
   fitBoundaryView,
   highlightRoutePreview,
@@ -22,24 +21,26 @@ import {
   showUserLocation,
   showRoutePreviews,
   showSingleRoute,
-  startNavigationSession,
-} from "./map.js?v=20260830-ui-10";
-import { createNavigationController } from "./navigation-session.js?v=20260830-ui-10";
+} from "./map.js?v=20260831-ui-12";
+import { createNavigationController } from "./navigation-session.js?v=20260831-ui-12";
 import {
   createAmapLocationServices,
   createLocationController,
   createMapPointSelection,
-} from "./location-control.js?v=20260830-ui-10";
-import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260830-ui-10";
-import { createRecommendationApi } from "./recommendation-api.js?v=20260830-ui-10";
+} from "./location-control.js?v=20260831-ui-12";
+import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260831-ui-12";
+import { createRecommendationApi } from "./recommendation-api.js?v=20260831-ui-12";
 import {
   DEFAULT_RECOMMENDATION_LOCATION,
   buildInitialRecommendationResult,
   createProfileDialog,
   createRecommendationUI,
-} from "./recommendation-ui.js?v=20260830-ui-10";
-import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260830-ui-10";
-import { renderRoutePlanner } from "./route-ui.js?v=20260830-ui-10";
+} from "./recommendation-ui.js?v=20260831-ui-12";
+import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260831-ui-12";
+import {
+  isMapLocationSelectionAllowed,
+  renderRoutePlanner,
+} from "./route-ui.js?v=20260831-ui-12";
 
 const RECOMMENDATION_MAP_CARDS_ENABLED = false;
 
@@ -66,14 +67,44 @@ async function bootstrap() {
   const routeDock = createRouteDock(undefined, {
     async onNavigate(route) {
       const routeId = route?.properties?.route_id || route?.route_id;
+      const origin = currentLocation;
       if (!routeId) {
-        console.error("路线详情缺少 route_id", { route });
-        return;
+        const error = new Error("路线详情缺少 route_id。");
+        console.error("直接导航启动失败", {
+          routeId: null,
+          origin,
+          status: map.navigation.state,
+          error,
+        });
+        throw error;
       }
-      const origin = currentLocation || await requestLocation();
-      if (origin) planner.openNavigation(routeId, origin);
+      if (!origin) {
+        const error = new Error("尚未确认出发位置，请先使用顶部地点搜索。");
+        console.error("直接导航启动失败", {
+          routeId,
+          origin: null,
+          status: map.navigation.state,
+          error,
+        });
+        throw error;
+      }
+      try {
+        return await planner.startDirectNavigation(routeId, origin);
+      } catch (error) {
+        console.error("直接导航启动失败", {
+          routeId,
+          origin,
+          status: map.navigation.state,
+          error,
+        });
+        throw error;
+      }
     },
     onClose({ source, routeId }) {
+      if (!planner?.endNavigationPreview()) {
+        stopInlineNavigation();
+        endNavigationSession(map);
+      }
       uiState.detailSource = null;
       recommendationUI?.setDetailOpen(false);
       if (source !== uiState.productView) {
@@ -100,14 +131,12 @@ async function bootstrap() {
   const environmentContainer = document.querySelector("#environmentPanel");
   const recommendationContainer = document.querySelector("#recommendationView");
   const selectionView = document.querySelector("#routeSelectionView");
-  const navigationView = document.querySelector("#routeNavigationView");
   const modeTabs = [...document.querySelectorAll("[data-product-view]")];
   const workbench = getWorkbenchControls();
   const locationControls = getLocationControls();
   const hadSavedProfile = Boolean(globalThis.localStorage?.getItem?.(HEALTH_PROFILE_STORAGE_KEY));
   let healthProfile = loadHealthProfile();
   let currentLocation = { ...DEFAULT_RECOMMENDATION_LOCATION };
-  let pendingLocationResolver = null;
   let locationCandidates = [];
   let activeLocationCandidateIndex = 0;
   let locationSearchRevision = 0;
@@ -150,7 +179,6 @@ async function bootstrap() {
   const navigationController = createNavigationController({
     onProgress(progress) {
       renderInlineNavigationProgress(guide, progress);
-      document.querySelector("#navigationStatus").textContent = navigationStatusText(progress);
     },
   });
 
@@ -212,13 +240,6 @@ async function bootstrap() {
       endNavigationSession(map);
       showRouteFeature(map, routeFeaturesById, routeId, data);
     },
-    onPickNavigationPoint(role, onPicked) {
-      startNavigationSession(map, onPicked);
-      enablePointPicker(map, role);
-    },
-    onLocationChange(point) {
-      locationController.commitCandidate({ ...point, label: point.label || "地图点" });
-    },
     onNavigate(request) {
       return planNavigation(map, request);
     },
@@ -258,19 +279,6 @@ async function bootstrap() {
         uiState.detailSource = null;
         routeDock.hide();
       }
-    },
-    onNavigationViewChange(open) {
-      if (open) {
-        recommendationUI?.setFiltersVisible(false);
-        recommendationContainer.hidden = true;
-        recommendationContainer.classList.remove("active");
-        selectionView.hidden = true;
-        navigationView.hidden = false;
-        document.querySelector(".mode-tabs").hidden = true;
-        return;
-      }
-      document.querySelector(".mode-tabs").hidden = false;
-      setProductView(uiState.productView);
     },
   });
 
@@ -434,7 +442,6 @@ async function bootstrap() {
       tab.setAttribute("aria-selected", String(active));
       tab.tabIndex = active ? 0 : -1;
     });
-    navigationView.hidden = true;
     recommendationContainer.hidden = visibleView !== "recommendation";
     recommendationContainer.classList.toggle("active", visibleView === "recommendation");
     recommendationUI?.setFiltersVisible(visibleView === "recommendation" && !uiState.chatOpen);
@@ -469,22 +476,6 @@ async function bootstrap() {
     globalThis.setTimeout?.(() => map.amap.resize?.(), 200);
   }
 
-  function requestLocation() {
-    if (pendingLocationResolver) return Promise.resolve(null);
-    setLocationEditorOpen(true);
-    locationControls.input.focus();
-    return new Promise((resolve) => {
-      pendingLocationResolver = resolve;
-    });
-  }
-
-  function finishLocationRequest(value) {
-    const resolve = pendingLocationResolver;
-    pendingLocationResolver = null;
-    setLocationEditorOpen(false);
-    resolve?.(value);
-  }
-
   function commitLocation(location, { refreshRoutes = true } = {}) {
     currentLocation = location;
     locationControls.input.value = "";
@@ -495,7 +486,7 @@ async function bootstrap() {
     locationControls.status.textContent = "";
     showUserLocation(map, location);
     recommendationUI.setLocation(location);
-    finishLocationRequest(location);
+    setLocationEditorOpen(false);
     if (refreshRoutes) refreshNearbyRoutes();
     return location;
   }
@@ -503,8 +494,7 @@ async function bootstrap() {
   function bindLocationControls() {
     locationControls.toggle.addEventListener("click", () => {
       const open = locationControls.editor.hidden;
-      if (!open && pendingLocationResolver) finishLocationRequest(null);
-      else setLocationEditorOpen(open);
+      setLocationEditorOpen(open);
     });
     locationControls.input.addEventListener("focus", () => setLocationEditorOpen(true));
     locationControls.input.addEventListener("input", () => {
@@ -539,7 +529,12 @@ async function bootstrap() {
 
   function bindMapLocationPicker() {
     map.amap.on("click", (event) => {
-      if (map.navigation.state !== "idle") return;
+      const navigationActive = Boolean(activeNavigation)
+        || ["planning", "planned", "previewing"].includes(map.navigation.state);
+      if (!isMapLocationSelectionAllowed({
+        detailOpen: Boolean(uiState.detailSource),
+        navigationActive,
+      })) return;
       const lng = Number(event?.lnglat?.getLng?.() ?? event?.lnglat?.lng);
       const lat = Number(event?.lnglat?.getLat?.() ?? event?.lnglat?.lat);
       if (!Number.isFinite(lng) || !Number.isFinite(lat)) return;
@@ -817,10 +812,6 @@ function hideInlineNavigationGuide(guide) {
   guide.nextButton.disabled = true;
 }
 
-function navigationStatusText(progress) {
-  return `第 ${progress.stepNumber}/${progress.stepCount} 步 · ${progress.instruction}`;
-}
-
 function formatDistance(value) {
   const meters = Math.max(0, Number(value || 0));
   return meters >= 1000 ? `${(meters / 1000).toFixed(1)} km` : `${Math.round(meters)} m`;
@@ -836,8 +827,6 @@ function showRouteFeature(map, routeFeaturesById, routeId, data, selectedPrefere
   if (!feature) {
     clearRouteResults(map);
     const message = `路线 ${routeId} 缺少地图路径数据，请刷新页面后重试。`;
-    document.querySelector("#routeDetail").textContent = message;
-    document.querySelector("#routeSummary").textContent = "路线加载失败";
     console.error(message, { routeId, loadedFeatureCount: routeFeaturesById.size });
     return;
   }
@@ -904,6 +893,9 @@ function errorMessage(error) {
 }
 
 bootstrap().catch((error) => {
-  const detail = document.querySelector("#routeDetail");
-  detail.textContent = error.message;
+  console.error("应用启动失败", { error });
+  const recommendationView = document.querySelector("#recommendationView");
+  if (!recommendationView) return;
+  recommendationView.hidden = false;
+  recommendationView.textContent = errorMessage(error);
 });

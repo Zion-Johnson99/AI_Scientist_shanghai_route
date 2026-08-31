@@ -15,12 +15,13 @@ test("健康档案使用 XH Logo 色板且不再使用亮蓝渐变", () => {
   assert.doesNotMatch(mainCss, /\.profile-dialog__save\s*\{[^}]*linear-gradient/s);
 });
 
-test("地图顶部筛选轨支持滚动、箭头与详情列避让", () => {
-  assert.match(recommendationCss, /\.recommendation-filters\s*\{[^}]*position:\s*(?:absolute|fixed)[^}]*left:\s*var\(--recommendation-filter-left\)/s);
+test("地图顶部筛选轨紧凑排列、自然滚动且只由详情状态避让", () => {
+  assert.match(recommendationCss, /\.recommendation-filters\s*\{[^}]*position:\s*(?:absolute|fixed)[^}]*left:\s*var\(--recommendation-filter-left\)[^}]*width:\s*(?:fit-content|max-content)[^}]*max-width:\s*calc\(/s);
   assert.match(recommendationCss, /\.recommendation-filters__viewport\s*\{[^}]*min-width:\s*0[^}]*overflow:\s*hidden/s);
-  assert.match(recommendationCss, /\.recommendation-filters__track\s*\{[^}]*overflow-x:\s*auto[^}]*scroll-behavior:\s*smooth/s);
-  assert.match(recommendationCss, /\.recommendation-filters__arrow\s*\{[^}]*border-radius:\s*50%/s);
+  assert.match(recommendationCss, /\.recommendation-filters__track\s*\{[^}]*gap:\s*6px[^}]*overflow-x:\s*auto[^}]*scrollbar-width:\s*none/s);
+  assert.doesNotMatch(recommendationCss, /\.recommendation-filters__arrow/);
   assert.match(recommendationCss, /\.recommendation-filters\.is-detail-open\s*\{[^}]*--recommendation-filter-left:/s);
+  assert.doesNotMatch(recommendationCss, /\.has-route-detail\s+\.recommendation-filters/);
 });
 
 test("筛选 chip 与弹出菜单保持品牌化、可聚焦的 Komoot 式表面", () => {
@@ -28,6 +29,11 @@ test("筛选 chip 与弹出菜单保持品牌化、可聚焦的 Komoot 式表面
   assert.match(recommendationCss, /\.recommendation-filter__chip\.is-open\s*\{[^}]*color:\s*var\(--brand-blue\)[^}]*background:\s*var\(--surface-brand-soft\)/s);
   assert.match(recommendationCss, /\.recommendation-filter__popover\s*\{[^}]*position:\s*absolute[^}]*box-shadow:/s);
   assert.match(recommendationCss, /\.recommendation-filter__chip:focus-visible\s*\{[^}]*var\(--focus\)/s);
+});
+
+test("路线卡运动图标使用品牌蓝和清晰的 20px 填充比例", () => {
+  assert.match(recommendationCss, /\.route-card__sport-icon\s*\{[^}]*width:\s*20px[^}]*height:\s*20px[^}]*color:\s*var\(--brand-blue\)/s);
+  assert.match(recommendationCss, /\.route-card__sport-icon svg\s*\{[^}]*fill:\s*currentcolor[^}]*stroke:\s*none/s);
 });
 
 test("左栏路线卡滚动，补充需求与 CTA 固定在底部", () => {

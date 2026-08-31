@@ -458,6 +458,42 @@ test("详情只渲染一个底部前往起点操作", () => {
   }
 });
 
+test("前往起点规划期间锁定按钮并阻止重复请求", async () => {
+  const previousDocument = globalThis.document;
+  const { document, nodes } = createDockDocumentStub();
+  globalThis.document = document;
+  let resolveNavigation;
+  const navigation = new Promise((resolve) => { resolveNavigation = resolve; });
+  let calls = 0;
+  try {
+    const dock = createRouteDock({ appendChild() {} }, {
+      onNavigate() {
+        calls += 1;
+        return navigation;
+      },
+    });
+    dock.show({ route: sampleRoute, environment: sampleEnvironment });
+    const button = nodes["[data-dock-navigate]"];
+
+    const firstClick = button.listeners.click();
+    button.listeners.click();
+
+    assert.equal(calls, 1);
+    assert.equal(button.disabled, true);
+    assert.equal(button.attributes["aria-busy"], "true");
+    assert.equal(button.textContent, "正在规划…");
+
+    resolveNavigation();
+    await firstClick;
+
+    assert.equal(button.disabled, false);
+    assert.equal(button.attributes["aria-busy"], "false");
+    assert.equal(button.textContent, "前往起点");
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
 test("详情保留三类环境读数，状态字移除且三行口径位于滚动区底部", () => {
   const previousDocument = globalThis.document;
   const { document, root } = createDockDocumentStub();
@@ -570,6 +606,7 @@ function createDockDocumentStub() {
 function elementStub(dataset = {}) {
   return {
     dataset,
+    disabled: false,
     textContent: "",
     children: [],
     attributes: {},

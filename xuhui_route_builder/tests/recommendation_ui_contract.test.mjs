@@ -202,7 +202,7 @@ test("首屏本地路线卡使用与详情同源的路线环境数据", () => {
   assert.equal(buildRecommendationViewModel(result).routes[0].pm25Text, "PM2.5 11.2 µg/m³");
 });
 
-test("Komoot 式顶部筛选轨承载默认值、弹层与横向箭头", () => {
+test("Komoot 式顶部筛选轨承载七项默认值、弹层与详情状态", () => {
   const previousDocument = globalThis.document;
   globalThis.document = createDocumentStub();
   try {
@@ -217,19 +217,22 @@ test("Komoot 式顶部筛选轨承载默认值、弹层与横向箭头", () => {
     assert.match(filters.textContent, /综合均衡/);
     assert.match(filters.textContent, /5 km 附近/);
     assert.match(filters.textContent, /不限/);
+    assert.equal(findAllByClass(filters, "recommendation-filter__chip").length, 7);
+    assert.equal(findByClass(filters, "recommendation-filters__arrow"), null);
 
     const goalChip = findByAttribute(filters, "aria-label", "设置运动目标");
     goalChip.listeners.click();
     assert.equal(goalChip.attributes["aria-expanded"], "true");
     assert.ok(findByClass(filterHost, "recommendation-filter__popover"));
 
-    const viewport = findByClass(filterHost, "recommendation-filters__viewport");
-    const track = findByClass(filterHost, "recommendation-filters__track");
-    findByAttribute(filterHost, "aria-label", "向右浏览筛选项").listeners.click();
-    assert.equal(viewport.scrollCalls.length, 0);
-    assert.ok(track.scrollCalls[0].left > 0);
     controller.setDetailOpen(true);
     assert.ok(String(findByClass(filterHost, "recommendation-filters").className).includes("is-detail-open"));
+    controller.setDetailOpen(false);
+    assert.doesNotMatch(String(findByClass(filterHost, "recommendation-filters").className), /is-detail-open/);
+
+    const source = readFileSync(new URL("../web/src/recommendation-ui.js", import.meta.url), "utf8");
+    assert.doesNotMatch(source, /function\s+filterArrow\s*\(/);
+    assert.doesNotMatch(source, /function\s+scrollFilters\s*\(/);
   } finally {
     globalThis.document = previousDocument;
   }

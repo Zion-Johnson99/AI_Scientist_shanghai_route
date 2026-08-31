@@ -28,6 +28,7 @@ runtime_root="$evaluation_root/runtime/local-app"
 api_health_url="http://127.0.0.1:8124/api/v1/health"
 web_url="http://127.0.0.1:8123/web/"
 environment_check_interval_seconds=1800
+startup_cache_max_age_minutes=30
 started_pids=()
 
 if [[ ! -x "$api_executable" ]]; then
@@ -42,7 +43,7 @@ mkdir -p "$runtime_root"
 
 dashboard_info() {
   local action="$1"
-  "$route_python" - "$dashboard_path" "$action" <<'PY'
+  "$route_python" - "$dashboard_path" "$action" "$startup_cache_max_age_minutes" <<'PY'
 import json
 import sys
 from datetime import datetime, timedelta
@@ -50,6 +51,7 @@ from pathlib import Path
 
 path = Path(sys.argv[1])
 action = sys.argv[2]
+max_age_minutes = int(sys.argv[3])
 
 
 def parse_time(value):
@@ -86,6 +88,16 @@ if action == "time":
     value = dashboard.get("metadata", {}).get("generated_at") if dashboard else None
     timestamp = parse_time(value)
     print(timestamp.astimezone().strftime("%Y-%m-%d %H:%M:%S") if timestamp else "未知")
+    raise SystemExit
+
+if action == "startup-cache-fresh":
+    value = dashboard.get("metadata", {}).get("generated_at") if dashboard else None
+    timestamp = parse_time(value)
+    if timestamp is None:
+        print("false")
+        raise SystemExit
+    age_seconds = (datetime.now().astimezone() - timestamp).total_seconds()
+    print(str(0 <= age_seconds < max_age_minutes * 60).lower())
     raise SystemExit
 
 if dashboard is None:
@@ -128,13 +140,114 @@ elif expired(current.get("weather"), now, margin_minutes=5):
 PY
 }
 
+print_refresh_summary() {
+  local mode="${1:-refresh}"
+  "$route_python" - \
+    "$runtime_root/environment-refresh.stdout.log" \
+    "$dashboard_path" \
+    "$mode" <<'PY'
+import json
+import sys
+from datetime import datetime
+from pathlib import Path
+
+report_path = Path(sys.argv[1])
+dashboard_path = Path(sys.argv[2])
+mode = sys.argv[3]
+
+
+def load_json(path):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise SystemExit(f"环境数据刷新结果无法解析：{error}") from error
+
+
+def local_time(value):
+    if value is None:
+        return "未知"
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        return str(value)
+    if parsed.tzinfo is None:
+        parsed = parsed.astimezone()
+    return parsed.astimezone().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def number(value, digits):
+    try:
+        return f"{float(value):.{digits}f}"
+    except (TypeError, ValueError):
+        return "未知"
+
+
+dashboard = load_json(dashboard_path)
+if mode == "refresh":
+    report = load_json(report_path)
+    run_status = str(report.get("status", "未知"))
+    publish_status = str((report.get("publish") or {}).get("status", "未知"))
+    update_time = local_time((dashboard.get("metadata") or {}).get("generated_at"))
+    if publish_status == "stale":
+        print(
+            f"警告：环境数据未生成新快照，继续使用上次数据，"
+            f"更新时间：{update_time}。",
+            file=sys.stderr,
+        )
+    else:
+        print(f"环境数据已发布，状态：{run_status}，更新时间：{update_time}。")
+    if run_status == "partial":
+        print(
+            "警告：本轮部分环境数据源已降级，"
+            "详情见下方站点摘要和刷新日志。",
+            file=sys.stderr,
+        )
+    fusion = (report.get("refresh") or {}).get("pm25_grid_fusion") or {}
+else:
+    fusion = (dashboard.get("metadata") or {}).get("pm2_5_fusion") or {}
+stations = fusion.get("stations") or []
+if not stations:
+    print("警告：本轮未返回 PM2.5 站点时间与权重。", file=sys.stderr)
+for station in stations:
+    station_id = station.get("station_id", "未知")
+    age_minutes = station.get("age_minutes")
+    print(
+        f"站点 {station_id}：观测时间 {local_time(station.get('observed_at'))}，"
+        f"滞后 {number(age_minutes, 0)} 分钟，"
+        f"时间权重 {number(station.get('temporal_weight_factor'), 3)}，"
+        f"网格权重范围 {number(station.get('grid_weight_min'), 3)}-"
+        f"{number(station.get('grid_weight_max'), 3)}。"
+    )
+    if not station.get("included", False):
+        print(
+            f"警告：站点 {station_id} 滞后已达 24 小时，本轮已剔除。",
+            file=sys.stderr,
+        )
+    elif isinstance(age_minutes, (int, float)) and age_minutes > 180:
+        print(
+            f"警告：站点 {station_id} 滞后超过 3 小时，"
+            "本轮已降低融合权重。",
+            file=sys.stderr,
+        )
+PY
+}
+
 refresh_environment() {
-  local tier update_time
+  local mode="${1:-continuous}" tier update_time
   tier="$(dashboard_info tier)"
-  if [[ -z "$tier" ]]; then
+  if (
+    [[ "$mode" == "startup" ]] \
+    && [[ -z "$tier" ]] \
+    && [[ "$(dashboard_info startup-cache-fresh)" == "true" ]]
+  ); then
     update_time="$(dashboard_info time)"
-    echo "环境数据未更新，上次更新时间：$update_time。"
-    return
+    echo "环境数据缓存仍有效，更新时间：$update_time。"
+    print_refresh_summary "cache"
+    return 0
+  elif [[ "$mode" == "startup" && "$tier" != "daily" ]]; then
+    tier="hourly"
+  elif [[ -z "$tier" ]]; then
+    return 0
   fi
   if [[ ! -x "$weather_executable" ]]; then
     echo "缺少环境数据服务，请先在 weather_api_data 目录完成依赖安装。" >&2
@@ -158,8 +271,7 @@ refresh_environment() {
     echo "环境数据更新后缺少网页数据包，日志目录：$runtime_root" >&2
     return 1
   fi
-  update_time="$(dashboard_info time)"
-  echo "环境数据已更新，更新时间：$update_time。"
+  print_refresh_summary
 }
 
 http_ready() {
@@ -236,7 +348,7 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-refresh_environment
+refresh_environment "startup"
 
 offline_mode=1
 mode_label="本地 Python 排序"
@@ -306,7 +418,7 @@ while true; do
   now_epoch="$(date +%s)"
   if (( now_epoch >= next_environment_check )); then
     next_environment_check=$(( now_epoch + environment_check_interval_seconds ))
-    if ! refresh_environment; then
+    if ! refresh_environment "continuous"; then
       echo "警告：运行期间环境数据刷新失败，继续使用上一份数据。" >&2
     fi
   fi

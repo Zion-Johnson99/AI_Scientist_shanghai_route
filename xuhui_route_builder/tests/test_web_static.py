@@ -63,8 +63,17 @@ def test_windows_launcher_starts_the_complete_local_application() -> None:
     assert "运行期间环境数据刷新失败" in launcher
     assert "AddMinutes(30)" in launcher
     assert "AddMinutes(1)" not in launcher
-    assert "环境数据已更新，更新时间：" in launcher
-    assert "环境数据未更新，上次更新时间：" in launcher
+    assert "Get-StartupEnvironmentRefreshTier" in launcher
+    assert "$startupCacheMaxAgeMinutes = 30" in launcher
+    assert "Test-EnvironmentDashboardCacheFresh" in launcher
+    assert "$age.TotalMinutes -lt $MaxAgeMinutes" in launcher
+    assert "环境数据缓存仍有效" in launcher
+    assert "Show-StationRefreshSummary -Dashboard $currentDashboard" in launcher
+    assert "Show-StationRefreshSummary" in launcher
+    assert "环境数据已发布，状态：" in launcher
+    assert "环境数据未生成新快照" in launcher
+    assert "站点 $stationId" in launcher
+    assert "temporal_weight_factor" in launcher
     assert "AQI 状态" not in launcher
     assert "数值 $aqiValue" not in launcher
     assert ".\\start-local-app.ps1" in readme
@@ -90,8 +99,16 @@ def test_macos_linux_launcher_starts_the_complete_local_application() -> None:
     assert "http://127.0.0.1:8123/web/" in launcher
     assert "trap cleanup EXIT INT TERM" in launcher
     assert "environment_check_interval_seconds=1800" in launcher
-    assert "环境数据已更新，更新时间：" in launcher
-    assert "环境数据未更新，上次更新时间：" in launcher
+    assert "startup_cache_max_age_minutes=30" in launcher
+    assert 'action == "startup-cache-fresh"' in launcher
+    assert "age_seconds < max_age_minutes * 60" in launcher
+    assert "环境数据缓存仍有效" in launcher
+    assert 'print_refresh_summary "cache"' in launcher
+    assert 'refresh_environment "startup"' in launcher
+    assert "print_refresh_summary" in launcher
+    assert "环境数据已发布，状态：" in launcher
+    assert "环境数据未生成新快照" in launcher
+    assert "temporal_weight_factor" in launcher
     assert "AQI 状态" not in launcher
     assert "bash ./start-local-app.sh" in readme
     assert "bash ./start-local-app.sh --use-qwen" in readme
@@ -122,13 +139,21 @@ def test_index_presents_the_health_map_product_shell() -> None:
         assert internal_copy not in html
 
 
-def test_product_toolbar_owns_the_single_location_mode_environment_and_profile_entries() -> None:
+def test_product_toolbar_owns_the_single_location_mode_environment_and_profile_entries() -> (
+    None
+):
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     toolbar = html[
-        html.index('<header class="product-toolbar"') : html.index("</header>") + len("</header>")
+        html.index('<header class="product-toolbar"') : html.index("</header>")
+        + len("</header>")
     ]
 
-    for element_id in ["locationInput", "sportModeTabs", "environmentPanel", "profileSettingsButton"]:
+    for element_id in [
+        "locationInput",
+        "sportModeTabs",
+        "environmentPanel",
+        "profileSettingsButton",
+    ]:
         assert f'id="{element_id}"' in toolbar
         assert html.count(f'id="{element_id}"') == 1
 
@@ -144,7 +169,7 @@ def test_product_toolbar_owns_the_single_location_mode_environment_and_profile_e
         assert plugin in html
     assert 'class="profile-action__label">个人档案</span>' in toolbar
     assert 'class="map-layer-button__label">图层</span>' in html
-    assert './styles/recommendation.css?v=20260830-ui-10' in html
+    assert "./styles/recommendation.css?v=20260831-ui-12" in html
     for mode_id, route_mode in [
         ("toolbarWalkMode", "walk"),
         ("toolbarRunMode", "run"),
@@ -173,20 +198,20 @@ def test_sidebar_exposes_a_persistent_workbench_header_outside_its_body() -> Non
     assert 'data-collapsed="false"' in sidebar
     assert 'id="workbenchTitle"' in header
     assert 'aria-live="polite"' in header
-    assert '>帮我推荐</h2>' in header
+    assert ">帮我推荐</h2>" in header
     assert 'id="workbenchQwenButton"' in header
-    assert 'data-workbench-qwen' in header
+    assert "data-workbench-qwen" in header
     assert 'aria-controls="recommendationView"' in header
     assert 'aria-expanded="false"' in header
     assert 'src="./assets/qwen-color.png"' in header
     assert 'id="workbenchCollapseButton"' in header
-    assert 'data-workbench-collapse' in header
+    assert "data-workbench-collapse" in header
     assert 'aria-controls="workbenchBody"' in header
     assert 'aria-expanded="true"' in header
     assert 'class="mode-tabs"' in body
     assert 'id="recommendationView"' in body
     assert 'id="routeSelectionView"' in body
-    assert 'id="routeNavigationView"' in body
+    assert 'id="routeNavigationView"' not in body
 
 
 def test_environment_and_profile_form_the_right_aligned_toolbar_group() -> None:
@@ -200,7 +225,7 @@ def test_environment_and_profile_form_the_right_aligned_toolbar_group() -> None:
     assert "margin-left: auto;" not in profile_block
 
 
-def test_toolbar_controls_share_a_48px_alignment_grid() -> None:
+def test_toolbar_controls_share_a_46px_alignment_grid() -> None:
     css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
 
     for selector in [
@@ -210,11 +235,12 @@ def test_toolbar_controls_share_a_48px_alignment_grid() -> None:
     ]:
         start = css.index(selector)
         block = css[start : css.index("}", start)]
-        assert "height: 48px;" in block
+        assert "height: 46px;" in block
 
     search_start = css.index(".route-search-shell {")
     search_block = css[search_start : css.index("}", search_start)]
-    assert "flex: 0 1 640px;" in search_block
+    assert "flex: 0 1 520px;" in search_block
+    assert "width: clamp(400px, 36vw, 560px);" in search_block
     assert "background: #ffffff;" in search_block
 
     sport_start = css.index(".product-toolbar .sport-mode-tabs {")
@@ -224,7 +250,9 @@ def test_toolbar_controls_share_a_48px_alignment_grid() -> None:
     assert "border: 0;" in sport_block
 
 
-def test_location_search_uses_autocomplete_geolocation_and_immediate_nearby_refresh() -> None:
+def test_location_search_uses_autocomplete_geolocation_and_immediate_nearby_refresh() -> (
+    None
+):
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
 
@@ -328,16 +356,10 @@ def test_route_detail_uses_a_vertical_shell_with_the_action_at_the_bottom() -> N
     assert "z-index: 460;" in mobile_detail
 
 
-def test_navigation_shell_uses_a_short_manual_start_flow() -> None:
+def test_navigation_shell_uses_direct_inline_preview() -> None:
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
 
     for element_id in [
-        "navigationBackButton",
-        "navigationRouteName",
-        "startInput",
-        "startPickButton",
-        "navigateButton",
-        "startSportButton",
         "inlineNavigationGuide",
         "inlineNavigationPreviousButton",
         "inlineNavigationNextButton",
@@ -345,15 +367,23 @@ def test_navigation_shell_uses_a_short_manual_start_flow() -> None:
     ]:
         assert f'id="{element_id}"' in html
 
-    assert "搜索上海地点" in html
-    assert "规划接驳路线" in html
-    assert "进入导航预览" in html
-    assert 'id="navigationRouteSelect"' not in html
-    assert 'id="navigationSportModeTabs"' not in html
-    assert 'id="startNavigationButton"' not in html
-    assert 'id="endNavigationButton"' not in html
-    assert "实时接驳" not in html
-    assert "定位精度" not in html
+    for removed_element_id in [
+        "routeNavigationView",
+        "navigationBackButton",
+        "navigationRouteName",
+        "startInput",
+        "startPickButton",
+        "navigateButton",
+        "startSportButton",
+        "navigationRouteSelect",
+        "navigationSportModeTabs",
+        "startNavigationButton",
+        "endNavigationButton",
+    ]:
+        assert f'id="{removed_element_id}"' not in html
+
+    assert "规划接驳路线" not in html
+    assert "进入导航预览" not in html
 
 
 def test_workbench_shell_keeps_primary_controls_touch_friendly_and_responsive() -> None:
@@ -382,7 +412,7 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260830-ui-10"
+    release = "v=20260831-ui-12"
     assert f"./styles/main.css?{release}" in html
     assert f"./styles/recommendation.css?{release}" in html
     assert f"./src/main.js?{release}" in html
@@ -507,12 +537,12 @@ def test_product_shell_separates_recommendation_from_compact_route_browsing() ->
     assert "metro:" not in route_ui_js
 
     assert "route-selection-view" in html
-    assert "route-navigation-view" in html
-    assert "startInput" in html
+    assert "route-navigation-view" not in html
+    assert "startInput" not in html
     assert "endInput" not in html
     assert "waypointInput" not in html
-    assert "navigationModeSummary" in html
-    assert "startSportButton" in html
+    assert "navigationModeSummary" not in html
+    assert "startSportButton" not in html
     assert "filterCandidateRoutes" in route_ui_js
     assert "onNavigate" in route_ui_js
     assert "selectBestRoute" in route_ui_js
@@ -520,12 +550,9 @@ def test_product_shell_separates_recommendation_from_compact_route_browsing() ->
     assert "data-route-mode" in html
     assert "createRouteCard" in route_ui_js
     assert "updateModeCounts(catalog, controls)" in route_ui_js
-    assert (
-        'tab.querySelector("span").textContent = `${routes.length} 条`;' in route_ui_js
-    )
+    assert 'tab.setAttribute("aria-label", `${modeLabel}，${routes.length} 条路线`);' in route_ui_js
+    assert 'tab.querySelector("span")' not in route_ui_js
     assert "routeShapeCounts" not in route_ui_js
-    assert "环" in route_ui_js
-    assert "单" in route_ui_js
     assert "30 条" not in html
     assert "90 条城市运动候选路线" not in html
 
@@ -665,16 +692,13 @@ def test_xuhui_boundary_uses_the_logo_blue_with_a_lighter_line_weight() -> None:
     assert "strokeWeight: 4" in boundary_block
 
 
-def test_web_loads_pois_and_supports_manual_navigation_controls() -> None:
+def test_web_loads_pois_and_supports_direct_navigation_preview() -> None:
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
     route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
     map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
 
     for element_id in [
-        "startPickButton",
-        "navigationModeSummary",
-        "startSportButton",
         "inlineNavigationGuide",
         "inlineNavigationInstruction",
         "inlineNavigationRemaining",
@@ -692,12 +716,17 @@ def test_web_loads_pois_and_supports_manual_navigation_controls() -> None:
         "endInput",
         "endPickButton",
         "navigationMode",
+        "startPickButton",
+        "navigationModeSummary",
+        "startSportButton",
+        "routeNavigationView",
     ]:
         assert f'id="{removed_element_id}"' not in html
 
     assert "poi_catalog.json" in data_loader_js
     assert "nearby_pois" in route_ui_js
     assert "preference_hits" not in route_ui_js
+    assert "startDirectNavigation" in route_ui_js
     assert "enablePointPicker" in map_js
     assert "setNavigationPoint" in map_js
     assert "navigationServiceMode" in map_js
@@ -717,7 +746,9 @@ def test_sidebar_route_picker_uses_an_independent_scrolling_route_list() -> None
     list_start = css.index(".browse-route-list {")
     list_block = css[list_start : css.index("}", list_start)]
 
-    assert "grid-template-rows: max-content max-content minmax(0, 1fr);" in selection_block
+    assert (
+        "grid-template-rows: max-content max-content minmax(0, 1fr);" in selection_block
+    )
     assert "overflow: hidden;" in selection_block
     assert "min-height: 0;" in list_block
     assert "grid-row: 2;" in list_block
@@ -747,7 +778,9 @@ def test_route_selection_preserves_content_rows_before_scrolling() -> None:
     ]
 
     assert "flex: 1 1 0;" in selection_block
-    assert "grid-template-rows: max-content max-content minmax(0, 1fr);" in selection_block
+    assert (
+        "grid-template-rows: max-content max-content minmax(0, 1fr);" in selection_block
+    )
     assert "overflow: hidden;" in selection_block
 
 

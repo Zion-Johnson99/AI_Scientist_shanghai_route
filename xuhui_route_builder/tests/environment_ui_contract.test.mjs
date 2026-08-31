@@ -358,6 +358,8 @@ test("横条摘要以图标和文字完整展示天气、温度、湿度及 AQI 
   assert.match(toggle, /environment-toggle__item--temperature[\s\S]*data-environment-icon="temperature"[\s\S]*<span[^>]*>温度<\/span>[\s\S]*<strong>26\.4°<\/strong>/);
   assert.match(toggle, /environment-toggle__item--humidity[\s\S]*data-environment-icon="humidity"[\s\S]*<span[^>]*>湿度<\/span>[\s\S]*<strong>68%<\/strong>/);
   assert.match(toggle, /environment-toggle__item--aqi[\s\S]*data-environment-icon="aqi"[\s\S]*<span[^>]*>AQI<\/span>[\s\S]*environment-toggle__aqi-number">42<\/span>[\s\S]*environment-toggle__aqi-level environment-toggle__aqi-level--excellent">优<\/span>/);
+  assert.match(toggle, /<svg class="environment-toggle__chevron"[\s\S]*viewBox="0 0 20 20"[\s\S]*<path d="m6 8 4 4 4-4"/);
+  assert.doesNotMatch(toggle, />⌄<\/span>/);
   assert.equal(container.toggle.attributes["aria-label"], "当前环境：多云，温度 26.4°，湿度 68%，AQI 42 优。展开环境详情");
 
   container.toggle.click();

@@ -313,7 +313,7 @@ function renderPanel(current, forecast) {
           ${environmentToggleAqi(current)}
         </span>
         ${alertDot}
-        <span class="environment-toggle__chevron" aria-hidden="true">⌄</span>
+        <svg class="environment-toggle__chevron" aria-hidden="true" focusable="false" viewBox="0 0 20 20"><path d="m6 8 4 4 4-4" /></svg>
       </button>
     </section>
     <section id="environmentDetails" class="environment-details" role="dialog" aria-label="环境详情" hidden>

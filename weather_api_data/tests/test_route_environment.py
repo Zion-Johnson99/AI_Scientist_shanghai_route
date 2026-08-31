@@ -40,9 +40,11 @@ def _segments(route_count: int = 1) -> list[dict[str, object]]:
 def _pm25_document() -> dict[str, object]:
     return {
         "dataset_type": "pm25_grid_estimate",
+        "status": "ok",
         "target_time": "2026-08-26T09:00:00+08:00",
         "generated_at": "2026-08-26T09:02:00+08:00",
         "spatial_basis": "grid_1km",
+        "calibration": {"active_station_count": 2},
         "quality": {"status": "estimated", "confidence": "medium"},
         "grids": [
             {"grid_id": "XH_PM25_G001", "pm2_5_ug_m3": 10.0, "is_estimated": True},
@@ -208,6 +210,28 @@ def test_build_route_environment_reports_partial_segment_coverage() -> None:
     assert pollen_daily[0]["value"] == pytest.approx(11.0)
     assert pollen_daily[0]["coverage_ratio"] == pytest.approx(0.25)
     assert pollen_daily[0]["status"] == "partial"
+
+
+def test_route_environment_propagates_degraded_pm25_fusion_status() -> None:
+    pm25_document = _pm25_document()
+    pm25_document["status"] = "partial"
+    pm25_document["quality"] = {"status": "estimated", "confidence": "low"}
+    pm25_document["calibration"] = {"active_station_count": 1}
+
+    document = build_route_environment_document(
+        route_segments=_segments(),
+        pm25_document=pm25_document,
+        pollen_document=_pollen_document(day_count=1),
+        noise_segments=_noise_segments(),
+        generated_at=datetime.fromisoformat("2026-09-01T09:05:00+08:00"),
+    )
+
+    route = cast(list[dict[str, object]], document["routes"])[0]
+    metric = cast(dict[str, object], route["pm2_5"])
+    assert metric["status"] == "partial"
+    assert metric["confidence"] == "low"
+    assert metric["source"] == ["qweather", "CHAP"]
+    assert route["status"] == "partial"
 
 
 def test_route_environment_ignores_expired_pollen_dates() -> None:

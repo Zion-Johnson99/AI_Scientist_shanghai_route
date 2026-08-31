@@ -6,8 +6,8 @@
     <title>徐汇户外健康地图</title>
     <link rel="icon" href="./xh-logo.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/qweather-icons@1.8.0/font/qweather-icons.css" />
-    <link rel="stylesheet" href="./styles/main.css?v=20260830-ui-10" />
-    <link rel="stylesheet" href="./styles/recommendation.css?v=20260830-ui-10" />
+    <link rel="stylesheet" href="./styles/main.css?v=20260831-ui-12" />
+    <link rel="stylesheet" href="./styles/recommendation.css?v=20260831-ui-12" />
     <script src="./local-amap-config.js"></script>
   </head>
   <body>
@@ -21,22 +21,22 @@
           <div class="route-search-shell" role="search" aria-label="搜索路线起始地点">
             <details id="sportModeTabs" class="sport-mode-tabs">
               <summary class="sport-mode-trigger" aria-label="选择运动方式">
-                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M13.4 5.2a2 2 0 1 0-4 0 2 2 0 0 0 4 0ZM10.7 8l-2.1 4.1-2.8 1.4m4.9-5.5 3.1 2.3 3.6.5m-6.7 1.7-1.4 3.2-2.6 3.1m4-6.3 3.2 2.9 1.3 3.8" /></svg>
+                <svg class="sport-icon" data-sport-icon="walk" aria-hidden="true" viewBox="0 0 24 24"><use href="./assets/icons/sport-icons.svg#sport-walk" /></svg>
                 <span class="sport-mode-trigger__label">步行</span>
                 <svg class="sport-mode-trigger__chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5" /></svg>
               </summary>
               <div class="sport-mode-menu" role="group" aria-label="运动方式">
                 <button id="toolbarWalkMode" class="active is-selected" type="button" aria-pressed="true" data-route-mode="walk">
-                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M13.4 5.2a2 2 0 1 0-4 0 2 2 0 0 0 4 0ZM10.7 8l-2.1 4.1-2.8 1.4m4.9-5.5 3.1 2.3 3.6.5m-6.7 1.7-1.4 3.2-2.6 3.1m4-6.3 3.2 2.9 1.3 3.8" /></svg>
-                  <b>步行</b><span>适合日常散步</span>
+                  <svg class="sport-icon" data-sport-icon="walk" aria-hidden="true" viewBox="0 0 24 24"><use href="./assets/icons/sport-icons.svg#sport-walk" /></svg>
+                  <b>步行</b><small>城市漫步与日常出行</small>
                 </button>
                 <button id="toolbarRunMode" type="button" aria-pressed="false" data-route-mode="run">
-                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M15.5 5.1a2 2 0 1 0-4 0 2 2 0 0 0 4 0ZM11.8 8l-2.9 3.4-3.2.9m6.1-4.3 3 2.6 3.7.6m-7.1.1-2.2 3.2-3 3m6.6-4.4 2.5 2.1 1.1 3.7" /></svg>
-                  <b>跑步</b><span>适合慢跑与训练</span>
+                  <svg class="sport-icon" data-sport-icon="run" aria-hidden="true" viewBox="0 0 24 24"><use href="./assets/icons/sport-icons.svg#sport-run" /></svg>
+                  <b>跑步</b><small>道路慢跑与节奏训练</small>
                 </button>
                 <button id="toolbarBikeMode" type="button" aria-pressed="false" data-route-mode="bike">
-                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.5 18.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm11 0a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM8 15l3-6h3l3.5 6M9.5 12h5.8M11 9 9.8 6.8H8" /></svg>
-                  <b>骑行</b><span>适合城市骑游</span>
+                  <svg class="sport-icon" data-sport-icon="bike" aria-hidden="true" viewBox="0 0 24 24"><use href="./assets/icons/sport-icons.svg#sport-bike" /></svg>
+                  <b>骑行</b><small>铺装道路与城市骑游</small>
                 </button>
               </div>
             </details>
@@ -141,30 +141,6 @@
           </section>
           </section>
 
-          <section id="routeNavigationView" class="tab-view route-navigation-view" aria-label="前往路线起点" hidden>
-          <button id="navigationBackButton" class="navigation-back" type="button">← 返回路线</button>
-          <div class="navigation-heading">
-            <span class="section-kicker">前往起点</span>
-            <h2 id="navigationRouteName">已选路线</h2>
-          </div>
-          <div id="navigationRouteDetail" class="detail navigation-route-detail"></div>
-          <div class="controls navigation-controls">
-            <label>从哪里出发
-              <span class="point-input-row">
-                <input id="startInput" type="search" placeholder="搜索上海地点" autocomplete="off" />
-                <button id="startPickButton" class="secondary-action point-pick-action" type="button">地图选点</button>
-              </span>
-            </label>
-            <div class="navigation-mode-summary" aria-label="接驳方式">
-              <span>接驳方式</span><strong id="navigationModeSummary">步行</strong>
-            </div>
-            <div class="navigation-primary-actions">
-              <button id="navigateButton" class="primary-action" type="button">规划接驳路线</button>
-              <button id="startSportButton" class="primary-action" type="button" disabled hidden>进入导航预览</button>
-            </div>
-            <div id="navigationStatus" class="navigation-status" aria-live="polite"></div>
-          </div>
-          </section>
         </div>
       </aside>
 
@@ -230,6 +206,6 @@
         });
       })();
     </script>
-    <script type="module" src="./src/main.js?v=20260830-ui-10"></script>
+    <script type="module" src="./src/main.js?v=20260831-ui-12"></script>
   </body>
 </html>

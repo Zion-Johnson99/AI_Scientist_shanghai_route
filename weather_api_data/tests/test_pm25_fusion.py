@@ -109,7 +109,13 @@ def _write_history(
     connection.close()
 
 
-def _write_latest(path: Path, *, observed_at: str = "2026-08-25T17:00:00+08:00") -> None:
+def _write_latest(
+    path: Path,
+    *,
+    observed_at: str = "2026-08-25T17:00:00+08:00",
+    station_80_observed_at: str | None = None,
+    station_207_observed_at: str | None = None,
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
         json.dumps(
@@ -119,7 +125,7 @@ def _write_latest(path: Path, *, observed_at: str = "2026-08-25T17:00:00+08:00")
                         "provider": "shanghai_sthj",
                         "spatial_basis": "station",
                         "spatial_id": "80",
-                        "observed_at": observed_at,
+                        "observed_at": station_80_observed_at or observed_at,
                         "status": "ok",
                         "values": {"pm2_5_ug_m3": 12.0},
                     },
@@ -127,7 +133,7 @@ def _write_latest(path: Path, *, observed_at: str = "2026-08-25T17:00:00+08:00")
                         "provider": "shanghai_sthj",
                         "spatial_basis": "station",
                         "spatial_id": "207",
-                        "observed_at": observed_at,
+                        "observed_at": station_207_observed_at or observed_at,
                         "status": "ok",
                         "values": {"pm2_5_ug_m3": 7.0},
                     },
@@ -371,21 +377,68 @@ def test_fusion_rejects_missing_exact_qweather_anchor(tmp_path: Path) -> None:
         )
 
 
-def test_fusion_rejects_station_observations_older_than_90_minutes(tmp_path: Path) -> None:
-    from weather_api_data.pm25_fusion import Pm25FusionError, build_pm25_grid_estimate
+def test_fusion_reduces_station_weight_after_three_hours(tmp_path: Path) -> None:
+    from weather_api_data.pm25_fusion import build_pm25_grid_estimate
 
     chap_path, history_path, latest_path, zones_path = _sources(tmp_path)
-    _write_latest(latest_path, observed_at="2026-08-25T15:00:00+08:00")
+    _write_latest(
+        latest_path,
+        station_80_observed_at="2026-08-25T13:00:00+08:00",
+        station_207_observed_at="2026-08-25T17:00:00+08:00",
+    )
 
-    with pytest.raises(Pm25FusionError, match="90"):
-        build_pm25_grid_estimate(
-            chap_path=chap_path,
-            history_path=history_path,
-            latest_path=latest_path,
-            zones_path=zones_path,
-            reference_source_id=REFERENCE_SOURCE_ID,
-            target_time=datetime.fromisoformat("2026-08-25T17:00:00+08:00"),
-        )
+    result = build_pm25_grid_estimate(
+        chap_path=chap_path,
+        history_path=history_path,
+        latest_path=latest_path,
+        zones_path=zones_path,
+        reference_source_id=REFERENCE_SOURCE_ID,
+        target_time=datetime.fromisoformat("2026-08-25T17:00:00+08:00"),
+    )
+
+    stations = {
+        str(station["station_id"]): station
+        for station in cast(list[dict[str, object]], result["stations"])
+    }
+    assert result["status"] == "partial"
+    assert stations["80"]["age_minutes"] == 240.0
+    assert cast(float, stations["80"]["temporal_weight_factor"]) < 1.0
+    assert stations["80"]["included"] is True
+    assert stations["207"]["temporal_weight_factor"] == 1.0
+
+
+def test_fusion_excludes_station_at_twenty_four_hours_and_keeps_grid_current(
+    tmp_path: Path,
+) -> None:
+    from weather_api_data.pm25_fusion import build_pm25_grid_estimate
+
+    chap_path, history_path, latest_path, zones_path = _sources(tmp_path)
+    _write_latest(
+        latest_path,
+        station_80_observed_at="2026-08-24T17:00:00+08:00",
+        station_207_observed_at="2026-08-25T17:00:00+08:00",
+    )
+
+    result = build_pm25_grid_estimate(
+        chap_path=chap_path,
+        history_path=history_path,
+        latest_path=latest_path,
+        zones_path=zones_path,
+        reference_source_id=REFERENCE_SOURCE_ID,
+        target_time=datetime.fromisoformat("2026-08-25T17:00:00+08:00"),
+    )
+
+    stations = {
+        str(station["station_id"]): station
+        for station in cast(list[dict[str, object]], result["stations"])
+    }
+    grids = cast(list[dict[str, object]], result["grids"])
+    assert result["status"] == "partial"
+    assert stations["80"]["included"] is False
+    assert stations["80"]["exclusion_reason"] == "age_at_least_24_hours"
+    assert stations["207"]["included"] is True
+    assert all(grid["station_correction_ug_m3"] == 0.0 for grid in grids)
+    assert np.mean([cast(float, grid["pm2_5_ug_m3"]) for grid in grids]) == pytest.approx(10.0)
 
 
 def test_fusion_writes_public_json_atomically(tmp_path: Path) -> None:

@@ -19,7 +19,8 @@ import numpy.typing as npt
 import xarray as xr
 
 REQUIRED_STATION_IDS = ("80", "207")
-MAX_STATION_AGE_MINUTES = 90
+STATION_WARN_AGE_MINUTES = 180
+MAX_STATION_AGE_MINUTES = 24 * 60
 FloatArray = npt.NDArray[np.float64]
 
 
@@ -34,6 +35,9 @@ class _Station:
     latitude: float
     observed_at: datetime
     pm2_5_ug_m3: float
+    age_minutes: float
+    temporal_weight_factor: float
+    included: bool
 
 
 @dataclass(frozen=True, slots=True)
@@ -84,8 +88,8 @@ def build_pm25_grid_estimate(
     anomalies = prior["anomaly"]
     anchor_value = _pm25(anchor.get("pm2_5_ug_m3"), "和风参考源")
 
-    station_details: list[dict[str, object]] = []
-    residuals: list[float] = []
+    station_anomalies: dict[str, float] = {}
+    station_residuals: dict[str, float] = {}
     for station in stations:
         historical_anomaly = _idw_value(
             station.longitude,
@@ -96,40 +100,81 @@ def build_pm25_grid_estimate(
         )
         expected = anchor_value + historical_anomaly
         residual = station.pm2_5_ug_m3 - expected
-        residuals.append(residual)
+        station_anomalies[station.station_id] = historical_anomaly
+        station_residuals[station.station_id] = residual
+
+    active_stations = tuple(station for station in stations if station.included)
+    station_grid_weights: dict[str, list[float]] = {station.station_id: [] for station in stations}
+    if len(active_stations) >= 2:
+        station_longitude = np.asarray(
+            [station.longitude for station in active_stations], dtype=np.float64
+        )
+        station_latitude = np.asarray(
+            [station.latitude for station in active_stations], dtype=np.float64
+        )
+        station_residual = np.asarray(
+            [station_residuals[station.station_id] for station in active_stations],
+            dtype=np.float64,
+        )
+        station_time_weight = np.asarray(
+            [station.temporal_weight_factor for station in active_stations],
+            dtype=np.float64,
+        )
+        correction_values: list[float] = []
+        for grid_longitude, grid_latitude in zip(longitude, latitude, strict=True):
+            normalized_weights = _idw_weights(
+                float(grid_longitude),
+                float(grid_latitude),
+                station_longitude,
+                station_latitude,
+                station_time_weight,
+            )
+            correction_values.append(float(np.sum(normalized_weights * station_residual)))
+            for station, weight in zip(active_stations, normalized_weights, strict=True):
+                station_grid_weights[station.station_id].append(float(weight))
+        corrections = np.asarray(correction_values, dtype=np.float64)
+    else:
+        corrections = np.zeros_like(anomalies, dtype=np.float64)
+    corrections -= float(corrections.mean())
+
+    station_details: list[dict[str, object]] = []
+    for station in stations:
+        grid_weights = station_grid_weights[station.station_id]
         station_details.append(
             {
                 "station_id": station.station_id,
                 "longitude": station.longitude,
                 "latitude": station.latitude,
                 "observed_at": station.observed_at.isoformat(),
-                "age_minutes": round(
-                    (target_time - station.observed_at).total_seconds() / 60,
-                    3,
-                ),
+                "age_minutes": round(station.age_minutes, 3),
                 "pm2_5_ug_m3": station.pm2_5_ug_m3,
-                "historical_monthly_anomaly_ug_m3": round(historical_anomaly, 6),
-                "residual_ug_m3": round(residual, 6),
+                "historical_monthly_anomaly_ug_m3": round(station_anomalies[station.station_id], 6),
+                "residual_ug_m3": round(station_residuals[station.station_id], 6),
+                "temporal_weight_factor": round(station.temporal_weight_factor, 6),
+                "included": station.included,
+                "exclusion_reason": (None if station.included else "age_at_least_24_hours"),
+                "grid_weight_min": round(min(grid_weights), 6) if grid_weights else 0.0,
+                "grid_weight_mean": (
+                    round(float(np.mean(grid_weights)), 6) if grid_weights else 0.0
+                ),
+                "grid_weight_max": round(max(grid_weights), 6) if grid_weights else 0.0,
             }
         )
 
-    station_longitude = np.asarray([station.longitude for station in stations], dtype=np.float64)
-    station_latitude = np.asarray([station.latitude for station in stations], dtype=np.float64)
-    station_residual = np.asarray(residuals, dtype=np.float64)
-    corrections = np.asarray(
-        [
-            _idw_value(
-                float(grid_longitude),
-                float(grid_latitude),
-                station_longitude,
-                station_latitude,
-                station_residual,
-            )
-            for grid_longitude, grid_latitude in zip(longitude, latitude, strict=True)
-        ],
-        dtype=np.float64,
-    )
-    corrections -= float(corrections.mean())
+    degraded_stations = [
+        station
+        for station in stations
+        if not station.included or station.temporal_weight_factor < 1.0
+    ]
+    status = "partial" if degraded_stations or len(active_stations) < 2 else "ok"
+    warnings = [
+        (
+            f"station_{station.station_id}_excluded_at_24_hours"
+            if not station.included
+            else f"station_{station.station_id}_age_exceeds_3_hours"
+        )
+        for station in degraded_stations
+    ]
 
     estimates = anchor_value + anomalies + corrections
     estimates = _nonnegative_with_anchor_mean(estimates, anchor_value)
@@ -153,6 +198,7 @@ def build_pm25_grid_estimate(
         )
 
     return {
+        "status": status,
         "schema_version": "1.0",
         "dataset_type": "pm25_grid_estimate",
         "dataset_role": "operational",
@@ -174,14 +220,18 @@ def build_pm25_grid_estimate(
             "method": "monthly_median_daily_spatial_anomaly",
         },
         "stations": station_details,
+        "warnings": warnings,
         "calibration": {
             "method": "qweather_anchor_plus_chap_monthly_anomaly_plus_station_idw_residual",
+            "station_warn_age_minutes": STATION_WARN_AGE_MINUTES,
             "station_max_age_minutes": MAX_STATION_AGE_MINUTES,
+            "station_time_weight_method": "linear_after_180_minutes_to_zero_at_1440_minutes",
+            "active_station_count": len(active_stations),
             "mean_constraint": "grid_mean_equals_qweather_reference_anchor",
         },
         "quality": {
             "status": "estimated",
-            "confidence": "medium",
+            "confidence": "medium" if status == "ok" else "low",
             "limitations": [
                 "CHAP spatial prior is a 2025 daily 1 km estimate",
                 "two stations constrain only a broad local residual surface",
@@ -298,7 +348,7 @@ def fuse_pm25_from_local_sources(*, root: Path, target_time: datetime) -> dict[s
     values = [_pm25(grid.get("pm2_5_ug_m3"), "融合网格") for grid in grids]
     stations = cast(list[dict[str, object]], document["stations"])
     return {
-        "status": "ok",
+        "status": document["status"],
         "provider": "qweather",
         "source_id": reference_source_id,
         "target_time": document["target_time"],
@@ -307,6 +357,8 @@ def fuse_pm25_from_local_sources(*, root: Path, target_time: datetime) -> dict[s
         "grid_min_pm2_5_ug_m3": min(values),
         "grid_max_pm2_5_ug_m3": max(values),
         "station_observed_at": [station["observed_at"] for station in stations],
+        "stations": stations,
+        "warnings": document["warnings"],
         "output_path": str(output_path),
     }
 
@@ -478,11 +530,8 @@ def _load_stations(
             raise Pm25FusionError(f"缺少上海站点 {station_id} 数据或坐标")
         observed_at = _parse_aware(record.get("observed_at"), f"站点 {station_id} observed_at")
         age_minutes = (target_time - observed_at).total_seconds() / 60
-        if age_minutes < 0 or age_minutes > MAX_STATION_AGE_MINUTES:
-            raise Pm25FusionError(
-                f"站点 {station_id} 与目标时刻相差 {age_minutes:.1f} 分钟，允许范围为 0 至 "
-                f"{MAX_STATION_AGE_MINUTES} 分钟"
-            )
+        if age_minutes < 0:
+            raise Pm25FusionError(f"站点 {station_id} 观测时间晚于融合目标时刻")
         values = _mapping(record.get("values"))
         if values is None:
             raise Pm25FusionError(f"站点 {station_id} 缺少 values")
@@ -493,6 +542,9 @@ def _load_stations(
                 latitude=coordinates[1],
                 observed_at=observed_at,
                 pm2_5_ug_m3=_pm25(values.get("pm2_5_ug_m3"), f"站点 {station_id}"),
+                age_minutes=age_minutes,
+                temporal_weight_factor=_station_time_weight(age_minutes),
+                included=age_minutes < MAX_STATION_AGE_MINUTES,
             )
         )
     return tuple(stations)
@@ -689,14 +741,44 @@ def _idw_value(
     source_latitude: FloatArray,
     source_values: FloatArray,
 ) -> float:
+    weights = _idw_weights(
+        target_longitude,
+        target_latitude,
+        source_longitude,
+        source_latitude,
+        np.ones_like(source_values, dtype=np.float64),
+    )
+    return float(np.sum(weights * source_values))
+
+
+def _idw_weights(
+    target_longitude: float,
+    target_latitude: float,
+    source_longitude: FloatArray,
+    source_latitude: FloatArray,
+    source_factors: FloatArray,
+) -> FloatArray:
     distances = _distance_m(
         target_longitude,
         target_latitude,
         source_longitude,
         source_latitude,
     )
-    weights = 1.0 / np.square(np.maximum(distances, 250.0))
-    return float(np.sum(weights * source_values) / np.sum(weights))
+    weights = source_factors / np.square(np.maximum(distances, 250.0))
+    weight_sum = float(np.sum(weights))
+    if weight_sum <= 0:
+        raise Pm25FusionError("站点融合权重无效")
+    return np.asarray(weights / weight_sum, dtype=np.float64)
+
+
+def _station_time_weight(age_minutes: float) -> float:
+    if age_minutes <= STATION_WARN_AGE_MINUTES:
+        return 1.0
+    if age_minutes >= MAX_STATION_AGE_MINUTES:
+        return 0.0
+    remaining = MAX_STATION_AGE_MINUTES - age_minutes
+    span = MAX_STATION_AGE_MINUTES - STATION_WARN_AGE_MINUTES
+    return remaining / span
 
 
 def _distance_m(
@@ -801,6 +883,7 @@ def _coordinate(value: object, label: str) -> float:
 
 __all__ = [
     "MAX_STATION_AGE_MINUTES",
+    "STATION_WARN_AGE_MINUTES",
     "Pm25FusionError",
     "build_pm25_grid_estimate",
     "build_pm25_grid_forecast",

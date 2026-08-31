@@ -138,7 +138,7 @@ test("浏览路线保留地图预览，推荐结果使用单路线聚焦", () =>
 
   assert.ok(routeUi.includes("options.onPreviewRoutes"));
   assert.ok(routeUi.includes("renderSelectionPreview"));
-  assert.ok(routeUi.includes("openNavigation(routeId, origin = null)"));
+  assert.ok(routeUi.includes("startDirectNavigation(routeId, origin)"));
   assert.ok(main.includes("showRoutePreviews"));
   assert.ok(main.includes("onPreviewRoutes"));
   assert.ok(main.includes("showSingleRoute"));
@@ -205,11 +205,11 @@ test("地图路线卡恢复原始尺寸、字体和距离行", () => {
   assert.doesNotMatch(css, /\.amap-route-option__meta\s*\{/);
 });
 
-test("接驳导航返回时退出内嵌导航视图", () => {
+test("详情前往起点直接进入导航预览且不再保留接驳返回页", () => {
   const routeUi = readFileSync(new URL("../web/src/route-ui.js", import.meta.url), "utf8");
 
-  assert.ok(routeUi.includes("controls.navigationBackButton.addEventListener"));
-  assert.ok(routeUi.includes("options.onNavigationViewChange?.(false)"));
+  assert.ok(routeUi.includes("options.onStartInlineNavigation(payload)"));
+  assert.doesNotMatch(routeUi, /navigationBackButton|onNavigationViewChange/);
 });
 
 function createDocumentStub() {

@@ -21,6 +21,7 @@ $apiHealthUrl = "http://127.0.0.1:8124/api/v1/health"
 $webUrl = "http://127.0.0.1:8123/web/"
 $startedProcesses = @()
 $validTiers = @("weather", "hourly", "daily")
+$startupCacheMaxAgeMinutes = 30
 
 function Test-HttpReady {
     param([Parameter(Mandatory)][string]$Uri)
@@ -169,6 +170,132 @@ function Get-EnvironmentRefreshTier {
     return $null
 }
 
+function Get-StartupEnvironmentRefreshTier {
+    param(
+        [AllowNull()][string]$Tier,
+        [Parameter(Mandatory)][string]$Path,
+        [Parameter(Mandatory)][int]$MaxAgeMinutes
+    )
+
+    if (
+        $null -eq $Tier `
+        -and (Test-EnvironmentDashboardCacheFresh -Path $Path -MaxAgeMinutes $MaxAgeMinutes)
+    ) {
+        return $null
+    }
+
+    if ($Tier -eq "daily") {
+        return "daily"
+    }
+    return "hourly"
+}
+
+function Test-EnvironmentDashboardCacheFresh {
+    param(
+        [Parameter(Mandatory)][string]$Path,
+        [Parameter(Mandatory)][int]$MaxAgeMinutes
+    )
+
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
+        return $false
+    }
+    try {
+        $dashboard = Get-Content -LiteralPath $Path -Raw -Encoding UTF8 | ConvertFrom-Json
+    }
+    catch {
+        return $false
+    }
+    $generatedAt = Convert-ToTimestamp -Value $dashboard.metadata.generated_at
+    if ($null -eq $generatedAt) {
+        return $false
+    }
+    $age = [DateTimeOffset]::Now - $generatedAt
+    return $age.TotalMinutes -ge 0 -and $age.TotalMinutes -lt $MaxAgeMinutes
+}
+
+function Get-OptionalPropertyValue {
+    param(
+        $InputObject,
+        [Parameter(Mandatory)][string]$Name
+    )
+
+    if ($null -eq $InputObject) {
+        return $null
+    }
+    $property = $InputObject.PSObject.Properties[$Name]
+    if ($null -eq $property) {
+        return $null
+    }
+    return $property.Value
+}
+
+function Format-EnvironmentNumber {
+    param(
+        $Value,
+        [Parameter(Mandatory)][string]$Format
+    )
+
+    if ($null -eq $Value) {
+        return "未知"
+    }
+    return ([double]$Value).ToString(
+        $Format,
+        [System.Globalization.CultureInfo]::InvariantCulture
+    )
+}
+
+function Show-StationRefreshSummary {
+    param(
+        $RefreshReport,
+        $Dashboard
+    )
+
+    if ($null -ne $Dashboard) {
+        $metadata = Get-OptionalPropertyValue -InputObject $Dashboard -Name "metadata"
+        $fusion = Get-OptionalPropertyValue -InputObject $metadata -Name "pm2_5_fusion"
+    }
+    else {
+        $refresh = Get-OptionalPropertyValue -InputObject $RefreshReport -Name "refresh"
+        $fusion = Get-OptionalPropertyValue -InputObject $refresh -Name "pm25_grid_fusion"
+    }
+    $stations = @(Get-OptionalPropertyValue -InputObject $fusion -Name "stations")
+    if ($null -eq $fusion -or $stations.Count -eq 0) {
+        Write-Warning "本轮未返回 PM2.5 站点时间与权重。"
+        return
+    }
+
+    foreach ($station in $stations) {
+        $stationId = [string](Get-OptionalPropertyValue -InputObject $station -Name "station_id")
+        $observedAt = Format-EnvironmentUpdateTime -Value (
+            Get-OptionalPropertyValue -InputObject $station -Name "observed_at"
+        )
+        $ageMinutesValue = Get-OptionalPropertyValue -InputObject $station -Name "age_minutes"
+        $ageMinutes = [double]$ageMinutesValue
+        $ageText = Format-EnvironmentNumber -Value $ageMinutes -Format "0"
+        $temporalWeight = Format-EnvironmentNumber -Value (
+            Get-OptionalPropertyValue -InputObject $station -Name "temporal_weight_factor"
+        ) -Format "0.000"
+        $gridWeightMin = Format-EnvironmentNumber -Value (
+            Get-OptionalPropertyValue -InputObject $station -Name "grid_weight_min"
+        ) -Format "0.000"
+        $gridWeightMax = Format-EnvironmentNumber -Value (
+            Get-OptionalPropertyValue -InputObject $station -Name "grid_weight_max"
+        ) -Format "0.000"
+        $included = [bool](Get-OptionalPropertyValue -InputObject $station -Name "included")
+
+        Write-Host (
+            "站点 $stationId：观测时间 $observedAt，滞后 $ageText 分钟，" +
+            "时间权重 $temporalWeight，网格权重范围 $gridWeightMin-$gridWeightMax。"
+        )
+        if (-not $included) {
+            Write-Warning "站点 $stationId 滞后已达 24 小时，本轮已剔除。"
+        }
+        elseif ($ageMinutes -gt 180) {
+            Write-Warning "站点 $stationId 滞后超过 3 小时，本轮已降低融合权重。"
+        }
+    }
+}
+
 function Update-EnvironmentData {
     param([Parameter(Mandatory)][string]$Tier)
 
@@ -182,6 +309,7 @@ function Update-EnvironmentData {
         throw "缺少 weather_api_data/.env，无法更新环境数据。"
     }
 
+    $refreshLogPath = Join-Path $runtimeRoot "environment-refresh.stdout.log"
     $refreshProcess = Start-Process `
         -FilePath $weatherExecutable `
         -ArgumentList @(
@@ -191,7 +319,7 @@ function Update-EnvironmentData {
         ) `
         -WorkingDirectory $weatherRoot `
         -WindowStyle Hidden `
-        -RedirectStandardOutput (Join-Path $runtimeRoot "environment-refresh.stdout.log") `
+        -RedirectStandardOutput $refreshLogPath `
         -RedirectStandardError (Join-Path $runtimeRoot "environment-refresh.stderr.log") `
         -Wait `
         -PassThru
@@ -202,13 +330,27 @@ function Update-EnvironmentData {
         throw "环境数据刷新结束后仍缺少网页数据包，日志目录：$runtimeRoot"
     }
 
-    $updatedDashboard = Get-Content -LiteralPath $dashboardPath -Raw -Encoding UTF8 | ConvertFrom-Json
-    $aqiStatus = [string]$updatedDashboard.current.aqi.status
-    $updateTime = Format-EnvironmentUpdateTime -Value $updatedDashboard.metadata.generated_at
-    Write-Host "环境数据已更新，更新时间：$updateTime。"
-    if ($aqiStatus -in @("stale", "no_data")) {
-        Write-Warning "环境数据中仍有缺失或过期内容，网页将保留相应提示。"
+    try {
+        $refreshReport = Get-Content -LiteralPath $refreshLogPath -Raw -Encoding UTF8 | ConvertFrom-Json
     }
+    catch {
+        throw "环境数据刷新日志无法解析，日志目录：$runtimeRoot"
+    }
+    $updatedDashboard = Get-Content -LiteralPath $dashboardPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    $updateTime = Format-EnvironmentUpdateTime -Value $updatedDashboard.metadata.generated_at
+    $runStatus = [string](Get-OptionalPropertyValue -InputObject $refreshReport -Name "status")
+    $publish = Get-OptionalPropertyValue -InputObject $refreshReport -Name "publish"
+    $publishStatus = [string](Get-OptionalPropertyValue -InputObject $publish -Name "status")
+    if ($publishStatus -eq "stale") {
+        Write-Warning "环境数据未生成新快照，继续使用上次数据，更新时间：$updateTime。"
+    }
+    else {
+        Write-Host "环境数据已发布，状态：$runStatus，更新时间：$updateTime。"
+    }
+    if ($runStatus -eq "partial") {
+        Write-Warning "本轮部分环境数据源已降级，详情见下方站点摘要和刷新日志。"
+    }
+    Show-StationRefreshSummary -RefreshReport $refreshReport
 }
 
 if (-not (Test-Path -LiteralPath $apiExecutable -PathType Leaf)) {
@@ -223,14 +365,17 @@ if (-not (Test-Path -LiteralPath $routePython -PathType Leaf)) {
 }
 
 New-Item -ItemType Directory -Path $runtimeRoot -Force | Out-Null
-$refreshTier = Get-EnvironmentRefreshTier -Path $dashboardPath
-if ($null -ne $refreshTier) {
-    Update-EnvironmentData -Tier $refreshTier
-}
-else {
+$refreshTier = Get-StartupEnvironmentRefreshTier -Tier (
+    Get-EnvironmentRefreshTier -Path $dashboardPath
+) -Path $dashboardPath -MaxAgeMinutes $startupCacheMaxAgeMinutes
+if ($null -eq $refreshTier) {
     $currentDashboard = Get-Content -LiteralPath $dashboardPath -Raw -Encoding UTF8 | ConvertFrom-Json
     $updateTime = Format-EnvironmentUpdateTime -Value $currentDashboard.metadata.generated_at
-    Write-Host "环境数据未更新，上次更新时间：$updateTime。"
+    Write-Host "环境数据缓存仍有效，更新时间：$updateTime。"
+    Show-StationRefreshSummary -Dashboard $currentDashboard
+}
+else {
+    Update-EnvironmentData -Tier $refreshTier
 }
 $offlineMode = if ($UseQwen) { "0" } else { "1" }
 $modeLabel = if ($UseQwen) { "千问审核，异常时回退本地排序" } else { "本地 Python 排序" }

@@ -123,14 +123,10 @@ function createMetric(name, text, icon = null) {
 }
 
 function createSportIcon(mode) {
-  const paths = {
-    walk: '<circle cx="10.8" cy="3.3" r="1.6"/><path d="m9.8 6.1-2 3.5 2.7 2.1-1.7 5.1M10 7l3 2.1 2.1-.2M10.5 11.7l3.4 4.5"/>',
-    run: '<circle cx="12.7" cy="3" r="1.5"/><path d="m9.3 6.2 3.1 1.6 2.5 2.2M11.8 7.6l-2.3 3.7-3.4 1.2M9.6 11.2l3.6 1.4 2.2 3.8M9.6 11.4l-2 4.8"/>',
-    bike: '<circle cx="5.1" cy="13.4" r="3.1"/><circle cx="14.9" cy="13.4" r="3.1"/><path d="m5.1 13.4 3.1-5.5h3.2l3.5 5.5M8.2 7.9l3.2 5.5H5.1M10.4 5.5h2.3M11.4 13.4l2.3-5.5"/>',
-  };
+  const iconName = ["walk", "run", "bike"].includes(mode) ? mode : "walk";
   const icon = element("span", `route-card__sport-icon route-card__sport-icon--${mode || "route"}`);
   icon.setAttribute("aria-hidden", "true");
-  icon.innerHTML = `<svg viewBox="0 0 20 20" focusable="false">${paths[mode] || '<path d="M3 14.5 7.5 10l3 2.8L16.5 6M14 6h2.5v2.5"/>'}</svg>`;
+  icon.innerHTML = `<svg data-sport-icon="${iconName}" viewBox="0 0 24 24" focusable="false"><use href="./assets/icons/sport-icons.svg#sport-${iconName}" /></svg>`;
   return icon;
 }
 

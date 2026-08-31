@@ -3,18 +3,13 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
-  advancePlanningRevision,
   buildNavigationRequest,
-  commitNavigationPlan,
   filterCandidateRoutes,
   filterNavigationRoutes,
-  navigationPrimaryActionState,
-  isCurrentPlanningRevision,
+  isMapLocationSelectionAllowed,
   selectBestRoute,
-  startPlannedNavigation,
-  resetNavigationForModeChange,
-  resetPlannedNavigationForRouteChange,
   selectNavigationRoute,
+  startDirectNavigation,
 } from "../web/src/route-ui.js";
 import {
   navigationServiceMode,
@@ -42,18 +37,6 @@ const navigationCatalog = [
   { ...route, route_id: "XH_BIKE_0001", route_name: "滨江骑行线", route_mode: "bike" },
   { ...route, route_id: "XH_BIKE_0002", route_name: "待考证骑行线", route_mode: "bike", validation_status: "needs_review" },
 ];
-
-test("路线选定后进入精简接驳面板且不重复选择运动类型和路线", () => {
-  const html = readFileSync(new URL("../web/index.html", import.meta.url), "utf8");
-  const backIndex = html.indexOf('id="navigationBackButton"');
-  const routeIndex = html.indexOf('id="navigationRouteName"');
-  const originIndex = html.indexOf('id="startInput"');
-
-  assert.ok(backIndex >= 0);
-  assert.ok(backIndex < routeIndex && routeIndex < originIndex);
-  assert.equal(html.includes('id="navigationSportModeTabs"'), false);
-  assert.equal(html.includes('id="navigationRouteSelect"'), false);
-});
 
 test("导航路线下拉保留当前运动类型的全部路线", () => {
   const routes = filterNavigationRoutes(navigationCatalog, "bike");
@@ -84,15 +67,6 @@ test("自动推荐跳过待考证路线", () => {
   assert.equal(selected.route_id, "XH_RUN_ACCEPTED");
 });
 
-test("切换导航运动类型会清除路线和旧接驳结果", () => {
-  assert.deepEqual(resetNavigationForModeChange(), {
-    navigationStatus: "ready",
-    selectedRouteId: "",
-    plannedRequest: null,
-    plannedPlan: null,
-  });
-});
-
 test("选择导航目标路线立即显示路线并推送指标", () => {
   const shown = [];
   const metrics = [];
@@ -107,33 +81,49 @@ test("选择导航目标路线立即显示路线并推送指标", () => {
   assert.deepEqual(metrics, [selected]);
 });
 
-test("接驳尚未规划时不会启动导航预览", () => {
+test("详情页前往起点一次完成接驳规划并打开导航预览", async () => {
+  const origin = { text: "上海南站" };
+  const request = buildNavigationRequest(route, origin);
+  const plan = { path: [[121.45, 31.19], [121.46, 31.18]], distance: 1200 };
+  const events = [];
+  let started = null;
+
+  const result = await startDirectNavigation(route, origin, {
+    onNavigate: (value) => {
+      events.push(["plan", value]);
+      return plan;
+    },
+    onStartInlineNavigation: (value) => {
+      events.push(["preview", value]);
+      started = value;
+    },
+  });
+
+  assert.deepEqual(events.map(([name]) => name), ["plan", "preview"]);
+  assert.deepEqual(events[0][1], request);
+  assert.strictEqual(started.plan, plan);
+  assert.deepEqual(started.request, request);
+  assert.deepEqual(result, { plan, request });
+});
+
+test("直接导航规划失败时不会打开预览", async () => {
   let starts = 0;
 
-  assert.equal(startPlannedNavigation("ready", null, { routeId: "XH_RUN_0001" }, {
-    onStartInlineNavigation: () => starts += 1,
-  }), false);
+  await assert.rejects(
+    startDirectNavigation(route, { text: "上海南站" }, {
+      onNavigate: () => Promise.reject(new Error("高德规划失败")),
+      onStartInlineNavigation: () => starts += 1,
+    }),
+    /高德规划失败/,
+  );
   assert.equal(starts, 0);
 });
 
-test("缺少导航预览处理器时不会伪报启动成功", () => {
-  const request = buildNavigationRequest(route, { text: "上海南站" });
-
-  assert.equal(startPlannedNavigation("planned", { path: [[121.45, 31.19], [121.46, 31.18]] }, request, {}), false);
-});
-
-test("接驳规划后把路径和请求交给导航预览", () => {
-  const request = buildNavigationRequest(route, { text: "上海南站" });
-  const plan = { path: [[121.45, 31.19], [121.46, 31.18]], distance: 1200 };
-  let started = null;
-
-  assert.equal(startPlannedNavigation("planned", plan, request, {
-    onStartInlineNavigation: (value) => {
-      started = value;
-    },
-  }), true);
-  assert.strictEqual(started.plan, plan);
-  assert.strictEqual(started.request, request);
+test("缺少直接导航处理器时明确失败", async () => {
+  await assert.rejects(
+    startDirectNavigation(route, { text: "上海南站" }, {}),
+    /接驳规划暂不可用/,
+  );
 });
 
 test("接驳请求只包含用户起点和已选路线起点", () => {
@@ -189,58 +179,10 @@ test("推荐位置接受用户主动选择的坐标且不请求设备定位", as
   assert.match(mapSource, /showUserLocation/);
 });
 
-test("切换目标路线后清除旧接驳完成状态", () => {
-  assert.deepEqual(resetPlannedNavigationForRouteChange(), {
-    navigationStatus: "ready",
-    statusText: "路线已更新，请重新规划接驳路线。",
-  });
-});
-
-test("导航主操作随规划状态只显示一个按钮", () => {
-  assert.deepEqual(navigationPrimaryActionState("ready"), {
-    showPlan: true,
-    planDisabled: false,
-    showPreview: false,
-    previewDisabled: true,
-  });
-  assert.deepEqual(navigationPrimaryActionState("planning"), {
-    showPlan: true,
-    planDisabled: true,
-    showPreview: false,
-    previewDisabled: true,
-  });
-  assert.deepEqual(navigationPrimaryActionState("planned"), {
-    showPlan: false,
-    planDisabled: false,
-    showPreview: true,
-    previewDisabled: false,
-  });
-  assert.deepEqual(navigationPrimaryActionState("previewing"), {
-    showPlan: false,
-    planDisabled: false,
-    showPreview: true,
-    previewDisabled: true,
-  });
-});
-
-test("路线变化后旧规划结果失效", () => {
-  const state = {
-    planningRevision: 0,
-    navigationStatus: "planning",
-    plannedNavigationRequest: null,
-    plannedNavigationPlan: null,
-  };
-  const oldRevision = advancePlanningRevision(state);
-  const oldRequest = { routeId: "XH_RUN_0001" };
-  const oldPlan = { path: [[121.45, 31.19], [121.46, 31.18]] };
-
-  assert.equal(isCurrentPlanningRevision(state, oldRevision), true);
-  advancePlanningRevision(state);
-  assert.equal(isCurrentPlanningRevision(state, oldRevision), false);
-  assert.equal(commitNavigationPlan(state, oldRevision, oldPlan, oldRequest), false);
-  assert.equal(state.navigationStatus, "planning");
-  assert.equal(state.plannedNavigationRequest, null);
-  assert.equal(state.plannedNavigationPlan, null);
+test("详情与导航预览期间锁定地图地点候选，总览恢复", () => {
+  assert.equal(isMapLocationSelectionAllowed({ detailOpen: true, navigationActive: false }), false);
+  assert.equal(isMapLocationSelectionAllowed({ detailOpen: false, navigationActive: true }), false);
+  assert.equal(isMapLocationSelectionAllowed({ detailOpen: false, navigationActive: false }), true);
 });
 
 test("未勾选途经偏好时保留当前运动类型的全部候选路线", () => {
@@ -275,15 +217,18 @@ test("普通浏览使用共享路线卡列表并保留筛选总览恢复接口",
   assert.doesNotMatch(source, /routeSelect\b/);
 });
 
-test("路线界面使用手动出发地与导航预览回调", () => {
+test("路线界面使用直接导航且不再绑定旧接驳页面", () => {
   const source = readFileSync(new URL("../web/src/route-ui.js", import.meta.url), "utf8");
 
-  assert.match(source, /onPickNavigationPoint/);
   assert.match(source, /onNavigate/);
   assert.match(source, /onStartInlineNavigation/);
   assert.match(source, /onEndInlineNavigation/);
-  assert.match(source, /planningRevision/);
-  assert.match(source, /isCurrentPlanningRevision/);
+  assert.match(source, /startDirectNavigation/);
+  assert.doesNotMatch(source, /openNavigation/);
+  assert.doesNotMatch(source, /bindNavigationControls/);
+  assert.doesNotMatch(source, /onPickNavigationPoint/);
+  assert.doesNotMatch(source, /startPickButton/);
+  assert.doesNotMatch(source, /routeNavigationView/);
   assert.doesNotMatch(source, /onStartNavigation/);
   assert.doesNotMatch(source, /onEndNavigation/);
   assert.doesNotMatch(source, /startNavigationButton/);
@@ -291,6 +236,26 @@ test("路线界面使用手动出发地与导航预览回调", () => {
   for (const removedCopy of ["用户位置", "徐汇区内", "实时定位", "严格验收", "待考证", "已切换"]) {
     assert.equal(source.includes(removedCopy), false);
   }
+});
+
+test("路线详情直接使用当前地点且地图点击随详情和导航锁定", () => {
+  const source = readFileSync(new URL("../web/src/main.js", import.meta.url), "utf8");
+
+  assert.match(source, /const origin = currentLocation;/);
+  assert.match(source, /planner\.startDirectNavigation\(routeId, origin\)/);
+  assert.match(source, /detailOpen: Boolean\(uiState\.detailSource\)/);
+  assert.match(source, /navigationActive/);
+  assert.match(source, /routeId,[\s\S]*origin,[\s\S]*status: map\.navigation\.state,[\s\S]*error/);
+  assert.doesNotMatch(source, /planner\.openNavigation/);
+});
+
+test("关闭路线详情会取消迟到的直接导航规划", () => {
+  const source = readFileSync(new URL("../web/src/main.js", import.meta.url), "utf8");
+  const closeHandler = source.slice(source.indexOf("onClose({ source, routeId })"), source.indexOf("const routeFeaturesById"));
+
+  assert.match(closeHandler, /planner\?\.endNavigationPreview\(\)/);
+  assert.match(closeHandler, /stopInlineNavigation\(\)/);
+  assert.match(closeHandler, /endNavigationSession\(map\)/);
 });
 
 test("途经偏好只使用真实附近POI", () => {

@@ -229,6 +229,7 @@ def _build_dashboard(
                 "same_grid_source_as_grids": True,
                 "recomputed_by_web_export": True,
             },
+            "pm2_5_fusion": _pm25_fusion_metadata(pm25_grid),
             "access_route_environment": {
                 "status": "not_aggregated",
                 "aggregation": "not_computed",
@@ -537,6 +538,53 @@ def _source_names(document: Mapping[str, Any]) -> list[str]:
         if isinstance(value, str) and value and value not in sources:
             sources.append(value)
     return sources
+
+
+def _pm25_fusion_metadata(document: Mapping[str, Any]) -> dict[str, Any]:
+    stations: list[dict[str, Any]] = []
+    raw_stations = document.get("stations")
+    if isinstance(raw_stations, list):
+        for raw_station in cast(list[object], raw_stations):
+            if not isinstance(raw_station, Mapping):
+                continue
+            station = cast(Mapping[str, Any], raw_station)
+            stations.append(
+                {
+                    field: station.get(field)
+                    for field in (
+                        "station_id",
+                        "observed_at",
+                        "age_minutes",
+                        "included",
+                        "exclusion_reason",
+                        "temporal_weight_factor",
+                        "grid_weight_min",
+                        "grid_weight_mean",
+                        "grid_weight_max",
+                    )
+                }
+            )
+    calibration = document.get("calibration")
+    calibration_summary: dict[str, Any] = {}
+    if isinstance(calibration, Mapping):
+        calibration_mapping = cast(Mapping[str, Any], calibration)
+        calibration_summary = {
+            field: calibration_mapping.get(field)
+            for field in (
+                "active_station_count",
+                "station_warn_age_minutes",
+                "station_max_age_minutes",
+                "station_time_weight_method",
+            )
+        }
+    warnings = document.get("warnings")
+    return {
+        "status": _status(document.get("status")),
+        "target_time": document.get("target_time"),
+        "stations": stations,
+        "warnings": list(cast(list[object], warnings)) if isinstance(warnings, list) else [],
+        "calibration": calibration_summary,
+    }
 
 
 def _first_or_none(records: list[dict[str, Any]]) -> dict[str, Any] | None:
