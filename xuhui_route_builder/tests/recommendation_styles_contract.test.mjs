@@ -53,4 +53,20 @@ test("CTA 在原位加载时显示蓝色流光与轻微呼吸", () => {
 test("移动端保留顶部筛选轨与底部抽屉的可用高度", () => {
   assert.match(recommendationCss, /@media\s*\(max-width:\s*980px\)[\s\S]*\.recommendation-filters[\s\S]*\{[^}]*top:\s*74px[^}]*right:\s*8px[^}]*left:\s*8px/s);
   assert.match(mainCss, /@media\s*\(max-width:\s*980px\)[\s\S]*\.sidebar\s*\{[^}]*top:\s*auto[^}]*bottom:\s*0[^}]*height:\s*min\(76dvh,\s*680px\)/s);
+  assert.match(mainCss, /@media\s*\(max-width:\s*980px\)[\s\S]*\.map-layer-button\s*\{[^}]*z-index:\s*330[^}]*top:\s*132px[^}]*bottom:\s*auto/s);
+  assert.match(mainCss, /@media\s*\(max-width:\s*980px\)[\s\S]*\.map-legend\s*\{[^}]*z-index:\s*330[^}]*top:\s*182px[^}]*bottom:\s*auto/s);
+});
+
+test("地图与白色浮层形成健康绿灰画布和清晰层级", () => {
+  assert.match(mainCss, /#map\s*\{[^}]*background:\s*#e8ece5/s);
+  assert.match(mainCss, /\.sidebar\s*\{[^}]*box-shadow:\s*0 14px 38px rgba\(16, 35, 63, 0\.15\)/s);
+  assert.match(recommendationCss, /\.recommendation-filter__chip\s*\{[^}]*box-shadow:\s*0 7px 20px rgba\(16, 35, 63, 0\.13\)/s);
+});
+
+test("图层面板用两张地图缩略色块表达当前选择", () => {
+  assert.match(mainCss, /\.map-style-switch\s*\{[^}]*grid-template-columns:\s*1fr 1fr/s);
+  assert.match(mainCss, /\.map-style-option\.is-selected\s*\{[^}]*border-color:\s*var\(--health-green\)/s);
+  assert.match(mainCss, /\.map-style-option__swatch--health\s*\{[^}]*#e8ece5/s);
+  assert.match(mainCss, /\.map-style-option__swatch--standard\s*\{[^}]*#ffd16a/s);
+  assert.match(mainCss, /\.map-legend__routes\s*\{[^}]*border-top:\s*1px solid var\(--line\)/s);
 });

@@ -2,10 +2,22 @@ import { routeSemanticWaypoints } from "./route-dock.js";
 
 const ROUTE_STYLES = {
   run: { color: "#ff5d5d", weight: 4 },
-  walk: { color: "#13bfa6", weight: 4 },
+  walk: { color: "#197cff", weight: 4 },
   bike: { color: "#7C3AED", weight: 4 },
   access: { color: "#ff9f1a", weight: 4 },
 };
+
+const DEFAULT_BASE_MAP_MODE = "health";
+const BASE_MAP_MODES = Object.freeze({
+  health: Object.freeze({
+    mapStyle: "amap://styles/fresh",
+    features: Object.freeze(["bg", "road", "building"]),
+  }),
+  standard: Object.freeze({
+    mapStyle: "amap://styles/normal",
+    features: Object.freeze(["bg", "point", "road", "building"]),
+  }),
+});
 
 const ROUTE_LAYER_STATES = {
   overview: {
@@ -81,12 +93,14 @@ const NAVIGATION_POINT_LABELS = {
 
 export async function createMap(targetId) {
   const AMap = await window.XUHUI_AMAP_READY;
+  const defaultBaseMap = BASE_MAP_MODES[DEFAULT_BASE_MAP_MODE];
   const amap = new AMap.Map(targetId, {
     center: [121.4361, 31.1763],
     zoom: 13,
     resizeEnable: true,
     viewMode: "2D",
-    mapStyle: "amap://styles/normal",
+    mapStyle: defaultBaseMap.mapStyle,
+    features: [...defaultBaseMap.features],
   });
   const scaleControl = new AMap.Scale({
     position: "RB",
@@ -105,6 +119,7 @@ export async function createMap(targetId) {
     routePreviewLayers: [],
     routePreviewMarkers: [],
     routePreviewZoomHandler: null,
+    baseMapMode: DEFAULT_BASE_MAP_MODE,
     entryLayers: [],
     poiLayers: [],
     semanticMarkerLayers: [],
@@ -130,6 +145,18 @@ export async function createMap(targetId) {
   };
 }
 
+export function setBaseMapMode(mapContext, mode) {
+  const config = BASE_MAP_MODES[mode];
+  if (!config) {
+    throw new Error(`未知底图模式：${mode}`);
+  }
+
+  mapContext.amap.setMapStyle(config.mapStyle);
+  mapContext.amap.setFeatures([...config.features]);
+  mapContext.baseMapMode = mode;
+  return mode;
+}
+
 export function drawBoundary(mapContext, boundary) {
   const { AMap, amap } = mapContext;
   mapContext.boundaryRings = extractBoundaryRings(boundary);
@@ -139,10 +166,10 @@ export function drawBoundary(mapContext, boundary) {
       new AMap.Polygon({
         path: lnglats,
         strokeColor: "#0b2856",
-        strokeWeight: 4,
-        strokeOpacity: 0.96,
-        fillColor: "#dcecff",
-        fillOpacity: 0.16,
+        strokeWeight: 3,
+        strokeOpacity: 0.78,
+        fillColor: "#0b2856",
+        fillOpacity: 0.04,
         bubble: true,
         zIndex: 30,
       }),
@@ -942,6 +969,20 @@ export async function resolveUserLocation(mapContext, value) {
   return lngLatToPoint(lnglat, text);
 }
 
+export function startPointMarkerContent({ showLabel = true, ariaLabel = "出发点" } = {}) {
+  const candidateClass = showLabel ? "" : " amap-user-location--candidate";
+  const label = showLabel ? '<span class="amap-user-location__label">出发点</span>' : "";
+  return `
+    <span class="amap-user-location${candidateClass}" aria-label="${ariaLabel}">
+      <svg class="amap-user-location__pin" viewBox="0 0 32 48" aria-hidden="true">
+        <ellipse cx="16" cy="44.5" rx="7" ry="2.5"></ellipse>
+        <path d="M16 1C7.72 1 1 7.72 1 16c0 10.58 15 27.5 15 27.5S31 26.58 31 16C31 7.72 24.28 1 16 1Z"></path>
+        <circle cx="16" cy="16" r="6"></circle>
+      </svg>
+      ${label}
+    </span>`;
+}
+
 export function showUserLocation(mapContext, value) {
   const point = normalizePoint(value);
   if (!point) {
@@ -952,8 +993,8 @@ export function showUserLocation(mapContext, value) {
   }
   const marker = new mapContext.AMap.Marker({
     position: [point.lng_gcj02, point.lat_gcj02],
-    content: '<span class="amap-user-location" aria-label="已选位置"><i></i></span>',
-    anchor: "center",
+    content: startPointMarkerContent(),
+    anchor: "bottom-center",
     offset: new mapContext.AMap.Pixel(0, 0),
     zIndex: 125,
   });

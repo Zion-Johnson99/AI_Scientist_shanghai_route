@@ -6,8 +6,8 @@
     <title>徐汇户外健康地图</title>
     <link rel="icon" href="./xh-logo.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/qweather-icons@1.8.0/font/qweather-icons.css" />
-    <link rel="stylesheet" href="./styles/main.css?v=20260831-ui-12" />
-    <link rel="stylesheet" href="./styles/recommendation.css?v=20260831-ui-12" />
+    <link rel="stylesheet" href="./styles/main.css?v=20260831-ui-17" />
+    <link rel="stylesheet" href="./styles/recommendation.css?v=20260831-ui-17" />
     <script src="./local-amap-config.js"></script>
   </head>
   <body>
@@ -150,10 +150,22 @@
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m12 3 8 4.5-8 4.5-8-4.5L12 3Zm-8 9 8 4.5 8-4.5M4 16.5 12 21l8-4.5" /></svg>
           <span class="map-layer-button__label">图层</span>
         </button>
-        <section id="mapLegend" class="map-legend" aria-label="地图图例" hidden>
-          <span><i class="legend-run"></i>跑步</span><span><i class="legend-walk"></i>步行</span>
-          <span><i class="legend-bike"></i>骑行</span><span><i class="legend-access"></i>接驳</span>
-          <span><i class="legend-boundary"></i>徐汇边界</span>
+        <section id="mapLegend" class="map-legend" aria-label="地图图层" hidden>
+          <div class="map-style-switch" role="group" aria-label="底图样式">
+            <button class="map-style-option is-selected" type="button" data-base-map-mode="health" aria-pressed="true">
+              <i class="map-style-option__swatch map-style-option__swatch--health" aria-hidden="true"></i>
+              <span><strong>健康地图</strong><small>低干扰路线视图</small></span>
+            </button>
+            <button class="map-style-option" type="button" data-base-map-mode="standard" aria-pressed="false">
+              <i class="map-style-option__swatch map-style-option__swatch--standard" aria-hidden="true"></i>
+              <span><strong>标准地图</strong><small>显示完整地图要素</small></span>
+            </button>
+          </div>
+          <div class="map-legend__routes" aria-label="路线图例">
+            <span><i class="legend-walk"></i>步行</span><span><i class="legend-run"></i>跑步</span>
+            <span><i class="legend-bike"></i>骑行</span><span><i class="legend-access"></i>接驳</span>
+            <span><i class="legend-boundary"></i>徐汇边界</span>
+          </div>
         </section>
         <aside id="inlineNavigationGuide" class="inline-navigation-guide" aria-label="接驳导航预览" aria-live="polite" hidden>
           <header class="inline-navigation-guide__head">
@@ -185,6 +197,7 @@
           "AMap.GeoJSON",
           "AMap.Geocoder",
           "AMap.AutoComplete",
+          "AMap.PlaceSearch",
           "AMap.Geolocation",
           "AMap.Walking",
           "AMap.Riding",
@@ -206,6 +219,6 @@
         });
       })();
     </script>
-    <script type="module" src="./src/main.js?v=20260831-ui-12"></script>
+    <script type="module" src="./src/main.js?v=20260831-ui-17"></script>
   </body>
 </html>

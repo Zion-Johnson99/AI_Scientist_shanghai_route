@@ -165,11 +165,11 @@ def test_product_toolbar_owns_the_single_location_mode_environment_and_profile_e
     assert 'id="locationInput" type="search" placeholder="搜索地点"' in toolbar
     assert 'id="locationCurrentButton"' in toolbar
     assert 'id="locationSuggestions"' in toolbar
-    for plugin in ["AMap.AutoComplete", "AMap.Geolocation"]:
+    for plugin in ["AMap.AutoComplete", "AMap.PlaceSearch", "AMap.Geolocation"]:
         assert plugin in html
     assert 'class="profile-action__label">个人档案</span>' in toolbar
     assert 'class="map-layer-button__label">图层</span>' in html
-    assert "./styles/recommendation.css?v=20260831-ui-12" in html
+    assert "./styles/recommendation.css?v=20260831-ui-17" in html
     for mode_id, route_mode in [
         ("toolbarWalkMode", "walk"),
         ("toolbarRunMode", "run"),
@@ -257,12 +257,15 @@ def test_location_search_uses_autocomplete_geolocation_and_immediate_nearby_refr
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
 
     assert "AMap.AutoComplete" in html
+    assert "AMap.PlaceSearch" in html
     assert "AMap.Geolocation" in html
     assert "createAmapLocationServices" in main_js
     assert "createLocationController" in main_js
     assert "locationControls.current" in main_js
     assert "locationServices.suggest" in main_js
     assert "locationServices.locate" in main_js
+    assert "shouldShowCurrentLocationOption" in main_js
+    assert "locationControls.current.hidden" in main_js
     assert "refreshNearbyRoutes" in main_js
     assert "createMapPointSelection" in main_js
     assert 'map.amap.on("click"' in main_js
@@ -274,17 +277,29 @@ def test_location_search_uses_autocomplete_geolocation_and_immediate_nearby_refr
 
 def test_toolbar_environment_suggestions_and_start_pin_have_product_styles() -> None:
     css = (WEB_ROOT / "styles" / "main.css").read_text(encoding="utf-8")
+    main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
+    map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
 
     assert ".environment-toggle__item" in css
     assert ".environment-toggle__aqi-level" in css
     assert ".location-suggestion" in css
     assert ".location-suggestion.is-active" in css
-    assert ".amap-location-candidate" in css
+    assert "max-height: min(416px, calc(100vh - 190px));" in css
+    assert ".amap-location-candidate" not in css + main_js
     assert ".map-location-confirmation" in css
     assert ".map-location-confirmation__confirm" in css
     marker_start = css.index(".amap-user-location {")
     marker_block = css[marker_start : css.index("}", marker_start)]
-    assert "background: #e5483f;" in marker_block
+    assert "width: 72px;" in marker_block
+    assert "height: 48px;" in marker_block
+    assert ".amap-user-location__pin" in css
+    assert ".amap-user-location__label" in css
+    assert "startPointMarkerContent" in map_js
+    assert "startPointMarkerContent" in main_js
+    assert "amap-user-location--candidate" in map_js
+    assert 'ariaLabel = "出发点"' in map_js
+    assert '<span class="amap-user-location__label">出发点</span>' in map_js
+    assert 'anchor: "bottom-center"' in map_js
 
 
 def test_product_toolbar_and_workbench_use_the_komoot_visual_shell() -> None:
@@ -412,7 +427,7 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260831-ui-12"
+    release = "v=20260831-ui-17"
     assert f"./styles/main.css?{release}" in html
     assert f"./styles/recommendation.css?{release}" in html
     assert f"./src/main.js?{release}" in html
@@ -680,7 +695,7 @@ def test_selected_route_layer_stays_above_the_xuhui_boundary() -> None:
     assert "zIndex: active ? 100 : 70" in route_block
 
 
-def test_xuhui_boundary_uses_the_logo_blue_with_a_lighter_line_weight() -> None:
+def test_xuhui_boundary_uses_a_visible_logo_blue_outline() -> None:
     map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
     boundary_block = map_js[
         map_js.index("export function drawBoundary") : map_js.index(
@@ -689,7 +704,9 @@ def test_xuhui_boundary_uses_the_logo_blue_with_a_lighter_line_weight() -> None:
     ]
 
     assert 'strokeColor: "#0b2856"' in boundary_block
-    assert "strokeWeight: 4" in boundary_block
+    assert "strokeWeight: 3" in boundary_block
+    assert "strokeOpacity: 0.78" in boundary_block
+    assert "fillOpacity: 0.04" in boundary_block
 
 
 def test_web_loads_pois_and_supports_direct_navigation_preview() -> None:

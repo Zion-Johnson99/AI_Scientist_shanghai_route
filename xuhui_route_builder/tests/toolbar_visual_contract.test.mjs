@@ -102,3 +102,29 @@ test("启动失败与路线缺图错误不再写入已删除的旧详情节点",
   assert.match(main, /console\.error\("应用启动失败",\s*\{ error \}\)/);
   assert.match(main, /querySelector\("#recommendationView"\)/);
 });
+
+test("图层面板默认选择健康地图并提供标准地图备用入口", () => {
+  assert.match(
+    html,
+    /class="map-style-option is-selected"[^>]*data-base-map-mode="health"[^>]*aria-pressed="true"/,
+  );
+  assert.match(
+    html,
+    /class="map-style-option"[^>]*data-base-map-mode="standard"[^>]*aria-pressed="false"/,
+  );
+  assert.match(html, /<strong>健康地图<\/strong><small>低干扰路线视图<\/small>/);
+  assert.match(html, /<strong>标准地图<\/strong><small>显示完整地图要素<\/small>/);
+  assert.match(main, /setBaseMapMode\(map, mode\)/);
+  assert.match(main, /candidate\.classList\.toggle\("is-selected", selected\)/);
+  assert.match(main, /candidate\.setAttribute\("aria-pressed", String\(selected\)\)/);
+});
+
+test("图例将蓝色步行路线放在跑步路线之前", () => {
+  const legendStart = html.indexOf('class="map-legend__routes"');
+  const legendEnd = html.indexOf("</div>", legendStart);
+  const legend = html.slice(legendStart, legendEnd);
+
+  assert.match(css, /--walk:\s*#197cff/i);
+  assert.ok(legend.indexOf("legend-walk") < legend.indexOf("legend-run"));
+  assert.match(legend, /legend-walk[^>]*><\/i>步行/);
+});

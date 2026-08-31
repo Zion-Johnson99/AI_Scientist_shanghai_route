@@ -1,11 +1,11 @@
 import {
   loadRouteData,
   startEnvironmentDashboardPolling,
-} from "./data-loader.js?v=20260831-ui-12";
+} from "./data-loader.js?v=20260831-ui-17";
 import {
   buildRouteExposureModel,
   createEnvironmentPanel,
-} from "./environment-ui.js?v=20260831-ui-12";
+} from "./environment-ui.js?v=20260831-ui-17";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -18,29 +18,33 @@ import {
   highlightRoutePreview,
   planNavigation,
   resolveUserLocation,
+  setBaseMapMode,
   showUserLocation,
   showRoutePreviews,
   showSingleRoute,
-} from "./map.js?v=20260831-ui-12";
-import { createNavigationController } from "./navigation-session.js?v=20260831-ui-12";
+  startPointMarkerContent,
+} from "./map.js?v=20260831-ui-17";
+import { createNavigationController } from "./navigation-session.js?v=20260831-ui-17";
 import {
+  buildLocalLocationCandidates,
   createAmapLocationServices,
   createLocationController,
   createMapPointSelection,
-} from "./location-control.js?v=20260831-ui-12";
-import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260831-ui-12";
-import { createRecommendationApi } from "./recommendation-api.js?v=20260831-ui-12";
+  shouldShowCurrentLocationOption,
+} from "./location-control.js?v=20260831-ui-17";
+import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260831-ui-17";
+import { createRecommendationApi } from "./recommendation-api.js?v=20260831-ui-17";
 import {
   DEFAULT_RECOMMENDATION_LOCATION,
   buildInitialRecommendationResult,
   createProfileDialog,
   createRecommendationUI,
-} from "./recommendation-ui.js?v=20260831-ui-12";
-import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260831-ui-12";
+} from "./recommendation-ui.js?v=20260831-ui-17";
+import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260831-ui-17";
 import {
   isMapLocationSelectionAllowed,
   renderRoutePlanner,
-} from "./route-ui.js?v=20260831-ui-12";
+} from "./route-ui.js?v=20260831-ui-17";
 
 const RECOMMENDATION_MAP_CARDS_ENABLED = false;
 
@@ -141,7 +145,9 @@ async function bootstrap() {
   let activeLocationCandidateIndex = 0;
   let locationSearchRevision = 0;
   let locationSearchTimer = null;
-  const locationServices = createAmapLocationServices(map);
+  const locationServices = createAmapLocationServices(map, {
+    localCandidates: buildLocalLocationCandidates(data.entries, data.pois),
+  });
   const locationController = createLocationController({
     initialLocation: currentLocation,
     onCommit: (location) => commitLocation(location),
@@ -479,6 +485,7 @@ async function bootstrap() {
   function commitLocation(location, { refreshRoutes = true } = {}) {
     currentLocation = location;
     locationControls.input.value = "";
+    syncCurrentLocationOption();
     locationCandidates = [];
     activeLocationCandidateIndex = 0;
     renderLocationSuggestions();
@@ -492,6 +499,7 @@ async function bootstrap() {
   }
 
   function bindLocationControls() {
+    syncCurrentLocationOption();
     locationControls.toggle.addEventListener("click", () => {
       const open = locationControls.editor.hidden;
       setLocationEditorOpen(open);
@@ -499,6 +507,7 @@ async function bootstrap() {
     locationControls.input.addEventListener("focus", () => setLocationEditorOpen(true));
     locationControls.input.addEventListener("input", () => {
       const query = locationControls.input.value;
+      syncCurrentLocationOption(query);
       locationController.setQuery(query);
       setLocationEditorOpen(true);
       queueLocationSuggestions(query);
@@ -525,6 +534,10 @@ async function bootstrap() {
     document.addEventListener("click", (event) => {
       if (!event.target.closest?.(".route-search-shell")) setLocationEditorOpen(false);
     });
+  }
+
+  function syncCurrentLocationOption(query = locationControls.input.value) {
+    locationControls.current.hidden = !shouldShowCurrentLocationOption(query);
   }
 
   function bindMapLocationPicker() {
@@ -572,7 +585,7 @@ async function bootstrap() {
 
     mapLocationCandidateMarker = new map.AMap.Marker({
       position: [candidate.lng_gcj02, candidate.lat_gcj02],
-      content: '<span class="amap-location-candidate" aria-hidden="true"><i></i></span>',
+      content: startPointMarkerContent({ showLabel: false, ariaLabel: "待确认出发点" }),
       anchor: "bottom-center",
       zIndex: 130,
     });
@@ -732,10 +745,23 @@ async function bootstrap() {
   function bindLayerControls() {
     const button = document.querySelector("#mapLayerButton");
     const legend = document.querySelector("#mapLegend");
+    const modeButtons = [...legend.querySelectorAll("[data-base-map-mode]")];
     button.addEventListener("click", () => {
       const open = legend.hidden;
       legend.hidden = !open;
       button.setAttribute("aria-expanded", String(open));
+    });
+
+    modeButtons.forEach((modeButton) => {
+      modeButton.addEventListener("click", () => {
+        const mode = modeButton.dataset.baseMapMode;
+        setBaseMapMode(map, mode);
+        modeButtons.forEach((candidate) => {
+          const selected = candidate === modeButton;
+          candidate.classList.toggle("is-selected", selected);
+          candidate.setAttribute("aria-pressed", String(selected));
+        });
+      });
     });
   }
 }

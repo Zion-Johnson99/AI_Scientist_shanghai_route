@@ -2,13 +2,32 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { createRecommendationMapController, routePreviewCardModel } from "../web/src/map.js";
+import {
+  createRecommendationMapController,
+  routePreviewCardModel,
+  setBaseMapMode,
+  startPointMarkerContent,
+} from "../web/src/map.js";
 
 const routes = [
   createRoute("XH_WALK_0001", 121.42),
   createRoute("XH_WALK_0002", 121.43),
   createRoute("XH_WALK_0003", 121.44),
 ];
+
+test("已确认起点与地图候选点共用同一红色图钉", () => {
+  const committed = startPointMarkerContent();
+  const candidate = startPointMarkerContent({ showLabel: false, ariaLabel: "待确认出发点" });
+
+  for (const content of [committed, candidate]) {
+    assert.match(content, /amap-user-location__pin/);
+    assert.match(content, /M16 1C7\.72 1 1 7\.72 1 16/);
+    assert.match(content, /<circle cx="16" cy="16" r="6"><\/circle>/);
+  }
+  assert.match(committed, /amap-user-location__label">出发点/);
+  assert.match(candidate, /amap-user-location--candidate/);
+  assert.doesNotMatch(candidate, /amap-user-location__label/);
+});
 
 test("推荐结果以三路线总览显示，并用一次 fitView 容纳现有路线", () => {
   const { mapContext, fitViews } = createMapContext();
@@ -240,9 +259,46 @@ test("徐汇区边界保留边界线且不再叠加竖排区名", () => {
   );
 
   assert.match(drawBoundarySource, /strokeColor:\s*"#0b2856"/);
+  assert.match(drawBoundarySource, /strokeWeight:\s*3/);
+  assert.match(drawBoundarySource, /strokeOpacity:\s*0\.78/);
+  assert.match(drawBoundarySource, /fillOpacity:\s*0\.04/);
   assert.match(drawBoundarySource, /bubble:\s*true/);
   assert.doesNotMatch(drawBoundarySource, /addBoundaryLabel/);
   assert.doesNotMatch(source, /amap-boundary-label/);
+});
+
+test("健康底图默认隐藏通用 POI，标准底图可恢复完整要素", () => {
+  const source = readFileSync(new URL("../web/src/map.js", import.meta.url), "utf8");
+  assert.match(source, /DEFAULT_BASE_MAP_MODE\s*=\s*"health"/);
+  assert.match(source, /mapStyle:\s*"amap:\/\/styles\/fresh"/);
+  assert.match(source, /features:\s*Object\.freeze\(\["bg",\s*"road",\s*"building"\]\)/);
+
+  const calls = [];
+  const mapContext = {
+    amap: {
+      setMapStyle(value) {
+        calls.push(["style", value]);
+      },
+      setFeatures(value) {
+        calls.push(["features", value]);
+      },
+    },
+    baseMapMode: "health",
+  };
+
+  assert.equal(setBaseMapMode(mapContext, "standard"), "standard");
+  assert.equal(mapContext.baseMapMode, "standard");
+  assert.deepEqual(calls, [
+    ["style", "amap://styles/normal"],
+    ["features", ["bg", "point", "road", "building"]],
+  ]);
+  assert.throws(() => setBaseMapMode(mapContext, "unknown"), /未知底图模式/);
+});
+
+test("步行路线使用品牌蓝并继续保留白色外描边", () => {
+  const source = readFileSync(new URL("../web/src/map.js", import.meta.url), "utf8");
+  assert.match(source, /walk:\s*\{\s*color:\s*"#197cff",\s*weight:\s*4\s*\}/);
+  assert.match(source, /strokeColor:\s*"#ffffff"/);
 });
 
 test("详情关闭按来源恢复推荐总览或当前浏览筛选总览", () => {

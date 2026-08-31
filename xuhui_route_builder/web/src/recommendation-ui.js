@@ -3,8 +3,8 @@ import { createRouteCard, routeCardModel } from "./route-card.js";
 
 export const DEFAULT_RECOMMENDATION_LOCATION = Object.freeze({
   label: "上海交通大学徐汇校区",
-  lng_gcj02: 121.433,
-  lat_gcj02: 31.2015,
+  lng_gcj02: 121.433095,
+  lat_gcj02: 31.199005,
 });
 
 export function buildInitialRecommendationResult({

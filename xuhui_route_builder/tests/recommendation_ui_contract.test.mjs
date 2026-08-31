@@ -174,8 +174,8 @@ test("首屏默认从交大徐汇校区筛选步行短线并按接驳距离稳�
 
   assert.deepEqual(DEFAULT_RECOMMENDATION_LOCATION, {
     label: "上海交通大学徐汇校区",
-    lng_gcj02: 121.433,
-    lat_gcj02: 31.2015,
+    lng_gcj02: 121.433095,
+    lat_gcj02: 31.199005,
   });
   assert.deepEqual(
     result.final_routes.map((route) => route.route.route.route_id),
