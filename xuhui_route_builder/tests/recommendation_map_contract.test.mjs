@@ -251,14 +251,15 @@ test("浏览和推荐公用的地图小卡只显示名称和公里数", () => {
   assert.equal("metaText" in model, false);
 });
 
-test("徐汇区边界保留边界线且不再叠加竖排区名", () => {
+test("徐汇区边界使用中性灰绿且不再叠加竖排区名", () => {
   const source = readFileSync(new URL("../web/src/map.js", import.meta.url), "utf8");
   const drawBoundarySource = source.slice(
     source.indexOf("export function drawBoundary"),
     source.indexOf("export function fitBoundaryView"),
   );
 
-  assert.match(drawBoundarySource, /strokeColor:\s*"#0b2856"/);
+  assert.match(drawBoundarySource, /strokeColor:\s*"#5B6C63"/);
+  assert.match(drawBoundarySource, /fillColor:\s*"#5B6C63"/);
   assert.match(drawBoundarySource, /strokeWeight:\s*3/);
   assert.match(drawBoundarySource, /strokeOpacity:\s*0\.78/);
   assert.match(drawBoundarySource, /fillOpacity:\s*0\.04/);
@@ -299,6 +300,32 @@ test("步行路线使用品牌蓝并继续保留白色外描边", () => {
   const source = readFileSync(new URL("../web/src/map.js", import.meta.url), "utf8");
   assert.match(source, /walk:\s*\{\s*color:\s*"#197cff",\s*weight:\s*4\s*\}/);
   assert.match(source, /strokeColor:\s*"#ffffff"/);
+});
+
+test("推荐路线根据运动模式使用图例语义色", () => {
+  const { mapContext } = createMapContext();
+  const controller = createRecommendationMapController(mapContext);
+  const modeRoutes = [
+    createRoute("XH_WALK_COLOR", 121.42, "walk"),
+    createRoute("XH_RUN_COLOR", 121.43, "run"),
+    createRoute("XH_BIKE_COLOR", 121.44, "bike"),
+    createRoute("XH_ACCESS_COLOR", 121.45, "access"),
+  ];
+
+  controller.showRoutes(modeRoutes);
+
+  const colors = Object.fromEntries(
+    [...mapContext.routeLayers.entries()].map(([routeId, layers]) => [
+      routeId,
+      layers.main.options.strokeColor,
+    ]),
+  );
+  assert.deepEqual(colors, {
+    XH_WALK_COLOR: "#197cff",
+    XH_RUN_COLOR: "#D45A50",
+    XH_BIKE_COLOR: "#6F5AB7",
+    XH_ACCESS_COLOR: "#C9872F",
+  });
 });
 
 test("详情关闭按来源恢复推荐总览或当前浏览筛选总览", () => {
@@ -349,13 +376,13 @@ test("过期 routeId 不改变当前推荐地图状态", () => {
   assert.equal(fitViews.length, fitViewCount);
 });
 
-function createRoute(routeId, startLng) {
+function createRoute(routeId, startLng, routeMode = "walk") {
   return {
     type: "Feature",
     properties: {
       route_id: routeId,
       route_name: routeId,
-      route_mode: "walk",
+      route_mode: routeMode,
       start_location: { name: "默认起点", lng_gcj02: startLng, lat_gcj02: 31.18 },
       end_location: { name: "默认终点", lng_gcj02: startLng + 0.005, lat_gcj02: 31.185 },
     },

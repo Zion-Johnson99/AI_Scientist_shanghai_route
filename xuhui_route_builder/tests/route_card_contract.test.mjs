@@ -20,10 +20,10 @@ test("共享模型统一运动方式、名称、时间、距离与 PM2.5 文案"
   assert.equal(model.routeId, "XH_WALK_0001");
   assert.equal(model.routeName, "西岸油罐艺术短线");
   assert.equal(model.labelText, "步行");
-  assert.equal(model.durationText, "12 分钟");
+  assert.equal(model.durationText, "12 min");
   assert.equal(model.distanceText, "0.9 km");
   assert.equal(model.pm25Text, "PM2.5 10.2 µg/m³");
-  assert.equal(model.journeyText, "12 分钟 · 0.9 km · PM2.5 10.2 µg/m³");
+  assert.equal(model.journeyText, "12 min · 0.9 km · PM2.5 10.2 µg/m³");
 });
 
 test("推荐嵌套记录支持首选标签并保留选中状态", () => {
@@ -86,7 +86,10 @@ test("整张卡承担点击与键盘选择，不创建 radio", () => {
     assert.equal(card.attributes.tabindex, "0");
     assert.equal(card.attributes["aria-current"], "true");
     assert.equal(findByAttribute(card, "role", "radio"), null);
-    assert.match(card.textContent, /12 分钟 · 0.9 km · PM2.5 10.2 µg\/m³/);
+    assert.ok(findByClass(card, "route-card__metrics-travel"));
+    assert.ok(findByClass(card, "route-card__metric--pm25"));
+    assert.match(card.textContent, /12 min · 0.9 km/);
+    assert.match(card.textContent, /PM2.5 10.2 µg\/m³/);
 
     card.dispatch("click", {});
     card.dispatch("keydown", keyEvent("Enter"));

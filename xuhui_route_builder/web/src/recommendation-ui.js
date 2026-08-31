@@ -1,5 +1,5 @@
 import { normalizeHealthProfile } from "./profile-store.js";
-import { createRouteCard, routeCardModel } from "./route-card.js";
+import { createRouteCard, routeCardModel } from "./route-card.js?v=20260831-ui-32";
 
 export const DEFAULT_RECOMMENDATION_LOCATION = Object.freeze({
   label: "上海交通大学徐汇校区",
@@ -645,8 +645,8 @@ export function createRecommendationUI({
       chip.setAttribute("aria-label", `设置${definition.label}`);
       chip.setAttribute("aria-expanded", String(openFilterKey === definition.key));
       chip.append(
+        filterIcon(definition.icon),
         element("span", "recommendation-filter__label", definition.label),
-        element("span", "recommendation-filter__value", filterValueLabel(definition)),
       );
       chip.addEventListener("click", () => {
         const opening = openFilterKey !== definition.key;
@@ -697,31 +697,32 @@ export function createRecommendationUI({
     const interests = currentQuestionnaire?.interests || [];
     const byValues = (values) => interests.filter((option) => values.includes(option.value));
     return [
-      { key: "target_time", label: "时间", options: currentQuestionnaire?.target_times || [] },
-      { key: "distance_range", label: "距离", options: currentQuestionnaire?.distance_ranges?.[answers.route_mode] || [] },
-      { key: "goal", label: "运动目标", options: currentQuestionnaire?.goals || [] },
-      { key: "search_scope", label: "搜索范围", options: currentQuestionnaire?.search_scopes || [] },
-      { key: "route_shape", label: "路线形态", options: currentQuestionnaire?.route_shapes || [] },
-      { key: "rest_stops", label: "休息与补给", options: byValues(["coffee", "toilet", "convenience"]), multiple: true },
-      { key: "scenery", label: "景观与环境", options: byValues(["waterfront", "park", "quiet"]), multiple: true },
+      { key: "target_time", icon: "time", label: "时间", options: currentQuestionnaire?.target_times || [] },
+      { key: "distance_range", icon: "distance", label: "距离", options: currentQuestionnaire?.distance_ranges?.[answers.route_mode] || [] },
+      { key: "goal", icon: "goal", label: "运动目标", options: currentQuestionnaire?.goals || [] },
+      { key: "search_scope", icon: "scope", label: "搜索范围", options: currentQuestionnaire?.search_scopes || [] },
+      { key: "route_shape", icon: "route", label: "路线形态", options: currentQuestionnaire?.route_shapes || [] },
+      { key: "rest_stops", icon: "rest", label: "休息与补给", options: byValues(["coffee", "toilet", "convenience"]), multiple: true },
+      { key: "scenery", icon: "scenery", label: "景观与环境", options: byValues(["waterfront", "park", "quiet"]), multiple: true },
     ];
-  }
-
-  function filterValueLabel(definition) {
-    if (definition.multiple) {
-      const labels = definition.options
-        .filter((option) => answers.interests.includes(option.value))
-        .map((option) => option.label);
-      return labels.length ? labels.join("、") : "不限";
-    }
-    return optionLabel(definition.options, answers[definition.key]) || "不限";
   }
 
   function renderFilterPopover(definition) {
     const popover = element("div", "recommendation-filter__popover");
+    const titleId = `recommendationFilterTitle-${definition.key}`;
+    popover.id = `recommendationFilter-${definition.key}`;
     popover.setAttribute("role", "dialog");
-    popover.setAttribute("aria-label", definition.label);
+    popover.setAttribute("aria-labelledby", titleId);
+    const header = element("header", "recommendation-filter__header");
+    const title = element("h2", "recommendation-filter__title", definition.label);
+    title.id = titleId;
+    const close = element("button", "recommendation-filter__close");
+    close.type = "button";
+    close.setAttribute("aria-label", `关闭${definition.label}筛选`);
+    close.addEventListener("click", () => closeFilter({ restoreFocus: true }));
+    header.append(title, close);
     const options = element("div", "recommendation-filter__options");
+    options.setAttribute("role", definition.multiple ? "group" : "radiogroup");
     if (definition.multiple) {
       options.append(filterOptionButton(definition, { value: "", label: "不限" }, !definition.options.some((option) => answers.interests.includes(option.value))));
     }
@@ -731,24 +732,44 @@ export function createRecommendationUI({
         : answers[definition.key] === option.value;
       options.append(filterOptionButton(definition, option, selected));
     });
-    popover.append(options);
+    const body = element("div", "recommendation-filter__body");
+    body.append(options);
     if (definition.key === "target_time" && answers.target_time === "custom") {
-      popover.append(inputField("自定义时间", "datetime-local", answers.custom_time, (value) => {
+      body.append(inputField("自定义时间", "datetime-local", answers.custom_time, (value) => {
         answers.custom_time = value;
       }));
     }
     if (definition.key === "search_scope" && answers.search_scope === "area") {
-      popover.append(selectField("指定片区", currentQuestionnaire?.areas, answers.area_id, (value) => {
+      body.append(selectField("指定片区", currentQuestionnaire?.areas, answers.area_id, (value) => {
         answers.area_id = value;
       }));
     }
+    const footer = element("footer", "recommendation-filter__footer");
+    const reset = element("button", "recommendation-filter__reset", "恢复默认");
+    reset.type = "button";
+    reset.disabled = filterUsesDefault(definition);
+    reset.addEventListener("click", () => {
+      resetFilter(definition);
+      pendingPopoverFocus = true;
+      render();
+    });
+    const done = element("button", "recommendation-filter__done", "完成");
+    done.type = "button";
+    done.addEventListener("click", () => closeFilter({ restoreFocus: true }));
+    footer.append(reset, done);
+    popover.append(header, body, footer);
     return popover;
   }
 
   function filterOptionButton(definition, option, selected) {
-    const button = element("button", `recommendation-filter__option${selected ? " is-selected" : ""}`, option.label);
+    const button = element("button", `recommendation-filter__option${selected ? " is-selected" : ""}`);
     button.type = "button";
-    button.setAttribute("aria-pressed", String(selected));
+    button.setAttribute("role", definition.multiple ? "checkbox" : "radio");
+    button.setAttribute("aria-checked", String(selected));
+    button.append(
+      element("span", "recommendation-filter__option-label", option.label),
+      element("span", "recommendation-filter__indicator"),
+    );
     button.addEventListener("click", () => {
       if (definition.multiple) {
         const groupValues = new Set(definition.options.map((candidate) => candidate.value));
@@ -759,11 +780,31 @@ export function createRecommendationUI({
         }
       } else {
         answers[definition.key] = option.value;
-        openFilterKey = ["custom", "area"].includes(option.value) ? definition.key : null;
       }
+      pendingPopoverFocus = true;
       render();
     });
     return button;
+  }
+
+  function filterUsesDefault(definition) {
+    if (definition.multiple) {
+      return !definition.options.some((option) => answers.interests.includes(option.value));
+    }
+    const defaults = defaultAnswers(currentQuestionnaire);
+    return answers[definition.key] === defaults[definition.key];
+  }
+
+  function resetFilter(definition) {
+    if (definition.multiple) {
+      const groupValues = new Set(definition.options.map((option) => option.value));
+      answers.interests = answers.interests.filter((value) => !groupValues.has(value));
+      return;
+    }
+    const defaults = defaultAnswers(currentQuestionnaire);
+    answers[definition.key] = defaults[definition.key];
+    if (definition.key === "target_time") answers.custom_time = defaults.custom_time;
+    if (definition.key === "search_scope") answers.area_id = defaults.area_id;
   }
 
   function positionFilterPopover(popover, chip, root) {
@@ -1330,4 +1371,12 @@ function element(tagName, className = "", text = null) {
     node.textContent = text;
   }
   return node;
+}
+
+function filterIcon(name) {
+  const icon = element("span", "recommendation-filter__icon");
+  icon.setAttribute("aria-hidden", "true");
+  icon.setAttribute("data-filter-icon", name);
+  icon.innerHTML = `<svg viewBox="0 0 24 24" focusable="false"><use href="./assets/icons/filter-icons.svg#filter-${name}" /></svg>`;
+  return icon;
 }

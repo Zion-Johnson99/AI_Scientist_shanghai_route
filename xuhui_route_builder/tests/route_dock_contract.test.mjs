@@ -534,7 +534,7 @@ test("详情样式固定右侧宽度、圆形叉号与底部主操作", () => {
   assert.match(css, /\.route-dock\.route-dock--detail\s*\{[\s\S]*?width:\s*min\(390px,/);
   assert.match(css, /\.route-dock__close\s*\{[\s\S]*?border-radius:\s*50%/);
   assert.match(css, /\.route-dock__actions\s*\{[\s\S]*?position:\s*sticky;[\s\S]*?bottom:\s*0;/);
-  assert.match(css, /\.route-dock__navigate\s*\{[\s\S]*?background:\s*var\(--brand-blue\)/);
+  assert.match(css, /\.route-dock__navigate\s*\{[\s\S]*?background:\s*var\(--brand-primary\)/);
 });
 
 function createDockDocumentStub() {

@@ -14,7 +14,10 @@ $weatherRoot = Join-Path $repositoryRoot "weather_api_data"
 $apiExecutable = Join-Path $evaluationRoot ".venv\Scripts\evaluation-model-qwen-api.exe"
 $routePython = Join-Path $routeRoot ".venv\Scripts\python.exe"
 $weatherExecutable = Join-Path $weatherRoot ".venv\Scripts\weather-api-data.exe"
+$routeEnvFile = Join-Path $routeRoot ".env"
 $weatherEnvFile = Join-Path $weatherRoot ".env"
+$routeWebRoot = Join-Path $routeRoot "web"
+$webMapConfigScript = Join-Path $routeRoot "src\xuhui_route_builder\web_map_config.py"
 $dashboardPath = Join-Path $routeRoot "data\web\environment_dashboard.json"
 $runtimeRoot = Join-Path $evaluationRoot "runtime\local-app"
 $apiHealthUrl = "http://127.0.0.1:8124/api/v1/health"
@@ -356,6 +359,21 @@ function Update-EnvironmentData {
     Show-StationRefreshSummary -RefreshReport $refreshReport
 }
 
+function Update-WebMapConfig {
+    if (-not (Test-Path -LiteralPath $routeEnvFile -PathType Leaf)) {
+        throw "缺少 xuhui_route_builder/.env，无法生成网页地图配置。"
+    }
+
+    & $routePython `
+        $webMapConfigScript `
+        --env-file $routeEnvFile `
+        --web-root $routeWebRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "网页地图配置生成失败，退出码为 $LASTEXITCODE。"
+    }
+    Write-Host "网页地图配置已更新。"
+}
+
 if (-not (Test-Path -LiteralPath $apiExecutable -PathType Leaf)) {
     throw "缺少推荐服务，请先在 evaluation_model_qwen 目录运行 uv sync --extra dev。"
 }
@@ -367,6 +385,7 @@ if (-not (Test-Path -LiteralPath $routePython -PathType Leaf)) {
     $routePython = $pythonCommand.Source
 }
 
+Update-WebMapConfig
 New-Item -ItemType Directory -Path $runtimeRoot -Force | Out-Null
 $refreshTier = Get-StartupEnvironmentRefreshTier -Tier (
     Get-EnvironmentRefreshTier -Path $dashboardPath

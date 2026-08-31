@@ -35,30 +35,33 @@ _徐汇区 90 条运动路线、本地地图与接驳导航使用说明。_
 
 Key 类型说明：本地网站选择 `Web端（JS API）`。`Web服务` Key 用于 Python 路线生成，两类 Key 的使用位置不同。
 
-## 配置高德 Key
+## 统一配置地图 Key
 
-首次使用网站时，在仓库根目录执行以下命令。PowerShell 会交互式读取 Key，输入值不会写入命令历史。配置完成后，本地文件 `web/local-amap-config.js` 会保存 Key 和安全密钥。
+首次使用时，在 `xuhui_route_builder` 目录复制本地配置模板，再填写高德、腾讯和百度 Key：
 
 ```powershell
 cd .\xuhui_route_builder
-$amapJsKey = Read-Host "请输入高德 Web端 JS API Key"
-$amapSecurityCode = Read-Host "请输入同一行的安全密钥"
-@"
-window.XUHUI_AMAP_JS_KEY = "$amapJsKey";
-window.XUHUI_AMAP_JS_SECURITY_CODE = "$amapSecurityCode";
-"@ | Set-Content -LiteralPath ".\web\local-amap-config.js" -Encoding utf8
-Remove-Variable amapJsKey, amapSecurityCode
+Copy-Item .env.example .env
 ```
 
-`web/local-amap-config.js` 已由 `.gitignore` 排除。当前明文配置方式仅供成员本地开发；高德在线生产环境推荐使用服务端代理保存安全密钥。[^4]
+| 变量 | 用途 |
+| --- | --- |
+| `AMAP_WEB_SERVICE_KEY` | Python 步行和骑行路线生成 |
+| `AMAP_JS_API_KEY` | 网页地图、定位和接驳导航 |
+| `AMAP_JS_SECURITY_CODE` | 高德 JS API 安全配置 |
+| `TENCENT_SEARCH_KEY` | 用户位置输入框的上海地点联想 |
+| `BAIDU_MAP_AK` | OSM 未命中或结果存在歧义时的地点检索兜底 |
+
+仓库根目录的 `start-local-app.ps1` 和 `start-local-app.sh` 会读取该 `.env`，生成 `web/local-amap-config.js` 与 `web/local-tencent-config.js`。两个生成文件和 `.env` 均由 Git 忽略；生成文件只包含浏览器运行所需的高德 JS 配置与腾讯搜索 Key，高德 Web 服务 Key 和百度 AK 留在 `.env`。[^4]
 
 ## 运行网站
 
-每次运行网站时，在仓库根目录单独执行以下命令：
+使用仓库根目录统一启动脚本时，地图配置会自动生成。单独启动路线网站时，先生成网页配置，再启动静态服务：
 
 ```powershell
 cd .\xuhui_route_builder
-python -m http.server 8123
+.\.venv\Scripts\python.exe .\src\xuhui_route_builder\web_map_config.py --env-file .env --web-root web
+.\.venv\Scripts\python.exe -m http.server 8123
 ```
 
 服务启动后，另开一个 PowerShell 窗口执行：
@@ -71,20 +74,7 @@ Start-Process "http://127.0.0.1:8123/web/"
 
 ## 数据构建配置
 
-浏览已有路线和使用导航只需要上一节的网页配置。重新解析地点、生成路线或刷新数据时，再复制 `.env.example`：
-
-```powershell
-Copy-Item .env.example .env
-```
-
-| 变量 | 用途 |
-| --- | --- |
-| `AMAP_WEB_SERVICE_KEY` | Python 步行和骑行路线生成 |
-| `AMAP_JS_API_KEY` | 网页 JS API Key 的本地记录 |
-| `AMAP_JS_SECURITY_CODE` | 网页安全密钥的本地记录 |
-| `BAIDU_MAP_AK` | OSM 未命中或结果存在歧义时的地点检索兜底 |
-
-地点解析依次使用已验收路线节点、OSM 本地 POI 索引、百度地点检索和百度地理编码。高德负责路径规划和网页地图展示。
+浏览已有路线和使用导航会读取生成后的网页配置。重新解析地点、生成路线或刷新数据时，同一份 `.env` 继续为 Python 提供高德 Web 服务 Key 和百度 AK。地点解析依次使用已验收路线节点、OSM 本地 POI 索引、百度地点检索和百度地理编码；高德负责路径规划和网页地图展示。
 
 ```powershell
 $env:PYTHONPATH="src"

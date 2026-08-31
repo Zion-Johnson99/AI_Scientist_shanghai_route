@@ -13,6 +13,7 @@ import {
 } from "../web/src/route-ui.js";
 import {
   navigationServiceMode,
+  planNavigation,
   poiMarkerLabel,
   resolveUserLocation,
 } from "../web/src/map.js";
@@ -159,6 +160,95 @@ test("跑步和步行使用步行服务，骑行使用骑行服务", () => {
   assert.equal(navigationServiceMode("run"), "walk");
   assert.equal(navigationServiceMode("bike"), "bike");
   assert.throws(() => navigationServiceMode("drive"), /运动类型/);
+});
+
+test("前往起点规划期间保持已选正式路线的完整亮度", async () => {
+  class Overlay {
+    constructor(options) {
+      this.options = { ...options };
+    }
+
+    setOptions(options) {
+      Object.assign(this.options, options);
+    }
+  }
+
+  class LngLat {
+    constructor(lng, lat) {
+      this.lng = lng;
+      this.lat = lat;
+    }
+
+    getLng() { return this.lng; }
+    getLat() { return this.lat; }
+  }
+
+  const selectedLayers = {
+    routeMode: "walk",
+    state: "sporting",
+    halo: new Overlay({ strokeOpacity: 0.9 }),
+    main: new Overlay({ strokeOpacity: 1 }),
+  };
+  const otherLayers = {
+    routeMode: "walk",
+    state: "muted",
+    halo: new Overlay({ strokeOpacity: 0.12 }),
+    main: new Overlay({ strokeOpacity: 0.1 }),
+  };
+  const mapContext = {
+    AMap: {
+      LngLat,
+      Marker: class Marker extends Overlay {},
+      Pixel: class Pixel {
+        constructor(x, y) { this.x = x; this.y = y; }
+      },
+    },
+    amap: {
+      add() {},
+      remove() {},
+    },
+    boundaryRings: [],
+    routeLayers: new Map([
+      ["XH_WALK_SELECTED", selectedLayers],
+      ["XH_WALK_OTHER", otherLayers],
+    ]),
+    navigationService: null,
+    navigation: {
+      state: "sporting",
+      planRevision: 0,
+      serviceRevision: 0,
+      markers: new Map(),
+      points: { origin: null, destination: null },
+      inlineLayers: null,
+    },
+    serviceHooks: {
+      walking: {
+        search(_origin, _destination, callback) {
+          callback("complete", {
+            routes: [{
+              distance: 1200,
+              time: 900,
+              path: [[121.45, 31.19], [121.46, 31.18]],
+              steps: [],
+            }],
+          });
+        },
+      },
+      riding: null,
+    },
+  };
+
+  await planNavigation(mapContext, {
+    routeId: "XH_WALK_SELECTED",
+    routeMode: "walk",
+    origin: { lng_gcj02: 121.45, lat_gcj02: 31.19 },
+    destination: { lng_gcj02: 121.46, lat_gcj02: 31.18 },
+  });
+
+  assert.equal(selectedLayers.state, "sporting");
+  assert.equal(selectedLayers.main.options.strokeOpacity, 1);
+  assert.equal(selectedLayers.halo.options.strokeOpacity, 0.9);
+  assert.equal(otherLayers.state, "muted");
 });
 
 test("推荐位置接受用户主动选择的坐标且不请求设备定位", async () => {

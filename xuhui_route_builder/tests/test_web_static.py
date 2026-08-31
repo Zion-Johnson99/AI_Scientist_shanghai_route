@@ -177,11 +177,13 @@ def test_product_toolbar_owns_the_single_location_mode_environment_and_profile_e
     assert 'id="locationInput" type="search" placeholder="搜索地点"' in toolbar
     assert 'id="locationCurrentButton"' in toolbar
     assert 'id="locationSuggestions"' in toolbar
-    for plugin in ["AMap.AutoComplete", "AMap.PlaceSearch", "AMap.Geolocation"]:
-        assert plugin in html
+    assert "AMap.Geolocation" in html
+    assert "AMap.AutoComplete" not in html
+    assert "AMap.PlaceSearch" not in html
+    assert './local-tencent-config.js' in html
     assert 'class="profile-action__label">个人档案</span>' in toolbar
     assert 'class="map-layer-button__label">图层</span>' in html
-    assert "./styles/recommendation.css?v=20260831-ui-24" in html
+    assert "./styles/recommendation.css?v=20260831-ui-32" in html
     for mode_id, route_mode in [
         ("toolbarWalkMode", "walk"),
         ("toolbarRunMode", "run"),
@@ -266,16 +268,17 @@ def test_toolbar_controls_share_a_46px_alignment_grid() -> None:
     assert "border: 0;" in sport_block
 
 
-def test_location_search_uses_autocomplete_geolocation_and_immediate_nearby_refresh() -> (
+def test_location_search_uses_tencent_suggestions_geolocation_and_nearby_refresh() -> (
     None
 ):
     html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
 
-    assert "AMap.AutoComplete" in html
-    assert "AMap.PlaceSearch" in html
+    assert "AMap.AutoComplete" not in html
+    assert "AMap.PlaceSearch" not in html
     assert "AMap.Geolocation" in html
-    assert "createAmapLocationServices" in main_js
+    assert "createTencentSuggestionSearch" in main_js
+    assert "createLocationServices" in main_js
     assert "createLocationController" in main_js
     assert "locationControls.current" in main_js
     assert "locationServices.suggest" in main_js
@@ -324,12 +327,14 @@ def test_product_toolbar_and_workbench_use_the_komoot_visual_shell() -> None:
     for token in [
         "--surface-toolbar: #ffffff;",
         "--surface-main: #ffffff;",
-        "--surface-brand-soft: #e8edf4;",
-        "--brand-blue: #0b2856;",
-        "--ink: #10233f;",
-        "--muted: #607089;",
-        "--line: rgba(16, 35, 63, 0.12);",
-        "--focus: #197cff;",
+        "--surface-brand-soft: #ede9de;",
+        "--brand-primary: #4f6814;",
+        "--brand-primary-hover: #3f5310;",
+        "--ink: #1e2a24;",
+        "--muted: #66736c;",
+        "--line: rgba(30, 42, 36, 0.12);",
+        "--focus: #81964a;",
+        "--walk: #197cff;",
     ]:
         assert token in css.lower()
     assert ".product-toolbar" in css
@@ -363,6 +368,15 @@ def test_product_toolbar_and_workbench_use_the_komoot_visual_shell() -> None:
     assert "border: 0;" in sidebar_block
     assert "margin: 0;" in map_block
     assert "border-radius: 0;" in map_block
+
+
+def test_xh_logo_uses_the_approved_komoot_olive_palette() -> None:
+    logo = (WEB_ROOT / "xh-logo.svg").read_text(encoding="utf-8")
+
+    assert logo.count("#4F6814") == 2
+    assert "#B8C88D" in logo
+    assert "#0b2856" not in logo.lower()
+    assert "#197cff" not in logo.lower()
 
 
 def test_route_detail_uses_a_vertical_shell_with_the_action_at_the_bottom() -> None:
@@ -443,7 +457,8 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260831-ui-24"
+    release = "v=20260831-ui-32"
+    assert html.count(f"./xh-logo.svg?{release}") == 2
     assert f"./styles/main.css?{release}" in html
     assert f"./styles/recommendation.css?{release}" in html
     assert f"./src/main.js?{release}" in html
@@ -455,6 +470,12 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     assert f"./recommendation-api.js?{release}" in main_js
     assert f"./recommendation-ui.js?{release}" in main_js
     assert f"./profile-store.js?{release}" in main_js
+    recommendation_ui_js = (WEB_ROOT / "src" / "recommendation-ui.js").read_text(
+        encoding="utf-8"
+    )
+    assert f"./route-card.js?{release}" in recommendation_ui_js
+    route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
+    assert f"./route-card.js?{release}" in route_ui_js
     assert "DATA_RELEASE" in data_loader_js
     assert 'cache: "no-store"' in data_loader_js
     for data_path in [
@@ -546,9 +567,9 @@ def test_product_shell_separates_recommendation_from_compact_route_browsing() ->
         "recommendationTab",
         "browseTab",
         "recommendationView",
-        "zoneFilter",
         "sportModeTabs",
         "distanceFilter",
+        "preferenceFilter",
         "browseRouteList",
         "browseRouteEmpty",
     ]:
@@ -557,6 +578,7 @@ def test_product_shell_separates_recommendation_from_compact_route_browsing() ->
     for removed_id in [
         "routeSelectionTab",
         "routeNavigationTab",
+        "zoneFilter",
         "keywordInput",
         "preferCoffee",
         "preferToilet",
@@ -586,6 +608,10 @@ def test_product_shell_separates_recommendation_from_compact_route_browsing() ->
     assert "routeShapeCounts" not in route_ui_js
     assert "30 条" not in html
     assert "90 条城市运动候选路线" not in html
+    assert "休息与补给" in html
+    assert '<option value="coffee">咖啡</option>' in html
+    assert '<option value="toilet">公共厕所</option>' in html
+    assert '<option value="convenience">便利补给</option>' in html
 
 
 def test_product_tabs_and_sport_filters_expose_complete_accessibility_state() -> None:
@@ -621,12 +647,16 @@ def test_small_screen_uses_full_map_with_overlay_drawer_and_visible_action() -> 
 
 
 def test_preference_filters_use_real_nearby_pois_only() -> None:
+    html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
     route_ui_js = (WEB_ROOT / "src" / "route-ui.js").read_text(encoding="utf-8")
 
+    assert 'id="preferenceFilter"' in html
     assert "PREFERENCE_KEYWORDS" not in route_ui_js
     assert "preferences.every((preference) => hits.has(preference))" in route_ui_js
     assert "route.nearby_pois" in route_ui_js
     assert "route.preference_hits" not in route_ui_js
+    assert 'controls.preferenceFilter.value === "all"' in route_ui_js
+    assert "[controls.preferenceFilter.value]" in route_ui_js
 
 
 def test_route_browser_uses_shared_cards_and_updates_preview_with_filters() -> None:
@@ -646,10 +676,11 @@ def test_route_browser_uses_shared_cards_and_updates_preview_with_filters() -> N
     assert "renderBrowseRouteList" in route_ui_js
     assert "initializeRouteSelection" in route_ui_js
     assert (
-        'controls.zoneFilter.addEventListener("change", refreshPreview)' in route_ui_js
+        'controls.distanceFilter.addEventListener("change", refreshPreview)'
+        in route_ui_js
     )
     assert (
-        'controls.distanceFilter.addEventListener("change", refreshPreview)'
+        'controls.preferenceFilter.addEventListener("change", refreshPreview)'
         in route_ui_js
     )
     assert "onPreviewRoutes(routes, onSelectRoute, onPreviewRoute)" in main_js
@@ -679,7 +710,7 @@ def test_map_uses_route_shape_and_real_waypoint_coordinates() -> None:
     map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
     dock_js = (WEB_ROOT / "src" / "route-dock.js").read_text(encoding="utf-8")
 
-    assert 'bike: { color: "#7C3AED"' in map_js
+    assert 'bike: { color: "#6F5AB7"' in map_js
     assert '["strict_loop", "loop"].includes(properties.route_shape)' in map_js
     assert 'label: isLoop ? "A/B" : "A"' in map_js
     assert "ordered_nodes" in dock_js
@@ -711,7 +742,7 @@ def test_selected_route_layer_stays_above_the_xuhui_boundary() -> None:
     assert "zIndex: active ? 100 : 70" in route_block
 
 
-def test_xuhui_boundary_uses_a_visible_logo_blue_outline() -> None:
+def test_xuhui_boundary_uses_a_visible_neutral_green_outline() -> None:
     map_js = (WEB_ROOT / "src" / "map.js").read_text(encoding="utf-8")
     boundary_block = map_js[
         map_js.index("export function drawBoundary") : map_js.index(
@@ -719,7 +750,7 @@ def test_xuhui_boundary_uses_a_visible_logo_blue_outline() -> None:
         )
     ]
 
-    assert 'strokeColor: "#0b2856"' in boundary_block
+    assert 'strokeColor: "#5B6C63"' in boundary_block
     assert "strokeWeight: 3" in boundary_block
     assert "strokeOpacity: 0.78" in boundary_block
     assert "fillOpacity: 0.04" in boundary_block

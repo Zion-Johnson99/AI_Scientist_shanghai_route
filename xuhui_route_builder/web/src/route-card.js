@@ -87,16 +87,19 @@ export function createRouteCard(model, { onSelect, onPreview } = {}) {
   topline.append(mode);
 
   const metrics = element("div", "route-card__metrics");
+  const travelMetrics = element("div", "route-card__metrics-travel");
   body.append(
     topline,
     element("strong", "route-card__name", model.routeName),
     metrics,
   );
-  metrics.append(
+  travelMetrics.append(
     createMetric("duration", model.durationText),
     element("span", "route-card__metric-separator", " · "),
     createMetric("distance", model.distanceText),
-    element("span", "route-card__metric-separator", " · "),
+  );
+  metrics.append(
+    travelMetrics,
     createMetric("pm25", model.pm25Text, createAirIcon()),
   );
   card.append(body);
@@ -160,7 +163,7 @@ function pm25MetricOf(route, environment) {
 
 function formatDuration(value) {
   const duration = Number(value);
-  return Number.isFinite(duration) && duration > 0 ? `${Math.round(duration)} 分钟` : "时间待确认";
+  return Number.isFinite(duration) && duration > 0 ? `${Math.round(duration)} min` : "时间待确认";
 }
 
 function formatDistance(value) {

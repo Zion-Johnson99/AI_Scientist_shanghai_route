@@ -18,7 +18,7 @@ _徐汇区本地路线原型、多源环境数据与个性化推荐说明，更�
 
 ## 本地启动完整应用
 
-首次使用前，分别按[评价与千问服务说明](./evaluation_model_qwen/README.md)和[徐汇路线构建器说明](./xuhui_route_builder/README.md)完成依赖与高德 Key 配置。
+首次使用前，分别按[评价与千问服务说明](./evaluation_model_qwen/README.md)和[徐汇路线构建器说明](./xuhui_route_builder/README.md)完成依赖与地图 Key 配置。
 
 日常启动在仓库根目录执行一条命令。默认使用本地 Python 排序，不消耗千问额度。
 
@@ -48,7 +48,7 @@ bash ./start-local-app.sh --use-qwen
 
 两个脚本的启动职责和端口一致，虚拟环境路径分别使用 Windows 的 `.venv\Scripts\` 与 macOS/Linux 的 `.venv/bin/`。每台机器需独立安装项目依赖和配置本地 `.env`。
 
-脚本会同时管理环境数据刷新、推荐 API 和静态网页，通过健康检查后自动打开 [http://127.0.0.1:8123/web/](http://127.0.0.1:8123/web/)。启动时按数据新鲜度选择刷新层级：天气和预警临近 15 分钟有效期时执行 `weather`，AQI 与当前 PM2.5 超过 1 小时执行 `hourly`，花粉、噪声和生活指数失效时执行 `daily`。运行期间每 30 分钟复查一次，每次刷新后也会间隔 30 分钟再尝试；命令窗口只显示本次是否更新及数据更新时间。单次上游更新失败会保留上一份数据并在命令窗口告警。
+脚本会先从 `xuhui_route_builder/.env` 生成已忽略的本地网页地图配置，再同时管理环境数据刷新、推荐 API 和静态网页，通过健康检查后自动打开 [http://127.0.0.1:8123/web/](http://127.0.0.1:8123/web/)。启动时按数据新鲜度选择刷新层级：天气和预警临近 15 分钟有效期时执行 `weather`，AQI 与当前 PM2.5 超过 1 小时执行 `hourly`，花粉、噪声和生活指数失效时执行 `daily`。运行期间每 30 分钟复查一次，每次刷新后也会间隔 30 分钟再尝试；命令窗口只显示本次是否更新及数据更新时间。单次上游更新失败会保留上一份数据并在命令窗口告警。
 
 命令窗口保持运行；按 `Ctrl+C` 会统一停止由本次命令启动的服务。切换本地或千问模式前，先结束上一条启动命令。千问鉴权、限流、网络或输出校验异常时，推荐服务会回退到本地 Python 排序。
 
@@ -80,7 +80,7 @@ cd .\weather_api_data
 
 ## 隐私边界
 
-真实 Key、token 和成员环境配置仅保存在本机。`weather_api_data/.env`、`weather_api_data/runtime/`、`evaluation_model_qwen/.env`、`evaluation_model_qwen/runtime/`、`xuhui_route_builder/web/local-amap-config.js` 和 `xuhui_route_builder/data/web/environment_dashboard.json` 均由 Git 忽略。凭据不写入提交、README、Issue、PR、日志或网页数据包。
+真实 Key、token 和成员环境配置仅保存在本机。`weather_api_data/.env`、`weather_api_data/runtime/`、`evaluation_model_qwen/.env`、`evaluation_model_qwen/runtime/`、`xuhui_route_builder/.env`、`xuhui_route_builder/web/local-amap-config.js`、`xuhui_route_builder/web/local-tencent-config.js` 和 `xuhui_route_builder/data/web/environment_dashboard.json` 均由 Git 忽略。凭据不写入提交、README、Issue、PR、日志或网页数据包。
 
 ## 验证
 

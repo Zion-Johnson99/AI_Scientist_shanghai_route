@@ -1,9 +1,8 @@
-import { createRouteCard, routeCardModel } from "./route-card.js";
+import { createRouteCard, routeCardModel } from "./route-card.js?v=20260831-ui-32";
 
 export function renderRoutePlanner(catalog, options) {
   const controls = getControls();
   updateModeCounts(catalog, controls);
-  populateZoneFilter(controls.zoneFilter, catalog);
 
   const state = {
     selectedRouteId: "",
@@ -127,8 +126,8 @@ function bindSelectionControls(catalog, state, controls, options) {
   const refreshPreview = () => {
     initializeRouteSelection(catalog, state, controls, options);
   };
-  controls.zoneFilter.addEventListener("change", refreshPreview);
   controls.distanceFilter.addEventListener("change", refreshPreview);
+  controls.preferenceFilter.addEventListener("change", refreshPreview);
   controls.routeList.addEventListener("scroll", () => {
     state.listScrollTop = controls.routeList.scrollTop;
   });
@@ -239,11 +238,11 @@ function renderSelectionPreview(routes, catalog, state, controls, options) {
 
 function readSelectionFilters(controls) {
   return {
-    zone: controls.zoneFilter.value,
+    zone: "all",
     keyword: "",
     mode: controls.sportModeTabs.find((tab) => tab.classList.contains("active"))?.dataset.routeMode || "walk",
     distance: controls.distanceFilter.value,
-    preferences: [],
+    preferences: controls.preferenceFilter.value === "all" ? [] : [controls.preferenceFilter.value],
   };
 }
 
@@ -332,24 +331,14 @@ function routePriority(route) {
 function getControls() {
   return {
     selectionView: document.querySelector("#routeSelectionView"),
-    zoneFilter: document.querySelector("#zoneFilter"),
     sportModeTabs: [...document.querySelectorAll("#sportModeTabs [data-route-mode]")],
     distanceFilter: document.querySelector("#distanceFilter"),
+    preferenceFilter: document.querySelector("#preferenceFilter"),
     resetButton: document.querySelector("#resetButton"),
     routeOptionCount: document.querySelector("#routeOptionCount"),
     routeList: document.querySelector("#browseRouteList"),
     routeEmpty: document.querySelector("#browseRouteEmpty"),
   };
-}
-
-function populateZoneFilter(select, catalog) {
-  const zones = [...new Set(catalog.map((route) => route.region_zone).filter(Boolean))].sort((a, b) => a.localeCompare(b, "zh-CN"));
-  for (const zone of zones) {
-    const option = document.createElement("option");
-    option.value = zone;
-    option.textContent = zone;
-    select.appendChild(option);
-  }
 }
 
 function updateModeCounts(catalog, controls) {
@@ -373,13 +362,13 @@ function routeDistanceBand(route) {
 }
 
 function resetSelectionControls(controls) {
-  controls.zoneFilter.value = "all";
   controls.sportModeTabs.forEach((tab, index) => {
     const active = index === 0;
     tab.classList.toggle("active", active);
     tab.setAttribute("aria-pressed", String(active));
   });
   controls.distanceFilter.value = "all";
+  controls.preferenceFilter.value = "all";
 }
 
 function findRoute(catalog, routeId) {

@@ -74,28 +74,54 @@ test("共起点卡片低倍局部堆叠，高倍放大后展开为可点击间�
   ]);
 });
 
-test("地图预览使用统一淡蓝连续线、无方向箭头，卡片点击回传路线", () => {
+test("地图预览按运动模式配色、无方向箭头，卡片携带模式并可点击", () => {
   const previousDocument = globalThis.document;
   globalThis.document = createDocumentStub();
   try {
     const { mapContext, added, fitViews } = createMapContext();
     const selected = [];
+    const semanticRoutes = [
+      previewRoutes[0],
+      {
+        ...previewRoutes[1],
+        properties: { ...previewRoutes[1].properties, route_mode: "run" },
+      },
+      {
+        ...previewRoutes[1],
+        properties: {
+          ...previewRoutes[1].properties,
+          route_id: "XH_BIKE_0001",
+          route_name: "骑行线",
+          route_mode: "bike",
+        },
+      },
+    ];
 
-    showRoutePreviews(mapContext, previewRoutes, (routeId) => selected.push(routeId));
+    showRoutePreviews(mapContext, semanticRoutes, (routeId) => selected.push(routeId));
 
     const lines = added.filter((overlay) => overlay instanceof mapContext.AMap.Polyline);
     const markers = added.filter((overlay) => overlay instanceof mapContext.AMap.Marker);
-    assert.equal(lines.length, previewRoutes.length);
-    assert.equal(markers.length, previewRoutes.length);
+    assert.equal(lines.length, semanticRoutes.length);
+    assert.equal(markers.length, semanticRoutes.length);
     assert.deepEqual(markers.map((marker) => marker.options.position.map(roundCoordinate)), [
       [121.440378, 31.208333],
       [121.440378, 31.208333],
+      [121.440378, 31.208333],
     ]);
-    assert.ok(lines.every((line) => line.options.strokeColor === "#3d91ff"));
+    assert.deepEqual(lines.map((line) => line.options.strokeColor), [
+      "#197cff",
+      "#D45A50",
+      "#6F5AB7",
+    ]);
     assert.ok(lines.every((line) => line.options.strokeWeight === 4));
     assert.ok(lines.every((line) => line.options.strokeOpacity === 0.34));
     assert.ok(lines.every((line) => line.options.showDir === false));
     assert.deepEqual(fitViews.at(-1)?.overlays, lines);
+    assert.deepEqual(markers.map((marker) => marker.options.content.dataset.routeMode), [
+      "walk",
+      "run",
+      "bike",
+    ]);
 
     markers[0].options.content.click();
     assert.deepEqual(selected, ["XH_WALK_0001"]);
@@ -189,7 +215,7 @@ test("推荐与浏览切换时关闭详情并保留各自入口状态", () => {
   assert.doesNotMatch(main, /if\s*\(viewChanged\)[\s\S]*?restartRecommendation\(\)/);
 });
 
-test("地图路线卡恢复原始尺寸、字体和距离行", () => {
+test("地图浮动卡保持原始尺寸并按运动图例描边", () => {
   const css = readFileSync(new URL("../web/styles/main.css", import.meta.url), "utf8");
   const cardRule = css.match(/\.amap-route-option\s*\{[^}]+\}/s)?.[0] || "";
   const nameRule = css.match(/\.amap-route-option__name\s*\{[^}]+\}/s)?.[0] || "";
@@ -197,11 +223,17 @@ test("地图路线卡恢复原始尺寸、字体和距离行", () => {
 
   assert.match(cardRule, /min-width:\s*126px/);
   assert.match(cardRule, /max-width:\s*148px/);
-  assert.match(cardRule, /border:\s*1px solid rgba\(61, 145, 255, 0\.38\)/);
+  assert.match(cardRule, /--route-option-accent:\s*var\(--walk\)/);
+  assert.match(cardRule, /border:\s*1px solid color-mix\(in srgb,\s*var\(--route-option-accent\) 42%,\s*transparent\)/);
   assert.match(nameRule, /font-family:\s*"STZhongsong"/);
   assert.match(nameRule, /text-overflow:\s*ellipsis/);
   assert.match(distanceRule, /font-size:\s*11px/);
-  assert.match(distanceRule, /color:\s*var\(--teal\)/);
+  assert.match(distanceRule, /color:\s*var\(--route-option-accent\)/);
+  assert.match(css, /\.amap-route-option\[data-route-mode="walk"\]\s*\{\s*--route-option-accent:\s*var\(--walk\);\s*\}/);
+  assert.match(css, /\.amap-route-option\[data-route-mode="run"\]\s*\{\s*--route-option-accent:\s*var\(--run\);\s*\}/);
+  assert.match(css, /\.amap-route-option\[data-route-mode="bike"\]\s*\{\s*--route-option-accent:\s*var\(--bike\);\s*\}/);
+  assert.match(css, /\.amap-route-option\[data-route-mode="access"\]\s*\{\s*--route-option-accent:\s*var\(--access\);\s*\}/);
+  assert.match(css, /\.amap-route-option::after\s*\{[^}]*background:\s*var\(--route-option-accent\)/s);
   assert.doesNotMatch(css, /\.amap-route-option__meta\s*\{/);
 });
 

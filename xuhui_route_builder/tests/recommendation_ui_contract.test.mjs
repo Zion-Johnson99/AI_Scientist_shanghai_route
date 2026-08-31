@@ -202,7 +202,7 @@ test("首屏本地路线卡使用与详情同源的路线环境数据", () => {
   assert.equal(buildRecommendationViewModel(result).routes[0].pm25Text, "PM2.5 11.2 µg/m³");
 });
 
-test("Komoot 式顶部筛选轨承载七项默认值、弹层与详情状态", () => {
+test("Komoot 式顶部筛选轨只显示七项图标与分类名称", () => {
   const previousDocument = globalThis.document;
   globalThis.document = createDocumentStub();
   try {
@@ -212,18 +212,34 @@ test("Komoot 式顶部筛选轨承载七项默认值、弹层与详情状态", (
 
     const filters = findByClass(filterHost, "recommendation-filters");
     assert.ok(filters);
-    assert.match(filters.textContent, /现在/);
-    assert.match(filters.textContent, /1 km/);
-    assert.match(filters.textContent, /综合均衡/);
-    assert.match(filters.textContent, /5 km 附近/);
-    assert.match(filters.textContent, /不限/);
+    assert.doesNotMatch(filters.textContent, /现在|1 km|综合均衡|5 km 附近|不限/);
     assert.equal(findAllByClass(filters, "recommendation-filter__chip").length, 7);
+    assert.equal(findAllByClass(filters, "recommendation-filter__icon").length, 7);
+    for (const icon of ["time", "distance", "goal", "scope", "route", "rest", "scenery"]) {
+      assert.ok(findByAttribute(filters, "data-filter-icon", icon));
+    }
     assert.equal(findByClass(filters, "recommendation-filters__arrow"), null);
 
     const goalChip = findByAttribute(filters, "aria-label", "设置运动目标");
     goalChip.listeners.click();
     assert.equal(goalChip.attributes["aria-expanded"], "true");
+    const popover = findByClass(filterHost, "recommendation-filter__popover");
+    assert.ok(popover);
+    assert.equal(findByClass(popover, "recommendation-filter__title").textContent, "运动目标");
+    assert.ok(findByAttribute(popover, "aria-label", "关闭运动目标筛选"));
+    assert.ok(findByText(popover, "恢复默认"));
+    assert.ok(findByText(popover, "完成"));
+
+    findByText(popover, "完成").listeners.click();
+    const timeChip = findByAttribute(filterHost, "aria-label", "设置时间");
+    timeChip.listeners.click();
+    findByText(filterHost, "2 小时后").listeners.click();
+    assert.equal(controller.getAnswers().target_time, "plus_2h");
     assert.ok(findByClass(filterHost, "recommendation-filter__popover"));
+    findByText(filterHost, "恢复默认").listeners.click();
+    assert.equal(controller.getAnswers().target_time, "now");
+    findByText(filterHost, "完成").listeners.click();
+    assert.equal(findByClass(filterHost, "recommendation-filter__popover"), null);
 
     controller.setDetailOpen(true);
     assert.ok(String(findByClass(filterHost, "recommendation-filters").className).includes("is-detail-open"));
@@ -488,7 +504,7 @@ test("Komoot 式路线卡以整卡交互，不再创建单独 radio", () => {
     assert.ok(findByClass(second, "route-card__media"));
     assert.ok(findByClass(second, "route-card__placeholder"));
     assert.equal(findByAttribute(second, "role", "radio"), null);
-    assert.match(second.textContent, /14 分钟/);
+    assert.match(second.textContent, /14 min/);
     assert.match(second.textContent, /0.9 km/);
     assert.equal(second.textContent.includes("距离更近"), false);
     assert.equal(second.textContent.includes("路线优势"), false);

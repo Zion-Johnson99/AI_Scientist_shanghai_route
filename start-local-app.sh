@@ -22,7 +22,10 @@ weather_root="$repository_root/weather_api_data"
 api_executable="$evaluation_root/.venv/bin/evaluation-model-qwen-api"
 route_python="$route_root/.venv/bin/python"
 weather_executable="$weather_root/.venv/bin/weather-api-data"
+route_env_file="$route_root/.env"
 weather_env_file="$weather_root/.env"
+route_web_root="$route_root/web"
+web_map_config_script="$route_root/src/xuhui_route_builder/web_map_config.py"
 dashboard_path="$route_root/data/web/environment_dashboard.json"
 runtime_root="$evaluation_root/runtime/local-app"
 api_health_url="http://127.0.0.1:8124/api/v1/health"
@@ -278,6 +281,17 @@ refresh_environment() {
   print_refresh_summary
 }
 
+generate_web_map_config() {
+  if [[ ! -f "$route_env_file" ]]; then
+    echo "缺少 xuhui_route_builder/.env，无法生成网页地图配置。" >&2
+    return 1
+  fi
+  "$route_python" "$web_map_config_script" \
+    --env-file "$route_env_file" \
+    --web-root "$route_web_root"
+  echo "网页地图配置已更新。"
+}
+
 http_ready() {
   "$route_python" - "$1" <<'PY' >/dev/null 2>&1
 import sys
@@ -352,6 +366,7 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
+generate_web_map_config
 refresh_environment "startup"
 
 offline_mode=1

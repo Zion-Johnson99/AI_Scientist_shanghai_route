@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>徐汇户外健康地图</title>
-    <link rel="icon" href="./xh-logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="./xh-logo.svg?v=20260831-ui-32" type="image/svg+xml" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/qweather-icons@1.8.0/font/qweather-icons.css" />
-    <link rel="stylesheet" href="./styles/main.css?v=20260831-ui-24" />
-    <link rel="stylesheet" href="./styles/recommendation.css?v=20260831-ui-24" />
+    <link rel="stylesheet" href="./styles/main.css?v=20260831-ui-32" />
+    <link rel="stylesheet" href="./styles/recommendation.css?v=20260831-ui-32" />
     <script src="./local-amap-config.js"></script>
     <script src="./local-tencent-config.js"></script>
   </head>
@@ -15,7 +15,7 @@
     <main class="app-shell">
       <header class="product-toolbar" aria-label="路线规划工具栏">
         <div class="brand-lockup">
-          <img class="brand-logo" src="./xh-logo.svg" alt="" width="34" height="34" />
+          <img class="brand-logo" src="./xh-logo.svg?v=20260831-ui-32" alt="" width="34" height="34" />
           <h1>徐汇户外健康地图</h1>
         </div>
         <div class="product-toolbar__actions">
@@ -152,15 +152,20 @@
           </div>
           <div class="controls browse-controls">
             <div class="field-grid two-columns">
-              <label>片区
-                <select id="zoneFilter"><option value="all">全部片区</option></select>
-              </label>
               <label>距离
                 <select id="distanceFilter">
                   <option value="all">全部距离</option>
                   <option value="short">短线</option>
                   <option value="medium">中线</option>
                   <option value="long">长线</option>
+                </select>
+              </label>
+              <label>休息与补给
+                <select id="preferenceFilter">
+                  <option value="all">全部休息与补给</option>
+                  <option value="coffee">咖啡</option>
+                  <option value="toilet">公共厕所</option>
+                  <option value="convenience">便利补给</option>
                 </select>
               </label>
             </div>
@@ -251,6 +256,6 @@
         });
       })();
     </script>
-    <script type="module" src="./src/main.js?v=20260831-ui-24"></script>
+    <script type="module" src="./src/main.js?v=20260831-ui-32"></script>
   </body>
 </html>

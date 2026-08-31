@@ -29,11 +29,11 @@ test("三种运动方式使用统一圆润填充 SVG 与说明", () => {
   assert.match(html, /<b>骑行<\/b><small>铺装道路与城市骑游<\/small>/);
 });
 
-test("环境摘要为深蓝色圆角长条并保留半透明分隔线", () => {
+test("环境摘要为棕橄榄绿圆角长条并保留半透明白色分隔线", () => {
   const legacyToggleStart = css.indexOf(".environment-panel:not(.is-expanded) .environment-toggle {");
   const legacyToggleBlock = css.slice(legacyToggleStart, css.indexOf("}", legacyToggleStart));
 
-  assert.match(css, /\.product-toolbar \.environment-toggle\s*\{[\s\S]*?border:\s*0;[\s\S]*?border-radius:\s*16px;[\s\S]*?color:\s*#fff;[\s\S]*?background:\s*var\(--brand-blue\);/);
+  assert.match(css, /\.product-toolbar \.environment-toggle\s*\{[\s\S]*?border:\s*0;[\s\S]*?border-radius:\s*16px;[\s\S]*?color:\s*#fff;[\s\S]*?background:\s*var\(--brand-primary\);/);
   assert.match(css, /\.product-toolbar \.environment-toggle\s*\{[^}]*padding:\s*0 24px 0 12px;/);
   assert.doesNotMatch(legacyToggleBlock, /padding:/);
   assert.match(css, /\.environment-toggle__item \+ \.environment-toggle__item\s*\{[\s\S]*?border-left:\s*1px solid rgba\(255, 255, 255,/);
@@ -130,12 +130,15 @@ test("图层面板默认选择健康地图并提供标准地图备用入口", ()
   assert.match(main, /candidate\.setAttribute\("aria-pressed", String\(selected\)\)/);
 });
 
-test("图例将蓝色步行路线放在跑步路线之前", () => {
+test("图例使用步行蓝、跑步红、骑行紫和接驳棕橙", () => {
   const legendStart = html.indexOf('class="map-legend__routes"');
   const legendEnd = html.indexOf("</div>", legendStart);
   const legend = html.slice(legendStart, legendEnd);
 
   assert.match(css, /--walk:\s*#197cff/i);
+  assert.match(css, /--run:\s*#D45A50/i);
+  assert.match(css, /--bike:\s*#6F5AB7/i);
+  assert.match(css, /--access:\s*#C9872F/i);
   assert.ok(legend.indexOf("legend-walk") < legend.indexOf("legend-run"));
   assert.match(legend, /legend-walk[^>]*><\/i>步行/);
 });

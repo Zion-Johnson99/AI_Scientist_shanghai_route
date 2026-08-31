@@ -1,10 +1,10 @@
 import { routeSemanticWaypoints } from "./route-dock.js";
 
 const ROUTE_STYLES = {
-  run: { color: "#ff5d5d", weight: 4 },
+  run: { color: "#D45A50", weight: 4 },
   walk: { color: "#197cff", weight: 4 },
-  bike: { color: "#7C3AED", weight: 4 },
-  access: { color: "#ff9f1a", weight: 4 },
+  bike: { color: "#6F5AB7", weight: 4 },
+  access: { color: "#C9872F", weight: 4 },
 };
 
 const DEFAULT_BASE_MAP_MODE = "health";
@@ -165,10 +165,10 @@ export function drawBoundary(mapContext, boundary) {
     getPolygon: (_feature, lnglats) =>
       new AMap.Polygon({
         path: lnglats,
-        strokeColor: "#0b2856",
+        strokeColor: "#5B6C63",
         strokeWeight: 3,
         strokeOpacity: 0.78,
-        fillColor: "#0b2856",
+        fillColor: "#5B6C63",
         fillOpacity: 0.04,
         bubble: true,
         zIndex: 30,
@@ -202,16 +202,21 @@ export function showRoutePreviews(
     }
 
     const properties = route.properties || {};
+    const style = routeStyle(properties.route_mode);
     const line = new mapContext.AMap.Polyline({
       path,
-      strokeColor: "#3d91ff",
+      strokeColor: style.color,
       strokeWeight: 4,
       strokeOpacity: 0.34,
       lineJoin: "round",
       lineCap: "round",
       showDir: false,
       zIndex: 64,
-      extData: { routeId: properties.route_id, layerRole: "preview" },
+      extData: {
+        routeId: properties.route_id,
+        routeMode: properties.route_mode,
+        layerRole: "preview",
+      },
     });
     mapContext.amap.add(line);
     line.__routeId = properties.route_id;
@@ -753,10 +758,12 @@ function createRouteMarker(mapContext, spec) {
 
 function createRoutePreviewMarker(mapContext, route, position, onSelectRoute, onPreviewRoute) {
   const model = routePreviewCardModel(route);
+  const routeMode = route?.properties?.route_mode || route?.route_mode || "walk";
   const button = document.createElement("button");
   button.type = "button";
   button.className = "amap-route-option";
   button.dataset.routeId = model.routeId;
+  button.dataset.routeMode = routeMode;
   button.title = model.fullName;
   button.setAttribute("aria-label", model.ariaLabel);
 
@@ -782,7 +789,7 @@ function createRoutePreviewMarker(mapContext, route, position, onSelectRoute, on
     anchor: "bottom-center",
     offset: new mapContext.AMap.Pixel(0, -8),
     zIndex: 92,
-    extData: { routeId: model.routeId, layerRole: "preview-option" },
+    extData: { routeId: model.routeId, routeMode, layerRole: "preview-option" },
   });
   marker.__routeId = model.routeId;
   marker.__routePreviewContent = button;
@@ -1189,7 +1196,7 @@ function createServiceHooks(AMap, amap) {
 
 function previewSportRoute(mapContext, selectedRouteId) {
   for (const [routeId, layers] of mapContext.routeLayers.entries()) {
-    setRouteLayerState(layers, routeId === selectedRouteId ? "preview" : "muted");
+    setRouteLayerState(layers, routeId === selectedRouteId ? "sporting" : "muted");
   }
 }
 
