@@ -10,6 +10,7 @@ import {
   createProfileDialog,
   createRecommendationUI,
 } from "../web/src/recommendation-ui.js";
+import { routeMediaFor } from "../web/src/route-media.js";
 
 const questionnaire = {
   route_modes: [{ value: "walk", label: "步行" }, { value: "run", label: "跑步" }],
@@ -936,6 +937,45 @@ test("聊天路线卡点击后保持聊天态并触发统一详情", async () =>
   }
 });
 
+test("千问最终推荐卡封面破图后回退路线图片占位", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const routeId = "XH_WALK_0001";
+    const media = routeMediaFor(routeId);
+    assert.ok(media.cover, `${routeId} 应作为千问推荐卡封面样例`);
+
+    const result = resultFixture("ok");
+    result.final_routes[0].route.route.route_id = routeId;
+    result.final_routes[0].route.route.route_name = "西岸油罐艺术短线";
+    const container = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async () => ({ reply: "为你找到三条路线。", ready: true, preference_patch: {} }),
+      onRecommend: async () => result,
+    });
+    controller.openChat();
+    findByAttribute(container, "aria-label", "描述路线需求").listeners.input({ target: { value: "推荐路线" } });
+    await findByClass(container, "recommendation-chat__composer").listeners.submit({ preventDefault() {} });
+
+    const card = findAllByClass(container, "recommendation-chat__route-card")[0];
+    const image = findByTag(card, "IMG");
+    assert.ok(image, "千问最终推荐卡应渲染路线封面");
+    assert.equal(image.attributes.src, media.cover);
+    assert.equal(typeof image.listeners.error, "function");
+    image.listeners.error();
+    assert.equal(findByTag(card, "IMG"), null);
+    const fallback = findByClass(card, "recommendation-chat__media-label");
+    assert.ok(fallback, "破图后应恢复路线图片占位");
+    assert.equal(fallback.textContent, "路线照片");
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
 test("千问 route_mode 意图补丁自动切换运动方式及默认距离", async () => {
   const previousDocument = globalThis.document;
   globalThis.document = createDocumentStub();
@@ -1438,4 +1478,13 @@ function findAllByClass(node, className, matches = []) {
   if (String(node.className || "").split(/\s+/).includes(className)) matches.push(node);
   for (const child of node.children || []) findAllByClass(child, className, matches);
   return matches;
+}
+
+function findByTag(node, tagName) {
+  if (node.tagName === tagName) return node;
+  for (const child of node.children || []) {
+    const found = findByTag(child, tagName);
+    if (found) return found;
+  }
+  return null;
 }

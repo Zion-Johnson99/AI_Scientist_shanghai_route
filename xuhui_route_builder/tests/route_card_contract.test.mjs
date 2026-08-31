@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { createRouteCard, routeCardModel } from "../web/src/route-card.js";
@@ -48,23 +49,47 @@ test("PM2.5 缺失和过期状态不展示伪精度", () => {
   }).pm25Text, "PM2.5 数据更新中");
 });
 
-test("媒体映射返回副本，未配置路线保持空媒体", () => {
+test("媒体映射覆盖 90 条正式路线并保留固定三图槽位", () => {
+  const catalog = JSON.parse(readFileSync(
+    new URL("../data/web/route_catalog.json", import.meta.url),
+    "utf8",
+  ));
+  const routeIds = catalog.map((route) => route.route_id).sort();
+  const mediaRouteIds = Object.keys(ROUTE_MEDIA).sort();
+
+  assert.equal(routeIds.length, 90);
+  assert.deepEqual(mediaRouteIds, routeIds);
+  for (const routeId of routeIds) {
+    const configured = ROUTE_MEDIA[routeId];
+    const routePaths = [];
+    assert.deepEqual(Object.keys(configured).sort(), ["cover", "gallery"], `${routeId} 媒体结构不固定`);
+    assert.equal(configured.gallery.length, 2, `${routeId} 需保留 context/detail 两个槽位`);
+    for (const path of [configured.cover, ...configured.gallery]) {
+      assert.ok(path === null || typeof path === "string", `${routeId} 媒体槽位只允许本地路径或 null`);
+      if (path === null) continue;
+      assert.match(path, /^\.?\/assets\/routes\/[^\s]+$/, `${routeId} 应使用 web/assets/routes 本地路径`);
+      routePaths.push(path);
+    }
+    assert.equal(new Set(routePaths).size, routePaths.length, `${routeId} 的三个媒体槽位不应重复`);
+  }
+});
+
+test("媒体查询返回副本并保留 gallery 空槽位", () => {
   assert.deepEqual(routeMediaFor("UNKNOWN"), { cover: null, gallery: [] });
-  assert.deepEqual(ROUTE_MEDIA, {});
 
   const mediaMap = {
     XH_WALK_0001: {
       cover: "/assets/routes/walk-1-cover.webp",
-      gallery: ["/assets/routes/walk-1-a.webp", "", "/assets/routes/walk-1-b.webp"],
+      gallery: ["/assets/routes/walk-1-context.webp", ""],
     },
   };
   const media = routeMediaFor("XH_WALK_0001", mediaMap);
   assert.deepEqual(media, {
     cover: "/assets/routes/walk-1-cover.webp",
-    gallery: ["/assets/routes/walk-1-a.webp", "/assets/routes/walk-1-b.webp"],
+    gallery: ["/assets/routes/walk-1-context.webp", null],
   });
   media.gallery.push("changed");
-  assert.equal(mediaMap.XH_WALK_0001.gallery.length, 3);
+  assert.equal(mediaMap.XH_WALK_0001.gallery.length, 2);
 });
 
 test("整张卡承担点击与键盘选择，不创建 radio", () => {
@@ -132,7 +157,7 @@ test("有封面时渲染图片，缺图时保留方形媒体占位", () => {
   const previousDocument = globalThis.document;
   globalThis.document = createDocumentStub();
   try {
-    const placeholderCard = createRouteCard(routeCardModel(browseRoute));
+    const placeholderCard = createRouteCard(routeCardModel(browseRoute, { mediaMap: {} }));
     assert.ok(findByClass(placeholderCard, "route-card--placeholder"));
     assert.ok(findByClass(placeholderCard, "route-card__media"));
     assert.ok(findByClass(placeholderCard, "route-card__placeholder"));
@@ -147,6 +172,11 @@ test("有封面时渲染图片，缺图时保留方形媒体占位", () => {
     const image = findByTag(imageCard, "IMG");
     assert.equal(image.attributes.src, "/route.webp");
     assert.equal(image.attributes.alt, "西岸油罐艺术短线");
+
+    image.dispatch("error", {});
+    assert.equal(findByTag(imageCard, "IMG"), null);
+    assert.ok(findByClass(imageCard, "route-card__media--placeholder"));
+    assert.ok(findByClass(imageCard, "route-card__placeholder"));
   } finally {
     globalThis.document = previousDocument;
   }
@@ -194,6 +224,10 @@ class NodeStub {
 
   append(...children) {
     this.children.push(...children);
+  }
+
+  replaceChildren(...children) {
+    this.children = [...children];
   }
 
   addEventListener(type, handler) {

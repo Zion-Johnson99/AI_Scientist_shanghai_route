@@ -1,5 +1,5 @@
 import { normalizeHealthProfile } from "./profile-store.js";
-import { createRouteCard, routeCardModel } from "./route-card.js?v=20260831-ui-33";
+import { createRouteCard, routeCardModel } from "./route-card.js?v=20260831-ui-34";
 
 export const DEFAULT_RECOMMENDATION_LOCATION = Object.freeze({
   label: "上海交通大学徐汇校区",
@@ -1045,6 +1045,9 @@ export function createRecommendationUI({
       image.setAttribute("src", model.media.cover);
       image.setAttribute("alt", model.routeName);
       image.setAttribute("loading", "lazy");
+      image.addEventListener("error", () => {
+        media.replaceChildren(element("span", "recommendation-chat__media-label", "路线照片"));
+      });
       media.append(image);
     } else {
       media.append(element("span", "recommendation-chat__media-label", "路线照片"));

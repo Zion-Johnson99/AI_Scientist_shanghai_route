@@ -9,6 +9,7 @@ import {
   buildRouteDockSource,
   createRouteDock,
 } from "../web/src/route-dock.js";
+import { routeMediaFor } from "../web/src/route-media.js";
 import { clearRouteResults, showRouteResults, showSingleRoute } from "../web/src/map.js";
 
 const sampleRoute = {
@@ -206,6 +207,46 @@ test("createRouteDock.show 以单页参数展示千问短优点与建议", () =>
     nodes["[data-dock-close]"].listeners.click();
     assert.deepEqual(closed, [{ source: "recommendation", routeId: "XH_RUN_0001" }]);
     assert.equal(root.hidden, true);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("详情画廊按 cover、context、detail 排列并在破图后回退占位", () => {
+  const previousDocument = globalThis.document;
+  const { document, nodes } = createDockDocumentStub();
+  globalThis.document = document;
+  try {
+    const routeId = "XH_WALK_0001";
+    const media = routeMediaFor(routeId);
+    const expectedPaths = [media.cover, media.gallery[0], media.gallery[1]];
+    assert.equal(media.gallery.length, 2);
+    assert.ok(expectedPaths.every(Boolean), `${routeId} 应作为三图齐全的详情顺序样例`);
+
+    const dock = createRouteDock({ appendChild() {} });
+    dock.show({
+      route: {
+        ...sampleRoute,
+        properties: {
+          ...sampleRoute.properties,
+          route_id: routeId,
+          route_name: "西岸油罐艺术短线",
+        },
+      },
+      environment: sampleEnvironment,
+      source: "browse",
+    });
+
+    const gallery = nodes["[data-dock-gallery]"];
+    assert.deepEqual(gallery.children.map((item) => item.tagName), ["IMG", "IMG", "IMG"]);
+    assert.deepEqual(gallery.children.map((item) => item.src), expectedPaths);
+
+    const failedImage = gallery.children[1];
+    assert.equal(typeof failedImage.listeners.error, "function");
+    failedImage.listeners.error();
+    assert.equal(gallery.children[1].tagName, "DIV");
+    assert.equal(gallery.children[1].className, "route-dock__gallery-placeholder");
+    assert.equal(gallery.children[1].attributes["aria-label"], "路线图片待补充");
   } finally {
     globalThis.document = previousDocument;
   }
@@ -596,15 +637,16 @@ function createDockDocumentStub() {
     activeElement: null,
     createElement(tagName) {
       if (tagName === "section") return root;
-      return elementStub();
+      return elementStub({}, tagName);
     },
     createTextNode(value) { return { textContent: value }; },
   };
   return { document, root, nodes };
 }
 
-function elementStub(dataset = {}) {
+function elementStub(dataset = {}, tagName = "") {
   return {
+    tagName: tagName.toUpperCase(),
     dataset,
     disabled: false,
     textContent: "",
@@ -614,7 +656,17 @@ function elementStub(dataset = {}) {
     setAttribute(name, value) { this.attributes[name] = value; },
     listeners: {},
     addEventListener(name, listener) { this.listeners[name] = listener; },
-    append(...children) { this.children.push(...children); },
+    append(...children) {
+      children.forEach((child) => { child.parentElement = this; });
+      this.children.push(...children);
+    },
+    replaceWith(...children) {
+      const index = this.parentElement?.children.indexOf(this) ?? -1;
+      if (index < 0) return;
+      children.forEach((child) => { child.parentElement = this.parentElement; });
+      this.parentElement.children.splice(index, 1, ...children);
+      this.parentElement = null;
+    },
   };
 }
 
@@ -622,7 +674,10 @@ function listStub() {
   return {
     children: [],
     replaceChildren() { this.children = []; },
-    append(...children) { this.children.push(...children); },
+    append(...children) {
+      children.forEach((child) => { child.parentElement = this; });
+      this.children.push(...children);
+    },
   };
 }
 

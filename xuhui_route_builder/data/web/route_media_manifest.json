@@ -1,0 +1,2545 @@
+{
+  "version": 1,
+  "generated_at": "2026-08-31",
+  "summary": {
+    "routes_total": 90,
+    "slots_total": 270,
+    "unique_webp_assets": 29,
+    "filled_slots": 53,
+    "missing_slots": 217,
+    "routes_three_slots": 4,
+    "routes_with_cover": 39,
+    "routes_without_media": 51,
+    "total_webp_bytes": 6580738,
+    "license_distribution": {
+      "CC BY 2.0": 3,
+      "CC BY 4.0": 2,
+      "CC BY-SA 3.0": 2,
+      "CC BY-SA 4.0": 21,
+      "CC0": 1
+    },
+    "routes_dropped_by_cover_reuse_limit": [
+      "XH_BIKE_0074",
+      "XH_RUN_0052",
+      "XH_RUN_0053",
+      "XH_RUN_0055",
+      "XH_RUN_0059",
+      "XH_RUN_0060",
+      "XH_WALK_0017",
+      "XH_WALK_0029"
+    ],
+    "missing_route_ids": [
+      "XH_WALK_0002",
+      "XH_WALK_0004",
+      "XH_WALK_0005",
+      "XH_WALK_0007",
+      "XH_WALK_0014",
+      "XH_WALK_0015",
+      "XH_WALK_0016",
+      "XH_WALK_0017",
+      "XH_WALK_0027",
+      "XH_WALK_0028",
+      "XH_WALK_0029",
+      "XH_WALK_0030",
+      "XH_RUN_0033",
+      "XH_RUN_0035",
+      "XH_RUN_0036",
+      "XH_RUN_0038",
+      "XH_RUN_0043",
+      "XH_RUN_0044",
+      "XH_RUN_0047",
+      "XH_RUN_0049",
+      "XH_RUN_0051",
+      "XH_RUN_0052",
+      "XH_RUN_0053",
+      "XH_RUN_0054",
+      "XH_RUN_0055",
+      "XH_RUN_0057",
+      "XH_RUN_0059",
+      "XH_RUN_0060",
+      "XH_BIKE_0061",
+      "XH_BIKE_0063",
+      "XH_BIKE_0064",
+      "XH_BIKE_0066",
+      "XH_BIKE_0067",
+      "XH_BIKE_0069",
+      "XH_BIKE_0073",
+      "XH_BIKE_0074",
+      "XH_BIKE_0075",
+      "XH_BIKE_0076",
+      "XH_BIKE_0077",
+      "XH_BIKE_0078",
+      "XH_BIKE_0080",
+      "XH_BIKE_0081",
+      "XH_BIKE_0082",
+      "XH_BIKE_0083",
+      "XH_BIKE_0084",
+      "XH_BIKE_0085",
+      "XH_BIKE_0086",
+      "XH_BIKE_0087",
+      "XH_BIKE_0088",
+      "XH_BIKE_0089",
+      "XH_BIKE_0090"
+    ],
+    "missing_slots_by_route": {
+      "XH_WALK_0002": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0003": [
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0004": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0005": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0006": [
+        "detail"
+      ],
+      "XH_WALK_0007": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0008": [
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0009": [
+        "detail"
+      ],
+      "XH_WALK_0010": [
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0011": [
+        "detail"
+      ],
+      "XH_WALK_0012": [
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0013": [
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0014": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0015": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0016": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0017": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0018": [
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0019": [
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0020": [
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0021": [
+        "detail"
+      ],
+      "XH_WALK_0022": [
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0023": [
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0024": [
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0025": [
+        "detail"
+      ],
+      "XH_WALK_0027": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0028": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0029": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_WALK_0030": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0032": [
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0033": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0034": [
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0035": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0036": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0037": [
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0038": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0039": [
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0040": [
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0041": [
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0042": [
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0043": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0044": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0046": [
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0047": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0048": [
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0049": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0050": [
+        "detail"
+      ],
+      "XH_RUN_0051": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0052": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0053": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0054": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0055": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0056": [
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0057": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0058": [
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0059": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_RUN_0060": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0061": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0062": [
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0063": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0064": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0065": [
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0066": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0067": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0068": [
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0069": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0070": [
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0071": [
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0072": [
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0073": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0074": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0075": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0076": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0077": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0078": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0079": [
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0080": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0081": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0082": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0083": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0084": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0085": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0086": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0087": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0088": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0089": [
+        "cover",
+        "context",
+        "detail"
+      ],
+      "XH_BIKE_0090": [
+        "cover",
+        "context",
+        "detail"
+      ]
+    }
+  },
+  "routes": {
+    "XH_WALK_0001": {
+      "route_name": "西岸油罐艺术短线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_WESTBUND_014",
+          "src": "./assets/routes/XH_IMG_WESTBUND_014.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：油罐艺术中心罐体外观与花坛景观步道（白天横图，2021年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Tank_Shanghai_20210209_02.jpg"
+          ]
+        },
+        "context": {
+          "asset_id": "XH_IMG_WESTBUND_016",
+          "src": "./assets/routes/XH_IMG_WESTBUND_016.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：油罐艺术中心园区绿地步道与行人（阴天，罐体+穹顶，2020年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Tank_Shanghai%2CJul_2020.jpg"
+          ]
+        },
+        "detail": {
+          "asset_id": "XH_IMG_WESTBUND_006",
+          "src": "./assets/routes/XH_IMG_WESTBUND_006.webp",
+          "verification_status": "verified_coordinate_distance",
+          "distance_to_route_m": 28.6,
+          "distance_limit_m": 100,
+          "evidence": [
+            "31.166484,121.460996",
+            "https://commons.wikimedia.org/wiki/File:Tank_Shanghai_20210209_01.jpg"
+          ]
+        }
+      }
+    },
+    "XH_WALK_0002": {
+      "route_name": "漕宝路桂平路街区单环线",
+      "mode": "walk",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0003": {
+      "route_name": "植物园兰室盆景北区短线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_GARDEN_004",
+          "src": "./assets/routes/XH_IMG_GARDEN_004.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：上海植物园水池与石拱桥（两岸草坪棕榈，右侧可见园路，2015年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Shanghai_Botanical_Garden_(20560550404).jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0004": {
+      "route_name": "汾阳路—襄阳南路街区单环线",
+      "mode": "walk",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0005": {
+      "route_name": "衡复中部风貌单环线",
+      "mode": "walk",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0006": {
+      "route_name": "田林宜山街区单环线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_CAOHEJING_004",
+          "src": "./assets/routes/XH_IMG_CAOHEJING_004.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：田林路×柳州路口街景（电子屏站牌硬证据+830路公交进站+行人，2021年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:%E7%94%B0%E6%9E%97%E8%B7%AF073607.jpg"
+          ]
+        },
+        "context": {
+          "asset_id": "XH_IMG_CAOHEJING_003",
+          "src": "./assets/routes/XH_IMG_CAOHEJING_003.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：桂林路×田林路路口街景（宽幅道路纵深+公交站台+中央绿带+骑行者，2021年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:%E6%A1%82%E6%9E%97%E8%B7%AF%E7%94%B0%E6%9E%97%E8%B7%AF04824.jpg"
+          ]
+        },
+        "detail": null
+      }
+    },
+    "XH_WALK_0007": {
+      "route_name": "徐家汇体育街区单环线",
+      "mode": "walk",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0008": {
+      "route_name": "龙华滨江北部街区单环线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_LONGHUA_009",
+          "src": "./assets/routes/XH_IMG_LONGHUA_009.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：西岸艺术中心（龙腾大道2555号）沿街外景（ART WEST BUND招牌+红陶土砖广场，2015年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Xi%27an_Yishuzhongxin.JPG"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0009": {
+      "route_name": "康健园社区单环线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_KANGJIAN_003",
+          "src": "./assets/routes/XH_IMG_KANGJIAN_003.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：蒲北路×桂林西街路口街景（悬铃木+铁艺围墙+住宅街区，康健园北门一带，2019年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Pubei_Road_at_Guilin_Xijie_Street.jpg"
+          ]
+        },
+        "context": {
+          "asset_id": "XH_IMG_KANGJIAN_002",
+          "src": "./assets/routes/XH_IMG_KANGJIAN_002.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：康健园湖面与脚踏船（岸边柳树绿篱+远处楼宇，2018年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Kangjian_Park_Lake_with_motorboats,_Shanghai.jpeg"
+          ]
+        },
+        "detail": null
+      }
+    },
+    "XH_WALK_0010": {
+      "route_name": "漕河泾宜山路至田林路单程线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_CAOHEJING_003",
+          "src": "./assets/routes/XH_IMG_CAOHEJING_003.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：桂林路×田林路路口街景（宽幅道路纵深+公交站台+中央绿带+骑行者，2021年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:%E6%A1%82%E6%9E%97%E8%B7%AF%E7%94%B0%E6%9E%97%E8%B7%AF04824.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0011": {
+      "route_name": "西岸北段艺术短线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_WESTBUND_001",
+          "src": "./assets/routes/XH_IMG_WESTBUND_001.webp",
+          "verification_status": "verified_coordinate_distance",
+          "distance_to_route_m": 56.8,
+          "distance_limit_m": 100,
+          "evidence": [
+            "31.186275,121.459145",
+            "https://commons.wikimedia.org/wiki/File:20251129_Long_Museum_West_Bund_(II).jpg"
+          ]
+        },
+        "context": {
+          "asset_id": "XH_IMG_WESTBUND_012",
+          "src": "./assets/routes/XH_IMG_WESTBUND_012.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：龙腾大道瑞宁路口滨江步道/骑行道纵深（含瑞宁路路牌，绿篱+天际线，2026年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:20260501%E8%A5%BF%E5%B2%B8%E6%BC%AB%E6%B8%B8%E7%BA%BF_01.jpg"
+          ]
+        },
+        "detail": null
+      }
+    },
+    "XH_WALK_0012": {
+      "route_name": "植物园南园主游线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_GARDEN_003",
+          "src": "./assets/routes/XH_IMG_GARDEN_003.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：上海植物园内水岸边景（树影+溪流纵深，无可见园路，2015年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Botanical_Garden_Shanghai_(21199375759).jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0013": {
+      "route_name": "植物园温室兰室南北单环线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_GARDEN_011",
+          "src": "./assets/routes/XH_IMG_GARDEN_011.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：石龙路地铁站站房与售票处指示（含站名标识，植物园4号门到达侧，2024年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:The_Station_Building_of_Shilong_Road_Station_in_Shanghai_2024.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0014": {
+      "route_name": "衡复公园音乐街区单环线",
+      "mode": "walk",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0015": {
+      "route_name": "衡复西部风貌长环线",
+      "mode": "walk",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0016": {
+      "route_name": "衡复东部风貌长环线",
+      "mode": "walk",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0017": {
+      "route_name": "徐家汇科学人文贯穿线",
+      "mode": "walk",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0018": {
+      "route_name": "龙华滨江南北长环线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_LONGHUA_006",
+          "src": "./assets/routes/XH_IMG_LONGHUA_006.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：龙华中路公交枢纽站入口与绿地缤纷城商办楼（站牌硬证据+公交+行人，2024年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Longhua_Rd.(M)_Bus_Station,_202409.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0019": {
+      "route_name": "康健园北门至柳州路单程线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_KANGJIAN_003",
+          "src": "./assets/routes/XH_IMG_KANGJIAN_003.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：蒲北路×桂林西街路口街景（悬铃木+铁艺围墙+住宅街区，康健园北门一带，2019年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Pubei_Road_at_Guilin_Xijie_Street.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0020": {
+      "route_name": "元界上澳塘至康健园单程线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_KANGJIAN_004",
+          "src": "./assets/routes/XH_IMG_KANGJIAN_004.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：桂林路街景（171路电动公交进站+电动车骑行者+沿街住宅，2025年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Shanghai_Bus_Route_171_at_Guilin_Rd._in_Xuhui,_Shanghai,_China_20250720.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0021": {
+      "route_name": "西岸美术馆大道北段线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_WESTBUND_012",
+          "src": "./assets/routes/XH_IMG_WESTBUND_012.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：龙腾大道瑞宁路口滨江步道/骑行道纵深（含瑞宁路路牌，绿篱+天际线，2026年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:20260501%E8%A5%BF%E5%B2%B8%E6%BC%AB%E6%B8%B8%E7%BA%BF_01.jpg"
+          ]
+        },
+        "context": {
+          "asset_id": "XH_IMG_WESTBUND_011",
+          "src": "./assets/routes/XH_IMG_WESTBUND_011.webp",
+          "verification_status": "verified_coordinate_distance",
+          "distance_to_route_m": 29.0,
+          "distance_limit_m": 100,
+          "evidence": [
+            "31.1733,121.4585（西岸美术馆，Wikidata；文件无内嵌坐标，按主题识别定位）",
+            "https://commons.wikimedia.org/wiki/File:Appearance_of_west_bund_museum_shanghai,_June_2020.jpg"
+          ]
+        },
+        "detail": null
+      }
+    },
+    "XH_WALK_0022": {
+      "route_name": "西岸南段梦中心滨水线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_LONGHUA_007",
+          "src": "./assets/routes/XH_IMG_LONGHUA_007.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：西岸油罐艺术中心主馆外景与入口广场（油罐TANK SHANGHAI招牌，2020年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Appearance_of_Tank_Shanghai,Jul_2020.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0023": {
+      "route_name": "植物园南北贯穿线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_GARDEN_004",
+          "src": "./assets/routes/XH_IMG_GARDEN_004.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：上海植物园水池与石拱桥（两岸草坪棕榈，右侧可见园路，2015年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Shanghai_Botanical_Garden_(20560550404).jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0024": {
+      "route_name": "衡复风貌纵贯长环线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_HENGFU_007",
+          "src": "./assets/routes/XH_IMG_HENGFU_007.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：乌鲁木齐南路近淮海中路路口街景（中国银行转角+路牌+骑行与过街行人，2020年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:%E4%B9%8C%E9%B2%81%E6%9C%A8%E9%BD%90%E4%B8%AD%E8%B7%AF%E8%A1%97%E6%99%AF%E4%B8%8A%E6%B5%B7Wulumuqi_Rd(s)_Shanghai_Jun_2020.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0025": {
+      "route_name": "衡复老洋房道路线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_COMMONS_183737818",
+          "src": "./assets/routes/XH_IMG_COMMONS_183737818.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：103 Wukang Road, Shanghai",
+            "来源页：https://commons.wikimedia.org/wiki/File:20260209_103_Wukang_Road.jpg"
+          ]
+        },
+        "context": {
+          "asset_id": "XH_IMG_HENGFU_009",
+          "src": "./assets/routes/XH_IMG_HENGFU_009.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：湖南路近武康路口街景（路牌+梧桐隧道+奶油色洋房+行人骑行者，2016年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Hunan_Road,_Shanghai_01.JPG"
+          ]
+        },
+        "detail": null
+      }
+    },
+    "XH_WALK_0026": {
+      "route_name": "徐家汇海派寻源至龙华单程线",
+      "mode": "walk",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_LONGHUA_004",
+          "src": "./assets/routes/XH_IMG_LONGHUA_004.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：龙华塔参道（灯笼步道纵深感，2026年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Longhua_Pagoda_approach_with_lanterns_Shanghai_2026-01-27_dllu.jpg"
+          ]
+        },
+        "context": {
+          "asset_id": "XH_IMG_XJH_006",
+          "src": "./assets/routes/XH_IMG_XJH_006.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：徐家汇公园北侧园路与圆形广场（希望之泉雕塑+春花带+行人，2025年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Xujiahui_park_March_2025.jpg"
+          ]
+        },
+        "detail": {
+          "asset_id": "XH_IMG_LONGHUA_006",
+          "src": "./assets/routes/XH_IMG_LONGHUA_006.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：龙华中路公交枢纽站入口与绿地缤纷城商办楼（站牌硬证据+公交+行人，2024年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Longhua_Rd.(M)_Bus_Station,_202409.jpg"
+          ]
+        }
+      }
+    },
+    "XH_WALK_0027": {
+      "route_name": "徐家汇体育—龙华纵贯长环线",
+      "mode": "walk",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0028": {
+      "route_name": "华发龙吴路至龙耀滨江贯穿线",
+      "mode": "walk",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0029": {
+      "route_name": "康健—华泾南向贯穿线",
+      "mode": "walk",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_WALK_0030": {
+      "route_name": "漕河泾南部水岸至华泾单程线",
+      "mode": "walk",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0031": {
+      "route_name": "西岸艺术滨江短线",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_WESTBUND_012",
+          "src": "./assets/routes/XH_IMG_WESTBUND_012.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：龙腾大道瑞宁路口滨江步道/骑行道纵深（含瑞宁路路牌，绿篱+天际线，2026年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:20260501%E8%A5%BF%E5%B2%B8%E6%BC%AB%E6%B8%B8%E7%BA%BF_01.jpg"
+          ]
+        },
+        "context": {
+          "asset_id": "XH_IMG_WESTBUND_016",
+          "src": "./assets/routes/XH_IMG_WESTBUND_016.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：油罐艺术中心园区绿地步道与行人（阴天，罐体+穹顶，2020年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Tank_Shanghai%2CJul_2020.jpg"
+          ]
+        },
+        "detail": {
+          "asset_id": "XH_IMG_WESTBUND_014",
+          "src": "./assets/routes/XH_IMG_WESTBUND_014.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：油罐艺术中心罐体外观与花坛景观步道（白天横图，2021年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Tank_Shanghai_20210209_02.jpg"
+          ]
+        }
+      }
+    },
+    "XH_RUN_0032": {
+      "route_name": "龙华滨江—传媒港短线",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_LONGHUA_007",
+          "src": "./assets/routes/XH_IMG_LONGHUA_007.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：西岸油罐艺术中心主馆外景与入口广场（油罐TANK SHANGHAI招牌，2020年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Appearance_of_Tank_Shanghai,Jul_2020.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0033": {
+      "route_name": "西岸滨水—云锦路单环",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0034": {
+      "route_name": "龙华—徐家汇南缘内陆单环",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_XJH_006",
+          "src": "./assets/routes/XH_IMG_XJH_006.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：徐家汇公园北侧园路与圆形广场（希望之泉雕塑+春花带+行人，2025年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Xujiahui_park_March_2025.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0035": {
+      "route_name": "日晖港—自然艺术公园滨江线",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0036": {
+      "route_name": "植物园外围公共道路单环",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0037": {
+      "route_name": "龙美术馆—自然艺术公园滨江长线",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_WESTBUND_012",
+          "src": "./assets/routes/XH_IMG_WESTBUND_012.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：龙腾大道瑞宁路口滨江步道/骑行道纵深（含瑞宁路路牌，绿篱+天际线，2026年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:20260501%E8%A5%BF%E5%B2%B8%E6%BC%AB%E6%B8%B8%E7%BA%BF_01.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0038": {
+      "route_name": "日晖港—华泾滨江贯通线",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0039": {
+      "route_name": "植物园北区主园路单程线",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_GARDEN_003",
+          "src": "./assets/routes/XH_IMG_GARDEN_003.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：上海植物园内水岸边景（树影+溪流纵深，无可见园路，2015年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Botanical_Garden_Shanghai_(21199375759).jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0040": {
+      "route_name": "植物园南区花园单程线",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_GARDEN_005",
+          "src": "./assets/routes/XH_IMG_GARDEN_005.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：上海植物园盆景园水庭（假山+白墙花窗+盆栽置石，2015年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Botanic_Garden_Penjing_Section_Shanghai_(21221625698).jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0041": {
+      "route_name": "植物园北缘公共道路短环",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_GARDEN_011",
+          "src": "./assets/routes/XH_IMG_GARDEN_011.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：石龙路地铁站站房与售票处指示（含站名标识，植物园4号门到达侧，2024年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:The_Station_Building_of_Shilong_Road_Station_in_Shanghai_2024.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0042": {
+      "route_name": "徐家汇南侧街区短环",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_XJH_007",
+          "src": "./assets/routes/XH_IMG_XJH_007.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：徐家汇公园天桥视角主步道纵深（蓝色栏杆景观天桥+两侧绿化，2018年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Xujiahui_Park,_Shanghai,_China_Feb_21,_2018.jpeg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0043": {
+      "route_name": "徐家汇凯旋—漕溪北路环",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0044": {
+      "route_name": "衡复西部风貌短环",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0045": {
+      "route_name": "龙华会—徐家汇公园单程线",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_LONGHUA_004",
+          "src": "./assets/routes/XH_IMG_LONGHUA_004.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：龙华塔参道（灯笼步道纵深感，2026年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Longhua_Pagoda_approach_with_lanterns_Shanghai_2026-01-27_dllu.jpg"
+          ]
+        },
+        "context": {
+          "asset_id": "XH_IMG_XJH_007",
+          "src": "./assets/routes/XH_IMG_XJH_007.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：徐家汇公园天桥视角主步道纵深（蓝色栏杆景观天桥+两侧绿化，2018年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Xujiahui_Park,_Shanghai,_China_Feb_21,_2018.jpeg"
+          ]
+        },
+        "detail": {
+          "asset_id": "XH_IMG_LONGHUA_003",
+          "src": "./assets/routes/XH_IMG_LONGHUA_003.webp",
+          "verification_status": "verified_coordinate_distance",
+          "distance_to_route_m": 89.9,
+          "distance_limit_m": 100,
+          "evidence": [
+            "31.1751,121.4475",
+            "https://commons.wikimedia.org/wiki/File:Shanghai_Longhua_Si_2016.08.21_08-42-16.jpg"
+          ]
+        }
+      }
+    },
+    "XH_RUN_0046": {
+      "route_name": "漕河泾开发区—康健园单程线",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_CAOHEJING_004",
+          "src": "./assets/routes/XH_IMG_CAOHEJING_004.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：田林路×柳州路口街景（电子屏站牌硬证据+830路公交进站+行人，2021年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:%E7%94%B0%E6%9E%97%E8%B7%AF073607.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0047": {
+      "route_name": "徐家汇体育文化中环",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0048": {
+      "route_name": "徐家汇肇嘉浜路—零陵路短环",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_XJH_007",
+          "src": "./assets/routes/XH_IMG_XJH_007.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：徐家汇公园天桥视角主步道纵深（蓝色栏杆景观天桥+两侧绿化，2018年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Xujiahui_Park,_Shanghai,_China_Feb_21,_2018.jpeg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0049": {
+      "route_name": "植物园—康健—漕河泾绿廊单程线",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0050": {
+      "route_name": "华泾—上海南站生态单程线",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_NANZHAN_001",
+          "src": "./assets/routes/XH_IMG_NANZHAN_001.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：上海南站外景与进站天桥（2022年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Shanghainan_Railway_Station_1.jpg"
+          ]
+        },
+        "context": {
+          "asset_id": "XH_IMG_NANZHAN_002",
+          "src": "./assets/routes/XH_IMG_NANZHAN_002.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 100,
+          "evidence": [
+            "场景说明：上海南站前南站电影广场（石景基座刻名硬证据+同心圆铺装+乔木，2018年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Movie_Square_in_front_of_Shanghai_South_Station.jpg"
+          ]
+        },
+        "detail": null
+      }
+    },
+    "XH_RUN_0051": {
+      "route_name": "徐家汇—漕河泾东部城市长环",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0052": {
+      "route_name": "植物园—华发南部外围长环",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0053": {
+      "route_name": "龙华—植物园北部扩展长环",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0054": {
+      "route_name": "漕河泾—华泾南部单程线",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0055": {
+      "route_name": "徐家汇—康健—华泾南向长线",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0056": {
+      "route_name": "衡复—康健—华泾长线",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_HENGFU_001",
+          "src": "./assets/routes/XH_IMG_HENGFU_001.webp",
+          "verification_status": "verified_coordinate_distance",
+          "distance_to_route_m": 12.2,
+          "distance_limit_m": 100,
+          "evidence": [
+            "31.206114,121.433219",
+            "https://commons.wikimedia.org/wiki/File:Wukang_Road_near_Huaihai_Road,_Shanghai.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0057": {
+      "route_name": "徐家汇—桂林—龙华城市长环",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0058": {
+      "route_name": "衡复—西岸文化长线",
+      "mode": "run",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_HENGFU_001",
+          "src": "./assets/routes/XH_IMG_HENGFU_001.webp",
+          "verification_status": "verified_coordinate_distance",
+          "distance_to_route_m": 0.8,
+          "distance_limit_m": 100,
+          "evidence": [
+            "31.206114,121.433219",
+            "https://commons.wikimedia.org/wiki/File:Wukang_Road_near_Huaihai_Road,_Shanghai.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0059": {
+      "route_name": "龙华—植物园北部长环",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_RUN_0060": {
+      "route_name": "华泾—徐家汇南北长线",
+      "mode": "run",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0061": {
+      "route_name": "西岸—龙华公共道路短环",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0062": {
+      "route_name": "上海植物园外围公共道路短环",
+      "mode": "bike",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_GARDEN_010",
+          "src": "./assets/routes/XH_IMG_GARDEN_010.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 150,
+          "evidence": [
+            "场景说明：石龙路×老沪闵路路口街景（白天路口纵深，骑行者+行人+信号灯，2018年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Crossroads_of_Shilong_Road_and_Old_Humin_Road.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0063": {
+      "route_name": "漕河泾—桂江外围骑行短环",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0064": {
+      "route_name": "徐家汇—衡复街区骑行短环",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0065": {
+      "route_name": "康健—漕河泾公共道路短环",
+      "mode": "bike",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_KANGJIAN_004",
+          "src": "./assets/routes/XH_IMG_KANGJIAN_004.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 150,
+          "evidence": [
+            "场景说明：桂林路街景（171路电动公交进站+电动车骑行者+沿街住宅，2025年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Shanghai_Bus_Route_171_at_Guilin_Rd._in_Xuhui,_Shanghai,_China_20250720.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0066": {
+      "route_name": "植物园—西岸龙腾大道骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0067": {
+      "route_name": "漕河泾—植物园—龙华骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0068": {
+      "route_name": "漕河泾—徐家汇骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_XJH_006",
+          "src": "./assets/routes/XH_IMG_XJH_006.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 150,
+          "evidence": [
+            "场景说明：徐家汇公园北侧园路与圆形广场（希望之泉雕塑+春花带+行人，2025年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Xujiahui_park_March_2025.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0069": {
+      "route_name": "衡复—龙华—西岸骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0070": {
+      "route_name": "华泾—上海植物园骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_GARDEN_010",
+          "src": "./assets/routes/XH_IMG_GARDEN_010.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 150,
+          "evidence": [
+            "场景说明：石龙路×老沪闵路路口街景（白天路口纵深，骑行者+行人+信号灯，2018年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Crossroads_of_Shilong_Road_and_Old_Humin_Road.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0071": {
+      "route_name": "西岸—徐家汇—龙华骑行中环",
+      "mode": "bike",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_XJH_006",
+          "src": "./assets/routes/XH_IMG_XJH_006.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 150,
+          "evidence": [
+            "场景说明：徐家汇公园北侧园路与圆形广场（希望之泉雕塑+春花带+行人，2025年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Xujiahui_park_March_2025.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0072": {
+      "route_name": "植物园—康健—漕河泾骑行中环",
+      "mode": "bike",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_GARDEN_010",
+          "src": "./assets/routes/XH_IMG_GARDEN_010.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 150,
+          "evidence": [
+            "场景说明：石龙路×老沪闵路路口街景（白天路口纵深，骑行者+行人+信号灯，2018年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:Crossroads_of_Shilong_Road_and_Old_Humin_Road.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0073": {
+      "route_name": "衡复—西岸—龙华骑行中环",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0074": {
+      "route_name": "华泾—植物园—龙华骑行中环",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0075": {
+      "route_name": "漕河泾—衡复—徐家汇骑行中环",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0076": {
+      "route_name": "衡复—植物园—华泾骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0077": {
+      "route_name": "漕河泾—龙华—西岸骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0078": {
+      "route_name": "华泾—西岸龙腾大道骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0079": {
+      "route_name": "衡复—漕河泾—桂江骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": {
+          "asset_id": "XH_IMG_HENGFU_007",
+          "src": "./assets/routes/XH_IMG_HENGFU_007.webp",
+          "verification_status": "verified_two_evidence",
+          "distance_to_route_m": null,
+          "distance_limit_m": 150,
+          "evidence": [
+            "场景说明：乌鲁木齐南路近淮海中路路口街景（中国银行转角+路牌+骑行与过街行人，2020年实景）",
+            "来源页：https://commons.wikimedia.org/wiki/File:%E4%B9%8C%E9%B2%81%E6%9C%A8%E9%BD%90%E4%B8%AD%E8%B7%AF%E8%A1%97%E6%99%AF%E4%B8%8A%E6%B5%B7Wulumuqi_Rd(s)_Shanghai_Jun_2020.jpg"
+          ]
+        },
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0080": {
+      "route_name": "植物园—西岸—衡复骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0081": {
+      "route_name": "徐汇全域公共道路外围长环",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0082": {
+      "route_name": "西岸—植物园—漕河泾—徐家汇长环",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0083": {
+      "route_name": "华泾—漕河泾—徐家汇—西岸长环",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0084": {
+      "route_name": "衡复—漕河泾—植物园—龙华长环",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0085": {
+      "route_name": "西岸—漕河泾—植物园—华泾长环",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0086": {
+      "route_name": "漕河泾—衡复—西岸—华泾骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0087": {
+      "route_name": "漕河泾—衡复—西岸—华泾南向线",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0088": {
+      "route_name": "衡复—徐家汇—西岸—植物园—华泾骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0089": {
+      "route_name": "华泾—漕河泾—衡复北向骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    },
+    "XH_BIKE_0090": {
+      "route_name": "衡复—漕河泾—植物园—华泾骑行线",
+      "mode": "bike",
+      "slots": {
+        "cover": null,
+        "context": null,
+        "detail": null
+      }
+    }
+  },
+  "assets": {
+    "XH_IMG_CAOHEJING_003": {
+      "asset_id": "XH_IMG_CAOHEJING_003",
+      "src": "./assets/routes/XH_IMG_CAOHEJING_003.webp",
+      "scene_name": "桂林路×田林路路口街景（宽幅道路纵深+公交站台+中央绿带+骑行者，2021年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_CAOHEJING_003.jpg",
+      "author": "Augustokremo",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:%E6%A1%82%E6%9E%97%E8%B7%AF%E7%94%B0%E6%9E%97%E8%B7%AF04824.jpg",
+      "captured_at": "2021",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "a3642c72a19a7f93b675228ebf1a5ce802de7108075760e8dd7cab08a79081b8",
+      "original_dimensions": [
+        3840,
+        2557
+      ],
+      "webp_dimensions": [
+        1280,
+        852
+      ],
+      "webp_bytes": 149682,
+      "webp_sha256": "0f086b63af263f55b3fccdd983ba28f1e533c96de1ef1d415b33db62f7852cda"
+    },
+    "XH_IMG_CAOHEJING_004": {
+      "asset_id": "XH_IMG_CAOHEJING_004",
+      "src": "./assets/routes/XH_IMG_CAOHEJING_004.webp",
+      "scene_name": "田林路×柳州路口街景（电子屏站牌硬证据+830路公交进站+行人，2021年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_CAOHEJING_004.jpg",
+      "author": "Augustokremo",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:%E7%94%B0%E6%9E%97%E8%B7%AF073607.jpg",
+      "captured_at": "2021",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "7e2003204ff82ab8374317c566254879e55dfef31090fa940b41a92d4d868188",
+      "original_dimensions": [
+        3840,
+        2557
+      ],
+      "webp_dimensions": [
+        1280,
+        852
+      ],
+      "webp_bytes": 140688,
+      "webp_sha256": "490081cbd9a5fa43bf58964b1e90e94a6b0f38506247b7b8f20ee6eba745efc1"
+    },
+    "XH_IMG_COMMONS_183737818": {
+      "asset_id": "XH_IMG_COMMONS_183737818",
+      "src": "./assets/routes/XH_IMG_COMMONS_183737818.webp",
+      "scene_name": "103 Wukang Road, Shanghai",
+      "source_collection": "徐汇90条路线图片包/01_路线图片",
+      "source_file": "01_路线图片/XH_WALK_0005_衡复中部风貌单环线/02_路线环境_XH_IMG_COMMONS_183737818.jpg",
+      "author": "Windmemories",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:20260209_103_Wukang_Road.jpg",
+      "captured_at": "2026-02-09 16:07:26",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "3cc559652d0de115a5a5461769e02aa76d7fc46bcd9eb947252fb07bcaa6af87",
+      "original_dimensions": [
+        1800,
+        1200
+      ],
+      "webp_dimensions": [
+        1280,
+        853
+      ],
+      "webp_bytes": 311956,
+      "webp_sha256": "8330a4ae54c27fbbf338d06136b1df57bb6e0f3dc06f6e41be34e3e23d8dcc37"
+    },
+    "XH_IMG_GARDEN_003": {
+      "asset_id": "XH_IMG_GARDEN_003",
+      "src": "./assets/routes/XH_IMG_GARDEN_003.webp",
+      "scene_name": "上海植物园内水岸边景（树影+溪流纵深，无可见园路，2015年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_GARDEN_003.jpg",
+      "author": "Esin Üstün",
+      "license": "CC BY 2.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Botanical_Garden_Shanghai_(21199375759).jpg",
+      "captured_at": "2015",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "74c2ffdc03c6f9008c496c5835e79ed13caddaaad94858b2c9a47732ff39bf8d",
+      "original_dimensions": [
+        3840,
+        2880
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 411856,
+      "webp_sha256": "79797f9a784d0594eb5b809ccb142bf9bead9948fcff220496418387c70adf20"
+    },
+    "XH_IMG_GARDEN_004": {
+      "asset_id": "XH_IMG_GARDEN_004",
+      "src": "./assets/routes/XH_IMG_GARDEN_004.webp",
+      "scene_name": "上海植物园水池与石拱桥（两岸草坪棕榈，右侧可见园路，2015年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_GARDEN_004.jpg",
+      "author": "Esin Üstün",
+      "license": "CC BY 2.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Shanghai_Botanical_Garden_(20560550404).jpg",
+      "captured_at": "2015",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "6a7e04337de299e485f1228b10e2ea6622bad68a2a0442b52ea830e5a85316ed",
+      "original_dimensions": [
+        3840,
+        2880
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 240586,
+      "webp_sha256": "812b470803281d08f9175f5f34ec17a76592e9f0495aebb2c80f1e15bdd172fe"
+    },
+    "XH_IMG_GARDEN_005": {
+      "asset_id": "XH_IMG_GARDEN_005",
+      "src": "./assets/routes/XH_IMG_GARDEN_005.webp",
+      "scene_name": "上海植物园盆景园水庭（假山+白墙花窗+盆栽置石，2015年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_GARDEN_005.jpg",
+      "author": "Esin Üstün",
+      "license": "CC BY 2.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Botanic_Garden_Penjing_Section_Shanghai_(21221625698).jpg",
+      "captured_at": "2015",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "e75500e957b92ff379183802371729403a575b1052a5c1d2c807441dff531eb8",
+      "original_dimensions": [
+        3840,
+        2880
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 312032,
+      "webp_sha256": "4d539a22e37dd9e4f9be521714f8034d66fad09c819447d0d1d0febbf5aadb83"
+    },
+    "XH_IMG_GARDEN_010": {
+      "asset_id": "XH_IMG_GARDEN_010",
+      "src": "./assets/routes/XH_IMG_GARDEN_010.webp",
+      "scene_name": "石龙路×老沪闵路路口街景（白天路口纵深，骑行者+行人+信号灯，2018年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_GARDEN_010.jpg",
+      "author": "Soramimi",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Crossroads_of_Shilong_Road_and_Old_Humin_Road.jpg",
+      "captured_at": "2018",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "46bb64665dd7151616a96fd7749fd91293be86b942acf0ca3f1917dd55dfefe4",
+      "original_dimensions": [
+        3840,
+        2881
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 134488,
+      "webp_sha256": "4adb84ae3f4da5da0c063859a2294cea3b013cb30f59d3aa41b30a322264d4d0"
+    },
+    "XH_IMG_GARDEN_011": {
+      "asset_id": "XH_IMG_GARDEN_011",
+      "src": "./assets/routes/XH_IMG_GARDEN_011.webp",
+      "scene_name": "石龙路地铁站站房与售票处指示（含站名标识，植物园4号门到达侧，2024年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_GARDEN_011.jpg",
+      "author": "Kmchang28",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:The_Station_Building_of_Shilong_Road_Station_in_Shanghai_2024.jpg",
+      "captured_at": "2024",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "3bbc8243c863743da31c38a63f1712514d193b2f022bb98a65a77d445e50f6e5",
+      "original_dimensions": [
+        3840,
+        2880
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 156702,
+      "webp_sha256": "43213c7de11b7e14e283f8424decc3fc361edaedf4856ef018ebc570d0b9fa2e"
+    },
+    "XH_IMG_HENGFU_001": {
+      "asset_id": "XH_IMG_HENGFU_001",
+      "src": "./assets/routes/XH_IMG_HENGFU_001.webp",
+      "scene_name": "武康路街景（近淮海路口，历史建筑+道路+行人）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_HENGFU_001.jpg",
+      "author": "SSYoung",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Wukang_Road_near_Huaihai_Road,_Shanghai.jpg",
+      "captured_at": "2016-05-08",
+      "coordinate_wgs84": "31.206114,121.433219",
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "a0383517587a4edb152e108203e0bed980562f26273d15b8a98995f3b84023f5",
+      "original_dimensions": [
+        1920,
+        1440
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 251130,
+      "webp_sha256": "60bc82eaa05c84cd3e5213c40977837874b0b62208797de694546ce36d2e55eb"
+    },
+    "XH_IMG_HENGFU_007": {
+      "asset_id": "XH_IMG_HENGFU_007",
+      "src": "./assets/routes/XH_IMG_HENGFU_007.webp",
+      "scene_name": "乌鲁木齐南路近淮海中路路口街景（中国银行转角+路牌+骑行与过街行人，2020年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_HENGFU_007.jpg",
+      "author": "Lcsun",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:%E4%B9%8C%E9%B2%81%E6%9C%A8%E9%BD%90%E4%B8%AD%E8%B7%AF%E8%A1%97%E6%99%AF%E4%B8%8A%E6%B5%B7Wulumuqi_Rd(s)_Shanghai_Jun_2020.jpg",
+      "captured_at": "2020",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "5b57a6b35cbe6c16e757092d8e52bf3c68de517809d4c2b2e3e88c0be5b8eaa4",
+      "original_dimensions": [
+        3840,
+        2160
+      ],
+      "webp_dimensions": [
+        1280,
+        720
+      ],
+      "webp_bytes": 214358,
+      "webp_sha256": "2e8b3ee37429272cccd65bf379a20065bbbc23fcf9592c05b3abae6e77d66d89"
+    },
+    "XH_IMG_HENGFU_009": {
+      "asset_id": "XH_IMG_HENGFU_009",
+      "src": "./assets/routes/XH_IMG_HENGFU_009.webp",
+      "scene_name": "湖南路近武康路口街景（路牌+梧桐隧道+奶油色洋房+行人骑行者，2016年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_HENGFU_009.jpg",
+      "author": "SSYoung",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Hunan_Road,_Shanghai_01.JPG",
+      "captured_at": "2016",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "f00782bd761a170947fb2b219ae3ee44fce83414e3fe1d37fd58d31fe96220ff",
+      "original_dimensions": [
+        1920,
+        1440
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 261788,
+      "webp_sha256": "edc584496810ab7e7a26cfc6e36353bfc9d2b17db2b84939c497922992f75da2"
+    },
+    "XH_IMG_KANGJIAN_002": {
+      "asset_id": "XH_IMG_KANGJIAN_002",
+      "src": "./assets/routes/XH_IMG_KANGJIAN_002.webp",
+      "scene_name": "康健园湖面与脚踏船（岸边柳树绿篱+远处楼宇，2018年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_KANGJIAN_002.jpg",
+      "author": "Szalai.laci",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Kangjian_Park_Lake_with_motorboats,_Shanghai.jpeg",
+      "captured_at": "2018",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "95a737da4124e60b8e7adac325acb618970b3012ac20b924af5fd722f5c0125c",
+      "original_dimensions": [
+        3840,
+        2880
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 229386,
+      "webp_sha256": "df27b0a9a591cc5747eab42585630b7bbd3d0908e9cc3cf0775d7a384a43daf0"
+    },
+    "XH_IMG_KANGJIAN_003": {
+      "asset_id": "XH_IMG_KANGJIAN_003",
+      "src": "./assets/routes/XH_IMG_KANGJIAN_003.webp",
+      "scene_name": "蒲北路×桂林西街路口街景（悬铃木+铁艺围墙+住宅街区，康健园北门一带，2019年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_KANGJIAN_003.jpg",
+      "author": "WQL",
+      "license": "CC BY-SA 3.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Pubei_Road_at_Guilin_Xijie_Street.jpg",
+      "captured_at": "2019",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "377eb052aac6eb67d959d71a2ba8646e971b58e8fa88e54be036a5e91175bc39",
+      "original_dimensions": [
+        2827,
+        2340
+      ],
+      "webp_dimensions": [
+        1280,
+        1059
+      ],
+      "webp_bytes": 304374,
+      "webp_sha256": "6356a3d7a2810061972fecf05964d93f4d2656d4c8d9f82cb6756c5c0974f22e"
+    },
+    "XH_IMG_KANGJIAN_004": {
+      "asset_id": "XH_IMG_KANGJIAN_004",
+      "src": "./assets/routes/XH_IMG_KANGJIAN_004.webp",
+      "scene_name": "桂林路街景（171路电动公交进站+电动车骑行者+沿街住宅，2025年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_KANGJIAN_004.jpg",
+      "author": "4084470 0.smil",
+      "license": "CC BY 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Shanghai_Bus_Route_171_at_Guilin_Rd._in_Xuhui,_Shanghai,_China_20250720.jpg",
+      "captured_at": "2025",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "b12b27e46e8f47c1a450ec1bf791ffea4e76abb7269226afc551068030a0e674",
+      "original_dimensions": [
+        3840,
+        2555
+      ],
+      "webp_dimensions": [
+        1280,
+        852
+      ],
+      "webp_bytes": 144486,
+      "webp_sha256": "5efac4d756857f60d165cce3da4728544ef9c31caa30b2b66a9d1fd7ceb5cec0"
+    },
+    "XH_IMG_LONGHUA_003": {
+      "asset_id": "XH_IMG_LONGHUA_003",
+      "src": "./assets/routes/XH_IMG_LONGHUA_003.webp",
+      "scene_name": "龙华塔广场外景（2016年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_LONGHUA_003.jpg",
+      "author": "Zhangzhugang",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Shanghai_Longhua_Si_2016.08.21_08-42-16.jpg",
+      "captured_at": "2016",
+      "coordinate_wgs84": "31.1751,121.4475",
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "87b19a5846792b76e5ed7ce61ab81437f5f3837ef1e34c9a52ad8049e3cda703",
+      "original_dimensions": [
+        1920,
+        1280
+      ],
+      "webp_dimensions": [
+        1280,
+        853
+      ],
+      "webp_bytes": 151808,
+      "webp_sha256": "6c814937d7e3c1c63f81927ab0479f0a9301fc324d3ef814d10859e779ff3ee0"
+    },
+    "XH_IMG_LONGHUA_004": {
+      "asset_id": "XH_IMG_LONGHUA_004",
+      "src": "./assets/routes/XH_IMG_LONGHUA_004.webp",
+      "scene_name": "龙华塔参道（灯笼步道纵深感，2026年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_LONGHUA_004.jpg",
+      "author": "Daniel Lu (dllu)",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Longhua_Pagoda_approach_with_lanterns_Shanghai_2026-01-27_dllu.jpg",
+      "captured_at": "2026",
+      "coordinate_wgs84": "无内嵌坐标；主题=龙华塔参道",
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "5b939268e17b2ae77e6a3490d9e968b21ef3463b3ca97bf18ce5256337944020",
+      "original_dimensions": [
+        1920,
+        1445
+      ],
+      "webp_dimensions": [
+        1280,
+        963
+      ],
+      "webp_bytes": 340050,
+      "webp_sha256": "0988d3223a09ca52fdaeac2b34015e9cd857a956d0656b8c63b6b78f98371397"
+    },
+    "XH_IMG_LONGHUA_006": {
+      "asset_id": "XH_IMG_LONGHUA_006",
+      "src": "./assets/routes/XH_IMG_LONGHUA_006.webp",
+      "scene_name": "龙华中路公交枢纽站入口与绿地缤纷城商办楼（站牌硬证据+公交+行人，2024年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_LONGHUA_006.jpg",
+      "author": "Benteds",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Longhua_Rd.(M)_Bus_Station,_202409.jpg",
+      "captured_at": "2024",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "0f766e4ed4fcbfec3ae4d9b5a9b062c4e20b7c94a5dcf223a9c91802c3c93d6d",
+      "original_dimensions": [
+        3840,
+        2880
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 259276,
+      "webp_sha256": "43dd4febdadb4b501844aa232a79046400e72e0ec6a42f655f762fc55d072e8b"
+    },
+    "XH_IMG_LONGHUA_007": {
+      "asset_id": "XH_IMG_LONGHUA_007",
+      "src": "./assets/routes/XH_IMG_LONGHUA_007.webp",
+      "scene_name": "西岸油罐艺术中心主馆外景与入口广场（油罐TANK SHANGHAI招牌，2020年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_LONGHUA_007.jpg",
+      "author": "Lcsun",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Appearance_of_Tank_Shanghai,Jul_2020.jpg",
+      "captured_at": "2020",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "487a355ca2d7b02193427f5bf92ed218ca2d464ee7c685e0aca2bbe95e63a462",
+      "original_dimensions": [
+        3840,
+        2880
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 64330,
+      "webp_sha256": "7a8a433398b6e86cf08af86e529b532870c595498bf5a01e3406e482388cf00d"
+    },
+    "XH_IMG_LONGHUA_009": {
+      "asset_id": "XH_IMG_LONGHUA_009",
+      "src": "./assets/routes/XH_IMG_LONGHUA_009.webp",
+      "scene_name": "西岸艺术中心（龙腾大道2555号）沿街外景（ART WEST BUND招牌+红陶土砖广场，2015年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_LONGHUA_009.jpg",
+      "author": "Fayhoo",
+      "license": "CC BY-SA 3.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Xi%27an_Yishuzhongxin.JPG",
+      "captured_at": "2015",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "c892aa0ee53ebb7d22821c4682bdb020d8e0c2fe7e497755149410d6d3258437",
+      "original_dimensions": [
+        2144,
+        1424
+      ],
+      "webp_dimensions": [
+        1280,
+        850
+      ],
+      "webp_bytes": 157480,
+      "webp_sha256": "c79a6281e85231add3367b0fe81a74ad640e913cecef18b07ae6e138a5e1c1e6"
+    },
+    "XH_IMG_NANZHAN_001": {
+      "asset_id": "XH_IMG_NANZHAN_001",
+      "src": "./assets/routes/XH_IMG_NANZHAN_001.webp",
+      "scene_name": "上海南站外景与进站天桥（2022年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_NANZHAN_001.jpg",
+      "author": "钉钉",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Shanghainan_Railway_Station_1.jpg",
+      "captured_at": "2022",
+      "coordinate_wgs84": "无内嵌坐标；主题=上海南站站房",
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "157801a7b4c804173440b85da5600777d862ab533fd814ffc8cd08f097495e60",
+      "original_dimensions": [
+        1920,
+        980
+      ],
+      "webp_dimensions": [
+        1280,
+        653
+      ],
+      "webp_bytes": 132492,
+      "webp_sha256": "5d1bcae09a4be766d65f2190fbc15bb4d75b0ae4aaac8f54a3864bc1b79341e0"
+    },
+    "XH_IMG_NANZHAN_002": {
+      "asset_id": "XH_IMG_NANZHAN_002",
+      "src": "./assets/routes/XH_IMG_NANZHAN_002.webp",
+      "scene_name": "上海南站前南站电影广场（石景基座刻名硬证据+同心圆铺装+乔木，2018年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_NANZHAN_002.jpg",
+      "author": "Soramimi",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Movie_Square_in_front_of_Shanghai_South_Station.jpg",
+      "captured_at": "2018",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "6cef32b7a7a64985a034adf668dc8f4ca499939abf12f17470d32628d8c3667e",
+      "original_dimensions": [
+        3840,
+        2880
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 281754,
+      "webp_sha256": "57eb7d1927d320964621853bcb63fdc682a9c31002de8af69a5edd0626093911"
+    },
+    "XH_IMG_WESTBUND_001": {
+      "asset_id": "XH_IMG_WESTBUND_001",
+      "src": "./assets/routes/XH_IMG_WESTBUND_001.webp",
+      "scene_name": "龙美术馆西岸馆前广场（南侧视角，2025年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_WESTBUND_001.jpg",
+      "author": "Supanut Arunoprayote",
+      "license": "CC BY 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:20251129_Long_Museum_West_Bund_(II).jpg",
+      "captured_at": "2025",
+      "coordinate_wgs84": "31.186275,121.459145",
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "016ef54cb6d53b2d839d234529d676e46250c47cce37e19955bc31097e1aa5a4",
+      "original_dimensions": [
+        1920,
+        1080
+      ],
+      "webp_dimensions": [
+        1280,
+        720
+      ],
+      "webp_bytes": 115138,
+      "webp_sha256": "677b16a9fdae6ea2b1bdea0f883e002d0b2893fe6b035a95d700ba5ebabe0223"
+    },
+    "XH_IMG_WESTBUND_006": {
+      "asset_id": "XH_IMG_WESTBUND_006",
+      "src": "./assets/routes/XH_IMG_WESTBUND_006.webp",
+      "scene_name": "油罐艺术中心入口广场外景（2021年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_WESTBUND_006.jpg",
+      "author": "Tigerzeng",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Tank_Shanghai_20210209_01.jpg",
+      "captured_at": "2021",
+      "coordinate_wgs84": "31.166484,121.460996",
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "73c04b26400ca509a0571aa20164bedb92084c5a65e0d076cf1b6b916bbe6512",
+      "original_dimensions": [
+        1920,
+        1440
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 157244,
+      "webp_sha256": "c0943dc1b09a1172073594ac26df8d0e4d70edb756a1f2cbf1180b644958c738"
+    },
+    "XH_IMG_WESTBUND_011": {
+      "asset_id": "XH_IMG_WESTBUND_011",
+      "src": "./assets/routes/XH_IMG_WESTBUND_011.webp",
+      "scene_name": "西岸美术馆前广场（2020年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_WESTBUND_011.jpg",
+      "author": "Lcsun",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Appearance_of_west_bund_museum_shanghai,_June_2020.jpg",
+      "captured_at": "2020",
+      "coordinate_wgs84": "31.1733,121.4585（西岸美术馆，Wikidata；文件无内嵌坐标，按主题识别定位）",
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "601590ca024d5111f433d586e171423d10fa9c3cf31f9ac4b83d3b1410e0000c",
+      "original_dimensions": [
+        1920,
+        1440
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 224478,
+      "webp_sha256": "3f5b7a3406a660c024f793b8b1b80779f98f23a940a12117424db3d4340f7d41"
+    },
+    "XH_IMG_WESTBUND_012": {
+      "asset_id": "XH_IMG_WESTBUND_012",
+      "src": "./assets/routes/XH_IMG_WESTBUND_012.webp",
+      "scene_name": "龙腾大道瑞宁路口滨江步道/骑行道纵深（含瑞宁路路牌，绿篱+天际线，2026年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_WESTBUND_012.jpg",
+      "author": "Nanhuajiaren",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:20260501%E8%A5%BF%E5%B2%B8%E6%BC%AB%E6%B8%B8%E7%BA%BF_01.jpg",
+      "captured_at": "2026",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "ca2e8be4a3a6ff2ec2477b5584d6b35e09d020b5aba96351a45edd4eb9986d7b",
+      "original_dimensions": [
+        3840,
+        2880
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 277732,
+      "webp_sha256": "6586d14cb135ff7dfeb2e80f73b4708d9eaf76dea8705e7574274b9a1056c466"
+    },
+    "XH_IMG_WESTBUND_014": {
+      "asset_id": "XH_IMG_WESTBUND_014",
+      "src": "./assets/routes/XH_IMG_WESTBUND_014.webp",
+      "scene_name": "油罐艺术中心罐体外观与花坛景观步道（白天横图，2021年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_WESTBUND_014.jpg",
+      "author": "Tigerzeng",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Tank_Shanghai_20210209_02.jpg",
+      "captured_at": "2021",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "03f9999a5035113efa62093ff81d304188c722cb02c770ed57cf373aed835c0b",
+      "original_dimensions": [
+        3840,
+        2880
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 274298,
+      "webp_sha256": "3fd287b7e0441ea3c89ac0d510de7f7e7724c73f3d8349248376d4cfbc53f222"
+    },
+    "XH_IMG_WESTBUND_016": {
+      "asset_id": "XH_IMG_WESTBUND_016",
+      "src": "./assets/routes/XH_IMG_WESTBUND_016.webp",
+      "scene_name": "油罐艺术中心园区绿地步道与行人（阴天，罐体+穹顶，2020年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_WESTBUND_016.jpg",
+      "author": "Lcsun",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Tank_Shanghai%2CJul_2020.jpg",
+      "captured_at": "2020",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "e4b99ba70254226f005126b50e90db846392edab359aa36bf3ad6c9027f93578",
+      "original_dimensions": [
+        3840,
+        2880
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 124622,
+      "webp_sha256": "9b7582752061af31f306f0d840c1364876704a5edf54c86d5bc750544ea0a57b"
+    },
+    "XH_IMG_XJH_006": {
+      "asset_id": "XH_IMG_XJH_006",
+      "src": "./assets/routes/XH_IMG_XJH_006.webp",
+      "scene_name": "徐家汇公园北侧园路与圆形广场（希望之泉雕塑+春花带+行人，2025年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_XJH_006.jpg",
+      "author": "Belteshassar",
+      "license": "CC0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Xujiahui_park_March_2025.jpg",
+      "captured_at": "2025",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "6420caaaa5a4c3476a9ee7feca09f49741d1474da8422c39eb3c815250af2b47",
+      "original_dimensions": [
+        3840,
+        5120
+      ],
+      "webp_dimensions": [
+        960,
+        1280
+      ],
+      "webp_bytes": 414016,
+      "webp_sha256": "f14bcb1cbf67f4c96d7449fd0c507d633cfec43c326bf5be7663dfce8480371d"
+    },
+    "XH_IMG_XJH_007": {
+      "asset_id": "XH_IMG_XJH_007",
+      "src": "./assets/routes/XH_IMG_XJH_007.webp",
+      "scene_name": "徐家汇公园天桥视角主步道纵深（蓝色栏杆景观天桥+两侧绿化，2018年实景）",
+      "source_collection": "图片查找工作/images/candidates",
+      "source_file": "images/candidates/XH_IMG_XJH_007.jpg",
+      "author": "Szalai.laci",
+      "license": "CC BY-SA 4.0",
+      "license_url": null,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Xujiahui_Park,_Shanghai,_China_Feb_21,_2018.jpeg",
+      "captured_at": "2018",
+      "coordinate_wgs84": null,
+      "verification_status": "verified_for_assigned_routes",
+      "original_sha256": "d01e60f1ff2587cf74a19e479a5cf7d7edf72172b080ffa225a6be1ea3649cbe",
+      "original_dimensions": [
+        3840,
+        2880
+      ],
+      "webp_dimensions": [
+        1280,
+        960
+      ],
+      "webp_bytes": 342508,
+      "webp_sha256": "cf65a79323d042e877c860022e198b002a757c5fef9c56547349867a57bbc6f3"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { routeMediaFor } from "./route-media.js";
+import { routeMediaFor } from "./route-media.js?v=20260831-ui-34";
 
 const MODE_LABELS = { walk: "步行", run: "跑步", bike: "骑行" };
 const SHAPE_LABELS = {
@@ -318,7 +318,7 @@ function renderRecommendation(root, detail) {
 
 function renderGallery(container, media, routeName) {
   container.replaceChildren();
-  const paths = [...new Set([...(media?.gallery || []), media?.cover].filter(Boolean))].slice(0, 3);
+  const paths = [media?.cover, ...(media?.gallery || [])].slice(0, 3);
   container.hidden = false;
   Array.from({ length: 3 }, (_, index) => {
     const path = paths[index];
@@ -327,15 +327,20 @@ function renderGallery(container, media, routeName) {
       image.src = path;
       image.alt = `${routeName} 路线照片 ${index + 1}`;
       image.loading = "lazy";
+      image.addEventListener("error", () => image.replaceWith(galleryPlaceholder()));
       return image;
     }
-    const placeholder = document.createElement("div");
-    placeholder.className = "route-dock__gallery-placeholder";
-    placeholder.setAttribute("role", "img");
-    placeholder.setAttribute("aria-label", "路线图片待补充");
-    placeholder.innerHTML = '<svg aria-hidden="true" viewBox="0 0 48 48"><circle cx="33" cy="15" r="3.5"/><path d="M8 36.5 18.5 25l6.5 6 5-5 10 10.5M8 10.5h32v28H8z"/></svg>';
-    return placeholder;
+    return galleryPlaceholder();
   }).forEach((item) => container.append(item));
+}
+
+function galleryPlaceholder() {
+  const placeholder = document.createElement("div");
+  placeholder.className = "route-dock__gallery-placeholder";
+  placeholder.setAttribute("role", "img");
+  placeholder.setAttribute("aria-label", "路线图片待补充");
+  placeholder.innerHTML = '<svg aria-hidden="true" viewBox="0 0 48 48"><circle cx="33" cy="15" r="3.5"/><path d="M8 36.5 18.5 25l6.5 6 5-5 10 10.5M8 10.5h32v28H8z"/></svg>';
+  return placeholder;
 }
 
 function renderOverview(list, model) {
