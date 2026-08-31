@@ -1,4 +1,4 @@
-import { routeMediaFor } from "./route-media.js?v=20260831-ui-34";
+import { routeMediaFor } from "./route-media.js?v=20260831-ui-35";
 
 const MODE_LABELS = { walk: "步行", run: "跑步", bike: "骑行" };
 const SHAPE_LABELS = {

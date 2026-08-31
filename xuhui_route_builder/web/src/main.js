@@ -1,11 +1,11 @@
 import {
   loadRouteData,
   startEnvironmentDashboardPolling,
-} from "./data-loader.js?v=20260831-ui-34";
+} from "./data-loader.js?v=20260831-ui-35";
 import {
   buildRouteExposureModel,
   createEnvironmentPanel,
-} from "./environment-ui.js?v=20260831-ui-34";
+} from "./environment-ui.js?v=20260831-ui-35";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -18,12 +18,13 @@ import {
   highlightRoutePreview,
   planNavigation,
   setBaseMapMode,
+  showHealthMapPlaces,
   showUserLocation,
   showRoutePreviews,
   showSingleRoute,
   startPointMarkerContent,
-} from "./map.js?v=20260831-ui-34";
-import { createNavigationController } from "./navigation-session.js?v=20260831-ui-34";
+} from "./map.js?v=20260831-ui-35";
+import { createNavigationController } from "./navigation-session.js?v=20260831-ui-35";
 import {
   buildLocalLocationCandidates,
   createLocationServices,
@@ -31,20 +32,20 @@ import {
   createMapPointSelection,
   createTencentSuggestionSearch,
   shouldShowCurrentLocationOption,
-} from "./location-control.js?v=20260831-ui-34";
-import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260831-ui-34";
-import { createRecommendationApi } from "./recommendation-api.js?v=20260831-ui-34";
+} from "./location-control.js?v=20260831-ui-35";
+import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260831-ui-35";
+import { createRecommendationApi } from "./recommendation-api.js?v=20260831-ui-35";
 import {
   DEFAULT_RECOMMENDATION_LOCATION,
   buildInitialRecommendationResult,
   createProfileDialog,
   createRecommendationUI,
-} from "./recommendation-ui.js?v=20260831-ui-34";
-import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260831-ui-34";
+} from "./recommendation-ui.js?v=20260831-ui-35";
+import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260831-ui-35";
 import {
   isMapLocationSelectionAllowed,
   renderRoutePlanner,
-} from "./route-ui.js?v=20260831-ui-34";
+} from "./route-ui.js?v=20260831-ui-35";
 
 const RECOMMENDATION_MAP_CARDS_ENABLED = false;
 
@@ -210,6 +211,7 @@ async function bootstrap() {
   });
 
   drawBoundary(map, data.boundary);
+  showHealthMapPlaces(map, data.entries, data.pois);
   planner = renderRoutePlanner(catalog, {
     getRouteEnvironment(routeId) {
       return buildRouteExposureModel(data.environmentDashboard, routeId);

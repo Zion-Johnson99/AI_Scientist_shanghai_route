@@ -19,6 +19,34 @@ const BASE_MAP_MODES = Object.freeze({
   }),
 });
 
+const HEALTH_MAP_PLACE_SPECS = Object.freeze([
+  { source: "entry", sourceId: "XH_ENT_0003", name: "上海植物园", category: "green", icon: "park", minZoom: 12, rank: 100 },
+  { source: "entry", sourceId: "XH_ENT_0006", name: "康健园", category: "green", icon: "park", minZoom: 12, rank: 98 },
+  { source: "entry", sourceId: "XH_ENT_0007", name: "徐家汇公园", category: "green", icon: "park", minZoom: 12, rank: 98 },
+  { source: "poi", sourceId: "official:huajing-park-huajing-road-gate", name: "华泾公园", category: "green", icon: "park", minZoom: 13, rank: 94 },
+  { source: "entry", sourceId: "XH_ENT_0002", name: "西岸艺术中心", category: "landmark", icon: "landmark", minZoom: 12, rank: 96 },
+  { source: "entry", sourceId: "XH_ENT_0010", name: "龙华寺", category: "landmark", icon: "landmark", minZoom: 12, rank: 96 },
+  { source: "entry", sourceId: "XH_ENT_0012", name: "武康大楼", category: "landmark", icon: "landmark", minZoom: 13, rank: 94 },
+  { source: "poi", sourceId: "official:xujiahui-sports-park-tianyaoqiao-gate", name: "徐家汇体育公园", category: "landmark", icon: "sport", minZoom: 13, rank: 94 },
+  { source: "entry", sourceId: "XH_ENT_0005", name: "桂江路中环绿廊", category: "green", icon: "park", minZoom: 14, rank: 86 },
+  { source: "entry", sourceId: "XH_ENT_0009", name: "龙华烈士陵园", category: "landmark", icon: "landmark", minZoom: 14, rank: 86 },
+  { source: "poi", sourceId: "amap:B00156LTS1", name: "植物园小卖部", category: "supply", icon: "supply", minZoom: 15, rank: 76 },
+  { source: "poi", sourceId: "official:7eleven-xuhui-binjiang", name: "7-ELEVEn·徐汇滨江", category: "supply", icon: "supply", minZoom: 15, rank: 76 },
+  { source: "poi", sourceId: "amap:B0FFF08VMK", name: "康健园公共厕所", category: "supply", icon: "toilet", minZoom: 15.5, rank: 68 },
+  { source: "poi", sourceId: "amap:B00156CS7I", name: "徐家汇公园公共厕所", category: "supply", icon: "toilet", minZoom: 15.5, rank: 68 },
+  { source: "poi", sourceId: "web:manner-xuhui-binjiang", name: "Manner·徐汇滨江", category: "supply", icon: "supply", minZoom: 15.5, rank: 66 },
+  { source: "poi", sourceId: "osm:node:5210178421", name: "罗森·复兴中路", category: "supply", icon: "supply", minZoom: 15.5, rank: 64 },
+  { source: "poi", sourceId: "osm:node:5239012373", name: "7-ELEVEn·田林路", category: "supply", icon: "supply", minZoom: 15.5, rank: 64 },
+  { source: "poi", sourceId: "amap:B0M6MSUF6U", name: "龙腾大道公共厕所", category: "supply", icon: "toilet", minZoom: 15.5, rank: 64 },
+  { source: "poi", sourceId: "starbucks:79955", name: "星巴克·龙华会", category: "supply", icon: "supply", minZoom: 15.5, rank: 62 },
+]);
+
+const HEALTH_MAP_PLACE_STYLES = Object.freeze({
+  green: Object.freeze({ color: "#3B9B43", labelColor: "#287B31" }),
+  landmark: Object.freeze({ color: "#536B18", labelColor: "#405510" }),
+  supply: Object.freeze({ color: "#E5792C", labelColor: "#C55D1C" }),
+});
+
 const ROUTE_LAYER_STATES = {
   overview: {
     mainOpacity: 0.78,
@@ -120,6 +148,8 @@ export async function createMap(targetId) {
     routePreviewMarkers: [],
     routePreviewZoomHandler: null,
     baseMapMode: DEFAULT_BASE_MAP_MODE,
+    healthPlaceLayer: null,
+    healthPlaceMarkers: [],
     entryLayers: [],
     poiLayers: [],
     semanticMarkerLayers: [],
@@ -154,7 +184,127 @@ export function setBaseMapMode(mapContext, mode) {
   mapContext.amap.setMapStyle(config.mapStyle);
   mapContext.amap.setFeatures([...config.features]);
   mapContext.baseMapMode = mode;
+  syncHealthMapPlaceVisibility(mapContext);
   return mode;
+}
+
+export function healthMapPlaceModels(entries = { features: [] }, pois = { features: [] }) {
+  const entriesById = new Map(
+    (entries.features || []).map((feature) => [feature?.properties?.entry_id, feature]),
+  );
+  const poisById = new Map(
+    (pois.features || []).map((feature) => [feature?.properties?.poi_id, feature]),
+  );
+
+  return HEALTH_MAP_PLACE_SPECS.flatMap((spec) => {
+    const feature = spec.source === "entry"
+      ? entriesById.get(spec.sourceId)
+      : poisById.get(spec.sourceId);
+    const coordinates = feature?.geometry?.coordinates;
+    if (!Array.isArray(coordinates) || coordinates.length < 2) {
+      return [];
+    }
+    return [{
+      ...spec,
+      position: [Number(coordinates[0]), Number(coordinates[1])],
+      interactive: false,
+    }];
+  });
+}
+
+export function showHealthMapPlaces(mapContext, entries, pois) {
+  const { AMap, amap } = mapContext;
+  if (!AMap.LabelsLayer || !AMap.LabelMarker) {
+    throw new Error("高德地图静态标注组件未加载。");
+  }
+
+  if (mapContext.healthPlaceLayer) {
+    amap.remove(mapContext.healthPlaceLayer);
+  }
+
+  const models = healthMapPlaceModels(entries, pois);
+  if (models.length !== HEALTH_MAP_PLACE_SPECS.length) {
+    const renderedIds = new Set(models.map((model) => model.sourceId));
+    console.warn("健康地图部分精选地点缺少坐标，已跳过", {
+      requestedCount: HEALTH_MAP_PLACE_SPECS.length,
+      renderedCount: models.length,
+      missingSourceIds: HEALTH_MAP_PLACE_SPECS
+        .map((spec) => spec.sourceId)
+        .filter((sourceId) => !renderedIds.has(sourceId)),
+    });
+  }
+
+  const layer = new AMap.LabelsLayer({
+    zooms: [11, 20],
+    zIndex: 58,
+    collision: true,
+    allowCollision: false,
+  });
+  const markers = models.map((model) => {
+    const style = HEALTH_MAP_PLACE_STYLES[model.category];
+    const marker = new AMap.LabelMarker({
+      position: model.position,
+      zooms: [model.minZoom, 20],
+      rank: model.rank,
+      opacity: 1,
+      icon: {
+        type: "image",
+        image: healthPlaceIconDataUri(model.icon, style.color),
+        size: [24, 24],
+        anchor: "center",
+      },
+      text: {
+        content: model.name,
+        direction: "right",
+        offset: [8, 0],
+        style: {
+          fontSize: 12,
+          fontWeight: "600",
+          fontFamily: "Noto Sans SC, Microsoft YaHei, sans-serif",
+          fillColor: style.labelColor,
+          strokeColor: "#FFFFFF",
+          strokeWidth: 3,
+          padding: "0, 0",
+        },
+      },
+      extData: {
+        sourceId: model.sourceId,
+        category: model.category,
+        name: model.name,
+        interactive: false,
+      },
+    });
+    layer.add(marker);
+    return marker;
+  });
+
+  amap.add(layer);
+  mapContext.healthPlaceLayer = layer;
+  mapContext.healthPlaceMarkers = markers;
+  syncHealthMapPlaceVisibility(mapContext);
+  return markers;
+}
+
+function syncHealthMapPlaceVisibility(mapContext) {
+  const layer = mapContext.healthPlaceLayer;
+  if (!layer) return;
+  if (mapContext.baseMapMode === "health") {
+    layer.show();
+  } else {
+    layer.hide();
+  }
+}
+
+function healthPlaceIconDataUri(icon, color) {
+  const paths = {
+    park: '<path fill="#fff" d="M12 3 7.3 9.6h2.5L6 15h5v5h2v-5h5l-3.8-5.4h2.5z"/>',
+    landmark: '<path fill="#fff" d="M5 19h14v-2h-1V9h1V7l-7-3-7 3v2h1v8H5zm3-10h2v8H8zm4 0h2v8h-2zm4 0h1v8h-1z"/>',
+    sport: '<path fill="#fff" d="M12 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-3.4 5.2-2.8 3.1 1.5 1.3 2.1-2.2 1.2 1.1-2.8 3.2v4.1h2v-3.3l1.8-1.9 1.2 1.1v4.1h2v-5l-3.5-3.4 1.2-1.2 1.8 1.8h3.2v-2h-2.4l-2.1-2.1a2 2 0 0 0-2.8 0z"/>',
+    supply: '<path fill="#fff" d="M6 5h12l-1 5a4.8 4.8 0 0 1-4 3.8V17h4v2H7v-2h4v-3.2A4.8 4.8 0 0 1 7 10zm2.1 2 .5 2.6A2.8 2.8 0 0 0 11.4 12h1.2a2.8 2.8 0 0 0 2.8-2.4l.5-2.6z"/>',
+    toilet: '<path fill="#fff" d="M8 5a1.8 1.8 0 1 0 0 3.6A1.8 1.8 0 0 0 8 5zm8 0a1.8 1.8 0 1 0 0 3.6A1.8 1.8 0 0 0 16 5zM6.2 10h3.6l.7 4H9.2v5H6.8v-5H5.5zm8 0h3.6l.7 4h-1.3v5h-2.4v-5h-1.3z"/>',
+  };
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="${color}" stroke="#fff" stroke-width="2"/>${paths[icon]}</svg>`;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
 export function drawBoundary(mapContext, boundary) {

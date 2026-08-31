@@ -1,4 +1,4 @@
-import { routeMediaFor } from "./route-media.js?v=20260831-ui-34";
+import { routeMediaFor } from "./route-media.js?v=20260831-ui-35";
 
 const ROUTE_MODE_LABELS = {
   walk: "步行",

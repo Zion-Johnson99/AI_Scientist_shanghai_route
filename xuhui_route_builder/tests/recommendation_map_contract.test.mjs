@@ -4,8 +4,10 @@ import test from "node:test";
 
 import {
   createRecommendationMapController,
+  healthMapPlaceModels,
   routePreviewCardModel,
   setBaseMapMode,
+  showHealthMapPlaces,
   startPointMarkerContent,
 } from "../web/src/map.js";
 
@@ -294,6 +296,97 @@ test("健康底图默认隐藏通用 POI，标准底图可恢复完整要素", (
     ["features", ["bg", "point", "road", "building"]],
   ]);
   assert.throws(() => setBaseMapMode(mapContext, "unknown"), /未知底图模式/);
+});
+
+test("健康地图只选取十九个绿地、地标和补给点，并按缩放逐级显示", () => {
+  const entries = JSON.parse(
+    readFileSync(new URL("../data/web/xuhui_entries.geojson", import.meta.url), "utf8"),
+  );
+  const pois = JSON.parse(
+    readFileSync(new URL("../data/web/poi_catalog.json", import.meta.url), "utf8"),
+  );
+
+  const models = healthMapPlaceModels(entries, pois);
+  const categoryCounts = Object.fromEntries(
+    ["green", "landmark", "supply"].map((category) => [
+      category,
+      models.filter((model) => model.category === category).length,
+    ]),
+  );
+
+  assert.equal(models.length, 19);
+  assert.deepEqual(categoryCounts, { green: 5, landmark: 5, supply: 9 });
+  assert.equal(models.filter((model) => model.minZoom <= 13).length, 8);
+  assert.equal(models.filter((model) => model.minZoom <= 15).length, 12);
+  assert.equal(new Set(models.map((model) => model.sourceId)).size, models.length);
+  assert.equal(models.every((model) => model.interactive === false), true);
+  assert.equal(models.some((model) => model.name.includes("医院")), false);
+  assert.equal(models.some((model) => model.name.includes("餐厅")), false);
+});
+
+test("健康地点层保持静态并只随两张底图切换显隐", () => {
+  const entries = JSON.parse(
+    readFileSync(new URL("../data/web/xuhui_entries.geojson", import.meta.url), "utf8"),
+  );
+  const pois = JSON.parse(
+    readFileSync(new URL("../data/web/poi_catalog.json", import.meta.url), "utf8"),
+  );
+  const visibility = [];
+  const added = [];
+
+  class LabelsLayer {
+    constructor(options) {
+      this.options = options;
+      this.markers = [];
+    }
+
+    add(marker) {
+      this.markers.push(marker);
+    }
+
+    show() {
+      visibility.push("show");
+    }
+
+    hide() {
+      visibility.push("hide");
+    }
+  }
+
+  class LabelMarker {
+    constructor(options) {
+      this.options = options;
+    }
+  }
+
+  const mapContext = {
+    AMap: { LabelsLayer, LabelMarker },
+    amap: {
+      add(layer) {
+        added.push(layer);
+      },
+      remove() {},
+      setMapStyle() {},
+      setFeatures() {},
+    },
+    baseMapMode: "health",
+    healthPlaceLayer: null,
+    healthPlaceMarkers: [],
+  };
+
+  const markers = showHealthMapPlaces(mapContext, entries, pois);
+
+  assert.equal(added.length, 1);
+  assert.equal(markers.length, 19);
+  assert.equal(mapContext.healthPlaceLayer.options.collision, true);
+  assert.equal(mapContext.healthPlaceLayer.options.allowCollision, false);
+  assert.equal(markers.every((marker) => marker.options.extData.interactive === false), true);
+  assert.equal(markers.every((marker) => marker.options.zooms[1] === 20), true);
+  assert.equal(markers.every((marker) => marker.options.icon.image.startsWith("data:image/svg+xml")), true);
+
+  setBaseMapMode(mapContext, "standard");
+  setBaseMapMode(mapContext, "health");
+  assert.deepEqual(visibility, ["show", "hide", "show"]);
 });
 
 test("步行路线使用品牌蓝并继续保留白色外描边", () => {

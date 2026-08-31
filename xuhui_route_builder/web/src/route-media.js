@@ -1,4 +1,4 @@
-import manifest from "../../data/web/route_media_manifest.json?v=20260831-ui-34" with { type: "json" };
+import manifest from "../../data/web/route_media_manifest.json?v=20260831-ui-35" with { type: "json" };
 
 export const ROUTE_MEDIA = Object.freeze(Object.fromEntries(
   Object.entries(manifest.routes || {}).map(([routeId, route]) => {
