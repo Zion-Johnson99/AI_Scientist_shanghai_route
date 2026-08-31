@@ -14,6 +14,15 @@ from weather_api_data.scheduler import run_scheduled_refresh
 NOW = datetime(2026, 8, 27, 1, 2, 3, tzinfo=timezone.utc)
 
 
+def test_windows_weather_task_runs_every_five_minutes() -> None:
+    script_path = Path(__file__).resolve().parents[1] / "scripts" / "install_windows_tasks.ps1"
+    script = script_path.read_text(encoding="utf-8-sig")
+
+    assert 'Description = "Refresh Xuhui weather and alerts every 5 minutes"' in script
+    assert "$start = $start.AddMinutes(5)" in script
+    assert "-RepetitionInterval (New-TimeSpan -Minutes 5)" in script
+
+
 def _callback(
     name: str,
     calls: list[str],

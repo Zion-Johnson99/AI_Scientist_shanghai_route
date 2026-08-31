@@ -1,5 +1,5 @@
 import { normalizeHealthProfile } from "./profile-store.js";
-import { createRouteCard, routeCardModel } from "./route-card.js?v=20260831-ui-32";
+import { createRouteCard, routeCardModel } from "./route-card.js?v=20260831-ui-33";
 
 export const DEFAULT_RECOMMENDATION_LOCATION = Object.freeze({
   label: "上海交通大学徐汇校区",

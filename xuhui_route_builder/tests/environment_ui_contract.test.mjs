@@ -304,6 +304,21 @@ test("预警只在按钮显示状态点，详情不展示状态和时间元数�
   assert.doesNotMatch(details, /有效期/);
 });
 
+test("多条有效预警按等级聚合成一张提示卡", () => {
+  const dashboard = dashboardFixture();
+  dashboard.current.alerts = [
+    record({ summary: "上海市暴雨蓝色预警", text: "局部将出现强降水", level: "minor" }),
+    record({ summary: "上海市雷电黄色预警", text: "可能发生雷电活动", level: "moderate" }),
+  ];
+  const container = createPanelStub();
+  createEnvironmentPanel(container, dashboard);
+
+  const details = container.innerHTML.slice(container.innerHTML.indexOf('class="environment-details"'));
+  assert.equal((details.match(/class="environment-alert"/g) || []).length, 1);
+  assert.match(details, /当前 2 条气象预警/);
+  assert.ok(details.indexOf("上海市雷电黄色预警") < details.indexOf("上海市暴雨蓝色预警"));
+});
+
 test("摘要缺值使用短横线，明确状态留在主条件和展开卡片", () => {
   const missingDashboard = dashboardFixture();
   missingDashboard.current.aqi = { status: "no_data", values: {} };

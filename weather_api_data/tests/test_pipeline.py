@@ -526,6 +526,25 @@ def test_refresh_weather_updates_near_expiry_weather_cache(
     ]
 
 
+def test_refresh_weather_updates_near_expiry_alert_cache(
+    bundle: Sequence[PipelineBundle],
+) -> None:
+    value = _only(bundle)
+    value.pipeline.refresh()
+    cache = json.loads(value.cache_path.read_text(encoding="utf-8"))
+    cache["entries"][f"alerts|{REFERENCE_SOURCE_ID}"]["valid_until"] = (
+        UTC_NOW + timedelta(seconds=30)
+    ).isoformat()
+    value.cache_path.write_text(json.dumps(cache), encoding="utf-8")
+    value.provider.calls.clear()
+
+    report = value.pipeline.refresh_weather()
+
+    assert report["call_count"] == 1
+    assert report["cache_hits"] == 2
+    assert value.provider.calls == [("alerts", REFERENCE_SOURCE_ID)]
+
+
 def test_refresh_weather_failure_is_partial_and_keeps_stale_snapshot(tmp_path: Path) -> None:
     provider = FakeQWeatherClient()
     value = _build_pipeline(tmp_path, provider=provider)

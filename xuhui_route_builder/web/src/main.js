@@ -1,11 +1,11 @@
 import {
   loadRouteData,
   startEnvironmentDashboardPolling,
-} from "./data-loader.js?v=20260831-ui-32";
+} from "./data-loader.js?v=20260831-ui-33";
 import {
   buildRouteExposureModel,
   createEnvironmentPanel,
-} from "./environment-ui.js?v=20260831-ui-32";
+} from "./environment-ui.js?v=20260831-ui-33";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -22,8 +22,8 @@ import {
   showRoutePreviews,
   showSingleRoute,
   startPointMarkerContent,
-} from "./map.js?v=20260831-ui-32";
-import { createNavigationController } from "./navigation-session.js?v=20260831-ui-32";
+} from "./map.js?v=20260831-ui-33";
+import { createNavigationController } from "./navigation-session.js?v=20260831-ui-33";
 import {
   buildLocalLocationCandidates,
   createLocationServices,
@@ -31,20 +31,20 @@ import {
   createMapPointSelection,
   createTencentSuggestionSearch,
   shouldShowCurrentLocationOption,
-} from "./location-control.js?v=20260831-ui-32";
-import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260831-ui-32";
-import { createRecommendationApi } from "./recommendation-api.js?v=20260831-ui-32";
+} from "./location-control.js?v=20260831-ui-33";
+import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260831-ui-33";
+import { createRecommendationApi } from "./recommendation-api.js?v=20260831-ui-33";
 import {
   DEFAULT_RECOMMENDATION_LOCATION,
   buildInitialRecommendationResult,
   createProfileDialog,
   createRecommendationUI,
-} from "./recommendation-ui.js?v=20260831-ui-32";
-import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260831-ui-32";
+} from "./recommendation-ui.js?v=20260831-ui-33";
+import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260831-ui-33";
 import {
   isMapLocationSelectionAllowed,
   renderRoutePlanner,
-} from "./route-ui.js?v=20260831-ui-32";
+} from "./route-ui.js?v=20260831-ui-33";
 
 const RECOMMENDATION_MAP_CARDS_ENABLED = false;
 

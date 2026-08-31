@@ -47,16 +47,14 @@ _HOURLY_BUCKETS = {
     "hourly_weather_24": "weather_forecast_24h",
 }
 _CACHE_ENDPOINTS = (*_ACTIVE_ENDPOINTS, "point_air_quality")
-_NEAR_EXPIRY_REFRESH_ENDPOINTS = frozenset(
-    {
-        "current_conditions",
-        "hourly_weather_24",
-        "current_air_quality",
-        "hourly_air_quality_24",
-        "indices_3day",
-    }
-)
-_NEAR_EXPIRY_REFRESH_MARGIN = timedelta(minutes=5)
+_NEAR_EXPIRY_REFRESH_MARGINS = {
+    "current_conditions": timedelta(minutes=5),
+    "hourly_weather_24": timedelta(minutes=5),
+    "current_air_quality": timedelta(minutes=5),
+    "hourly_air_quality_24": timedelta(minutes=5),
+    "indices_3day": timedelta(minutes=5),
+    "alerts": timedelta(minutes=1),
+}
 
 
 class ProviderOperations(Protocol):
@@ -364,11 +362,7 @@ class WeatherPipeline:
 
         for endpoint, request in requests:
             cache_key = _cache_key(endpoint, reference_source_id)
-            refresh_margin = (
-                _NEAR_EXPIRY_REFRESH_MARGIN
-                if endpoint in _NEAR_EXPIRY_REFRESH_ENDPOINTS
-                else timedelta(0)
-            )
+            refresh_margin = _NEAR_EXPIRY_REFRESH_MARGINS.get(endpoint, timedelta(0))
             cached = _unexpired_records(
                 entries.get(cache_key),
                 _aware_utc(self._now()),
@@ -473,11 +467,7 @@ class WeatherPipeline:
         for location in locations:
             for endpoint, request in self._refresh_requests(location, reference_source_id):
                 cache_key = _cache_key(endpoint, location.location_key)
-                refresh_margin = (
-                    _NEAR_EXPIRY_REFRESH_MARGIN
-                    if endpoint in _NEAR_EXPIRY_REFRESH_ENDPOINTS
-                    else timedelta(0)
-                )
+                refresh_margin = _NEAR_EXPIRY_REFRESH_MARGINS.get(endpoint, timedelta(0))
                 cached = _unexpired_records(
                     entries.get(cache_key),
                     _aware_utc(self._now()),

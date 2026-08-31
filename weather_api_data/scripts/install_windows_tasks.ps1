@@ -13,7 +13,7 @@ $taskDefinitions = @(
     [pscustomobject]@{
         Name = "XuhuiEnvironmentRefresh-Weather"
         Tier = "weather"
-        Description = "Refresh Xuhui weather and alerts every 15 minutes"
+        Description = "Refresh Xuhui weather and alerts every 5 minutes"
     },
     [pscustomobject]@{
         Name = "XuhuiEnvironmentRefresh-Hourly"
@@ -36,10 +36,10 @@ function New-RefreshTrigger {
             $start = Get-Date -Year $now.Year -Month $now.Month -Day $now.Day `
                 -Hour $now.Hour -Minute 0 -Second 0
             while ($start -le $now) {
-                $start = $start.AddMinutes(15)
+                $start = $start.AddMinutes(5)
             }
             return New-ScheduledTaskTrigger -Once -At $start `
-                -RepetitionInterval (New-TimeSpan -Minutes 15)
+                -RepetitionInterval (New-TimeSpan -Minutes 5)
         }
         "hourly" {
             $start = Get-Date -Year $now.Year -Month $now.Month -Day $now.Day `

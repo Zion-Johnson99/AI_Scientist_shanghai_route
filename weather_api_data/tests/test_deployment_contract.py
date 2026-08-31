@@ -28,7 +28,7 @@ def test_windows_tasks_use_frozen_cli_contract_and_runtime_paths() -> None:
 def test_windows_task_triggers_and_reliability_settings_are_explicit() -> None:
     script = _read(WINDOWS_SCRIPT)
 
-    assert "New-TimeSpan -Minutes 15" in script
+    assert "-RepetitionInterval (New-TimeSpan -Minutes 5)" in script
     assert "New-TimeSpan -Hours 1" in script
     assert re.search(r'New-ScheduledTaskTrigger -Daily -At ["\']06:07["\']', script)
     assert "-StartWhenAvailable" in script

@@ -12,6 +12,12 @@ const DISPLAY_STATUS = {
   no_data: "暂无数据",
   stale: "数据更新中",
 };
+const ALERT_SEVERITY_RANK = {
+  extreme: 4,
+  severe: 3,
+  moderate: 2,
+  minor: 1,
+};
 
 export function buildCurrentEnvironmentModel(dashboard) {
   const weather = dashboard?.current?.weather;
@@ -268,13 +274,7 @@ function renderPanel(current, forecast) {
   const summaryHumidity = current.humidity === null ? "—" : current.humidityText;
   const summaryWind = current.windSpeed === null ? "—" : current.windText;
   const summaryPrecipitation = current.precipitation === null ? "—" : current.precipitationText;
-  const alerts = current.alerts.length
-    ? `<div class="environment-alerts" role="status">${current.alerts.map((alert) => (
-      `<div class="environment-alert"><strong>${escapeHtml(alert.title)}</strong>${
-        alert.text ? `<span>${escapeHtml(alert.text)}</span>` : ""
-      }</div>`
-    )).join("")}</div>`
-    : "";
+  const alerts = renderAlerts(current.alerts);
   const alertDot = current.alerts.length
     ? '<span class="environment-alert-dot" aria-label="当前有环境预警"></span>'
     : "";
@@ -475,6 +475,18 @@ function hourlyEmptyStatus(hours) {
   return hours.some(({ status }) => status === "stale") ? "stale" : "no_data";
 }
 
+function renderAlerts(alerts) {
+  if (!alerts.length) return "";
+  const [primary, ...others] = alerts;
+  const title = others.length ? `当前 ${alerts.length} 条气象预警` : primary.title;
+  const text = others.length
+    ? `${primary.title}；另有${others.map((alert) => alert.title).join("、")}`
+    : primary.text;
+  return `<div class="environment-alerts" role="status"><div class="environment-alert"><strong>${escapeHtml(title)}</strong>${
+    text ? `<span>${escapeHtml(text)}</span>` : ""
+  }</div></div>`;
+}
+
 function normalizeAlerts(alerts) {
   return (Array.isArray(alerts) ? alerts : [])
     .filter((alert) => hasDisplayValue(recordStatus(alert, alert?.values || alert)))
@@ -485,7 +497,11 @@ function normalizeAlerts(alerts) {
         text: String(values.text || values.description || ""),
         severity: String(values.level || values.severity || "warning"),
       };
-    });
+    })
+    .sort((left, right) => (
+      (ALERT_SEVERITY_RANK[right.severity.toLowerCase()] || 0)
+      - (ALERT_SEVERITY_RANK[left.severity.toLowerCase()] || 0)
+    ));
 }
 
 function exposureMetric(label, record, options = {}) {

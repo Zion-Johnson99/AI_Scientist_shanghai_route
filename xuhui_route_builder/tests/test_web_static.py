@@ -183,7 +183,7 @@ def test_product_toolbar_owns_the_single_location_mode_environment_and_profile_e
     assert './local-tencent-config.js' in html
     assert 'class="profile-action__label">个人档案</span>' in toolbar
     assert 'class="map-layer-button__label">图层</span>' in html
-    assert "./styles/recommendation.css?v=20260831-ui-32" in html
+    assert "./styles/recommendation.css?v=20260831-ui-33" in html
     for mode_id, route_mode in [
         ("toolbarWalkMode", "walk"),
         ("toolbarRunMode", "run"),
@@ -457,7 +457,7 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260831-ui-32"
+    release = "v=20260831-ui-33"
     assert html.count(f"./xh-logo.svg?{release}") == 2
     assert f"./styles/main.css?{release}" in html
     assert f"./styles/recommendation.css?{release}" in html
