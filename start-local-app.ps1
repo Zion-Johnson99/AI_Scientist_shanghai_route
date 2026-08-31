@@ -136,9 +136,11 @@ function Get-EnvironmentRefreshTier {
     if ($lifeIndices.Count -eq 0 -or $routes.Count -eq 0) {
         return "daily"
     }
+    $lifeIndicesNeedHourlyRefresh = $false
     foreach ($indexRecord in $lifeIndices) {
-        if (Test-RecordExpired -Record $indexRecord -Now $now) {
-            return "daily"
+        if (Test-RecordExpired -Record $indexRecord -Now $now -RefreshMarginMinutes 5) {
+            $lifeIndicesNeedHourlyRefresh = $true
+            break
         }
     }
 
@@ -158,7 +160,8 @@ function Get-EnvironmentRefreshTier {
 
     $pm25Time = Convert-ToTimestamp -Value $routeSample.pm2_5.business_time
     if (
-        (Test-RecordExpired -Record $dashboard.current.aqi -Now $now -RefreshMarginMinutes 5) `
+        $lifeIndicesNeedHourlyRefresh `
+        -or (Test-RecordExpired -Record $dashboard.current.aqi -Now $now -RefreshMarginMinutes 5) `
         -or $null -eq $pm25Time `
         -or $pm25Time -le $now.AddHours(-1)
     ) {

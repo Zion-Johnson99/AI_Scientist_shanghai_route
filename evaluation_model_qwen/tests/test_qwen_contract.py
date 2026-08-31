@@ -536,6 +536,36 @@ def test_intent_patch_rejects_invalid_distance_order_and_route_ids() -> None:
         IntentResponse.model_validate(document)
 
 
+@pytest.mark.parametrize("route_mode", ["walk", "run", "bike"])
+def test_intent_patch_accepts_and_serializes_route_mode(
+    route_mode: Literal["walk", "run", "bike"],
+) -> None:
+    response = intent_response().model_copy(
+        update={
+            "preference_patch": IntentPreferencePatch(
+                route_mode=route_mode,
+                distance_min_m=4000,
+                target_distance_m=5000,
+                distance_max_m=6000,
+            )
+        }
+    )
+
+    document = response.model_dump(mode="json")
+
+    assert response.preference_patch.route_mode == route_mode
+    assert document["preference_patch"]["route_mode"] == route_mode
+    assert IntentResponse.model_validate(document) == response
+
+
+def test_intent_patch_rejects_invalid_route_mode() -> None:
+    document = intent_response().model_dump(mode="json")
+    document["preference_patch"]["route_mode"] = "scooter"
+
+    with pytest.raises(ValueError):
+        IntentResponse.model_validate(document)
+
+
 def test_intent_response_requires_one_missing_field_for_follow_up() -> None:
     assert intent_response(ready=True).missing_fields == []
     assert intent_response(ready=False).missing_fields == ["distance"]
@@ -550,7 +580,9 @@ def test_intent_response_requires_one_missing_field_for_follow_up() -> None:
 
 
 def test_intent_uses_independent_strict_schema_and_safe_recent_history() -> None:
-    calls = FakeCompletions(completion(intent_response(), request_id="req-intent"))
+    parsed_intent = intent_response().model_dump(mode="json")
+    parsed_intent["preference_patch"]["route_mode"] = "bike"
+    calls = FakeCompletions(completion(parsed_intent, request_id="req-intent"))
     client = QwenClient(
         api_key="secret-key",
         base_url="https://example.invalid/v1",
@@ -573,9 +605,12 @@ def test_intent_uses_independent_strict_schema_and_safe_recent_history() -> None
     sent_text = json.dumps(sent, ensure_ascii=False)
     assert result.ready is True
     assert audit.request_id == "req-intent"
-    assert audit.prompt_version == "qwen-route-intent-v1"
+    assert audit.prompt_version == "qwen-route-intent-v2"
     assert calls.calls[0]["response_format"] is IntentResponse
     assert calls.calls[0]["extra_body"] == {"enable_thinking": False}
+    assert result.preference_patch.route_mode == "bike"
+    assert "本轮需求" in calls.calls[0]["messages"][0]["content"]
+    assert "walk、run、bike" in calls.calls[0]["messages"][0]["content"]
     assert [item["content"] for item in sent["history"]] == [
         f"历史消息 {index}" for index in range(6)
     ]
@@ -584,6 +619,27 @@ def test_intent_uses_independent_strict_schema_and_safe_recent_history() -> None
     assert "lat_gcj02" not in sent_text
     assert "sk-private-value" not in sent_text
     assert "C:\\\\secret" not in sent_text
+
+
+def test_intent_prompt_requires_short_friendly_reply_contract() -> None:
+    calls = FakeCompletions(completion(intent_response()))
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(calls),
+    )
+
+    client.interpret_intent(intent_request())
+
+    system_prompt = calls.calls[0]["messages"][0]["content"]
+    assert "自然承接用户本轮的核心需求" in system_prompt
+    assert "最多两句或两个短段" in system_prompt
+    assert "每轮只问一个可执行问题" in system_prompt
+    assert "ready=false 时 reply 只问这一个问题" in system_prompt
+    assert "ready=true 时 reply 只给一句自然过渡且不再追问" in system_prompt
+    assert "已识别、已确认、请确认是否" in system_prompt
+    assert "内部字段名、JSON、路线 ID、排序指令" in system_prompt
+    assert "无候选路线由推荐服务处理" in system_prompt
 
 
 def test_intent_accepts_one_field_follow_up() -> None:
@@ -605,6 +661,52 @@ def test_intent_accepts_one_field_follow_up() -> None:
     assert result == follow_up
 
 
+def test_intent_service_discards_stale_model_target_time() -> None:
+    stale = intent_response().model_copy(
+        update={
+            "preference_patch": IntentPreferencePatch(
+                route_mode="walk",
+                target_time=datetime.fromisoformat("2024-05-22T10:00:00+00:00"),
+                distance_min_m=1500,
+                target_distance_m=2500,
+                distance_max_m=3500,
+            )
+        }
+    )
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(FakeCompletions(completion(stale))),
+    )
+
+    result = interpret_intent_service(intent_request(), qwen_client=client)
+
+    assert result.ready is True
+    assert result.preference_patch.target_time is None
+    assert result.preference_patch.route_mode == "walk"
+
+
+def test_intent_service_keeps_only_one_search_scope() -> None:
+    conflicting = intent_response().model_copy(
+        update={
+            "preference_patch": IntentPreferencePatch(
+                search_radius_m=10_000,
+                area_ids=["shanghai_xuhui_sjtu"],
+            )
+        }
+    )
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(FakeCompletions(completion(conflicting))),
+    )
+
+    result = interpret_intent_service(intent_request(), qwen_client=client)
+
+    assert result.preference_patch.search_radius_m == 10_000
+    assert result.preference_patch.area_ids is None
+
+
 def test_intent_rejects_route_id_in_model_output() -> None:
     document = intent_response().model_dump(mode="json")
     document["preference_patch"]["route_id"] = "route-1"
@@ -619,7 +721,7 @@ def test_intent_rejects_route_id_in_model_output() -> None:
         client.interpret_intent(intent_request())
 
     assert exc_info.value.audit.error_type == "invalid_response"
-    assert exc_info.value.audit.prompt_version == "qwen-route-intent-v1"
+    assert exc_info.value.audit.prompt_version == "qwen-route-intent-v2"
 
 
 @pytest.mark.parametrize(

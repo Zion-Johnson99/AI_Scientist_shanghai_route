@@ -264,6 +264,7 @@ export function createRecommendationUI({
   onReturnRouteOverview,
   onRestartRecommendation,
   onChatStateChange,
+  onRouteModeChange,
   shouldSelectRoute = () => true,
 } = {}) {
   if (!container) {
@@ -292,8 +293,9 @@ export function createRecommendationUI({
   let chatDraft = "";
   let chatHistory = [];
   let intentPatch = {};
-  let intentReady = false;
   let chatError = "";
+  let chatProgress = "";
+  let chatResultVisible = false;
   let preChatState = null;
   const answers = defaultAnswers(questionnaire);
 
@@ -323,8 +325,9 @@ export function createRecommendationUI({
       chatDraft = "";
       chatHistory = [];
       intentPatch = {};
-      intentReady = false;
       chatError = "";
+      chatProgress = "";
+      chatResultVisible = false;
       render();
       onRestartRecommendation?.();
     },
@@ -341,7 +344,7 @@ export function createRecommendationUI({
       render();
       const model = buildRecommendationViewModel(result);
       if (["result", "degraded"].includes(model.kind) && shouldSelectRoute()) {
-        onShowRoutes?.(model.routes.map((route) => route.source));
+        onShowRoutes?.(model.routes.map((route) => route.source), { source: "recommendation" });
       }
     },
     showError(error) {
@@ -391,14 +394,14 @@ export function createRecommendationUI({
     },
     setHoveredRoute(routeId) {
       hoveredRouteId = routeId || null;
-      if (viewState === "result") render();
+      if (["result", "chat"].includes(viewState)) render();
     },
     selectRoute(routeId) {
       const model = buildRecommendationViewModel(currentResult, routeId);
       if (!["result", "degraded"].includes(model.kind) || !model.selectedRoute) return;
       currentRouteId = routeId;
       hoveredRouteId = null;
-      viewState = "result";
+      if (viewState !== "chat") viewState = "result";
       render();
       onSelectRoute?.(routeId, model.selectedRoute);
     },
@@ -413,6 +416,7 @@ export function createRecommendationUI({
       return { ...answers, interests: [...answers.interests] };
     },
     openChat,
+    newChat,
     closeChat,
     isChatOpen() {
       return viewState === "chat";
@@ -452,10 +456,37 @@ export function createRecommendationUI({
     onChatStateChange?.(true);
   }
 
+  function newChat() {
+    const chatWasOpen = viewState === "chat";
+    if (!chatWasOpen) {
+      preChatState = {
+        viewState,
+        currentRouteId,
+        scrollTop: Number(container.scrollTop || 0),
+      };
+      viewState = "chat";
+    }
+    intentRevision += 1;
+    chatBusy = false;
+    chatDraft = "";
+    chatHistory = [];
+    intentPatch = {};
+    chatError = "";
+    chatProgress = "";
+    chatResultVisible = false;
+    currentRouteId = null;
+    hoveredRouteId = null;
+    render();
+    container.scrollTop = 0;
+    onReturnRouteOverview?.();
+    if (!chatWasOpen) onChatStateChange?.(true);
+  }
+
   function closeChat() {
     if (viewState !== "chat") return;
     intentRevision += 1;
     chatBusy = false;
+    chatProgress = "";
     const previous = preChatState || {
       viewState: "questionnaire",
       currentRouteId: null,
@@ -748,13 +779,6 @@ export function createRecommendationUI({
 
   function renderChat() {
     const workspace = element("section", "recommendation-chat");
-    const close = element("button", "recommendation-chat__close", "×");
-    close.type = "button";
-    close.setAttribute("aria-label", "关闭千问聊天");
-    close.setAttribute("title", "关闭千问聊天");
-    close.addEventListener("click", closeChat);
-    workspace.append(close);
-
     const scroll = element("div", "recommendation-chat__scroll");
     scroll.append(element(
       "p",
@@ -770,10 +794,7 @@ export function createRecommendationUI({
       chatExamples().forEach((example) => {
         const button = element("button", "recommendation-chat__example", example);
         button.type = "button";
-        button.addEventListener("click", () => {
-          chatDraft = example;
-          render();
-        });
+        button.addEventListener("click", () => submitChatMessage(example));
         examples.append(button);
       });
       starter.append(examples);
@@ -786,24 +807,21 @@ export function createRecommendationUI({
       });
       scroll.append(messages);
     }
+    if (chatProgress) scroll.append(renderChatProgress(chatProgress));
+    if (chatResultVisible) {
+      const model = buildRecommendationViewModel(currentResult, currentRouteId);
+      if (["result", "degraded"].includes(model.kind)) {
+        const cards = element("div", "recommendation-chat__route-cards");
+        model.routes.slice(0, 3).forEach((route, index) => cards.append(renderChatRouteCard(route, index)));
+        scroll.append(cards);
+      } else if (["paused", "no_candidates"].includes(model.kind)) {
+        scroll.append(element("p", "recommendation-chat__empty-result", model.message));
+      }
+    }
     if (chatError) {
       const warning = element("p", "recommendation-chat__error", chatError);
       warning.setAttribute("role", "alert");
       scroll.append(warning);
-    }
-    if (intentReady) {
-      const confirm = element("button", "recommendation-chat__confirm", "开始推荐");
-      confirm.type = "button";
-      confirm.addEventListener("click", async () => {
-        const revision = ++requestRevision;
-        try {
-          const base = buildUserProfile({ questionnaire: currentQuestionnaire, answers, profile: currentProfile, location: currentLocation });
-          await runRecommendation(applyIntentPatch(base, intentPatch), revision);
-        } catch (error) {
-          controller.showError(error);
-        }
-      });
-      scroll.append(confirm);
     }
     workspace.append(scroll);
 
@@ -813,12 +831,34 @@ export function createRecommendationUI({
     input.setAttribute("maxlength", "500");
     input.setAttribute("placeholder", "例如：想跑 5 公里，安静一点，沿途有厕所");
     input.value = chatDraft;
-    input.addEventListener("input", (event) => { chatDraft = event.target.value; });
-    const send = element("button", "recommendation-chat__send", chatBusy ? "整理中…" : "发送");
+    input.disabled = chatBusy;
+    let isComposing = false;
+    const send = element("button", "recommendation-chat__send");
     send.type = "submit";
-    send.disabled = chatBusy;
-    send.setAttribute("aria-label", chatBusy ? "正在整理路线需求" : "发送路线需求");
-    form.append(input, send);
+    send.setAttribute("aria-label", "发送路线需求");
+    send.setAttribute("title", "发送路线需求");
+    const icon = element("img", "recommendation-chat__send-icon");
+    icon.setAttribute("src", "./assets/icons/navigation-2.svg");
+    icon.setAttribute("alt", "");
+    icon.setAttribute("aria-hidden", "true");
+    send.append(icon);
+    input.addEventListener("input", (event) => {
+      chatDraft = event.target.value;
+      syncChatComposer(form, send);
+    });
+    input.addEventListener("compositionstart", () => { isComposing = true; });
+    input.addEventListener("compositionend", (event) => {
+      isComposing = false;
+      chatDraft = event.target.value;
+      syncChatComposer(form, send);
+    });
+    input.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" || event.shiftKey || isComposing || event.isComposing) return;
+      event.preventDefault();
+      return form.requestSubmit();
+    });
+    form.append(input);
+    syncChatComposer(form, send);
     form.addEventListener("submit", handleIntentSubmit);
     workspace.append(form);
     return workspace;
@@ -826,7 +866,11 @@ export function createRecommendationUI({
 
   async function handleIntentSubmit(event) {
     event.preventDefault();
-    const message = chatDraft.trim();
+    return submitChatMessage(chatDraft);
+  }
+
+  async function submitChatMessage(value) {
+    const message = String(value || "").trim();
     if (!message || chatBusy) return;
     const revision = ++intentRevision;
     const priorHistory = chatHistory.slice(-6);
@@ -834,7 +878,8 @@ export function createRecommendationUI({
     chatDraft = "";
     chatBusy = true;
     chatError = "";
-    intentReady = false;
+    chatProgress = "正在理解路线需求";
+    chatResultVisible = false;
     render();
     try {
       const response = await onInterpretIntent?.({
@@ -852,19 +897,63 @@ export function createRecommendationUI({
       });
       if (!response) throw new Error("千问服务未返回内容。");
       if (revision !== intentRevision) return;
-      chatHistory.push({ role: "assistant", content: String(response.reply || "已整理你的偏好。") });
       intentPatch = { ...intentPatch, ...(response.preference_patch || {}) };
       applyPatchToAnswers(intentPatch);
-      intentReady = Boolean(response.ready);
+      chatHistory.push({ role: "assistant", content: String(response.reply || "已整理你的偏好。") });
+      if (response.ready) {
+        chatProgress = "正在匹配合适路线";
+        render();
+        const base = buildUserProfile({
+          questionnaire: currentQuestionnaire,
+          answers,
+          profile: currentProfile,
+          location: currentLocation,
+        });
+        const result = await onRecommend?.(applyIntentPatch(base, intentPatch));
+        if (!result) throw new Error("推荐服务未返回结果。");
+        if (revision !== intentRevision) return;
+        currentResult = result;
+        currentRouteId = null;
+        chatResultVisible = true;
+        const model = buildRecommendationViewModel(result);
+        if (["result", "degraded"].includes(model.kind) && shouldSelectRoute()) {
+          onShowRoutes?.(model.routes.map((route) => route.source), { source: "chat" });
+        }
+      }
     } catch (error) {
       if (revision !== intentRevision) return;
       chatError = `${String(error?.message || "千问暂时不可用。")} 已填写的条件仍会保留。`;
     } finally {
       if (revision === intentRevision) {
         chatBusy = false;
+        chatProgress = "";
         render();
       }
     }
+  }
+
+  function syncChatComposer(form, send) {
+    const hasDraft = Boolean(String(chatDraft || "").trim()) && !chatBusy;
+    form.classList.toggle("has-draft", hasDraft);
+    if (hasDraft && send.parentElement !== form) {
+      form.append(send);
+    } else if (!hasDraft) {
+      send.remove();
+    }
+  }
+
+  function renderChatProgress(label) {
+    const progress = element("div", "recommendation-chat__progress");
+    progress.setAttribute("aria-live", "polite");
+    const dots = element("span", "recommendation-chat__progress-dots");
+    dots.setAttribute("aria-hidden", "true");
+    for (let index = 0; index < 3; index += 1) {
+      const dot = element("span", "recommendation-chat__progress-dot");
+      dot.style.animationDelay = `${index * 140}ms`;
+      dots.append(dot);
+    }
+    progress.append(dots, element("span", "recommendation-chat__progress-label", label));
+    return progress;
   }
 
   async function runRecommendation(payload, revision) {
@@ -892,7 +981,69 @@ export function createRecommendationUI({
     return card;
   }
 
+  function renderChatRouteCard(route, index) {
+    const model = routeCardModel(route.source, {
+      preferredLabel: ["首选", "备选 1", "备选 2"][index] || "",
+      selected: route.isSelected,
+    });
+    const card = element(
+      "article",
+      `recommendation-chat__route-card${route.isSelected ? " is-selected" : ""}`,
+    );
+    card.dataset.routeId = model.routeId;
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("aria-current", String(Boolean(route.isSelected)));
+    card.setAttribute("aria-label", `查看路线 ${model.routeName}`);
+
+    const media = element("div", "recommendation-chat__media");
+    media.setAttribute("role", "img");
+    media.setAttribute("aria-label", `${model.routeName}路线图片预留位置`);
+    if (model.media?.cover) {
+      const image = element("img", "recommendation-chat__image");
+      image.setAttribute("src", model.media.cover);
+      image.setAttribute("alt", model.routeName);
+      image.setAttribute("loading", "lazy");
+      media.append(image);
+    } else {
+      media.append(element("span", "recommendation-chat__media-label", "路线照片"));
+    }
+
+    const body = element("div", "recommendation-chat__route-body");
+    const topline = element("div", "recommendation-chat__route-topline");
+    if (model.rankLabel) topline.append(element("span", "recommendation-chat__rank", model.rankLabel));
+    topline.append(element("span", "recommendation-chat__mode", model.modeLabel));
+    body.append(
+      topline,
+      element("strong", "recommendation-chat__route-name", model.routeName),
+      element("span", "recommendation-chat__route-metrics", model.journeyText),
+    );
+    const fit = String(route.source?.personalized_fit || "").trim();
+    if (fit) body.append(element("span", "recommendation-chat__route-fit", fit));
+    card.append(media, body);
+
+    const select = () => controller.selectRoute(model.routeId);
+    card.addEventListener("click", select);
+    card.addEventListener("keydown", (event) => {
+      if (!["Enter", " "].includes(event.key) || event.repeat) return;
+      event.preventDefault();
+      select();
+    });
+    card.addEventListener("mouseenter", () => onPreviewRoute?.(model.routeId, route.source));
+    card.addEventListener("mouseleave", () => onPreviewRoute?.(null, route.source));
+    if (route.routeId === hoveredRouteId) card.className += " is-hovered";
+    return card;
+  }
+
   function applyPatchToAnswers(patch) {
+    if ((currentQuestionnaire?.route_modes || []).some((option) => option.value === patch.route_mode)) {
+      const modeChanged = answers.route_mode !== patch.route_mode;
+      answers.route_mode = patch.route_mode;
+      if (modeChanged) {
+        answers.distance_range = defaultDistanceRange(currentQuestionnaire, patch.route_mode);
+        onRouteModeChange?.(patch.route_mode);
+      }
+    }
     if ((currentQuestionnaire?.goals || []).some((option) => option.value === patch.goal)) {
       answers.goal = patch.goal;
     }
@@ -1028,6 +1179,7 @@ function chatExamples() {
 
 function applyIntentPatch(profile, patch) {
   const allowed = [
+    "route_mode",
     "distance_min_m",
     "target_distance_m",
     "distance_max_m",
@@ -1041,7 +1193,9 @@ function applyIntentPatch(profile, patch) {
   ];
   const next = { ...profile };
   allowed.forEach((field) => {
-    if (patch?.[field] !== undefined) next[field] = cloneValue(patch[field]);
+    if (patch?.[field] !== undefined && patch[field] !== null) {
+      next[field] = cloneValue(patch[field]);
+    }
   });
   return next;
 }

@@ -438,6 +438,25 @@ def test_refresh_updates_weather_when_cache_is_about_to_expire(
     }
 
 
+def test_refresh_updates_indices_when_cache_is_about_to_expire(
+    bundle: Sequence[PipelineBundle],
+) -> None:
+    value = _only(bundle)
+    value.pipeline.refresh()
+    cache = json.loads(value.cache_path.read_text(encoding="utf-8"))
+    cache["entries"][f"indices_3day|{REFERENCE_SOURCE_ID}"]["valid_until"] = (
+        UTC_NOW + timedelta(minutes=4)
+    ).isoformat()
+    value.cache_path.write_text(json.dumps(cache), encoding="utf-8")
+    value.provider.calls.clear()
+
+    report = value.pipeline.refresh()
+
+    assert report["call_count"] == 1
+    assert report["cache_hits"] == 27
+    assert value.provider.calls == [("indices_3day", REFERENCE_SOURCE_ID)]
+
+
 def test_refresh_weather_only_updates_reference_weather_and_preserves_full_export(
     bundle: Sequence[PipelineBundle],
 ) -> None:

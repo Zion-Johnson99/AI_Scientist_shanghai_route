@@ -3,7 +3,8 @@ from __future__ import annotations
 import json
 from collections.abc import Mapping
 from copy import deepcopy
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
+from email.utils import format_datetime
 from pathlib import Path
 from typing import cast
 
@@ -167,8 +168,24 @@ def test_indices_emit_three_unique_dates_and_keep_refer_sources(
     assert records[0].values["name"] == "运动指数"
     assert records[0].values["value"] == "2"
     assert records[0].values["category"] == "较适宜"
+    assert records[0].valid_until == (FETCHED_AT + timedelta(hours=1)).isoformat()
     attributions = dict(records[0].source)["attributions"]
     assert list(cast(tuple[object, ...], attributions)) == ["QWeather"]
+
+
+def test_indices_expiry_is_capped_at_one_hour_when_response_expires_later(
+    responses: Mapping[str, object],
+) -> None:
+    result = HttpResult(
+        payload=responses["indices_3day"],
+        status_code=200,
+        expires=format_datetime(FETCHED_AT + timedelta(hours=6), usegmt=True),
+        fetched_at=FETCHED_AT,
+    )
+
+    records = QWeatherNormalizer().normalize("indices_3day", result, SOURCE_ID, POINT_IDS)
+
+    assert records[0].valid_until == (FETCHED_AT + timedelta(hours=1)).isoformat()
 
 
 def test_zero_result_alert_is_normal_empty_result(

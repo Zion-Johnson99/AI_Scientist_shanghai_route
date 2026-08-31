@@ -80,7 +80,7 @@ _TTL = {
     "hourly_weather_24": timedelta(hours=1),
     "current_air_quality": timedelta(hours=1),
     "hourly_air_quality_24": timedelta(hours=1),
-    "indices_3day": timedelta(hours=6),
+    "indices_3day": timedelta(hours=1),
     "alerts": timedelta(minutes=5),
 }
 _POLLUTANT_FIELDS = {
@@ -367,14 +367,17 @@ def _granularity(endpoint: str) -> str:
 
 
 def _valid_until(endpoint: str, result: HttpResult) -> str:
+    ttl_expiry = _aware(result.fetched_at) + _TTL[endpoint]
     if result.expires:
         try:
             expires = parsedate_to_datetime(result.expires)
             if expires.tzinfo is not None:
+                if endpoint == "indices_3day":
+                    expires = min(expires, ttl_expiry)
                 return _utc_iso(expires)
         except (TypeError, ValueError, OverflowError):
             pass
-    return _utc_iso(result.fetched_at + _TTL[endpoint])
+    return _utc_iso(ttl_expiry)
 
 
 def _zero_result(payload: Mapping[str, object]) -> bool:

@@ -53,6 +53,12 @@ def test_windows_launcher_starts_the_complete_local_application() -> None:
     assert '"weather", "hourly", "daily"' in launcher
     assert "current.aqi" in launcher
     assert "current.life_indices" in launcher
+    assert "$lifeIndicesNeedHourlyRefresh = $false" in launcher
+    assert (
+        "Test-RecordExpired -Record $indexRecord -Now $now -RefreshMarginMinutes 5"
+        in launcher
+    )
+    assert "$lifeIndicesNeedHourlyRefresh `" in launcher
     assert "routes.items" in launcher
     assert "Get-Content -LiteralPath $Path -Raw -Encoding UTF8" in launcher
     assert "Get-Content -LiteralPath $dashboardPath -Raw -Encoding UTF8" in launcher
@@ -102,6 +108,12 @@ def test_macos_linux_launcher_starts_the_complete_local_application() -> None:
     assert "startup_cache_max_age_minutes=30" in launcher
     assert 'action == "startup-cache-fresh"' in launcher
     assert "age_seconds < max_age_minutes * 60" in launcher
+    assert "life_indices_need_hourly_refresh = any(" in launcher
+    assert "expired(item, now, margin_minutes=5)" in launcher
+    assert (
+        'life_indices_need_hourly_refresh\n    or expired(current.get("aqi"), now, margin_minutes=5)'
+        in launcher
+    )
     assert "环境数据缓存仍有效" in launcher
     assert 'print_refresh_summary "cache"' in launcher
     assert 'refresh_environment "startup"' in launcher
@@ -169,7 +181,7 @@ def test_product_toolbar_owns_the_single_location_mode_environment_and_profile_e
         assert plugin in html
     assert 'class="profile-action__label">个人档案</span>' in toolbar
     assert 'class="map-layer-button__label">图层</span>' in html
-    assert "./styles/recommendation.css?v=20260831-ui-17" in html
+    assert "./styles/recommendation.css?v=20260831-ui-24" in html
     for mode_id, route_mode in [
         ("toolbarWalkMode", "walk"),
         ("toolbarRunMode", "run"),
@@ -202,8 +214,12 @@ def test_sidebar_exposes_a_persistent_workbench_header_outside_its_body() -> Non
     assert 'id="workbenchQwenButton"' in header
     assert "data-workbench-qwen" in header
     assert 'aria-controls="recommendationView"' in header
-    assert 'aria-expanded="false"' in header
+    assert 'aria-label="打开千问路线助手"' in header
+    assert 'title="千问路线助手"' in header
     assert 'src="./assets/qwen-color.png"' in header
+    assert 'id="workbenchNewChatButton"' in header
+    assert "data-workbench-new-chat" in header
+    assert 'aria-label="新建千问聊天"' in header
     assert 'id="workbenchCollapseButton"' in header
     assert "data-workbench-collapse" in header
     assert 'aria-controls="workbenchBody"' in header
@@ -427,7 +443,7 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
-    release = "v=20260831-ui-17"
+    release = "v=20260831-ui-24"
     assert f"./styles/main.css?{release}" in html
     assert f"./styles/recommendation.css?{release}" in html
     assert f"./src/main.js?{release}" in html

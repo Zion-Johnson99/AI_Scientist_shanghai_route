@@ -90,6 +90,7 @@ class IntentProfileContext(StrictModel):
 
 
 class IntentPreferencePatch(StrictModel):
+    route_mode: RouteMode | None = None
     target_time: datetime | None = None
     distance_min_m: int | None = Field(default=None, gt=0)
     target_distance_m: int | None = Field(default=None, gt=0)

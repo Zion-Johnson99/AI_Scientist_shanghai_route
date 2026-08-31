@@ -24,26 +24,31 @@ export const LOCATION_PLACEHOLDER = "搜索地点";
 const LOCATION_STATUSES = new Set(["idle", "searching", "locating"]);
 const ROUTE_MODES = new Set(["walk", "run", "bike"]);
 const MAX_LOCATION_SUGGESTIONS = 8;
-const AUTOCOMPLETE_SUFFICIENT_COUNT = 6;
 const LOCAL_SUGGESTION_SUFFICIENT_COUNT = 2;
+const TENCENT_SUGGESTION_ENDPOINT = "https://apis.map.qq.com/ws/place/v1/suggestion";
+let tencentJsonpSequence = 0;
 
 export function shouldShowCurrentLocationOption(query) {
   return !String(query || "").trim();
 }
 
-export function normalizeAmapTips(tips) {
-  return (Array.isArray(tips) ? tips : [])
-    .map((tip) => {
-      const location = tip?.location;
-      const lng = firstFinite(location?.lng, location?.getLng?.());
-      const lat = firstFinite(location?.lat, location?.getLat?.());
+export function normalizeTencentSuggestions(items) {
+  return (Array.isArray(items) ? items : [])
+    .map((item) => {
+      const location = item?.location;
+      const lng = firstFinite(location?.lng);
+      const lat = firstFinite(location?.lat);
       if (lng === null || lat === null) return null;
-      const district = String(tip?.district || "").trim();
-      const address = String(tip?.address || "").trim();
+      const addressParts = [...new Set([
+        item?.province,
+        item?.city,
+        item?.district,
+        item?.address,
+      ].map((value) => String(value || "").trim()).filter(Boolean))];
       return {
-        id: String(tip?.id || `${lng},${lat}`),
-        label: String(tip?.name || "已选位置").trim() || "已选位置",
-        address: [district, address].filter(Boolean).join(" "),
+        id: String(item?.id || `${lng},${lat}`),
+        label: String(item?.title || "已选位置").trim() || "已选位置",
+        address: addressParts.join(" "),
         lng_gcj02: lng,
         lat_gcj02: lat,
       };
@@ -51,25 +56,29 @@ export function normalizeAmapTips(tips) {
     .filter(Boolean);
 }
 
-export function normalizeAmapPlaces(places) {
-  return (Array.isArray(places) ? places : [])
-    .map((place) => {
-      const location = place?.location;
-      const lng = firstFinite(location?.lng, location?.getLng?.());
-      const lat = firstFinite(location?.lat, location?.getLat?.());
-      if (lng === null || lat === null) return null;
-      const city = String(place?.cityname || "").trim();
-      const district = String(place?.adname || "").trim();
-      const address = String(place?.address || "").trim();
-      return {
-        id: String(place?.id || `${lng},${lat}`),
-        label: String(place?.name || "已选位置").trim() || "已选位置",
-        address: [city, district, address].filter(Boolean).join(" "),
-        lng_gcj02: lng,
-        lat_gcj02: lat,
-      };
-    })
-    .filter(Boolean);
+export function createTencentSuggestionSearch({ key, requestJsonp = tencentJsonpRequest } = {}) {
+  const apiKey = String(key || "").trim();
+  return async function searchTencentSuggestions(query) {
+    const keyword = String(query || "").trim();
+    if (!keyword) return [];
+    if (!apiKey) {
+      throw new Error("缺少本地腾讯搜索 Key 配置，请检查 web/local-tencent-config.js。");
+    }
+    const url = new URL(TENCENT_SUGGESTION_ENDPOINT);
+    url.search = new URLSearchParams({
+      key: apiKey,
+      keyword,
+      region: "上海",
+      region_fix: "1",
+      page_index: "1",
+      page_size: String(MAX_LOCATION_SUGGESTIONS),
+    }).toString();
+    const result = await requestJsonp(url.toString());
+    if (Number(result?.status) !== 0) {
+      throw new Error(String(result?.message || `腾讯地点联想失败，状态码 ${result?.status ?? "未知"}。`));
+    }
+    return normalizeTencentSuggestions(result?.data);
+  };
 }
 
 export function buildLocalLocationCandidates(entries, pois) {
@@ -95,19 +104,17 @@ export function buildLocalLocationCandidates(entries, pois) {
   return mergeLocationCandidates(XUHUI_CORE_LANDMARKS, featureCandidates);
 }
 
-export function createAmapLocationServices(mapContext, { localCandidates = [] } = {}) {
+export function createLocationServices(mapContext, {
+  localCandidates = [],
+  searchSuggestions,
+} = {}) {
   const AMap = mapContext?.AMap;
-  if (!AMap?.AutoComplete || !AMap?.PlaceSearch || !AMap?.Geolocation) {
-    throw new Error("高德地点联想、POI 搜索或定位插件未加载。");
+  if (!AMap?.Geolocation) {
+    throw new Error("高德定位插件未加载。");
   }
-  const autocomplete = new AMap.AutoComplete({ city: "上海", citylimit: true });
-  const placeSearch = new AMap.PlaceSearch({
-    city: "上海",
-    citylimit: true,
-    pageSize: MAX_LOCATION_SUGGESTIONS,
-    pageIndex: 1,
-    extensions: "base",
-  });
+  if (typeof searchSuggestions !== "function") {
+    throw new Error("腾讯地点联想服务未初始化。");
+  }
   const geolocation = new AMap.Geolocation({
     enableHighAccuracy: true,
     timeout: 10_000,
@@ -119,59 +126,6 @@ export function createAmapLocationServices(mapContext, { localCandidates = [] } 
   });
   const geocoder = AMap.Geocoder ? new AMap.Geocoder({ city: "上海" }) : null;
 
-  function geocodeSuggestion(keyword) {
-    return new Promise((resolve, reject) => {
-      geocoder.getLocation(keyword, (status, result) => {
-        const geocode = result?.geocodes?.[0];
-        const lng = firstFinite(geocode?.location?.lng, geocode?.location?.getLng?.());
-        const lat = firstFinite(geocode?.location?.lat, geocode?.location?.getLat?.());
-        if (status !== "complete" || lng === null || lat === null) {
-          reject(new Error(String(result?.info || result || "地点搜索失败。")));
-          return;
-        }
-        resolve([{
-          id: `geocode:${lng},${lat}`,
-          label: keyword,
-          address: String(geocode.formattedAddress || keyword),
-          lng_gcj02: lng,
-          lat_gcj02: lat,
-        }]);
-      });
-    });
-  }
-
-  function autocompleteSuggestions(keyword) {
-    return new Promise((resolve, reject) => {
-      autocomplete.search(keyword, (status, result) => {
-        if (status === "complete") {
-          resolve(normalizeAmapTips(result?.tips));
-          return;
-        }
-        if (status === "no_data") {
-          resolve([]);
-          return;
-        }
-        reject(new Error(String(result?.info || result?.message || result || "地点联想搜索失败。")));
-      });
-    });
-  }
-
-  function placeSuggestions(keyword) {
-    return new Promise((resolve, reject) => {
-      placeSearch.search(keyword, (status, result) => {
-        if (status === "complete") {
-          resolve(normalizeAmapPlaces(result?.poiList?.pois));
-          return;
-        }
-        if (status === "no_data") {
-          resolve([]);
-          return;
-        }
-        reject(new Error(String(result?.info || result?.message || result || "POI 搜索失败。")));
-      });
-    });
-  }
-
   return {
     async suggest(query) {
       const keyword = String(query || "").trim();
@@ -180,34 +134,15 @@ export function createAmapLocationServices(mapContext, { localCandidates = [] } 
       if (localMatches.length >= LOCAL_SUGGESTION_SUFFICIENT_COUNT) {
         return localMatches.slice(0, MAX_LOCATION_SUGGESTIONS);
       }
-
-      let autocompleteCandidates = [];
-      let autocompleteError = null;
       try {
-        autocompleteCandidates = await autocompleteSuggestions(keyword);
+        return mergeLocationCandidates(
+          await searchSuggestions(keyword),
+          localMatches,
+        ).slice(0, MAX_LOCATION_SUGGESTIONS);
       } catch (error) {
-        autocompleteError = error;
+        if (localMatches.length) return localMatches.slice(0, MAX_LOCATION_SUGGESTIONS);
+        throw error;
       }
-      if (autocompleteCandidates.length >= AUTOCOMPLETE_SUFFICIENT_COUNT) {
-        return mergeLocationCandidates(autocompleteCandidates, localMatches)
-          .slice(0, MAX_LOCATION_SUGGESTIONS);
-      }
-
-      try {
-        const placeCandidates = await placeSuggestions(keyword);
-        const candidates = mergeLocationCandidates(autocompleteCandidates, placeCandidates, localMatches);
-        if (candidates.length) return candidates.slice(0, MAX_LOCATION_SUGGESTIONS);
-      } catch (error) {
-        const candidates = mergeLocationCandidates(autocompleteCandidates, localMatches);
-        if (candidates.length) {
-          return candidates.slice(0, MAX_LOCATION_SUGGESTIONS);
-        }
-        autocompleteError = error;
-      }
-
-      if (geocoder) return geocodeSuggestion(keyword);
-      if (autocompleteError) throw autocompleteError;
-      return [];
     },
     locate() {
       return new Promise((resolve, reject) => {
@@ -238,6 +173,41 @@ export function createAmapLocationServices(mapContext, { localCandidates = [] } 
       });
     },
   };
+}
+
+function tencentJsonpRequest(url, { timeoutMs = 8_000 } = {}) {
+  if (!globalThis.document?.head) {
+    return Promise.reject(new Error("当前环境无法发起腾讯地点联想请求。"));
+  }
+  const callbackName = `__xuhuiTencentSuggestion${Date.now()}_${tencentJsonpSequence += 1}`;
+  const requestUrl = new URL(url);
+  requestUrl.searchParams.set("output", "jsonp");
+  requestUrl.searchParams.set("callback", callbackName);
+
+  return new Promise((resolve, reject) => {
+    const script = globalThis.document.createElement("script");
+    let timer = null;
+    const cleanup = () => {
+      globalThis.clearTimeout?.(timer);
+      script.remove();
+      delete globalThis[callbackName];
+    };
+    globalThis[callbackName] = (result) => {
+      cleanup();
+      resolve(result);
+    };
+    script.async = true;
+    script.src = requestUrl.toString();
+    script.onerror = () => {
+      cleanup();
+      reject(new Error("腾讯地点联想请求失败，请检查网络、Key 和域名白名单。"));
+    };
+    timer = globalThis.setTimeout?.(() => {
+      cleanup();
+      reject(new Error("腾讯地点联想请求超时，请重试。"));
+    }, timeoutMs);
+    globalThis.document.head.appendChild(script);
+  });
 }
 
 function mergeLocationCandidates(...groups) {

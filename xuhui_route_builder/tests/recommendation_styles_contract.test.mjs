@@ -42,6 +42,39 @@ test("左栏路线卡滚动，补充需求与 CTA 固定在底部", () => {
   assert.match(recommendationCss, /\.recommendation-workspace__footer\s*\{[^}]*flex:\s*0\s+0\s+auto/s);
 });
 
+test("千问输入框在扁长胶囊与外置圆形发送键之间切换", () => {
+  assert.match(recommendationCss, /\.recommendation-chat__composer\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)[^}]*gap:\s*12px[^}]*padding:\s*0[^}]*border:\s*0[^}]*background:\s*transparent/s);
+  assert.match(recommendationCss, /\.recommendation-chat__composer\.has-draft\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+56px/s);
+  assert.match(recommendationCss, /\.recommendation-chat__input\s*\{[^}]*height:\s*56px[^}]*padding:\s*16px\s+18px\s+14px[^}]*border:\s*1px\s+solid[^}]*border-radius:\s*999px/s);
+  assert.match(recommendationCss, /\.recommendation-chat__send\s*\{[^}]*width:\s*56px[^}]*height:\s*56px[^}]*border-radius:\s*50%/s);
+  assert.match(recommendationCss, /\.recommendation-chat__send-icon\s*\{[^}]*transform:\s*rotate\(45deg\)/s);
+});
+
+test("千问消息、公开进度与无图路线卡采用独立 Komoot 式层级", () => {
+  assert.match(recommendationCss, /\.recommendation-chat__message\s*\{[^}]*font-weight:\s*(?:6\d\d|7\d\d)/s);
+  assert.match(recommendationCss, /\.recommendation-chat__message--assistant\s*\{[^}]*padding:\s*0[^}]*background:\s*transparent/s);
+  assert.match(recommendationCss, /\.recommendation-chat__message--user\s*\{[^}]*border-radius:\s*999px[^}]*background:\s*(?:#f3f2ee|var\(--surface-soft\))/s);
+  assert.match(recommendationCss, /\.recommendation-chat__progress\s*\{[^}]*font-weight:\s*(?:6\d\d|7\d\d)/s);
+  assert.match(recommendationCss, /\.recommendation-chat__progress-dot\s*\{[^}]*animation:\s*recommendation-chat-progress/s);
+  assert.match(recommendationCss, /@keyframes\s+recommendation-chat-progress/);
+  assert.match(recommendationCss, /\.recommendation-chat__route-card\s*\{[^}]*border-radius:/s);
+  assert.match(recommendationCss, /\.recommendation-chat__media\s*\{[^}]*flex:\s*0\s+0\s+(?:112|116|120|124|128)px[^}]*background:/s);
+});
+
+test("桌面工作台收窄到 392px 且聊天角色切换增加纵向留白", () => {
+  assert.match(mainCss, /\.sidebar\s*\{[^}]*width:\s*min\(392px,\s*calc\(100vw\s*-\s*32px\)\)/s);
+  assert.match(recommendationCss, /\.recommendation-chat__message--assistant\s*\{[^}]*font-weight:\s*600/s);
+  assert.match(
+    recommendationCss,
+    /\.recommendation-chat__message--user\s*\+\s*\.recommendation-chat__message--assistant,\s*\.recommendation-chat__message--assistant\s*\+\s*\.recommendation-chat__message--user\s*\{[^}]*margin-top:\s*12px/s,
+  );
+});
+
+test("千问聊天移除开始推荐 CTA 并为动态状态提供减弱动画", () => {
+  assert.doesNotMatch(recommendationCss, /\.recommendation-chat__confirm/);
+  assert.match(recommendationCss, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.recommendation-chat__progress-dot/s);
+});
+
 test("CTA 在原位加载时显示蓝色流光与轻微呼吸", () => {
   assert.match(recommendationCss, /\.recommendation-form__submit\.is-loading\s*\{[^}]*animation:\s*recommendation-cta-breathe/s);
   assert.match(recommendationCss, /\.recommendation-form__submit\.is-loading::before\s*\{[^}]*linear-gradient\([^}]*#197cff[^}]*animation:\s*recommendation-cta-shimmer/s);

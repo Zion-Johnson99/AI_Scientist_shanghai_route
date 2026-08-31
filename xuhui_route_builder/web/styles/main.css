@@ -3450,7 +3450,7 @@ select:disabled {
   top: 82px;
   bottom: 16px;
   left: 16px;
-  width: min(404px, calc(100vw - 32px));
+  width: min(392px, calc(100vw - 32px));
   gap: 0;
   min-height: 0;
   margin: 0;
@@ -3497,6 +3497,8 @@ select:disabled {
 }
 
 .workbench-qwen-button,
+.workbench-new-chat-button,
+.workbench-chat-close-button,
 .workbench-collapse-button {
   display: grid;
   flex: 0 0 32px;
@@ -3510,9 +3512,26 @@ select:disabled {
   background: transparent;
 }
 
+.workbench-new-chat-button {
+  color: #756957;
+}
+
+.workbench-qwen-button[hidden],
+.workbench-new-chat-button[hidden] {
+  display: none;
+}
+
+.workbench-chat-close-button[hidden] {
+  display: none;
+}
+
 .workbench-qwen-button:hover,
+.workbench-new-chat-button:hover,
+.workbench-chat-close-button:hover,
 .workbench-collapse-button:hover,
 .workbench-qwen-button:focus-visible,
+.workbench-new-chat-button:focus-visible,
+.workbench-chat-close-button:focus-visible,
 .workbench-collapse-button:focus-visible {
   background: var(--surface-brand-soft);
 }
@@ -3524,6 +3543,17 @@ select:disabled {
   object-fit: contain;
 }
 
+.workbench-new-chat-button svg {
+  display: block;
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .workbench-collapse-button svg {
   width: 20px;
   height: 20px;
@@ -3533,6 +3563,19 @@ select:disabled {
   stroke-linecap: round;
   stroke-linejoin: round;
   transition: transform 180ms ease;
+}
+
+.workbench-chat-close-button {
+  color: #756957;
+}
+
+.workbench-chat-close-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
 }
 
 .workbench-body {

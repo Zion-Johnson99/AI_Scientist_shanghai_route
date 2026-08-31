@@ -12,12 +12,14 @@ from fastapi.testclient import TestClient
 from evaluation_model_qwen import api
 from evaluation_model_qwen.loaders import LoaderError, load_data
 from evaluation_model_qwen.models import (
+    ApiAudit,
     IntentPreferencePatch,
     IntentRequest,
     IntentResponse,
     RecommendationResult,
     UserProfile,
 )
+from evaluation_model_qwen.qwen_client import QwenApiError, QwenConfigurationError
 from evaluation_model_qwen.service import recommend, write_audit_result
 
 
@@ -174,17 +176,27 @@ def test_recommendation_audit_and_logs_omit_free_text(
     assert "secret-value" not in caplog.text
 
 
-def test_invalid_profile_and_gender_return_422(client: Any, profile: UserProfile) -> None:
+def test_invalid_profile_and_gender_return_422(
+    client: Any,
+    profile: UserProfile,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
     document = profile.model_dump(mode="json")
     document["target_distance_m"] = 999_999
     document["gender"] = "female"
 
-    response = client.post("/api/v1/recommendations", json=document)
+    with caplog.at_level(logging.WARNING, logger="evaluation_model_qwen.api"):
+        response = client.post("/api/v1/recommendations", json=document)
 
     assert response.status_code == 422
+    assert response.json()["error"]["code"] == "validation_error"
+    assert "operation=recommendations" in caplog.text
+    assert "error_type=RequestValidationError" in caplog.text
+    assert "Traceback (most recent call last)" in caplog.text
+    assert "secret-value" not in caplog.text
 
 
-def test_data_failure_returns_uniform_503(
+def test_data_failure_returns_stable_503_code(
     client: Any,
     monkeypatch: pytest.MonkeyPatch,
     profile: UserProfile,
@@ -200,11 +212,98 @@ def test_data_failure_returns_uniform_503(
     assert response.status_code == 503
     assert response.json() == {
         "error": {
-            "code": "service_unavailable",
-            "message": "推荐服务暂不可用，请稍后重试。",
+            "code": "recommendation_data_unavailable",
+            "message": "路线与环境数据暂不可用，请稍后重试。",
         }
     }
     assert "secret-value" not in response.text
+
+
+@pytest.mark.parametrize(
+    ("error_type", "exception_type", "expected_code"),
+    [
+        ("missing_api_key", QwenConfigurationError, "qwen_configuration_unavailable"),
+        ("authentication", QwenApiError, "qwen_authentication_failed"),
+        ("rate_limit", QwenApiError, "qwen_quota_exceeded"),
+        ("timeout", QwenApiError, "qwen_timeout"),
+        ("connection", QwenApiError, "qwen_network_unavailable"),
+    ],
+)
+def test_qwen_failures_return_stable_503_codes(
+    client: Any,
+    monkeypatch: pytest.MonkeyPatch,
+    profile: UserProfile,
+    error_type: str,
+    exception_type: type[QwenApiError] | type[QwenConfigurationError],
+    expected_code: str,
+) -> None:
+    failure = exception_type(
+        ApiAudit(
+            status="degraded",
+            error_type=error_type,
+            error_message="DASHSCOPE_API_KEY=secret-value 用户自由文本",
+        )
+    )
+
+    def fail_recommend(received: UserProfile, *, offline: bool) -> RecommendationResult:
+        del received, offline
+        raise failure
+
+    monkeypatch.setattr(api, "recommend", fail_recommend)
+
+    response = client.post("/api/v1/recommendations", json=profile.model_dump(mode="json"))
+
+    assert response.status_code == 503
+    assert response.json()["error"]["code"] == expected_code
+    assert "secret-value" not in response.text
+    assert "用户自由文本" not in response.text
+
+
+def test_business_value_error_returns_invalid_recommendation_request(
+    client: Any,
+    monkeypatch: pytest.MonkeyPatch,
+    profile: UserProfile,
+) -> None:
+    def fail_recommend(received: UserProfile, *, offline: bool) -> RecommendationResult:
+        del received, offline
+        raise ValueError("生成偏好无效：用户自由文本")
+
+    monkeypatch.setattr(api, "recommend", fail_recommend)
+
+    response = client.post("/api/v1/recommendations", json=profile.model_dump(mode="json"))
+
+    assert response.status_code == 422
+    assert response.json() == {
+        "error": {
+            "code": "invalid_recommendation_request",
+            "message": "推荐条件无效，请检查后重试。",
+        }
+    }
+    assert "用户自由文本" not in response.text
+
+
+def test_unknown_failure_stays_generic_503_and_logs_redacted_traceback(
+    client: Any,
+    monkeypatch: pytest.MonkeyPatch,
+    profile: UserProfile,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    def fail_recommend(received: UserProfile, *, offline: bool) -> RecommendationResult:
+        del received, offline
+        raise RuntimeError("DASHSCOPE_API_KEY=secret-value 用户自由文本")
+
+    monkeypatch.setattr(api, "recommend", fail_recommend)
+
+    with caplog.at_level(logging.ERROR, logger="evaluation_model_qwen.api"):
+        response = client.post("/api/v1/recommendations", json=profile.model_dump(mode="json"))
+
+    assert response.status_code == 503
+    assert response.json()["error"]["code"] == "service_unavailable"
+    assert "operation=recommendations" in caplog.text
+    assert "error_type=RuntimeError" in caplog.text
+    assert "Traceback (most recent call last)" in caplog.text
+    assert "secret-value" not in caplog.text
+    assert "用户自由文本" not in caplog.text
 
 
 @pytest.mark.parametrize("origin", ["http://127.0.0.1:8123", "http://localhost:8123"])

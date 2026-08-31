@@ -4,6 +4,7 @@ import argparse
 import logging
 import os
 from pathlib import Path
+from traceback import extract_tb
 from typing import Any, Sequence
 
 import uvicorn
@@ -14,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from .intent_service import interpret_intent
-from .loaders import load_data
+from .loaders import LoaderError, load_data
 from .models import (
     IntentRequest,
     IntentResponse,
@@ -22,12 +23,36 @@ from .models import (
     RecommendationResult,
     UserProfile,
 )
+from .qwen_client import QwenClientError, QwenConfigurationError
 from .service import evaluation_root, recommend, write_audit_result
 
 LOGGER = logging.getLogger(__name__)
 ALLOWED_ORIGINS = ("http://127.0.0.1:8123", "http://localhost:8123")
 OFFLINE_ENV = "EVALUATION_MODEL_QWEN_OFFLINE"
 AUDIT_ROOT_ENV = "EVALUATION_MODEL_QWEN_AUDIT_ROOT"
+
+_QWEN_ERROR_CODES = {
+    "authentication": "qwen_authentication_failed",
+    "connection": "qwen_network_unavailable",
+    "rate_limit": "qwen_quota_exceeded",
+    "timeout": "qwen_timeout",
+}
+_QWEN_CONFIGURATION_ERRORS = {
+    "invalid_base_url",
+    "invalid_timeout",
+    "missing_api_key",
+    "missing_base_url",
+}
+_ERROR_MESSAGES = {
+    "invalid_recommendation_request": "推荐条件无效，请检查后重试。",
+    "qwen_authentication_failed": "千问服务鉴权失败，请联系管理员。",
+    "qwen_configuration_unavailable": "千问服务配置暂不可用，请联系管理员。",
+    "qwen_network_unavailable": "千问服务连接失败，请稍后重试。",
+    "qwen_quota_exceeded": "千问服务额度暂不可用，请稍后重试。",
+    "qwen_timeout": "千问服务响应超时，请稍后重试。",
+    "recommendation_data_unavailable": "路线与环境数据暂不可用，请稍后重试。",
+    "service_unavailable": "推荐服务暂不可用，请稍后重试。",
+}
 
 _INTEREST_LABELS = {
     "waterfront": "滨水",
@@ -80,14 +105,17 @@ def create_app() -> FastAPI:
         recommendations,
         methods=["POST"],
         response_model=RecommendationResult,
-        responses={503: {"description": "推荐服务或数据包暂不可用"}},
+        responses={
+            422: {"description": "推荐条件无效"},
+            503: {"description": "推荐服务或数据包暂不可用"},
+        },
     )
     return application
 
 
 async def _validation_error(request: Request, exc: Exception) -> JSONResponse:
-    del request
-    LOGGER.warning("request_validation_failed error_type=%s", type(exc).__name__)
+    operation = request.url.path.rsplit("/", maxsplit=1)[-1].replace("-", "_")
+    _log_exception(operation or "request_validation", exc, level=logging.WARNING)
     return JSONResponse(
         status_code=422,
         content={
@@ -103,7 +131,7 @@ def health() -> dict[str, Any] | JSONResponse:
     try:
         bundle = load_data()
     except Exception as exc:  # noqa: BLE001
-        return _service_unavailable("health", exc)
+        return _error_response("health", exc)
     return {
         "status": "ok",
         "data": {
@@ -122,7 +150,7 @@ def questionnaire() -> dict[str, Any] | JSONResponse:
     try:
         config = _load_questionnaire()
     except Exception as exc:  # noqa: BLE001
-        return _service_unavailable("questionnaire", exc)
+        return _error_response("questionnaire", exc)
     return _questionnaire_document(config)
 
 
@@ -130,7 +158,7 @@ def recommendation_intent(request: IntentRequest) -> IntentResponse | JSONRespon
     try:
         return interpret_intent(request)
     except Exception as exc:  # noqa: BLE001
-        return _service_unavailable("recommendation_intent", exc)
+        return _error_response("recommendation_intent", exc)
 
 
 def recommendations(profile: UserProfile) -> RecommendationResult | JSONResponse:
@@ -138,7 +166,7 @@ def recommendations(profile: UserProfile) -> RecommendationResult | JSONResponse
         result = recommend(profile, offline=_offline_enabled())
         audit_path = write_audit_result(result, _audit_root())
     except Exception as exc:  # noqa: BLE001
-        return _service_unavailable("recommendations", exc)
+        return _error_response("recommendations", exc)
     LOGGER.info(
         "recommendation_completed run_id=%s status=%s decision_source=%s audit_file=%s",
         result.run_id,
@@ -221,21 +249,46 @@ def _qwen_configured() -> bool:
     return bool(api_key and base_url and "<" not in base_url and ">" not in base_url)
 
 
-def _service_unavailable(operation: str, exc: Exception) -> JSONResponse:
-    LOGGER.error(
-        "request_failed operation=%s error_type=%s",
+def _error_response(operation: str, exc: Exception) -> JSONResponse:
+    status_code, code = _classify_error(operation, exc)
+    _log_exception(operation, exc)
+    return JSONResponse(
+        status_code=status_code,
+        content={"error": {"code": code, "message": _ERROR_MESSAGES[code]}},
+    )
+
+
+def _classify_error(operation: str, exc: Exception) -> tuple[int, str]:
+    if isinstance(exc, LoaderError) or operation in {"health", "questionnaire"}:
+        return 503, "recommendation_data_unavailable"
+    if isinstance(exc, QwenConfigurationError):
+        return 503, "qwen_configuration_unavailable"
+    if isinstance(exc, QwenClientError):
+        error_type = exc.audit.error_type
+        if error_type in _QWEN_CONFIGURATION_ERRORS:
+            return 503, "qwen_configuration_unavailable"
+        if error_type is not None and error_type in _QWEN_ERROR_CODES:
+            return 503, _QWEN_ERROR_CODES[error_type]
+        return 503, "service_unavailable"
+    if isinstance(exc, ValueError):
+        return 422, "invalid_recommendation_request"
+    return 503, "service_unavailable"
+
+
+def _log_exception(operation: str, exc: Exception, *, level: int = logging.ERROR) -> None:
+    redacted = RuntimeError(f"{type(exc).__name__}: exception details redacted")
+    traceback_lines = ["Traceback (most recent call last):"]
+    traceback_lines.extend(
+        f'  File "{frame.filename}", line {frame.lineno}, in {frame.name}'
+        for frame in extract_tb(exc.__traceback__)
+    )
+    LOGGER.log(
+        level,
+        "request_failed operation=%s error_type=%s\n%s",
         operation,
         type(exc).__name__,
-        stack_info=True,
-    )
-    return JSONResponse(
-        status_code=503,
-        content={
-            "error": {
-                "code": "service_unavailable",
-                "message": "推荐服务暂不可用，请稍后重试。",
-            }
-        },
+        "\n".join(traceback_lines),
+        exc_info=(type(redacted), redacted, None),
     )
 
 

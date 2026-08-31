@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from datetime import datetime, timezone
 from pathlib import Path
 
 from .models import IntentMissingField, IntentPreferencePatch, IntentRequest, IntentResponse
@@ -28,6 +29,7 @@ def interpret_intent(
         )
         return _fallback_response(request)
 
+    result = _sanitize_preference_patch(result)
     LOGGER.info(
         "intent_completed request_id=%s latency_ms=%s model=%s status=ok error_type=none",
         audit.request_id,
@@ -35,6 +37,25 @@ def interpret_intent(
         audit.model,
     )
     return result
+
+
+def _sanitize_preference_patch(result: IntentResponse) -> IntentResponse:
+    patch = result.preference_patch
+    updates: dict[str, object] = {}
+    target_time = patch.target_time
+    if target_time is not None:
+        comparable = (
+            target_time.replace(tzinfo=timezone.utc)
+            if target_time.tzinfo is None
+            else target_time.astimezone(timezone.utc)
+        )
+        if comparable < datetime.now(timezone.utc):
+            updates["target_time"] = None
+    if patch.search_radius_m is not None and patch.area_ids:
+        updates["area_ids"] = None
+    if not updates:
+        return result
+    return result.model_copy(update={"preference_patch": patch.model_copy(update=updates)})
 
 
 def _fallback_response(request: IntentRequest) -> IntentResponse:

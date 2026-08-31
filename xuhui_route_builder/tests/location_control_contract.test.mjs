@@ -5,11 +5,11 @@ import {
   DEFAULT_LOCATION,
   LOCATION_PLACEHOLDER,
   buildLocalLocationCandidates,
-  createAmapLocationServices,
+  createLocationServices,
   createLocationController,
   createMapPointSelection,
-  normalizeAmapPlaces,
-  normalizeAmapTips,
+  createTencentSuggestionSearch,
+  normalizeTencentSuggestions,
   selectNearbyRoutes,
   shouldShowCurrentLocationOption,
 } from "../web/src/location-control.js";
@@ -141,46 +141,62 @@ test("附近路线筛选同时接受 GeoJSON 要素并支持自定义半径", ()
   assert.deepEqual(selectNearbyRoutes([near, outside], origin, { search_radius_m: 500 }), [near]);
 });
 
-test("高德联想候选只保留带唯一坐标的地点", () => {
-  const tips = normalizeAmapTips([
+test("腾讯联想候选保留名称、行政区和 GCJ-02 坐标", () => {
+  const suggestions = normalizeTencentSuggestions([
     {
       id: "poi-1",
-      name: "上海交通大学徐汇校区",
-      district: "上海市徐汇区",
+      title: "上海交通大学徐汇校区",
+      province: "上海市",
+      city: "上海市",
+      district: "徐汇区",
       address: "华山路1954号",
-      location: { getLng: () => 121.433, getLat: () => 31.2015 },
+      location: { lng: 121.433, lat: 31.2015 },
     },
-    { id: "city-only", name: "徐汇区", location: null },
+    { id: "city-only", title: "徐汇区", location: null },
   ]);
 
-  assert.deepEqual(tips, [{
+  assert.deepEqual(suggestions, [{
     id: "poi-1",
     label: "上海交通大学徐汇校区",
-    address: "上海市徐汇区 华山路1954号",
+    address: "上海市 徐汇区 华山路1954号",
     lng_gcj02: 121.433,
     lat_gcj02: 31.2015,
   }]);
 });
 
-test("高德 POI 搜索保留名称、行政区和坐标", () => {
-  const places = normalizeAmapPlaces([
-    {
-      id: "B00155AMEJ",
-      name: "龙华寺",
-      cityname: "上海市",
-      adname: "徐汇区",
-      address: "龙华路2853号",
-      location: { lng: 121.451842, lat: 31.175174 },
+test("腾讯联想请求限制上海市并使用独立 Key", async () => {
+  let requestedUrl = "";
+  const search = createTencentSuggestionSearch({
+    key: "tencent-test-key",
+    requestJsonp: async (url) => {
+      requestedUrl = url;
+      return {
+        status: 0,
+        data: [{
+          id: "B00155AMEJ",
+          title: "龙华寺",
+          district: "徐汇区",
+          address: "龙华路2853号",
+          location: { lng: 121.451842, lat: 31.175174 },
+        }],
+      };
     },
-  ]);
+  });
 
-  assert.deepEqual(places, [{
+  assert.deepEqual(await search("龙华"), [{
     id: "B00155AMEJ",
     label: "龙华寺",
-    address: "上海市 徐汇区 龙华路2853号",
+    address: "徐汇区 龙华路2853号",
     lng_gcj02: 121.451842,
     lat_gcj02: 31.175174,
   }]);
+  const url = new URL(requestedUrl);
+  assert.equal(url.origin + url.pathname, "https://apis.map.qq.com/ws/place/v1/suggestion");
+  assert.equal(url.searchParams.get("key"), "tencent-test-key");
+  assert.equal(url.searchParams.get("keyword"), "龙华");
+  assert.equal(url.searchParams.get("region"), "上海");
+  assert.equal(url.searchParams.get("region_fix"), "1");
+  assert.equal(url.searchParams.get("page_size"), "8");
 });
 
 test("本地地点索引合并核心地标、路线入口和已核验 POI", () => {
@@ -209,24 +225,20 @@ test("本地地点索引合并核心地标、路线入口和已核验 POI", () =
   ]);
 });
 
-test("高德地点服务封装联想与设备定位，并显式暴露失败", async () => {
-  class AutoComplete {
-    search(query, callback) {
-      assert.equal(query, "交大");
-      callback("complete", { tips: [{ id: "1", name: "交大", location: { lng: 121.43, lat: 31.2 } }] });
-    }
-  }
+test("地点服务使用腾讯联想与高德设备定位，并显式暴露定位失败", async () => {
   class Geolocation {
     getCurrentPosition(callback) {
       callback("complete", { position: { lng: 121.44, lat: 31.21 } });
     }
   }
-  class PlaceSearch {
-    search(_query, callback) {
-      callback("complete", { poiList: { pois: [] } });
-    }
-  }
-  const services = createAmapLocationServices({ AMap: { AutoComplete, PlaceSearch, Geolocation } });
+  const searchSuggestions = async (query) => {
+    assert.equal(query, "交大");
+    return [{ id: "1", label: "交大", address: "徐汇区", lng_gcj02: 121.43, lat_gcj02: 31.2 }];
+  };
+  const services = createLocationServices(
+    { AMap: { Geolocation } },
+    { searchSuggestions },
+  );
 
   assert.equal((await services.suggest("交大"))[0].label, "交大");
   assert.deepEqual(await services.locate(), {
@@ -235,97 +247,65 @@ test("高德地点服务封装联想与设备定位，并显式暴露失败", as
     lat_gcj02: 31.21,
   });
 
-  const failed = createAmapLocationServices({
-    AMap: {
-      AutoComplete,
-      PlaceSearch,
-      Geolocation: class {
-        getCurrentPosition(callback) {
-          callback("error", { message: "用户拒绝定位" });
-        }
+  const failed = createLocationServices(
+    {
+      AMap: {
+        Geolocation: class {
+          getCurrentPosition(callback) {
+            callback("error", { message: "用户拒绝定位" });
+          }
+        },
       },
     },
-  });
+    {
+      searchSuggestions,
+    },
+  );
   await assert.rejects(() => failed.locate(), /用户拒绝定位/);
 });
 
-test("高德联想额度耗尽时由 POI 搜索返回丰富候选", async () => {
-  class AutoComplete {
-    search(_query, callback) {
-      callback("error", "USER_DAILY_QUERY_OVER_LIMIT");
-    }
-  }
-  class Geolocation {}
-  class PlaceSearch {
-    search(query, callback) {
-      assert.equal(query, "龙华");
-      callback("complete", {
-        poiList: {
-          pois: [
-            { id: "temple", name: "龙华寺", address: "龙华路2853号", location: { lng: 121.451842, lat: 31.175174 } },
-            { id: "metro", name: "龙华(地铁站)", address: "11号线;12号线", location: { lng: 121.452958, lat: 31.172672 } },
-          ],
-        },
-      });
-    }
-  }
-  const services = createAmapLocationServices({ AMap: { AutoComplete, PlaceSearch, Geolocation } });
-
-  assert.deepEqual((await services.suggest("龙华")).map((candidate) => candidate.label), [
-    "龙华寺",
-    "龙华(地铁站)",
-  ]);
-});
-
-test("高德联想与 POI 额度同时耗尽时使用本地已核验地点", async () => {
-  class QuotaLimitedSearch {
-    search(_query, callback) {
-      callback("error", "USER_DAILY_QUERY_OVER_LIMIT");
-    }
-  }
-  class Geolocation {}
-  const services = createAmapLocationServices(
+test("腾讯搜索失败时保留本地已核验地点", async () => {
+  const services = createLocationServices(
+    { AMap: { Geolocation: class {} } },
     {
-      AMap: {
-        AutoComplete: QuotaLimitedSearch,
-        PlaceSearch: QuotaLimitedSearch,
-        Geolocation,
+      searchSuggestions: async () => {
+        throw new Error("腾讯搜索配额耗尽");
       },
-    },
-    {
       localCandidates: [
         { id: "temple", label: "龙华寺", address: "徐汇区 龙华路2853号", lng_gcj02: 121.451842, lat_gcj02: 31.175174 },
-        { id: "plaza", label: "龙华寺广场", address: "徐汇区 龙华", lng_gcj02: 121.4536, lat_gcj02: 31.1728 },
       ],
     },
   );
 
-  assert.deepEqual((await services.suggest("龙华")).map((candidate) => candidate.label), [
-    "龙华寺",
-    "龙华寺广场",
-  ]);
+  assert.deepEqual((await services.suggest("龙华寺")).map((candidate) => candidate.label), ["龙华寺"]);
 });
 
-test("本地命中两个地点时直接返回且不等待在线服务", async () => {
+test("腾讯 Key 缺失时给出明确错误", async () => {
+  const search = createTencentSuggestionSearch({ key: "" });
+
+  await assert.rejects(() => search("龙华"), /local-tencent-config\.js/);
+});
+
+test("本地命中两个地点时直接返回且不调用腾讯", async () => {
   let onlineSearchCalls = 0;
-  class SearchService {
-    search(_query, callback) {
-      onlineSearchCalls += 1;
-      callback("error", "USER_DAILY_QUERY_OVER_LIMIT");
-    }
-  }
-  const services = createAmapLocationServices(
+  const services = createLocationServices(
     {
       AMap: {
-        AutoComplete: SearchService,
-        PlaceSearch: SearchService,
-        Geolocation: class {},
+        Geolocation: class {
+          getCurrentPosition(callback) {
+            callback("complete", { position: { lng: 121.44, lat: 31.21 } });
+          }
+        },
       },
     },
     {
+      searchSuggestions: async () => {
+        onlineSearchCalls += 1;
+        throw new Error("不应调用在线搜索");
+      },
       localCandidates: [
-        { id: "temple", label: "龙华寺", address: "徐汇区", lng_gcj02: 121.451842, lat_gcj02: 31.175174 },
-        { id: "plaza", label: "龙华寺广场", address: "徐汇区", lng_gcj02: 121.4536, lat_gcj02: 31.1728 },
+        { id: "temple", label: "龙华寺", address: "徐汇区 龙华路2853号", lng_gcj02: 121.451842, lat_gcj02: 31.175174 },
+        { id: "plaza", label: "龙华寺广场", address: "徐汇区 龙华", lng_gcj02: 121.4536, lat_gcj02: 31.1728 },
       ],
     },
   );

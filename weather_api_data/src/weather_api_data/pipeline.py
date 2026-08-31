@@ -53,6 +53,7 @@ _NEAR_EXPIRY_REFRESH_ENDPOINTS = frozenset(
         "hourly_weather_24",
         "current_air_quality",
         "hourly_air_quality_24",
+        "indices_3day",
     }
 )
 _NEAR_EXPIRY_REFRESH_MARGIN = timedelta(minutes=5)

@@ -1,11 +1,11 @@
 import {
   loadRouteData,
   startEnvironmentDashboardPolling,
-} from "./data-loader.js?v=20260831-ui-17";
+} from "./data-loader.js?v=20260831-ui-24";
 import {
   buildRouteExposureModel,
   createEnvironmentPanel,
-} from "./environment-ui.js?v=20260831-ui-17";
+} from "./environment-ui.js?v=20260831-ui-24";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -17,34 +17,34 @@ import {
   fitBoundaryView,
   highlightRoutePreview,
   planNavigation,
-  resolveUserLocation,
   setBaseMapMode,
   showUserLocation,
   showRoutePreviews,
   showSingleRoute,
   startPointMarkerContent,
-} from "./map.js?v=20260831-ui-17";
-import { createNavigationController } from "./navigation-session.js?v=20260831-ui-17";
+} from "./map.js?v=20260831-ui-24";
+import { createNavigationController } from "./navigation-session.js?v=20260831-ui-24";
 import {
   buildLocalLocationCandidates,
-  createAmapLocationServices,
+  createLocationServices,
   createLocationController,
   createMapPointSelection,
+  createTencentSuggestionSearch,
   shouldShowCurrentLocationOption,
-} from "./location-control.js?v=20260831-ui-17";
-import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260831-ui-17";
-import { createRecommendationApi } from "./recommendation-api.js?v=20260831-ui-17";
+} from "./location-control.js?v=20260831-ui-24";
+import { loadHealthProfile, saveHealthProfile, HEALTH_PROFILE_STORAGE_KEY } from "./profile-store.js?v=20260831-ui-24";
+import { createRecommendationApi } from "./recommendation-api.js?v=20260831-ui-24";
 import {
   DEFAULT_RECOMMENDATION_LOCATION,
   buildInitialRecommendationResult,
   createProfileDialog,
   createRecommendationUI,
-} from "./recommendation-ui.js?v=20260831-ui-17";
-import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260831-ui-17";
+} from "./recommendation-ui.js?v=20260831-ui-24";
+import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260831-ui-24";
 import {
   isMapLocationSelectionAllowed,
   renderRoutePlanner,
-} from "./route-ui.js?v=20260831-ui-17";
+} from "./route-ui.js?v=20260831-ui-24";
 
 const RECOMMENDATION_MAP_CARDS_ENABLED = false;
 
@@ -145,8 +145,11 @@ async function bootstrap() {
   let activeLocationCandidateIndex = 0;
   let locationSearchRevision = 0;
   let locationSearchTimer = null;
-  const locationServices = createAmapLocationServices(map, {
+  const locationServices = createLocationServices(map, {
     localCandidates: buildLocalLocationCandidates(data.entries, data.pois),
+    searchSuggestions: createTencentSuggestionSearch({
+      key: globalThis.XUHUI_TENCENT_SEARCH_KEY,
+    }),
   });
   const locationController = createLocationController({
     initialLocation: currentLocation,
@@ -309,12 +312,20 @@ async function bootstrap() {
     shouldSelectRoute: () => uiState.productView === "recommendation" || uiState.chatOpen,
     onChatStateChange(open) {
       uiState.chatOpen = Boolean(open);
+      if (!uiState.chatOpen && uiState.detailSource === "recommendation") {
+        uiState.detailSource = null;
+        routeDock.hide();
+      }
       renderProductView();
       syncWorkbench();
     },
-    onShowRoutes(routes) {
+    onRouteModeChange(mode) {
+      syncRouteModeControls(mode);
+    },
+    onShowRoutes(routes, context = {}) {
       uiState.productView = "recommendation";
-      uiState.chatOpen = false;
+      const chatResult = context.source === "chat" || recommendationUI.isChatOpen();
+      if (!chatResult) uiState.chatOpen = false;
       recommendationFeatures = recommendationFeaturesFromResult(routes, routeFeaturesById);
       recommendationMap.showRoutes(recommendationFeatures, data.entries, data.pois, recommendationUI.getAnswers().interests);
       uiState.detailSource = null;
@@ -392,11 +403,16 @@ async function bootstrap() {
   });
   workbench.qwenButton.addEventListener("click", () => {
     if (uiState.sidebarCollapsed) setSidebarCollapsed(false);
-    if (uiState.chatOpen) recommendationUI.closeChat();
-    else recommendationUI.openChat();
+    recommendationUI.newChat();
+  });
+  workbench.newChatButton.addEventListener("click", () => {
+    recommendationUI.newChat();
   });
   workbench.collapseButton.addEventListener("click", () => {
     setSidebarCollapsed(!uiState.sidebarCollapsed);
+  });
+  workbench.chatCloseButton.addEventListener("click", () => {
+    recommendationUI.closeChat();
   });
   bindLocationControls();
   bindMapLocationPicker();
@@ -461,9 +477,9 @@ async function bootstrap() {
     workbench.title.textContent = uiState.chatOpen
       ? "千问路线助手"
       : uiState.productView === "browse" ? "浏览路线" : "帮我推荐";
-    workbench.qwenButton.setAttribute("aria-expanded", String(uiState.chatOpen));
-    workbench.qwenButton.setAttribute("aria-label", uiState.chatOpen ? "关闭千问路线助手" : "打开千问路线助手");
-    workbench.qwenButton.title = uiState.chatOpen ? "关闭千问路线助手" : "千问路线助手";
+    workbench.qwenButton.hidden = uiState.chatOpen;
+    workbench.newChatButton.hidden = !uiState.chatOpen;
+    workbench.chatCloseButton.hidden = !uiState.chatOpen;
     workbench.sidebar.classList.toggle("is-collapsed", uiState.sidebarCollapsed);
     workbench.sidebar.dataset.collapsed = String(uiState.sidebarCollapsed);
     workbench.collapseButton.setAttribute("aria-expanded", String(!uiState.sidebarCollapsed));
@@ -651,12 +667,24 @@ async function bootstrap() {
     }
     const query = String(locationControls.input.value || "").trim();
     if (!query) return;
+    globalThis.clearTimeout?.(locationSearchTimer);
+    const revision = ++locationSearchRevision;
     locationControls.status.textContent = "正在确定地点…";
     try {
-      locationController.commitCandidate(await resolveUserLocation(map, { text: query }));
+      const candidates = await locationServices.suggest(query);
+      if (revision !== locationSearchRevision) return;
+      locationCandidates = candidates;
+      activeLocationCandidateIndex = 0;
+      if (!candidates.length) {
+        locationControls.status.textContent = "没有找到匹配地点。";
+        renderLocationSuggestions();
+        return;
+      }
+      locationController.commitCandidate(candidates[0]);
     } catch (error) {
+      if (revision !== locationSearchRevision) return;
       locationControls.status.textContent = errorMessage(error);
-      console.error("地点搜索失败", { query, error });
+      console.error("腾讯地点搜索失败", { query, error });
     }
   }
 
@@ -716,25 +744,32 @@ async function bootstrap() {
     const buttons = [...document.querySelectorAll("[data-route-mode]")];
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
-        buttons.forEach((candidate) => {
-          const active = candidate === button;
-          candidate.classList.toggle("active", active);
-          candidate.classList.toggle("is-selected", active);
-          candidate.setAttribute("aria-pressed", String(active));
-        });
         const mode = button.dataset.routeMode;
+        syncRouteModeControls(mode);
         recommendationUI.setRouteMode(mode);
-        locationController.setMode(mode);
-        locationControls.modeLabel.textContent = button.querySelector("b")?.textContent || "步行";
-        const icon = button.querySelector("svg")?.cloneNode(true);
-        if (icon && locationControls.modeIcon) {
-          locationControls.modeIcon.replaceWith(icon);
-          locationControls.modeIcon = icon;
-        }
-        locationControls.modeDetails.open = false;
         refreshNearbyRoutes();
       });
     });
+  }
+
+  function syncRouteModeControls(mode) {
+    const buttons = [...document.querySelectorAll("[data-route-mode]")];
+    const selected = buttons.find((button) => button.dataset.routeMode === mode);
+    if (!selected) return;
+    buttons.forEach((button) => {
+      const active = button === selected;
+      button.classList.toggle("active", active);
+      button.classList.toggle("is-selected", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    locationController.setMode(mode);
+    locationControls.modeLabel.textContent = selected.querySelector("b")?.textContent || "步行";
+    const icon = selected.querySelector("svg")?.cloneNode(true);
+    if (icon && locationControls.modeIcon) {
+      locationControls.modeIcon.replaceWith(icon);
+      locationControls.modeIcon = icon;
+    }
+    locationControls.modeDetails.open = false;
   }
 
   function setLocationEditorOpen(open) {
@@ -788,7 +823,9 @@ function getWorkbenchControls() {
     sidebar: document.querySelector("#workbenchSidebar"),
     title: document.querySelector("#workbenchTitle"),
     qwenButton: document.querySelector("#workbenchQwenButton"),
+    newChatButton: document.querySelector("#workbenchNewChatButton"),
     collapseButton: document.querySelector("#workbenchCollapseButton"),
+    chatCloseButton: document.querySelector("#workbenchChatCloseButton"),
   };
 }
 

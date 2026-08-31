@@ -531,7 +531,7 @@ test("关闭千问聊天恢复进入前的推荐结果、选中路线与滚动�
     assert.match(container.textContent, /从交大徐汇校区出发/);
     container.scrollTop = 0;
 
-    findByAttribute(container, "aria-label", "关闭千问聊天").listeners.click();
+    controller.closeChat();
     assert.match(container.textContent, /为你推荐/);
     assert.match(container.textContent, /公园小环线/);
     assert.equal(controller.getCurrentRouteId(), "route-2");
@@ -559,7 +559,422 @@ test("千问空态使用顶部说明与底部交互区，并保留可提交输�
     assert.match(starter.textContent, /你今天想走一条怎样的路线/);
     assert.equal(composer.tagName, "FORM");
     assert.ok(findByAttribute(composer, "aria-label", "描述路线需求"));
-    assert.ok(findByAttribute(composer, "aria-label", "发送路线需求"));
+    assert.equal(findByAttribute(composer, "aria-label", "发送路线需求"), null);
+    assert.doesNotMatch(String(composer.className), /has-draft/);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("千问输入非空后才显示圆形导航发送按钮", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({ container, questionnaire, profile: localProfile, location });
+    controller.openChat();
+
+    const input = findByAttribute(container, "aria-label", "描述路线需求");
+    input.listeners.input({ target: { value: "想跑 5 公里" } });
+
+    const composer = findByClass(container, "recommendation-chat__composer");
+    const send = findByAttribute(composer, "aria-label", "发送路线需求");
+    assert.match(String(composer.className), /has-draft/);
+    assert.ok(send, "非空输入缺少独立导航发送按钮");
+    assert.equal(send.textContent.trim(), "", "导航按钮应使用图标表达发送");
+
+    findByAttribute(container, "aria-label", "描述路线需求").listeners.input({ target: { value: "   " } });
+    const emptyComposer = findByClass(container, "recommendation-chat__composer");
+    assert.doesNotMatch(String(emptyComposer.className), /has-draft/);
+    assert.equal(findByAttribute(emptyComposer, "aria-label", "发送路线需求"), null);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("千问输入时永久挂载文本框并复用同一个发送按钮", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({ container, questionnaire, profile: localProfile, location });
+    controller.openChat();
+
+    const input = findByAttribute(container, "aria-label", "描述路线需求");
+    input.focus();
+    input.value = "滨江";
+    input.listeners.input({ target: input });
+    const firstSend = findByAttribute(container, "aria-label", "发送路线需求");
+
+    assert.equal(findByAttribute(container, "aria-label", "描述路线需求"), input);
+    assert.equal(globalThis.document.activeElement, input, "输入时文本框被重新挂载并丢失焦点");
+    assert.ok(firstSend);
+
+    input.value = "滨江慢跑";
+    input.listeners.input({ target: input });
+    assert.equal(findByAttribute(container, "aria-label", "描述路线需求"), input);
+    assert.equal(findByAttribute(container, "aria-label", "发送路线需求"), firstSend, "草稿变化时重复创建发送按钮");
+
+    input.value = "   ";
+    input.listeners.input({ target: input });
+    assert.equal(findByAttribute(container, "aria-label", "描述路线需求"), input);
+    assert.equal(findByAttribute(container, "aria-label", "发送路线需求"), null);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("新建聊天清空当前会话并留在千问面板", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async () => ({
+        reply: "你更偏好公园还是滨江？",
+        ready: false,
+        preference_patch: { interests: ["quiet"] },
+      }),
+    });
+    controller.openChat();
+    const input = findByAttribute(container, "aria-label", "描述路线需求");
+    input.listeners.input({ target: { value: "想走安静路线" } });
+    await findByClass(container, "recommendation-chat__composer").listeners.submit({ preventDefault() {} });
+    assert.match(container.textContent, /想走安静路线/);
+    assert.match(container.textContent, /你更偏好公园还是滨江/);
+
+    controller.newChat();
+
+    assert.equal(controller.isChatOpen(), true);
+    assert.match(container.textContent, /你今天想走一条怎样的路线/);
+    assert.doesNotMatch(container.textContent, /想走安静路线|你更偏好公园还是滨江/);
+    const resetInput = findByAttribute(container, "aria-label", "描述路线需求");
+    assert.equal(resetInput.value, "");
+    assert.equal(findByAttribute(container, "aria-label", "发送路线需求"), null);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("推荐提问点击后直接发送给千问", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const requests = [];
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async (payload) => {
+        requests.push(payload);
+        return { reply: "还想补充什么偏好吗？", ready: false, preference_patch: {} };
+      },
+    });
+    controller.openChat();
+
+    const example = findAllByClass(container, "recommendation-chat__example")[1];
+    const exampleText = example.textContent;
+    await example.listeners.click();
+
+    assert.equal(requests.length, 1);
+    assert.equal(requests[0].message, exampleText);
+    assert.match(container.textContent, /还想补充什么偏好吗/);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("Enter 直接发送且 Shift+Enter 保留换行", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    let requestCount = 0;
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async () => {
+        requestCount += 1;
+        return { reply: "收到", ready: false, preference_patch: {} };
+      },
+    });
+    controller.openChat();
+
+    let input = findByAttribute(container, "aria-label", "描述路线需求");
+    input.listeners.input({ target: { value: "安静的跑步路线" } });
+    input = findByAttribute(container, "aria-label", "描述路线需求");
+    assert.equal(typeof input.listeners.keydown, "function", "输入框缺少 Enter 键盘提交处理");
+    let enterPrevented = false;
+    await input.listeners.keydown({
+      key: "Enter",
+      shiftKey: false,
+      preventDefault() { enterPrevented = true; },
+    });
+    assert.equal(enterPrevented, true);
+    assert.equal(requestCount, 1);
+
+    input = findByAttribute(container, "aria-label", "描述路线需求");
+    input.listeners.input({ target: { value: "第一行" } });
+    input = findByAttribute(container, "aria-label", "描述路线需求");
+    let shiftEnterPrevented = false;
+    await input.listeners.keydown({
+      key: "Enter",
+      shiftKey: true,
+      preventDefault() { shiftEnterPrevented = true; },
+    });
+    assert.equal(shiftEnterPrevented, false);
+    assert.equal(requestCount, 1);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("中文输入法组合态按 Enter 只确认候选且不提交", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    let requestCount = 0;
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async () => {
+        requestCount += 1;
+        return { reply: "收到", ready: false, preference_patch: {} };
+      },
+    });
+    controller.openChat();
+
+    const input = findByAttribute(container, "aria-label", "描述路线需求");
+    assert.equal(typeof input.listeners.compositionstart, "function");
+    assert.equal(typeof input.listeners.compositionend, "function");
+    input.value = "徐汇滨江";
+    input.listeners.input({ target: input });
+    input.listeners.compositionstart();
+    let composingPrevented = false;
+    await input.listeners.keydown({
+      key: "Enter",
+      shiftKey: false,
+      isComposing: false,
+      preventDefault() { composingPrevented = true; },
+    });
+    assert.equal(composingPrevented, false);
+    assert.equal(requestCount, 0);
+
+    input.listeners.compositionend({ target: input });
+    await input.listeners.keydown({
+      key: "Enter",
+      shiftKey: false,
+      isComposing: false,
+      preventDefault() {},
+    });
+    assert.equal(requestCount, 1);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("千问处理中展示 Komoot 式公开进度状态", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    let resolveIntent;
+    const intent = new Promise((resolve) => { resolveIntent = resolve; });
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: () => intent,
+    });
+    controller.openChat();
+    findByAttribute(container, "aria-label", "描述路线需求").listeners.input({ target: { value: "滨江跑步" } });
+
+    const pending = findByClass(container, "recommendation-chat__composer").listeners.submit({ preventDefault() {} });
+    const progress = findByClass(container, "recommendation-chat__progress");
+    assert.ok(progress, "chatBusy 时缺少公开进度状态");
+    assert.equal(progress.attributes["aria-live"], "polite");
+    assert.match(progress.textContent, /正在理解路线需求|正在匹配合适路线/);
+    assert.equal(findAllByClass(progress, "recommendation-chat__progress-dot").length, 3);
+
+    resolveIntent({ reply: "请再补充距离", ready: false, preference_patch: {} });
+    await pending;
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("千问 ready 后自动推荐并在对话内最多展示三张专用无图卡", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    let recommendationCount = 0;
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async () => ({
+        reply: "正在为你匹配路线。",
+        ready: true,
+        preference_patch: { free_text: "安静滨江" },
+      }),
+      onRecommend: async () => {
+        recommendationCount += 1;
+        return resultFixture("ok");
+      },
+    });
+    controller.openChat();
+    findByAttribute(container, "aria-label", "描述路线需求").listeners.input({ target: { value: "安静的滨江路线" } });
+
+    await findByClass(container, "recommendation-chat__composer").listeners.submit({ preventDefault() {} });
+
+    const cards = findAllByClass(container, "recommendation-chat__route-card");
+    assert.equal(recommendationCount, 1);
+    assert.equal(controller.isChatOpen(), true);
+    assert.equal(cards.length, 3);
+    assert.equal(findAllByClass(container, "recommendation-chat__media").length, 3);
+    assert.equal(container.textContent.includes("开始推荐"), false);
+    assert.equal(findAllByClass(container, "route-card").length, 0, "聊天卡应与普通推荐卡区分");
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("千问未就绪时只追加追问且不请求推荐", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    let recommendationCount = 0;
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async () => ({
+        reply: "你希望走多远？",
+        ready: false,
+        preference_patch: {},
+      }),
+      onRecommend: async () => {
+        recommendationCount += 1;
+        return resultFixture("ok");
+      },
+    });
+    controller.openChat();
+    findByAttribute(container, "aria-label", "描述路线需求").listeners.input({ target: { value: "想散步" } });
+
+    await findByClass(container, "recommendation-chat__composer").listeners.submit({ preventDefault() {} });
+
+    assert.equal(recommendationCount, 0);
+    assert.match(findByClass(container, "recommendation-chat__message--assistant").textContent, /你希望走多远/);
+    assert.equal(findAllByClass(container, "recommendation-chat__route-card").length, 0);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("聊天路线卡点击后保持聊天态并触发统一详情", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const selected = [];
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async () => ({ reply: "为你找到三条路线。", ready: true, preference_patch: {} }),
+      onRecommend: async () => resultFixture("ok"),
+      onSelectRoute: (routeId) => selected.push(routeId),
+    });
+    controller.openChat();
+    findByAttribute(container, "aria-label", "描述路线需求").listeners.input({ target: { value: "推荐路线" } });
+    await findByClass(container, "recommendation-chat__composer").listeners.submit({ preventDefault() {} });
+
+    const cards = findAllByClass(container, "recommendation-chat__route-card");
+    assert.equal(cards.length, 3, "聊天内应先渲染三张专用路线卡");
+    const second = cards[1];
+    second.listeners.click();
+
+    assert.equal(controller.isChatOpen(), true);
+    assert.equal(controller.getCurrentRouteId(), "route-2");
+    assert.deepEqual(selected, ["route-2"]);
+    assert.ok(findByClass(container, "recommendation-chat"));
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("千问 route_mode 意图补丁自动切换运动方式及默认距离", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async () => ({
+        reply: "已切换为跑步路线。",
+        ready: false,
+        preference_patch: { route_mode: "run" },
+      }),
+    });
+    controller.openChat();
+    findByAttribute(container, "aria-label", "描述路线需求").listeners.input({ target: { value: "我想跑步" } });
+
+    await findByClass(container, "recommendation-chat__composer").listeners.submit({ preventDefault() {} });
+
+    assert.equal(controller.getAnswers().route_mode, "run");
+    assert.equal(controller.getAnswers().distance_range, "run_mid");
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("千问空值补丁不覆盖前端已解析的推荐时间", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    let recommendationProfile = null;
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async () => ({
+        reply: "条件完整，开始推荐。",
+        ready: true,
+        preference_patch: { target_time: null },
+      }),
+      onRecommend: async (payload) => {
+        recommendationProfile = payload;
+        return resultFixture("ok");
+      },
+    });
+    controller.openChat();
+    findByAttribute(container, "aria-label", "描述路线需求").listeners.input({ target: { value: "现在出发" } });
+
+    await findByClass(container, "recommendation-chat__composer").listeners.submit({ preventDefault() {} });
+
+    assert.match(String(recommendationProfile?.target_time || ""), /^\d{4}-\d{2}-\d{2}T/);
   } finally {
     globalThis.document = previousDocument;
   }
@@ -571,20 +986,49 @@ test("千问样式契约固定全高留白、底部起始区与纯白简约表�
   assert.match(css, /\.recommendation-view\.active:has\(\.recommendation-chat\)\s*\{[^}]*grid-template-rows:\s*minmax\(0,\s*1fr\)/s);
   assert.match(css, /\.recommendation-chat\s*\{[^}]*height:\s*100%/s);
   assert.match(css, /\.recommendation-chat__starter\s*\{[^}]*margin-top:\s*auto/s);
-  assert.match(css, /\.recommendation-chat__composer\s*\{[^}]*background:\s*#fff(?:fff)?/s);
+  assert.match(css, /\.recommendation-chat__composer\s*\{[^}]*background:\s*transparent/s);
   assert.match(css, /\.recommendation-chat__example\s*\{[^}]*border:\s*0/s);
 });
 
-test("公共标题栏让千问入口在推荐、浏览、结果和折叠态持续可见", () => {
+test("公共标题栏提供新建聊天、折叠和唯一退出入口", () => {
   const html = readFileSync(new URL("../web/index.html", import.meta.url), "utf8");
+  const mainJs = readFileSync(new URL("../web/src/main.js", import.meta.url), "utf8");
   const headerStart = html.indexOf('id="workbenchHeader"');
+  const headerEnd = html.indexOf("</header>", headerStart);
   const qwenStart = html.indexOf('id="workbenchQwenButton"');
+  const qwenEnd = html.indexOf("</button>", qwenStart) + "</button>".length;
+  const qwenButton = html.slice(qwenStart, qwenEnd);
+  const newChatStart = html.indexOf('id="workbenchNewChatButton"');
+  const newChatEnd = html.indexOf("</button>", newChatStart) + "</button>".length;
+  const newChatButton = html.slice(newChatStart, newChatEnd);
+  const chatCloseStart = html.indexOf('id="workbenchChatCloseButton"');
+  const chatCloseTag = html.slice(chatCloseStart, html.indexOf(">", chatCloseStart) + 1);
   const bodyStart = html.indexOf('id="workbenchBody"');
+  const qwenHandlerStart = mainJs.indexOf('workbench.qwenButton.addEventListener("click"');
+  const qwenHandlerEnd = mainJs.indexOf("workbench.collapseButton.addEventListener", qwenHandlerStart);
+  const qwenHandler = mainJs.slice(qwenHandlerStart, qwenHandlerEnd);
 
   assert.ok(headerStart >= 0, "缺少公共工作台标题栏");
-  assert.ok(qwenStart > headerStart, "千问入口应位于公共标题栏中");
-  assert.ok(bodyStart > qwenStart, "千问入口应位于可折叠正文之外");
-  assert.match(html, /id="workbenchQwenButton"[^>]*data-workbench-qwen[^>]*aria-expanded="false"/);
+  assert.ok(qwenStart > headerStart, "新建聊天入口应位于公共标题栏中");
+  assert.ok(chatCloseStart > headerStart && chatCloseStart < headerEnd, "聊天关闭按钮应与新建和收起按钮位于同一标题栏");
+  assert.ok(bodyStart > qwenStart, "新建聊天入口应位于可折叠正文之外");
+  assert.match(qwenButton, /data-workbench-qwen/);
+  assert.match(qwenButton, /aria-label="打开千问路线助手"/);
+  assert.match(qwenButton, /<img[^>]*qwen-color\.png/);
+  assert.doesNotMatch(qwenButton, /新建千问聊天|<svg/);
+  assert.ok(newChatStart > qwenEnd && newChatStart < chatCloseStart, "新建聊天应是进入聊天后新增的独立按钮");
+  assert.match(newChatButton, /data-workbench-new-chat/);
+  assert.match(newChatButton, /aria-label="新建千问聊天"/);
+  assert.match(newChatButton, /\shidden(?:\s|>)/);
+  assert.match(newChatButton, /<svg[\s\S]*?<path[\s\S]*?<path/);
+  assert.match(qwenHandler, /recommendationUI\.newChat\(\)/);
+  assert.doesNotMatch(qwenHandler, /closeChat\(\)/);
+  assert.match(mainJs, /newChatButton\.addEventListener\("click"[\s\S]*?recommendationUI\.newChat\(\)/);
+  assert.match(mainJs, /qwenButton\.hidden\s*=\s*uiState\.chatOpen/);
+  assert.match(mainJs, /newChatButton\.hidden\s*=\s*!uiState\.chatOpen/);
+  assert.match(chatCloseTag, /data-workbench-chat-close/);
+  assert.match(chatCloseTag, /aria-label="关闭千问聊天"/);
+  assert.match(chatCloseTag, /\shidden(?:\s|>)/);
   assert.match(html, /id="workbenchCollapseButton"[^>]*data-workbench-collapse[^>]*aria-controls="workbenchBody"/);
 });
 
@@ -857,9 +1301,19 @@ function createDocumentStub() {
     }
 
     replaceChildren(...children) {
+      if (documentStub.activeElement && this.contains(documentStub.activeElement)) {
+        documentStub.activeElement = null;
+      }
+      this.children.forEach((child) => { child.parentElement = null; });
       this.children = [];
       this.append(...children);
       this._text = "";
+    }
+
+    remove() {
+      if (!this.parentElement) return;
+      this.parentElement.children = this.parentElement.children.filter((child) => child !== this);
+      this.parentElement = null;
     }
 
     setAttribute(name, value) {
@@ -868,6 +1322,10 @@ function createDocumentStub() {
 
     addEventListener(name, callback) {
       this.listeners[name] = callback;
+    }
+
+    requestSubmit() {
+      return this.listeners.submit?.({ preventDefault() {} });
     }
 
     scrollBy(options) {

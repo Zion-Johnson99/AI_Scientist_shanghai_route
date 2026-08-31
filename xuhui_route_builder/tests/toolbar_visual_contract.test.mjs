@@ -88,6 +88,17 @@ test("个人档案齿轮默认透明无框并提供交互反馈", () => {
   assert.match(css, /\.profile-action:hover,[\s\S]*?\.profile-action:focus-visible\s*\{[\s\S]*?background:\s*var\(--surface-brand-soft\);/);
 });
 
+test("千问入口与聊天态三项操作在标题栏按顺序切换", () => {
+  assert.match(
+    html,
+    /<div class="workbench-header__actions">[\s\S]*?id="workbenchQwenButton"[\s\S]*?id="workbenchNewChatButton"[\s\S]*?data-workbench-new-chat[\s\S]*?hidden[\s\S]*?id="workbenchCollapseButton"[\s\S]*?id="workbenchChatCloseButton"[\s\S]*?data-workbench-chat-close[\s\S]*?hidden/,
+  );
+  assert.match(css, /\.workbench-qwen-button,\s*\.workbench-new-chat-button,\s*\.workbench-chat-close-button,\s*\.workbench-collapse-button\s*\{/);
+  assert.match(css, /\.workbench-qwen-button\[hidden\],\s*\.workbench-new-chat-button\[hidden\]\s*\{[^}]*display:\s*none;/);
+  assert.match(css, /\.workbench-chat-close-button\[hidden\]\s*\{[^}]*display:\s*none;/);
+  assert.match(css, /\.workbench-chat-close-button svg\s*\{[\s\S]*?stroke:\s*currentColor;/);
+});
+
 test("旧接驳中间页面已从静态结构移除", () => {
   assert.doesNotMatch(html, /id="routeNavigationView"/);
   assert.doesNotMatch(html, /id="startPickButton"/);

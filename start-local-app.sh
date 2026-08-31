@@ -108,9 +108,12 @@ now = datetime.now().astimezone()
 current = dashboard.get("current", {})
 life_indices = current.get("life_indices") or []
 routes = dashboard.get("routes", {}).get("items") or []
-if not life_indices or not routes or any(expired(item, now) for item in life_indices):
+if not life_indices or not routes:
     print("daily")
     raise SystemExit
+life_indices_need_hourly_refresh = any(
+    expired(item, now, margin_minutes=5) for item in life_indices
+)
 
 route = routes[0]
 noise_time = parse_time((route.get("noise") or {}).get("fetched_at"))
@@ -130,7 +133,8 @@ if (
 
 pm25_time = parse_time((route.get("pm2_5") or {}).get("business_time"))
 if (
-    expired(current.get("aqi"), now, margin_minutes=5)
+    life_indices_need_hourly_refresh
+    or expired(current.get("aqi"), now, margin_minutes=5)
     or pm25_time is None
     or pm25_time <= now - timedelta(hours=1)
 ):

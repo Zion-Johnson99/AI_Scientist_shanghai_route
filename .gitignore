@@ -6,6 +6,7 @@
 .env.*
 !.env.example
 /xuhui_route_builder/web/local-amap-config.js
+/xuhui_route_builder/web/local-tencent-config.js
 *.key
 *.pem
 *.token
