@@ -249,6 +249,14 @@ def test_load_data_fetches_remote_environment_to_runtime_cache(
     assert (project_root / "runtime" / "cache" / "environment_dashboard.json").is_file()
 
 
+def test_remote_environment_cache_defaults_to_one_minute(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.delenv("EVALUATION_MODEL_QWEN_ENVIRONMENT_CACHE_SECONDS", raising=False)
+
+    assert loaders._environment_cache_seconds() == 60
+
+
 def test_load_data_defaults_to_real_sibling_data() -> None:
     bundle = load_data()
 

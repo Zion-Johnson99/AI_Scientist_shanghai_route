@@ -1,0 +1,16 @@
+name = "xuhui-environment-data"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[vars]
+GITHUB_OWNER = "Zion-Johnson99"
+GITHUB_REPO = "AI_Scientist_shanghai_route"
+GITHUB_WORKFLOW = "environment-refresh.yml"
+GITHUB_REF = "main"
+
+[triggers]
+crons = ["0,15,30,45 * * * *", "3,18,33,48 * * * *"]
+
+[[r2_buckets]]
+binding = "ENVIRONMENT_BUCKET"
+bucket_name = "xuhui-environment-data"

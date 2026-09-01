@@ -98,7 +98,7 @@ def _remote_environment_path(url: str, cache_path: Path) -> Path:
 
 
 def _environment_cache_seconds() -> int:
-    raw = os.getenv(_ENVIRONMENT_CACHE_SECONDS_ENV, "300")
+    raw = os.getenv(_ENVIRONMENT_CACHE_SECONDS_ENV, "60")
     try:
         value = int(raw)
     except ValueError as exc:

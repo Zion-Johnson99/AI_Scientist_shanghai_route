@@ -22,6 +22,7 @@ def test_generate_web_map_config_writes_only_browser_keys(tmp_path: Path) -> Non
                 "AMAP_JS_SECURITY_CODE=browser-amap-security",
                 "BAIDU_MAP_AK=server-baidu-secret",
                 "TENCENT_SEARCH_KEY=browser-tencent-key",
+                "ENVIRONMENT_DASHBOARD_URL=https://environment.example.com/environment_dashboard.json",
             )
         ),
         encoding="utf-8",
@@ -36,6 +37,10 @@ def test_generate_web_map_config_writes_only_browser_keys(tmp_path: Path) -> Non
         'window.XUHUI_AMAP_JS_SECURITY_CODE = "browser-amap-security";' in amap_content
     )
     assert 'window.XUHUI_TENCENT_SEARCH_KEY = "browser-tencent-key";' in tencent_content
+    assert (
+        "window.XUHUI_ENVIRONMENT_DASHBOARD_URL = "
+        '"https://environment.example.com/environment_dashboard.json";'
+    ) in tencent_content
     assert "server-amap-secret" not in amap_content + tencent_content
     assert "server-baidu-secret" not in amap_content + tencent_content
 
@@ -61,6 +66,9 @@ def test_generate_web_map_config_from_environment_writes_browser_keys(
             "AMAP_JS_SECURITY_CODE": "browser-amap-security",
             "TENCENT_SEARCH_KEY": "browser-tencent-key",
             "RECOMMENDATION_API_BASE_URL": "https://api.example.com/api/v1",
+            "ENVIRONMENT_DASHBOARD_URL": (
+                "https://environment.example.com/environment_dashboard.json"
+            ),
         },
         tmp_path / "web",
     )
@@ -68,8 +76,47 @@ def test_generate_web_map_config_from_environment_writes_browser_keys(
     assert "browser-amap-key" in amap_target.read_text(encoding="utf-8")
     tencent_content = tencent_target.read_text(encoding="utf-8")
     assert "browser-tencent-key" in tencent_content
-    assert 'window.XUHUI_RECOMMENDATION_API_BASE_URL = "https://api.example.com/api/v1";' in (
-        tencent_content
+    assert (
+        'window.XUHUI_RECOMMENDATION_API_BASE_URL = "https://api.example.com/api/v1";'
+        in (tencent_content)
+    )
+    assert (
+        "window.XUHUI_ENVIRONMENT_DASHBOARD_URL = "
+        '"https://environment.example.com/environment_dashboard.json";'
+    ) in tencent_content
+
+
+def test_generate_web_map_config_rejects_non_https_environment_url(
+    tmp_path: Path,
+) -> None:
+    with pytest.raises(
+        WebMapConfigError, match="ENVIRONMENT_DASHBOARD_URL 需为 HTTPS 地址"
+    ):
+        generate_web_map_config_from_environment(
+            {
+                "AMAP_JS_API_KEY": "browser-amap-key",
+                "AMAP_JS_SECURITY_CODE": "browser-amap-security",
+                "TENCENT_SEARCH_KEY": "browser-tencent-key",
+                "ENVIRONMENT_DASHBOARD_URL": "http://environment.example.com/data.json",
+            },
+            tmp_path / "web",
+        )
+
+
+def test_generate_web_map_config_keeps_local_environment_url_optional(
+    tmp_path: Path,
+) -> None:
+    _, tencent_target = generate_web_map_config_from_environment(
+        {
+            "AMAP_JS_API_KEY": "browser-amap-key",
+            "AMAP_JS_SECURITY_CODE": "browser-amap-security",
+            "TENCENT_SEARCH_KEY": "browser-tencent-key",
+        },
+        tmp_path / "web",
+    )
+
+    assert 'window.XUHUI_ENVIRONMENT_DASHBOARD_URL = "";' in (
+        tencent_target.read_text(encoding="utf-8")
     )
 
 

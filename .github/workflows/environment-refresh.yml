@@ -2,10 +2,11 @@ name: Environment Refresh
 
 on:
   schedule:
-    # GitHub cron uses UTC. Shanghai cadence: every 15 minutes from :04, hourly at :08,
+    # Cloudflare triggers the primary weather refresh at :00/:15/:30/:45.
+    # GitHub cron is the independent backup at :10/:25/:40/:55, hourly at :05,
     # and daily at 06:07 (22:07 UTC on the previous date).
-    - cron: "4,19,34,49 * * * *"
-    - cron: "8 * * * *"
+    - cron: "10,25,40,55 * * * *"
+    - cron: "5 * * * *"
     - cron: "7 22 * * *"
   workflow_dispatch:
     inputs:
@@ -50,10 +51,24 @@ jobs:
       AMAP_JS_SECURITY_CODE: ${{ secrets.AMAP_JS_SECURITY_CODE }}
       TENCENT_SEARCH_KEY: ${{ secrets.TENCENT_SEARCH_KEY }}
       RECOMMENDATION_API_BASE_URL: ${{ vars.RECOMMENDATION_API_BASE_URL }}
+      ENVIRONMENT_DASHBOARD_URL: ${{ vars.ENVIRONMENT_DASHBOARD_URL }}
+      ENVIRONMENT_PUBLISH_TOKEN: ${{ secrets.ENVIRONMENT_PUBLISH_TOKEN }}
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+
+      - name: Validate online publish configuration
+        shell: bash
+        run: |
+          if [[ "$ENVIRONMENT_DASHBOARD_URL" != https://* ]]; then
+            echo "ENVIRONMENT_DASHBOARD_URL must be configured as an HTTPS repository variable" >&2
+            exit 1
+          fi
+          if [[ -z "$ENVIRONMENT_PUBLISH_TOKEN" ]]; then
+            echo "ENVIRONMENT_PUBLISH_TOKEN repository secret is missing" >&2
+            exit 1
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -82,8 +97,8 @@ jobs:
             tier="${{ inputs.tier }}"
           else
             case "${{ github.event.schedule }}" in
-              "4,19,34,49 * * * *") tier="weather" ;;
-              "8 * * * *") tier="hourly" ;;
+              "10,25,40,55 * * * *") tier="weather" ;;
+              "5 * * * *") tier="hourly" ;;
               "7 22 * * *") tier="daily" ;;
               *) echo "Unknown schedule" >&2; exit 1 ;;
             esac
@@ -117,6 +132,17 @@ jobs:
           uv run --directory weather_api_data --frozen --extra chap
           weather-api-data --root "$GITHUB_WORKSPACE/weather_api_data"
           scheduled-refresh --tier "${{ steps.refresh-tier.outputs.tier }}"
+
+      - name: Publish last-known-good environment dashboard
+        shell: bash
+        run: |
+          curl --fail-with-body --silent --show-error \
+            --retry 2 --retry-all-errors --retry-delay 1 --max-time 20 \
+            --request POST \
+            --header "Authorization: Bearer $ENVIRONMENT_PUBLISH_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data-binary @xuhui_route_builder/data/web/environment_dashboard.json \
+            "$ENVIRONMENT_DASHBOARD_URL"
 
       - name: Save environment runtime
         if: ${{ always() && hashFiles('weather_api_data/runtime/**') != '' }}

@@ -14,8 +14,7 @@ def test_qwen_container_uses_frozen_runtime_and_public_bind() -> None:
     assert "uv sync --directory /app/evaluation_model_qwen --frozen --no-dev" in dockerfile
     assert "xuhui_route_builder/data/web/route_catalog.json" in dockerfile
     assert (
-        "exec /app/evaluation_model_qwen/.venv/bin/evaluation-model-qwen-api "
-        "--host 0.0.0.0"
+        "exec /app/evaluation_model_qwen/.venv/bin/evaluation-model-qwen-api --host 0.0.0.0"
     ) in dockerfile
     assert "uv run" not in dockerfile
     assert "${PORT:-10000}" in dockerfile
@@ -50,5 +49,9 @@ def test_render_blueprint_keeps_qwen_secrets_out_of_git() -> None:
     assert "key: DASHSCOPE_API_KEY\n        sync: false" in blueprint
     assert "key: DASHSCOPE_BASE_URL\n        sync: false" in blueprint
     assert 'key: FORWARDED_ALLOW_IPS\n        value: "*"' in blueprint
-    assert "https://zion-johnson99.github.io/AI_Scientist_shanghai_route" in blueprint
+    assert "key: EVALUATION_MODEL_QWEN_ENVIRONMENT_URL\n        sync: false" in blueprint
+    assert 'key: EVALUATION_MODEL_QWEN_ENVIRONMENT_CACHE_SECONDS\n        value: "60"' in blueprint
+    assert (
+        "github.io/AI_Scientist_shanghai_route/data/web/environment_dashboard.json" not in blueprint
+    )
     assert "DASHSCOPE_API_KEY=" not in blueprint

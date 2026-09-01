@@ -44,11 +44,20 @@ def generate_web_map_config_from_environment(
     amap_key = _required_value(values, "AMAP_JS_API_KEY")
     amap_security_code = _required_value(values, "AMAP_JS_SECURITY_CODE")
     tencent_search_key = _required_value(values, "TENCENT_SEARCH_KEY")
-    recommendation_api_base_url = str(
-        values.get("RECOMMENDATION_API_BASE_URL") or _LOCAL_RECOMMENDATION_API
-    ).strip().rstrip("/")
+    recommendation_api_base_url = (
+        str(values.get("RECOMMENDATION_API_BASE_URL") or _LOCAL_RECOMMENDATION_API)
+        .strip()
+        .rstrip("/")
+    )
     if not recommendation_api_base_url.startswith(("https://", "http://127.0.0.1:")):
         raise WebMapConfigError("RECOMMENDATION_API_BASE_URL 需为 HTTPS 地址")
+    environment_dashboard_url = str(
+        values.get("ENVIRONMENT_DASHBOARD_URL") or ""
+    ).strip()
+    if environment_dashboard_url and not environment_dashboard_url.startswith(
+        "https://"
+    ):
+        raise WebMapConfigError("ENVIRONMENT_DASHBOARD_URL 需为 HTTPS 地址")
 
     amap_target = web_root / "local-amap-config.js"
     tencent_target = web_root / "local-tencent-config.js"
@@ -71,6 +80,8 @@ def generate_web_map_config_from_environment(
                 f"{json.dumps(tencent_search_key, ensure_ascii=False)};",
                 "window.XUHUI_RECOMMENDATION_API_BASE_URL = "
                 f"{json.dumps(recommendation_api_base_url, ensure_ascii=False)};",
+                "window.XUHUI_ENVIRONMENT_DASHBOARD_URL = "
+                f"{json.dumps(environment_dashboard_url, ensure_ascii=False)};",
                 "",
             )
         ),

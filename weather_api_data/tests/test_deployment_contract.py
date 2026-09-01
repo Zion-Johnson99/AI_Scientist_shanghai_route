@@ -7,6 +7,7 @@ ROOT = Path(__file__).parents[2]
 WINDOWS_SCRIPT = ROOT / "weather_api_data" / "scripts" / "install_windows_tasks.ps1"
 WORKFLOW = ROOT / ".github" / "workflows" / "environment-refresh.yml"
 PAGES_INDEX = ROOT / "xuhui_route_builder" / "pages-index.html"
+WORKER_CONFIG = ROOT / "infra" / "cloudflare-environment-worker" / "wrangler.toml"
 
 
 def _read(path: Path) -> str:
@@ -54,13 +55,13 @@ def test_windows_status_is_read_only_and_uninstall_targets_exact_names() -> None
     assert expected_names <= set(re.findall(r"XuhuiEnvironmentRefresh-[A-Za-z]+", script))
 
 
-def test_workflow_schedules_three_refresh_tiers_and_keeps_manual_choice() -> None:
+def test_workflow_schedules_backup_refresh_tiers_and_keeps_manual_choice() -> None:
     workflow = _read(WORKFLOW)
 
     assert "workflow_dispatch:" in workflow
     assert "schedule:" in workflow
-    assert 'cron: "4,19,34,49 * * * *"' in workflow
-    assert 'cron: "8 * * * *"' in workflow
+    assert 'cron: "10,25,40,55 * * * *"' in workflow
+    assert 'cron: "5 * * * *"' in workflow
     assert 'cron: "7 22 * * *"' in workflow
     assert "type: choice" in workflow
     for tier in ("weather", "hourly", "daily"):
@@ -73,13 +74,20 @@ def test_workflow_routes_schedule_to_tier_and_persists_runtime() -> None:
     workflow = _read(WORKFLOW)
 
     assert "Resolve refresh tier" in workflow
-    assert '"4,19,34,49 * * * *") tier="weather"' in workflow
-    assert '"8 * * * *") tier="hourly"' in workflow
+    assert '"10,25,40,55 * * * *") tier="weather"' in workflow
+    assert '"5 * * * *") tier="hourly"' in workflow
     assert '"7 22 * * *") tier="daily"' in workflow
     assert "uses: actions/cache/restore@" in workflow
     assert "uses: actions/cache/save@" in workflow
     assert "weather_api_data/runtime" in workflow
     assert "Bootstrap complete environment runtime" in workflow
+
+
+def test_cloudflare_primary_schedule_uses_quarter_hours_and_watchdog() -> None:
+    config = _read(WORKER_CONFIG)
+
+    assert '"0,15,30,45 * * * *"' in config
+    assert '"3,18,33,48 * * * *"' in config
 
 
 def test_workflow_reads_secrets_as_environment_without_writing_env_file() -> None:
@@ -96,7 +104,20 @@ def test_workflow_reads_secrets_as_environment_without_writing_env_file() -> Non
     ):
         assert f"${{{{ secrets.{secret} }}}}" in workflow
     assert "${{ vars.RECOMMENDATION_API_BASE_URL }}" in workflow
+    assert "${{ vars.ENVIRONMENT_DASHBOARD_URL }}" in workflow
+    assert "${{ secrets.ENVIRONMENT_PUBLISH_TOKEN }}" in workflow
     assert not re.search(r"(?:echo|printf|Out-File|Set-Content).*(?:\.env|GITHUB_ENV)", workflow)
+
+
+def test_workflow_validates_and_publishes_last_known_good_dashboard() -> None:
+    workflow = _read(WORKFLOW)
+
+    assert "Validate online publish configuration" in workflow
+    assert "Publish last-known-good environment dashboard" in workflow
+    assert "Authorization: Bearer $ENVIRONMENT_PUBLISH_TOKEN" in workflow
+    assert "--max-time 20" in workflow
+    assert "--retry 2" in workflow
+    assert "xuhui_route_builder/data/web/environment_dashboard.json" in workflow
 
 
 def test_workflow_uses_frozen_uv_and_uploads_pages_tree() -> None:

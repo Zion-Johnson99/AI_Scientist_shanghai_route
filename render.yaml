@@ -29,6 +29,6 @@ services:
       - key: FORWARDED_ALLOW_IPS
         value: "*"
       - key: EVALUATION_MODEL_QWEN_ENVIRONMENT_URL
-        value: https://zion-johnson99.github.io/AI_Scientist_shanghai_route/data/web/environment_dashboard.json
+        sync: false
       - key: EVALUATION_MODEL_QWEN_ENVIRONMENT_CACHE_SECONDS
-        value: "300"
+        value: "60"
