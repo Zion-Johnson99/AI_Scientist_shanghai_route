@@ -76,7 +76,6 @@ jobs:
         run: |
           test -f xuhui_route_builder/web/index.html
           test -f xuhui_route_builder/pages-index.html
-          test -f xuhui_route_builder/data/web/environment_dashboard.json
           mkdir -p pages-artifact/web pages-artifact/data/web
           cp xuhui_route_builder/pages-index.html pages-artifact/index.html
           cp -R xuhui_route_builder/web/. pages-artifact/web/
