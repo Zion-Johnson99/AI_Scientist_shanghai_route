@@ -156,6 +156,36 @@ test("POST 仅在验证和 R2 写入成功后替换对象", async () => {
   assert.deepEqual(JSON.parse(bucket.objects.get(DASHBOARD_KEY)), next);
 });
 
+test("POST 使用 R2 httpEtag 执行条件覆盖", async () => {
+  const oldText = JSON.stringify(dashboard());
+  const next = dashboard("2026-09-01T06:15:00.000Z");
+  let receivedIfMatch = null;
+  const bucket = {
+    async get() {
+      return {
+        body: oldText,
+        etag: "etag-current",
+        httpEtag: '"etag-current"',
+        async text() {
+          return oldText;
+        },
+      };
+    },
+    async put(_key, _value, options) {
+      receivedIfMatch = options.onlyIf?.get("if-match") || null;
+      if (receivedIfMatch !== '"etag-current"') {
+        throw new Error("Invalid ETag in if-match header");
+      }
+      return {};
+    },
+  };
+
+  const response = await worker.fetch(request("POST", next), env(bucket));
+
+  assert.equal(response.status, 204);
+  assert.equal(receivedIfMatch, '"etag-current"');
+});
+
 test("当前项目环境看板满足线上原子发布闸门", async () => {
   const actualPath = new URL(
     "../../../xuhui_route_builder/data/web/environment_dashboard.json",

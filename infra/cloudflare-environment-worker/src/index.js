@@ -167,8 +167,8 @@ async function publishDashboard(request, env) {
     httpMetadata: { contentType: "application/json; charset=utf-8", cacheControl: "no-store" },
     customMetadata: { generatedAt: incomingGeneratedAt },
   };
-  if (current.object?.etag) {
-    putOptions.onlyIf = new Headers({ "if-match": current.object.etag });
+  if (current.object?.httpEtag) {
+    putOptions.onlyIf = new Headers({ "if-match": current.object.httpEtag });
   }
 
   try {
