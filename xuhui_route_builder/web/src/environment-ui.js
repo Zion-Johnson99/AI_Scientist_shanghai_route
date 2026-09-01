@@ -24,8 +24,8 @@ export function buildCurrentEnvironmentModel(dashboard) {
   const aqiRecord = dashboard?.current?.aqi;
   const weatherStatus = recordStatus(weather, weather?.values?.temperature_c);
   const aqiStatus = recordStatus(aqiRecord, aqiRecord?.values?.aqi);
-  const weatherAvailable = hasDisplayValue(weatherStatus);
-  const aqiAvailable = hasDisplayValue(aqiStatus);
+  const weatherAvailable = hasCurrentValue(weatherStatus, weather?.values?.temperature_c);
+  const aqiAvailable = hasCurrentValue(aqiStatus, aqiRecord?.values?.aqi);
   const values = weather?.values || {};
   const temperature = weatherAvailable ? finiteNumber(values.temperature_c) : null;
   const humidity = weatherAvailable ? finiteNumber(values.relative_humidity_pct) : null;
@@ -38,6 +38,8 @@ export function buildCurrentEnvironmentModel(dashboard) {
     status: combinedStatus(weatherStatus, aqiStatus),
     weatherStatus,
     aqiStatus,
+    weatherFreshnessText: weatherStatus === "stale" ? "等待更新" : "",
+    aqiFreshnessText: aqiStatus === "stale" ? "等待更新" : "",
     temperature,
     temperatureText: temperature === null ? statusText(weatherStatus) : `${formatNumber(temperature)}°`,
     weatherText: weatherAvailable ? String(values.weather_text || "天气更新中") : statusText(weatherStatus),
@@ -283,7 +285,7 @@ function renderPanel(current, forecast) {
       <div class="environment-summary__primary" aria-hidden="true">
         <div>
           <div class="environment-summary__location">${escapeHtml(current.location)}</div>
-          <div class="environment-summary__condition">${icon}<span>${escapeHtml(current.weatherText)}</span></div>
+          <div class="environment-summary__condition">${icon}<span>${escapeHtml(current.weatherText)}${current.weatherFreshnessText ? `（${escapeHtml(current.weatherFreshnessText)}）` : ""}</span></div>
         </div>
         <div class="environment-summary__temperature">${escapeHtml(summaryTemperature)}</div>
       </div>
@@ -299,6 +301,7 @@ function renderPanel(current, forecast) {
             <span class="environment-toggle__icon" aria-hidden="true">${icon}</span>
             <span class="environment-toggle__label">天气</span>
             <strong>${escapeHtml(current.weatherText)}</strong>
+            ${current.weatherFreshnessText ? `<span class="environment-toggle__label">${escapeHtml(current.weatherFreshnessText)}</span>` : ""}
           </span>
           <span class="environment-toggle__item environment-toggle__item--temperature">
             ${environmentIconMarkup("temperature")}
@@ -337,11 +340,11 @@ function renderPanel(current, forecast) {
 
 function renderNow(current) {
   return `<div class="environment-now-grid">
-    ${nowCard("天气", current.weatherText, current.temperature === null ? "" : current.temperatureText, current.weatherStatus)}
-    ${nowCard("湿度", current.humidityText, "相对湿度", current.weatherStatus)}
-    ${nowCard("风向风速", current.windText, "当前风况", current.weatherStatus)}
-    ${nowCard("降水", current.precipitationText, "当前降水", current.weatherStatus)}
-    ${nowCard("AQI", current.aqiText, current.aqi === null ? "" : current.aqiLevel, current.aqiStatus)}
+    ${nowCard("天气", current.weatherText, current.temperature === null ? "" : [current.temperatureText, current.weatherFreshnessText].filter(Boolean).join(" · "), current.weatherStatus)}
+    ${nowCard("湿度", current.humidityText, ["相对湿度", current.weatherFreshnessText].filter(Boolean).join(" · "), current.weatherStatus)}
+    ${nowCard("风向风速", current.windText, ["当前风况", current.weatherFreshnessText].filter(Boolean).join(" · "), current.weatherStatus)}
+    ${nowCard("降水", current.precipitationText, ["当前降水", current.weatherFreshnessText].filter(Boolean).join(" · "), current.weatherStatus)}
+    ${nowCard("AQI", current.aqiText, current.aqi === null ? "" : [current.aqiLevel, current.aqiFreshnessText].filter(Boolean).join(" · "), current.aqiStatus)}
   </div>`;
 }
 
@@ -430,15 +433,19 @@ function environmentToggleAqi(current) {
       <span class="environment-toggle__aqi-number">${escapeHtml(current.aqiText)}</span>
       <span class="environment-toggle__aqi-level environment-toggle__aqi-level--${tone}">${escapeHtml(current.aqiLevel)}</span>
     </strong>
+    ${current.aqiFreshnessText ? `<span class="environment-toggle__label">${escapeHtml(current.aqiFreshnessText)}</span>` : ""}
   </span>`;
 }
 
 function environmentToggleLabel(current, open) {
+  const weather = current.weatherFreshnessText
+    ? `${current.weatherText}（${current.weatherFreshnessText}）`
+    : current.weatherText;
   const aqi = current.aqi === null
     ? current.aqiText
-    : `${current.aqiText} ${current.aqiLevel}`;
+    : `${current.aqiText} ${current.aqiLevel}${current.aqiFreshnessText ? `（${current.aqiFreshnessText}）` : ""}`;
   const action = open ? "收起环境详情" : "展开环境详情";
-  return `当前环境：${current.weatherText}，温度 ${current.temperatureText}，湿度 ${current.humidityText}，AQI ${aqi}。${action}`;
+  return `当前环境：${weather}，温度 ${current.temperatureText}，湿度 ${current.humidityText}，AQI ${aqi}。${action}`;
 }
 
 function environmentIconMarkup(type) {
@@ -562,6 +569,10 @@ function statusText(status) {
 
 function hasDisplayValue(status) {
   return status === "ok" || status === "partial";
+}
+
+function hasCurrentValue(status, value) {
+  return hasDisplayValue(status) || (status === "stale" && hasValue(value));
 }
 
 function hasValue(value) {

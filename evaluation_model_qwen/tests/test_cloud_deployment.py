@@ -13,7 +13,11 @@ def test_qwen_container_uses_frozen_runtime_and_public_bind() -> None:
     assert "uv==0.11.26" in dockerfile
     assert "uv sync --directory /app/evaluation_model_qwen --frozen --no-dev" in dockerfile
     assert "xuhui_route_builder/data/web/route_catalog.json" in dockerfile
-    assert "evaluation-model-qwen-api --host 0.0.0.0" in dockerfile
+    assert (
+        "exec /app/evaluation_model_qwen/.venv/bin/evaluation-model-qwen-api "
+        "--host 0.0.0.0"
+    ) in dockerfile
+    assert "uv run" not in dockerfile
     assert "${PORT:-10000}" in dockerfile
     assert "USER appuser" in dockerfile
     assert "COPY ." not in dockerfile

@@ -21,4 +21,4 @@ RUN uv sync --directory /app/evaluation_model_qwen --frozen --no-dev \
 USER appuser
 WORKDIR /app/evaluation_model_qwen
 
-CMD ["sh", "-c", "exec uv run --frozen evaluation-model-qwen-api --host 0.0.0.0 --port ${PORT:-10000}"]
+CMD ["sh", "-c", "exec /app/evaluation_model_qwen/.venv/bin/evaluation-model-qwen-api --host 0.0.0.0 --port ${PORT:-10000}"]
