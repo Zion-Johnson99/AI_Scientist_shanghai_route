@@ -42,6 +42,21 @@ test("默认连接 8124 端口下的 v1 接口", async () => {
   assert.deepEqual(calls.map((call) => call.options.method), ["GET", "GET"]);
 });
 
+test("部署配置可覆盖推荐服务地址", async () => {
+  globalThis.XUHUI_RECOMMENDATION_API_BASE_URL = "https://api.example.com/api/v1/";
+  try {
+    const configuredModule = await import(
+      "../web/src/recommendation-api.js?runtime-config-test"
+    );
+    assert.equal(
+      configuredModule.DEFAULT_RECOMMENDATION_API_BASE_URL,
+      "https://api.example.com/api/v1",
+    );
+  } finally {
+    delete globalThis.XUHUI_RECOMMENDATION_API_BASE_URL;
+  }
+});
+
 test("推荐请求严格排除性别与本地档案版本", async () => {
   let sentBody = null;
   const api = createRecommendationApi({

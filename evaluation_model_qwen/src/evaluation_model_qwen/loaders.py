@@ -1,8 +1,14 @@
 from __future__ import annotations
 
 import json
+import logging
+import os
+import tempfile
+import time
 from pathlib import Path
 from typing import Any, TypeVar, cast
+from urllib.parse import urlsplit
+from urllib.request import Request, urlopen
 
 from pydantic import BaseModel, ValidationError
 
@@ -21,6 +27,11 @@ from .models import (
 EXPECTED_ROUTE_COUNT = 90
 _DEFAULT_PROJECT_ROOT = Path(__file__).resolve().parents[2]
 _DATA_STATUSES = {"ok", "partial", "stale", "no_data", "error"}
+_ENVIRONMENT_URL_ENV = "EVALUATION_MODEL_QWEN_ENVIRONMENT_URL"
+_ENVIRONMENT_CACHE_SECONDS_ENV = "EVALUATION_MODEL_QWEN_ENVIRONMENT_CACHE_SECONDS"
+_REMOTE_TIMEOUT_SECONDS = 10.0
+_MAX_REMOTE_BYTES = 16 * 1024 * 1024
+_LOGGER = logging.getLogger(__name__)
 _ModelT = TypeVar("_ModelT", bound=BaseModel)
 
 
@@ -38,6 +49,11 @@ def load_data(
     data_dir = root.parent / "xuhui_route_builder" / "data" / "web"
     route_path = route_catalog_path or data_dir / "route_catalog.json"
     dashboard_path = environment_path or data_dir / "environment_dashboard.json"
+    if environment_path is None and os.getenv(_ENVIRONMENT_URL_ENV):
+        dashboard_path = _remote_environment_path(
+            os.environ[_ENVIRONMENT_URL_ENV],
+            root / "runtime" / "cache" / "environment_dashboard.json",
+        )
 
     routes = _load_routes(route_path)
     environment = _load_environment(dashboard_path)
@@ -52,6 +68,75 @@ def load_data(
             f"missing_in_environment={missing}, unexpected_in_environment={unexpected}"
         )
     return DataBundle(routes=routes, environment=environment)
+
+
+def _remote_environment_path(url: str, cache_path: Path) -> Path:
+    parsed = urlsplit(url)
+    if (
+        parsed.scheme != "https"
+        or not parsed.netloc
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.fragment
+    ):
+        raise LoaderError(f"{_ENVIRONMENT_URL_ENV} 需为无凭据、无片段的 HTTPS 地址")
+    cache_seconds = _environment_cache_seconds()
+    if cache_path.is_file() and time.time() - cache_path.stat().st_mtime < cache_seconds:
+        return cache_path
+    try:
+        _download_environment(url, cache_path)
+    except (OSError, UnicodeError, json.JSONDecodeError, LoaderError) as exc:
+        if cache_path.is_file():
+            _LOGGER.warning(
+                "environment_download_failed fallback=cache error_type=%s",
+                type(exc).__name__,
+                exc_info=True,
+            )
+            return cache_path
+        raise LoaderError(f"远端环境数据读取失败: error_type={type(exc).__name__}") from exc
+    return cache_path
+
+
+def _environment_cache_seconds() -> int:
+    raw = os.getenv(_ENVIRONMENT_CACHE_SECONDS_ENV, "300")
+    try:
+        value = int(raw)
+    except ValueError as exc:
+        raise LoaderError(f"{_ENVIRONMENT_CACHE_SECONDS_ENV} 需为非负整数") from exc
+    if value < 0:
+        raise LoaderError(f"{_ENVIRONMENT_CACHE_SECONDS_ENV} 需为非负整数")
+    return value
+
+
+def _download_environment(url: str, destination: Path) -> None:
+    request = Request(
+        url,
+        headers={"Accept": "application/json", "User-Agent": "xuhui-route-qwen-api/1.0"},
+    )
+    with urlopen(request, timeout=_REMOTE_TIMEOUT_SECONDS) as response:
+        payload = response.read(_MAX_REMOTE_BYTES + 1)
+    if len(payload) > _MAX_REMOTE_BYTES:
+        raise LoaderError("远端环境数据超过 16 MiB 限制")
+    document = json.loads(payload.decode("utf-8"))
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        mode="w",
+        encoding="utf-8",
+        newline="\n",
+        dir=destination.parent,
+        prefix=f".{destination.name}.",
+        suffix=".tmp",
+        delete=False,
+    ) as handle:
+        temporary = Path(handle.name)
+        json.dump(document, handle, ensure_ascii=False, separators=(",", ":"))
+        handle.write("\n")
+    try:
+        _load_environment(temporary)
+        os.replace(temporary, destination)
+    except Exception:
+        temporary.unlink(missing_ok=True)
+        raise
 
 
 def _load_routes(path: Path) -> list[RouteRecord]:

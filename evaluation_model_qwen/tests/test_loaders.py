@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import pytest
 
+from evaluation_model_qwen import loaders
 from evaluation_model_qwen.loaders import LoaderError, load_data
 
 
@@ -210,6 +211,42 @@ def test_load_data_preserves_all_current_alerts(tmp_path: Path) -> None:
         "2026-08-28T17:00:00+08:00",
         "2026-08-28T17:10:00+08:00",
     ]
+
+
+def test_load_data_fetches_remote_environment_to_runtime_cache(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    route_path, environment_path = _write_contract(tmp_path)
+    payload = environment_path.read_bytes()
+    project_root = tmp_path / "evaluation_model_qwen"
+    project_root.mkdir()
+    calls: list[tuple[str, float]] = []
+
+    class FakeResponse:
+        def __enter__(self) -> FakeResponse:
+            return self
+
+        def __exit__(self, *args: object) -> None:
+            del args
+
+        def read(self, amount: int = -1) -> bytes:
+            return payload[:amount] if amount >= 0 else payload
+
+    def fake_urlopen(request: Any, timeout: float) -> FakeResponse:
+        calls.append((cast(str, request.full_url), timeout))
+        return FakeResponse()
+
+    remote_url = "https://zion-johnson99.github.io/AI_Scientist_shanghai_route/data/web/environment_dashboard.json"
+    monkeypatch.setenv("EVALUATION_MODEL_QWEN_ENVIRONMENT_URL", remote_url)
+    monkeypatch.setenv("EVALUATION_MODEL_QWEN_ENVIRONMENT_CACHE_SECONDS", "300")
+    monkeypatch.setattr(loaders, "urlopen", fake_urlopen)
+
+    bundle = load_data(project_root=project_root, route_catalog_path=route_path)
+
+    assert len(bundle.environment.route_environment) == 90
+    assert calls == [(remote_url, 10.0)]
+    assert (project_root / "runtime" / "cache" / "environment_dashboard.json").is_file()
 
 
 def test_load_data_defaults_to_real_sibling_data() -> None:

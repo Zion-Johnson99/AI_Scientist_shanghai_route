@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: ai-scientist-shanghai-route-api
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: main
+    autoDeployTrigger: commit
+    dockerfilePath: ./evaluation_model_qwen/Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: DASHSCOPE_API_KEY
+        sync: false
+      - key: DASHSCOPE_BASE_URL
+        sync: false
+      - key: QWEN_MODEL
+        value: qwen3.7-plus
+      - key: QWEN_TIMEOUT_SECONDS
+        value: "30"
+      - key: EVALUATION_MODEL_QWEN_OFFLINE
+        value: "0"
+      - key: EVALUATION_MODEL_QWEN_ALLOWED_ORIGINS
+        value: https://zion-johnson99.github.io
+      - key: EVALUATION_MODEL_QWEN_RATE_LIMIT_PER_MINUTE
+        value: "10"
+      - key: EVALUATION_MODEL_QWEN_DAILY_REQUEST_LIMIT
+        value: "300"
+      - key: FORWARDED_ALLOW_IPS
+        value: "*"
+      - key: EVALUATION_MODEL_QWEN_ENVIRONMENT_URL
+        value: https://zion-johnson99.github.io/AI_Scientist_shanghai_route/data/web/environment_dashboard.json
+      - key: EVALUATION_MODEL_QWEN_ENVIRONMENT_CACHE_SECONDS
+        value: "300"

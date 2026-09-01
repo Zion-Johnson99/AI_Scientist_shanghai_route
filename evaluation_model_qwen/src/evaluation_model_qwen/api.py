@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 from traceback import extract_tb
 from typing import Any, Sequence
+from urllib.parse import urlsplit
 
 import uvicorn
 from dotenv import dotenv_values
@@ -24,12 +25,19 @@ from .models import (
     UserProfile,
 )
 from .qwen_client import QwenClientError, QwenConfigurationError
+from .rate_limit import RequestLimiter
 from .service import evaluation_root, recommend, write_audit_result
 
 LOGGER = logging.getLogger(__name__)
-ALLOWED_ORIGINS = ("http://127.0.0.1:8123", "http://localhost:8123")
+LOCAL_ORIGINS = ("http://127.0.0.1:8123", "http://localhost:8123")
 OFFLINE_ENV = "EVALUATION_MODEL_QWEN_OFFLINE"
 AUDIT_ROOT_ENV = "EVALUATION_MODEL_QWEN_AUDIT_ROOT"
+ALLOWED_ORIGINS_ENV = "EVALUATION_MODEL_QWEN_ALLOWED_ORIGINS"
+RATE_LIMIT_PER_MINUTE_ENV = "EVALUATION_MODEL_QWEN_RATE_LIMIT_PER_MINUTE"
+DAILY_REQUEST_LIMIT_ENV = "EVALUATION_MODEL_QWEN_DAILY_REQUEST_LIMIT"
+_RATE_LIMITED_PATHS = frozenset(
+    {"/api/v1/recommendation-intent", "/api/v1/recommendations"}
+)
 
 _QWEN_ERROR_CODES = {
     "authentication": "qwen_authentication_failed",
@@ -72,13 +80,42 @@ _SENSITIVITY_LABELS = {
 
 def create_app() -> FastAPI:
     application = FastAPI(title="徐汇健康路线推荐 API", version="1.0.0")
+    limiter = RequestLimiter(
+        per_minute=_positive_env_int(RATE_LIMIT_PER_MINUTE_ENV, 20),
+        daily_total=_positive_env_int(DAILY_REQUEST_LIMIT_ENV, 500),
+    )
     application.add_middleware(
         CORSMiddleware,
-        allow_origins=list(ALLOWED_ORIGINS),
+        allow_origins=list(_allowed_origins()),
         allow_credentials=False,
         allow_methods=["GET", "POST"],
         allow_headers=["Content-Type"],
     )
+
+    async def enforce_rate_limit(request: Request, call_next: Any) -> Any:
+        if request.method == "POST" and request.url.path in _RATE_LIMITED_PATHS:
+            client_key = _client_key(request)
+            decision = limiter.acquire(client_key)
+            if not decision.allowed:
+                LOGGER.warning(
+                    "request_rate_limited path=%s client=%s retry_after=%s",
+                    request.url.path,
+                    client_key,
+                    decision.retry_after_seconds,
+                )
+                return JSONResponse(
+                    status_code=429,
+                    content={
+                        "error": {
+                            "code": "rate_limit_exceeded",
+                            "message": "请求过于频繁，请稍后重试。",
+                        }
+                    },
+                    headers={"Retry-After": str(decision.retry_after_seconds)},
+                )
+        return await call_next(request)
+
+    application.middleware("http")(enforce_rate_limit)
     application.add_exception_handler(RequestValidationError, _validation_error)
 
     application.add_api_route(
@@ -111,6 +148,37 @@ def create_app() -> FastAPI:
         },
     )
     return application
+
+
+def _allowed_origins() -> tuple[str, ...]:
+    configured = os.getenv(ALLOWED_ORIGINS_ENV, "")
+    origins: list[str] = list(LOCAL_ORIGINS)
+    for value in configured.split(","):
+        origin = value.strip().rstrip("/")
+        if not origin:
+            continue
+        parsed = urlsplit(origin)
+        if parsed.scheme not in {"http", "https"} or not parsed.netloc or parsed.path:
+            raise ValueError(f"{ALLOWED_ORIGINS_ENV} 包含无效 Origin")
+        origins.append(origin)
+    return tuple(dict.fromkeys(origins))
+
+
+def _positive_env_int(name: str, default: int) -> int:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    try:
+        value = int(raw)
+    except ValueError as exc:
+        raise ValueError(f"{name} 需为正整数") from exc
+    if value <= 0:
+        raise ValueError(f"{name} 需为正整数")
+    return value
+
+
+def _client_key(request: Request) -> str:
+    return request.client.host if request.client is not None else "unknown"
 
 
 async def _validation_error(request: Request, exc: Exception) -> JSONResponse:

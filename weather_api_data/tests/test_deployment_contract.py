@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).parents[2]
 WINDOWS_SCRIPT = ROOT / "weather_api_data" / "scripts" / "install_windows_tasks.ps1"
 WORKFLOW = ROOT / ".github" / "workflows" / "environment-refresh.yml"
+PAGES_INDEX = ROOT / "xuhui_route_builder" / "pages-index.html"
 
 
 def _read(path: Path) -> str:
@@ -53,16 +54,32 @@ def test_windows_status_is_read_only_and_uninstall_targets_exact_names() -> None
     assert expected_names <= set(re.findall(r"XuhuiEnvironmentRefresh-[A-Za-z]+", script))
 
 
-def test_workflow_is_manual_only_and_exposes_tier_choice() -> None:
+def test_workflow_schedules_three_refresh_tiers_and_keeps_manual_choice() -> None:
     workflow = _read(WORKFLOW)
 
     assert "workflow_dispatch:" in workflow
-    assert not re.search(r"^\s*schedule\s*:", workflow, flags=re.MULTILINE)
+    assert "schedule:" in workflow
+    assert 'cron: "*/15 * * * *"' in workflow
+    assert 'cron: "2 * * * *"' in workflow
+    assert 'cron: "7 22 * * *"' in workflow
     assert "type: choice" in workflow
     for tier in ("weather", "hourly", "daily"):
         assert re.search(rf"^\s+- {tier}$", workflow, flags=re.MULTILINE)
     assert "deploy_pages:" in workflow
-    assert "default: false" in workflow
+    assert "default: true" in workflow
+
+
+def test_workflow_routes_schedule_to_tier_and_persists_runtime() -> None:
+    workflow = _read(WORKFLOW)
+
+    assert "Resolve refresh tier" in workflow
+    assert '"*/15 * * * *") tier="weather"' in workflow
+    assert '"2 * * * *") tier="hourly"' in workflow
+    assert '"7 22 * * *") tier="daily"' in workflow
+    assert "uses: actions/cache/restore@" in workflow
+    assert "uses: actions/cache/save@" in workflow
+    assert "weather_api_data/runtime" in workflow
+    assert "Bootstrap complete environment runtime" in workflow
 
 
 def test_workflow_reads_secrets_as_environment_without_writing_env_file() -> None:
@@ -73,8 +90,12 @@ def test_workflow_reads_secrets_as_environment_without_writing_env_file() -> Non
         "QWEATHER_API_HOST",
         "POLLEN_API_KEY",
         "SHANGHAI_NOISE_TOKEN",
+        "AMAP_JS_API_KEY",
+        "AMAP_JS_SECURITY_CODE",
+        "TENCENT_SEARCH_KEY",
     ):
         assert f"${{{{ secrets.{secret} }}}}" in workflow
+    assert "${{ vars.RECOMMENDATION_API_BASE_URL }}" in workflow
     assert not re.search(r"(?:echo|printf|Out-File|Set-Content).*(?:\.env|GITHUB_ENV)", workflow)
 
 
@@ -84,12 +105,22 @@ def test_workflow_uses_frozen_uv_and_uploads_pages_tree() -> None:
     assert "uv sync --directory weather_api_data --frozen --extra chap" in workflow
     assert re.search(
         r'weather-api-data --root "\$GITHUB_WORKSPACE/weather_api_data"\s+'
-        r'scheduled-refresh --tier "\$\{\{ inputs\.tier \}\}"',
+        r'scheduled-refresh --tier "\$\{\{ steps\.refresh-tier\.outputs\.tier \}\}"',
         workflow,
     )
     assert "uses: actions/upload-pages-artifact@" in workflow
     assert "path: pages-artifact" in workflow
+    assert "xuhui_route_builder/pages-index.html" in workflow
+    assert "pages-artifact/index.html" in workflow
     assert "web/index.html" in workflow
     assert "data/web/environment_dashboard.json" in workflow
-    assert "if: ${{ inputs.deploy_pages }}" in workflow
+    assert "Generate browser map configuration" in workflow
+    assert "github.event_name == 'schedule' || inputs.deploy_pages" in workflow
     assert "uses: actions/deploy-pages@" in workflow
+
+
+def test_pages_root_redirects_to_web_application() -> None:
+    html = _read(PAGES_INDEX)
+
+    assert 'content="0; url=./web/"' in html
+    assert 'location.replace("./web/")' in html

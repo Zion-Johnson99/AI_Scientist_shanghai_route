@@ -334,6 +334,67 @@ def test_cors_rejects_other_origins(client: Any) -> None:
     assert "access-control-allow-origin" not in response.headers
 
 
+def test_cors_accepts_configured_github_pages_origin(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    origin = "https://zion-johnson99.github.io"
+    monkeypatch.setenv("EVALUATION_MODEL_QWEN_ALLOWED_ORIGINS", origin)
+
+    with TestClient(api.create_app()) as raw_client:
+        configured_client = cast(Any, raw_client)
+        response = configured_client.options(
+            "/api/v1/recommendations",
+            headers={
+                "Origin": origin,
+                "Access-Control-Request-Method": "POST",
+                "Access-Control-Request-Headers": "content-type",
+            },
+        )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == origin
+
+
+def test_public_post_endpoints_apply_per_client_rate_limit(
+    monkeypatch: pytest.MonkeyPatch,
+    profile: UserProfile,
+    offline_result: RecommendationResult,
+) -> None:
+    monkeypatch.setenv("EVALUATION_MODEL_QWEN_OFFLINE", "1")
+    monkeypatch.setenv("EVALUATION_MODEL_QWEN_RATE_LIMIT_PER_MINUTE", "1")
+    monkeypatch.setenv("EVALUATION_MODEL_QWEN_DAILY_REQUEST_LIMIT", "10")
+    monkeypatch.setenv("EVALUATION_MODEL_QWEN_TRUST_PROXY_HEADERS", "1")
+
+    def fake_recommend(received: UserProfile, *, offline: bool) -> RecommendationResult:
+        del received, offline
+        return offline_result
+
+    def fake_write_audit(received: RecommendationResult, runtime_root: Path) -> Path:
+        del received
+        return runtime_root / "audit.json"
+
+    monkeypatch.setattr(api, "recommend", fake_recommend)
+    monkeypatch.setattr(api, "write_audit_result", fake_write_audit)
+
+    with TestClient(api.create_app()) as raw_client:
+        limited_client = cast(Any, raw_client)
+        first = limited_client.post(
+            "/api/v1/recommendations",
+            json=profile.model_dump(mode="json"),
+            headers={"X-Forwarded-For": "198.51.100.10"},
+        )
+        second = limited_client.post(
+            "/api/v1/recommendations",
+            json=profile.model_dump(mode="json"),
+            headers={"X-Forwarded-For": "198.51.100.11"},
+        )
+
+    assert first.status_code == 200
+    assert second.status_code == 429
+    assert second.json()["error"]["code"] == "rate_limit_exceeded"
+    assert int(second.headers["retry-after"]) > 0
+
+
 def intent_document() -> dict[str, Any]:
     return {
         "message": "想跑 5 公里，安静一点，沿途有厕所",
