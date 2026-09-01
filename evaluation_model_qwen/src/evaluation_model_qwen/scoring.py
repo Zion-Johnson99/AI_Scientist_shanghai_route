@@ -25,6 +25,18 @@ DIMENSION_NAMES = (
     "interest_service",
 )
 
+CORE_SCENIC_INTERESTS = frozenset({"waterfront", "park", "quiet"})
+WATERFRONT_AREA_IDS = frozenset({"west_bund"})
+PARK_AREA_IDS = frozenset({"shanghai_botanical_garden", "kangjian", "xujiahui_sports"})
+WATERFRONT_KEYWORDS = ("徐汇滨江", "西岸", "龙腾大道")
+PARK_KEYWORDS = ("上海植物园", "植物园", "康健园", "体育公园", "桂江绿廊")
+INTEREST_ALIASES = {
+    "quiet": frozenset({"quiet", "安静", "静谧"}),
+    "coffee": frozenset({"coffee", "咖啡"}),
+    "toilet": frozenset({"toilet", "厕所", "公厕"}),
+    "convenience": frozenset({"convenience", "便利店"}),
+}
+
 
 def _parse_datetime(value: str | None, fallback_tz: Any) -> datetime | None:
     if not value:
@@ -173,6 +185,13 @@ def evaluate_risk(
             if value >= float(thresholds[pause_key]):
                 paused = True
                 reasons.append(f"{label}达到暂停阈值")
+            elif (
+                value_key == "real_feel_temperature_c"
+                and "heat" in profile.sensitivities
+                and value >= float(thresholds[warning_key])
+            ):
+                paused = True
+                reasons.append("体感温度达到敏感人群暂停阈值")
             elif value >= float(thresholds[warning_key]):
                 warnings = True
                 reasons.append(f"{label}达到提醒阈值")
@@ -276,9 +295,10 @@ def _environment_dimension(
     profile: UserProfile,
     weights: dict[str, Any],
     ignore_pollen: bool,
-) -> tuple[float | None, float, dict[str, Any], list[str]]:
+) -> tuple[float, float, dict[str, Any], list[str]]:
+    missing_score = float(weights["missing_metric_score"])
     if route_environment is None:
-        return None, 0.0, {}, ["路线环境数据缺失"]
+        return missing_score, 0.0, {}, ["路线环境数据缺失，环境维度按中性分计入"]
     metric_weights = {key: float(value) for key, value in weights["environment_weights"].items()}
     boost = float(weights["sensitivity_boost"])
     if "air" in profile.sensitivities:
@@ -314,6 +334,10 @@ def _environment_dimension(
         }
     elif pm.value is not None:
         notes.append("PM2.5 与目标业务时间相差超过 2 小时或状态不可用")
+        values.append((missing_score, 0.0, metric_weights["pm2_5"]))
+    else:
+        notes.append("PM2.5 数据缺失，按中性分计入")
+        values.append((missing_score, 0.0, metric_weights["pm2_5"]))
 
     noise = route_environment.noise
     scenario = _noise_scenario(profile.target_time)
@@ -337,6 +361,9 @@ def _environment_dimension(
             "unit": noise.unit,
             "reliability": round(reliability, 6),
         }
+    else:
+        notes.append("噪声数据缺失或状态不可用，按中性分计入")
+        values.append((missing_score, 0.0, metric_weights["noise"]))
 
     pollen = _select_pollen(route_environment, profile.target_time.date())
     if not ignore_pollen and _valid_metric(pollen, profile.target_time, weights):
@@ -354,8 +381,9 @@ def _environment_dimension(
             "unit": pollen.unit,
             "reliability": round(reliability, 6),
         }
-    if not values:
-        return None, 0.0, summary, notes
+    elif not ignore_pollen:
+        notes.append("花粉数据缺失或状态不可用，按中性分计入")
+        values.append((missing_score, 0.0, metric_weights["pollen"]))
     total_weight = sum(item[2] for item in values)
     score = sum(item[0] * item[2] for item in values) / total_weight
     confidence = sum(item[1] * item[2] for item in values) / total_weight
@@ -369,7 +397,7 @@ def _sport_score(route: RouteRecord, profile: UserProfile) -> float:
 
 def _access_score(access_distance_m: float | None, profile: UserProfile) -> float | None:
     if access_distance_m is None:
-        return 85.0 if profile.area_ids else None
+        return None
     scale = float(profile.search_radius_m or 5000)
     return max(0.0, 100.0 * (1.0 - access_distance_m / scale))
 
@@ -385,24 +413,102 @@ def _quality_score(route: RouteRecord, weights: dict[str, Any]) -> float:
     return sum(components) / len(components)
 
 
-def _interest_score(route: RouteRecord, profile: UserProfile) -> tuple[float | None, list[str]]:
-    if not profile.interests:
-        return None, []
+def _text_has_keyword(value: str, keywords: tuple[str, ...]) -> bool:
+    return any(keyword in value for keyword in keywords)
+
+
+def _explicit_interest_match(route: RouteRecord, interest: str) -> bool:
+    area_ids = set(route.popular_area_ids)
+    if interest == "waterfront":
+        return bool(
+            area_ids.intersection(WATERFRONT_AREA_IDS)
+            or _text_has_keyword(route.region_zone, WATERFRONT_KEYWORDS)
+            or _text_has_keyword(route.route_name, WATERFRONT_KEYWORDS)
+        )
+    if interest == "park":
+        return bool(
+            area_ids.intersection(PARK_AREA_IDS)
+            or _text_has_keyword(route.region_zone, PARK_KEYWORDS)
+            or _text_has_keyword(route.route_name, PARK_KEYWORDS)
+            or any(poi.poi_type.lower() in {"park", "park_gate"} for poi in route.nearby_pois)
+        )
+    aliases = INTEREST_ALIASES.get(interest, frozenset({interest}))
     searchable = {
         value.lower() for value in route.tags + route.feature_tags + route.preference_hits
     }
     searchable.update(poi.poi_type.lower() for poi in route.nearby_pois)
-    aliases = {
-        "waterfront": {"waterfront", "滨水", "滨江"},
-        "park": {"park", "公园", "绿地"},
-        "quiet": {"quiet", "安静", "静谧"},
-    }
-    matched = [
-        interest
-        for interest in profile.interests
-        if searchable.intersection(aliases.get(interest, {interest}))
-    ]
-    return 100.0 * len(matched) / len(profile.interests), matched
+    return bool(searchable.intersection(aliases))
+
+
+def _quiet_interest_score(
+    route_environment: RouteEnvironment | None,
+    profile: UserProfile,
+    weights: dict[str, Any],
+) -> tuple[float, bool]:
+    if route_environment is None:
+        return float(weights["missing_metric_score"]), False
+    noise = route_environment.noise
+    noise_value = noise.scenarios.get(_noise_scenario(profile.target_time), noise.value)
+    if (
+        noise_value is None
+        or _reliability(noise.status, noise.confidence, noise.estimated, weights) <= 0
+        or not _not_expired(noise.valid_until, profile.target_time)
+    ):
+        return float(weights["missing_metric_score"]), False
+    score, _ = _metric_value(noise, 100.0 - noise_value, weights)
+    return score, True
+
+
+def _interest_score(
+    route: RouteRecord,
+    route_environment: RouteEnvironment | None,
+    profile: UserProfile,
+    weights: dict[str, Any],
+) -> tuple[float | None, list[str], bool]:
+    if not profile.interests:
+        return None, [], False
+    core_scores: list[float] = []
+    facility_scores: list[float] = []
+    matched: list[str] = []
+    core_evidence = False
+    for interest in profile.interests:
+        explicit_match = _explicit_interest_match(route, interest)
+        if explicit_match:
+            matched.append(interest)
+        if interest == "quiet":
+            score, noise_evidence = _quiet_interest_score(route_environment, profile, weights)
+            core_scores.append(score if noise_evidence or not explicit_match else 100.0)
+            core_evidence = core_evidence or explicit_match or noise_evidence
+        elif interest in CORE_SCENIC_INTERESTS:
+            core_scores.append(100.0 if explicit_match else 0.0)
+            core_evidence = core_evidence or explicit_match
+        else:
+            facility_scores.append(100.0 if explicit_match else 0.0)
+
+    if core_scores and facility_scores:
+        core_share = float(weights["core_interest_weight_floor"]) / 100.0
+        score = core_share * sum(core_scores) / len(core_scores)
+        score += (1.0 - core_share) * sum(facility_scores) / len(facility_scores)
+    elif core_scores:
+        score = sum(core_scores) / len(core_scores)
+    else:
+        score = sum(facility_scores) / len(facility_scores)
+    return score, matched, core_evidence
+
+
+def _prioritize_core_interest(dimension_weights: dict[str, float], weights: dict[str, Any]) -> None:
+    floor = float(weights["core_interest_weight_floor"])
+    current = dimension_weights["interest_service"]
+    if current >= floor:
+        return
+    non_interest_total = sum(
+        value for name, value in dimension_weights.items() if name != "interest_service"
+    )
+    remaining = 100.0 - floor
+    for name in dimension_weights:
+        if name != "interest_service":
+            dimension_weights[name] = dimension_weights[name] * remaining / non_interest_total
+    dimension_weights["interest_service"] = floor
 
 
 def _pollen_is_equal(
@@ -420,7 +526,7 @@ def _pollen_is_equal(
         if _valid_metric(pollen, profile.target_time, weights):
             assert pollen is not None and pollen.value is not None
             values.append(pollen.value)
-    return len(values) > 1 and len(set(values)) == 1
+    return len(values) == len(candidates) and len(values) > 1 and len(set(values)) == 1
 
 
 def score_routes(
@@ -442,6 +548,17 @@ def score_routes(
         name: float(value)
         for name, value in zip(DIMENSION_NAMES, weights["goal_weights"][profile.goal])
     }
+    interest_results = {
+        route.route_id: _interest_score(
+            route,
+            bundle.environment.route_environment.get(route.route_id),
+            profile,
+            weights,
+        )
+        for route, _ in candidates
+    }
+    if any(result[2] for result in interest_results.values()):
+        _prioritize_core_interest(dimension_weights, weights)
     scored: list[ScoredRoute] = []
     for route, access_distance_m in candidates:
         environment_score, data_confidence, environment_summary, notes = _environment_dimension(
@@ -451,17 +568,18 @@ def score_routes(
             ignore_pollen,
         )
         access_score = _access_score(access_distance_m, profile)
-        interest_score, matched = _interest_score(route, profile)
+        interest_score, matched, _ = interest_results[route.route_id]
         dimensions: dict[str, float] = {
             "sport_match": _sport_score(route, profile),
             "route_quality": _quality_score(route, weights),
         }
-        if environment_score is not None:
-            dimensions["environment_health"] = environment_score
+        dimensions["environment_health"] = environment_score
         if access_score is not None:
             dimensions["access_convenience"] = access_score
         if interest_score is not None:
             dimensions["interest_service"] = interest_score
+        if access_distance_m is not None:
+            notes.append("起点接驳距离为 GCJ-02 直线估算，实际道路距离通常更长")
         active_weight = sum(float(dimension_weights[name]) for name in dimensions)
         base_score = (
             sum(value * float(dimension_weights[name]) for name, value in dimensions.items())
