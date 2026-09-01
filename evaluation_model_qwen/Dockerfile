@@ -12,6 +12,8 @@ RUN python -m pip install --no-cache-dir uv==0.11.26 \
 COPY evaluation_model_qwen /app/evaluation_model_qwen
 COPY xuhui_route_builder/data/web/route_catalog.json \
     /app/xuhui_route_builder/data/web/route_catalog.json
+COPY xuhui_route_builder/data/web/xuhui_routes.geojson \
+    /app/xuhui_route_builder/data/web/xuhui_routes.geojson
 
 RUN uv sync --directory /app/evaluation_model_qwen --frozen --no-dev \
     && mkdir -p /app/evaluation_model_qwen/runtime/cache \

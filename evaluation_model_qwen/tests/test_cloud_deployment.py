@@ -23,6 +23,15 @@ def test_qwen_container_uses_frozen_runtime_and_public_bind() -> None:
     assert ".env" not in dockerfile
 
 
+def test_qwen_container_includes_route_geometry_used_by_diversity_filter() -> None:
+    dockerfile = DOCKERFILE.read_text(encoding="utf-8")
+    dockerignore = DOCKERIGNORE.read_text(encoding="utf-8")
+
+    geometry_path = "xuhui_route_builder/data/web/xuhui_routes.geojson"
+    assert geometry_path in dockerfile
+    assert f"!{geometry_path}" in dockerignore
+
+
 def test_docker_context_excludes_credentials_and_local_runtime() -> None:
     dockerignore = DOCKERIGNORE.read_text(encoding="utf-8")
 

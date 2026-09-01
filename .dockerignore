@@ -6,6 +6,7 @@
 !xuhui_route_builder/data/
 !xuhui_route_builder/data/web/
 !xuhui_route_builder/data/web/route_catalog.json
+!xuhui_route_builder/data/web/xuhui_routes.geojson
 
 .git
 **/.env
