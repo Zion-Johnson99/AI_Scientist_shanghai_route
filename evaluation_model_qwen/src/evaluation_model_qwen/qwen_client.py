@@ -235,6 +235,7 @@ class QwenClient:
             decision = (
                 parsed if isinstance(parsed, QwenDecision) else QwenDecision.model_validate(parsed)
             )
+            decision = _enforce_approved_order(decision, top5)
             _validate_decision(decision, top5, profile)
             decision = _sanitize_decision(decision)
             decision = _ground_decision(decision, top5, profile, risk)
@@ -503,6 +504,17 @@ def _validate_decision(
     review_ids = [review.route_id for review in decision.route_reviews]
     if review_ids != ranked_ids:
         raise _InvalidResponseError("路线审核与排序路线未一一对应")
+
+
+def _enforce_approved_order(
+    decision: QwenDecision,
+    candidates: list[ScoredRoute],
+) -> QwenDecision:
+    if decision.review_status != "approved":
+        return decision
+    return decision.model_copy(
+        update={"ranked_route_ids": [candidate.route.route_id for candidate in candidates]}
+    )
 
 
 def _validate_adjusted_order(

@@ -330,6 +330,26 @@ def test_approved_review_cannot_change_python_order() -> None:
         )
 
 
+def test_approved_review_uses_python_order_when_ranked_ids_are_malformed() -> None:
+    parsed = decision(["route-1", "route-2"]).model_dump()
+    parsed["ranked_route_ids"] = ["hroute-1", "hroute-2"]
+    calls = FakeCompletions(completion(parsed))
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(calls),
+    )
+
+    result, _ = client.review(
+        [scored_route("route-1", 1), scored_route("route-2", 2)],
+        profile(),
+        RiskAssessment(status="ok", score_penalty=0),
+    )
+
+    assert result.ranked_route_ids == ["route-1", "route-2"]
+    assert [review.route_id for review in result.route_reviews] == ["route-1", "route-2"]
+
+
 def test_adjusted_review_may_reorder_python_candidates() -> None:
     first = scored_route("route-1", 1).model_copy(update={"matched_preferences": []})
     second = scored_route("route-2", 2)
