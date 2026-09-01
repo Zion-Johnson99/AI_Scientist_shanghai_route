@@ -1,0 +1,100 @@
+name: Deploy Xuhui Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: environment-refresh
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build Pages artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      AMAP_JS_API_KEY: ${{ secrets.AMAP_JS_API_KEY }}
+      AMAP_JS_SECURITY_CODE: ${{ secrets.AMAP_JS_SECURITY_CODE }}
+      TENCENT_SEARCH_KEY: ${{ secrets.TENCENT_SEARCH_KEY }}
+      RECOMMENDATION_API_BASE_URL: ${{ vars.RECOMMENDATION_API_BASE_URL }}
+      ENVIRONMENT_DASHBOARD_URL: ${{ vars.ENVIRONMENT_DASHBOARD_URL }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Validate online configuration
+        shell: bash
+        run: |
+          if [[ "$RECOMMENDATION_API_BASE_URL" != https://* ]]; then
+            echo "RECOMMENDATION_API_BASE_URL must be configured as an HTTPS repository variable" >&2
+            exit 1
+          fi
+          if [[ "$ENVIRONMENT_DASHBOARD_URL" != https://* ]]; then
+            echo "ENVIRONMENT_DASHBOARD_URL must be configured as an HTTPS repository variable" >&2
+            exit 1
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install frozen route builder
+        run: |
+          python -m pip install --disable-pip-version-check uv==0.11.26
+          uv sync --directory xuhui_route_builder --frozen
+
+      - name: Generate browser map configuration
+        run: >-
+          uv run --directory xuhui_route_builder --frozen
+          python -m xuhui_route_builder.web_map_config
+          --from-environment
+          --web-root "$GITHUB_WORKSPACE/xuhui_route_builder/web"
+
+      - name: Verify generated browser map configuration
+        shell: bash
+        run: |
+          test -s xuhui_route_builder/web/local-amap-config.js
+          test -s xuhui_route_builder/web/local-tencent-config.js
+          if grep -Eq '127\.0\.0\.1|replace-with-your-' \
+            xuhui_route_builder/web/local-amap-config.js \
+            xuhui_route_builder/web/local-tencent-config.js; then
+            echo "Generated browser configuration contains a local or placeholder value" >&2
+            exit 1
+          fi
+
+      - name: Build Pages artifact tree
+        shell: bash
+        run: |
+          test -f xuhui_route_builder/web/index.html
+          test -f xuhui_route_builder/pages-index.html
+          test -f xuhui_route_builder/data/web/environment_dashboard.json
+          mkdir -p pages-artifact/web pages-artifact/data/web
+          cp xuhui_route_builder/pages-index.html pages-artifact/index.html
+          cp -R xuhui_route_builder/web/. pages-artifact/web/
+          cp -R xuhui_route_builder/data/web/. pages-artifact/data/web/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: pages-artifact
+
+  deploy:
+    name: Deploy Pages artifact
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
