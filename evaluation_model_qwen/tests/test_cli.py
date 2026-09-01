@@ -15,7 +15,7 @@ class DegradedClient:
     def api_check(self) -> ApiAudit:
         return ApiAudit(
             status="degraded",
-            model="qwen3.7-plus",
+            model="qwen3.8-flash",
             error_type="authentication",
             error_message="千问身份验证失败",
         )

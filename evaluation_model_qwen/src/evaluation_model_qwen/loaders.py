@@ -13,6 +13,7 @@ from urllib.request import Request, urlopen
 from pydantic import BaseModel, ValidationError
 
 from .models import (
+    Coordinate,
     DataBundle,
     EnvironmentMetric,
     EnvironmentSnapshot,
@@ -42,12 +43,16 @@ class LoaderError(ValueError):
 def load_data(
     project_root: Path | None = None,
     route_catalog_path: Path | None = None,
+    route_geometry_path: Path | None = None,
     environment_path: Path | None = None,
 ) -> DataBundle:
     """Load and validate the route catalog and environment dashboard."""
     root = project_root or _DEFAULT_PROJECT_ROOT
     data_dir = root.parent / "xuhui_route_builder" / "data" / "web"
     route_path = route_catalog_path or data_dir / "route_catalog.json"
+    geometry_path = route_geometry_path
+    if geometry_path is None and route_catalog_path is None:
+        geometry_path = data_dir / "xuhui_routes.geojson"
     dashboard_path = environment_path or data_dir / "environment_dashboard.json"
     if environment_path is None and os.getenv(_ENVIRONMENT_URL_ENV):
         dashboard_path = _remote_environment_path(
@@ -55,9 +60,18 @@ def load_data(
             root / "runtime" / "cache" / "environment_dashboard.json",
         )
 
-    routes = _load_routes(route_path)
+    geometries = _load_route_geometries(geometry_path) if geometry_path is not None else {}
+    routes = _load_routes(route_path, geometries)
     environment = _load_environment(dashboard_path)
     route_ids = {route.route_id for route in routes}
+    if geometry_path is not None and route_ids != set(geometries):
+        missing = sorted(route_ids - set(geometries))
+        unexpected = sorted(set(geometries) - route_ids)
+        raise LoaderError(
+            f"{route_path} route_catalog[].route_id and "
+            f"{geometry_path} features[].properties.route_id do not match: "
+            f"missing_in_geometry={missing}, unexpected_in_geometry={unexpected}"
+        )
     environment_ids = set(environment.route_environment)
     if route_ids != environment_ids:
         missing = sorted(route_ids - environment_ids)
@@ -139,7 +153,7 @@ def _download_environment(url: str, destination: Path) -> None:
         raise
 
 
-def _load_routes(path: Path) -> list[RouteRecord]:
+def _load_routes(path: Path, geometries: dict[str, list[Coordinate]]) -> list[RouteRecord]:
     raw = _read_json(path)
     values = _array(raw, path, "route_catalog")
 
@@ -154,7 +168,7 @@ def _load_routes(path: Path) -> list[RouteRecord]:
         if route_id in seen_ids:
             raise LoaderError(f"{path} {context}.route_id: duplicate value {route_id!r}")
         seen_ids.add(route_id)
-        routes.append(_parse_route(item, path, context))
+        routes.append(_parse_route(item, path, context, geometries.get(route_id, [])))
 
     if len(routes) != EXPECTED_ROUTE_COUNT:
         raise LoaderError(
@@ -163,7 +177,12 @@ def _load_routes(path: Path) -> list[RouteRecord]:
     return routes
 
 
-def _parse_route(item: dict[str, Any], path: Path, context: str) -> RouteRecord:
+def _parse_route(
+    item: dict[str, Any],
+    path: Path,
+    context: str,
+    geometry_gcj02: list[Coordinate],
+) -> RouteRecord:
     start = _parse_location(
         _required(item, "start_location", path, context), path, f"{context}.start_location"
     )
@@ -214,8 +233,52 @@ def _parse_route(item: dict[str, Any], path: Path, context: str) -> RouteRecord:
         nearby_pois=pois,
         route_inside_ratio=item.get("route_inside_ratio"),
         snap_ratio=item.get("snap_ratio"),
+        geometry_gcj02=geometry_gcj02,
     )
     return _model(RouteRecord, selected, path, context)
+
+
+def _load_route_geometries(path: Path) -> dict[str, list[Coordinate]]:
+    document = _mapping(_read_json(path), path, "route_geometry")
+    features = _array(_required(document, "features", path, "route_geometry"), path, "features")
+    geometries: dict[str, list[Coordinate]] = {}
+    for index, raw_feature in enumerate(features):
+        context = f"features[{index}]"
+        feature = _mapping(raw_feature, path, context)
+        properties = _child_mapping(feature, "properties", path, context)
+        route_id = _required(properties, "route_id", path, f"{context}.properties")
+        if not isinstance(route_id, str):
+            raise LoaderError(f"{path} {context}.properties.route_id: expected a string")
+        if route_id in geometries:
+            raise LoaderError(f"{path} {context}.properties.route_id: duplicate value {route_id!r}")
+        geometry = _child_mapping(feature, "geometry", path, context)
+        if geometry.get("type") != "LineString":
+            raise LoaderError(f"{path} {context}.geometry.type: expected 'LineString'")
+        coordinates = _array(
+            _required(geometry, "coordinates", path, f"{context}.geometry"),
+            path,
+            f"{context}.geometry.coordinates",
+        )
+        points: list[Coordinate] = []
+        for point_index, raw_point in enumerate(coordinates):
+            point_context = f"{context}.geometry.coordinates[{point_index}]"
+            if not isinstance(raw_point, list):
+                raise LoaderError(f"{path} {point_context}: expected [longitude, latitude]")
+            point_values = cast(list[Any], raw_point)
+            if len(point_values) < 2:
+                raise LoaderError(f"{path} {point_context}: expected [longitude, latitude]")
+            points.append(
+                _model(
+                    Coordinate,
+                    {"lng_gcj02": point_values[0], "lat_gcj02": point_values[1]},
+                    path,
+                    point_context,
+                )
+            )
+        if len(points) < 2:
+            raise LoaderError(f"{path} {context}.geometry.coordinates: expected at least 2 points")
+        geometries[route_id] = points
+    return geometries
 
 
 def _parse_location(value: Any, path: Path, context: str) -> RouteLocation:

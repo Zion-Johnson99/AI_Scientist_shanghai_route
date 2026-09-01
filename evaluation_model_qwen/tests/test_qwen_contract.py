@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 from typing import Any, Literal
 
@@ -225,7 +225,7 @@ def test_api_check_uses_non_thinking_mode_and_returns_audit() -> None:
     assert audit.request_id == "req-check"
     assert audit.input_tokens == 123
     assert audit.output_tokens == 45
-    assert calls.calls[0]["model"] == "qwen3.7-plus"
+    assert calls.calls[0]["model"] == "qwen3.8-flash"
     assert calls.calls[0]["temperature"] == 0.2
     assert calls.calls[0]["max_completion_tokens"] == 1200
     assert calls.calls[0]["extra_body"] == {"enable_thinking": False}
@@ -297,6 +297,15 @@ def test_review_uses_strict_schema_and_only_sends_safe_summary() -> None:
         "confidence": "medium",
         "reliability": 0.72,
     }
+    assert sent["candidates"][0]["verified_facts"] == [
+        "距离符合目标范围",
+        "路线数据支持滨江偏好",
+        "PM2.5 在候选中较低",
+    ]
+    assert result.route_reviews[0].personalized_fit_reason == (
+        "全程约5.001公里，符合目标距离范围；路线数据支持滨江偏好。"
+    )
+    assert result.route_reviews[0].advantages == sent["candidates"][0]["verified_facts"]
     assert "start_location" not in sent_text
     assert "end_location" not in sent_text
     assert "environment_summary" not in sent_text
@@ -322,6 +331,8 @@ def test_approved_review_cannot_change_python_order() -> None:
 
 
 def test_adjusted_review_may_reorder_python_candidates() -> None:
+    first = scored_route("route-1", 1).model_copy(update={"matched_preferences": []})
+    second = scored_route("route-2", 2)
     calls = FakeCompletions(completion(decision(["route-2", "route-1"], "adjusted")))
     client = QwenClient(
         api_key="secret-key",
@@ -330,12 +341,31 @@ def test_adjusted_review_may_reorder_python_candidates() -> None:
     )
 
     result, _ = client.review(
-        [scored_route("route-1", 1), scored_route("route-2", 2)],
+        [first, second],
         profile(),
         RiskAssessment(status="ok", score_penalty=0),
     )
 
     assert result.ranked_route_ids == ["route-2", "route-1"]
+
+
+def test_adjusted_review_rejects_promotion_without_preference_evidence() -> None:
+    unsupported = scored_route("route-2", 2).model_copy(update={"matched_preferences": []})
+    calls = FakeCompletions(completion(decision(["route-2", "route-1"], "adjusted")))
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(calls),
+    )
+
+    with pytest.raises(QwenResponseError) as exc_info:
+        client.review(
+            [scored_route("route-1", 1), unsupported],
+            profile(),
+            RiskAssessment(status="ok", score_penalty=0),
+        )
+
+    assert exc_info.value.audit.error_type == "invalid_response"
 
 
 def test_untrusted_text_and_model_output_are_sanitized() -> None:
@@ -607,6 +637,7 @@ def test_intent_uses_independent_strict_schema_and_safe_recent_history() -> None
     assert audit.request_id == "req-intent"
     assert audit.prompt_version == "qwen-route-intent-v2"
     assert calls.calls[0]["response_format"] is IntentResponse
+    assert calls.calls[0]["model"] == "qwen3.8-flash"
     assert calls.calls[0]["extra_body"] == {"enable_thinking": False}
     assert result.preference_patch.route_mode == "bike"
     assert "本轮需求" in calls.calls[0]["messages"][0]["content"]
@@ -686,6 +717,78 @@ def test_intent_service_discards_stale_model_target_time() -> None:
     assert result.preference_patch.route_mode == "walk"
 
 
+def test_intent_service_enforces_loop_waterfront_scenery_and_free_text() -> None:
+    request = intent_request().model_copy(
+        update={"message": "周末骑行 10 公里左右，想看滨江风景，最后回到出发点"}
+    )
+    incomplete = intent_response().model_copy(
+        update={
+            "reply": "会为你整理合适路线。",
+            "preference_patch": IntentPreferencePatch(route_mode="bike"),
+        }
+    )
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(FakeCompletions(completion(incomplete))),
+    )
+
+    result = interpret_intent_service(request, qwen_client=client)
+
+    assert result.preference_patch.route_shape == "strict_loop"
+    assert result.preference_patch.interests == ["waterfront"]
+    assert result.preference_patch.goal == "scenery"
+    assert result.preference_patch.free_text == request.message
+    assert "滨江" in result.reply
+    assert "回到出发点" in result.reply
+
+
+def test_intent_service_rejects_target_time_beyond_next_24_hours() -> None:
+    future = datetime.now(timezone.utc) + timedelta(hours=25)
+    out_of_range = intent_response().model_copy(
+        update={
+            "preference_patch": IntentPreferencePatch(
+                target_time=future,
+                distance_min_m=4000,
+                target_distance_m=5000,
+                distance_max_m=6000,
+            )
+        }
+    )
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(FakeCompletions(completion(out_of_range))),
+    )
+
+    result = interpret_intent_service(intent_request(), qwen_client=client)
+
+    assert result.ready is False
+    assert result.missing_fields == ["target_time"]
+    assert result.preference_patch.target_time is None
+    assert "未来 24 小时" in result.reply
+
+
+def test_intent_service_rejects_out_of_range_time_already_in_context() -> None:
+    future = datetime.now(timezone.utc) + timedelta(hours=25)
+    request = intent_request()
+    preferences = request.context.preferences.model_copy(update={"target_time": future})
+    request = request.model_copy(
+        update={"context": request.context.model_copy(update={"preferences": preferences})}
+    )
+    client = QwenClient(
+        api_key="secret-key",
+        base_url="https://example.invalid/v1",
+        client=fake_client(FakeCompletions(completion(intent_response()))),
+    )
+
+    result = interpret_intent_service(request, qwen_client=client)
+
+    assert result.ready is False
+    assert result.missing_fields == ["target_time"]
+    assert "未来 24 小时" in result.reply
+
+
 def test_intent_service_keeps_only_one_search_scope() -> None:
     conflicting = intent_response().model_copy(
         update={
@@ -750,7 +853,7 @@ def test_intent_service_degrades_without_logging_conversation(
         result = interpret_intent_service(request, qwen_client=client)
 
     assert result.ready is False
-    assert result.preference_patch == IntentPreferencePatch(goal="relax")
+    assert result.preference_patch == IntentPreferencePatch(goal="relax", free_text=request.message)
     assert result.missing_fields == ["distance"]
     assert "切换到快捷选择" in result.reply
     assert expected_type in caplog.text
@@ -771,5 +874,5 @@ def test_intent_service_degrades_on_invalid_structured_output() -> None:
     result = interpret_intent_service(request, qwen_client=client)
 
     assert result.ready is False
-    assert result.preference_patch == IntentPreferencePatch(goal="relax")
+    assert result.preference_patch == IntentPreferencePatch(goal="relax", free_text=request.message)
     assert result.missing_fields == ["distance"]

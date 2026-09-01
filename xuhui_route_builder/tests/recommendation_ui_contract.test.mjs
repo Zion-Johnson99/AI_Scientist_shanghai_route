@@ -140,6 +140,15 @@ test("推荐结果模型覆盖加载、暂停、无候选、降级和正常状�
   assert.equal(buildRecommendationViewModel({ view: "error", message: "服务不可用" }).kind, "error");
 });
 
+test("推荐结果展示未满足的显式偏好", () => {
+  const result = resultFixture("ok");
+  result.profile_conflicts = ["当前条件下没有已核实的厕所路线，已保留其他条件较优的结果。"];
+
+  const model = buildRecommendationViewModel(result);
+
+  assert.match(model.notice, /没有已核实的厕所/);
+});
+
 test("结果保持接口顺序，选中备选时首选位置不变", () => {
   const model = buildRecommendationViewModel(resultFixture("ok"), "route-2");
 
@@ -913,6 +922,7 @@ test("千问 ready 后自动推荐并在对话内最多展示三张专用无图�
   try {
     const container = globalThis.document.createElement("div");
     let recommendationCount = 0;
+    let recommendationProfile = null;
     const controller = createRecommendationUI({
       container,
       questionnaire,
@@ -923,8 +933,9 @@ test("千问 ready 后自动推荐并在对话内最多展示三张专用无图�
         ready: true,
         preference_patch: { free_text: "安静滨江" },
       }),
-      onRecommend: async () => {
+      onRecommend: async (payload) => {
         recommendationCount += 1;
+        recommendationProfile = payload;
         return resultFixture("ok");
       },
     });
@@ -940,6 +951,7 @@ test("千问 ready 后自动推荐并在对话内最多展示三张专用无图�
     assert.equal(findAllByClass(container, "recommendation-chat__media").length, 3);
     assert.equal(container.textContent.includes("开始推荐"), false);
     assert.equal(findAllByClass(container, "route-card").length, 0, "聊天卡应与普通推荐卡区分");
+    assert.equal(recommendationProfile.free_text, "安静滨江");
   } finally {
     globalThis.document = previousDocument;
   }
@@ -1074,6 +1086,140 @@ test("千问 route_mode 意图补丁自动切换运动方式及默认距离", as
 
     assert.equal(controller.getAnswers().route_mode, "run");
     assert.equal(controller.getAnswers().distance_range, "run_mid");
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("千问明确距离随 route_mode 同步到顶部筛选与最终请求", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const intentQuestionnaire = {
+      ...questionnaire,
+      route_modes: [...questionnaire.route_modes, { value: "bike", label: "骑行" }],
+      distance_ranges: {
+        ...questionnaire.distance_ranges,
+        bike: [
+          { value: "bike_short", label: "5–10 公里", distance_min_m: 5000, target_distance_m: 8000, distance_max_m: 10000 },
+          { value: "bike_ten", label: "8–12 公里", distance_min_m: 8000, target_distance_m: 10000, distance_max_m: 12000 },
+        ],
+      },
+      interests: [...questionnaire.interests, { value: "waterfront", label: "滨江" }],
+      route_shapes: [...questionnaire.route_shapes, { value: "loop", label: "环线" }],
+    };
+    const message = "周末骑行 10 公里左右，想看滨江风景，最后回到出发点";
+    let recommendationProfile = null;
+    const container = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({
+      container,
+      questionnaire: intentQuestionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async () => ({
+        reply: "条件已整理。",
+        ready: true,
+        preference_patch: {
+          route_mode: "bike",
+          distance_min_m: 8000,
+          target_distance_m: 10000,
+          distance_max_m: 12000,
+          target_time: "2026-09-06T01:00:00.000Z",
+          route_shape: "loop",
+          interests: ["waterfront"],
+        },
+      }),
+      onRecommend: async (payload) => {
+        recommendationProfile = payload;
+        return resultFixture("ok");
+      },
+    });
+    controller.openChat();
+    findByAttribute(container, "aria-label", "描述路线需求").listeners.input({ target: { value: message } });
+
+    await findByClass(container, "recommendation-chat__composer").listeners.submit({ preventDefault() {} });
+
+    const answers = controller.getAnswers();
+    assert.equal(answers.route_mode, "bike");
+    assert.equal(answers.distance_range, "bike_ten");
+    assert.equal(answers.target_time, "custom");
+    assert.equal(answers.route_shape, "loop");
+    assert.deepEqual(answers.interests, ["waterfront"]);
+    assert.equal(recommendationProfile.distance_min_m, 8000);
+    assert.equal(recommendationProfile.target_distance_m, 10000);
+    assert.equal(recommendationProfile.distance_max_m, 12000);
+    assert.equal(recommendationProfile.target_time, "2026-09-06T01:00:00.000Z");
+    assert.equal(recommendationProfile.route_shape, "loop");
+    assert.deepEqual(recommendationProfile.interests, ["waterfront"]);
+    assert.equal(recommendationProfile.free_text, message, "千问未返回 free_text 时应保留原始聊天需求");
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("后续片区意图取代先前半径且不形成 AND 过约束", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    let turn = 0;
+    let recommendationProfile = null;
+    const container = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async () => {
+        turn += 1;
+        return turn === 1
+          ? { reply: "已设置附近范围。", ready: false, preference_patch: { search_radius_m: 5000 } }
+          : { reply: "已改为徐汇滨江。", ready: true, preference_patch: { area_ids: ["west_bund"] } };
+      },
+      onRecommend: async (payload) => {
+        recommendationProfile = payload;
+        return resultFixture("ok");
+      },
+    });
+    controller.openChat();
+    findByAttribute(container, "aria-label", "描述路线需求").listeners.input({ target: { value: "先看 5 公里附近" } });
+    await findByClass(container, "recommendation-chat__composer").listeners.submit({ preventDefault() {} });
+    findByAttribute(container, "aria-label", "描述路线需求").listeners.input({ target: { value: "改成徐汇滨江" } });
+    await findByClass(container, "recommendation-chat__composer").listeners.submit({ preventDefault() {} });
+
+    assert.equal(controller.getAnswers().search_scope, "area");
+    assert.equal(controller.getAnswers().area_id, "west_bund");
+    assert.equal(recommendationProfile.search_radius_m, null);
+    assert.deepEqual(recommendationProfile.area_ids, ["west_bund"]);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("意图响应新字段不透传到下轮严格 schema 上下文", async () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const requests = [];
+    const container = globalThis.document.createElement("div");
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      onInterpretIntent: async (request) => {
+        requests.push(request);
+        return { reply: "请继续补充。", ready: false, preference_patch: { future_signal: "new-contract-field" } };
+      },
+    });
+    controller.openChat();
+    for (const message of ["想散步", "现在出发"]) {
+      findByAttribute(container, "aria-label", "描述路线需求").listeners.input({ target: { value: message } });
+      await findByClass(container, "recommendation-chat__composer").listeners.submit({ preventDefault() {} });
+    }
+
+    assert.equal(requests.length, 2);
+    assert.equal(requests[1].context.preferences.future_signal, undefined);
+    assert.equal(requests[1].context.preferences.free_text, "想散步");
   } finally {
     globalThis.document = previousDocument;
   }

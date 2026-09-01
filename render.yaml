@@ -15,7 +15,7 @@ services:
       - key: DASHSCOPE_BASE_URL
         sync: false
       - key: QWEN_MODEL
-        value: qwen3.7-plus
+        value: qwen3.8-flash
       - key: QWEN_TIMEOUT_SECONDS
         value: "30"
       - key: EVALUATION_MODEL_QWEN_OFFLINE

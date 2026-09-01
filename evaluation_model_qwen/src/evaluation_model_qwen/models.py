@@ -100,6 +100,7 @@ class IntentPreferencePatch(StrictModel):
     goal: Goal | None = None
     route_shape: RouteShapePreference | None = None
     interests: list[Interest] | None = Field(default=None, max_length=6)
+    free_text: str | None = Field(default=None, max_length=500)
 
     @model_validator(mode="after")
     def validate_distance_order(self) -> IntentPreferencePatch:
@@ -228,6 +229,9 @@ class RouteRecord(StrictModel):
     geometry_status: str
     route_inside_ratio: float | None = None
     snap_ratio: float | None = None
+    geometry_gcj02: list[Coordinate] = Field(
+        default_factory=lambda: list[Coordinate](), exclude=True
+    )
 
 
 class EnvironmentMetric(StrictModel):

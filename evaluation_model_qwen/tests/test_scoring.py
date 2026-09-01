@@ -320,7 +320,24 @@ def test_aqi_and_weather_thresholds_are_inclusive() -> None:
     assert paused.status == "paused"
 
 
-def test_environment_reliability_shrinks_toward_50_and_missing_weights_renormalize() -> None:
+def test_heat_sensitivity_uses_existing_real_feel_warning_threshold_as_pause_threshold() -> None:
+    weather = timed(
+        NOW,
+        precipitation_mm=0,
+        real_feel_temperature_c=WEIGHTS["risk_thresholds"]["warning_real_feel_c"],
+        wind_gust_kmh=0,
+    )
+    data = bundle([route("route")], current_weather=weather)
+
+    regular = evaluate_risk(data, profile(), WEIGHTS)
+    heat_sensitive = evaluate_risk(data, profile(sensitivities=["heat"]), WEIGHTS)
+
+    assert regular.status == "warning"
+    assert heat_sensitive.status == "paused"
+    assert "体感温度达到敏感人群暂停阈值" in heat_sensitive.reasons
+
+
+def test_environment_reliability_shrinks_toward_50_and_missing_metrics_stay_neutral() -> None:
     route_record = route("route")
     reliable = environment("route", pm=metric(0, business_time=NOW.isoformat()))
     unreliable = environment(
@@ -350,9 +367,231 @@ def test_environment_reliability_shrinks_toward_50_and_missing_weights_renormali
         WEIGHTS,
     )[0]
 
-    assert reliable_score.dimension_scores["environment_health"] == pytest.approx(100)
-    assert unreliable_score.dimension_scores["environment_health"] == pytest.approx(65.75)
-    assert unreliable_score.data_confidence == pytest.approx(0.315)
+    assert reliable_score.dimension_scores["environment_health"] == pytest.approx(72.5)
+    assert reliable_score.data_confidence == pytest.approx(0.45)
+    assert unreliable_score.dimension_scores["environment_health"] == pytest.approx(57.0875)
+    assert unreliable_score.data_confidence == pytest.approx(0.14175)
+
+
+def test_missing_environment_is_neutral_and_loses_confidence_tie_break() -> None:
+    known = environment("known", pm=metric(91, business_time=NOW.isoformat()))
+    known.noise = metric(50)
+    known.pollen_daily = []
+    routes = [route("missing"), route("known")]
+
+    scored = score_routes(
+        bundle(routes, environments={"known": known}),
+        profile(),
+        evaluate_risk(bundle(routes), profile(), WEIGHTS),
+        WEIGHTS,
+    )
+
+    assert [item.route.route_id for item in scored] == ["known", "missing"]
+    assert scored[0].base_score == pytest.approx(scored[1].base_score)
+    assert scored[1].dimension_scores["environment_health"] == pytest.approx(50)
+    assert scored[1].data_confidence == 0
+    assert "路线环境数据缺失，环境维度按中性分计入" in scored[1].risk_notes
+
+
+def test_missing_environment_metric_does_not_gain_from_weight_renormalization() -> None:
+    partial = environment("partial", pm=metric(0, business_time=NOW.isoformat()))
+    partial.noise = metric(None, status="no_data")
+    partial.pollen_daily = []
+    complete = environment("complete", pm=metric(0, business_time=NOW.isoformat()))
+    complete.noise = metric(50)
+    complete.pollen_daily = []
+    routes = [route("partial"), route("complete")]
+
+    scored = score_routes(
+        bundle(routes, environments={"partial": partial, "complete": complete}),
+        profile(),
+        evaluate_risk(bundle(routes), profile(), WEIGHTS),
+        WEIGHTS,
+    )
+    by_id = {item.route.route_id: item for item in scored}
+
+    assert by_id["partial"].dimension_scores["environment_health"] == pytest.approx(
+        by_id["complete"].dimension_scores["environment_health"]
+    )
+    assert by_id["partial"].data_confidence < by_id["complete"].data_confidence
+
+
+@pytest.mark.parametrize(
+    "identity_fields",
+    [
+        {"popular_area_ids": ["west_bund"], "region_zone": "龙华", "route_name": "测试路线"},
+        {"popular_area_ids": [], "region_zone": "徐汇滨江—龙华", "route_name": "测试路线"},
+        {"popular_area_ids": [], "region_zone": "龙华", "route_name": "西岸龙腾大道骑行线"},
+    ],
+)
+def test_waterfront_matches_trusted_route_identity_fields(
+    identity_fields: dict[str, object],
+) -> None:
+    record = route("waterfront", tags=[], feature_tags=[], preference_hits=[], **identity_fields)
+
+    scored = score_routes(
+        bundle([record]),
+        profile(interests=["waterfront"]),
+        evaluate_risk(bundle([record]), profile(), WEIGHTS),
+        WEIGHTS,
+    )[0]
+
+    assert scored.matched_preferences == ["waterfront"]
+    assert scored.dimension_scores["interest_service"] == 100
+
+
+def test_false_generic_waterfront_tag_is_rejected_and_real_waterfront_gets_priority() -> None:
+    false_tag = route(
+        "XH_BIKE_0063",
+        route_name="漕河泾—桂江外围骑行短环",
+        region_zone="漕河泾—桂江绿廊",
+        popular_area_ids=["caohejing", "kangjian"],
+        tags=["骑行", "滨江", "商业"],
+    )
+    waterfront = route(
+        "waterfront",
+        route_name="衡复—西岸—龙华骑行中环",
+        region_zone="衡复风貌区—徐汇滨江—龙华",
+        popular_area_ids=["west_bund", "longhua"],
+        tags=[],
+        distance_m=1200,
+        confidence="low",
+        route_inside_ratio=0.5,
+        snap_ratio=0.5,
+    )
+    false_environment = environment("XH_BIKE_0063", pm=metric(0, business_time=NOW.isoformat()))
+    false_environment.noise = metric(0)
+    waterfront_environment = environment(
+        "waterfront", pm=metric(150, business_time=NOW.isoformat())
+    )
+    waterfront_environment.noise = metric(100)
+    routes = [false_tag, waterfront]
+
+    scored = score_routes(
+        bundle(
+            routes,
+            environments={
+                "XH_BIKE_0063": false_environment,
+                "waterfront": waterfront_environment,
+            },
+        ),
+        profile(interests=["waterfront"]),
+        evaluate_risk(bundle(routes), profile(), WEIGHTS),
+        WEIGHTS,
+    )
+
+    assert scored[0].route.route_id == "waterfront"
+    assert scored[0].matched_preferences == ["waterfront"]
+    assert scored[1].matched_preferences == []
+
+
+def test_park_uses_canonical_area_evidence_and_rejects_generic_tag() -> None:
+    false_tag = route(
+        "false-park",
+        route_name="普通道路环线",
+        region_zone="漕河泾",
+        popular_area_ids=["caohejing"],
+        tags=["公园"],
+    )
+    park = route(
+        "park",
+        route_name="植物园骑行环线",
+        region_zone="上海植物园及周边",
+        popular_area_ids=["shanghai_botanical_garden"],
+        tags=[],
+    )
+
+    scored = score_routes(
+        bundle([false_tag, park]),
+        profile(interests=["park"]),
+        evaluate_risk(bundle([false_tag, park]), profile(), WEIGHTS),
+        WEIGHTS,
+    )
+    by_id = {item.route.route_id: item for item in scored}
+
+    assert by_id["park"].matched_preferences == ["park"]
+    assert by_id["false-park"].matched_preferences == []
+
+
+def test_quiet_interest_uses_continuous_noise_score_without_claiming_explicit_match() -> None:
+    quiet_environment = environment("quieter")
+    quiet_environment.noise = metric(20, scenarios={"weekday_offpeak": 20})
+    loud_environment = environment("louder")
+    loud_environment.noise = metric(80, scenarios={"weekday_offpeak": 80})
+    routes = [route("louder", tags=[]), route("quieter", tags=[])]
+
+    scored = score_routes(
+        bundle(
+            routes,
+            environments={"quieter": quiet_environment, "louder": loud_environment},
+        ),
+        profile(interests=["quiet"]),
+        evaluate_risk(bundle(routes), profile(), WEIGHTS),
+        WEIGHTS,
+    )
+    by_id = {item.route.route_id: item for item in scored}
+
+    assert scored[0].route.route_id == "quieter"
+    assert (
+        by_id["quieter"].dimension_scores["interest_service"]
+        > by_id["louder"].dimension_scores["interest_service"]
+    )
+    assert by_id["quieter"].matched_preferences == []
+    assert by_id["louder"].matched_preferences == []
+
+
+def test_explicit_facility_match_ranks_before_unmatched_route() -> None:
+    coffee = route(
+        "coffee",
+        preference_hits=["coffee"],
+        nearby_pois=[{"poi_type": "coffee", "poi_name": "咖啡店", "distance_m": 20}],
+        distance_m=1200,
+        confidence="low",
+        route_inside_ratio=0,
+        snap_ratio=0,
+    )
+    healthy = route("healthy", preference_hits=[], nearby_pois=[])
+    coffee_environment = environment("coffee", pm=metric(150, business_time=NOW.isoformat()))
+    coffee_environment.noise = metric(100)
+    healthy_environment = environment("healthy", pm=metric(0, business_time=NOW.isoformat()))
+    healthy_environment.noise = metric(0)
+    routes = [coffee, healthy]
+
+    scored = score_routes(
+        bundle(
+            routes,
+            environments={"coffee": coffee_environment, "healthy": healthy_environment},
+        ),
+        profile(interests=["coffee"]),
+        evaluate_risk(bundle(routes), profile(), WEIGHTS),
+        WEIGHTS,
+    )
+
+    assert scored[0].route.route_id == "coffee"
+    assert scored[0].matched_preferences == ["coffee"]
+    assert scored[1].route.route_id == "healthy"
+
+
+def test_access_distance_is_labeled_as_gcj02_straight_line_estimate() -> None:
+    scored = score_routes(
+        bundle([route("route")]),
+        profile(origin=Coordinate(lng_gcj02=121.44, lat_gcj02=31.18)),
+        evaluate_risk(bundle([route("route")]), profile(), WEIGHTS),
+        WEIGHTS,
+    )[0]
+
+    assert "起点接驳距离为 GCJ-02 直线估算，实际道路距离通常更长" in scored.risk_notes
+
+
+def test_area_filter_without_origin_does_not_fabricate_access_score() -> None:
+    scored = score_routes(
+        bundle([route("route")]),
+        profile(area_ids=["west_bund"]),
+        evaluate_risk(bundle([route("route")]), profile(), WEIGHTS),
+        WEIGHTS,
+    )[0]
+
+    assert "access_convenience" not in scored.dimension_scores
 
 
 def test_pm25_requires_two_hour_alignment_pollen_uses_date_and_noise_uses_scenario() -> None:
@@ -472,3 +711,21 @@ def test_equal_pollen_values_do_not_change_rank_and_order_is_stable() -> None:
     assert all(
         "花粉在候选路线间为全区同值" not in note for item in first for note in item.risk_notes
     )
+
+
+def test_pollen_is_only_removed_when_every_candidate_has_the_same_value() -> None:
+    routes = [route(route_id) for route_id in ["a", "b", "missing"]]
+    environments = {item.route_id: environment(item.route_id) for item in routes}
+    environments["a"].pollen_daily[0].value = 60
+    environments["b"].pollen_daily[0].value = 60
+    environments["missing"].pollen_daily = []
+
+    data = bundle(routes, environments=environments)
+    risk = evaluate_risk(data, profile(), WEIGHTS)
+    scored = score_routes(data, profile(), risk, WEIGHTS)
+    by_id = {item.route.route_id: item for item in scored}
+
+    assert "pollen" in by_id["a"].environment_summary
+    assert "pollen" in by_id["b"].environment_summary
+    assert "花粉数据缺失或状态不可用，按中性分计入" in by_id["missing"].risk_notes
+    assert "花粉在候选路线间为全区同值，仅作全局提醒，未参与排序" not in risk.reasons
