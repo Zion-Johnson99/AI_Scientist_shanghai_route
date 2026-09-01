@@ -1,11 +1,11 @@
 import {
   loadRouteData,
   startEnvironmentDashboardPolling,
-} from "./data-loader.js?v=20260831-ui-35";
+} from "./data-loader.js?v=20260901-environment-2";
 import {
   buildRouteExposureModel,
   createEnvironmentPanel,
-} from "./environment-ui.js?v=20260901-runtime-1";
+} from "./environment-ui.js?v=20260901-environment-2";
 import {
   beginInlineNavigation,
   clearInlineNavigation,
@@ -40,12 +40,12 @@ import {
   buildInitialRecommendationResult,
   createProfileDialog,
   createRecommendationUI,
-} from "./recommendation-ui.js?v=20260831-ui-35";
-import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260831-ui-35";
+} from "./recommendation-ui.js?v=20260901-environment-2";
+import { buildRouteDockSource, createRouteDock } from "./route-dock.js?v=20260901-environment-2";
 import {
   isMapLocationSelectionAllowed,
   renderRoutePlanner,
-} from "./route-ui.js?v=20260831-ui-35";
+} from "./route-ui.js?v=20260901-environment-2";
 
 const RECOMMENDATION_MAP_CARDS_ENABLED = false;
 
@@ -173,6 +173,7 @@ async function bootstrap() {
     environmentPanel.destroy();
     environmentPanel = createEnvironmentPanel(environmentContainer, nextDashboard);
     environmentPanel.setOpen(wasOpen);
+    recommendationUI?.refreshEnvironment();
   });
   let activeNavigation = null;
   let recommendationFeatures = [];
@@ -308,6 +309,7 @@ async function bootstrap() {
     questionnaire,
     profile: healthProfile,
     location: currentLocation,
+    getRouteEnvironment: (routeId) => buildRouteExposureModel(data.environmentDashboard, routeId),
     onRecommend: (profile) => recommendationApi.recommend(profile),
     onInterpretIntent: (request) => recommendationApi.interpretIntent(request),
     onReloadQuestionnaire: () => recommendationApi.questionnaire(),

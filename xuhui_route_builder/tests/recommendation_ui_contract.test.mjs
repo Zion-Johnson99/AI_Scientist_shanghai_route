@@ -523,11 +523,86 @@ test("推荐左栏路线卡的 PM2.5 始终带 µg/m³", () => {
     result.final_routes[1].route.environment_summary = {
       pm2_5: { value: 12.4, status: "ok", unit: "μg/m³" },
     };
-    const controller = createRecommendationUI({ container, questionnaire, profile: localProfile, location });
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      getRouteEnvironment: () => ({ pm25: { value: 99, status: "ok", unit: "μg/m³" } }),
+    });
 
     controller.showResult(result);
     const second = findByAttribute(container, "aria-label", "查看路线 公园小环线");
     assert.match(second.textContent, /PM2.5 12.4 µg\/m³/);
+    assert.equal(second.textContent.includes("PM2.5 99"), false);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("推荐接口的 PM2.5 过期时，路线卡回退到页面当前环境数据", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const result = resultFixture("ok");
+    result.final_routes[1].route.environment_summary = {
+      pm2_5: { value: 22, status: "stale", unit: "μg/m³" },
+    };
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      getRouteEnvironment: (routeId) => (
+        routeId === "route-2"
+          ? { pm25: { value: 12.4, status: "ok", unit: "μg/m³" } }
+          : null
+      ),
+    });
+
+    controller.showResult(result);
+    const second = findByAttribute(container, "aria-label", "查看路线 公园小环线");
+    assert.match(second.textContent, /PM2.5 12.4 µg\/m³/);
+    assert.equal(second.textContent.includes("数据更新中"), false);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("环境轮询取得新数据后刷新已有推荐卡 PM2.5", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const container = globalThis.document.createElement("div");
+    const result = resultFixture("ok");
+    result.final_routes[1].route.environment_summary = {};
+    let pm25 = 12.4;
+    const controller = createRecommendationUI({
+      container,
+      questionnaire,
+      profile: localProfile,
+      location,
+      getRouteEnvironment: (routeId) => (
+        routeId === "route-2"
+          ? { pm25: { value: pm25, status: "ok", unit: "μg/m³" } }
+          : null
+      ),
+    });
+
+    controller.showResult(result);
+    assert.match(
+      findByAttribute(container, "aria-label", "查看路线 公园小环线").textContent,
+      /PM2.5 12.4 µg\/m³/,
+    );
+
+    pm25 = 10.8;
+    controller.refreshEnvironment();
+
+    assert.match(
+      findByAttribute(container, "aria-label", "查看路线 公园小环线").textContent,
+      /PM2.5 10.8 µg\/m³/,
+    );
   } finally {
     globalThis.document = previousDocument;
   }

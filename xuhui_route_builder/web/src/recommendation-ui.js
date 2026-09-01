@@ -1,5 +1,5 @@
 import { normalizeHealthProfile } from "./profile-store.js";
-import { createRouteCard, routeCardModel } from "./route-card.js?v=20260831-ui-35";
+import { createRouteCard, routeCardModel } from "./route-card.js?v=20260901-environment-2";
 
 export const DEFAULT_RECOMMENDATION_LOCATION = Object.freeze({
   label: "上海交通大学徐汇校区",
@@ -195,7 +195,7 @@ export function createProfileDialog({ host, profile, onSave } = {}) {
   };
 }
 
-export function buildRecommendationViewModel(result, currentRouteId = null) {
+export function buildRecommendationViewModel(result, currentRouteId = null, getRouteEnvironment = () => null) {
   if (result?.view === "loading") {
     return {
       kind: "loading",
@@ -220,7 +220,7 @@ export function buildRecommendationViewModel(result, currentRouteId = null) {
   const routes = [...(result?.final_routes || [])]
     .sort((left, right) => Number(left?.final_rank || 999) - Number(right?.final_rank || 999))
     .slice(0, 3)
-    .map(normalizeFinalRoute)
+    .map((route) => normalizeFinalRoute(route, getRouteEnvironment))
     .filter(Boolean);
   if (result?.status === "no_candidates" || !routes.length) {
     return {
@@ -265,6 +265,7 @@ export function createRecommendationUI({
   onRestartRecommendation,
   onChatStateChange,
   onRouteModeChange,
+  getRouteEnvironment = () => null,
   shouldSelectRoute = () => true,
 } = {}) {
   if (!container) {
@@ -342,7 +343,7 @@ export function createRecommendationUI({
       currentRouteId = null;
       switchProductView("result");
       render();
-      const model = buildRecommendationViewModel(result);
+      const model = buildRecommendationViewModel(result, null, getRouteEnvironment);
       if (["result", "degraded"].includes(model.kind) && shouldSelectRoute()) {
         onShowRoutes?.(model.routes.map((route) => route.source), { source: "recommendation" });
       }
@@ -365,6 +366,9 @@ export function createRecommendationUI({
     setLocation(value) {
       currentLocation = value;
       render();
+    },
+    refreshEnvironment() {
+      if (currentResult && ["result", "chat"].includes(viewState)) render();
     },
     setDetailOpen(value) {
       detailOpen = Boolean(value);
@@ -397,7 +401,7 @@ export function createRecommendationUI({
       if (["result", "chat"].includes(viewState)) render();
     },
     selectRoute(routeId) {
-      const model = buildRecommendationViewModel(currentResult, routeId);
+      const model = buildRecommendationViewModel(currentResult, routeId, getRouteEnvironment);
       if (!["result", "degraded"].includes(model.kind) || !model.selectedRoute) return;
       currentRouteId = routeId;
       hoveredRouteId = null;
@@ -409,7 +413,7 @@ export function createRecommendationUI({
       return currentRouteId;
     },
     getResultRoutes() {
-      const model = buildRecommendationViewModel(currentResult, currentRouteId);
+      const model = buildRecommendationViewModel(currentResult, currentRouteId, getRouteEnvironment);
       return ["result", "degraded"].includes(model.kind) ? model.routes.map((route) => route.source) : [];
     },
     getAnswers() {
@@ -523,7 +527,7 @@ export function createRecommendationUI({
   function renderWorkspace() {
     const workspace = element("section", "recommendation-workspace");
     const content = element("div", "recommendation-workspace__content");
-    const model = buildRecommendationViewModel(currentResult, currentRouteId);
+    const model = buildRecommendationViewModel(currentResult, currentRouteId, getRouteEnvironment);
     const hasRoutes = ["result", "degraded"].includes(model.kind);
     if (hasRoutes) {
       const heading = currentResult?.decision_source === "local_nearby" ? "附近路线" : "为你推荐";
@@ -850,7 +854,7 @@ export function createRecommendationUI({
     }
     if (chatProgress) scroll.append(renderChatProgress(chatProgress));
     if (chatResultVisible) {
-      const model = buildRecommendationViewModel(currentResult, currentRouteId);
+      const model = buildRecommendationViewModel(currentResult, currentRouteId, getRouteEnvironment);
       if (["result", "degraded"].includes(model.kind)) {
         const cards = element("div", "recommendation-chat__route-cards");
         model.routes.slice(0, 3).forEach((route, index) => cards.append(renderChatRouteCard(route, index)));
@@ -956,7 +960,7 @@ export function createRecommendationUI({
         currentResult = result;
         currentRouteId = null;
         chatResultVisible = true;
-        const model = buildRecommendationViewModel(result);
+        const model = buildRecommendationViewModel(result, null, getRouteEnvironment);
         if (["result", "degraded"].includes(model.kind) && shouldSelectRoute()) {
           onShowRoutes?.(model.routes.map((route) => route.source), { source: "chat" });
         }
@@ -1007,6 +1011,7 @@ export function createRecommendationUI({
 
   function renderRouteCard(route, index) {
     const model = routeCardModel(route.source, {
+      environment: route.environment,
       preferredLabel: ["首选", "备选 1", "备选 2"][index] || "",
       selected: route.isSelected,
     });
@@ -1024,6 +1029,7 @@ export function createRecommendationUI({
 
   function renderChatRouteCard(route, index) {
     const model = routeCardModel(route.source, {
+      environment: route.environment,
       preferredLabel: ["首选", "备选 1", "备选 2"][index] || "",
       selected: route.isSelected,
     });
@@ -1186,23 +1192,50 @@ function defaultDistanceRange(questionnaire, routeMode) {
   return options[1]?.value || options[0]?.value || "";
 }
 
-function normalizeFinalRoute(finalRoute) {
+function normalizeFinalRoute(finalRoute, getRouteEnvironment = () => null) {
   const scored = finalRoute?.route;
   const route = scored?.route;
   const routeId = route?.route_id;
   if (!routeId) {
     return null;
   }
+  const apiPm25 = scored?.environment_summary?.pm2_5;
+  const routeEnvironment = usablePm25Metric(apiPm25) ? null : getRouteEnvironment(routeId);
+  const localPm25 = routeEnvironment?.pm25 || routeEnvironment?.pm2_5;
+  const pm25 = preferredPm25Metric(apiPm25, localPm25);
   return {
     source: finalRoute,
     routeId,
     routeName: String(route.route_name || "未命名路线"),
     distanceText: formatDistance(route.distance_m),
     durationText: formatDuration(route.duration_min),
-    pm25Text: compactPm25(scored?.environment_summary?.pm2_5),
+    pm25Text: compactPm25(pm25),
+    environment: pm25 ? { pm25 } : null,
     advantages: uniqueTextValues(finalRoute?.advantages).slice(0, 3),
     suggestions: uniqueTextValues(finalRoute?.suggestions).slice(0, 2),
   };
+}
+
+function preferredPm25Metric(apiMetric, localMetric) {
+  if (usablePm25Metric(apiMetric)) return apiMetric;
+  if (numericPm25Metric(localMetric)) return displayablePm25Metric(localMetric);
+  if (numericPm25Metric(apiMetric)) return displayablePm25Metric(apiMetric);
+  return null;
+}
+
+function usablePm25Metric(metric) {
+  const status = String(metric?.status || "").toLowerCase();
+  return numericPm25Metric(metric) && !["stale", "no_data", "error", "unavailable"].includes(status);
+}
+
+function numericPm25Metric(metric) {
+  const value = metric?.value ?? metric?.displayValue;
+  return value !== null && value !== "" && Number.isFinite(Number(value));
+}
+
+function displayablePm25Metric(metric) {
+  const value = Number(metric?.value ?? metric?.displayValue);
+  return { ...metric, value, displayValue: value, status: "ok" };
 }
 
 function compactPm25(metric) {
