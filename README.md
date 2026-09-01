@@ -1,8 +1,12 @@
 # 面向上海城市户外运动的健康路线决策 AI Scientist
 
-_徐汇区本地路线原型、多源环境数据与个性化推荐说明，更新于 2026-08-30。_
+_徐汇区路线原型、多源环境数据与个性化推荐说明，更新于 2026-09-01。_
 
 ---
+
+## 在线访问
+
+[打开徐汇户外健康地图](https://zion-johnson99.github.io/AI_Scientist_shanghai_route/)
 
 ## 当前能力
 
@@ -14,7 +18,7 @@ _徐汇区本地路线原型、多源环境数据与个性化推荐说明，更�
 | 环境网页展示 | 已接入 | 展示当前天气、AQI、预警、生活指数、24 小时天气与 AQI，以及 54 个环境网格和 90 条路线的 PM2.5、花粉、噪声结果 |
 | 个性化排序 | 已接入 | 支持硬约束、五维评分、首选与两条备选；可使用本地 Python 排序或千问个性化审核 |
 | AI Scientist 工作流 | 待完成 | 已保留 Agent 输入输出边界，假设、实验、验证和结果记录尚待串联 |
-| 在线部署 | 暂停 | 当前采用团队成员本地运行方式 |
+| 在线部署 | 已上线 | GitHub Pages 提供公开网页，GitHub Actions 按计划更新环境数据 |
 
 ## 本地启动完整应用
 
@@ -80,7 +84,7 @@ cd .\weather_api_data
 
 ## 隐私边界
 
-真实 Key、token 和成员环境配置仅保存在本机。`weather_api_data/.env`、`weather_api_data/runtime/`、`evaluation_model_qwen/.env`、`evaluation_model_qwen/runtime/`、`xuhui_route_builder/.env`、`xuhui_route_builder/web/local-amap-config.js`、`xuhui_route_builder/web/local-tencent-config.js` 和 `xuhui_route_builder/data/web/environment_dashboard.json` 均由 Git 忽略。凭据不写入提交、README、Issue、PR、日志或网页数据包。
+真实 Key、token 和成员环境配置保存在本机 `.env` 或云端加密 Secrets 中。`weather_api_data/.env`、`weather_api_data/runtime/`、`evaluation_model_qwen/.env`、`evaluation_model_qwen/runtime/`、`xuhui_route_builder/.env`、`xuhui_route_builder/web/local-amap-config.js`、`xuhui_route_builder/web/local-tencent-config.js` 和 `xuhui_route_builder/data/web/environment_dashboard.json` 均由 Git 忽略。凭据不写入提交、README、Issue、PR、日志或网页数据包。
 
 ## 验证
 
