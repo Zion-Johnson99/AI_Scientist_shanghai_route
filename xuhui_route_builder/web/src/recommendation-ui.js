@@ -942,8 +942,12 @@ export function createRecommendationUI({
       });
       if (!response) throw new Error("千问服务未返回内容。");
       if (revision !== intentRevision) return;
-      intentPatch = { ...intentPatch, ...(response.preference_patch || {}) };
-      applyPatchToAnswers(intentPatch);
+      intentPatch = mergeIntentPatch(
+        intentPatch,
+        response.preference_patch,
+        chatHistory.filter((item) => item.role === "user").map((item) => item.content).join("；"),
+      );
+      intentPatch = applyPatchToAnswers(intentPatch);
       chatHistory.push({ role: "assistant", content: String(response.reply || "已整理你的偏好。") });
       if (response.ready) {
         chatProgress = "正在匹配合适路线";
@@ -1086,24 +1090,60 @@ export function createRecommendationUI({
   }
 
   function applyPatchToAnswers(patch) {
-    if ((currentQuestionnaire?.route_modes || []).some((option) => option.value === patch.route_mode)) {
+    const next = { ...patch };
+    const routeModes = currentQuestionnaire?.route_modes || [];
+    if (routeModes.some((option) => option.value === next.route_mode)) {
       const modeChanged = answers.route_mode !== patch.route_mode;
-      answers.route_mode = patch.route_mode;
-      if (modeChanged) {
-        answers.distance_range = defaultDistanceRange(currentQuestionnaire, patch.route_mode);
-        onRouteModeChange?.(patch.route_mode);
+      answers.route_mode = next.route_mode;
+      const explicitDistance = intentDistanceOption(currentQuestionnaire, next.route_mode, next);
+      if (explicitDistance) {
+        answers.distance_range = explicitDistance.value;
+        next.distance_min_m = explicitDistance.distance_min_m;
+        next.target_distance_m = explicitDistance.target_distance_m;
+        next.distance_max_m = explicitDistance.distance_max_m;
+      } else if (modeChanged) {
+        answers.distance_range = defaultDistanceRange(currentQuestionnaire, next.route_mode);
+      }
+      if (modeChanged) onRouteModeChange?.(next.route_mode);
+    } else {
+      delete next.route_mode;
+    }
+    if (!next.route_mode) {
+      const explicitDistance = intentDistanceOption(currentQuestionnaire, answers.route_mode, next);
+      if (explicitDistance) {
+        answers.distance_range = explicitDistance.value;
+        next.distance_min_m = explicitDistance.distance_min_m;
+        next.target_distance_m = explicitDistance.target_distance_m;
+        next.distance_max_m = explicitDistance.distance_max_m;
       }
     }
-    if ((currentQuestionnaire?.goals || []).some((option) => option.value === patch.goal)) {
-      answers.goal = patch.goal;
+    if ((currentQuestionnaire?.goals || []).some((option) => option.value === next.goal)) {
+      answers.goal = next.goal;
+    } else {
+      delete next.goal;
     }
-    if ((currentQuestionnaire?.route_shapes || []).some((option) => option.value === patch.route_shape)) {
-      answers.route_shape = patch.route_shape;
+    if ((currentQuestionnaire?.route_shapes || []).some((option) => option.value === next.route_shape)) {
+      answers.route_shape = next.route_shape;
+    } else {
+      delete next.route_shape;
     }
-    if (Array.isArray(patch.interests)) {
-      answers.interests = cleanSelections(patch.interests, currentQuestionnaire?.interests);
+    if (Array.isArray(next.interests)) {
+      answers.interests = cleanSelections(next.interests, currentQuestionnaire?.interests);
+      next.interests = [...answers.interests];
     }
-    if (typeof patch.free_text === "string") answers.free_text = patch.free_text.slice(0, 500);
+    if (typeof next.free_text === "string") {
+      next.free_text = next.free_text.trim().slice(0, 500);
+      answers.free_text = next.free_text;
+    }
+    if (validIntentTime(next.target_time)) {
+      answers.target_time = "custom";
+      answers.custom_time = localDateTimeValue(next.target_time);
+      next.target_time = new Date(answers.custom_time).toISOString();
+    } else {
+      delete next.target_time;
+    }
+    synchronizeSearchScope(next, answers, currentQuestionnaire);
+    return next;
   }
 
   render();
@@ -1254,22 +1294,121 @@ function chatExamples() {
   ];
 }
 
+const INTENT_PATCH_FIELDS = [
+  "route_mode",
+  "distance_min_m",
+  "target_distance_m",
+  "distance_max_m",
+  "search_radius_m",
+  "area_ids",
+  "goal",
+  "route_shape",
+  "interests",
+  "free_text",
+  "target_time",
+];
+
+function mergeIntentPatch(current, received, fallbackFreeText) {
+  const incoming = explicitIntentPatch(received);
+  const next = { ...current, ...incoming };
+  const hasRadius = positiveNumber(incoming.search_radius_m) !== null;
+  const hasAreas = Array.isArray(incoming.area_ids) && incoming.area_ids.length > 0;
+  if (hasRadius) {
+    delete next.area_ids;
+  } else if (hasAreas) {
+    delete next.search_radius_m;
+  }
+  const suppliedFreeText = typeof incoming.free_text === "string" && incoming.free_text.trim();
+  next.free_text = String(suppliedFreeText || fallbackFreeText || "").trim().slice(0, 500);
+  return next;
+}
+
+function explicitIntentPatch(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  return Object.fromEntries(
+    INTENT_PATCH_FIELDS
+      .filter((field) => Object.prototype.hasOwnProperty.call(value, field))
+      .map((field) => [field, cloneValue(value[field])]),
+  );
+}
+
+function intentDistanceOption(questionnaire, routeMode, patch) {
+  const low = positiveNumber(patch?.distance_min_m);
+  const target = positiveNumber(patch?.target_distance_m);
+  const high = positiveNumber(patch?.distance_max_m);
+  const reference = target ?? (low !== null && high !== null ? (low + high) / 2 : low ?? high);
+  if (reference === null) return null;
+  const options = questionnaire?.distance_ranges?.[routeMode] || [];
+  return [...options].sort((left, right) => (
+    distanceOptionDelta(left, { low, target, high, reference })
+    - distanceOptionDelta(right, { low, target, high, reference })
+  ))[0] || null;
+}
+
+function distanceOptionDelta(option, values) {
+  const target = positiveNumber(option?.target_distance_m) ?? 0;
+  const low = positiveNumber(option?.distance_min_m) ?? target;
+  const high = positiveNumber(option?.distance_max_m) ?? target;
+  return Math.abs(target - values.reference)
+    + Math.abs(low - (values.low ?? values.reference))
+    + Math.abs(high - (values.high ?? values.reference));
+}
+
+function synchronizeSearchScope(patch, answers, questionnaire) {
+  if (Array.isArray(patch.area_ids)) {
+    const areas = cleanSelections(patch.area_ids, questionnaire?.areas);
+    if (areas.length) {
+      answers.search_scope = "area";
+      [answers.area_id] = areas;
+      patch.area_ids = [answers.area_id];
+      delete patch.search_radius_m;
+      return;
+    }
+    if (patch.area_ids.length === 0) {
+      answers.search_scope = "all_xuhui";
+      patch.area_ids = [];
+      delete patch.search_radius_m;
+      return;
+    }
+    delete patch.area_ids;
+  }
+  const radius = positiveNumber(patch.search_radius_m);
+  if (radius === null) {
+    delete patch.search_radius_m;
+    return;
+  }
+  const scopes = (questionnaire?.search_scopes || [])
+    .map((option) => ({ option, radius: nearbyRadiusFromScope(option.value) }))
+    .filter((item) => item.radius !== null)
+    .sort((left, right) => Math.abs(left.radius - radius) - Math.abs(right.radius - radius));
+  const selected = scopes[0];
+  if (!selected) {
+    delete patch.search_radius_m;
+    return;
+  }
+  answers.search_scope = selected.option.value;
+  patch.search_radius_m = selected.radius;
+  delete patch.area_ids;
+}
+
+function validIntentTime(value) {
+  return value !== null && value !== undefined && !Number.isNaN(new Date(value).valueOf());
+}
+
+function localDateTimeValue(value) {
+  const date = new Date(value);
+  const pad = (part) => String(part).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+function positiveNumber(value) {
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0 ? number : null;
+}
+
 function applyIntentPatch(profile, patch) {
-  const allowed = [
-    "route_mode",
-    "distance_min_m",
-    "target_distance_m",
-    "distance_max_m",
-    "search_radius_m",
-    "area_ids",
-    "goal",
-    "route_shape",
-    "interests",
-    "free_text",
-    "target_time",
-  ];
   const next = { ...profile };
-  allowed.forEach((field) => {
+  INTENT_PATCH_FIELDS.forEach((field) => {
     if (patch?.[field] !== undefined && patch[field] !== null) {
       next[field] = cloneValue(patch[field]);
     }
