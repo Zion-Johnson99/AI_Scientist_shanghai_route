@@ -1,101 +1,144 @@
-# 面向上海城市户外运动的健康路线决策 AI Scientist
+# 徐汇户外健康地图
 
-_徐汇区路线原型、多源环境数据与个性化推荐说明，更新于 2026-09-01。_
+_科研项目：面向上海城市户外运动的多源环境暴露感知与健康路线决策 AI Scientist_
 
 ---
 
-## 在线访问
+## 在线体验
 
-[打开徐汇户外健康地图](https://zion-johnson99.github.io/AI_Scientist_shanghai_route/)
+[徐汇户外健康地图——面向上海城市户外运动的多源环境暴露感知与健康路线决策AI Scientist](https://zion-johnson99.github.io/AI_Scientist_shanghai_route/)
 
-## 当前能力
+![徐汇户外健康地图产品首页](./docs/images/readme/product-overview.png)
+_图 1：地图首页集中展示路线、环境信息与筛选入口。_
 
-| 模块 | 状态 | 当前结果 |
+## 项目介绍
+
+在碳达峰、碳中和战略背景下，步行、骑行等绿色出行方式正在成为城市低碳转型与健康生活的重要连接点。[《上海市加快推进绿色低碳转型行动方案（2024—2027 年）》](https://www.shanghai.gov.cn/nw12344/20240914/a33482feb8a24666ad745e95ef295f03.html?siteId=1)提出结合城市更新和“十五分钟生活圈”建设慢行交通体系，到 2027 年，中心城区绿色交通出行比例达到 75% 以上。慢行空间的持续改善为户外活动提供了基础，路线周边的空气污染、花粉、噪声、天气和道路环境也会直接影响运动体验与健康风险。
+
+现有研究已经证明环境数据能够参与路线决策。2024 年发表于 *Environment International* 的[城市空气健康导航研究](https://pubmed.ncbi.nlm.nih.gov/38878652/)利用 PM2.5 预测和空间插值寻找低暴露路线；[北京跑步轨迹研究](https://pubmed.ncbi.nlm.nih.gov/39004371/)进一步说明跑步者的 PM2.5 暴露会随时间、地点和运动方式变化。此类工作为健康路线规划提供了重要基础，研究对象仍主要集中在 PM2.5。进入实际运动场景后，用户还会同时关注花粉过敏、交通噪声、温湿度、降雨、沿途绿地与水体、补给条件、目标距离以及个人健康偏好，多源信息之间缺少统一的分析与推荐流程。
+
+徐汇户外健康地图围绕这一研究需求，构建了面向步行、跑步和骑行的多源环境暴露感知与健康路线决策系统。项目以徐汇区为首个应用区域，整理并验收三种运动方式各 30 条、共 90 条路线，将路线轨迹与天气、空气质量、PM2.5、花粉、噪声、绿地水体、沿途地点和接驳距离进行关联。用户输入运动方式、目标距离、出发位置和关注因素后，系统从路线库中生成一条首选路线和两条备选路线，并提供推荐理由、风险提醒、路线详情和前往起点的导航。
+
+项目面向 XH-202619《基于国产开源大模型的 AI Scientist 的研发与应用》赛题，并参加[“挑战杯”揭榜挂帅专项赛](https://university.aliyun.com/action/tzbjbgs2026)，对应 **B. 科学实验任务规划与反馈迭代**。研究范围聚焦低碳出行中的健康路线决策，个人碳减排量暂未纳入核算。当前公开页面呈现项目现阶段的最终闭环实验结果与可视化产品。
+
+## 项目研发与迭代
+
+项目采用千问辅助的 AI Scientist 研发流程，围绕研究目标、模块开发、实验验证和反馈修改推进多轮迭代。仓库将数据源核查、路线生成与验收、环境数据刷新、推荐结果审查等方法沉淀为内置 Skills；Harness 负责组织 Skills 的执行顺序，衔接各模块的数据和结果，并完成质量检查与异常回退。千问根据阶段目标辅助拆解研发任务、评价实验结果和提出下一轮调整方向，使路线、环境数据、评价模型和网页展示能够沿同一条研究链路逐步完善。
+
+| 迭代阶段 | 开发内容 | 当前成果 |
 | --- | --- | --- |
-| 路线与 POI | 已完成 | 步行、跑步、骑行各 30 条，共 90 条已验收路线 |
-| 本地地图与导航 | 已完成 | 支持筛选、路线展示、地点输入、地图点选、步行或骑行接驳和网页内导航 |
-| 多源环境数据 | 已接入 | 和风天气、上海空气质量站点、CHAP PM2.5、Google 花粉和噪声代理已形成统一刷新与本地历史链路 |
-| 环境网页展示 | 已接入 | 展示当前天气、AQI、预警、生活指数、24 小时天气与 AQI，以及 54 个环境网格和 90 条路线的 PM2.5、花粉、噪声结果 |
-| 个性化排序 | 已接入 | 支持硬约束、五维评分、首选与两条备选；可使用本地 Python 排序或千问个性化审核 |
-| AI Scientist 工作流 | 待完成 | 已保留 Agent 输入输出边界，假设、实验、验证和结果记录尚待串联 |
-| 在线部署 | 已上线 | GitHub Pages 提供公开网页，GitHub Actions 按计划更新环境数据 |
+| 路线规划模块 | 建立运动入口、候选路线、路线验收和接驳导航流程 | 三种运动各 30 条，共 90 条已验收路线，并完成地图展示与起点导航 |
+| 环境数据模块 | 接入并统一不同时间尺度和空间尺度的环境信息 | 形成天气、空气质量、PM2.5、花粉和噪声数据，覆盖 54 个环境网格与全部路线 |
+| 评价推荐模块 | 将环境风险、运动需求、到达成本和个人偏好纳入路线排序 | 建立硬约束和五维评分，由千问评价候选路线并生成推荐理由与风险提醒 |
+| 系统整合与验证 | 将各模块结果接入网页，并根据测试结果修正数据、评分和交互 | 形成可公开访问的地图、推荐服务和自动化数据更新流程 |
 
-## 本地启动完整应用
+```mermaid
+flowchart LR
+    accTitle: AI Scientist 反馈迭代闭环
+    accDescr: 千问根据研究目标拆解任务，调用内置 Skills 推进路线、环境和评价模块，再根据验证结果进入下一轮开发。
 
-首次使用前，分别按[评价与千问服务说明](./evaluation_model_qwen/README.md)和[徐汇路线构建器说明](./xuhui_route_builder/README.md)完成依赖与地图 Key 配置。
+    research_goal([研究问题]) --> qwen_plan[千问拆解任务]
+    qwen_plan --> skills_harness[Skills 与 Harness]
+    skills_harness --> modules[路线、环境与评价模块]
+    modules --> result_check{测试与实机验证}
+    result_check -->|发现新问题| qwen_plan
+    result_check -->|通过| final_product([徐汇户外健康地图])
+```
 
-日常启动在仓库根目录执行一条命令。默认使用本地 Python 排序，不消耗千问额度。
+产品运行阶段使用 `qwen3.7-plus` 完成路线评价与推荐。系统先通过 Python 检查安全条件、距离和用户偏好，对候选路线执行可复现的五维评分；千问随后审核排名靠前的路线，生成首选、备选、推荐理由和风险提醒。模型服务临时异常时，页面会继续使用本地评分结果。
 
-Windows 使用 PowerShell：
+![路线助手推荐界面](./docs/images/readme/qwen-recommendation.png)
+_图 2：路线助手展示首选路线、备选路线和推荐说明；本地排序与千问评价共用这套界面。_
+
+## 产品功能
+
+- 路线浏览：按步行、跑步、骑行和距离查看徐汇区路线，地图同步显示入口、轨迹与沿途地点
+- 环境判断：查看当前天气、AQI、生活指数、24 小时趋势，以及路线对应的 PM2.5、花粉和噪声结果
+- 个性化推荐：结合运动方式、距离、位置、健康关注和场景偏好，输出一条首选路线与两条备选路线
+- 地图导航：支持地点输入、地图点选、当前位置定位，以及步行或骑行前往路线起点
+
+![路线详情与环境信息](./docs/images/readme/route-detail.png)
+_图 3：路线详情页展示轨迹、距离、沿途地点和环境信息。_
+
+## 完成情况
+
+| 模块 | 当前结果 |
+| --- | --- |
+| 路线与地点 | 步行、跑步、骑行各 30 条，共 90 条已验收路线 |
+| 地图与导航 | 已完成路线筛选、地图展示、位置选择和接驳导航 |
+| 环境数据 | 已接入天气、空气质量、CHAP PM2.5、Google 花粉和噪声风险数据 |
+| 环境展示 | 已覆盖 54 个环境网格和 90 条路线，并提供当前状态与 24 小时趋势 |
+| 评价与推荐 | 已完成硬约束、五维评分、千问评价、首选与备选推荐和异常回退 |
+| AI Scientist 闭环 | 已采用千问辅助规划、Skills 与 Harness 组织实验任务，形成当前可视化结果 |
+| 在线部署 | GitHub Pages 提供公开网页，自动化任务按计划更新环境数据 |
+
+## 本地体验
+
+本地运行需要 Python 3.10 或更高版本，并安装 [uv](https://docs.astral.sh/uv/getting-started/installation/)。以下流程以 Windows PowerShell 为例。
+
+### 1. 安装三个模块
+
+在仓库根目录运行：
+
+```powershell
+uv sync --directory .\xuhui_route_builder
+uv sync --directory .\weather_api_data --extra chap
+uv sync --directory .\evaluation_model_qwen
+```
+
+### 2. 创建本地配置
+
+```powershell
+Copy-Item .\xuhui_route_builder\.env.example .\xuhui_route_builder\.env
+Copy-Item .\weather_api_data\.env.example .\weather_api_data\.env
+Copy-Item .\evaluation_model_qwen\.env.example .\evaluation_model_qwen\.env
+```
+
+打开三个 `.env` 文件，按模板提示填写自己申请的服务信息：
+
+| 配置位置 | 用途 |
+| --- | --- |
+| `xuhui_route_builder/.env` | 地图显示、地点搜索和接驳导航 |
+| `weather_api_data/.env` | 天气、空气质量、花粉等环境数据更新 |
+| `evaluation_model_qwen/.env` | 千问评价与推荐，默认模型为 `qwen3.7-plus` |
+
+各服务的 Key 只放在本机 `.env` 或云端加密 Secrets 中，仓库仅提交配置模板。
+
+### 3. 启动完整应用
+
+日常体验可直接启动本地评分模式：
 
 ```powershell
 .\start-local-app.ps1
 ```
 
-启用千问个性化审核：
+启用千问评价与个性化推荐：
 
 ```powershell
 .\start-local-app.ps1 -UseQwen
 ```
 
-macOS 或 Linux 使用 Bash：
+启动完成后会自动打开 [http://127.0.0.1:8123/web/](http://127.0.0.1:8123/web/)。命令窗口保持运行，结束体验时按 `Ctrl+C`。启动时按数据新鲜度选择必要的刷新层级，运行期间每 30 分钟复查一次；上游请求异常时继续使用上一份可用数据。
+
+macOS 或 Linux 使用：
 
 ```bash
 bash ./start-local-app.sh
-```
-
-启用千问个性化审核：
-
-```bash
 bash ./start-local-app.sh --use-qwen
 ```
 
-两个脚本的启动职责和端口一致，虚拟环境路径分别使用 Windows 的 `.venv\Scripts\` 与 macOS/Linux 的 `.venv/bin/`。每台机器需独立安装项目依赖和配置本地 `.env`。
+更详细的首次配置和问题排查见各模块说明：
 
-脚本会先从 `xuhui_route_builder/.env` 生成已忽略的本地网页地图配置，再同时管理环境数据刷新、推荐 API 和静态网页，通过健康检查后自动打开 [http://127.0.0.1:8123/web/](http://127.0.0.1:8123/web/)。启动时按数据新鲜度选择刷新层级：天气和预警临近 15 分钟有效期时执行 `weather`，AQI 与当前 PM2.5 超过 1 小时执行 `hourly`，花粉、噪声和生活指数失效时执行 `daily`。运行期间每 30 分钟复查一次，每次刷新后也会间隔 30 分钟再尝试；命令窗口只显示本次是否更新及数据更新时间。单次上游更新失败会保留上一份数据并在命令窗口告警。
+- [路线地图与导航](./xuhui_route_builder/README.md)
+- [多源环境数据](./weather_api_data/README.md)
+- [千问评价与推荐](./evaluation_model_qwen/README.md)
 
-命令窗口保持运行；按 `Ctrl+C` 会统一停止由本次命令启动的服务。切换本地或千问模式前，先结束上一条启动命令。千问鉴权、限流、网络或输出校验异常时，推荐服务会回退到本地 Python 排序。
+## 项目结构
 
-环境数据包缺失或需要更新时，先按 [多源环境数据说明](./weather_api_data/README.md) 配置本地环境并执行：
-
-```powershell
-cd .\weather_api_data
-.\.venv\Scripts\weather-api-data.exe refresh-all
-.\.venv\Scripts\weather-api-data.exe publish-web
-```
-
-页面显示“暂时没有完成推荐”时，先访问 [推荐服务健康检查](http://127.0.0.1:8124/api/v1/health)。该地址无法打开通常表示统一启动命令已经退出，或 8124 端口被其他程序占用。启动日志保存在 `evaluation_model_qwen/runtime/local-app/`。
-
-## 数据口径
-
-网页数据包包含 54 个约 1 km 环境网格和 90 条路线结果。PM2.5 属于网格空间估计，花粉属于日级网格背景，噪声属于约 100 m 路段的 0–100 风险代理。未来 PM2.5 在上海当前缺少上游污染物浓度，系统保留缺值；接驳路径环境状态为 `not_aggregated`。
-
-数据状态以 `environment_dashboard.json` 内的 `generated_at` 和 `status` 为准。`partial` 表示部分来源或字段暂缺，`stale` 表示页面保留上一份可用快照并标注过期。
-
-## 主要目录
-
-| 路径 | 内容 |
+| 目录 | 内容 |
 | --- | --- |
-| [`xuhui_route_builder/`](./xuhui_route_builder/) | 路线数据、构建工具、本地网页、导航和测试 |
-| [`weather_api_data/`](./weather_api_data/) | 天气、空气质量、PM2.5、花粉、噪声、路线暴露、调度和网页数据发布 |
-| [`evaluation_model_qwen/`](./evaluation_model_qwen/) | 路线硬约束、五维评分、千问审核、推荐 API 和审计记录 |
-| [`.agents/skills/`](./.agents/skills/) | 项目共享技能与验证工具 |
-| [`上海路线规划项目方案/`](./上海路线规划项目方案/) | 项目方案与研究设计材料 |
-
-## 隐私边界
-
-真实 Key、token 和成员环境配置保存在本机 `.env` 或云端加密 Secrets 中。`weather_api_data/.env`、`weather_api_data/runtime/`、`evaluation_model_qwen/.env`、`evaluation_model_qwen/runtime/`、`xuhui_route_builder/.env`、`xuhui_route_builder/web/local-amap-config.js`、`xuhui_route_builder/web/local-tencent-config.js` 和 `xuhui_route_builder/data/web/environment_dashboard.json` 均由 Git 忽略。凭据不写入提交、README、Issue、PR、日志或网页数据包。
-
-## 验证
-
-路线与网页测试：
-
-```powershell
-cd .\xuhui_route_builder
-.\.venv\Scripts\python.exe -m pytest tests -q
-node --test tests/*.test.mjs
-```
-
-环境模块的 pytest、Ruff 和 Pyright 命令见 [多源环境数据说明](./weather_api_data/README.md)。
-
-评价与推荐服务的 pytest、Ruff 和 Pyright 命令见 [评价与千问服务说明](./evaluation_model_qwen/README.md)。
+| [`xuhui_route_builder/`](./xuhui_route_builder/) | 90 条路线、地图界面、地点搜索和接驳导航 |
+| [`weather_api_data/`](./weather_api_data/) | 天气、空气质量、PM2.5、花粉、噪声与网页数据发布 |
+| [`evaluation_model_qwen/`](./evaluation_model_qwen/) | 路线筛选、五维评分、千问评价、推荐服务与结果记录 |
+| [`.agents/skills/`](./.agents/skills/) | AI Scientist 使用的项目 Skills 与验证工具 |
+| [`上海路线规划项目方案/`](./上海路线规划项目方案/) | 研究问题、实验设计和早期项目方案 |
