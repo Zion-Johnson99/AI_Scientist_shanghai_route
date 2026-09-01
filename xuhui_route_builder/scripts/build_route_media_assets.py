@@ -275,10 +275,16 @@ def import_candidates(
             captured_at, captured_date = parse_captured_at(record["captured_at"])
             if captured_date < CUTOFF:
                 continue
-            areas = normalize_areas(record.get("scene_area", record.get("scene_area_ids")))
+            areas = normalize_areas(
+                record.get("scene_area", record.get("scene_area_ids"))
+            )
             if not areas:
-                raise ValueError(f"候选素材缺少可识别区域: {record.get('candidate_id')}")
-            asset_id = normalize_asset_id(str(record.get("candidate_id", "")), source_sha256)
+                raise ValueError(
+                    f"候选素材缺少可识别区域: {record.get('candidate_id')}"
+                )
+            asset_id = normalize_asset_id(
+                str(record.get("candidate_id", "")), source_sha256
+            )
             if asset_id in assets_by_id:
                 asset_id = f"{asset_id}_{source_sha256[:8].upper()}"
             asset = {
@@ -308,7 +314,9 @@ def import_candidates(
             assets_by_id[asset_id] = asset
             hashes.add(source_sha256)
             source_paths[asset_id] = source_path
-    return sorted(assets_by_id.values(), key=lambda item: item["asset_id"]), source_paths
+    return sorted(
+        assets_by_id.values(), key=lambda item: item["asset_id"]
+    ), source_paths
 
 
 def route_areas(route: dict[str, Any]) -> set[str]:
@@ -393,14 +401,19 @@ def assign_assets(
     for route in routes:
         eligible = eligible_by_route[route["route_id"]]
         if len(eligible) < 3 or sum(asset["road_visible"] for asset in eligible) < 2:
-            raise ValueError(f"路线候选素材不足: {route['route_id']} {route['route_name']}")
+            raise ValueError(
+                f"路线候选素材不足: {route['route_id']} {route['route_name']}"
+            )
 
     usage: Counter[str] = Counter()
     cover_usage: Counter[str] = Counter()
     assignments: dict[str, dict[str, str]] = {}
     ordered_routes = sorted(
         routes,
-        key=lambda route: (len(eligible_by_route[route["route_id"]]), route["route_id"]),
+        key=lambda route: (
+            len(eligible_by_route[route["route_id"]]),
+            route["route_id"],
+        ),
     )
     for route in ordered_routes:
         route_id = route["route_id"]
@@ -415,7 +428,8 @@ def assign_assets(
                 if asset_id in selected.values() or usage[asset_id] >= MAX_TOTAL_REUSE:
                     continue
                 if slot == "cover" and (
-                    not asset["road_visible"] or cover_usage[asset_id] >= MAX_COVER_REUSE
+                    not asset["road_visible"]
+                    or cover_usage[asset_id] >= MAX_COVER_REUSE
                 ):
                     continue
                 if not asset["road_visible"] and scenery_count >= 1:
@@ -455,7 +469,11 @@ def apply_route_slot_overrides(assignments: dict[str, dict[str, str]]) -> None:
         assigned = assignments[route_id]
         for target_slot, asset_id in overrides.items():
             source_slot = next(
-                (slot for slot, assigned_id in assigned.items() if assigned_id == asset_id),
+                (
+                    slot
+                    for slot, assigned_id in assigned.items()
+                    if assigned_id == asset_id
+                ),
                 None,
             )
             if source_slot is None:
@@ -469,7 +487,9 @@ def apply_route_slot_overrides(assignments: dict[str, dict[str, str]]) -> None:
 def materialize(source_path: Path, output_path: Path) -> dict[str, Any]:
     with Image.open(source_path) as opened:
         image = ImageOps.exif_transpose(opened).convert("RGB")
-    needs_write = source_path.resolve() != output_path.resolve() or max(image.size) > 1280
+    needs_write = (
+        source_path.resolve() != output_path.resolve() or max(image.size) > 1280
+    )
     if needs_write:
         image.thumbnail((1280, 1280), Image.Resampling.LANCZOS)
         same_path = source_path.resolve() == output_path.resolve()
@@ -504,7 +524,9 @@ def build_manifest(
     assignments: dict[str, dict[str, str]],
     imported: dict[str, Path],
 ) -> dict[str, Any]:
-    used_ids = {asset_id for slots in assignments.values() for asset_id in slots.values()}
+    used_ids = {
+        asset_id for slots in assignments.values() for asset_id in slots.values()
+    }
     assets_by_id = {asset["asset_id"]: asset for asset in assets}
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     asset_manifest: dict[str, dict[str, Any]] = {}
@@ -512,7 +534,9 @@ def build_manifest(
         asset = assets_by_id[asset_id]
         output_path = OUTPUT_DIR / f"{asset_id}.webp"
         image_info = materialize(registry_source_path(asset, imported), output_path)
-        asset["source_file"] = str(output_path.relative_to(REPO_ROOT)).replace("\\", "/")
+        asset["source_file"] = str(output_path.relative_to(REPO_ROOT)).replace(
+            "\\", "/"
+        )
         asset_manifest[asset_id] = {
             **asset,
             "src": f"./assets/routes/{asset_id}.webp",
@@ -565,7 +589,9 @@ def build_manifest(
     routes_with_pure_scenery = [
         route_id
         for route_id, slots in assignments.items()
-        if any(not assets_by_id[asset_id]["road_visible"] for asset_id in slots.values())
+        if any(
+            not assets_by_id[asset_id]["road_visible"] for asset_id in slots.values()
+        )
     ]
     total_bytes = sum(asset["webp_bytes"] for asset in asset_manifest.values())
     return {
@@ -610,7 +636,9 @@ def main() -> None:
     assets = trim_assets(assets)
     assignments = assign_assets(routes, assets)
     apply_route_slot_overrides(assignments)
-    used_ids = {asset_id for slots in assignments.values() for asset_id in slots.values()}
+    used_ids = {
+        asset_id for slots in assignments.values() for asset_id in slots.values()
+    }
     summary = {
         "registry_assets": len(assets),
         "assigned_unique_assets": len(used_ids),

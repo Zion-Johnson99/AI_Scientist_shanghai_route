@@ -11,6 +11,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+  "Pillow>=12,<13",
   "pyright>=1.1.411",
   "pytest>=8.0",
   "ruff>=0.16.3",

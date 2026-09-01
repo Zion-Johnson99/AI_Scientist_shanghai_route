@@ -9,7 +9,6 @@ BUILDER_PATH = PROJECT_ROOT / "scripts" / "build_route_media_assets.py"
 
 
 def test_materialize_can_recompress_webp_in_place(tmp_path: Path) -> None:
-    base_python = Path(sys.base_prefix) / "python.exe"
     image_path = tmp_path / "in-place.webp"
     program = """
 import importlib.util
@@ -34,7 +33,7 @@ with Image.open(image_path) as image:
     assert max(image.size) == 1280
 """
     completed = subprocess.run(
-        [str(base_python), "-c", program, str(BUILDER_PATH), str(image_path)],
+        [sys.executable, "-c", program, str(BUILDER_PATH), str(image_path)],
         check=False,
         capture_output=True,
         text=True,

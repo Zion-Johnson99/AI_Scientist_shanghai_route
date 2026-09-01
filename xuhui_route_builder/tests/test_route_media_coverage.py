@@ -35,7 +35,11 @@ def test_registry_has_enough_current_traceable_assets() -> None:
     for asset in assets:
         observed = captured_date(asset["captured_at"])
         assert CUTOFF <= observed <= date.today()
-        assert asset["date_basis"] in {"taken_at", "post_published_at", "source_metadata"}
+        assert asset["date_basis"] in {
+            "taken_at",
+            "post_published_at",
+            "source_metadata",
+        }
         assert asset["source_page_url"].startswith(("https://", "http://"))
         assert asset["accessed_at"]
         assert isinstance(asset["road_visible"], bool)
@@ -59,10 +63,13 @@ def test_manifest_fills_all_route_slots_with_bounded_reuse() -> None:
         assert all(slots[slot] is not None for slot in SLOTS)
         asset_ids = [slots[slot]["asset_id"] for slot in SLOTS]
         assert len(set(asset_ids)) == len(SLOTS)
-        assert sum(
-            not manifest["assets"][asset_id]["road_visible"]
-            for asset_id in asset_ids
-        ) <= 1
+        assert (
+            sum(
+                not manifest["assets"][asset_id]["road_visible"]
+                for asset_id in asset_ids
+            )
+            <= 1
+        )
         usage.update(asset_ids)
         cover_usage.update([slots["cover"]["asset_id"]])
 

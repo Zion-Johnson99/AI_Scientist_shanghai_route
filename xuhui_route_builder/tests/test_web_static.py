@@ -159,7 +159,7 @@ def test_health_map_wires_a_static_place_layer_without_replacing_route_flows() -
     assert "showHealthMapPlaces(map, data.entries, data.pois);" in main_js
     assert "new AMap.LabelsLayer" in map_js
     assert "new AMap.LabelMarker" in map_js
-    assert 'interactive: false' in map_js
+    assert "interactive: false" in map_js
     assert "planner = renderRoutePlanner(catalog" in main_js
     assert "createRecommendationMapController(map" in main_js
 
@@ -193,7 +193,7 @@ def test_product_toolbar_owns_the_single_location_mode_environment_and_profile_e
     assert "AMap.Geolocation" in html
     assert "AMap.AutoComplete" not in html
     assert "AMap.PlaceSearch" not in html
-    assert './local-tencent-config.js' in html
+    assert "./local-tencent-config.js" in html
     assert 'class="profile-action__label">个人档案</span>' in toolbar
     assert 'class="map-layer-button__label">图层</span>' in html
     assert "./styles/recommendation.css?v=20260831-ui-35" in html
@@ -622,7 +622,10 @@ def test_product_shell_separates_recommendation_from_compact_route_browsing() ->
     assert "data-route-mode" in html
     assert "createRouteCard" in route_ui_js
     assert "updateModeCounts(catalog, controls)" in route_ui_js
-    assert 'tab.setAttribute("aria-label", `${modeLabel}，${routes.length} 条路线`);' in route_ui_js
+    assert (
+        'tab.setAttribute("aria-label", `${modeLabel}，${routes.length} 条路线`);'
+        in route_ui_js
+    )
     assert 'tab.querySelector("span")' not in route_ui_js
     assert "routeShapeCounts" not in route_ui_js
     assert "30 条" not in html
