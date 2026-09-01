@@ -1,0 +1,45 @@
+{
+  "route_modes": [
+    {"value": "walk", "label": "步行"},
+    {"value": "run", "label": "跑步"},
+    {"value": "bike", "label": "骑行"}
+  ],
+  "distance_ranges": {
+    "walk": [[700, 1500, 1000], [1500, 3000, 2500], [3000, 5000, 4000]],
+    "run": [[1000, 3000, 2000], [3000, 6000, 5000], [6000, 10000, 8000], [10000, 14000, 12000]],
+    "bike": [[5000, 10000, 8000], [10000, 20000, 15000], [20000, 30000, 25000]]
+  },
+  "goals": [
+    {"value": "balanced", "label": "综合均衡"},
+    {"value": "health_environment", "label": "健康环境"},
+    {"value": "distance_training", "label": "固定距离训练"},
+    {"value": "relax", "label": "放松"},
+    {"value": "scenery", "label": "观景"},
+    {"value": "family", "label": "亲子"},
+    {"value": "nearby", "label": "就近运动"}
+  ],
+  "experience_levels": [
+    {"value": "beginner", "label": "初学"},
+    {"value": "regular", "label": "经常运动"},
+    {"value": "frequent", "label": "高频训练"}
+  ],
+  "age_groups": [
+    {"value": "under_18", "label": "18 岁以下"},
+    {"value": "18_39", "label": "18-39 岁"},
+    {"value": "40_59", "label": "40-59 岁"},
+    {"value": "60_plus", "label": "60 岁及以上"},
+    {"value": "undisclosed", "label": "不透露"}
+  ],
+  "areas": [
+    {"value": "west_bund", "label": "徐汇滨江"},
+    {"value": "shanghai_botanical_garden", "label": "上海植物园"},
+    {"value": "xujiahui", "label": "徐家汇"},
+    {"value": "longhua", "label": "龙华"},
+    {"value": "hengfu", "label": "衡复风貌区"},
+    {"value": "caohejing", "label": "漕河泾"},
+    {"value": "huajing", "label": "华泾"},
+    {"value": "kangjian", "label": "康健"}
+  ],
+  "interests": ["waterfront", "park", "quiet", "coffee", "toilet", "convenience"],
+  "sensitivities": ["air", "pollen", "heat", "noise"]
+}

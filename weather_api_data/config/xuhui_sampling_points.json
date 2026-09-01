@@ -1,0 +1,86 @@
+[
+  {
+    "point_id": "XH_ENT_0001",
+    "name": "龙耀路地铁站滨江入口",
+    "longitude": 121.455241,
+    "latitude": 31.161142
+  },
+  {
+    "point_id": "XH_ENT_0002",
+    "name": "西岸艺术中心滨江入口",
+    "longitude": 121.460455,
+    "latitude": 31.170949
+  },
+  {
+    "point_id": "XH_ENT_0003",
+    "name": "上海植物园1号门",
+    "longitude": 121.43359,
+    "latitude": 31.151204
+  },
+  {
+    "point_id": "XH_ENT_0004",
+    "name": "上海植物园4号门",
+    "longitude": 121.427179,
+    "latitude": 31.156592
+  },
+  {
+    "point_id": "XH_ENT_0005",
+    "name": "桂江路中环绿廊入口",
+    "longitude": 121.415864,
+    "latitude": 31.152682
+  },
+  {
+    "point_id": "XH_ENT_0006",
+    "name": "康健园北门",
+    "longitude": 121.419668,
+    "latitude": 31.161681
+  },
+  {
+    "point_id": "XH_ENT_0007",
+    "name": "徐家汇公园入口",
+    "longitude": 121.437193,
+    "latitude": 31.200285
+  },
+  {
+    "point_id": "XH_ENT_0008",
+    "name": "徐家汇站12号口",
+    "longitude": 121.434187,
+    "latitude": 31.197381
+  },
+  {
+    "point_id": "XH_ENT_0009",
+    "name": "龙华烈士陵园一号门",
+    "longitude": 121.448321,
+    "latitude": 31.178317
+  },
+  {
+    "point_id": "XH_ENT_0010",
+    "name": "龙华寺广场",
+    "longitude": 121.449023,
+    "latitude": 31.174721
+  },
+  {
+    "point_id": "XH_ENT_0011",
+    "name": "衡山路8号入口",
+    "longitude": 121.441401,
+    "latitude": 31.206889
+  },
+  {
+    "point_id": "XH_ENT_0012",
+    "name": "武康大楼源点广场",
+    "longitude": 121.434086,
+    "latitude": 31.209575
+  },
+  {
+    "point_id": "XH_ENT_0013",
+    "name": "漕河泾开发区站入口",
+    "longitude": 121.399853,
+    "latitude": 31.177862
+  },
+  {
+    "point_id": "XH_ENT_0014",
+    "name": "漕河泾办公园区入口",
+    "longitude": 121.405956,
+    "latitude": 31.172366
+  }
+]

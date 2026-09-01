@@ -1,0 +1,20 @@
+{
+  "route_mode": "walk",
+  "target_time": "now",
+  "distance_min_m": 1500,
+  "target_distance_m": 2500,
+  "distance_max_m": 3500,
+  "origin": {
+    "lng_gcj02": 121.4435,
+    "lat_gcj02": 31.1889
+  },
+  "search_radius_m": 10000,
+  "area_ids": [],
+  "goal": "health_environment",
+  "experience": "regular",
+  "age_group": "18_39",
+  "sensitivities": ["air", "noise"],
+  "route_shape": "any",
+  "interests": ["park", "toilet"],
+  "free_text": "希望路线安静、绿化较多，沿途方便休息。"
+}

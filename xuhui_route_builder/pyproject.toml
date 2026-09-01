@@ -1,0 +1,43 @@
+[project]
+name = "xuhui-route-builder"
+version = "0.1.0"
+description = "徐汇区户外运动路线构建器第一阶段原型"
+requires-python = ">=3.10"
+dependencies = [
+  "pydantic>=2.0",
+  "python-dotenv>=1.0",
+  "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = [
+  "Pillow>=12,<13",
+  "pyright>=1.1.411",
+  "pytest>=8.0",
+  "ruff>=0.16.3",
+]
+
+[project.scripts]
+xuhui-route-builder = "xuhui_route_builder.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "BLE", "RUF", "TRY"]
+ignore = [
+  "RUF001", # Chinese punctuation is intentional in user-facing text.
+  "TRY003", # Context-rich operational errors are part of the CLI contract.
+  "TRY301", # Local validation raises keep batch failure context together.
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["xuhui_route_builder"]

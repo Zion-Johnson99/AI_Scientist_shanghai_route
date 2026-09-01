@@ -1,0 +1,939 @@
+{
+  "batch_status": "accepted",
+  "accepted_count": 90,
+  "review_count": 0,
+  "rejected_count": 0,
+  "published_count": 90,
+  "displayed_count": 90,
+  "mode_counts": {
+    "walk": 30,
+    "run": 30,
+    "bike": 30
+  },
+  "distance_band_counts": {
+    "walk": {
+      "short": 10,
+      "medium": 10,
+      "long": 10
+    },
+    "run": {
+      "short": 10,
+      "medium": 10,
+      "long": 10
+    },
+    "bike": {
+      "short": 10,
+      "medium": 10,
+      "long": 10
+    }
+  },
+  "network_version": [
+    "amap_walking_20260819+local_topology+visual_audit_20260819",
+    "amap_walking_20260820+local_topology+visual_audit_20260820",
+    "amap_riding_20260820+local_topology+visual_audit_20260820"
+  ],
+  "duplicate_groups": {},
+  "routes": [
+    {
+      "route_id": "XH_WALK_0001",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0002",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0003",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0004",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0005",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0006",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0007",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0008",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0009",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0010",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0011",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0012",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0013",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0014",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0015",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0016",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0017",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0018",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0019",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0020",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0021",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0022",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0023",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0024",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0025",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0026",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0027",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0028",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0029",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9954337899543378,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_WALK_0030",
+      "mode": "walk",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0031",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0032",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0033",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0034",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0035",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9658119658119658,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0036",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0037",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0038",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9655172413793104,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0039",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0040",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0041",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0042",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0043",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0044",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0045",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0046",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0047",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0048",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0049",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0050",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0051",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0052",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9980806142034548,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0053",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0054",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9982817869415808,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0055",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9607508532423208,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0056",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9985007496251874,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0057",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0058",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-18",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0059",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_RUN_0060",
+      "mode": "run",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0061",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0062",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0063",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0064",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9914285714285714,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0065",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0066",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0067",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0068",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-15",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0069",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0070",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0071",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0072",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9942196531791907,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0073",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0074",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9949238578680203,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0075",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0076",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0077",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0078",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0079",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0080",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0081",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9726224783861671,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0082",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9584086799276673,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0083",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9099162011173184,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0084",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0085",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9805749805749806,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0086",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0087",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9615004935834156,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0088",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0089",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 0.9730250481695568,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    },
+    {
+      "route_id": "XH_BIKE_0090",
+      "mode": "bike",
+      "validation_status": "accepted",
+      "snap_ratio": null,
+      "route_inside_ratio": 1.0,
+      "source_accessed_at": "2026-08-20",
+      "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "review_note": "高德原始路径、本地几何门禁和全景目视检查通过"
+    }
+  ],
+  "failures": []
+}

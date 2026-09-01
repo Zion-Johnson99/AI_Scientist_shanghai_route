@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">徐汇户外健康地图 XH 标志</title>
+  <path fill="#4F6814" d="M5 8h13l14 17L45 8h14L39 32l20 24H45L32 39 18 56H5l20-24z"/>
+  <path fill="#4F6814" d="M38 8h9v19h12V8h-9v48h9V36H47v20h-9z"/>
+  <path fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4" d="M23 42c5-9 9-9 14-2s9 7 15-1"/>
+  <circle cx="54" cy="38" r="3.5" fill="#B8C88D"/>
+</svg>

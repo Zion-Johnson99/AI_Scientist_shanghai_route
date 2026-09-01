@@ -1,0 +1,15 @@
+﻿entry_id,entry_name,entry_type,region_zone,lng_gcj02,lat_gcj02,lng_wgs84,lat_wgs84,source_url,confidence,poi_id,address,parent_poi,navi_poiid,entr_location,nearest_metro,source_api,default_visible
+XH_ENT_0001,龙耀路地铁站滨江入口,metro_exit,徐汇滨江,121.4598,31.1592,121.455241,31.161142,https://www.meet-in-shanghai.net/tc/news/sports-paradise-beautiful-riverside-artistic-shoreline-come-and-run-along-the-xuhui-riverside-514030/,4,,,,,,龙耀路,curated_entry_pool,True
+XH_ENT_0002,西岸艺术中心滨江入口,riverside_access,徐汇滨江,121.465,31.169,121.460455,31.170949,https://www.meet-in-shanghai.net/tc/news/sports-paradise-beautiful-riverside-artistic-shoreline-come-and-run-along-the-xuhui-riverside-514030/,4,,,,,,云锦路,curated_entry_pool,True
+XH_ENT_0003,上海植物园1号门,park_gate,上海植物园,121.4382,31.1493,121.43359,31.151204,https://www.shbg.org/,4,,,,,,石龙路,curated_entry_pool,True
+XH_ENT_0004,上海植物园4号门,park_gate,上海植物园,121.4318,31.1547,121.427179,31.156592,https://www.shbg.org/,4,,,,,,龙吴路,curated_entry_pool,True
+XH_ENT_0005,桂江路中环绿廊入口,community_node,康健园,121.4205,31.1508,121.415864,31.152682,https://www.thepaper.cn/newsDetail_forward_23437827,4,,,,,,桂江路,curated_entry_pool,False
+XH_ENT_0006,康健园北门,park_gate,康健园,121.4243,31.1598,121.419668,31.161681,https://www.thepaper.cn/newsDetail_forward_23437827,4,,,,,,桂林西街,curated_entry_pool,True
+XH_ENT_0007,徐家汇公园入口,park_gate,徐家汇,121.4418,31.1984,121.437193,31.200285,https://www.xujiahuiorigin.com/zouJin/jingQuXunLiInner?id=1f12b109c4aa7037b47d5f800d6c5c2d,4,,,,,,衡山路,curated_entry_pool,True
+XH_ENT_0008,徐家汇站12号口,metro_exit,徐家汇,121.4388,31.1955,121.434187,31.197381,https://www.xujiahuiorigin.com/zouJin/jingQuXunLiInner?id=1f12b109c4aa7037b47d5f800d6c5c2d,4,,,,,,漕溪北路,curated_entry_pool,True
+XH_ENT_0009,龙华烈士陵园一号门,scenic_node,龙华,121.4529,31.1764,121.448321,31.178317,https://www.jfdaily.com/sgh/detail?id=4010125,4,,,,,,龙华西路,curated_entry_pool,False
+XH_ENT_0010,龙华寺广场,scenic_node,龙华,121.4536,31.1728,121.449023,31.174721,https://www.jfdaily.com/sgh/detail?id=4010125,4,,,,,,龙华路,curated_entry_pool,False
+XH_ENT_0011,衡山路8号入口,scenic_node,衡复风貌区,121.446,31.205,121.441401,31.206889,https://www.xuhui.gov.cn/xwzx_zwxx/20250211/551975.html,4,,,,,,衡山路,curated_entry_pool,False
+XH_ENT_0012,武康大楼源点广场,scenic_node,衡复风貌区,121.4387,31.2077,121.434086,31.209575,https://www.xuhui.gov.cn/xwzx_zwxx/20250211/551975.html,4,,,,,,淮海中路,curated_entry_pool,False
+XH_ENT_0013,漕河泾开发区站入口,metro_exit,漕河泾,121.4045,31.176,121.399853,31.177862,https://www.xuhui.gov.cn/,4,,,,,,宜山路,curated_entry_pool,True
+XH_ENT_0014,漕河泾办公园区入口,office_cluster,漕河泾,121.4106,31.1705,121.405956,31.172366,https://www.xuhui.gov.cn/,4,,,,,,桂平路,curated_entry_pool,False

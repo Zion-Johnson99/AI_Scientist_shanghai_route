@@ -1,0 +1,53 @@
+[project]
+name = "evaluation-model-qwen"
+version = "0.1.0"
+description = "徐汇健康路线评价、千问审核与 CLI"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.116,<1",
+  "openai>=2.0,<3",
+  "pydantic>=2.0,<3",
+  "python-dotenv>=1.0,<2",
+  "uvicorn>=0.35,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pyright>=1.1.411",
+  "pytest>=8.0",
+  "ruff>=0.16.3",
+]
+
+[project.scripts]
+evaluation-model-qwen = "evaluation_model_qwen.cli:main"
+evaluation-model-qwen-api = "evaluation_model_qwen.api:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "BLE", "RUF", "TRY"]
+ignore = [
+  "RUF001",
+  "TRY003",
+  "TRY301",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["evaluation_model_qwen"]
+
+[tool.pyright]
+include = ["src", "tests"]
+pythonVersion = "3.10"
+typeCheckingMode = "strict"

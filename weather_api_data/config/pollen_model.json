@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "weights": {
+    "google_background": 0.7,
+    "weather": 0.15,
+    "vegetation": 0.15
+  },
+  "google_index_max": 5,
+  "weather": {
+    "weights": {
+      "dryness": 0.5,
+      "humidity": 0.25,
+      "wind": 0.25
+    },
+    "rain_full_suppression_mm": 2.0,
+    "humidity_high_risk_percent": 30.0,
+    "humidity_low_risk_percent": 80.0,
+    "wind_full_score_kph": 20.0
+  },
+  "risk_thresholds": {
+    "medium": 34.0,
+    "high": 67.0
+  },
+  "spatial_resolution_m": 1000
+}

@@ -1,0 +1,488 @@
+{
+  "current_conditions": {
+    "metadata": {
+      "tag": "fixture-current-weather",
+      "attributions": [
+        "QWeather"
+      ]
+    },
+    "condition": {
+      "text": "多云",
+      "code": "101"
+    },
+    "temperature": {
+      "value": 31.2,
+      "unit": "°C"
+    },
+    "feelsLike": {
+      "value": 35.1,
+      "unit": "°C"
+    },
+    "humidity": 0.65,
+    "wind": {
+      "direction": {
+        "degree": 120,
+        "compass": "ESE"
+      },
+      "speed": {
+        "value": 12.4,
+        "unit": "km/h"
+      },
+      "scale": "3"
+    },
+    "windGust": {
+      "value": 18.0,
+      "unit": "km/h"
+    },
+    "precipitation": {
+      "amount": {
+        "value": 1.3,
+        "unit": "mm"
+      },
+      "intensity": "light",
+      "type": "rain"
+    },
+    "pressure": {
+      "value": 1004.2,
+      "unit": "hPa"
+    },
+    "visibility": {
+      "value": 16.1,
+      "unit": "km"
+    },
+    "dewPoint": {
+      "value": 23.8,
+      "unit": "°C"
+    },
+    "cloudCover": 0.72,
+    "uvIndex": 3.0
+  },
+  "hourly_weather_24": {
+    "metadata": {
+      "tag": "fixture-hourly-weather",
+      "attributions": [
+        "QWeather"
+      ]
+    },
+    "hours": [
+      {
+        "forecastTime": "2026-08-26T20:00:00+08:00",
+        "condition": {
+          "text": "多云",
+          "code": "101"
+        },
+        "temperature": {
+          "value": 30.0,
+          "unit": "°C"
+        },
+        "feelsLike": {
+          "value": 34.0,
+          "unit": "°C"
+        },
+        "humidity": 0.68,
+        "wind": {
+          "direction": {
+            "degree": 135,
+            "compass": "SE"
+          },
+          "speed": {
+            "value": 8.3,
+            "unit": "km/h"
+          },
+          "scale": "2"
+        },
+        "windGust": {
+          "value": 14.0,
+          "unit": "km/h"
+        },
+        "precipitation": {
+          "amount": {
+            "value": 2.4,
+            "unit": "mm"
+          },
+          "probability": 0.45,
+          "intensity": "moderate",
+          "type": "rain"
+        },
+        "pressure": {
+          "value": 1005.0,
+          "unit": "hPa"
+        },
+        "visibility": {
+          "value": 16.1,
+          "unit": "km"
+        },
+        "dewPoint": {
+          "value": 23.5,
+          "unit": "°C"
+        },
+        "cloudCover": 0.8,
+        "uvIndex": 0.0
+      },
+      {
+        "forecastTime": "2026-08-27T09:00:00+08:00",
+        "condition": {
+          "text": "小雨",
+          "code": "305"
+        },
+        "temperature": {
+          "value": 28.0,
+          "unit": "°C"
+        },
+        "feelsLike": {
+          "value": 31.0,
+          "unit": "°C"
+        },
+        "humidity": 0.76,
+        "wind": {
+          "direction": {
+            "degree": 90,
+            "compass": "E"
+          },
+          "speed": {
+            "value": 10.0,
+            "unit": "km/h"
+          },
+          "scale": "2"
+        },
+        "windGust": {
+          "value": 16.0,
+          "unit": "km/h"
+        },
+        "precipitation": {
+          "amount": {
+            "value": 1.0,
+            "unit": "mm"
+          },
+          "probability": 0.6,
+          "intensity": "light",
+          "type": "rain"
+        },
+        "pressure": {
+          "value": 1007.0,
+          "unit": "hPa"
+        },
+        "visibility": {
+          "value": 12.0,
+          "unit": "km"
+        },
+        "dewPoint": {
+          "value": 23.0,
+          "unit": "°C"
+        },
+        "cloudCover": 0.9,
+        "uvIndex": 2.0
+      }
+    ]
+  },
+  "current_air_quality": {
+    "metadata": {
+      "tag": "fixture-current-air",
+      "attributions": [
+        "QWeather"
+      ]
+    },
+    "indexes": [
+      {
+        "code": "cn-mee",
+        "name": "中国 AQI",
+        "aqi": 55,
+        "aqiDisplay": "55"
+      },
+      {
+        "code": "cn-mee-1h",
+        "name": "中国小时 AQI",
+        "aqi": 42,
+        "aqiDisplay": "42"
+      }
+    ],
+    "pollutants": [
+      {
+        "code": "pm2p5",
+        "concentration": {
+          "value": 18.2,
+          "unit": "μg/m³"
+        }
+      },
+      {
+        "code": "pm10",
+        "concentration": {
+          "value": 31.0,
+          "unit": "μg/m³"
+        }
+      },
+      {
+        "code": "o3",
+        "concentration": {
+          "value": 72.0,
+          "unit": "μg/m³"
+        }
+      },
+      {
+        "code": "no2",
+        "concentration": {
+          "value": 20.0,
+          "unit": "μg/m³"
+        }
+      },
+      {
+        "code": "so2",
+        "concentration": {
+          "value": 5.0,
+          "unit": "μg/m³"
+        }
+      },
+      {
+        "code": "co",
+        "concentration": {
+          "value": 620.0,
+          "unit": "μg/m³"
+        }
+      }
+    ]
+  },
+  "hourly_air_quality_24": {
+    "metadata": {
+      "tag": "fixture-hourly-air",
+      "attributions": [
+        "QWeather"
+      ]
+    },
+    "hours": [
+      {
+        "forecastTime": "2026-08-26T20:00:00+08:00",
+        "indexes": [
+          {
+            "code": "cn-mee",
+            "name": "中国 AQI",
+            "aqi": 48,
+            "aqiDisplay": "48"
+          }
+        ],
+        "pollutants": [
+          {
+            "code": "pm2p5",
+            "concentration": {
+              "value": 21.0,
+          "unit": "μg/m³"
+            }
+          },
+          {
+            "code": "pm10",
+            "concentration": {
+              "value": 34.0,
+          "unit": "μg/m³"
+            }
+          },
+          {
+            "code": "o3",
+            "concentration": {
+              "value": 75.0,
+          "unit": "μg/m³"
+            }
+          },
+          {
+            "code": "no2",
+            "concentration": {
+              "value": 22.0,
+          "unit": "μg/m³"
+            }
+          },
+          {
+            "code": "so2",
+            "concentration": {
+              "value": 6.0,
+          "unit": "μg/m³"
+            }
+          },
+          {
+            "code": "co",
+            "concentration": {
+              "value": 0.58,
+              "unit": "mg/m3"
+            }
+          }
+        ]
+      },
+      {
+        "forecastTime": "2026-08-27T09:00:00+08:00",
+        "indexes": [
+          {
+            "code": "cn-mee",
+            "name": "中国 AQI",
+            "aqi": 61,
+            "aqiDisplay": "61"
+          }
+        ],
+        "pollutants": [
+          {
+            "code": "pm2p5",
+            "concentration": {
+              "value": 27.0,
+              "unit": "μg/m³"
+            }
+          },
+          {
+            "code": "pm10",
+            "concentration": {
+              "value": 41.0,
+              "unit": "μg/m³"
+            }
+          },
+          {
+            "code": "o3",
+            "concentration": {
+              "value": 68.0,
+              "unit": "μg/m³"
+            }
+          },
+          {
+            "code": "no2",
+            "concentration": {
+              "value": 26.0,
+              "unit": "μg/m³"
+            }
+          },
+          {
+            "code": "so2",
+            "concentration": {
+              "value": 7.0,
+              "unit": "μg/m³"
+            }
+          },
+          {
+            "code": "co",
+            "concentration": {
+              "value": 0.7,
+              "unit": "mg/m3"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "indices_3day": {
+    "code": "200",
+    "updateTime": "2026-08-26T18:00:00+08:00",
+    "daily": [
+      {
+        "date": "2026-08-26",
+        "type": "1",
+        "name": "运动指数",
+        "level": "2",
+        "category": "较适宜",
+        "text": "较适宜进行户外运动"
+      },
+      {
+        "date": "2026-08-27",
+        "type": "1",
+        "name": "运动指数",
+        "level": "3",
+        "category": "一般",
+        "text": "降雨时注意防滑"
+      },
+      {
+        "date": "2026-08-28",
+        "type": "1",
+        "name": "运动指数",
+        "level": "2",
+        "category": "较适宜",
+        "text": "较适宜进行户外运动"
+      }
+    ],
+    "refer": {
+      "sources": [
+        "QWeather"
+      ]
+    }
+  },
+  "alerts_empty": {
+    "metadata": {
+      "tag": "fixture-alert-empty",
+      "zeroResult": true,
+      "attributions": [
+        "QWeather"
+      ]
+    },
+    "alerts": []
+  },
+  "alerts_active": {
+    "metadata": {
+      "tag": "fixture-alert-active",
+      "zeroResult": false,
+      "attributions": [
+        "QWeather"
+      ]
+    },
+    "alerts": [
+      {
+        "id": "SH-RAIN-20260826-001",
+        "senderName": "上海市气象台",
+        "issuedTime": "2026-08-26T18:30:00+08:00",
+        "eventType": {
+          "name": "暴雨",
+          "code": "RAINSTORM"
+        },
+        "severity": "Moderate",
+        "effectiveTime": "2026-08-26T19:00:00+08:00",
+        "expireTime": "2026-08-27T01:00:00+08:00",
+        "headline": "上海市暴雨蓝色预警",
+        "description": "局部将出现强降水",
+        "instruction": "注意道路积水和户外运动安全"
+      }
+    ]
+  },
+  "air_current_missing_pollutant": {
+    "metadata": {
+      "tag": "fixture-air-missing-pm25",
+      "attributions": [
+        "QWeather"
+      ]
+    },
+    "indexes": [
+      {
+        "code": "cn-mee-1h",
+        "name": "中国小时 AQI",
+        "aqi": 42,
+        "aqiDisplay": "42"
+      }
+    ],
+    "pollutants": [
+      {
+        "code": "pm10",
+        "concentration": {
+          "value": 31.0,
+          "unit": "μg/m³"
+        }
+      },
+      {
+        "code": "o3",
+        "concentration": {
+          "value": 72.0,
+          "unit": "μg/m³"
+        }
+      },
+      {
+        "code": "no2",
+        "concentration": {
+          "value": 20.0,
+          "unit": "μg/m³"
+        }
+      },
+      {
+        "code": "so2",
+        "concentration": {
+          "value": 5.0,
+          "unit": "μg/m³"
+        }
+      },
+      {
+        "code": "co",
+        "concentration": {
+          "value": 620.0,
+          "unit": "μg/m³"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "regionCode": "CN",
+  "dailyInfo": [
+    {
+      "date": {"year": 2026, "month": 8, "day": 26},
+      "pollenTypeInfo": [
+        {
+          "code": "GRASS",
+          "displayName": "Grass",
+          "inSeason": true,
+          "indexInfo": {
+            "code": "MODERATE",
+            "displayName": "Moderate",
+            "value": 3,
+            "category": "Moderate"
+          }
+        },
+        {
+          "code": "TREE",
+          "displayName": "Tree",
+          "inSeason": false
+        }
+      ]
+    },
+    {
+      "date": {"year": 2026, "month": 8, "day": 27},
+      "pollenTypeInfo": [
+        {
+          "code": "GRASS",
+          "displayName": "Grass",
+          "inSeason": true,
+          "indexInfo": {
+            "code": "HIGH",
+            "displayName": "High",
+            "value": 4,
+            "category": "High"
+          }
+        }
+      ]
+    }
+  ]
+}

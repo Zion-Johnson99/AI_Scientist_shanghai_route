@@ -1,0 +1,4 @@
+interface:
+  display_name: "徐汇路线优化"
+  short_description: "重建并验收徐汇区步行、跑步和骑行路线及真实沿线设施"
+  default_prompt: "使用 $optimize-xuhui-routes 分批重建一种运动的 30 条路线，独立验收几何、真实 POI、公园关系与网页展示。"

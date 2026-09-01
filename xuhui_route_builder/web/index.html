@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>徐汇户外健康地图</title>
+    <link rel="icon" href="./xh-logo.svg?v=20260831-ui-35" type="image/svg+xml" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/qweather-icons@1.8.0/font/qweather-icons.css" />
+    <link rel="stylesheet" href="./styles/main.css?v=20260831-ui-35" />
+    <link rel="stylesheet" href="./styles/recommendation.css?v=20260831-ui-35" />
+    <script src="./local-amap-config.js"></script>
+    <script src="./local-tencent-config.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="product-toolbar" aria-label="路线规划工具栏">
+        <div class="brand-lockup">
+          <img class="brand-logo" src="./xh-logo.svg?v=20260831-ui-35" alt="" width="34" height="34" />
+          <h1>徐汇户外健康地图</h1>
+        </div>
+        <div class="product-toolbar__actions">
+          <div class="route-search-shell" role="search" aria-label="搜索路线起始地点">
+            <details id="sportModeTabs" class="sport-mode-tabs">
+              <summary class="sport-mode-trigger" aria-label="选择运动方式">
+                <svg class="sport-icon" data-sport-icon="walk" aria-hidden="true" viewBox="0 0 24 24"><use href="./assets/icons/sport-icons.svg#sport-walk" /></svg>
+                <span class="sport-mode-trigger__label">步行</span>
+                <svg class="sport-mode-trigger__chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5" /></svg>
+              </summary>
+              <div class="sport-mode-menu" role="group" aria-label="运动方式">
+                <button id="toolbarWalkMode" class="active is-selected" type="button" aria-pressed="true" data-route-mode="walk">
+                  <svg class="sport-icon" data-sport-icon="walk" aria-hidden="true" viewBox="0 0 24 24"><use href="./assets/icons/sport-icons.svg#sport-walk" /></svg>
+                  <b>步行</b><small>城市漫步与日常出行</small>
+                </button>
+                <button id="toolbarRunMode" type="button" aria-pressed="false" data-route-mode="run">
+                  <svg class="sport-icon" data-sport-icon="run" aria-hidden="true" viewBox="0 0 24 24"><use href="./assets/icons/sport-icons.svg#sport-run" /></svg>
+                  <b>跑步</b><small>道路慢跑与节奏训练</small>
+                </button>
+                <button id="toolbarBikeMode" type="button" aria-pressed="false" data-route-mode="bike">
+                  <svg class="sport-icon" data-sport-icon="bike" aria-hidden="true" viewBox="0 0 24 24"><use href="./assets/icons/sport-icons.svg#sport-bike" /></svg>
+                  <b>骑行</b><small>铺装道路与城市骑游</small>
+                </button>
+              </div>
+            </details>
+
+            <div class="toolbar-location">
+              <svg class="location-search-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m20 20-4.5-4.5m2.5-5A7.5 7.5 0 1 1 3 10.5a7.5 7.5 0 0 1 15 0Z" /></svg>
+              <label class="visually-hidden" for="locationInput">搜索地点</label>
+              <input id="locationInput" type="search" placeholder="搜索地点" autocomplete="off" aria-controls="locationEditor" />
+              <button id="locationButton" class="location-button" type="button" aria-expanded="false" aria-controls="locationEditor" aria-label="打开地点选项">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-6.1 7-12A7 7 0 1 0 5 9c0 5.9 7 12 7 12Zm0-9.4A2.6 2.6 0 1 1 12 6a2.6 2.6 0 0 1 0 5.2Z" /></svg>
+              </button>
+              <div id="locationEditor" class="location-editor" hidden>
+                <button id="locationCurrentButton" class="location-current-option" type="button">
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m12 3 2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2L12 3Z" /></svg>
+                  <span><strong>定位到当前位置</strong><small>使用设备定位查找附近路线</small></span>
+                </button>
+                <div id="locationSuggestions" class="location-suggestions" role="listbox" aria-label="地点搜索建议"></div>
+                <div id="locationStatus" class="field-status" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
+
+          <aside id="environmentPanel" class="environment-panel" aria-label="徐汇区环境信息" aria-live="polite"></aside>
+          <button id="profileSettingsButton" class="profile-action" type="button" aria-label="修改个人档案" title="修改个人档案">
+            <span class="profile-action__label">个人档案</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Zm7.1-1.7 1.2.9-2 3.5-1.5-.6a7.8 7.8 0 0 1-2.1 1.2l-.3 1.6h-4l-.3-1.6A7.8 7.8 0 0 1 8 17.3l-1.5.6-2-3.5 1.2-.9a7.6 7.6 0 0 1 0-2.9l-1.2-.9 2-3.5 1.5.6a7.8 7.8 0 0 1 2.1-1.2l.3-1.6h4l.3 1.6a7.8 7.8 0 0 1 2.1 1.2l1.5-.6 2 3.5-1.2.9a7.6 7.6 0 0 1 0 2.9Z" /></svg>
+          </button>
+        </div>
+      </header>
+
+      <aside id="workbenchSidebar" class="sidebar" data-collapsed="false">
+        <header id="workbenchHeader" class="workbench-header" aria-label="路线工作台">
+          <h2 id="workbenchTitle" aria-live="polite">帮我推荐</h2>
+          <div class="workbench-header__actions">
+            <button
+              id="workbenchQwenButton"
+              class="workbench-qwen-button"
+              type="button"
+              data-workbench-qwen
+              aria-label="打开千问路线助手"
+              aria-controls="recommendationView"
+              title="千问路线助手"
+            >
+              <img
+                src="./assets/qwen-color.png"
+                alt=""
+                width="24"
+                height="24"
+              />
+            </button>
+            <button
+              id="workbenchNewChatButton"
+              class="workbench-new-chat-button"
+              type="button"
+              data-workbench-new-chat
+              aria-label="新建千问聊天"
+              aria-controls="recommendationView"
+              title="新建聊天"
+              hidden
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M20.5 11.4a8.3 8.3 0 0 1-8.8 8.3 9.2 9.2 0 0 1-3.9-.9L3 20.5l1.7-4.4a8.3 8.3 0 1 1 15.8-4.7Z" />
+                <path d="M12 8v7M8.5 11.5h7" />
+              </svg>
+            </button>
+            <button
+              id="workbenchCollapseButton"
+              class="workbench-collapse-button"
+              type="button"
+              data-workbench-collapse
+              aria-label="折叠路线工作台"
+              aria-controls="workbenchBody"
+              aria-expanded="true"
+              title="折叠工作台"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m7 14 5-5 5 5" />
+              </svg>
+            </button>
+            <button
+              id="workbenchChatCloseButton"
+              class="workbench-chat-close-button"
+              type="button"
+              data-workbench-chat-close
+              aria-label="关闭千问聊天"
+              aria-controls="recommendationView"
+              title="关闭千问聊天"
+              hidden
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m7 7 10 10M17 7 7 17" />
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <div id="workbenchBody" class="workbench-body">
+          <nav class="mode-tabs" role="tablist" aria-label="路线入口">
+          <button id="recommendationTab" class="active" type="button" role="tab" aria-selected="true" aria-controls="recommendationView" data-product-view="recommendation">帮我推荐</button>
+          <button id="browseTab" type="button" role="tab" aria-selected="false" aria-controls="routeSelectionView" tabindex="-1" data-product-view="browse">浏览路线</button>
+          </nav>
+
+          <section id="recommendationView" class="tab-view recommendation-view active" role="tabpanel" aria-labelledby="recommendationTab"></section>
+
+          <section id="routeSelectionView" class="tab-view route-selection-view" role="tabpanel" aria-labelledby="browseTab" hidden>
+          <div class="browse-intro">
+            <div>
+              <span class="section-kicker">自由探索</span>
+              <h2>浏览 90 条徐汇路线</h2>
+            </div>
+            <button id="resetButton" class="text-action" type="button">清除筛选</button>
+          </div>
+          <div class="controls browse-controls">
+            <div class="field-grid two-columns">
+              <label>距离
+                <select id="distanceFilter">
+                  <option value="all">全部距离</option>
+                  <option value="short">短线</option>
+                  <option value="medium">中线</option>
+                  <option value="long">长线</option>
+                </select>
+              </label>
+              <label>休息与补给
+                <select id="preferenceFilter">
+                  <option value="all">全部休息与补给</option>
+                  <option value="coffee">咖啡</option>
+                  <option value="toilet">公共厕所</option>
+                  <option value="convenience">便利补给</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <section class="result-panel browse-result" aria-label="路线浏览结果">
+            <div class="route-tab-heading">
+              <strong>地图中的路线</strong>
+              <span id="routeOptionCount" aria-live="polite"></span>
+            </div>
+            <p id="browseRouteEmpty" class="empty-state" role="status" hidden>当前筛选暂无路线</p>
+            <div id="browseRouteList" class="browse-route-list" aria-label="筛选后的路线"></div>
+          </section>
+          </section>
+
+        </div>
+      </aside>
+
+      <section class="map-wrap" aria-label="徐汇路线地图">
+        <div id="map"></div>
+        <button id="mapLayerButton" class="map-layer-button" type="button" aria-expanded="false" aria-controls="mapLegend">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m12 3 8 4.5-8 4.5-8-4.5L12 3Zm-8 9 8 4.5 8-4.5M4 16.5 12 21l8-4.5" /></svg>
+          <span class="map-layer-button__label">图层</span>
+        </button>
+        <section id="mapLegend" class="map-legend" aria-label="地图图层" hidden>
+          <div class="map-style-switch" role="group" aria-label="底图样式">
+            <button class="map-style-option is-selected" type="button" data-base-map-mode="health" aria-pressed="true">
+              <i class="map-style-option__swatch map-style-option__swatch--health" aria-hidden="true"></i>
+              <span><strong>健康地图</strong><small>低干扰路线视图</small></span>
+            </button>
+            <button class="map-style-option" type="button" data-base-map-mode="standard" aria-pressed="false">
+              <i class="map-style-option__swatch map-style-option__swatch--standard" aria-hidden="true"></i>
+              <span><strong>标准地图</strong><small>显示完整地图要素</small></span>
+            </button>
+          </div>
+          <div class="map-legend__routes" aria-label="路线图例">
+            <span><i class="legend-walk"></i>步行</span><span><i class="legend-run"></i>跑步</span>
+            <span><i class="legend-bike"></i>骑行</span><span><i class="legend-access"></i>接驳</span>
+            <span><i class="legend-boundary"></i>徐汇边界</span>
+          </div>
+        </section>
+        <aside id="inlineNavigationGuide" class="inline-navigation-guide" aria-label="接驳导航预览" aria-live="polite" hidden>
+          <header class="inline-navigation-guide__head">
+            <span id="inlineNavigationState" class="inline-navigation-guide__state">导航预览</span>
+            <button id="inlineNavigationEndButton" type="button">结束预览</button>
+          </header>
+          <div class="inline-navigation-guide__maneuver"><div><small>当前步骤</small><strong id="inlineNavigationInstruction">从起点出发</strong></div></div>
+          <div class="inline-navigation-guide__metrics">
+            <div><small>接驳距离</small><strong id="inlineNavigationRemaining">--</strong></div>
+            <div><small>预计时间</small><strong id="inlineNavigationDuration">--</strong></div>
+          </div>
+          <div class="inline-navigation-guide__progress" aria-hidden="true"><i id="inlineNavigationProgress"></i></div>
+          <footer class="inline-navigation-guide__actions">
+            <button id="inlineNavigationPreviousButton" class="secondary-action" type="button">上一步</button>
+            <button id="inlineNavigationNextButton" class="primary-action" type="button">下一步</button>
+          </footer>
+        </aside>
+      </section>
+    </main>
+
+    <div id="profileModalHost" class="profile-modal-host"></div>
+
+    <script>
+      (() => {
+        const params = new URLSearchParams(window.location.search);
+        const key = params.get("amapKey") || window.XUHUI_AMAP_JS_KEY;
+        const security = params.get("amapSecurity") || window.XUHUI_AMAP_JS_SECURITY_CODE;
+        const plugins = [
+          "AMap.GeoJSON",
+          "AMap.Geocoder",
+          "AMap.Geolocation",
+          "AMap.Walking",
+          "AMap.Riding",
+          "AMap.Scale",
+        ];
+        window._AMapSecurityConfig = { securityJsCode: security };
+        window.XUHUI_AMAP_READY = new Promise((resolve, reject) => {
+          if (!key || !security) {
+            reject(new Error("缺少本地高德 Key 配置，请检查 web/local-amap-config.js。"));
+            return;
+          }
+          const script = document.createElement("script");
+          script.src = `https://webapi.amap.com/maps?v=2.0&key=${encodeURIComponent(key)}&plugin=${plugins.join(",")}`;
+          script.onload = () => window.AMap
+            ? resolve(window.AMap)
+            : reject(new Error("高德地图对象未初始化，请检查 Key、安全密钥和域名白名单。"));
+          script.onerror = () => reject(new Error("高德地图脚本加载失败，请检查网络或 Key 配置。"));
+          document.head.appendChild(script);
+        });
+      })();
+    </script>
+    <script type="module" src="./src/main.js?v=20260831-ui-35"></script>
+  </body>
+</html>

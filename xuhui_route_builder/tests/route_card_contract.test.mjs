@@ -1,0 +1,268 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import test from "node:test";
+
+import { createRouteCard, routeCardModel } from "../web/src/route-card.js";
+import { ROUTE_MEDIA, routeMediaFor } from "../web/src/route-media.js";
+
+const browseRoute = {
+  route_id: "XH_WALK_0001",
+  route_name: "西岸油罐艺术短线",
+  route_mode: "walk",
+  distance_m: 868,
+  duration_min: 12,
+};
+
+test("共享模型统一运动方式、名称、时间、距离与 PM2.5 文案", () => {
+  const model = routeCardModel(browseRoute, {
+    environment: { pm25: { value: 10.24, status: "ok", unit: "µg/m³" } },
+  });
+
+  assert.equal(model.routeId, "XH_WALK_0001");
+  assert.equal(model.routeName, "西岸油罐艺术短线");
+  assert.equal(model.labelText, "步行");
+  assert.equal(model.durationText, "12 min");
+  assert.equal(model.distanceText, "0.9 km");
+  assert.equal(model.pm25Text, "PM2.5 10.2 µg/m³");
+  assert.equal(model.journeyText, "12 min · 0.9 km · PM2.5 10.2 µg/m³");
+});
+
+test("推荐嵌套记录支持首选标签并保留选中状态", () => {
+  const model = routeCardModel({
+    final_rank: 1,
+    route: {
+      environment_summary: { pm2_5: { value: 12.4, status: "ok" } },
+      route: { ...browseRoute, route_id: "route-1" },
+    },
+  }, { preferredLabel: "首选", selected: true });
+
+  assert.equal(model.routeId, "route-1");
+  assert.equal(model.labelText, "首选");
+  assert.equal(model.pm25Text, "PM2.5 12.4 µg/m³");
+  assert.equal(model.selected, true);
+});
+
+test("PM2.5 缺失和过期状态不展示伪精度", () => {
+  assert.equal(routeCardModel(browseRoute).pm25Text, "PM2.5 暂无数据");
+  assert.equal(routeCardModel(browseRoute, {
+    environment: { pm2_5: { value: 18.6, status: "stale" } },
+  }).pm25Text, "PM2.5 数据更新中");
+});
+
+test("媒体映射覆盖 90 条正式路线并保留固定三图槽位", () => {
+  const catalog = JSON.parse(readFileSync(
+    new URL("../data/web/route_catalog.json", import.meta.url),
+    "utf8",
+  ));
+  const routeIds = catalog.map((route) => route.route_id).sort();
+  const mediaRouteIds = Object.keys(ROUTE_MEDIA).sort();
+
+  assert.equal(routeIds.length, 90);
+  assert.deepEqual(mediaRouteIds, routeIds);
+  for (const routeId of routeIds) {
+    const configured = ROUTE_MEDIA[routeId];
+    const routePaths = [];
+    assert.deepEqual(Object.keys(configured).sort(), ["cover", "gallery"], `${routeId} 媒体结构不固定`);
+    assert.equal(configured.gallery.length, 2, `${routeId} 需保留 context/detail 两个槽位`);
+    for (const path of [configured.cover, ...configured.gallery]) {
+      assert.ok(path === null || typeof path === "string", `${routeId} 媒体槽位只允许本地路径或 null`);
+      if (path === null) continue;
+      assert.match(path, /^\.?\/assets\/routes\/[^\s]+$/, `${routeId} 应使用 web/assets/routes 本地路径`);
+      routePaths.push(path);
+    }
+    assert.equal(new Set(routePaths).size, routePaths.length, `${routeId} 的三个媒体槽位不应重复`);
+  }
+});
+
+test("媒体查询返回副本并保留 gallery 空槽位", () => {
+  assert.deepEqual(routeMediaFor("UNKNOWN"), { cover: null, gallery: [] });
+
+  const mediaMap = {
+    XH_WALK_0001: {
+      cover: "/assets/routes/walk-1-cover.webp",
+      gallery: ["/assets/routes/walk-1-context.webp", ""],
+    },
+  };
+  const media = routeMediaFor("XH_WALK_0001", mediaMap);
+  assert.deepEqual(media, {
+    cover: "/assets/routes/walk-1-cover.webp",
+    gallery: ["/assets/routes/walk-1-context.webp", null],
+  });
+  media.gallery.push("changed");
+  assert.equal(mediaMap.XH_WALK_0001.gallery.length, 2);
+});
+
+test("整张卡承担点击与键盘选择，不创建 radio", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const selected = [];
+    const previewed = [];
+    const card = createRouteCard(routeCardModel(browseRoute, {
+      selected: true,
+      environment: { pm2_5: { value: 10.2, status: "ok" } },
+    }), {
+      onSelect: (routeId) => selected.push(routeId),
+      onPreview: (routeId) => previewed.push(routeId),
+    });
+
+    assert.equal(card.dataset.routeId, "XH_WALK_0001");
+    assert.equal(card.attributes.role, "button");
+    assert.equal(card.attributes.tabindex, "0");
+    assert.equal(card.attributes["aria-current"], "true");
+    assert.equal(findByAttribute(card, "role", "radio"), null);
+    assert.ok(findByClass(card, "route-card__metrics-travel"));
+    assert.ok(findByClass(card, "route-card__metric--pm25"));
+    assert.match(card.textContent, /12 min · 0.9 km/);
+    assert.match(card.textContent, /PM2.5 10.2 µg\/m³/);
+
+    card.dispatch("click", {});
+    card.dispatch("keydown", keyEvent("Enter"));
+    card.dispatch("keydown", keyEvent(" "));
+    card.dispatch("keydown", keyEvent("Escape"));
+    assert.deepEqual(selected, ["XH_WALK_0001", "XH_WALK_0001", "XH_WALK_0001"]);
+
+    card.dispatch("mouseenter", {});
+    card.dispatch("mouseleave", {});
+    assert.deepEqual(previewed, ["XH_WALK_0001", null]);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("三种运动方式使用统一的本地填充 SVG 图标", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const icons = ["walk", "run", "bike"].map((routeMode, index) => {
+      const card = createRouteCard(routeCardModel({
+        ...browseRoute,
+        route_id: `XH_${routeMode.toUpperCase()}_${index + 1}`,
+        route_mode: routeMode,
+      }));
+      const icon = findByClass(card, `route-card__sport-icon--${routeMode}`);
+      assert.ok(icon);
+      assert.match(icon.innerHTML, /viewBox="0 0 24 24"/);
+      assert.match(icon.innerHTML, new RegExp(`sport-icons\\.svg#sport-${routeMode}`));
+      return icon.innerHTML;
+    });
+
+    assert.equal(new Set(icons).size, 3);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+test("有封面时渲染图片，缺图时保留方形媒体占位", () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = createDocumentStub();
+  try {
+    const placeholderCard = createRouteCard(routeCardModel(browseRoute, { mediaMap: {} }));
+    assert.ok(findByClass(placeholderCard, "route-card--placeholder"));
+    assert.ok(findByClass(placeholderCard, "route-card__media"));
+    assert.ok(findByClass(placeholderCard, "route-card__placeholder"));
+    assert.equal(findByTag(placeholderCard, "IMG"), null);
+
+    const imageCard = createRouteCard(routeCardModel(browseRoute, {
+      mediaMap: { XH_WALK_0001: { cover: "/route.webp", gallery: [] } },
+    }));
+    assert.ok(findByClass(imageCard, "route-card--has-cover"));
+    assert.equal(findByClass(imageCard, "route-card--placeholder"), null);
+    assert.ok(findByClass(imageCard, "route-card__media"));
+    const image = findByTag(imageCard, "IMG");
+    assert.equal(image.attributes.src, "/route.webp");
+    assert.equal(image.attributes.alt, "西岸油罐艺术短线");
+
+    image.dispatch("error", {});
+    assert.equal(findByTag(imageCard, "IMG"), null);
+    assert.ok(findByClass(imageCard, "route-card__media--placeholder"));
+    assert.ok(findByClass(imageCard, "route-card__placeholder"));
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});
+
+function keyEvent(key) {
+  return {
+    key,
+    prevented: false,
+    preventDefault() { this.prevented = true; },
+  };
+}
+
+function createDocumentStub() {
+  return {
+    createElement(tagName) {
+      return new NodeStub(tagName);
+    },
+  };
+}
+
+class NodeStub {
+  constructor(tagName) {
+    this.tagName = tagName.toUpperCase();
+    this.children = [];
+    this.attributes = {};
+    this.dataset = {};
+    this.className = "";
+    this.listeners = {};
+    this._text = "";
+  }
+
+  set textContent(value) {
+    this._text = String(value);
+    this.children = [];
+  }
+
+  get textContent() {
+    return this._text + this.children.map((child) => child.textContent || "").join("");
+  }
+
+  setAttribute(name, value) {
+    this.attributes[name] = String(value);
+  }
+
+  append(...children) {
+    this.children.push(...children);
+  }
+
+  replaceChildren(...children) {
+    this.children = [...children];
+  }
+
+  addEventListener(type, handler) {
+    this.listeners[type] ||= [];
+    this.listeners[type].push(handler);
+  }
+
+  dispatch(type, event) {
+    for (const handler of this.listeners[type] || []) handler(event);
+  }
+}
+
+function findByAttribute(node, name, value) {
+  if (node?.attributes?.[name] === value) return node;
+  for (const child of node?.children || []) {
+    const match = findByAttribute(child, name, value);
+    if (match) return match;
+  }
+  return null;
+}
+
+function findByClass(node, className) {
+  if (String(node?.className || "").split(/\s+/).includes(className)) return node;
+  for (const child of node?.children || []) {
+    const match = findByClass(child, className);
+    if (match) return match;
+  }
+  return null;
+}
+
+function findByTag(node, tagName) {
+  if (node?.tagName === tagName) return node;
+  for (const child of node?.children || []) {
+    const match = findByTag(child, tagName);
+    if (match) return match;
+  }
+  return null;
+}
