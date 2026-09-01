@@ -93,6 +93,28 @@ def test_disabled_api_still_prepares_historical_calibration(tmp_path: Path) -> N
     assert Path(cast(str, result["historical_calibration_path"])).is_file()
 
 
+def test_tracked_calibration_does_not_require_ignored_raw_history(tmp_path: Path) -> None:
+    project_root = Path(__file__).parents[1]
+    source_dir = (
+        project_root / "noise_data" / "xuhui_noise_monitoring" / "xuhui_data"
+    )
+    target_dir = tmp_path / "noise_data" / "xuhui_noise_monitoring" / "xuhui_data"
+    target_dir.mkdir(parents=True)
+    for name in ("xuhui_noise_baseline.json", "xuhui_noise_observations.csv"):
+        (target_dir / name).write_bytes((source_dir / name).read_bytes())
+
+    result = refresh_noise_observations_from_project(
+        settings=Settings(),
+        session=cast(requests.Session, FakeSession()),
+        root=tmp_path,
+    )
+
+    assert result["status"] == "disabled"
+    assert result["historical_calibration_path"] == str(
+        target_dir / "xuhui_noise_baseline.json"
+    )
+
+
 def test_prepare_noise_history_reports_generated_products(tmp_path: Path) -> None:
     _write_history(tmp_path)
 

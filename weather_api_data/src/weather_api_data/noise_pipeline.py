@@ -244,13 +244,12 @@ def _prepare_historical_calibration(root: Path) -> Path:
     processed = root / "noise_data" / "xuhui_noise_monitoring" / "xuhui_data"
     calibration = processed / "xuhui_noise_baseline.json"
     observations = processed / "xuhui_noise_observations.csv"
-    if (
-        not calibration.is_file()
-        or not observations.is_file()
-        or source.stat().st_mtime > calibration.stat().st_mtime
+    processed_ready = calibration.is_file() and observations.is_file()
+    if processed_ready and (
+        not source.is_file() or source.stat().st_mtime <= calibration.stat().st_mtime
     ):
-        return write_noise_data_products(source, processed).calibration_path
-    return calibration
+        return calibration
+    return write_noise_data_products(source, processed).calibration_path
 
 
 def _freshness_status(
