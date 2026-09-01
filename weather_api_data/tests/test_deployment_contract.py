@@ -136,8 +136,22 @@ def test_workflow_uses_frozen_uv_and_uploads_pages_tree() -> None:
     assert "web/index.html" in workflow
     assert "data/web/environment_dashboard.json" in workflow
     assert "Generate browser map configuration" in workflow
-    assert "github.event_name == 'schedule' || inputs.deploy_pages" in workflow
+    assert "needs['refresh-and-build'].outputs.deploy_pages == 'true'" in workflow
     assert "uses: actions/deploy-pages@" in workflow
+
+
+def test_workflow_only_builds_pages_artifact_for_explicit_page_deploys() -> None:
+    workflow = _read(WORKFLOW)
+
+    assert 'echo "deploy_pages=$deploy_pages" >> "$GITHUB_OUTPUT"' in workflow
+    assert '"10,25,40,55 * * * *") tier="weather"; deploy_pages="false"' in workflow
+    assert '"5 * * * *") tier="hourly"; deploy_pages="false"' in workflow
+    assert '"7 22 * * *") tier="daily"; deploy_pages="true"' in workflow
+    assert workflow.count(
+        "if: ${{ steps.refresh-tier.outputs.deploy_pages == 'true' }}"
+    ) == 3
+    assert "deploy_pages: ${{ steps.refresh-tier.outputs.deploy_pages }}" in workflow
+    assert "if: ${{ needs['refresh-and-build'].outputs.deploy_pages == 'true' }}" in workflow
 
 
 def test_pages_root_redirects_to_web_application() -> None:

@@ -36,9 +36,11 @@ concurrency:
 
 jobs:
   refresh-and-build:
-    name: Refresh environment data and build Pages artifact
+    name: Refresh environment data
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    outputs:
+      deploy_pages: ${{ steps.refresh-tier.outputs.deploy_pages }}
     env:
       QWEATHER_ENABLED: "true"
       QWEATHER_API_KEY: ${{ secrets.QWEATHER_API_KEY }}
@@ -95,15 +97,17 @@ jobs:
         run: |
           if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
             tier="${{ inputs.tier }}"
+            deploy_pages="${{ inputs.deploy_pages }}"
           else
             case "${{ github.event.schedule }}" in
-              "10,25,40,55 * * * *") tier="weather" ;;
-              "5 * * * *") tier="hourly" ;;
-              "7 22 * * *") tier="daily" ;;
+              "10,25,40,55 * * * *") tier="weather"; deploy_pages="false" ;;
+              "5 * * * *") tier="hourly"; deploy_pages="false" ;;
+              "7 22 * * *") tier="daily"; deploy_pages="true" ;;
               *) echo "Unknown schedule" >&2; exit 1 ;;
             esac
           fi
           echo "tier=$tier" >> "$GITHUB_OUTPUT"
+          echo "deploy_pages=$deploy_pages" >> "$GITHUB_OUTPUT"
 
       - name: Bootstrap complete environment runtime
         if: ${{ steps.refresh-tier.outputs.tier != 'daily' }}
@@ -152,6 +156,7 @@ jobs:
           key: environment-runtime-${{ github.run_id }}
 
       - name: Generate browser map configuration
+        if: ${{ steps.refresh-tier.outputs.deploy_pages == 'true' }}
         run: >-
           uv run --directory xuhui_route_builder --frozen
           python -m xuhui_route_builder.web_map_config
@@ -159,6 +164,7 @@ jobs:
           --web-root "$GITHUB_WORKSPACE/xuhui_route_builder/web"
 
       - name: Build Pages artifact tree
+        if: ${{ steps.refresh-tier.outputs.deploy_pages == 'true' }}
         shell: bash
         run: |
           test -f xuhui_route_builder/web/index.html
@@ -170,13 +176,14 @@ jobs:
           cp -R xuhui_route_builder/data/web/. pages-artifact/data/web/
 
       - name: Upload Pages artifact
+        if: ${{ steps.refresh-tier.outputs.deploy_pages == 'true' }}
         uses: actions/upload-pages-artifact@v4
         with:
           path: pages-artifact
 
   deploy:
     name: Deploy Pages artifact
-    if: ${{ github.event_name == 'schedule' || inputs.deploy_pages }}
+    if: ${{ needs['refresh-and-build'].outputs.deploy_pages == 'true' }}
     needs: refresh-and-build
     runs-on: ubuntu-latest
     environment:
