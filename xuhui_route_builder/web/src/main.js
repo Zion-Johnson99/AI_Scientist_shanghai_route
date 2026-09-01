@@ -1,5 +1,6 @@
 import {
-  loadRouteData,
+  loadEnvironmentDashboard,
+  loadJson,
   startEnvironmentDashboardPolling,
 } from "./data-loader.js?v=20260901-environment-2";
 import {
@@ -48,11 +49,21 @@ import {
 } from "./route-ui.js?v=20260901-environment-2";
 
 const RECOMMENDATION_MAP_CARDS_ENABLED = false;
+const LOCAL_BOOTSTRAP_QUESTIONNAIRE = createBootstrapQuestionnaire();
 
 async function bootstrap() {
-  const map = await createMap("map");
-  const data = await loadRouteData();
   const recommendationApi = createRecommendationApi();
+  const mapPromise = createMap("map");
+  const routeDataPromise = loadBootstrapRouteData();
+  const environmentPromise = loadEnvironmentDashboard().catch((error) => {
+    console.warn("环境数据后台加载失败，先显示本地路线", { error });
+    return null;
+  });
+  const questionnairePromise = recommendationApi.questionnaire()
+    .then((value) => ({ value, error: null }))
+    .catch((error) => ({ value: null, error }));
+  const map = await mapPromise;
+  const data = await routeDataPromise;
   const uiState = {
     productView: "recommendation",
     chatOpen: false,
@@ -61,14 +72,7 @@ async function bootstrap() {
   };
   let planner = null;
   let recommendationUI = null;
-  let questionnaire = null;
-  let questionnaireError = null;
-  try {
-    questionnaire = await recommendationApi.questionnaire();
-  } catch (error) {
-    questionnaireError = error;
-    console.error("推荐问卷加载失败", { error });
-  }
+  let questionnaire = LOCAL_BOOTSTRAP_QUESTIONNAIRE;
   const routeDock = createRouteDock(undefined, {
     async onNavigate(route) {
       const routeId = route?.properties?.route_id || route?.route_id;
@@ -164,7 +168,8 @@ async function bootstrap() {
   });
   let environmentGeneratedAt = data.environmentDashboard?.metadata?.generated_at || null;
   let environmentPanel = createEnvironmentPanel(environmentContainer, data.environmentDashboard);
-  startEnvironmentDashboardPolling((nextDashboard) => {
+  function applyEnvironmentDashboard(nextDashboard) {
+    if (!nextDashboard) return;
     const nextGeneratedAt = nextDashboard?.metadata?.generated_at || null;
     if (nextGeneratedAt && nextGeneratedAt === environmentGeneratedAt) return;
     const wasOpen = environmentContainer.classList.contains("is-expanded");
@@ -174,7 +179,10 @@ async function bootstrap() {
     environmentPanel = createEnvironmentPanel(environmentContainer, nextDashboard);
     environmentPanel.setOpen(wasOpen);
     recommendationUI?.refreshEnvironment();
-  });
+    if (recommendationUI) refreshNearbyRoutes();
+  }
+  void environmentPromise.then(applyEnvironmentDashboard);
+  startEnvironmentDashboardPolling(applyEnvironmentDashboard);
   let activeNavigation = null;
   let recommendationFeatures = [];
 
@@ -312,7 +320,11 @@ async function bootstrap() {
     getRouteEnvironment: (routeId) => buildRouteExposureModel(data.environmentDashboard, routeId),
     onRecommend: (profile) => recommendationApi.recommend(profile),
     onInterpretIntent: (request) => recommendationApi.interpretIntent(request),
-    onReloadQuestionnaire: () => recommendationApi.questionnaire(),
+    onReloadQuestionnaire: async () => {
+      const nextQuestionnaire = await recommendationApi.questionnaire();
+      questionnaire = nextQuestionnaire;
+      return nextQuestionnaire;
+    },
     shouldSelectRoute: () => uiState.productView === "recommendation" || uiState.chatOpen,
     onChatStateChange(open) {
       uiState.chatOpen = Boolean(open);
@@ -378,18 +390,23 @@ async function bootstrap() {
     },
   });
   commitLocation(currentLocation, { refreshRoutes: false });
-  if (questionnaireError) {
-    recommendationUI.showError(questionnaireError);
-  } else {
-    const initialResult = buildInitialRecommendationResult({
-      catalog,
-      questionnaire,
-      answers: recommendationUI.getAnswers(),
-      location: currentLocation,
-      getRouteEnvironment: (routeId) => buildRouteExposureModel(data.environmentDashboard, routeId),
-    });
-    recommendationUI.showResult(initialResult);
-  }
+  const initialResult = buildInitialRecommendationResult({
+    catalog,
+    questionnaire,
+    answers: recommendationUI.getAnswers(),
+    location: currentLocation,
+    getRouteEnvironment: (routeId) => buildRouteExposureModel(data.environmentDashboard, routeId),
+  });
+  recommendationUI.showResult(initialResult);
+  void questionnairePromise.then(({ value, error }) => {
+    if (value) {
+      questionnaire = value;
+      recommendationUI.setQuestionnaire(value);
+    } else {
+      console.warn("推荐问卷后台加载失败，继续使用本地默认配置", { error });
+    }
+    refreshNearbyRoutes();
+  });
 
   document.querySelector("#profileSettingsButton").addEventListener("click", () => profileDialog.open());
   if (!hadSavedProfile) profileDialog.open();
@@ -733,7 +750,7 @@ async function bootstrap() {
   }
 
   function refreshNearbyRoutes() {
-    if (questionnaireError || !questionnaire || !recommendationUI) return;
+    if (!questionnaire || !recommendationUI) return;
     const result = buildInitialRecommendationResult({
       catalog,
       questionnaire,
@@ -887,6 +904,128 @@ function formatDistance(value) {
 function formatDuration(value) {
   const seconds = Math.max(0, Number(value || 0));
   return `${Math.max(0, Math.ceil(seconds / 60))} 分钟`;
+}
+
+async function loadBootstrapRouteData() {
+  const [boundary, entries, routes, catalog, pois] = await Promise.all([
+    loadJson("../data/web/xuhui_boundary.geojson"),
+    loadJson("../data/web/xuhui_entries.geojson"),
+    loadJson("../data/web/xuhui_routes.geojson"),
+    loadJson("../data/web/route_catalog.json"),
+    loadJson("../data/web/poi_catalog.json"),
+  ]);
+  return {
+    boundary,
+    entries,
+    routes,
+    catalog,
+    pois,
+    environmentDashboard: null,
+  };
+}
+
+function createBootstrapQuestionnaire() {
+  return {
+    route_modes: [
+      bootstrapOption("walk", "步行"),
+      bootstrapOption("run", "跑步"),
+      bootstrapOption("bike", "骑行"),
+    ],
+    distance_ranges: {
+      walk: [
+        bootstrapDistanceRange(700, 1500, 1000),
+        bootstrapDistanceRange(1500, 3000, 2500),
+        bootstrapDistanceRange(3000, 5000, 4000),
+      ],
+      run: [
+        bootstrapDistanceRange(1000, 3000, 2000),
+        bootstrapDistanceRange(3000, 6000, 5000),
+        bootstrapDistanceRange(6000, 10000, 8000),
+        bootstrapDistanceRange(10000, 14000, 12000),
+      ],
+      bike: [
+        bootstrapDistanceRange(5000, 10000, 8000),
+        bootstrapDistanceRange(10000, 20000, 15000),
+        bootstrapDistanceRange(20000, 30000, 25000),
+      ],
+    },
+    goals: [
+      bootstrapOption("balanced", "综合均衡"),
+      bootstrapOption("health_environment", "健康环境"),
+      bootstrapOption("distance_training", "固定距离训练"),
+      bootstrapOption("relax", "放松"),
+      bootstrapOption("scenery", "观景"),
+      bootstrapOption("family", "亲子"),
+      bootstrapOption("nearby", "就近运动"),
+    ],
+    experience_levels: [
+      bootstrapOption("beginner", "初学"),
+      bootstrapOption("regular", "经常运动"),
+      bootstrapOption("frequent", "高频训练"),
+    ],
+    age_groups: [
+      bootstrapOption("under_18", "18 岁以下"),
+      bootstrapOption("18_39", "18-39 岁"),
+      bootstrapOption("40_59", "40-59 岁"),
+      bootstrapOption("60_plus", "60 岁及以上"),
+      bootstrapOption("undisclosed", "不透露"),
+    ],
+    areas: [
+      bootstrapOption("west_bund", "徐汇滨江"),
+      bootstrapOption("shanghai_botanical_garden", "上海植物园"),
+      bootstrapOption("xujiahui", "徐家汇"),
+      bootstrapOption("longhua", "龙华"),
+      bootstrapOption("hengfu", "衡复风貌区"),
+      bootstrapOption("caohejing", "漕河泾"),
+      bootstrapOption("huajing", "华泾"),
+      bootstrapOption("kangjian", "康健"),
+    ],
+    interests: [
+      bootstrapOption("waterfront", "滨水"),
+      bootstrapOption("park", "公园"),
+      bootstrapOption("quiet", "安静"),
+      bootstrapOption("coffee", "咖啡"),
+      bootstrapOption("toilet", "厕所"),
+      bootstrapOption("convenience", "补给"),
+    ],
+    sensitivities: [
+      bootstrapOption("air", "空气"),
+      bootstrapOption("pollen", "花粉"),
+      bootstrapOption("heat", "高温"),
+      bootstrapOption("noise", "噪声"),
+    ],
+    target_times: [
+      bootstrapOption("now", "现在"),
+      bootstrapOption("plus_2h", "两小时后"),
+      bootstrapOption("custom", "自定义时间"),
+    ],
+    search_scopes: [
+      bootstrapOption("nearby_3000", "附近 3 公里"),
+      bootstrapOption("nearby_5000", "附近 5 公里"),
+      bootstrapOption("nearby_8000", "附近 8 公里"),
+      bootstrapOption("area", "指定片区"),
+      bootstrapOption("all_xuhui", "全徐汇区"),
+    ],
+    route_shapes: [
+      bootstrapOption("any", "不限"),
+      bootstrapOption("strict_loop", "环线"),
+      bootstrapOption("one_way", "单程"),
+    ],
+  };
+}
+
+function bootstrapOption(value, label) {
+  return { value, label };
+}
+
+function bootstrapDistanceRange(low, high, target) {
+  return {
+    value: `${low}_${high}_${target}`,
+    label: `${low / 1000}–${high / 1000} 公里`,
+    distance_min_m: low,
+    target_distance_m: target,
+    distance_max_m: high,
+  };
 }
 
 function showRouteFeature(map, routeFeaturesById, routeId, data, selectedPreferences = []) {
