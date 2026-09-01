@@ -2,10 +2,10 @@ name: Environment Refresh
 
 on:
   schedule:
-    # GitHub cron uses UTC. Shanghai cadence: every 15 minutes, hourly at :02,
+    # GitHub cron uses UTC. Shanghai cadence: every 15 minutes from :04, hourly at :08,
     # and daily at 06:07 (22:07 UTC on the previous date).
-    - cron: "*/15 * * * *"
-    - cron: "2 * * * *"
+    - cron: "4,19,34,49 * * * *"
+    - cron: "8 * * * *"
     - cron: "7 22 * * *"
   workflow_dispatch:
     inputs:
@@ -82,8 +82,8 @@ jobs:
             tier="${{ inputs.tier }}"
           else
             case "${{ github.event.schedule }}" in
-              "*/15 * * * *") tier="weather" ;;
-              "2 * * * *") tier="hourly" ;;
+              "4,19,34,49 * * * *") tier="weather" ;;
+              "8 * * * *") tier="hourly" ;;
               "7 22 * * *") tier="daily" ;;
               *) echo "Unknown schedule" >&2; exit 1 ;;
             esac

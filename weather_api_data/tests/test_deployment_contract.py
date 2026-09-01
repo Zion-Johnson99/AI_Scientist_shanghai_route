@@ -59,8 +59,8 @@ def test_workflow_schedules_three_refresh_tiers_and_keeps_manual_choice() -> Non
 
     assert "workflow_dispatch:" in workflow
     assert "schedule:" in workflow
-    assert 'cron: "*/15 * * * *"' in workflow
-    assert 'cron: "2 * * * *"' in workflow
+    assert 'cron: "4,19,34,49 * * * *"' in workflow
+    assert 'cron: "8 * * * *"' in workflow
     assert 'cron: "7 22 * * *"' in workflow
     assert "type: choice" in workflow
     for tier in ("weather", "hourly", "daily"):
@@ -73,8 +73,8 @@ def test_workflow_routes_schedule_to_tier_and_persists_runtime() -> None:
     workflow = _read(WORKFLOW)
 
     assert "Resolve refresh tier" in workflow
-    assert '"*/15 * * * *") tier="weather"' in workflow
-    assert '"2 * * * *") tier="hourly"' in workflow
+    assert '"4,19,34,49 * * * *") tier="weather"' in workflow
+    assert '"8 * * * *") tier="hourly"' in workflow
     assert '"7 22 * * *") tier="daily"' in workflow
     assert "uses: actions/cache/restore@" in workflow
     assert "uses: actions/cache/save@" in workflow
