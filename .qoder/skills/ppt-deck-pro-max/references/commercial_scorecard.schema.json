@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Deck Commercial Scorecard",
+  "type": "object",
+  "required": ["overall_score", "dimensions", "summary", "recommended_action"],
+  "properties": {
+    "overall_score": { "type": ["number", "null"], "minimum": 1, "maximum": 5 },
+    "dimensions": {
+      "type": "object",
+      "required": [
+        "audience_fit",
+        "buying_reason_clarity",
+        "proof_strength",
+        "objection_coverage",
+        "narrative_flow",
+        "commercial_ask"
+      ],
+      "properties": {
+        "audience_fit": { "type": ["number", "null"], "minimum": 1, "maximum": 5 },
+        "buying_reason_clarity": { "type": ["number", "null"], "minimum": 1, "maximum": 5 },
+        "proof_strength": { "type": ["number", "null"], "minimum": 1, "maximum": 5 },
+        "objection_coverage": { "type": ["number", "null"], "minimum": 1, "maximum": 5 },
+        "narrative_flow": { "type": ["number", "null"], "minimum": 1, "maximum": 5 },
+        "commercial_ask": { "type": ["number", "null"], "minimum": 1, "maximum": 5 }
+      },
+      "additionalProperties": false
+    },
+    "summary": { "type": ["string", "null"] },
+    "recommended_action": { "type": ["string", "null"] },
+    "weak_dimensions": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": true
+}

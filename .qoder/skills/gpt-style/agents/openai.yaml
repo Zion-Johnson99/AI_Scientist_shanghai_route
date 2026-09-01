@@ -1,0 +1,4 @@
+interface:
+  display_name: "GPT Style"
+  short_description: "Personal direct and academic writing style"
+  default_prompt: "Use $gpt-style to rewrite this answer in my preferred concise style."
