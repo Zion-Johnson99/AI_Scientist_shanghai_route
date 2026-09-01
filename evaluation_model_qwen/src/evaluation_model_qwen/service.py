@@ -104,16 +104,15 @@ def recommend(
     try:
         client = QwenClient.from_env(env_file or evaluation_root() / ".env")
         decision, audit = client.review(candidates, profile, risk)
-        reviews = {item.route_id: item for item in decision.route_reviews}
         by_id = {item.route.route_id: item for item in candidates}
         final_routes = [
             FinalRoute(
                 route=by_id[route_id],
                 final_rank=index,
-                personalized_fit=reviews[route_id].personalized_fit_reason,
-                advantages=reviews[route_id].advantages,
-                suggestions=reviews[route_id].suggestions,
-                cautions=reviews[route_id].cautions,
+                personalized_fit=_verified_personalized_fit(by_id[route_id], profile),
+                advantages=_fallback_advantages(by_id[route_id], profile, candidates),
+                suggestions=_fallback_suggestions(by_id[route_id], risk),
+                cautions=by_id[route_id].risk_notes,
             )
             for index, route_id in enumerate(decision.ranked_route_ids, start=1)
         ]
@@ -179,7 +178,7 @@ def _fallback_result(
         FinalRoute(
             route=item,
             final_rank=index,
-            personalized_fit="依据硬约束、五维基础评分和数据可信度形成该顺序。",
+            personalized_fit=_verified_personalized_fit(item, profile),
             advantages=_fallback_advantages(item, profile, candidates),
             suggestions=_fallback_suggestions(item, risk),
             cautions=item.risk_notes,
@@ -213,15 +212,18 @@ def _fallback_advantages(
     profile: UserProfile,
     candidates: list[ScoredRoute],
 ) -> list[str]:
-    advantages = ["距离符合目标"]
+    advantages = ["距离符合目标范围"]
+    matched_labels = _matched_interest_labels(candidate, profile)
+    if matched_labels:
+        advantages.append(f"路线数据支持{'、'.join(matched_labels[:3])}偏好")
+    if profile.route_shape == "strict_loop" and candidate.route.route_shape == "strict_loop":
+        advantages.append("闭环形态符合回到起点需求")
     pm25_value = _metric_value(candidate, "pm2_5")
     comparable_pm25 = [
         value for item in candidates if (value := _metric_value(item, "pm2_5")) is not None
     ]
     if pm25_value is not None and comparable_pm25 and pm25_value <= min(comparable_pm25):
         advantages.append("PM2.5 在候选中较低")
-    if candidate.matched_preferences:
-        advantages.append("符合已选路线偏好")
     if len(advantages) < 2 and candidate.data_confidence >= 0.7:
         advantages.append("路线数据可信度较高")
     if len(advantages) < 2:
@@ -229,6 +231,30 @@ def _fallback_advantages(
     if profile.goal == "nearby" and candidate.access_distance_m is not None:
         advantages.append("到路线起点接驳较短")
     return advantages[:3]
+
+
+def _verified_personalized_fit(candidate: ScoredRoute, profile: UserProfile) -> str:
+    distance_km = candidate.route.distance_m / 1000
+    clauses = [f"全程约{distance_km:g}公里，符合目标距离范围"]
+    if profile.route_shape == "strict_loop" and candidate.route.route_shape == "strict_loop":
+        clauses.append("闭环形态符合回到起点需求")
+    matched_labels = _matched_interest_labels(candidate, profile)
+    if matched_labels:
+        clauses.append(f"路线数据支持{'、'.join(matched_labels)}偏好")
+    return "；".join(clauses) + "。"
+
+
+def _matched_interest_labels(candidate: ScoredRoute, profile: UserProfile) -> list[str]:
+    labels = {
+        "waterfront": "滨江",
+        "park": "公园",
+        "quiet": "安静",
+        "coffee": "咖啡",
+        "toilet": "厕所",
+        "convenience": "便利设施",
+    }
+    matched = set(candidate.matched_preferences) & set(profile.interests)
+    return [labels[interest] for interest in profile.interests if interest in matched]
 
 
 def _fallback_suggestions(candidate: ScoredRoute, risk: RiskAssessment) -> list[str]:
