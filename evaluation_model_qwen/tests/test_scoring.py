@@ -540,7 +540,7 @@ def test_quiet_interest_uses_continuous_noise_score_without_claiming_explicit_ma
     assert by_id["louder"].matched_preferences == []
 
 
-def test_facility_interest_remains_a_soft_preference() -> None:
+def test_explicit_facility_match_ranks_before_unmatched_route() -> None:
     coffee = route(
         "coffee",
         preference_hits=["coffee"],
@@ -567,8 +567,9 @@ def test_facility_interest_remains_a_soft_preference() -> None:
         WEIGHTS,
     )
 
-    assert scored[0].route.route_id == "healthy"
-    assert scored[1].matched_preferences == ["coffee"]
+    assert scored[0].route.route_id == "coffee"
+    assert scored[0].matched_preferences == ["coffee"]
+    assert scored[1].route.route_id == "healthy"
 
 
 def test_access_distance_is_labeled_as_gcj02_straight_line_estimate() -> None:

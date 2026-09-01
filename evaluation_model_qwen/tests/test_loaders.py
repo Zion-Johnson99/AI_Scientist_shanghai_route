@@ -254,7 +254,7 @@ def test_remote_environment_cache_defaults_to_one_minute(
 ) -> None:
     monkeypatch.delenv("EVALUATION_MODEL_QWEN_ENVIRONMENT_CACHE_SECONDS", raising=False)
 
-    assert loaders._environment_cache_seconds() == 60
+    assert loaders._environment_cache_seconds() == 60  # pyright: ignore[reportPrivateUsage]
 
 
 def test_load_data_defaults_to_real_sibling_data() -> None:
@@ -263,6 +263,8 @@ def test_load_data_defaults_to_real_sibling_data() -> None:
     assert len(bundle.routes) == 90
     assert len(bundle.environment.route_environment) == 90
     assert {route.route_id for route in bundle.routes} == set(bundle.environment.route_environment)
+    assert all(len(route.geometry_gcj02) >= 2 for route in bundle.routes)
+    assert "geometry_gcj02" not in bundle.routes[0].model_dump()
 
 
 def test_load_data_rejects_duplicate_route_id_with_context(tmp_path: Path) -> None:

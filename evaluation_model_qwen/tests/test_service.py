@@ -31,7 +31,7 @@ class FailingReviewClient:
         raise QwenApiError(
             ApiAudit(
                 status="degraded",
-                model="qwen3.7-plus",
+                model="qwen3.8-flash",
                 error_type="rate_limit",
                 error_message="千问请求触发限流",
             )
@@ -104,7 +104,7 @@ class HallucinatingReviewClient:
                 decision_summary="维持原排序",
                 review_status="approved",
             ),
-            ApiAudit(status="ok", model="qwen3.7-plus"),
+            ApiAudit(status="ok", model="qwen3.8-flash"),
         )
 
 
@@ -165,3 +165,22 @@ def test_real_catalog_waterfront_loop_request_keeps_semantics_and_verified_fit()
     assert "滨江偏好" in result.final_routes[0].personalized_fit
     assert all(item.route.route.route_shape == "strict_loop" for item in result.final_routes)
     assert all(item.route.route.route_id != "XH_BIKE_0077" for item in result.final_routes)
+
+
+def test_real_catalog_filters_near_duplicate_routes_and_reports_missing_toilet() -> None:
+    snapshot_time = load_data().environment.generated_at
+    profile = UserProfile(
+        route_mode="run",
+        target_time=snapshot_time,
+        distance_min_m=10000,
+        target_distance_m=12000,
+        distance_max_m=14000,
+        interests=["toilet"],
+    )
+
+    result = recommend(profile, offline=True)
+
+    route_ids = [item.route.route.route_id for item in result.final_routes]
+    assert not {"XH_RUN_0053", "XH_RUN_0059"}.issubset(route_ids)
+    assert "没有已核实的厕所" in result.decision_summary
+    assert any("没有已核实的厕所" in item for item in result.profile_conflicts)

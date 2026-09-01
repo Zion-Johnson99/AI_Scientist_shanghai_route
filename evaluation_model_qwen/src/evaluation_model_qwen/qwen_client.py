@@ -31,7 +31,7 @@ __all__ = [
     "QwenResponseError",
 ]
 
-DEFAULT_MODEL = "qwen3.7-plus"
+DEFAULT_MODEL = "qwen3.8-flash"
 DEFAULT_TIMEOUT_SECONDS = 30.0
 TEMPERATURE = 0.2
 MAX_COMPLETION_TOKENS = 1200

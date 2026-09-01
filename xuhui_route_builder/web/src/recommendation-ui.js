@@ -239,9 +239,13 @@ export function buildRecommendationViewModel(result, currentRouteId = null, getR
     isSelected: route.routeId === selectedRouteId,
     explanationSource,
   }));
+  const notices = uniqueTextValues(result?.profile_conflicts);
+  if (result.status === "degraded") {
+    notices.push("个性化解释已简化，路线排序由本地评分完成。");
+  }
   return {
     kind: result.status === "degraded" ? "degraded" : "result",
-    notice: result.status === "degraded" ? "个性化解释已简化，路线排序由本地评分完成。" : "",
+    notice: notices.join(" "),
     summary: String(result.decision_summary || ""),
     routes: stableRoutes,
     selectedRouteId,
@@ -856,6 +860,11 @@ export function createRecommendationUI({
     if (chatResultVisible) {
       const model = buildRecommendationViewModel(currentResult, currentRouteId, getRouteEnvironment);
       if (["result", "degraded"].includes(model.kind)) {
+        if (model.notice) {
+          const notice = element("p", "recommendation-state__notice", model.notice);
+          notice.setAttribute("role", "status");
+          scroll.append(notice);
+        }
         const cards = element("div", "recommendation-chat__route-cards");
         model.routes.slice(0, 3).forEach((route, index) => cards.append(renderChatRouteCard(route, index)));
         scroll.append(cards);

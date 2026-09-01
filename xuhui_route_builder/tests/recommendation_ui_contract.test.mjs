@@ -140,6 +140,15 @@ test("推荐结果模型覆盖加载、暂停、无候选、降级和正常状�
   assert.equal(buildRecommendationViewModel({ view: "error", message: "服务不可用" }).kind, "error");
 });
 
+test("推荐结果展示未满足的显式偏好", () => {
+  const result = resultFixture("ok");
+  result.profile_conflicts = ["当前条件下没有已核实的厕所路线，已保留其他条件较优的结果。"];
+
+  const model = buildRecommendationViewModel(result);
+
+  assert.match(model.notice, /没有已核实的厕所/);
+});
+
 test("结果保持接口顺序，选中备选时首选位置不变", () => {
   const model = buildRecommendationViewModel(resultFixture("ok"), "route-2");
 

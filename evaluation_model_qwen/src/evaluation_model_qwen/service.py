@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any, Literal, cast
 from uuid import uuid4
 
+from .diversity import select_diverse_candidates
 from .loaders import load_data
 from .models import (
     ApiAudit,
@@ -42,6 +43,7 @@ def recommend(
     offline: bool = False,
     project_root: Path | None = None,
     route_catalog_path: Path | None = None,
+    route_geometry_path: Path | None = None,
     environment_path: Path | None = None,
     weights_path: Path | None = None,
     env_file: Path | None = None,
@@ -49,6 +51,7 @@ def recommend(
     bundle = load_data(
         project_root=project_root or evaluation_root(),
         route_catalog_path=route_catalog_path,
+        route_geometry_path=route_geometry_path,
         environment_path=environment_path,
     )
     weights = load_weights(weights_path)
@@ -71,8 +74,8 @@ def recommend(
             api_audit=ApiAudit(status="not_used"),
         )
 
-    candidates = score_routes(bundle, profile, risk, weights)[:5]
-    if not candidates:
+    scored_candidates = score_routes(bundle, profile, risk, weights)
+    if not scored_candidates:
         return RecommendationResult(
             run_id=run_id,
             generated_at=generated_at,
@@ -86,6 +89,8 @@ def recommend(
             data_generated_at=bundle.environment.generated_at,
             api_audit=ApiAudit(status="not_used"),
         )
+    profile_conflicts = _missing_facility_conflicts(scored_candidates, profile)
+    candidates = select_diverse_candidates(scored_candidates, limit=5)
 
     if offline:
         return _fallback_result(
@@ -99,6 +104,7 @@ def recommend(
             decision_source="offline",
             audit=ApiAudit(status="not_used"),
             summary="离线模式采用 Python 基础排序。",
+            profile_conflicts=profile_conflicts,
         )
 
     try:
@@ -125,8 +131,11 @@ def recommend(
             risk=risk,
             base_candidates=candidates,
             final_routes=final_routes,
-            decision_summary=decision.decision_summary,
-            profile_conflicts=decision.profile_conflicts,
+            decision_summary=_summary_with_conflicts(
+                decision.decision_summary,
+                profile_conflicts,
+            ),
+            profile_conflicts=_unique_text(profile_conflicts + decision.profile_conflicts),
             data_generated_at=bundle.environment.generated_at,
             api_audit=audit,
         )
@@ -142,6 +151,7 @@ def recommend(
             decision_source="python_fallback",
             audit=exc.audit,
             summary="千问审核暂不可用，当前结果采用 Python 基础排序。",
+            profile_conflicts=profile_conflicts,
         )
 
 
@@ -173,6 +183,7 @@ def _fallback_result(
     decision_source: Literal["python_fallback", "offline"],
     audit: ApiAudit,
     summary: str,
+    profile_conflicts: list[str],
 ) -> RecommendationResult:
     final_routes = [
         FinalRoute(
@@ -195,11 +206,35 @@ def _fallback_result(
             "risk": risk,
             "base_candidates": candidates,
             "final_routes": final_routes,
-            "decision_summary": summary,
+            "decision_summary": _summary_with_conflicts(summary, profile_conflicts),
+            "profile_conflicts": profile_conflicts,
             "data_generated_at": data_generated_at,
             "api_audit": audit,
         }
     )
+
+
+def _missing_facility_conflicts(candidates: list[ScoredRoute], profile: UserProfile) -> list[str]:
+    labels = {
+        "coffee": "咖啡",
+        "toilet": "厕所",
+        "convenience": "便利设施",
+    }
+    matched = {interest for candidate in candidates for interest in candidate.matched_preferences}
+    return [
+        f"当前条件下没有已核实的{labels[interest]}路线，已保留其他条件较优的结果；"
+        "扩大距离或搜索范围后可能获得匹配。"
+        for interest in profile.interests
+        if interest in labels and interest not in matched
+    ]
+
+
+def _summary_with_conflicts(summary: str, conflicts: list[str]) -> str:
+    return " ".join([*conflicts, summary])
+
+
+def _unique_text(values: list[str]) -> list[str]:
+    return list(dict.fromkeys(value for value in values if value))
 
 
 def _run_id() -> str:

@@ -225,7 +225,7 @@ def test_api_check_uses_non_thinking_mode_and_returns_audit() -> None:
     assert audit.request_id == "req-check"
     assert audit.input_tokens == 123
     assert audit.output_tokens == 45
-    assert calls.calls[0]["model"] == "qwen3.7-plus"
+    assert calls.calls[0]["model"] == "qwen3.8-flash"
     assert calls.calls[0]["temperature"] == 0.2
     assert calls.calls[0]["max_completion_tokens"] == 1200
     assert calls.calls[0]["extra_body"] == {"enable_thinking": False}
@@ -637,6 +637,7 @@ def test_intent_uses_independent_strict_schema_and_safe_recent_history() -> None
     assert audit.request_id == "req-intent"
     assert audit.prompt_version == "qwen-route-intent-v2"
     assert calls.calls[0]["response_format"] is IntentResponse
+    assert calls.calls[0]["model"] == "qwen3.8-flash"
     assert calls.calls[0]["extra_body"] == {"enable_thinking": False}
     assert result.preference_patch.route_mode == "bike"
     assert "本轮需求" in calls.calls[0]["messages"][0]["content"]

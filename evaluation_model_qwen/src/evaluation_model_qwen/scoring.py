@@ -603,6 +603,7 @@ def score_routes(
 
     scored.sort(
         key=lambda item: (
+            -len(set(item.matched_preferences) & set(profile.interests)),
             -item.base_score,
             -item.data_confidence,
             item.access_distance_m if item.access_distance_m is not None else float("inf"),

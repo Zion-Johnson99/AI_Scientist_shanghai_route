@@ -45,7 +45,7 @@ flowchart LR
     result_check -->|通过| final_product([徐汇户外健康地图])
 ```
 
-产品运行阶段使用 `qwen3.7-plus` 完成路线评价与推荐。系统先通过 Python 检查安全条件、距离和用户偏好，对候选路线执行可复现的五维评分；千问随后审核排名靠前的路线，生成首选、备选、推荐理由和风险提醒。模型服务临时异常时，页面会继续使用本地评分结果。
+产品运行阶段使用 `qwen3.8-flash` 整理专门对话中的路线需求，并审核排名靠前的候选路线。系统先通过 Python 检查安全条件、距离和用户偏好，对候选路线执行可复现的五维评分与相似路线过滤；千问随后生成首选、备选、推荐理由和风险提醒。模型服务临时异常时，页面会继续使用本地评分结果。
 
 ![路线助手推荐界面](./docs/images/readme/qwen-recommendation.png)
 _图 2：路线助手展示首选路线、备选路线和推荐说明；本地排序与千问评价共用这套界面。_
@@ -100,7 +100,7 @@ Copy-Item .\evaluation_model_qwen\.env.example .\evaluation_model_qwen\.env
 | --- | --- |
 | `xuhui_route_builder/.env` | 地图显示、地点搜索和接驳导航 |
 | `weather_api_data/.env` | 天气、空气质量、花粉等环境数据更新 |
-| `evaluation_model_qwen/.env` | 千问评价与推荐，默认模型为 `qwen3.7-plus` |
+| `evaluation_model_qwen/.env` | 千问需求对话、评价与推荐，默认模型为 `qwen3.8-flash` |
 
 各服务的 Key 只放在本机 `.env` 或云端加密 Secrets 中，仓库仅提交配置模板。
 

@@ -229,6 +229,9 @@ class RouteRecord(StrictModel):
     geometry_status: str
     route_inside_ratio: float | None = None
     snap_ratio: float | None = None
+    geometry_gcj02: list[Coordinate] = Field(
+        default_factory=lambda: list[Coordinate](), exclude=True
+    )
 
 
 class EnvironmentMetric(StrictModel):
