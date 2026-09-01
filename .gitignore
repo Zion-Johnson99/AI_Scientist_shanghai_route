@@ -11,6 +11,7 @@
 *.pem
 *.token
 secrets/
+.wrangler/
 
 # Python caches and virtual environments
 __pycache__/
