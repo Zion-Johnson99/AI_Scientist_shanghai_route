@@ -5,7 +5,7 @@ import {
 import {
   buildRouteExposureModel,
   createEnvironmentPanel,
-} from "./environment-ui.js?v=20260831-ui-35";
+} from "./environment-ui.js?v=20260901-runtime-1";
 import {
   beginInlineNavigation,
   clearInlineNavigation,

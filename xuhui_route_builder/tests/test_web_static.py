@@ -471,10 +471,11 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
     release = "v=20260831-ui-35"
+    runtime_release = "v=20260901-runtime-1"
     assert html.count(f"./xh-logo.svg?{release}") == 2
     assert f"./styles/main.css?{release}" in html
     assert f"./styles/recommendation.css?{release}" in html
-    assert f"./src/main.js?{release}" in html
+    assert f"./src/main.js?{runtime_release}" in html
     assert f"./data-loader.js?{release}" in main_js
     assert f"./navigation-session.js?{release}" in main_js
     assert f"./map.js?{release}" in main_js
@@ -505,6 +506,17 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
         "poi_catalog.json",
     ]:
         assert data_path in data_loader_js
+
+
+def test_runtime_config_and_environment_assets_use_current_release() -> None:
+    html = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+    main_js = (WEB_ROOT / "src" / "main.js").read_text(encoding="utf-8")
+
+    release = "v=20260901-runtime-1"
+    assert f'./local-amap-config.js?{release}' in html
+    assert f'./local-tencent-config.js?{release}' in html
+    assert f'./src/main.js?{release}' in html
+    assert f'./environment-ui.js?{release}' in main_js
 
 
 def test_route_detail_hides_internal_review_note() -> None:
