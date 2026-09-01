@@ -2,9 +2,40 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  loadEnvironmentDashboard,
   loadRouteData,
   startEnvironmentDashboardPolling,
 } from "../web/src/data-loader.js";
+
+test("环境看板优先读取无缓存在线发布地址", async () => {
+  const previousFetch = globalThis.fetch;
+  const previousUrl = globalThis.XUHUI_ENVIRONMENT_DASHBOARD_URL;
+  const requestedUrls = [];
+  const dashboard = { metadata: { generated_at: "2099-09-01T00:15:00+08:00" } };
+
+  globalThis.XUHUI_ENVIRONMENT_DASHBOARD_URL =
+    "https://environment.example.com/environment_dashboard.json";
+  globalThis.fetch = async (url, options) => {
+    requestedUrls.push({ url, options });
+    return { ok: true, async json() { return dashboard; } };
+  };
+
+  try {
+    assert.strictEqual(await loadEnvironmentDashboard(), dashboard);
+    assert.match(
+      requestedUrls[0].url,
+      /^https:\/\/environment\.example\.com\/environment_dashboard\.json\?v=/,
+    );
+    assert.deepEqual(requestedUrls[0].options, { cache: "no-store" });
+  } finally {
+    globalThis.fetch = previousFetch;
+    if (previousUrl === undefined) {
+      delete globalThis.XUHUI_ENVIRONMENT_DASHBOARD_URL;
+    } else {
+      globalThis.XUHUI_ENVIRONMENT_DASHBOARD_URL = previousUrl;
+    }
+  }
+});
 
 test("路线数据加载包含统一环境看板", async () => {
   const previousFetch = globalThis.fetch;

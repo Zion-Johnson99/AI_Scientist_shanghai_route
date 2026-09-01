@@ -42,11 +42,11 @@ test("推荐嵌套记录支持首选标签并保留选中状态", () => {
   assert.equal(model.selected, true);
 });
 
-test("PM2.5 缺失和过期状态不展示伪精度", () => {
+test("PM2.5 过期时继续展示最后数值，真正缺失时保持空态", () => {
   assert.equal(routeCardModel(browseRoute).pm25Text, "PM2.5 暂无数据");
   assert.equal(routeCardModel(browseRoute, {
     environment: { pm2_5: { value: 18.6, status: "stale" } },
-  }).pm25Text, "PM2.5 数据更新中");
+  }).pm25Text, "PM2.5 18.6 µg/m³");
 });
 
 test("媒体映射覆盖 90 条正式路线并保留固定三图槽位", () => {

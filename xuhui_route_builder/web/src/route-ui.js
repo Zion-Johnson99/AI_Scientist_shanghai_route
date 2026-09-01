@@ -1,4 +1,4 @@
-import { createRouteCard, routeCardModel } from "./route-card.js?v=20260831-ui-35";
+import { createRouteCard, routeCardModel } from "./route-card.js?v=20260901-environment-2";
 
 export function renderRoutePlanner(catalog, options) {
   const controls = getControls();

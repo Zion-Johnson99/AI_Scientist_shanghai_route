@@ -98,10 +98,10 @@ test("dock 对缺失、过期和 partial 环境状态使用稳定读数", () => 
 
   const degraded = buildRouteDockModel(sampleRoute.properties, {
     ...sampleEnvironment,
-    pm25: { displayValue: "数据更新中", status: "stale" },
+    pm25: { value: 15.3, displayValue: "15.3", unit: "µg/m³", status: "stale" },
     noise: { displayValue: "暂无数据", status: "no_data" },
   });
-  assert.equal(degraded.exposures.pm25.compactText, "数据更新中");
+  assert.equal(degraded.exposures.pm25.compactText, "15.3 µg/m³");
   assert.equal(degraded.exposures.noise.compactText, "暂无数据");
   assert.equal("statusLabel" in degraded.exposures.pollen, false);
 });
@@ -121,6 +121,25 @@ test("未来 3 小时从推荐计划时间起展示四个真实天气与 AQI 点
   assert.equal(forecast.points[0].precipitationText, "降水 20%");
   assert.equal(forecast.points[0].aqiText, "AQI 45 · 优");
   assert.doesNotMatch(JSON.stringify(forecast), /pm25|PM2\.5|µg\/m³/);
+});
+
+test("未来 3 小时记录过期时继续展示最后天气与 AQI 数值", () => {
+  const dashboard = forecastDashboard();
+  dashboard.current.weather.status = "stale";
+  dashboard.current.aqi.status = "stale";
+  dashboard.forecast.weather_hourly.forEach((record) => { record.status = "stale"; });
+  dashboard.forecast.aqi_hourly.forEach((record) => { record.status = "stale"; });
+
+  const forecast = buildRouteForecastModel(
+    dashboard,
+    { target_time: "plus_2h" },
+    () => new Date("2026-08-30T08:00:00+08:00"),
+  );
+
+  assert.equal(forecast.points[0].weatherText, "多云");
+  assert.equal(forecast.points[0].temperatureText, "27°");
+  assert.equal(forecast.points[0].aqiText, "AQI 45 · 优");
+  assert.doesNotMatch(JSON.stringify(forecast), /等待更新|数据更新中|数据较旧|暂无数据/);
 });
 
 test("浏览路线和无法解析的推荐时间都从当前时刻开始", () => {

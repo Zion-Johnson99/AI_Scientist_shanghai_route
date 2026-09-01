@@ -415,7 +415,7 @@ function cleanSummaryItems(values, limit) {
 function buildExposureModel(key, exposure) {
   const status = String(exposure?.status || "no_data");
   const displayValue = String(exposure?.displayValue || DATA_STATE_TEXT.no_data);
-  const available = status === "ok" || status === "partial";
+  const available = Number.isFinite(Number(exposure?.value ?? exposure?.displayValue));
   const riskLevel = available && exposure?.riskLevel ? String(exposure.riskLevel) : "";
   const valueText = available
     ? key === "pm25"
@@ -478,7 +478,7 @@ function nearestHourlyRecord(records, target) {
 }
 
 function availableNumber(record, key) {
-  if (!["ok", "partial"].includes(record?.status)) return null;
+  if (!["ok", "partial", "stale"].includes(record?.status)) return null;
   const rawValue = record?.values?.[key];
   if (rawValue === null || rawValue === undefined || rawValue === "") return null;
   const value = Number(rawValue);
@@ -486,7 +486,7 @@ function availableNumber(record, key) {
 }
 
 function availableText(record, key) {
-  if (!["ok", "partial"].includes(record?.status)) return "";
+  if (!["ok", "partial", "stale"].includes(record?.status)) return "";
   return String(record?.values?.[key] || "").trim();
 }
 

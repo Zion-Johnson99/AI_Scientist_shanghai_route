@@ -24,8 +24,8 @@ export function buildCurrentEnvironmentModel(dashboard) {
   const aqiRecord = dashboard?.current?.aqi;
   const weatherStatus = recordStatus(weather, weather?.values?.temperature_c);
   const aqiStatus = recordStatus(aqiRecord, aqiRecord?.values?.aqi);
-  const weatherAvailable = hasCurrentValue(weatherStatus, weather?.values?.temperature_c);
-  const aqiAvailable = hasCurrentValue(aqiStatus, aqiRecord?.values?.aqi);
+  const weatherAvailable = hasLastValue(weatherStatus, weather?.values?.temperature_c);
+  const aqiAvailable = hasLastValue(aqiStatus, aqiRecord?.values?.aqi);
   const values = weather?.values || {};
   const temperature = weatherAvailable ? finiteNumber(values.temperature_c) : null;
   const humidity = weatherAvailable ? finiteNumber(values.relative_humidity_pct) : null;
@@ -38,8 +38,8 @@ export function buildCurrentEnvironmentModel(dashboard) {
     status: combinedStatus(weatherStatus, aqiStatus),
     weatherStatus,
     aqiStatus,
-    weatherFreshnessText: weatherStatus === "stale" ? "等待更新" : "",
-    aqiFreshnessText: aqiStatus === "stale" ? "等待更新" : "",
+    weatherFreshnessText: "",
+    aqiFreshnessText: "",
     temperature,
     temperatureText: temperature === null ? statusText(weatherStatus) : `${formatNumber(temperature)}°`,
     weatherText: weatherAvailable ? String(values.weather_text || "天气更新中") : statusText(weatherStatus),
@@ -69,7 +69,7 @@ export function buildForecastEnvironmentModel(dashboard) {
   const weatherHours = (forecast.weather_hourly || []).slice(0, 24).map((record) => {
     const values = record?.values || {};
     const status = recordStatus(record, values.temperature_c);
-    const available = hasDisplayValue(status);
+    const available = hasLastValue(status, values.temperature_c);
     const temperature = available ? finiteNumber(values.temperature_c) : null;
     return {
       time: record?.business_time || null,
@@ -91,7 +91,7 @@ export function buildForecastEnvironmentModel(dashboard) {
   const aqiHours = (forecast.aqi_hourly || []).slice(0, 24).map((record) => {
     const value = record?.values?.aqi;
     const status = recordStatus(record, value);
-    const aqi = hasDisplayValue(status) ? finiteNumber(value) : null;
+    const aqi = hasLastValue(status, value) ? finiteNumber(value) : null;
     return {
       time: record?.business_time || null,
       timeLabel: hourLabel(record?.business_time),
@@ -113,7 +113,7 @@ export function buildForecastEnvironmentModel(dashboard) {
       ));
       const category = record?.values?.category;
       const status = recordStatus(record, category);
-      const available = hasDisplayValue(status);
+      const available = hasLastValue(status, category);
       return {
         name,
         status,
@@ -357,7 +357,7 @@ function renderHourly(forecast) {
         ? `${weatherIconMarkup(hour.weatherIcon, hour.weatherText)}<span>${escapeHtml(hour.weatherText)}</span>`
         : "";
       const precipitation = available
-        ? `<span>降水 ${escapeHtml(metricText(hour.precipitationProbability, "%", hour.status))}</span>`
+        ? `<span>降水 ${escapeHtml(metricText(hour.precipitationProbability, "%"))}</span>`
         : "";
       return `<article class="environment-hour">
         <time>${escapeHtml(hour.timeLabel)}</time>
@@ -513,7 +513,7 @@ function normalizeAlerts(alerts) {
 
 function exposureMetric(label, record, options = {}) {
   const status = recordStatus(record, record?.value, "expires_at");
-  const value = hasDisplayValue(status) ? finiteNumber(record?.value) : null;
+  const value = hasLastValue(status, record?.value) ? finiteNumber(record?.value) : null;
   const rounded = value === null ? null : roundTo(value, options.digits ?? 1);
   return {
     label,
@@ -571,7 +571,7 @@ function hasDisplayValue(status) {
   return status === "ok" || status === "partial";
 }
 
-function hasCurrentValue(status, value) {
+function hasLastValue(status, value) {
   return hasDisplayValue(status) || (status === "stale" && hasValue(value));
 }
 
@@ -594,9 +594,9 @@ function formatNumber(value) {
   return Number.isInteger(Number(value)) ? String(Number(value)) : String(roundTo(Number(value), 1));
 }
 
-function metricText(value, unit, status) {
+function metricText(value, unit) {
   const number = finiteNumber(value);
-  return number === null ? statusText(status) : `${formatNumber(number)}${unit}`;
+  return number === null ? "—" : `${formatNumber(number)}${unit}`;
 }
 
 function windDirectionName(value) {

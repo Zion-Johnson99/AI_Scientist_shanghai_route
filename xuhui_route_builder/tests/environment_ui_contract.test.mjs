@@ -135,7 +135,7 @@ test("当前环境模型保留天气、湿度、风、降水和 AQI，空预警�
   assert.deepEqual(model.alerts, []);
 });
 
-test("过期当前记录保留最后一次成功数值并标记等待更新", () => {
+test("过期当前记录保留最后一次成功数值且不展示更新提示", () => {
   const dashboard = dashboardFixture();
   dashboard.current.weather.valid_until = "2000-01-01T00:00:00+08:00";
   dashboard.current.aqi.valid_until = "2000-01-01T00:00:00+08:00";
@@ -150,8 +150,8 @@ test("过期当前记录保留最后一次成功数值并标记等待更新", ()
   assert.equal(model.aqiStatus, "stale");
   assert.equal(model.aqi, 42);
   assert.equal(model.aqiText, "42");
-  assert.equal(model.weatherFreshnessText, "等待更新");
-  assert.equal(model.aqiFreshnessText, "等待更新");
+  assert.equal(model.weatherFreshnessText, "");
+  assert.equal(model.aqiFreshnessText, "");
 });
 
 test("过期天气保留旧值，缺失 AQI 保持暂无数据", () => {
@@ -164,13 +164,13 @@ test("过期天气保留旧值，缺失 AQI 保持暂无数据", () => {
   assert.equal(model.weatherStatus, "stale");
   assert.equal(model.temperature, 26.4);
   assert.equal(model.temperatureText, "26.4°");
-  assert.equal(model.weatherFreshnessText, "等待更新");
+  assert.equal(model.weatherFreshnessText, "");
   assert.equal(model.aqiStatus, "no_data");
   assert.equal(model.aqi, null);
   assert.equal(model.aqiText, "暂无数据");
 });
 
-test("后端显式 stale 状态保留最后 AQI 并标记等待更新", () => {
+test("后端显式 stale 状态保留最后 AQI 且不展示更新提示", () => {
   const dashboard = dashboardFixture();
   dashboard.current.aqi = record({ aqi: 88 }, { status: "stale" });
 
@@ -179,7 +179,7 @@ test("后端显式 stale 状态保留最后 AQI 并标记等待更新", () => {
   assert.equal(model.aqiStatus, "stale");
   assert.equal(model.aqi, 88);
   assert.equal(model.aqiText, "88");
-  assert.equal(model.aqiFreshnessText, "等待更新");
+  assert.equal(model.aqiFreshnessText, "");
 });
 
 test("有效预警映射标题和正文，过期预警被过滤", () => {
@@ -217,6 +217,27 @@ test("未来模型只包含 24 小时天气、AQI 和三天六类生活指数", 
   assert.equal(serialized.includes("pollen"), false);
 });
 
+test("过期的当前、24 小时和六类指数继续显示最后数值且不展示异常提示", () => {
+  const dashboard = dashboardFixture();
+  dashboard.current.weather.status = "stale";
+  dashboard.current.aqi.status = "stale";
+  dashboard.forecast.weather_hourly.forEach((item) => { item.status = "stale"; });
+  dashboard.forecast.aqi_hourly.forEach((item) => { item.status = "stale"; });
+  dashboard.forecast.life_indices_daily.forEach((item) => { item.status = "stale"; });
+
+  const container = createPanelStub();
+  const panel = createEnvironmentPanel(container, dashboard);
+
+  assert.equal(panel.current.temperature, 26.4);
+  assert.equal(panel.current.aqi, 42);
+  assert.equal(panel.forecast.weatherHours[0].temperature, 27);
+  assert.equal(panel.forecast.aqiHours[0].aqi, 48);
+  assert.ok(panel.forecast.indexDays.every(({ indices }) => (
+    indices.length === 6 && indices.every(({ category, text }) => category === "适宜" && text)
+  )));
+  assert.doesNotMatch(container.innerHTML, /等待更新|数据更新中|数据较旧|暂无数据/);
+});
+
 test("路线环境只取当天 PM2.5、花粉和噪声，并保留真实空间尺度", () => {
   const model = buildRouteExposureModel(dashboardFixture(), "XH_WALK_0001");
 
@@ -232,6 +253,21 @@ test("路线环境只取当天 PM2.5、花粉和噪声，并保留真实空间�
   assert.match(model.details.noise, /约 100 m.*风险代理/);
   assert.doesNotMatch(JSON.stringify(model), /分贝|实测/);
   assert.equal(JSON.stringify(model).includes("88"), false);
+});
+
+test("路线环境记录过期后继续使用最后一次成功数值", () => {
+  const dashboard = dashboardFixture();
+  const route = dashboard.routes.items[0];
+  route.pm2_5.status = "stale";
+  route.noise.status = "stale";
+  route.pollen_daily[0].status = "stale";
+
+  const model = buildRouteExposureModel(dashboard, "XH_WALK_0001");
+
+  assert.equal(model.pm25.displayValue, "15.3");
+  assert.equal(model.pollen.displayValue, "31.5");
+  assert.equal(model.noise.displayValue, "36.8");
+  assert.doesNotMatch(JSON.stringify(model), /等待更新|数据更新中|数据较旧|暂无数据/);
 });
 
 test("路线不存在时返回稳定空态", () => {
@@ -340,7 +376,7 @@ test("多条有效预警按等级聚合成一张提示卡", () => {
   assert.ok(details.indexOf("上海市雷电黄色预警") < details.indexOf("上海市暴雨蓝色预警"));
 });
 
-test("摘要缺值使用短横线，过期值保留并标明等待更新", () => {
+test("摘要缺值使用短横线，过期值保留且不附加更新提示", () => {
   const missingDashboard = dashboardFixture();
   missingDashboard.current.aqi = { status: "no_data", values: {} };
   const missingContainer = createPanelStub();
@@ -355,18 +391,19 @@ test("摘要缺值使用短横线，过期值保留并标明等待更新", () =>
   createEnvironmentPanel(staleContainer, staleDashboard);
   const staleSummary = panelSummary(staleContainer.innerHTML);
   const staticSummary = staleSummary.slice(0, staleSummary.indexOf('<button class="environment-toggle"'));
-  assert.match(staticSummary, /多云（等待更新）/);
+  assert.match(staticSummary, />多云</);
+  assert.doesNotMatch(staticSummary, /等待更新|数据更新中|数据较旧/);
   assert.match(staticSummary, /environment-summary__temperature">26\.4°<\/div>/);
   assert.match(staticSummary, /<span>湿度<\/span><strong>68%<\/strong>/);
   assert.match(staticSummary, /<span>AQI<\/span><strong>—<\/strong>/);
-  assert.match(staleContainer.innerHTML, /<span>湿度<\/span><strong>68%<\/strong><small[^>]*>相对湿度 · 等待更新<\/small>/);
+  assert.match(staleContainer.innerHTML, /<span>湿度<\/span><strong>68%<\/strong><small[^>]*>相对湿度<\/small>/);
   assert.match(staleContainer.innerHTML, /<span>AQI<\/span><strong>暂无数据<\/strong>/);
 
   const staleWeatherCard = nowCardHtml(staleContainer.innerHTML, "天气");
   const missingAqiCard = nowCardHtml(staleContainer.innerHTML, "AQI");
-  assert.equal(occurrences(staleWeatherCard, "等待更新"), 1);
+  assert.equal(occurrences(staleWeatherCard, "等待更新"), 0);
   assert.match(staleWeatherCard, /<strong>多云<\/strong>/);
-  assert.match(staleWeatherCard, /<small[^>]*>26\.4° · 等待更新<\/small>/);
+  assert.match(staleWeatherCard, /<small[^>]*>26\.4°<\/small>/);
   assert.equal(occurrences(missingAqiCard, "暂无数据"), 1);
   assert.doesNotMatch(missingAqiCard, /<small/);
 
@@ -412,15 +449,16 @@ test("横条摘要保留过期天气数值并区分缺失 AQI", () => {
   createEnvironmentPanel(container, dashboard);
   const toggle = environmentToggleHtml(container.innerHTML);
 
-  assert.match(toggle, /aria-label="当前环境：多云（等待更新），温度 26\.4°，湿度 68%，AQI 暂无数据。展开环境详情"/);
-  assert.match(toggle, /environment-toggle__item--weather[\s\S]*<strong>多云<\/strong>[\s\S]*<span class="environment-toggle__label">等待更新<\/span>/);
+  assert.match(toggle, /aria-label="当前环境：多云，温度 26\.4°，湿度 68%，AQI 暂无数据。展开环境详情"/);
+  assert.match(toggle, /environment-toggle__item--weather[\s\S]*<strong>多云<\/strong>/);
+  assert.doesNotMatch(toggle, /等待更新|数据更新中|数据较旧/);
   assert.match(toggle, /environment-toggle__item--temperature[\s\S]*<strong>26\.4°<\/strong>/);
   assert.match(toggle, /environment-toggle__item--humidity[\s\S]*<strong>68%<\/strong>/);
   assert.match(toggle, /environment-toggle__item--aqi[\s\S]*<strong>暂无数据<\/strong>/);
   assert.doesNotMatch(toggle, /environment-toggle__aqi-level/);
 });
 
-test("24 小时全量不可用时聚合为空态，混合数据以短横线保留时间轴", () => {
+test("24 小时过期记录继续显示最后数值，真正缺值仍使用稳定空态", () => {
   const unavailable = dashboardFixture();
   unavailable.forecast.weather_hourly = Array.from({ length: 24 }, (_, hour) => record({
     temperature_c: 30,
@@ -429,10 +467,11 @@ test("24 小时全量不可用时聚合为空态，混合数据以短横线保�
     business_time: `2099-08-27T${String(hour).padStart(2, "0")}:00:00+08:00`,
     status: "stale",
   }));
-  unavailable.forecast.aqi_hourly = Array.from({ length: 24 }, (_, hour) => ({
+  unavailable.forecast.aqi_hourly = Array.from({ length: 24 }, (_, hour) => record({
+    aqi: 51,
+  }, {
     business_time: `2099-08-27T${String(hour).padStart(2, "0")}:00:00+08:00`,
-    status: "no_data",
-    values: {},
+    status: "stale",
   }));
   const unavailableContainer = createPanelStub();
   const unavailablePanel = createEnvironmentPanel(unavailableContainer, unavailable);
@@ -441,35 +480,20 @@ test("24 小时全量不可用时聚合为空态，混合数据以短横线保�
 
   const unavailableWeather = hourlySection(unavailableContainer.innerHTML, "未来 24 小时天气");
   const unavailableAqi = hourlySection(unavailableContainer.innerHTML, "未来 24 小时 AQI");
-  assert.equal(occurrences(unavailableWeather, "数据更新中"), 1);
-  assert.match(unavailableWeather, /24 小时天气数据更新中/);
-  assert.equal(occurrences(unavailableWeather, 'class="environment-hour"'), 0);
-  assert.equal(occurrences(unavailableAqi, "暂无数据"), 1);
-  assert.match(unavailableAqi, /24 小时 AQI 暂无数据/);
-  assert.equal(occurrences(unavailableAqi, 'class="environment-aqi-point"'), 0);
+  assert.doesNotMatch(unavailableWeather, /等待更新|数据更新中|数据较旧|暂无数据/);
+  assert.equal(occurrences(unavailableWeather, 'class="environment-hour"'), 24);
+  assert.equal(occurrences(unavailableWeather, "<strong>30°</strong>"), 24);
+  assert.doesNotMatch(unavailableAqi, /等待更新|数据更新中|数据较旧|暂无数据/);
+  assert.equal(occurrences(unavailableAqi, 'class="environment-aqi-point"'), 24);
+  assert.equal(occurrences(unavailableAqi, "<strong>51</strong>"), 24);
 
-  const mixed = dashboardFixture();
-  mixed.forecast.weather_hourly = [
-    mixed.forecast.weather_hourly[0],
-    ...unavailable.forecast.weather_hourly.slice(1),
-  ];
-  mixed.forecast.aqi_hourly = [
-    mixed.forecast.aqi_hourly[0],
-    ...unavailable.forecast.aqi_hourly.slice(1),
-  ];
-  const mixedContainer = createPanelStub();
-  const mixedPanel = createEnvironmentPanel(mixedContainer, mixed);
-  assert.equal(mixedPanel.forecast.weatherHours.length, 24);
-  assert.equal(mixedPanel.forecast.aqiHours.length, 24);
-
-  const mixedWeather = hourlySection(mixedContainer.innerHTML, "未来 24 小时天气");
-  const mixedAqi = hourlySection(mixedContainer.innerHTML, "未来 24 小时 AQI");
-  assert.equal(occurrences(mixedWeather, 'class="environment-hour"'), 24);
-  assert.equal(occurrences(mixedAqi, 'class="environment-aqi-point"'), 24);
-  assert.doesNotMatch(mixedWeather, /数据更新中|暂无数据/);
-  assert.doesNotMatch(mixedAqi, /数据更新中|暂无数据/);
-  assert.equal(occurrences(mixedWeather, "<strong>—</strong>"), 23);
-  assert.equal(occurrences(mixedAqi, "<strong>—</strong>"), 23);
+  const missing = dashboardFixture();
+  missing.forecast.weather_hourly = [{ status: "no_data", values: {} }];
+  missing.forecast.aqi_hourly = [{ status: "no_data", values: {} }];
+  const missingContainer = createPanelStub();
+  createEnvironmentPanel(missingContainer, missing);
+  assert.match(hourlySection(missingContainer.innerHTML, "未来 24 小时天气"), /24 小时天气暂无数据/);
+  assert.match(hourlySection(missingContainer.innerHTML, "未来 24 小时 AQI"), /24 小时 AQI 暂无数据/);
 });
 
 function panelSummary(html) {

@@ -172,9 +172,6 @@ function formatDistance(value) {
 }
 
 function formatPm25(metric) {
-  if (metric?.status === "stale" || metric?.displayValue === "数据更新中") {
-    return "PM2.5 数据更新中";
-  }
   const value = Number(metric?.value ?? metric?.displayValue);
   if (!Number.isFinite(value)) {
     return "PM2.5 暂无数据";

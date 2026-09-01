@@ -1,6 +1,13 @@
 const DATA_RELEASE = "20260830-ui-3";
-const ENVIRONMENT_DASHBOARD_PATH = "../data/web/environment_dashboard.json";
+const FALLBACK_ENVIRONMENT_DASHBOARD_PATH = "../data/web/environment_dashboard.json";
 const ENVIRONMENT_POLL_INTERVAL_MS = 60_000;
+
+function environmentDashboardPath() {
+  const configured = globalThis.XUHUI_ENVIRONMENT_DASHBOARD_URL;
+  return typeof configured === "string" && configured.startsWith("https://")
+    ? configured
+    : FALLBACK_ENVIRONMENT_DASHBOARD_PATH;
+}
 
 export async function loadJson(path) {
   const separator = path.includes("?") ? "&" : "?";
@@ -12,7 +19,7 @@ export async function loadJson(path) {
 }
 
 export function loadEnvironmentDashboard() {
-  return loadJson(ENVIRONMENT_DASHBOARD_PATH);
+  return loadJson(environmentDashboardPath());
 }
 
 export async function loadRouteData() {
@@ -33,7 +40,7 @@ export function startEnvironmentDashboardPolling(onDashboard) {
       onDashboard(await loadEnvironmentDashboard());
     } catch (error) {
       console.error("环境数据自动更新失败", {
-        path: ENVIRONMENT_DASHBOARD_PATH,
+        path: environmentDashboardPath(),
         intervalMs: ENVIRONMENT_POLL_INTERVAL_MS,
         error,
       });
