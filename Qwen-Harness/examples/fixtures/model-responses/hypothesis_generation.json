@@ -1,0 +1,58 @@
+{
+  "hypotheses": [
+    {
+      "hypothesis_id": "hyp-001",
+      "statement": "在距离约束（同端点附加距离上限 0.20、目标距离偏差上限 0.15）内，多源融合个性化效用（PM2.5 融合估计、噪声风险代理、绿地水体、接驳成本与个人敏感项）选出的路线，其综合环境暴露得分低于最短可行路径基线与 PM2.5 单源基线。",
+      "mechanism": "单源基线被单一维度支配，忽略噪声、绿地与接驳成本的权衡；多源融合在候选集内联合比较各暴露面，可以在不违反距离约束的前提下选出综合暴露更低的候选。",
+      "independent_variables": ["多源融合效用（PM2.5、噪声风险、绿地水体、接驳成本）", "个人敏感项权重"],
+      "dependent_variables": ["综合环境暴露得分", "environment_win_rate", "detour_pass_rate", "目标距离偏差"],
+      "moderators": ["运动方式（步行/跑步/骑行）", "PM2.5 背景水平"],
+      "expected_direction": "多源个性化方案的综合暴露得分低于两个单维基线，且胜率与合规率达到预注册阈值。",
+      "falsification_criteria": [
+        "environment_win_rate 相对 B0/B1 低于 0.50",
+        "detour_pass_rate 低于 0.50 或目标距离偏差系统性超过 0.15",
+        "全部画像上与非个性化多源方案无差异"
+      ],
+      "required_data": ["徐汇区候选路线库快照", "网格/站点融合 PM2.5 估计", "噪声 0-100 风险代理", "绿地水体与接驳字段", "评分接口 evaluation.score_candidates"],
+      "supporting_claim_ids": ["clm-001", "clm-003", "clm-004", "clm-005", "clm-006"],
+      "novelty_argument": "既有证据集中于单暴露的人群健康效应；在固定候选集与距离约束下对多暴露联合的路线级个性化推荐做预注册对照，未见公开先例。",
+      "feasibility_score": 0.85,
+      "scientific_value_score": 0.8,
+      "risks": ["暴露字段均为代理，不能外推个体实际暴露", "候选集规模有限会压缩效应量"]
+    },
+    {
+      "hypothesis_id": "hyp-002",
+      "statement": "多源方案相对 PM2.5 单源基线的增益集中在低 PM2.5 背景情景；高背景情景下单源基线即可获得大部分环境收益。",
+      "mechanism": "当 PM2.5 主导综合风险时，单源解逼近多源解；当 PM2.5 水平较低时，噪声与绿地的相对权重上升，多源差异才显现。",
+      "independent_variables": ["PM2.5 背景水平分层（高/低）"],
+      "dependent_variables": ["相对 B1 的综合暴露改善幅度"],
+      "moderators": ["季节", "画像运动方式"],
+      "expected_direction": "低背景分层的相对改善幅度高于高背景分层。",
+      "falsification_criteria": ["高低背景分层的相对改善幅度无差异", "两个分层的相对改善幅度均不大于 0"],
+      "required_data": ["可分层的环境快照", "evaluation.score_candidates 输出"],
+      "supporting_claim_ids": ["clm-002", "clm-003"],
+      "novelty_argument": "把单源与多源方案置于同一对照框架并检验背景浓度的调节作用，为权重配置提供证据。",
+      "feasibility_score": 0.7,
+      "scientific_value_score": 0.65,
+      "risks": ["离线夹具数据不能覆盖真实浓度分层，需在线数据验证"]
+    },
+    {
+      "hypothesis_id": "hyp-003",
+      "statement": "引入个人敏感项权重后，推荐路线与个人约束的一致性（preference_win_rate）高于非个性化多源方案，且不违反距离约束。",
+      "mechanism": "效用函数为敏感项添加个性化惩罚项，候选集内偏好一致性得分上升；距离约束作为硬门禁保持不变。",
+      "independent_variables": ["个人敏感项权重（噪声/PM2.5/距离等）"],
+      "dependent_variables": ["preference_win_rate", "目标距离偏差", "detour_pass_rate"],
+      "moderators": ["敏感项数量", "候选集规模"],
+      "expected_direction": "preference_win_rate 达到预注册阈值，且距离约束合规率不下降。",
+      "falsification_criteria": ["preference_win_rate 低于 0.50", "引入个性化后距离约束违规率上升"],
+      "required_data": ["画像敏感项字段", "evaluation.score_candidates 输出"],
+      "supporting_claim_ids": ["clm-006", "clm-007"],
+      "novelty_argument": "在候选集约束最优框架内量化个性化权重的边际贡献，区别于一般推荐系统评估。",
+      "feasibility_score": 0.8,
+      "scientific_value_score": 0.6,
+      "risks": ["夹具画像不能覆盖真实用户偏好多样性"]
+    }
+  ],
+  "recommended_hypothesis_id": "hyp-001",
+  "selection_rationale": "hyp-001 直接回答核心科学问题，证据链完整（clm-001/003/004/005/006），所需数据全部可由现有模块只读快照提供；hyp-002 与 hyp-003 是其分解与延伸，适合作为后续迭代目标。"
+}

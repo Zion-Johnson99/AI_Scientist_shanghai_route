@@ -1,0 +1,16 @@
+[FIXTURE] PubMed record (metadata-style excerpt for offline reproduction).
+
+PMID: 16805392
+Title: Health effects of fine particulate air pollution: lines that connect.
+Authors: Pope CA 3rd, Dockery DW.
+Journal: Journal of the Air & Waste Management Association, 2006.
+DOI: 10.1080/10473289.2006.10464485
+
+Abstract (abridged, fixture):
+Critical evaluation of the scientific literature suggests that fine particulate
+air pollution (PM2.5) is associated with increased cardiopulmonary mortality.
+Long-term cohort studies report meaningful associations between chronic fine
+particulate exposure and total, cardiovascular, and lung-cancer mortality.
+The evidence supports a causal interpretation for PM2.5 exposure and
+cardiopulmonary health outcomes, with effect estimates increasing roughly in
+proportion to long-term mean concentrations observed across cohorts.

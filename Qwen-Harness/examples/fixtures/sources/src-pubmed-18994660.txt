@@ -1,0 +1,16 @@
+[FIXTURE] PubMed record (metadata-style excerpt for offline reproduction).
+
+PMID: 18994660
+Title: Effect of exposure to natural environment on health inequalities: an
+observational population study.
+Authors: Mitchell R, Popham F.
+Journal: Lancet (London, England), 2008.
+DOI: 10.1016/S0140-6736(08)61689-X
+
+Abstract (abridged, fixture):
+This observational population study examined whether access to greenspace could
+explain variation in health inequalities by income. Populations with the highest
+exposure to greenspace had the lowest health inequalities, and exposure to
+greenspace was associated with reduced all-cause mortality. The findings suggest
+that environments promoting physical activity, such as natural or green
+environments, may confer health benefits and narrow health gaps.

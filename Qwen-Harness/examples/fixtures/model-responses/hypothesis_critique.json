@@ -1,0 +1,37 @@
+{
+  "assessments": [
+    {
+      "hypothesis_id": "hyp-001",
+      "verdict": "accept",
+      "novelty_notes": "路线级多暴露联合对照未见公开先例；但结论必须严格限定为候选集内约束最优，避免外推为全局最优或健康收益。",
+      "feasibility_notes": "所需数据全部来自现有模块只读快照与评分接口，预注册指标（胜率/合规率）可由 evaluation 输出直接计算。",
+      "counterexamples": [],
+      "missing_evidence": ["暴露字段为代理，缺少个体实际暴露的验证数据"]
+    },
+    {
+      "hypothesis_id": "hyp-002",
+      "verdict": "revise",
+      "novelty_notes": "背景浓度调节作用的检验设计合理，但需要先有 hyp-001 的主效应结果作为前提。",
+      "feasibility_notes": "离线夹具无法提供真实浓度分层；在线数据到位前应降级为探索性分析。",
+      "counterexamples": ["clm-003 的 Medicare 队列（65 岁及以上）不能外推到户外运动人群，效应量不可直接引用"],
+      "missing_evidence": ["可分层的小时级环境数据", "浓度分层的预注册切点"]
+    },
+    {
+      "hypothesis_id": "hyp-003",
+      "verdict": "revise",
+      "novelty_notes": "个性化权重的边际贡献是产品关键问题，但画像敏感项字段目前仅有夹具示例。",
+      "feasibility_notes": "需要先定义偏好一致性的计算口径（与 B2 的成对比较），否则 preference_win_rate 不可复核。",
+      "counterexamples": [],
+      "missing_evidence": ["真实用户敏感项分布", "偏好一致性的外部校验"]
+    }
+  ],
+  "conflicts": [
+    "clm-002/003 支持的是人群层面的暴露-死亡关联，本研究只评估路线层面的暴露与偏好指标，两者不能相互替代。"
+  ],
+  "missing_evidence": [
+    "噪声 0-100 风险代理与花粉日级代理的观测来源验证",
+    "候选路段级绿地覆盖度量"
+  ],
+  "selected_hypothesis_id": "hyp-001",
+  "selection_rationale": "hyp-001 证据链完整、数据可得、可证伪标准明确；hyp-002/hyp-003 依赖其主效应结果，留待后续迭代。"
+}

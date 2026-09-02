@@ -1,0 +1,17 @@
+{
+  "source_id": "src-who-aqg-2021",
+  "source_type": "https_url",
+  "title": "WHO Global Air Quality Guidelines: Particulate Matter (PM2.5 and PM10), ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide",
+  "authors": [
+    "World Health Organization"
+  ],
+  "year": 2021,
+  "doi": null,
+  "pmid": null,
+  "url": "https://www.who.int/publications/i/item/9789240034228",
+  "local_path": null,
+  "accessed_at": "2026-07-12T00:00:00Z",
+  "sha256": "7f729fcd1d20247b69f79bfdd9c9a192c98d3b49a20953b2692f796e983ed202",
+  "license_note": "WHO 公开发布文件（fixture，离线复现用）",
+  "verification_status": "verified"
+}

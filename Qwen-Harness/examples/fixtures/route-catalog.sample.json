@@ -1,0 +1,485 @@
+[
+ {
+  "route_id": "XH_WALK_0001",
+  "route_name": "西岸油罐艺术短线",
+  "route_mode": "walk",
+  "route_shape": "one_way",
+  "distance_level": "0.97km",
+  "target_distance_m": 970,
+  "distance_m": 970,
+  "duration_min": 12.9,
+  "start_entry_id": "walk_westbund_tank_short_start",
+  "start_location": {
+   "name": "西岸梦中心",
+   "location_type": "route_node",
+   "lng_gcj02": 121.466628,
+   "lat_gcj02": 31.161363,
+   "source_url": "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html"
+  },
+  "end_entry_id": "walk_westbund_tank_short_end",
+  "end_location": {
+   "name": "西岸美术馆",
+   "location_type": "route_node",
+   "lng_gcj02": 121.463368,
+   "lat_gcj02": 31.167799,
+   "source_url": "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html"
+  },
+  "region_zone": "徐汇滨江及龙华滨江",
+  "tags": [
+   "步行",
+   "短线",
+   "滨江",
+   "艺术"
+  ],
+  "future_score": null,
+  "score_note": "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。",
+  "source_name": "书香徐汇·西岸艺术之旅",
+  "source_url": "https://www.xuhui.gov.cn/gzfw-shdt/20240422/535778.html",
+  "source_accessed_at": "2026-08-15",
+  "confidence": "中高",
+  "distance_error_m": 0,
+  "loop_flag": false,
+  "feature_tags": [],
+  "candidate_rank": "candidate",
+  "geometry_source": "amap_direction",
+  "geometry_status": "complete",
+  "validation_status": "accepted",
+  "display_status": "严格验收",
+  "snap_ratio": null,
+  "route_inside_ratio": 1.0,
+  "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+  "verified_at": "2026-08-19T00:00:00+00:00",
+  "review_note": "高德原始路径、本地几何门禁和全景目视检查通过",
+  "raw_response_paths": [
+   "data/raw/amap/walking_v2_47f3dff34442ec70.json"
+  ],
+  "source_level": "B",
+  "waypoint_names": [
+   "西岸梦中心",
+   "西岸美术馆"
+  ],
+  "ordered_nodes": [
+   {
+    "name": "西岸梦中心",
+    "node_type": null,
+    "lng_gcj02": 121.466628,
+    "lat_gcj02": 31.161363,
+    "source_url": null,
+    "poi_id": null
+   },
+   {
+    "name": "西岸美术馆",
+    "node_type": null,
+    "lng_gcj02": 121.463368,
+    "lat_gcj02": 31.167799,
+    "source_url": null,
+    "poi_id": null
+   }
+  ],
+  "amenity_ids": [
+   "amap:B0L2TO44Z8",
+   "amap:B0KUNMEGLF"
+  ],
+  "nearby_pois": [
+   {
+    "poi_id": "amap:B0L2TO44Z8",
+    "poi_type": "coffee",
+    "poi_name": "Plusone咖啡(西岸店)",
+    "distance_m": 36.1,
+    "route_relation": "along_route",
+    "source": "AMap place_around v5 same-turn successful response",
+    "source_id": "amap:B0L2TO44Z8",
+    "source_accessed_at": "2026-08-18T00:00:00+08:00",
+    "open_status": "10:00-20:00",
+    "verification_status": "verified",
+    "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0L2TO44Z8"
+   },
+   {
+    "poi_id": "amap:B0KUNMEGLF",
+    "poi_type": "toilet",
+    "poi_name": "公共厕所",
+    "distance_m": 49.2,
+    "route_relation": "along_route",
+    "source": "AMap place_around v5 same-turn successful response",
+    "source_id": "amap:B0KUNMEGLF",
+    "source_accessed_at": "2026-08-18T00:00:00+08:00",
+    "open_status": "24小时营业",
+    "verification_status": "verified",
+    "evidence_path": "embedded:walk_route_pois.json#verified_response_snapshot/B0KUNMEGLF"
+   }
+  ],
+  "popular_area_ids": [
+   "west_bund"
+  ],
+  "preference_search_status": {
+   "coffee": "verified",
+   "park_gate": "no_verified_match",
+   "toilet": "verified",
+   "convenience": "no_verified_match"
+  },
+  "preference_hits": [
+   "coffee",
+   "toilet"
+  ]
+ },
+ {
+  "route_id": "XH_WALK_0002",
+  "route_name": "漕宝路桂平路街区单环线",
+  "route_mode": "walk",
+  "route_shape": "strict_loop",
+  "distance_level": "2.86km",
+  "target_distance_m": 2860,
+  "distance_m": 2860,
+  "duration_min": 38.1,
+  "start_entry_id": "walk_botanical_north_lawn_start",
+  "start_location": {
+   "name": "桂平路与漕宝路交叉口",
+   "location_type": "route_node",
+   "lng_gcj02": 121.40525,
+   "lat_gcj02": 31.163013,
+   "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=e7f65f87-3fff-4e58-b780-4a46b1463f66"
+  },
+  "end_entry_id": "walk_botanical_north_lawn_end",
+  "end_location": {
+   "name": "桂平路与漕宝路交叉口",
+   "location_type": "route_node",
+   "lng_gcj02": 121.40525,
+   "lat_gcj02": 31.163013,
+   "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=e7f65f87-3fff-4e58-b780-4a46b1463f66"
+  },
+  "region_zone": "漕河泾开发区",
+  "tags": [
+   "步行",
+   "短线",
+   "植物园",
+   "闭环"
+  ],
+  "future_score": null,
+  "score_note": "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。",
+  "source_name": "上海植物园北区官方游园导览",
+  "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=e7f65f87-3fff-4e58-b780-4a46b1463f66",
+  "source_accessed_at": "2026-08-15",
+  "confidence": "高",
+  "distance_error_m": 0,
+  "loop_flag": true,
+  "feature_tags": [],
+  "candidate_rank": "candidate",
+  "geometry_source": "audited_import",
+  "geometry_status": "complete",
+  "validation_status": "accepted",
+  "display_status": "严格验收",
+  "snap_ratio": null,
+  "route_inside_ratio": 1.0,
+  "network_source": "amap_walking_20260819+local_topology+visual_audit_20260819",
+  "verified_at": "2026-08-19T00:00:00+00:00",
+  "review_note": "高德原始路径、本地几何门禁和全景目视检查通过",
+  "raw_response_paths": [
+   "data/raw/amap_js/xh_walk_0002_20260819.json"
+  ],
+  "source_level": "A",
+  "waypoint_names": [
+   "桂平路与漕宝路交叉口",
+   "桂平路与钦州南路交叉口",
+   "虹漕南路与钦州南路交叉口",
+   "虹漕南路与漕宝路交叉口",
+   "桂平路与漕宝路交叉口"
+  ],
+  "ordered_nodes": [
+   {
+    "name": "桂平路与漕宝路交叉口",
+    "node_type": "road_intersection",
+    "lng_gcj02": 121.40525,
+    "lat_gcj02": 31.163013,
+    "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=e7f65f87-3fff-4e58-b780-4a46b1463f66",
+    "poi_id": null
+   },
+   {
+    "name": "桂平路与钦州南路交叉口",
+    "node_type": "road_intersection",
+    "lng_gcj02": 121.409291,
+    "lat_gcj02": 31.155691,
+    "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=e7f65f87-3fff-4e58-b780-4a46b1463f66",
+    "poi_id": null
+   },
+   {
+    "name": "虹漕南路与钦州南路交叉口",
+    "node_type": "road_intersection",
+    "lng_gcj02": 121.413866,
+    "lat_gcj02": 31.156773,
+    "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=e7f65f87-3fff-4e58-b780-4a46b1463f66",
+    "poi_id": null
+   },
+   {
+    "name": "虹漕南路与漕宝路交叉口",
+    "node_type": "road_intersection",
+    "lng_gcj02": 121.412173,
+    "lat_gcj02": 31.164308,
+    "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=e7f65f87-3fff-4e58-b780-4a46b1463f66",
+    "poi_id": null
+   },
+   {
+    "name": "桂平路与漕宝路交叉口",
+    "node_type": "road_intersection",
+    "lng_gcj02": 121.40525,
+    "lat_gcj02": 31.163013,
+    "source_url": "https://www.shbg.org/sites/zhiwuyuan/InfoContent.aspx?ctgId=3c25f682-3f21-4cb3-994b-ab79489bacae&infoId=e7f65f87-3fff-4e58-b780-4a46b1463f66",
+    "poi_id": null
+   }
+  ],
+  "amenity_ids": [],
+  "nearby_pois": [],
+  "popular_area_ids": [
+   "caohejing"
+  ],
+  "preference_search_status": {
+   "coffee": "no_verified_match",
+   "park_gate": "no_verified_match",
+   "toilet": "no_verified_match",
+   "convenience": "no_verified_match"
+  },
+  "preference_hits": []
+ },
+ {
+  "route_id": "XH_RUN_0031",
+  "route_name": "西岸艺术滨江短线",
+  "route_mode": "run",
+  "route_shape": "one_way",
+  "distance_level": "2.557km",
+  "target_distance_m": 2557,
+  "distance_m": 2557,
+  "duration_min": 34.1,
+  "start_entry_id": "xrb_s01_start",
+  "start_location": {
+   "name": "龙美术馆西岸馆",
+   "location_type": "route_node",
+   "lng_gcj02": 121.46464,
+   "lat_gcj02": 31.183806,
+   "source_url": "https://tyj.sh.gov.cn/gqfc/20210930/19e8d84a536a4a728d8598cba0179898.html"
+  },
+  "end_entry_id": "xrb_s01_end",
+  "end_location": {
+   "name": "油罐艺术中心",
+   "location_type": "route_node",
+   "lng_gcj02": 121.464227,
+   "lat_gcj02": 31.164514,
+   "source_url": "https://tyj.sh.gov.cn/gqfc/20210930/19e8d84a536a4a728d8598cba0179898.html"
+  },
+  "region_zone": "徐汇滨江及龙华滨江",
+  "tags": [
+   "短线",
+   "滨江",
+   "艺术"
+  ],
+  "future_score": null,
+  "score_note": "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。",
+  "source_name": "上海西岸滨水体育空间",
+  "source_url": "https://tyj.sh.gov.cn/gqfc/20210930/19e8d84a536a4a728d8598cba0179898.html",
+  "source_accessed_at": "2026-08-18",
+  "confidence": "高",
+  "distance_error_m": 0,
+  "loop_flag": false,
+  "feature_tags": [],
+  "candidate_rank": "candidate",
+  "geometry_source": "amap_direction",
+  "geometry_status": "complete",
+  "validation_status": "accepted",
+  "display_status": "严格验收",
+  "snap_ratio": null,
+  "route_inside_ratio": 1.0,
+  "network_source": "amap_walking_20260820+local_topology+visual_audit_20260820",
+  "verified_at": "2026-08-20T00:00:00+00:00",
+  "review_note": "高德原始路径、本地几何门禁和全景目视检查通过",
+  "raw_response_paths": [
+   "data/raw/amap/walking_v2_b959bfc41954aa44.json",
+   "data/raw/amap/walking_v2_e9a5413b6f3a5926.json",
+   "data/raw/amap/walking_v2_17a19f4dca6b3e8a.json"
+  ],
+  "source_level": "A",
+  "waypoint_names": [
+   "龙美术馆西岸馆",
+   "徐汇滨江绿地",
+   "西岸美术馆",
+   "油罐艺术中心"
+  ],
+  "ordered_nodes": [
+   {
+    "name": "龙美术馆西岸馆",
+    "node_type": null,
+    "lng_gcj02": 121.46464,
+    "lat_gcj02": 31.183806,
+    "source_url": null,
+    "poi_id": null
+   },
+   {
+    "name": "油罐艺术中心",
+    "node_type": null,
+    "lng_gcj02": 121.464227,
+    "lat_gcj02": 31.164514,
+    "source_url": null,
+    "poi_id": null
+   }
+  ],
+  "amenity_ids": [
+   "starbucks:64580",
+   "amap:B0KUNMEGLF"
+  ],
+  "nearby_pois": [
+   {
+    "poi_id": "starbucks:64580",
+    "poi_type": "coffee",
+    "poi_name": "上海徐汇滨江店",
+    "distance_m": 13.6,
+    "route_relation": "along_route",
+    "source": "Starbucks China official store API",
+    "source_id": "64580",
+    "source_accessed_at": "2026-08-18",
+    "open_status": "today=06:30-22:00",
+    "verification_status": "verified",
+    "evidence_path": "https://www.starbucks.com.cn/api/stores/nearby?lat=31.184&lon=121.464&limit=50&locale=ZH&features=&radius=5000"
+   },
+   {
+    "poi_id": "amap:B0KUNMEGLF",
+    "poi_type": "toilet",
+    "poi_name": "公共厕所",
+    "distance_m": 94.8,
+    "route_relation": "along_route",
+    "source": "AMap cached place_text v5",
+    "source_id": "B0KUNMEGLF",
+    "source_accessed_at": "2026-07-12T10:52:27.024883+08:00",
+    "open_status": "周一至周日00:00-24:00",
+    "verification_status": "verified",
+    "evidence_path": "data/raw/amap/place_text_v5_ac14cd685ef1f4c2.json"
+   }
+  ],
+  "popular_area_ids": [
+   "west_bund"
+  ],
+  "preference_search_status": {
+   "coffee": "verified",
+   "park_gate": "no_verified_match",
+   "toilet": "verified",
+   "convenience": "no_verified_match"
+  },
+  "preference_hits": [
+   "coffee",
+   "toilet"
+  ]
+ },
+ {
+  "route_id": "XH_BIKE_0061",
+  "route_name": "西岸—龙华公共道路短环",
+  "route_mode": "bike",
+  "route_shape": "strict_loop",
+  "distance_level": "5.857km",
+  "target_distance_m": 5857,
+  "distance_m": 5857,
+  "duration_min": 23.4,
+  "start_entry_id": "bike_xh_0813_001_start",
+  "start_location": {
+   "name": "瑞宁路与云锦路交叉口",
+   "location_type": "start",
+   "lng_gcj02": 121.456166,
+   "lat_gcj02": 31.178591,
+   "source_url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html"
+  },
+  "end_entry_id": "bike_xh_0813_001_end",
+  "end_location": {
+   "name": "瑞宁路与云锦路交叉口",
+   "location_type": "end",
+   "lng_gcj02": 121.456166,
+   "lat_gcj02": 31.178591,
+   "source_url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html"
+  },
+  "region_zone": "徐汇滨江及龙华",
+  "tags": [
+   "骑行",
+   "滨江",
+   "艺术"
+  ],
+  "future_score": null,
+  "score_note": "后续评分入口：当前阶段只展示路线标签，暂不计算 PM2.5、噪声、花粉或综合暴露评分。",
+  "source_name": "骑行浦江，寻踪徐汇艺文智岸",
+  "source_url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
+  "source_accessed_at": "2026-08-20",
+  "confidence": "高",
+  "distance_error_m": 0,
+  "loop_flag": true,
+  "feature_tags": [],
+  "candidate_rank": "candidate",
+  "geometry_source": "audited_import",
+  "geometry_status": "complete",
+  "validation_status": "accepted",
+  "display_status": "严格验收",
+  "snap_ratio": null,
+  "route_inside_ratio": 1.0,
+  "network_source": "amap_riding_20260820+local_topology+visual_audit_20260820",
+  "verified_at": "2026-08-20T00:00:00+00:00",
+  "review_note": "高德原始路径、本地几何门禁和全景目视检查通过",
+  "raw_response_paths": [
+   "data/raw/amap_js/xh_bike_0061_20260820.json"
+  ],
+  "source_level": "A",
+  "waypoint_names": [
+   "瑞宁路与云锦路交叉口",
+   "瑞宁路与龙腾大道交叉口",
+   "龙耀路与龙腾大道交叉口",
+   "龙耀路与云锦路交叉口",
+   "瑞宁路与云锦路交叉口"
+  ],
+  "ordered_nodes": [
+   {
+    "name": "瑞宁路与云锦路交叉口",
+    "node_type": "road_intersection",
+    "lng_gcj02": 121.456166,
+    "lat_gcj02": 31.178591,
+    "source_url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
+    "poi_id": null
+   },
+   {
+    "name": "瑞宁路与龙腾大道交叉口",
+    "node_type": "road_intersection",
+    "lng_gcj02": 121.463157,
+    "lat_gcj02": 31.184318,
+    "source_url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
+    "poi_id": null
+   },
+   {
+    "name": "龙耀路与龙腾大道交叉口",
+    "node_type": "road_intersection",
+    "lng_gcj02": 121.463306,
+    "lat_gcj02": 31.163505,
+    "source_url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
+    "poi_id": null
+   },
+   {
+    "name": "龙耀路与云锦路交叉口",
+    "node_type": "road_intersection",
+    "lng_gcj02": 121.459325,
+    "lat_gcj02": 31.161549,
+    "source_url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
+    "poi_id": null
+   },
+   {
+    "name": "瑞宁路与云锦路交叉口",
+    "node_type": "road_intersection",
+    "lng_gcj02": 121.456166,
+    "lat_gcj02": 31.178591,
+    "source_url": "https://whlyj.sh.gov.cn/gqfc/20250521/6cd8a6e351814965b9b5f1cd515994d6.html",
+    "poi_id": null
+   }
+  ],
+  "amenity_ids": [],
+  "nearby_pois": [],
+  "popular_area_ids": [
+   "west_bund",
+   "longhua"
+  ],
+  "preference_search_status": {
+   "coffee": "no_verified_match",
+   "park_gate": "no_verified_match",
+   "toilet": "no_verified_match",
+   "convenience": "no_verified_match"
+  },
+  "preference_hits": []
+ }
+]

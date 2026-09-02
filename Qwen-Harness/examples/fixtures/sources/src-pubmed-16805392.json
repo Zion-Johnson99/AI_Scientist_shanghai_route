@@ -1,0 +1,18 @@
+{
+  "source_id": "src-pubmed-16805392",
+  "source_type": "pubmed",
+  "title": "Health effects of fine particulate air pollution: lines that connect",
+  "authors": [
+    "Pope CA 3rd",
+    "Dockery DW"
+  ],
+  "year": 2006,
+  "doi": "10.1080/10473289.2006.10464485",
+  "pmid": "16805392",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/16805392/",
+  "local_path": null,
+  "accessed_at": "2026-07-12T00:00:00Z",
+  "sha256": "6af876d931fa6b0cef5c771ca257d6666066f75e69dbf251420cb356636310da",
+  "license_note": "PubMed 元数据（fixture，离线复现用）",
+  "verification_status": "verified"
+}

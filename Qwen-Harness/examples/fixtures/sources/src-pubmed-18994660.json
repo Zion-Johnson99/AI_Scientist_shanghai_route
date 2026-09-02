@@ -1,0 +1,18 @@
+{
+  "source_id": "src-pubmed-18994660",
+  "source_type": "pubmed",
+  "title": "Effect of exposure to natural environment on health inequalities: an observational population study",
+  "authors": [
+    "Mitchell R",
+    "Popham F"
+  ],
+  "year": 2008,
+  "doi": "10.1016/S0140-6736(08)61689-X",
+  "pmid": "18994660",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/18994660/",
+  "local_path": null,
+  "accessed_at": "2026-07-12T00:00:00Z",
+  "sha256": "2954226b13520904ba1952c641d5167ce48f51cf66a08f8f1c748b71a9347be2",
+  "license_note": "PubMed 元数据（fixture，离线复现用）",
+  "verification_status": "verified"
+}

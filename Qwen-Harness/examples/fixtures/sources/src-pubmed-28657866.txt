@@ -1,0 +1,16 @@
+[FIXTURE] PubMed record (metadata-style excerpt for offline reproduction).
+
+PMID: 28657866
+Title: Air Pollution and Mortality in the Medicare Population.
+Authors: Di Q, Wang Y, Zanobetti A, Wang Y, Koutrakis P, Choirat C, Dominici F,
+Schwartz JD.
+Journal: The New England Journal of Medicine, 2017.
+DOI: 10.1056/NEJMoa1702747
+
+Abstract (abridged, fixture):
+In a nationwide cohort of Medicare enrollees (65 years of age or older),
+long-term exposure to fine particulate matter (PM2.5) and ozone was associated
+with higher risk of death from any cause. The association with PM2.5 persisted
+at annual concentrations below the current U.S. national ambient air quality
+standard of 12 ug per cubic metre, indicating that risk increases even at low
+concentrations. Effect estimates were robust across model specifications.

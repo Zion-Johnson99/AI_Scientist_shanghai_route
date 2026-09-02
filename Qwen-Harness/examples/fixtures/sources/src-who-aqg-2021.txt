@@ -1,0 +1,15 @@
+[FIXTURE] WHO Global Air Quality Guidelines: Particulate Matter (PM2.5 and PM10),
+ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide. Geneva: World Health
+Organization, 2021. ISBN 978-92-4-003422-8.
+
+Scope note (fixture): 固定离线来源文本，用于离线复现，非实时抓取。
+
+Key guideline values for outdoor ambient air quality:
+- Fine particulate matter (PM2.5): annual mean guideline value 5 micrograms per
+  cubic metre (ug/m3); 24-hour peak season guideline value 15 ug/m3.
+- The guidelines are evidence-based recommendations derived from systematic
+  review of the epidemiological literature on health effects of air pollution.
+- Evidence for long-term exposure effects on all-cause and cardiopulmonary
+  mortality is rated as high certainty for PM2.5.
+
+URL: https://www.who.int/publications/i/item/9789240034228

@@ -1,0 +1,17 @@
+{
+  "source_id": "src-local-scientific-question",
+  "source_type": "local_file",
+  "title": "Qwen-Harness 需求与总体架构：§5 科学问题与可验证假设（项目设计文档摘录）",
+  "authors": [
+    "Qwen-Harness 项目组"
+  ],
+  "year": 2026,
+  "doi": null,
+  "pmid": null,
+  "url": null,
+  "local_path": "docs/qwen-harness-build/00-需求与总体架构.md",
+  "accessed_at": "2026-07-12T00:00:00Z",
+  "sha256": "5119f7b20173b94cd9ef5ea5e24fcbfa8682609842a659711a537b79a9a17dac",
+  "license_note": "仓库内项目设计文档（fixture，离线复现用）",
+  "verification_status": "verified"
+}

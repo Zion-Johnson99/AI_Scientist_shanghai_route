@@ -1,0 +1,2532 @@
+{
+ "metadata": {
+  "access_route_environment": {
+   "aggregation": "not_computed",
+   "status": "not_aggregated"
+  },
+  "coordinate_systems": [
+   "WGS84",
+   "GCJ-02"
+  ],
+  "dataset_type": "environment_dashboard",
+  "future_pm2_5": {
+   "concentration_inferred_from_aqi": false,
+   "status": "partial"
+  },
+  "generated_at": "2026-09-01T14:51:13.710609+08:00",
+  "pm2_5": {
+   "estimated": true,
+   "name": "PM2.5",
+   "spatial_resolution_m": 1000,
+   "spatial_scale": "1km_grid_estimate",
+   "unit": "µg/m³"
+  },
+  "pm2_5_fusion": {
+   "calibration": {
+    "active_station_count": 2,
+    "station_max_age_minutes": 1440,
+    "station_time_weight_method": "linear_after_180_minutes_to_zero_at_1440_minutes",
+    "station_warn_age_minutes": 180
+   },
+   "stations": [
+    {
+     "age_minutes": 0.0,
+     "exclusion_reason": null,
+     "grid_weight_max": 0.974081,
+     "grid_weight_mean": 0.445999,
+     "grid_weight_min": 0.029627,
+     "included": true,
+     "observed_at": "2026-09-01T14:00:00+08:00",
+     "station_id": "80",
+     "temporal_weight_factor": 1.0
+    },
+    {
+     "age_minutes": 0.0,
+     "exclusion_reason": null,
+     "grid_weight_max": 0.970373,
+     "grid_weight_mean": 0.554001,
+     "grid_weight_min": 0.025919,
+     "included": true,
+     "observed_at": "2026-09-01T14:00:00+08:00",
+     "station_id": "207",
+     "temporal_weight_factor": 1.0
+    }
+   ],
+   "status": "ok",
+   "target_time": "2026-09-01T14:00:00+08:00",
+   "warnings": []
+  },
+  "pm2_5_route_method": {
+   "grid_count": 54,
+   "method": "length_weighted_mean_of_intersected_grid_segments",
+   "recomputed_by_web_export": true,
+   "same_grid_source_as_grids": true,
+   "weight": "segment_length_m"
+  },
+  "schema_version": "1.0",
+  "source_files": [
+   "environment_latest.json",
+   "environment_hourly.json",
+   "grid_environment_latest.json",
+   "pm25_grid_latest.json",
+   "pollen_grid_scores.json",
+   "noise_segments.json",
+   "route_environment.json",
+   "xuhui_routes.geojson"
+  ],
+  "stale_reason": "missing_source:pm25_grid_latest.json",
+  "status": "stale"
+ },
+ "current": {
+  "status": "stale",
+  "alerts": [],
+  "weather": {
+   "business_time": "2026-09-01T06:50:41.518125+00:00",
+   "completeness": 1.0,
+   "dataset_role": "operational",
+   "dataset_type": "weather_observation",
+   "fetched_at": "2026-09-01T06:50:41.518125+00:00",
+   "granularity": "current",
+   "location_key": "qweather:31.18,121.45",
+   "missing_fields": [],
+   "probe_point_ids": [
+    "XH_ENT_0009"
+   ],
+   "source": {
+    "attributions": [
+     "https://developer.qweather.com/attribution.html"
+    ],
+    "latitude": 31.18,
+    "longitude": 121.45,
+    "provider": "qweather",
+    "source_id": "qweather:31.18,121.45",
+    "time_basis": "fetched_at"
+   },
+   "status": "ok",
+   "units": {
+    "precipitation_mm": "mm",
+    "pressure_mb": "mb",
+    "real_feel_temperature_c": "C",
+    "relative_humidity_pct": "%",
+    "temperature_c": "C",
+    "uv_index": "index",
+    "visibility_km": "km",
+    "wind_direction_deg": "degree",
+    "wind_gust_kmh": "km/h",
+    "wind_speed_kmh": "km/h"
+   },
+   "valid_until": "2026-09-01T07:05:41.518125+00:00",
+   "values": {
+    "precipitation_mm": 0.0,
+    "pressure_mb": 1008.12,
+    "real_feel_temperature_c": 33.21,
+    "relative_humidity_pct": 66.0,
+    "temperature_c": 29.89,
+    "uv_index": 2.0,
+    "visibility_km": 29.92,
+    "weather_icon": "104",
+    "weather_text": "阴",
+    "wind_direction_deg": 92,
+    "wind_gust_kmh": 17.568,
+    "wind_speed_kmh": 4.032000000000001
+   }
+  },
+  "aqi": {
+   "business_time": "2026-09-01T14:00:00+08:00",
+   "completeness": 1.0,
+   "dataset_role": "operational",
+   "dataset_type": "air_quality_observation",
+   "fetched_at": "2026-09-01T06:50:42.166073+00:00",
+   "granularity": "current",
+   "location_key": "qweather:31.18,121.45",
+   "missing_fields": [],
+   "probe_point_ids": [
+    "XH_ENT_0009"
+   ],
+   "source": {
+    "air_quality_source": "QWeather 1x1 km coordinate product",
+    "aqi_standard": "cn-mee",
+    "attributions": [
+     "https://developer.qweather.com/attribution.html"
+    ],
+    "is_estimated": true,
+    "latitude": 31.18,
+    "longitude": 121.45,
+    "provider": "qweather",
+    "source_id": "qweather:31.18,121.45",
+    "spatial_resolution": "1x1_km",
+    "time_basis": "fetched_at_shanghai_hour"
+   },
+   "status": "ok",
+   "units": {
+    "aqi": "index"
+   },
+   "valid_until": "2026-09-01T07:50:42.166073+00:00",
+   "values": {
+    "aqi": 21.0
+   }
+  },
+  "life_indices": [
+   {
+    "business_time": "2026-09-01T00:00:00+08:00",
+    "completeness": 1.0,
+    "dataset_role": "operational",
+    "dataset_type": "life_index",
+    "fetched_at": "2026-09-01T06:50:41.844179+00:00",
+    "granularity": "daily",
+    "location_key": "qweather:31.18,121.45",
+    "missing_fields": [],
+    "probe_point_ids": [
+     "XH_ENT_0009"
+    ],
+    "source": {
+     "attributions": [
+      "QWeather"
+     ],
+     "latitude": 31.18,
+     "longitude": 121.45,
+     "provider": "qweather",
+     "source_id": "qweather:31.18,121.45"
+    },
+    "status": "ok",
+    "units": {},
+    "valid_until": "2026-09-01T07:50:41.844179+00:00",
+    "values": {
+     "category": "较不宜",
+     "category_value": "3",
+     "index_id": "1",
+     "local_date_time": "2026-09-01",
+     "name": "运动指数",
+     "text": "阴天，且天气较热，请减少运动时间并降低运动强度。",
+     "value": "3"
+    }
+   },
+   {
+    "business_time": "2026-09-01T00:00:00+08:00",
+    "completeness": 1.0,
+    "dataset_role": "operational",
+    "dataset_type": "life_index",
+    "fetched_at": "2026-09-01T06:50:41.844179+00:00",
+    "granularity": "daily",
+    "location_key": "qweather:31.18,121.45",
+    "missing_fields": [],
+    "probe_point_ids": [
+     "XH_ENT_0009"
+    ],
+    "source": {
+     "attributions": [
+      "QWeather"
+     ],
+     "latitude": 31.18,
+     "longitude": 121.45,
+     "provider": "qweather",
+     "source_id": "qweather:31.18,121.45"
+    },
+    "status": "ok",
+    "units": {},
+    "valid_until": "2026-09-01T07:50:41.844179+00:00",
+    "values": {
+     "category": "不宜",
+     "category_value": "4",
+     "index_id": "2",
+     "local_date_time": "2026-09-01",
+     "name": "洗车指数",
+     "text": "不宜洗车，未来24小时内有雨，如果在此期间洗车，雨水和路上的泥水可能会再次弄脏您的爱车。",
+     "value": "4"
+    }
+   }
+  ]
+ },
+ "forecast": {
+  "status": "stale",
+  "weather_hourly": [
+   {
+    "business_time": "2026-09-01T15:00:00+08:00",
+    "completeness": 1.0,
+    "dataset_role": "operational",
+    "dataset_type": "weather_forecast",
+    "fetched_at": "2026-09-01T06:50:41.679578+00:00",
+    "granularity": "hourly",
+    "location_key": "qweather:31.18,121.45",
+    "missing_fields": [],
+    "probe_point_ids": [
+     "XH_ENT_0009"
+    ],
+    "source": {
+     "attributions": [
+      "https://developer.qweather.com/attribution.html"
+     ],
+     "latitude": 31.18,
+     "longitude": 121.45,
+     "provider": "qweather",
+     "source_id": "qweather:31.18,121.45"
+    },
+    "status": "ok",
+    "units": {
+     "precipitation_mm": "mm",
+     "precipitation_probability_pct": "%",
+     "pressure_mb": "mb",
+     "real_feel_temperature_c": "C",
+     "relative_humidity_pct": "%",
+     "temperature_c": "C",
+     "uv_index": "index",
+     "visibility_km": "km",
+     "wind_direction_deg": "degree",
+     "wind_gust_kmh": "km/h",
+     "wind_speed_kmh": "km/h"
+    },
+    "valid_until": "2026-09-01T07:50:41.679578+00:00",
+    "values": {
+     "precipitation_mm": 0.0,
+     "precipitation_probability_pct": 0.0,
+     "pressure_mb": 1008.03,
+     "real_feel_temperature_c": 33.22,
+     "relative_humidity_pct": 63.0,
+     "temperature_c": 30.75,
+     "uv_index": 2.0,
+     "visibility_km": 23.981,
+     "weather_icon": "101",
+     "weather_text": "多云",
+     "wind_direction_deg": 90,
+     "wind_gust_kmh": 22.176000000000002,
+     "wind_speed_kmh": 9.144
+    }
+   },
+   {
+    "business_time": "2026-09-01T16:00:00+08:00",
+    "completeness": 1.0,
+    "dataset_role": "operational",
+    "dataset_type": "weather_forecast",
+    "fetched_at": "2026-09-01T06:50:41.679578+00:00",
+    "granularity": "hourly",
+    "location_key": "qweather:31.18,121.45",
+    "missing_fields": [],
+    "probe_point_ids": [
+     "XH_ENT_0009"
+    ],
+    "source": {
+     "attributions": [
+      "https://developer.qweather.com/attribution.html"
+     ],
+     "latitude": 31.18,
+     "longitude": 121.45,
+     "provider": "qweather",
+     "source_id": "qweather:31.18,121.45"
+    },
+    "status": "ok",
+    "units": {
+     "precipitation_mm": "mm",
+     "precipitation_probability_pct": "%",
+     "pressure_mb": "mb",
+     "real_feel_temperature_c": "C",
+     "relative_humidity_pct": "%",
+     "temperature_c": "C",
+     "uv_index": "index",
+     "visibility_km": "km",
+     "wind_direction_deg": "degree",
+     "wind_gust_kmh": "km/h",
+     "wind_speed_kmh": "km/h"
+    },
+    "valid_until": "2026-09-01T07:50:41.679578+00:00",
+    "values": {
+     "precipitation_mm": 0.0,
+     "precipitation_probability_pct": 0.0,
+     "pressure_mb": 1008.0,
+     "real_feel_temperature_c": 32.93,
+     "relative_humidity_pct": 68.0,
+     "temperature_c": 30.27,
+     "uv_index": 1.0,
+     "visibility_km": 23.968,
+     "weather_icon": "101",
+     "weather_text": "多云",
+     "wind_direction_deg": 90,
+     "wind_gust_kmh": 20.844,
+     "wind_speed_kmh": 9.324
+    }
+   }
+  ],
+  "aqi_hourly": [
+   {
+    "business_time": "2026-09-01T07:00:00+00:00",
+    "completeness": 1.0,
+    "dataset_role": "operational",
+    "dataset_type": "air_quality_forecast",
+    "fetched_at": "2026-09-01T06:50:42.326408+00:00",
+    "granularity": "hourly",
+    "location_key": "qweather:31.18,121.45",
+    "missing_fields": [],
+    "probe_point_ids": [
+     "XH_ENT_0009"
+    ],
+    "source": {
+     "air_quality_source": "QWeather 1x1 km coordinate product",
+     "aqi_standard": "cn-mee",
+     "attributions": [
+      "https://developer.qweather.com/attribution.html"
+     ],
+     "is_estimated": true,
+     "latitude": 31.18,
+     "longitude": 121.45,
+     "provider": "qweather",
+     "source_id": "qweather:31.18,121.45",
+     "spatial_resolution": "1x1_km"
+    },
+    "status": "partial",
+    "units": {
+     "aqi": "index"
+    },
+    "valid_until": "2026-09-01T07:50:42.326408+00:00",
+    "values": {
+     "aqi": 27.0
+    }
+   },
+   {
+    "business_time": "2026-09-01T08:00:00+00:00",
+    "completeness": 1.0,
+    "dataset_role": "operational",
+    "dataset_type": "air_quality_forecast",
+    "fetched_at": "2026-09-01T06:50:42.326408+00:00",
+    "granularity": "hourly",
+    "location_key": "qweather:31.18,121.45",
+    "missing_fields": [],
+    "probe_point_ids": [
+     "XH_ENT_0009"
+    ],
+    "source": {
+     "air_quality_source": "QWeather 1x1 km coordinate product",
+     "aqi_standard": "cn-mee",
+     "attributions": [
+      "https://developer.qweather.com/attribution.html"
+     ],
+     "is_estimated": true,
+     "latitude": 31.18,
+     "longitude": 121.45,
+     "provider": "qweather",
+     "source_id": "qweather:31.18,121.45",
+     "spatial_resolution": "1x1_km"
+    },
+    "status": "partial",
+    "units": {
+     "aqi": "index"
+    },
+    "valid_until": "2026-09-01T07:50:42.326408+00:00",
+    "values": {
+     "aqi": 34.0
+    }
+   }
+  ],
+  "pm2_5_hourly": [
+   {
+    "business_time": "2026-09-01T07:00:00+00:00",
+    "completeness": 0.0,
+    "dataset_role": "operational",
+    "dataset_type": "air_quality_forecast",
+    "fetched_at": "2026-09-01T06:50:42.326408+00:00",
+    "granularity": "hourly",
+    "location_key": "qweather:31.18,121.45",
+    "missing_fields": [
+     "pm2_5_ug_m3"
+    ],
+    "probe_point_ids": [
+     "XH_ENT_0009"
+    ],
+    "source": {
+     "air_quality_source": "QWeather 1x1 km coordinate product",
+     "aqi_standard": "cn-mee",
+     "attributions": [
+      "https://developer.qweather.com/attribution.html"
+     ],
+     "is_estimated": true,
+     "latitude": 31.18,
+     "longitude": 121.45,
+     "provider": "qweather",
+     "source_id": "qweather:31.18,121.45",
+     "spatial_resolution": "1x1_km"
+    },
+    "status": "partial",
+    "units": {},
+    "valid_until": "2026-09-01T07:50:42.326408+00:00",
+    "values": {}
+   }
+  ],
+  "pollen_grid_daily": [
+   {
+    "forecast_date": "2026-09-01",
+    "grids": [
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G001",
+      "latitude": 31.214706,
+      "longitude": 121.447159,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G002",
+      "latitude": 31.214706,
+      "longitude": 121.457161,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G003",
+      "latitude": 31.204706,
+      "longitude": 121.447159,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G004",
+      "latitude": 31.204706,
+      "longitude": 121.457161,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G005",
+      "latitude": 31.194706,
+      "longitude": 121.427155,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G006",
+      "latitude": 31.194706,
+      "longitude": 121.437157,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G007",
+      "latitude": 31.194706,
+      "longitude": 121.447159,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G008",
+      "latitude": 31.194706,
+      "longitude": 121.457161,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G009",
+      "latitude": 31.194706,
+      "longitude": 121.467155,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G010",
+      "latitude": 31.184706,
+      "longitude": 121.41716,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G011",
+      "latitude": 31.184706,
+      "longitude": 121.427155,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G012",
+      "latitude": 31.184706,
+      "longitude": 121.437157,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G013",
+      "latitude": 31.184706,
+      "longitude": 121.447159,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G014",
+      "latitude": 31.184706,
+      "longitude": 121.457161,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G015",
+      "latitude": 31.184706,
+      "longitude": 121.467155,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G016",
+      "latitude": 31.174706,
+      "longitude": 121.397156,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G017",
+      "latitude": 31.174706,
+      "longitude": 121.407158,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G018",
+      "latitude": 31.174706,
+      "longitude": 121.41716,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G019",
+      "latitude": 31.174706,
+      "longitude": 121.427155,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G020",
+      "latitude": 31.174706,
+      "longitude": 121.437157,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G021",
+      "latitude": 31.174706,
+      "longitude": 121.447159,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G022",
+      "latitude": 31.174706,
+      "longitude": 121.457161,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G023",
+      "latitude": 31.164705,
+      "longitude": 121.397156,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G024",
+      "latitude": 31.164705,
+      "longitude": 121.407158,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G025",
+      "latitude": 31.164705,
+      "longitude": 121.41716,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G026",
+      "latitude": 31.164705,
+      "longitude": 121.427155,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G027",
+      "latitude": 31.164705,
+      "longitude": 121.437157,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G028",
+      "latitude": 31.164705,
+      "longitude": 121.447159,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G029",
+      "latitude": 31.164705,
+      "longitude": 121.457161,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G030",
+      "latitude": 31.164705,
+      "longitude": 121.467155,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G031",
+      "latitude": 31.154705,
+      "longitude": 121.397156,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G032",
+      "latitude": 31.154705,
+      "longitude": 121.407158,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G033",
+      "latitude": 31.154705,
+      "longitude": 121.41716,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G034",
+      "latitude": 31.154705,
+      "longitude": 121.427155,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G035",
+      "latitude": 31.154705,
+      "longitude": 121.437157,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G036",
+      "latitude": 31.154705,
+      "longitude": 121.447159,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G037",
+      "latitude": 31.154705,
+      "longitude": 121.457161,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G038",
+      "latitude": 31.144705,
+      "longitude": 121.41716,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G039",
+      "latitude": 31.144705,
+      "longitude": 121.427155,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G040",
+      "latitude": 31.144705,
+      "longitude": 121.437157,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G041",
+      "latitude": 31.144705,
+      "longitude": 121.447159,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G042",
+      "latitude": 31.144705,
+      "longitude": 121.457161,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G043",
+      "latitude": 31.134706,
+      "longitude": 121.41716,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G044",
+      "latitude": 31.134706,
+      "longitude": 121.427155,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G045",
+      "latitude": 31.134706,
+      "longitude": 121.437157,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G046",
+      "latitude": 31.134706,
+      "longitude": 121.447159,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G047",
+      "latitude": 31.134706,
+      "longitude": 121.457161,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G048",
+      "latitude": 31.124706,
+      "longitude": 121.447159,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G049",
+      "latitude": 31.124706,
+      "longitude": 121.457161,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G050",
+      "latitude": 31.124706,
+      "longitude": 121.467155,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G051",
+      "latitude": 31.114706,
+      "longitude": 121.437157,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G052",
+      "latitude": 31.114706,
+      "longitude": 121.447159,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G053",
+      "latitude": 31.114706,
+      "longitude": 121.457161,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     },
+     {
+      "components": {
+       "google_background_score": 20.0,
+       "grass_index_code": "UPI",
+       "grass_index_value": 1,
+       "grass_status": "ok",
+       "tree_index_value": null,
+       "tree_status": "no_data",
+       "vegetation_score": null,
+       "weather_score": 65.53,
+       "weed_index_value": null,
+       "weed_status": "no_data"
+      },
+      "confidence": "medium",
+      "estimated": true,
+      "forecast_date": "2026-09-01",
+      "grid_id": "XH_PM25_G054",
+      "latitude": 31.104706,
+      "longitude": 121.457161,
+      "pollen_risk_score": 28.03,
+      "risk_level": "low",
+      "source": "google_pollen+qweather",
+      "spatial_resolution_m": 1000,
+      "status": "partial"
+     }
+    ]
+   }
+  ],
+  "life_indices_daily": [
+   {
+    "business_time": "2026-09-01T00:00:00+08:00",
+    "completeness": 1.0,
+    "dataset_role": "operational",
+    "dataset_type": "life_index",
+    "fetched_at": "2026-09-01T06:50:41.844179+00:00",
+    "granularity": "daily",
+    "location_key": "qweather:31.18,121.45",
+    "missing_fields": [],
+    "probe_point_ids": [
+     "XH_ENT_0009"
+    ],
+    "source": {
+     "attributions": [
+      "QWeather"
+     ],
+     "latitude": 31.18,
+     "longitude": 121.45,
+     "provider": "qweather",
+     "source_id": "qweather:31.18,121.45"
+    },
+    "status": "ok",
+    "units": {},
+    "valid_until": "2026-09-01T07:50:41.844179+00:00",
+    "values": {
+     "category": "较不宜",
+     "category_value": "3",
+     "index_id": "1",
+     "local_date_time": "2026-09-01",
+     "name": "运动指数",
+     "text": "阴天，且天气较热，请减少运动时间并降低运动强度。",
+     "value": "3"
+    }
+   },
+   {
+    "business_time": "2026-09-01T00:00:00+08:00",
+    "completeness": 1.0,
+    "dataset_role": "operational",
+    "dataset_type": "life_index",
+    "fetched_at": "2026-09-01T06:50:41.844179+00:00",
+    "granularity": "daily",
+    "location_key": "qweather:31.18,121.45",
+    "missing_fields": [],
+    "probe_point_ids": [
+     "XH_ENT_0009"
+    ],
+    "source": {
+     "attributions": [
+      "QWeather"
+     ],
+     "latitude": 31.18,
+     "longitude": 121.45,
+     "provider": "qweather",
+     "source_id": "qweather:31.18,121.45"
+    },
+    "status": "ok",
+    "units": {},
+    "valid_until": "2026-09-01T07:50:41.844179+00:00",
+    "values": {
+     "category": "不宜",
+     "category_value": "4",
+     "index_id": "2",
+     "local_date_time": "2026-09-01",
+     "name": "洗车指数",
+     "text": "不宜洗车，未来24小时内有雨，如果在此期间洗车，雨水和路上的泥水可能会再次弄脏您的爱车。",
+     "value": "4"
+    }
+   }
+  ]
+ },
+ "grids": {
+  "status": "stale",
+  "count": 1,
+  "items": [
+   {
+    "business_time": "2026-09-01T11:00:00+08:00",
+    "coordinates": {
+     "gcj02": {
+      "latitude": 31.212819,
+      "longitude": 121.451756
+     },
+     "wgs84": {
+      "latitude": 31.214706,
+      "longitude": 121.447159
+     }
+    },
+    "expires_at": null,
+    "fetched_at": "2026-09-01T03:37:25.549392+00:00",
+    "grid_id": "XH_PM25_G001",
+    "noise": {
+     "business_time": "static_scenario",
+     "confidence": "medium",
+     "covered_length_m": 16420.436,
+     "estimated": true,
+     "expires_at": null,
+     "fetched_at": "2026-09-01T03:37:25.549392+00:00",
+     "name": "noise_risk",
+     "noise_risk_score": 40.967,
+     "route_count": 17,
+     "scenario_risk_scores": {
+      "daytime": 40.967,
+      "night": 30.725,
+      "weekday_offpeak": 38.918,
+      "weekday_peak": 45.064
+     },
+     "segment_count": 168,
+     "source": [
+      "noise_segments"
+     ],
+     "spatial_scale": "route_segment_proxy_aggregated_to_1km_grid",
+     "status": "partial",
+     "unit": "0-100 risk index"
+    },
+    "pm2_5": {
+     "business_time": "2026-09-01T14:00:00+08:00",
+     "estimated": true,
+     "expires_at": null,
+     "fetched_at": "2026-09-01T14:51:13.405390+08:00",
+     "name": "PM2.5",
+     "source": [
+      "qweather",
+      "qweather:31.18,121.45"
+     ],
+     "spatial_resolution_m": 1000,
+     "spatial_scale": "1km_grid_estimate",
+     "status": "ok",
+     "unit": "µg/m³",
+     "value": 9.406766
+    },
+    "pollen": {
+     "components": {
+      "google_background_score": 20.0,
+      "grass_index_code": "UPI",
+      "grass_index_value": 1,
+      "grass_status": "ok",
+      "tree_index_value": null,
+      "tree_status": "no_data",
+      "vegetation_score": null,
+      "weather_score": 65.53,
+      "weed_index_value": null,
+      "weed_status": "no_data"
+     },
+     "confidence": "medium",
+     "estimated": true,
+     "expires_at": null,
+     "fetched_at": "2026-09-01T03:37:25.549392+00:00",
+     "forecast_date": "2026-09-01",
+     "grid_id": "XH_PM25_G001",
+     "latitude": 31.214706,
+     "longitude": 121.447159,
+     "pollen_risk_score": 28.03,
+     "risk_level": "low",
+     "source": "google_pollen+qweather",
+     "spatial_resolution_m": 1000,
+     "status": "partial"
+    },
+    "status": "partial"
+   }
+  ]
+ },
+ "routes": {
+  "status": "stale",
+  "count": 4,
+  "items": [
+   {
+    "access_route_environment": {
+     "aggregation": "not_computed",
+     "status": "not_aggregated"
+    },
+    "noise": {
+     "business_time": "static_scenario",
+     "confidence": "low",
+     "coverage_ratio": 1.0,
+     "estimated": true,
+     "expires_at": null,
+     "fetched_at": "2026-09-01T11:37:25.319210+08:00",
+     "risk_level": "low",
+     "scenarios": {
+      "daytime": 16.999,
+      "night": 12.749,
+      "weekday_offpeak": 16.149,
+      "weekday_peak": 18.699
+     },
+     "source": [
+      "amap_riding_20260820+local_topology+visual_audit_20260820",
+      "route_metadata:XH_BIKE_0061",
+      "shanghai_open_data:O5485687412025006"
+     ],
+     "spatial_scale": "about_100m_road_segment_proxy",
+     "status": "partial",
+     "unit": "0-100 risk index",
+     "value": 16.999
+    },
+    "pm2_5": {
+     "aggregation": "segment_length_weighted_mean",
+     "business_time": "2026-09-01T14:00:00+08:00",
+     "confidence": "medium",
+     "coverage_ratio": 1.0,
+     "estimated": true,
+     "expires_at": null,
+     "fetched_at": "2026-09-01T14:51:13.405390+08:00",
+     "name": "PM2.5",
+     "source": [
+      "qweather",
+      "qweather:31.18,121.45"
+     ],
+     "source_grid_count": 54,
+     "spatial_resolution_m": 1000,
+     "spatial_scale": "1km_grid_estimate",
+     "status": "ok",
+     "unit": "µg/m³",
+     "value": 10.496481
+    },
+    "pollen_daily": [
+     {
+      "business_time": "2026-09-01",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-01T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen",
+       "qweather"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 28.03
+     },
+     {
+      "business_time": "2026-09-02",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-02T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen",
+       "qweather"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 18.75
+     },
+     {
+      "business_time": "2026-09-03",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-03T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 20.0
+     },
+     {
+      "business_time": "2026-09-04",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-04T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 20.0
+     },
+     {
+      "business_time": "2026-09-05",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-05T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 20.0
+     }
+    ],
+    "route_id": "XH_BIKE_0061",
+    "segment_count": 59,
+    "status": "partial",
+    "total_length_m": 5851.944
+   },
+   {
+    "access_route_environment": {
+     "aggregation": "not_computed",
+     "status": "not_aggregated"
+    },
+    "noise": {
+     "business_time": "static_scenario",
+     "confidence": "low",
+     "coverage_ratio": 1.0,
+     "estimated": true,
+     "expires_at": null,
+     "fetched_at": "2026-09-01T11:37:25.319210+08:00",
+     "risk_level": "low",
+     "scenarios": {
+      "daytime": 23.426,
+      "night": 17.569,
+      "weekday_offpeak": 22.255,
+      "weekday_peak": 25.769
+     },
+     "source": [
+      "64580",
+      "B0KUNMEGLF",
+      "amap_walking_20260820+local_topology+visual_audit_20260820",
+      "route_metadata:XH_RUN_0031",
+      "shanghai_open_data:O5485687412025006"
+     ],
+     "spatial_scale": "about_100m_road_segment_proxy",
+     "status": "partial",
+     "unit": "0-100 risk index",
+     "value": 23.426
+    },
+    "pm2_5": {
+     "aggregation": "segment_length_weighted_mean",
+     "business_time": "2026-09-01T14:00:00+08:00",
+     "confidence": "medium",
+     "coverage_ratio": 1.0,
+     "estimated": true,
+     "expires_at": null,
+     "fetched_at": "2026-09-01T14:51:13.405390+08:00",
+     "name": "PM2.5",
+     "source": [
+      "qweather",
+      "qweather:31.18,121.45"
+     ],
+     "source_grid_count": 54,
+     "spatial_resolution_m": 1000,
+     "spatial_scale": "1km_grid_estimate",
+     "status": "ok",
+     "unit": "µg/m³",
+     "value": 10.460436
+    },
+    "pollen_daily": [
+     {
+      "business_time": "2026-09-01",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-01T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen",
+       "qweather"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 28.03
+     },
+     {
+      "business_time": "2026-09-02",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-02T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen",
+       "qweather"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 18.75
+     },
+     {
+      "business_time": "2026-09-03",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-03T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 20.0
+     },
+     {
+      "business_time": "2026-09-04",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-04T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 20.0
+     },
+     {
+      "business_time": "2026-09-05",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-05T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 20.0
+     }
+    ],
+    "route_id": "XH_RUN_0031",
+    "segment_count": 26,
+    "status": "partial",
+    "total_length_m": 2576.5
+   },
+   {
+    "access_route_environment": {
+     "aggregation": "not_computed",
+     "status": "not_aggregated"
+    },
+    "noise": {
+     "business_time": "static_scenario",
+     "confidence": "low",
+     "coverage_ratio": 1.0,
+     "estimated": true,
+     "expires_at": null,
+     "fetched_at": "2026-09-01T11:37:25.319210+08:00",
+     "risk_level": "low",
+     "scenarios": {
+      "daytime": 22.988,
+      "night": 17.241,
+      "weekday_offpeak": 21.839,
+      "weekday_peak": 25.287
+     },
+     "source": [
+      "amap:B0KUNMEGLF",
+      "amap:B0L2TO44Z8",
+      "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "route_metadata:XH_WALK_0001",
+      "shanghai_open_data:O5485687412025006"
+     ],
+     "spatial_scale": "about_100m_road_segment_proxy",
+     "status": "partial",
+     "unit": "0-100 risk index",
+     "value": 22.988
+    },
+    "pm2_5": {
+     "aggregation": "segment_length_weighted_mean",
+     "business_time": "2026-09-01T14:00:00+08:00",
+     "confidence": "medium",
+     "coverage_ratio": 1.0,
+     "estimated": true,
+     "expires_at": null,
+     "fetched_at": "2026-09-01T14:51:13.405390+08:00",
+     "name": "PM2.5",
+     "source": [
+      "qweather",
+      "qweather:31.18,121.45"
+     ],
+     "source_grid_count": 54,
+     "spatial_resolution_m": 1000,
+     "spatial_scale": "1km_grid_estimate",
+     "status": "ok",
+     "unit": "µg/m³",
+     "value": 10.926305
+    },
+    "pollen_daily": [
+     {
+      "business_time": "2026-09-01",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-01T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen",
+       "qweather"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 28.03
+     },
+     {
+      "business_time": "2026-09-02",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-02T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen",
+       "qweather"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 18.75
+     },
+     {
+      "business_time": "2026-09-03",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-03T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 20.0
+     },
+     {
+      "business_time": "2026-09-04",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-04T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 20.0
+     },
+     {
+      "business_time": "2026-09-05",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-05T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 20.0
+     }
+    ],
+    "route_id": "XH_WALK_0001",
+    "segment_count": 10,
+    "status": "partial",
+    "total_length_m": 975.433
+   },
+   {
+    "access_route_environment": {
+     "aggregation": "not_computed",
+     "status": "not_aggregated"
+    },
+    "noise": {
+     "business_time": "static_scenario",
+     "confidence": "low",
+     "coverage_ratio": 1.0,
+     "estimated": true,
+     "expires_at": null,
+     "fetched_at": "2026-09-01T11:37:25.319210+08:00",
+     "risk_level": "medium",
+     "scenarios": {
+      "daytime": 37.147,
+      "night": 27.86,
+      "weekday_offpeak": 35.29,
+      "weekday_peak": 40.862
+     },
+     "source": [
+      "amap_walking_20260819+local_topology+visual_audit_20260819",
+      "route_metadata:XH_WALK_0002",
+      "shanghai_open_data:O5485687412025006"
+     ],
+     "spatial_scale": "about_100m_road_segment_proxy",
+     "status": "partial",
+     "unit": "0-100 risk index",
+     "value": 37.147
+    },
+    "pm2_5": {
+     "aggregation": "segment_length_weighted_mean",
+     "business_time": "2026-09-01T14:00:00+08:00",
+     "confidence": "medium",
+     "coverage_ratio": 1.0,
+     "estimated": true,
+     "expires_at": null,
+     "fetched_at": "2026-09-01T14:51:13.405390+08:00",
+     "name": "PM2.5",
+     "source": [
+      "qweather",
+      "qweather:31.18,121.45"
+     ],
+     "source_grid_count": 54,
+     "spatial_resolution_m": 1000,
+     "spatial_scale": "1km_grid_estimate",
+     "status": "ok",
+     "unit": "µg/m³",
+     "value": 12.023887
+    },
+    "pollen_daily": [
+     {
+      "business_time": "2026-09-01",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-01T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen",
+       "qweather"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 28.03
+     },
+     {
+      "business_time": "2026-09-02",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-02T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen",
+       "qweather"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 18.75
+     },
+     {
+      "business_time": "2026-09-03",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-03T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 20.0
+     },
+     {
+      "business_time": "2026-09-04",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-04T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 20.0
+     },
+     {
+      "business_time": "2026-09-05",
+      "confidence": "low",
+      "coverage_ratio": 1.0,
+      "estimated": true,
+      "expires_at": "2026-09-05T23:59:59+08:00",
+      "fetched_at": "2026-09-01T03:37:24.457717+00:00",
+      "risk_level": "low",
+      "source": [
+       "google_pollen"
+      ],
+      "spatial_scale": "about_1000m_grid_sample",
+      "status": "partial",
+      "unit": "0-100 risk index",
+      "value": 20.0
+     }
+    ],
+    "route_id": "XH_WALK_0002",
+    "segment_count": 29,
+    "status": "partial",
+    "total_length_m": 2876.615
+   }
+  ]
+ }
+}

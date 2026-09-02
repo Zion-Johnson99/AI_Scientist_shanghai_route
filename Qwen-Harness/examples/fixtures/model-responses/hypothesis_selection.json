@@ -1,0 +1,34 @@
+{
+  "assessments": [
+    {
+      "hypothesis_id": "hyp-001",
+      "verdict": "accept",
+      "novelty_notes": "候选集内约束最优的多源对照设计成立，结论边界（不外推健康收益）已在评审中确认。",
+      "feasibility_notes": "数据、指标与停止条件均可预注册，可立即进入实验设计。",
+      "counterexamples": [],
+      "missing_evidence": []
+    },
+    {
+      "hypothesis_id": "hyp-002",
+      "verdict": "revise",
+      "novelty_notes": "背景浓度调节作用值得保留为后续迭代假设。",
+      "feasibility_notes": "离线条件下无法完成浓度分层，本轮不选。",
+      "counterexamples": [],
+      "missing_evidence": ["可分层的小时级环境数据"]
+    },
+    {
+      "hypothesis_id": "hyp-003",
+      "verdict": "revise",
+      "novelty_notes": "个性化权重的贡献检验依赖偏好一致性口径，先补充口径定义再进入实验。",
+      "feasibility_notes": "本轮不选，作为下一轮候选。",
+      "counterexamples": [],
+      "missing_evidence": ["真实用户敏感项分布"]
+    }
+  ],
+  "conflicts": [],
+  "missing_evidence": [
+    "暴露代理字段（噪声、花粉）的观测来源验证仍缺失，但不阻碍路线层面的对照实验"
+  ],
+  "selected_hypothesis_id": "hyp-001",
+  "selection_rationale": "综合评审意见：hyp-001 是唯一同时满足证据支撑、数据可得与可证伪标准的候选；hyp-002/hyp-003 分别受限于在线数据与口径定义，转入后续迭代。"
+}

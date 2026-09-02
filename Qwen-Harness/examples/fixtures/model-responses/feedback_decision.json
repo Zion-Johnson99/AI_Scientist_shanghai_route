@@ -1,0 +1,18 @@
+{
+  "status": "stop_partial",
+  "reason": "多源个性化方案在多数画像上优于单源与非个性化基线，且距离约束合规；但偏好一致性未达 supported 阈值，且 PM2.5、噪声、花粉字段均为代理数据而非个体实际暴露测量。按预注册判定规则给出 partially_supported，停止迭代；证据不足的部分如实标记为局限，不外推健康收益。",
+  "automatic_actions": [],
+  "proposed_code_changes": [
+    {
+      "action": "propose_environment_model_change",
+      "description": "将 PM2.5 网格/站点融合估计升级为小时级浓度场，并为花粉引入观测来源（当前为日级背景代理）。",
+      "rationale": "代理字段是偏好一致性未达标的主要候选解释；属数据与模型改进提案，仅记录不自动执行。"
+    },
+    {
+      "action": "propose_scoring_code_change",
+      "description": "在评分接口输出中补充按画像分层的胜率明细，便于复核 preference_win_rate 的计算口径。",
+      "rationale": "评审要求偏好一致性口径可复核；属评分输出增强提案，仅记录不自动执行。"
+    }
+  ],
+  "next_iteration_goal": null
+}

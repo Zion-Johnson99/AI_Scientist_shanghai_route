@@ -1,0 +1,17 @@
+{
+  "source_id": "src-who-noise-guidelines-2018",
+  "source_type": "https_url",
+  "title": "WHO Environmental Noise Guidelines for the European Region",
+  "authors": [
+    "World Health Organization Regional Office for Europe"
+  ],
+  "year": 2018,
+  "doi": null,
+  "pmid": null,
+  "url": "https://www.who.int/publications/i/item/9789241550338",
+  "local_path": null,
+  "accessed_at": "2026-07-12T00:00:00Z",
+  "sha256": "207f1b7537fd696d6988e85b3ef675faa27528292ba66c2a0e6aa96ba3f6ea1a",
+  "license_note": "WHO 公开发布文件（fixture，离线复现用）",
+  "verification_status": "verified"
+}

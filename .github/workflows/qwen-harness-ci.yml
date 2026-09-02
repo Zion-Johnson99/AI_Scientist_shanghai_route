@@ -1,0 +1,60 @@
+name: Qwen Harness CI
+
+on:
+  pull_request:
+    paths:
+      - "Qwen-Harness/**"
+      - ".github/workflows/qwen-harness-ci.yml"
+  push:
+    branches: [main, Qwen_Harness_Build]
+    paths:
+      - "Qwen-Harness/**"
+      - ".github/workflows/qwen-harness-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-quality-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: Qwen-Harness
+    env:
+      QWEN_HARNESS_NETWORK_ENABLED: "false"
+      QWEN_HARNESS_RUNTIME_ROOT: runtime
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install locked dependencies
+        run: uv sync --all-extras --frozen
+
+      - name: Run tests
+        run: uv run pytest -q
+
+      - name: Run Ruff
+        run: |
+          uv run ruff check src tests
+          uv run ruff format --check src tests
+
+      - name: Run Pyright
+        run: uv run pyright --project pyproject.toml
+
+      - name: Validate offline configuration
+        run: uv run qwen-harness validate --scope config
+
+      - name: Run deterministic offline smoke test
+        run: >-
+          uv run qwen-harness run
+          --goal-file examples/goals/multisource-route.json
+          --workflow reproduce-existing
+          --offline
+          --approval-mode auto
+          --max-iterations 1
+          --json

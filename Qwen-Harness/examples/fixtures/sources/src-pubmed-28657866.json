@@ -1,0 +1,24 @@
+{
+  "source_id": "src-pubmed-28657866",
+  "source_type": "pubmed",
+  "title": "Air Pollution and Mortality in the Medicare Population",
+  "authors": [
+    "Di Q",
+    "Wang Y",
+    "Zanobetti A",
+    "Wang Y",
+    "Koutrakis P",
+    "Choirat C",
+    "Dominici F",
+    "Schwartz JD"
+  ],
+  "year": 2017,
+  "doi": "10.1056/NEJMoa1702747",
+  "pmid": "28657866",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/28657866/",
+  "local_path": null,
+  "accessed_at": "2026-07-12T00:00:00Z",
+  "sha256": "4e267f6382827593f7734ea60f8aa21b2b887ef0f049a12479784034151a61f6",
+  "license_note": "PubMed 元数据（fixture，离线复现用）",
+  "verification_status": "verified"
+}

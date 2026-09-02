@@ -1,0 +1,185 @@
+{
+  "schema_version": "1.0",
+  "run_id": "offline-reproduce-existing",
+  "git_head": "",
+  "problem_statement": "在明确的距离约束（同端点附加距离上限 0.20、目标距离偏差上限 0.15）内，多源环境信息融合能否在徐汇区当前候选路线集上，为户外运动者产生更稳定、更符合个人需求的路线推荐；“最优路线”仅定义为候选集内的约束最优解。",
+  "rationale": "WHO 指南与大规模队列证据表明，PM2.5 长期暴露与全因及心肺死亡存在高确定性关联，且在低于现行标准的浓度下风险仍随浓度上升；道路交通噪声超过 Lden 53 dB 与不良健康影响相关；绿地暴露与全因死亡率下降相关。这些证据均为人群层面，未回答路线层面的多暴露联合选择问题；项目设计文档将研究问题落到多源融合与距离约束上，形成候选集内约束最优的可检验命题。",
+  "technical_details": [
+    "PM2.5 为网格/站点融合估计，非个体实际暴露测量",
+    "花粉为日级背景代理，噪声为 0-100 风险代理",
+    "效用函数包含独立维度得分、目标距离偏差惩罚、接驳成本惩罚与低可信数据惩罚",
+    "候选集须通过运动方式、距离、安全、区域、路线形态与数据可用性门禁"
+  ],
+  "datasets": {
+    "source": [
+      "examples/fixtures/route-catalog.sample.json（候选路线库快照，夹具）",
+      "examples/fixtures/environment-dashboard.sample.json（环境面板快照，夹具）",
+      "examples/fixtures/route-geometry.sample.geojson（路线几何，夹具）",
+      "examples/fixtures/sources/（6 个固定文献/政策来源，夹具）"
+    ],
+    "target": ["上海市徐汇区候选路线库（步行/跑步/骑行）"]
+  },
+  "paper_title": "距离约束下的多源环境融合路线选择：基于徐汇候选路线集的预注册离线对照",
+  "paper_abstract": "背景：户外运动路线决策受空气污染、噪声、绿地等多源环境因素影响，但既有证据多停留在人群层面。方法：在徐汇区候选路线库上，以预注册的距离约束（附加距离上限 0.20、目标距离偏差上限 0.15）对多源融合个性化方案与最短路径、PM2.5 单源、多源非个性化等基线进行离线对照，指标为环境胜率、绕行合规率与偏好胜率。结果（离线夹具）：多源方案在多数画像上优于单源基线且距离约束合规，但偏好一致性未达 supported 阈值，判定为 partially_supported。结论：多源融合在候选集内可提供更稳定的约束最优推荐；所有暴露字段均为代理数据，结论不外推为健康收益。",
+  "methods": [
+    "证据抽取：仅使用已注册且核验来源，claim 携带 source_id 与证据位置",
+    "引用核验：数值可追溯、参考文献去重、DOI/PMID 一致性（CitationGate）",
+    "假设评审与选择：独立评审全部候选，假设门禁通过后进入实验设计",
+    "实验：预注册基线、主/辅指标、距离约束与停止条件；模块仅使用只读白名单操作",
+    "判定：数据不足→inconclusive，部分达标→partially_supported，方向相反→unsupported"
+  ],
+  "experiments": {
+    "baselines": [
+      {
+        "baseline_id": "B0_shortest_feasible",
+        "name": "最短可行路径",
+        "selection_rule": "同起终点与运动方式约束下，选择通过门禁且距离最短的候选路线",
+        "required_fields": ["distance_m", "validation_status"]
+      },
+      {
+        "baseline_id": "B1_pm25_only",
+        "name": "PM2.5 单源",
+        "selection_rule": "在可行候选中选择 PM2.5 暴露得分最低者，忽略其他环境维度与个人权重",
+        "required_fields": ["pm25_score"]
+      },
+      {
+        "baseline_id": "B2_multi_env_nonpersonalized",
+        "name": "多源非个性化",
+        "selection_rule": "多源环境融合但使用默认权重，不应用个人敏感项权重",
+        "required_fields": ["composite_env_score"]
+      },
+      {
+        "baseline_id": "B3_target_distance_only",
+        "name": "仅目标距离",
+        "selection_rule": "选择目标距离偏差最小的候选路线，忽略环境暴露",
+        "required_fields": ["target_distance_m", "distance_m"]
+      }
+    ],
+    "metrics": [
+      {
+        "metric_id": "environment_win_rate",
+        "name": "环境胜率",
+        "direction": "higher",
+        "formula": "V1 综合环境暴露得分同时优于 B0 与 B1 的画像占比",
+        "primary": true,
+        "data_source": "evaluation.score_candidates 模块输出"
+      },
+      {
+        "metric_id": "detour_pass_rate",
+        "name": "绕行合规率",
+        "direction": "higher",
+        "formula": "同端点附加距离比不超过 0.20 的画像占比",
+        "primary": false,
+        "data_source": "route.read_snapshot 快照与 evaluation 输出"
+      },
+      {
+        "metric_id": "preference_win_rate",
+        "name": "偏好胜率",
+        "direction": "higher",
+        "formula": "V1 个性化效用优于 B2 非个性化方案的画像占比",
+        "primary": false,
+        "data_source": "evaluation.score_candidates 模块输出"
+      },
+      {
+        "metric_id": "target_distance_deviation",
+        "name": "目标距离偏差",
+        "direction": "lower",
+        "formula": "mean(|推荐路线距离 - 目标距离| / 目标距离)",
+        "primary": false,
+        "data_source": "route.read_snapshot 快照"
+      }
+    ]
+  },
+  "results": {
+    "status": "partially_supported",
+    "summary": "离线复现结论与 feedback_decision 一致：多源个性化方案在多数画像上优于单源与非个性化基线，距离约束合规；偏好一致性未达 supported 阈值，且暴露字段均为代理数据，按预注册规则判定为 partially_supported。",
+    "metric_highlights": [],
+    "negative_results": [
+      "偏好一致性（preference_win_rate）未达到 supported 阈值",
+      "噪声与花粉代理字段缺少观测来源验证，未纳入因果解释"
+    ],
+    "metrics_summary_ref": "reports/metrics_summary.json（由 experiment_analysis 阶段产出）"
+  },
+  "references": [
+    {
+      "source_id": "src-who-aqg-2021",
+      "title": "WHO Global Air Quality Guidelines: Particulate Matter (PM2.5 and PM10), ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide",
+      "authors": ["World Health Organization"],
+      "year": 2021,
+      "doi": null,
+      "pmid": null,
+      "url": "https://www.who.int/publications/i/item/9789240034228"
+    },
+    {
+      "source_id": "src-who-noise-guidelines-2018",
+      "title": "WHO Environmental Noise Guidelines for the European Region",
+      "authors": ["World Health Organization Regional Office for Europe"],
+      "year": 2018,
+      "doi": null,
+      "pmid": null,
+      "url": "https://www.who.int/publications/i/item/9789241550338"
+    },
+    {
+      "source_id": "src-pubmed-16805392",
+      "title": "Health effects of fine particulate air pollution: lines that connect",
+      "authors": ["Pope CA 3rd", "Dockery DW"],
+      "year": 2006,
+      "doi": "10.1080/10473289.2006.10464485",
+      "pmid": "16805392",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16805392/"
+    },
+    {
+      "source_id": "src-pubmed-28657866",
+      "title": "Air Pollution and Mortality in the Medicare Population",
+      "authors": ["Di Q", "Wang Y", "Zanobetti A", "Wang Y", "Koutrakis P", "Choirat C", "Dominici F", "Schwartz JD"],
+      "year": 2017,
+      "doi": "10.1056/NEJMoa1702747",
+      "pmid": "28657866",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28657866/"
+    },
+    {
+      "source_id": "src-pubmed-18994660",
+      "title": "Effect of exposure to natural environment on health inequalities: an observational population study",
+      "authors": ["Mitchell R", "Popham F"],
+      "year": 2008,
+      "doi": "10.1016/S0140-6736(08)61689-X",
+      "pmid": "18994660",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18994660/"
+    },
+    {
+      "source_id": "src-local-scientific-question",
+      "title": "Qwen-Harness 需求与总体架构：§5 科学问题与可验证假设（项目设计文档摘录）",
+      "authors": ["Qwen-Harness 项目组"],
+      "year": 2026,
+      "doi": null,
+      "pmid": null,
+      "url": null
+    }
+  ],
+  "evidence_map": {
+    "problem_statement": ["clm-006", "clm-007"],
+    "rationale": ["clm-001", "clm-002", "clm-003", "clm-004", "clm-005"],
+    "methods": ["clm-006"],
+    "limitations": ["clm-003", "clm-005", "clm-007"]
+  },
+  "limitations": [
+    "PM2.5 为网格/站点融合估计，花粉为日级背景代理，噪声为 0-100 风险代理，均非个体实际暴露测量",
+    "结论限定为当前候选集内的约束最优，不声称全局最优，也不外推其他区域或人群",
+    "未评估临床健康结局；人群层面的暴露-死亡关联不能替代路线层面的推荐效果",
+    "离线复现使用固定夹具，数值结论不代表真实数据的统计检验结果"
+  ],
+  "reproducibility": {
+    "workflow": "reproduce-existing",
+    "offline_fixture": true,
+    "commands": [
+      "python -m qwen_harness run --workflow reproduce-existing --offline --goal-file examples/goals/multisource-route.json"
+    ],
+    "notes": "模型输出来自 examples/fixtures/model-responses/，来源来自 examples/fixtures/sources/（SHA256 已锁定）；未发起任何网络请求。"
+  },
+  "data_snapshot_hashes": {
+    "examples/fixtures/route-catalog.sample.json": "583ac09803a0f91c74ab9bd71e762e2d0139e8922f6c5dbbfd0336b4b3e71da8",
+    "examples/fixtures/environment-dashboard.sample.json": "dcb9a13558fcad8c498d7e60fb8d50e527890e749c7d46a63e02b5f9d30017d6",
+    "examples/fixtures/route-geometry.sample.geojson": "98d2f1f04f2243482c43c80e418362118cc7a5767ac493f698fbdf25d8708bf0"
+  },
+  "generated_at": "2026-07-12T00:00:00Z"
+}

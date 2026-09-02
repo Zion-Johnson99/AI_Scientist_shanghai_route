@@ -1,0 +1,15 @@
+[FIXTURE] WHO Environmental Noise Guidelines for the European Region. Copenhagen:
+World Health Organization Regional Office for Europe, 2018. ISBN 978-92-4-155033-8.
+
+Scope note (fixture): 固定离线来源文本，用于离线复现，非实时抓取。
+
+Key statements:
+- The guideline recommends reducing noise levels produced by road traffic to below
+  Lden 53 dB, as road traffic noise above this level is associated with adverse
+  health effects (annoyance and sleep disturbance).
+- For railway traffic the recommended level is Lden 54 dB; for aircraft noise the
+  recommendation is Lden 45 dB (night levels lower).
+- The guidelines are based on systematic reviews of exposure-effect evidence and
+  use health-outcome-specific recommendations rather than a single global limit.
+
+URL: https://www.who.int/publications/i/item/9789241550338

@@ -1,0 +1,38 @@
+{
+  "gaps": [
+    {
+      "gap_id": "gap-001",
+      "statement": "既有证据确立了 PM2.5、噪声、绿地的健康相关性，但没有在同城路线层面给出多暴露维度联合评分与验证方法，无法直接回答“多源融合能否选出暴露更低的路线”。",
+      "supported_by_claim_ids": ["clm-001", "clm-003", "clm-004"],
+      "affected_variables": ["pm25_exposure", "noise_risk", "composite_env_score"],
+      "why_unresolved": "流行病学研究以人群长期暴露为对象，不提供路线粒度的候选比较与距离约束下的选择规则。",
+      "available_data": ["徐汇区候选路线库快照", "网格/站点融合 PM2.5 估计", "噪声 0-100 风险代理", "evaluation.score_candidates 评分接口"],
+      "missing_data": ["路线粒度的个体实际暴露测量", "暴露-反应在路线层面的标定"],
+      "testability": "high",
+      "product_relevance": "high"
+    },
+    {
+      "gap_id": "gap-002",
+      "statement": "距离约束（同端点附加距离上限 0.20、目标距离偏差上限 0.15）对个性化推荐稳定性与胜率的影响未被量化，约束收紧或放松时的推荐漂移未知。",
+      "supported_by_claim_ids": ["clm-006", "clm-007"],
+      "affected_variables": ["detour_ratio", "target_distance_deviation", "environment_win_rate"],
+      "why_unresolved": "项目仅给出约束的操作定义与默认阈值，缺少在不同阈值下的预注册对照实验。",
+      "available_data": ["候选路线距离字段", "目标距离画像字段", "预注册阈值配置"],
+      "missing_data": ["阈值敏感性分析的实验记录"],
+      "testability": "high",
+      "product_relevance": "high"
+    },
+    {
+      "gap_id": "gap-003",
+      "statement": "绿地暴露与健康不平等下降的关联来自人群观察研究，未定位到候选路线路段，无法判断绿地维度在本地候选集内是否具有区分度。",
+      "supported_by_claim_ids": ["clm-005", "clm-002"],
+      "affected_variables": ["greenspace_water_score", "composite_env_score"],
+      "why_unresolved": "原研究按区域统计绿地暴露，未提供路段级绿地可达性或途经绿地的度量。",
+      "available_data": ["路线几何与标签（绿地/滨水）", "路线库 tags 字段"],
+      "missing_data": ["路段级绿地覆盖率", "途经绿地的时间占比"],
+      "testability": "medium",
+      "product_relevance": "medium"
+    }
+  ],
+  "summary": "三个缺口均围绕“证据在路线层面的落地”：多暴露联合评分（gap-001）、距离约束的量化影响（gap-002）与绿地维度的本地可测性（gap-003），共同指向多源融合路线选择的预注册实验。"
+}

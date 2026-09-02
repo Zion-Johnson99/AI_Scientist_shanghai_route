@@ -1,0 +1,135 @@
+{
+  "hypothesis_id": "hyp-001",
+  "profiles": [
+    {
+      "profile_id": "walk-short",
+      "route_mode": "walk",
+      "target_distance_m": 970,
+      "case_ids": ["XH_WALK_0001"],
+      "sensitivity": []
+    },
+    {
+      "profile_id": "walk-long-noise-sensitive",
+      "route_mode": "walk",
+      "target_distance_m": 2860,
+      "case_ids": ["XH_WALK_0002"],
+      "sensitivity": ["noise"]
+    },
+    {
+      "profile_id": "run-medium-pm-sensitive",
+      "route_mode": "run",
+      "target_distance_m": 2557,
+      "case_ids": ["XH_RUN_0031"],
+      "sensitivity": ["pm25"]
+    },
+    {
+      "profile_id": "bike-long",
+      "route_mode": "bike",
+      "target_distance_m": 5857,
+      "case_ids": ["XH_BIKE_0061"],
+      "sensitivity": []
+    }
+  ],
+  "baselines": [
+    {
+      "baseline_id": "B0_shortest_feasible",
+      "name": "最短可行路径",
+      "selection_rule": "同起终点与运动方式约束下，选择通过门禁且距离最短的候选路线",
+      "required_fields": ["distance_m", "validation_status"]
+    },
+    {
+      "baseline_id": "B1_pm25_only",
+      "name": "PM2.5 单源",
+      "selection_rule": "在可行候选中选择 PM2.5 暴露得分最低者，忽略其他环境维度与个人权重",
+      "required_fields": ["pm25_score"]
+    },
+    {
+      "baseline_id": "B2_multi_environment",
+      "name": "多环境非个性化",
+      "selection_rule": "在目标距离偏差门禁内最小化预注册综合暴露风险 R_env=alpha*R_pm25+beta*R_noise+gamma*R_pollen，不应用个人权重",
+      "required_fields": ["environment_summary.pm2_5.value", "environment_summary.noise.value", "environment_summary.pollen.value"]
+    },
+    {
+      "baseline_id": "B3_non_personalized",
+      "name": "默认权重非个性化",
+      "selection_rule": "使用评价模块默认平衡权重，不提升敏感项与兴趣项，按 route_quality、sport_match、data_confidence 降序选择",
+      "required_fields": ["dimension_scores.route_quality", "dimension_scores.sport_match", "data_confidence"]
+    }
+  ],
+  "variants": ["M1_personalized_constrained"],
+  "metrics": [
+    {
+      "metric_id": "environment_win_rate",
+      "name": "环境胜率",
+      "direction": "higher",
+      "formula": "V1 综合环境暴露得分同时优于 B0 与 B1 的画像占比",
+      "primary": true,
+      "data_source": "evaluation.score_candidates 模块输出"
+    },
+    {
+      "metric_id": "detour_pass_rate",
+      "name": "绕行合规率",
+      "direction": "higher",
+      "formula": "同端点附加距离比不超过 0.20 的画像占比",
+      "primary": false,
+      "data_source": "route.read_snapshot 快照与 evaluation 输出"
+    },
+    {
+      "metric_id": "preference_win_rate",
+      "name": "偏好胜率",
+      "direction": "higher",
+      "formula": "V1 个性化效用优于 B2 非个性化方案的画像占比",
+      "primary": false,
+      "data_source": "evaluation.score_candidates 模块输出"
+    },
+    {
+      "metric_id": "target_distance_deviation",
+      "name": "目标距离偏差",
+      "direction": "lower",
+      "formula": "mean(|推荐路线距离 - 目标距离| / 目标距离)",
+      "primary": false,
+      "data_source": "route.read_snapshot 快照"
+    }
+  ],
+  "detour_limit": 0.2,
+  "target_distance_tolerance": 0.15,
+  "module_operations": [
+    {
+      "operation_id": "route.read_snapshot",
+      "module": "route",
+      "parameters": {"dataset": "examples/fixtures/route-catalog.sample.json"},
+      "reason": "读取候选路线库与几何快照，计算距离与绕行指标"
+    },
+    {
+      "operation_id": "environment.read_snapshot",
+      "module": "environment",
+      "parameters": {"dataset": "examples/fixtures/environment-dashboard.sample.json"},
+      "reason": "读取 PM2.5 融合估计与噪声、花粉等代理字段"
+    },
+    {
+      "operation_id": "evaluation.score_candidates",
+      "module": "evaluation",
+      "parameters": {
+        "variants": [
+          "M1_personalized_constrained",
+          "B0_shortest_feasible",
+          "B1_pm25_only",
+          "B2_multi_environment",
+          "B3_non_personalized"
+        ]
+      },
+      "reason": "按预注册权重对候选评分并输出指标汇总"
+    }
+  ],
+  "acceptance_criteria": [
+    "environment_win_rate、detour_pass_rate、preference_win_rate 全部达到预注册阈值判定为 supported",
+    "任一胜率低于 0.50 判定为 unsupported",
+    "达到部分阈值判定为 partially_supported",
+    "指标缺失或致命数据错误判定为 inconclusive"
+  ],
+  "stop_conditions": [
+    "detour_pass_rate 低于 0.50：距离约束被系统性违反",
+    "致命数据错误大于 0：快照缺失或哈希不一致",
+    "候选路线全部被门禁拒绝，无可行解"
+  ]
+}

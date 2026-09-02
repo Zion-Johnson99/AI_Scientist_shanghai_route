@@ -1,0 +1,54 @@
+{
+  "$comment": "在线采集来源清单（source_collection 阶段使用）。离线模式或网络未授权时，引擎/处理器改用 examples/fixtures/sources/ 下的固定夹具，本清单不会触发任何网络请求。",
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "source_id": "src-who-aqg-2021",
+      "source_type": "https_url",
+      "url": "https://www.who.int/publications/i/item/9789240034228",
+      "title": "WHO Global Air Quality Guidelines (2021)",
+      "license_note": "WHO 公开发布文件，可公开访问",
+      "fixture": "examples/fixtures/sources/src-who-aqg-2021.json"
+    },
+    {
+      "source_id": "src-who-noise-guidelines-2018",
+      "source_type": "https_url",
+      "url": "https://www.who.int/publications/i/item/9789241550338",
+      "title": "WHO Environmental Noise Guidelines for the European Region (2018)",
+      "license_note": "WHO 公开发布文件，可公开访问",
+      "fixture": "examples/fixtures/sources/src-who-noise-guidelines-2018.json"
+    },
+    {
+      "source_id": "src-pubmed-16805392",
+      "source_type": "pubmed",
+      "pmid": "16805392",
+      "title": "Health effects of fine particulate air pollution: lines that connect",
+      "license_note": "PubMed 元数据（NLM 条款允许用于检索与引用）",
+      "fixture": "examples/fixtures/sources/src-pubmed-16805392.json"
+    },
+    {
+      "source_id": "src-pubmed-28657866",
+      "source_type": "pubmed",
+      "pmid": "28657866",
+      "title": "Air Pollution and Mortality in the Medicare Population",
+      "license_note": "PubMed 元数据（NLM 条款允许用于检索与引用）",
+      "fixture": "examples/fixtures/sources/src-pubmed-28657866.json"
+    },
+    {
+      "source_id": "src-pubmed-18994660",
+      "source_type": "pubmed",
+      "pmid": "18994660",
+      "title": "Effect of exposure to natural environment on health inequalities",
+      "license_note": "PubMed 元数据（NLM 条款允许用于检索与引用）",
+      "fixture": "examples/fixtures/sources/src-pubmed-18994660.json"
+    },
+    {
+      "source_id": "src-local-scientific-question",
+      "source_type": "local_file",
+      "local_path": "docs/qwen-harness-build/00-需求与总体架构.md",
+      "title": "Qwen-Harness 需求与总体架构：§5 科学问题与可验证假设（项目设计文档摘录）",
+      "license_note": "仓库内项目设计文档",
+      "fixture": "examples/fixtures/sources/src-local-scientific-question.json"
+    }
+  ]
+}
