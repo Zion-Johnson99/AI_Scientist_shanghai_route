@@ -61,11 +61,10 @@ env/
 *.synctex.gz
 *.toc
 *.vrb
+*.xdv
 
-# Local AISci reference templates and generated submission artifact
-/AISci模板和文档/AI Scientist_luo/
-/AISci模板和文档/main.tex
-/AISci模板和文档/AI Scientist_zhong/main.pdf
+# Local AISci templates and submission documents
+/AISci模板和文档/
 
 # OS and editor files
 .DS_Store
