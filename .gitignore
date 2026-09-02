@@ -62,6 +62,11 @@ env/
 *.toc
 *.vrb
 
+# Local AISci reference templates and generated submission artifact
+/AISci模板和文档/AI Scientist_luo/
+/AISci模板和文档/main.tex
+/AISci模板和文档/AI Scientist_zhong/main.pdf
+
 # OS and editor files
 .DS_Store
 Thumbs.db
