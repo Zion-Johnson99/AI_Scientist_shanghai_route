@@ -1,0 +1,119 @@
+{
+  "$defs": {
+    "EvidenceClaim": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "claim": {
+          "title": "Claim",
+          "type": "string"
+        },
+        "evidence_location": {
+          "title": "Evidence Location",
+          "type": "string"
+        },
+        "short_excerpt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Short Excerpt"
+        },
+        "evidence_type": {
+          "enum": [
+            "result",
+            "method",
+            "dataset",
+            "limitation",
+            "definition",
+            "policy"
+          ],
+          "title": "Evidence Type",
+          "type": "string"
+        },
+        "support_strength": {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ],
+          "title": "Support Strength",
+          "type": "string"
+        },
+        "caveats": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Caveats",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claim_id",
+        "source_id",
+        "claim",
+        "evidence_location",
+        "evidence_type",
+        "support_strength"
+      ],
+      "title": "EvidenceClaim",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "card_id": {
+      "title": "Card Id",
+      "type": "string"
+    },
+    "research_question": {
+      "title": "Research Question",
+      "type": "string"
+    },
+    "source_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Source Ids",
+      "type": "array"
+    },
+    "claims": {
+      "items": {
+        "$ref": "#/$defs/EvidenceClaim"
+      },
+      "title": "Claims",
+      "type": "array"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "card_id",
+    "research_question"
+  ],
+  "title": "EvidenceCard",
+  "type": "object",
+  "$comment": "由 qwen_harness.models.EvidenceCard.model_json_schema() 生成（冻结契约）"
+}

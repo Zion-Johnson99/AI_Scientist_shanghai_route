@@ -1,0 +1,20 @@
+# Local secrets and environment
+.env
+
+# Runtime artifacts (keep the directory marker)
+runtime/*
+!runtime/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+dist/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.pyright/
+.playwright-cli/

@@ -1,0 +1,54 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "question": {
+      "title": "Question",
+      "type": "string"
+    },
+    "domain": {
+      "default": "urban_environmental_health",
+      "title": "Domain",
+      "type": "string"
+    },
+    "region": {
+      "default": "Shanghai Xuhui",
+      "title": "Region",
+      "type": "string"
+    },
+    "target_population": {
+      "default": "outdoor walkers, runners and cyclists",
+      "title": "Target Population",
+      "type": "string"
+    },
+    "desired_outcome": {
+      "default": "",
+      "title": "Desired Outcome",
+      "type": "string"
+    },
+    "constraints": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Constraints",
+      "type": "array"
+    },
+    "seed_sources": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Seed Sources",
+      "type": "array"
+    }
+  },
+  "required": [
+    "title",
+    "question"
+  ],
+  "title": "ResearchGoal",
+  "type": "object",
+  "$comment": "由 qwen_harness.models.ResearchGoal.model_json_schema() 生成（冻结契约）"
+}

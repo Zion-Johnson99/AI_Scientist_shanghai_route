@@ -1,0 +1,268 @@
+{
+  "schema_version": "1.0",
+  "name": "reproduce-existing",
+  "version": "1.0",
+  "description": "离线复现：与 full-research 相同的生成型阶段，使用带明确来源标记的固定夹具（offline_fixture=true）",
+  "offline_fixture": true,
+  "stages": [
+    {
+      "name": "initialize",
+      "handler": "qwen_harness.workflow.stages:initialize_stage",
+      "required_skills": [
+        "qwen-harness-orchestration"
+      ],
+      "dependencies": [],
+      "approval": "none",
+      "retry_limit": 0,
+      "enabled": true
+    },
+    {
+      "name": "problem_framing",
+      "handler": "qwen_harness.agents.problem_framer:stage_handler",
+      "required_skills": [
+        "qwen-harness-orchestration",
+        "scientific-evidence-hypothesis"
+      ],
+      "dependencies": [
+        "initialize"
+      ],
+      "approval": "none",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "source_collection",
+      "handler": "qwen_harness.sources.base:source_collection_stage",
+      "required_skills": [
+        "scientific-evidence-hypothesis"
+      ],
+      "dependencies": [
+        "problem_framing"
+      ],
+      "approval": "none",
+      "retry_limit": 2,
+      "enabled": true
+    },
+    {
+      "name": "evidence_extraction",
+      "handler": "qwen_harness.agents.evidence_agent:stage_handler",
+      "required_skills": [
+        "scientific-evidence-hypothesis"
+      ],
+      "dependencies": [
+        "source_collection"
+      ],
+      "approval": "none",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "citation_validation",
+      "handler": "qwen_harness.sources.citation_gate:stage_handler",
+      "required_skills": [
+        "scientific-evidence-hypothesis"
+      ],
+      "dependencies": [
+        "evidence_extraction"
+      ],
+      "approval": "none",
+      "retry_limit": 0,
+      "enabled": true
+    },
+    {
+      "name": "gap_analysis",
+      "handler": "qwen_harness.agents.gap_agent:stage_handler",
+      "required_skills": [
+        "scientific-evidence-hypothesis"
+      ],
+      "dependencies": [
+        "citation_validation"
+      ],
+      "approval": "none",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "hypothesis_generation",
+      "handler": "qwen_harness.agents.hypothesis_agent:stage_handler",
+      "required_skills": [
+        "scientific-evidence-hypothesis"
+      ],
+      "dependencies": [
+        "gap_analysis"
+      ],
+      "approval": "none",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "hypothesis_critique",
+      "handler": "qwen_harness.agents.critic_agent:stage_handler",
+      "required_skills": [
+        "scientific-evidence-hypothesis"
+      ],
+      "dependencies": [
+        "hypothesis_generation"
+      ],
+      "approval": "none",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "hypothesis_selection",
+      "handler": "qwen_harness.agents.critic_agent:selection_stage_handler",
+      "required_skills": [
+        "scientific-evidence-hypothesis"
+      ],
+      "dependencies": [
+        "hypothesis_critique"
+      ],
+      "approval": "none",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "experiment_design",
+      "handler": "qwen_harness.agents.experiment_agent:stage_handler",
+      "required_skills": [
+        "evaluation-qwen-experiments",
+        "xuhui-route-builder-engineering",
+        "weather-environment-pipeline"
+      ],
+      "dependencies": [
+        "hypothesis_selection"
+      ],
+      "approval": "none",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "project_generation",
+      "handler": "qwen_harness.generation.stage_handlers:stage_handler",
+      "required_skills": [
+        "qwen-harness-orchestration",
+        "xuhui-route-builder-engineering",
+        "weather-environment-pipeline",
+        "evaluation-qwen-experiments",
+        "web-product-integration"
+      ],
+      "dependencies": [
+        "experiment_design"
+      ],
+      "approval": "none",
+      "retry_limit": 0,
+      "enabled": true
+    },
+    {
+      "name": "module_preflight",
+      "handler": "qwen_harness.workflow.stages:module_preflight_stage",
+      "required_skills": [
+        "xuhui-route-builder-engineering",
+        "weather-environment-pipeline",
+        "evaluation-qwen-experiments",
+        "web-product-integration"
+      ],
+      "dependencies": [
+        "project_generation"
+      ],
+      "approval": "none",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "module_execution",
+      "handler": "qwen_harness.workflow.stages:module_execution_stage",
+      "required_skills": [
+        "xuhui-route-builder-engineering",
+        "weather-environment-pipeline",
+        "evaluation-qwen-experiments",
+        "web-product-integration"
+      ],
+      "dependencies": [
+        "module_preflight"
+      ],
+      "approval": "critical",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "experiment_analysis",
+      "handler": "qwen_harness.experiments.runner:stage_handler",
+      "required_skills": [
+        "evaluation-qwen-experiments"
+      ],
+      "dependencies": [
+        "module_execution"
+      ],
+      "approval": "none",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "feedback_decision",
+      "handler": "qwen_harness.agents.feedback_agent:stage_handler",
+      "required_skills": [
+        "qwen-harness-orchestration"
+      ],
+      "dependencies": [
+        "experiment_analysis"
+      ],
+      "approval": "none",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "scientific_report",
+      "handler": "qwen_harness.agents.report_agent:stage_handler",
+      "required_skills": [
+        "scientific-evidence-hypothesis",
+        "qwen-harness-orchestration"
+      ],
+      "dependencies": [
+        "feedback_decision"
+      ],
+      "approval": "none",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "web_payload",
+      "handler": "qwen_harness.reporting.web_payload:stage_handler",
+      "required_skills": [
+        "web-product-integration"
+      ],
+      "dependencies": [
+        "scientific_report"
+      ],
+      "approval": "none",
+      "retry_limit": 1,
+      "enabled": true
+    },
+    {
+      "name": "final_validation",
+      "handler": "qwen_harness.workflow.stages:final_validation_stage",
+      "required_skills": [
+        "qwen-harness-orchestration"
+      ],
+      "dependencies": [
+        "web_payload"
+      ],
+      "approval": "none",
+      "retry_limit": 0,
+      "enabled": true
+    },
+    {
+      "name": "publish_web",
+      "handler": "qwen_harness.workflow.stages:publish_web_stage",
+      "required_skills": [
+        "web-product-integration"
+      ],
+      "dependencies": [
+        "final_validation"
+      ],
+      "approval": "always",
+      "retry_limit": 0,
+      "enabled": true
+    }
+  ]
+}

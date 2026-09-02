@@ -1,0 +1,101 @@
+{
+  "$defs": {
+    "KnowledgeGap": {
+      "additionalProperties": false,
+      "properties": {
+        "gap_id": {
+          "title": "Gap Id",
+          "type": "string"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        },
+        "supported_by_claim_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Supported By Claim Ids",
+          "type": "array"
+        },
+        "affected_variables": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Affected Variables",
+          "type": "array"
+        },
+        "why_unresolved": {
+          "title": "Why Unresolved",
+          "type": "string"
+        },
+        "available_data": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Available Data",
+          "type": "array"
+        },
+        "missing_data": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Data",
+          "type": "array"
+        },
+        "testability": {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ],
+          "title": "Testability",
+          "type": "string"
+        },
+        "product_relevance": {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ],
+          "title": "Product Relevance",
+          "type": "string"
+        }
+      },
+      "required": [
+        "gap_id",
+        "statement",
+        "why_unresolved",
+        "testability",
+        "product_relevance"
+      ],
+      "title": "KnowledgeGap",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "gaps": {
+      "items": {
+        "$ref": "#/$defs/KnowledgeGap"
+      },
+      "title": "Gaps",
+      "type": "array"
+    },
+    "summary": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Summary"
+    }
+  },
+  "title": "KnowledgeGapSet",
+  "type": "object",
+  "$comment": "由 qwen_harness.models.KnowledgeGapSet.model_json_schema() 生成（冻结契约）"
+}

@@ -1,0 +1,122 @@
+{
+  "$defs": {
+    "HypothesisCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "hypothesis_id": {
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        },
+        "mechanism": {
+          "title": "Mechanism",
+          "type": "string"
+        },
+        "independent_variables": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Independent Variables",
+          "type": "array"
+        },
+        "dependent_variables": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Dependent Variables",
+          "type": "array"
+        },
+        "moderators": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Moderators",
+          "type": "array"
+        },
+        "expected_direction": {
+          "title": "Expected Direction",
+          "type": "string"
+        },
+        "falsification_criteria": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Falsification Criteria",
+          "type": "array"
+        },
+        "required_data": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Data",
+          "type": "array"
+        },
+        "supporting_claim_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Supporting Claim Ids",
+          "type": "array"
+        },
+        "novelty_argument": {
+          "title": "Novelty Argument",
+          "type": "string"
+        },
+        "feasibility_score": {
+          "title": "Feasibility Score",
+          "type": "number"
+        },
+        "scientific_value_score": {
+          "title": "Scientific Value Score",
+          "type": "number"
+        },
+        "risks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Risks",
+          "type": "array"
+        }
+      },
+      "required": [
+        "hypothesis_id",
+        "statement",
+        "mechanism",
+        "expected_direction",
+        "novelty_argument",
+        "feasibility_score",
+        "scientific_value_score"
+      ],
+      "title": "HypothesisCandidate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "hypotheses": {
+      "items": {
+        "$ref": "#/$defs/HypothesisCandidate"
+      },
+      "title": "Hypotheses",
+      "type": "array"
+    },
+    "recommended_hypothesis_id": {
+      "title": "Recommended Hypothesis Id",
+      "type": "string"
+    },
+    "selection_rationale": {
+      "title": "Selection Rationale",
+      "type": "string"
+    }
+  },
+  "required": [
+    "recommended_hypothesis_id",
+    "selection_rationale"
+  ],
+  "title": "HypothesisSet",
+  "type": "object",
+  "$comment": "由 qwen_harness.models.HypothesisSet.model_json_schema() 生成（冻结契约）"
+}

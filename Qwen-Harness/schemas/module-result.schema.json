@@ -1,0 +1,135 @@
+{
+  "$defs": {
+    "CommandAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "command_id": {
+          "title": "Command Id",
+          "type": "string"
+        },
+        "argv": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Argv",
+          "type": "array"
+        },
+        "cwd": {
+          "title": "Cwd",
+          "type": "string"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "finished_at": {
+          "format": "date-time",
+          "title": "Finished At",
+          "type": "string"
+        },
+        "exit_code": {
+          "title": "Exit Code",
+          "type": "integer"
+        },
+        "stdout_path": {
+          "title": "Stdout Path",
+          "type": "string"
+        },
+        "stderr_path": {
+          "title": "Stderr Path",
+          "type": "string"
+        },
+        "timeout": {
+          "title": "Timeout",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "command_id",
+        "argv",
+        "cwd",
+        "started_at",
+        "finished_at",
+        "exit_code",
+        "stdout_path",
+        "stderr_path",
+        "timeout"
+      ],
+      "title": "CommandAudit",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "module": {
+      "enum": [
+        "route",
+        "environment",
+        "evaluation",
+        "web"
+      ],
+      "title": "Module",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "partial",
+        "skipped",
+        "error"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "input_artifacts": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Input Artifacts",
+      "type": "array"
+    },
+    "output_artifacts": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Output Artifacts",
+      "type": "array"
+    },
+    "data_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Data Hashes",
+      "type": "object"
+    },
+    "commands": {
+      "items": {
+        "$ref": "#/$defs/CommandAudit"
+      },
+      "title": "Commands",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "errors": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Errors",
+      "type": "array"
+    }
+  },
+  "required": [
+    "module",
+    "status"
+  ],
+  "title": "ModuleResult",
+  "type": "object",
+  "$comment": "由 qwen_harness.models.ModuleResult.model_json_schema() 生成（冻结契约）"
+}

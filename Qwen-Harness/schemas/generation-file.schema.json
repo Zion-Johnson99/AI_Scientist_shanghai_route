@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "generation-file.schema.json",
+  "title": "Generated File",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["path", "content"],
+  "properties": {
+    "path": {
+      "type": "string",
+      "pattern": "^(Qwen-Harness|evaluation_model_qwen|weather_api_data|xuhui_route_builder)/(?!\\.\\.(?:/|$))(?!\\.(?:/|$))(?!.*\\/\\.\\.(?:\\/|$))(?!.*\\/\\.(?:\\/|$))[^\\\\]+$"
+    },
+    "content": {"type": "string"}
+  }
+}

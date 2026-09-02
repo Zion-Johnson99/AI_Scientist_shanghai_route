@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "model": {
+    "name": "qwen3.8-max",
+    "temperature": 0.2,
+    "seed": 1234,
+    "default_reasoning_effort": "medium",
+    "stage_reasoning_effort": {
+      "problem_framing": "medium",
+      "evidence_extraction": "medium",
+      "gap_analysis": "medium",
+      "hypothesis_generation": "medium",
+      "hypothesis_critique": "medium",
+      "experiment_design": "medium",
+      "experiment_analysis": "medium",
+      "feedback_decision": "medium",
+      "scientific_report": "medium",
+      "generation_architecture": "low",
+      "generation_file": "low",
+      "generation_repair": "low"
+    }
+  },
+  "runtime": {
+    "max_iterations": 2,
+    "atomic_writes": true,
+    "approval_mode": "critical",
+    "command_timeout_seconds": 900
+  },
+  "paths": {
+    "skills_root": "../.qoder/skills",
+    "route_module": "../xuhui_route_builder",
+    "environment_module": "../weather_api_data",
+    "evaluation_module": "../evaluation_model_qwen",
+    "web_root": "../xuhui_route_builder/web",
+    "web_data_root": "../xuhui_route_builder/data/web"
+  }
+}

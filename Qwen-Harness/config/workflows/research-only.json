@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "name": "research-only",
+  "version": "1.0",
+  "description": "仅科研链路：跳过模块预检、模块执行、实验分析与网页发布，用于文献-假设-报告类目标。",
+  "offline_fixture": false,
+  "stages": [
+    {
+      "name": "initialize",
+      "handler": "qwen_harness.workflow.stages:initialize_stage",
+      "required_skills": ["qwen-harness-orchestration"]
+    },
+    {
+      "name": "problem_framing",
+      "handler": "qwen_harness.agents.problem_framer:stage_handler",
+      "required_skills": ["qwen-harness-orchestration", "scientific-evidence-hypothesis"],
+      "dependencies": ["initialize"]
+    },
+    {
+      "name": "source_collection",
+      "handler": "qwen_harness.sources.base:source_collection_stage",
+      "required_skills": ["scientific-evidence-hypothesis"],
+      "dependencies": ["problem_framing"]
+    },
+    {
+      "name": "evidence_extraction",
+      "handler": "qwen_harness.agents.evidence_agent:stage_handler",
+      "required_skills": ["scientific-evidence-hypothesis"],
+      "dependencies": ["source_collection"]
+    },
+    {
+      "name": "citation_validation",
+      "handler": "qwen_harness.sources.citation_gate:stage_handler",
+      "required_skills": ["scientific-evidence-hypothesis"],
+      "dependencies": ["evidence_extraction"]
+    },
+    {
+      "name": "gap_analysis",
+      "handler": "qwen_harness.agents.gap_agent:stage_handler",
+      "required_skills": ["scientific-evidence-hypothesis"],
+      "dependencies": ["citation_validation"]
+    },
+    {
+      "name": "hypothesis_generation",
+      "handler": "qwen_harness.agents.hypothesis_agent:stage_handler",
+      "required_skills": ["scientific-evidence-hypothesis"],
+      "dependencies": ["gap_analysis"]
+    },
+    {
+      "name": "hypothesis_critique",
+      "handler": "qwen_harness.agents.critic_agent:stage_handler",
+      "required_skills": ["scientific-evidence-hypothesis"],
+      "dependencies": ["hypothesis_generation"]
+    },
+    {
+      "name": "hypothesis_selection",
+      "handler": "qwen_harness.agents.critic_agent:selection_stage_handler",
+      "required_skills": ["scientific-evidence-hypothesis"],
+      "dependencies": ["hypothesis_critique"]
+    },
+    {
+      "name": "experiment_design",
+      "handler": "qwen_harness.agents.experiment_agent:stage_handler",
+      "required_skills": ["evaluation-qwen-experiments", "xuhui-route-builder-engineering"],
+      "dependencies": ["hypothesis_selection"]
+    },
+    {
+      "name": "feedback_decision",
+      "handler": "qwen_harness.agents.feedback_agent:stage_handler",
+      "required_skills": ["qwen-harness-orchestration"],
+      "dependencies": ["experiment_design"]
+    },
+    {
+      "name": "scientific_report",
+      "handler": "qwen_harness.agents.report_agent:stage_handler",
+      "required_skills": ["scientific-evidence-hypothesis", "qwen-harness-orchestration"],
+      "dependencies": ["feedback_decision"]
+    },
+    {
+      "name": "web_payload",
+      "handler": "qwen_harness.reporting.web_payload:stage_handler",
+      "required_skills": ["web-product-integration"],
+      "dependencies": ["scientific_report"]
+    },
+    {
+      "name": "final_validation",
+      "handler": "qwen_harness.workflow.stages:final_validation_stage",
+      "required_skills": ["qwen-harness-orchestration", "web-product-integration"],
+      "dependencies": ["web_payload"]
+    }
+  ]
+}

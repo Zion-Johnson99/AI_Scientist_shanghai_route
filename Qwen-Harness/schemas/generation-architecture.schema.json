@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "generation-architecture.schema.json",
+  "title": "Generation Architecture Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "technology_choices", "integration_contracts", "files"],
+  "properties": {
+    "summary": {"type": "string", "minLength": 1},
+    "technology_choices": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "integration_contracts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "files": {
+      "type": "array",
+      "minItems": 4,
+      "items": {"$ref": "#/$defs/filePlan"},
+      "allOf": [
+        {"contains": {"properties": {"path": {"pattern": "^Qwen-Harness/"}}}},
+        {"contains": {"properties": {"path": {"pattern": "^evaluation_model_qwen/"}}}},
+        {"contains": {"properties": {"path": {"pattern": "^weather_api_data/"}}}},
+        {"contains": {"properties": {"path": {"pattern": "^xuhui_route_builder/"}}}}
+      ]
+    }
+  },
+  "$defs": {
+    "filePlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "purpose", "acceptance_criteria"],
+      "properties": {
+        "path": {"$ref": "#/$defs/sourcePath"},
+        "purpose": {"type": "string", "minLength": 1},
+        "acceptance_criteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "sourcePath": {
+      "type": "string",
+      "pattern": "^(Qwen-Harness|evaluation_model_qwen|weather_api_data|xuhui_route_builder)/(?!\\.\\.(?:/|$))(?!\\.(?:/|$))(?!.*\\/\\.\\.(?:\\/|$))(?!.*\\/\\.(?:\\/|$))[^\\\\]+$"
+    }
+  }
+}

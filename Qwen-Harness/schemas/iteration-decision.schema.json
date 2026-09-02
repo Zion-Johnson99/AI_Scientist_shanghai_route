@@ -1,0 +1,55 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "enum": [
+        "continue",
+        "stop_supported",
+        "stop_partial",
+        "stop_unsupported",
+        "stop_inconclusive"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "reason": {
+      "title": "Reason",
+      "type": "string"
+    },
+    "automatic_actions": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Automatic Actions",
+      "type": "array"
+    },
+    "proposed_code_changes": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Proposed Code Changes",
+      "type": "array"
+    },
+    "next_iteration_goal": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Next Iteration Goal"
+    }
+  },
+  "required": [
+    "status",
+    "reason"
+  ],
+  "title": "IterationDecision",
+  "type": "object",
+  "$comment": "由 qwen_harness.models.IterationDecision.model_json_schema() 生成（冻结契约）"
+}

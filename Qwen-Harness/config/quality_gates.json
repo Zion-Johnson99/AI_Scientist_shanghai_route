@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "evidence": {
+    "min_verified_sources": 5,
+    "reference_verification_rate_min": 1.0,
+    "require_evidence_location": true,
+    "excerpt_max_chars": 400
+  },
+  "hypothesis": {
+    "min_candidates": 3,
+    "require_falsification_criteria": true,
+    "require_variables": true
+  },
+  "experiment": {
+    "require_baselines": true,
+    "require_primary_metric": true,
+    "detour_limit_max": 0.3,
+    "require_snapshot_hashes": true
+  },
+  "result": {
+    "require_module_provenance": true,
+    "composite_utility_as_sole_metric": false,
+    "require_negative_result_reporting": true
+  },
+  "supported": {
+    "detour_pass_rate_min": 0.9,
+    "environment_win_rate_min": 0.6,
+    "preference_win_rate_min": 0.6,
+    "reference_verification_rate_min": 1.0,
+    "fatal_data_errors_max": 0,
+    "require_module_provenance": true,
+    "composite_utility_as_sole_metric": false,
+    "require_negative_result_reporting": true
+  },
+  "publish": {
+    "require_schema_version": "1.0",
+    "forbid_absolute_paths": true,
+    "require_https_references": true,
+    "forbidden_tokens": [
+      "DASHSCOPE_API_KEY",
+      "Authorization:",
+      "sk-"
+    ]
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "$defs": {
+    "SelectedRoute": {
+      "additionalProperties": false,
+      "properties": {
+        "route_id": {
+          "title": "Route Id",
+          "type": "string"
+        },
+        "route_name": {
+          "title": "Route Name",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "route_id",
+        "route_name",
+        "reason"
+      ],
+      "title": "SelectedRoute",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "supported",
+        "partially_supported",
+        "unsupported",
+        "inconclusive",
+        "error"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "research_question": {
+      "title": "Research Question",
+      "type": "string"
+    },
+    "hypothesis": {
+      "title": "Hypothesis",
+      "type": "string"
+    },
+    "selected_route": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SelectedRoute"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "key_metrics": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Key Metrics",
+      "type": "array"
+    },
+    "baseline_comparison": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Baseline Comparison",
+      "type": "array"
+    },
+    "iterations": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Iterations",
+      "type": "array"
+    },
+    "references": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "References",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "artifacts": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Artifacts",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_id",
+    "generated_at",
+    "status",
+    "research_question",
+    "hypothesis"
+  ],
+  "title": "WebPayload",
+  "type": "object",
+  "$comment": "由 qwen_harness.models.WebPayload.model_json_schema() 生成（冻结契约）"
+}

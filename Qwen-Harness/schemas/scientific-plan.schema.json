@@ -1,0 +1,314 @@
+{
+  "$defs": {
+    "BaselineSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_id": {
+          "title": "Baseline Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "selection_rule": {
+          "title": "Selection Rule",
+          "type": "string"
+        },
+        "required_fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "baseline_id",
+        "name",
+        "selection_rule"
+      ],
+      "title": "BaselineSpec",
+      "type": "object"
+    },
+    "MetricSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "metric_id": {
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "direction": {
+          "enum": [
+            "higher",
+            "lower",
+            "target"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "formula": {
+          "title": "Formula",
+          "type": "string"
+        },
+        "primary": {
+          "title": "Primary",
+          "type": "boolean"
+        },
+        "data_source": {
+          "title": "Data Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "metric_id",
+        "name",
+        "direction",
+        "formula",
+        "primary",
+        "data_source"
+      ],
+      "title": "MetricSpec",
+      "type": "object"
+    },
+    "PlanDatasets": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source",
+          "type": "array"
+        },
+        "target": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Target",
+          "type": "array"
+        }
+      },
+      "title": "PlanDatasets",
+      "type": "object"
+    },
+    "PlanExperiments": {
+      "additionalProperties": false,
+      "properties": {
+        "baselines": {
+          "items": {
+            "$ref": "#/$defs/BaselineSpec"
+          },
+          "title": "Baselines",
+          "type": "array"
+        },
+        "metrics": {
+          "items": {
+            "$ref": "#/$defs/MetricSpec"
+          },
+          "title": "Metrics",
+          "type": "array"
+        }
+      },
+      "title": "PlanExperiments",
+      "type": "object"
+    },
+    "PlanReference": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "authors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Authors",
+          "type": "array"
+        },
+        "year": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Year"
+        },
+        "doi": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Doi"
+        },
+        "pmid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pmid"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "required": [
+        "source_id",
+        "title"
+      ],
+      "title": "PlanReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "git_head": {
+      "default": "",
+      "title": "Git Head",
+      "type": "string"
+    },
+    "problem_statement": {
+      "title": "Problem Statement",
+      "type": "string"
+    },
+    "rationale": {
+      "title": "Rationale",
+      "type": "string"
+    },
+    "technical_details": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Technical Details",
+      "type": "array"
+    },
+    "datasets": {
+      "$ref": "#/$defs/PlanDatasets"
+    },
+    "paper_title": {
+      "title": "Paper Title",
+      "type": "string"
+    },
+    "paper_abstract": {
+      "title": "Paper Abstract",
+      "type": "string"
+    },
+    "methods": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Methods",
+      "type": "array"
+    },
+    "experiments": {
+      "$ref": "#/$defs/PlanExperiments"
+    },
+    "results": {
+      "additionalProperties": true,
+      "title": "Results",
+      "type": "object"
+    },
+    "references": {
+      "items": {
+        "$ref": "#/$defs/PlanReference"
+      },
+      "title": "References",
+      "type": "array"
+    },
+    "evidence_map": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Evidence Map",
+      "type": "object"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "reproducibility": {
+      "additionalProperties": true,
+      "title": "Reproducibility",
+      "type": "object"
+    },
+    "data_snapshot_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Data Snapshot Hashes",
+      "type": "object"
+    },
+    "generated_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Generated At"
+    }
+  },
+  "required": [
+    "run_id",
+    "problem_statement",
+    "rationale",
+    "datasets",
+    "paper_title",
+    "paper_abstract",
+    "experiments"
+  ],
+  "title": "ScientificPlan",
+  "type": "object",
+  "$comment": "由 qwen_harness.models.ScientificPlan.model_json_schema() 生成（冻结契约）"
+}

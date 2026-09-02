@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "allowed_source_types": [
+    "local_file",
+    "pubmed",
+    "crossref",
+    "https_url",
+    "repository_file"
+  ],
+  "allowed_domains": [
+    "pubmed.ncbi.nlm.nih.gov",
+    "eutils.ncbi.nlm.nih.gov",
+    "api.crossref.org",
+    "doi.org",
+    "www.ncbi.nlm.nih.gov",
+    "www.who.int",
+    "www.nature.com",
+    "www.thelancet.com",
+    "www.sciencedirect.com",
+    "link.springer.com",
+    "onlinelibrary.wiley.com",
+    "academic.oup.com",
+    "www.mdpi.com",
+    "arxiv.org",
+    "ec.europa.eu",
+    "www.shanghai.gov.cn"
+  ],
+  "max_download_bytes": 20971520,
+  "pdf_max_pages": 40,
+  "excerpt_max_chars": 400,
+  "request_interval_seconds": 1.0,
+  "max_retries": 2,
+  "user_agent": "qwen-harness/0.1.0 (research workflow; contact: repo maintainer)",
+  "require_license_note": true,
+  "require_accessed_at": true,
+  "https_only": true,
+  "reject_url_credentials": true
+}
