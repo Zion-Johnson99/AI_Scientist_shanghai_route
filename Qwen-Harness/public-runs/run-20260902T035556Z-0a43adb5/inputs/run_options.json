@@ -1,0 +1,11 @@
+{
+  "workflow": "full-research",
+  "offline": false,
+  "allow_network": true,
+  "refresh_environment": "none",
+  "approval_mode": "auto",
+  "max_iterations": 2,
+  "publish_web": false,
+  "run_id": null,
+  "json_output": true
+}

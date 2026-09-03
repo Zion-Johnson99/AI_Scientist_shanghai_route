@@ -1,0 +1,28 @@
+{
+  "schema": "ResearchGoal",
+  "title": "Deterministic, road-snapped healthy-route generation and transparent multi-criteria recommendation for Xuhui District, Shanghai",
+  "question": "Can a fully deterministic pipeline that builds routes directly on a public OSM road graph, attaches a declared ordinal environment-exposure proxy to a 54-cell grid, and ranks candidates with fixed weights produce a 90-route Xuhui portfolio that passes every numeric route-quality gate and exposes its reasoning in a locally served web product - without any paid LLM call and without copying the existing repository answer modules?",
+  "domain": "urban environmental exposure sensing and healthy-route decision support",
+  "region": "Xuhui District (徐汇区), Shanghai, China",
+  "target_population": "Residents, students and commuters in Xuhui who walk, run or cycle outdoors and want to trade off distance, environment quality, access cost and personal preference.",
+  "desired_outcome": "A reproducible run directory containing 90 accepted routes, a 54-cell environment grid contract-consistent with those routes, a deterministic recommendation/evaluation module, a complete local web product with an original visual language, and a full gate report whose failures are stated rather than hidden.",
+  "constraints": [
+    "provider=qoder_session, model_name=qwen3.8-max, billing_channel=qoder_credits, dashscope_api_used=false",
+    "No read of Qwen-Harness/.env or any API key; no DashScope / Bailian / paid LLM call",
+    "No read of xuhui_route_builder, weather_api_data, evaluation_model_qwen implementations or data",
+    "No read of round-1 workspace/source/** or round-1 publish/local-product/**",
+    "No access to the online product before blind_checkpoint is frozen",
+    "All writes confined to Qwen-Harness/runtime/runs/<run-id>/",
+    "No git commit, branch, PR or push",
+    "Determinism: fixed seeds, no network access at recommendation time"
+  ],
+  "seed_sources": [
+    "SRC-001",
+    "SRC-002",
+    "SRC-003",
+    "SRC-005",
+    "SRC-006"
+  ],
+  "generated_at": "2026-09-02T13:16:11Z",
+  "run_id": "run-20260902T125247Z-d8922e23"
+}

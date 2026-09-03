@@ -1,0 +1,16 @@
+
+=================================== ERRORS ====================================
+___________________ ERROR collecting tests/test_scoring.py ____________________
+ImportError while importing test module '<run_root>\workspace\source\evaluation_model_qwen\tests\test_scoring.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+<user_home>\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+evaluation_model_qwen\tests\test_scoring.py:5: in <module>
+    from evaluation_model_qwen.models import (
+E   ImportError: cannot import name 'EnvironmentBlock' from 'evaluation_model_qwen.models' (<run_root>\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\models.py)
+=========================== short test summary info ===========================
+ERROR evaluation_model_qwen\tests\test_scoring.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.79s

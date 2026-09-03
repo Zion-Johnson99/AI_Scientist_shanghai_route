@@ -1,0 +1,29 @@
+{
+  "handler": "qwen_harness.agents.evidence_agent:stage_handler",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 219850.9,
+  "status": "passed",
+  "summary": "证据卡 card-001：14 条 Claim",
+  "artifacts": [
+    "stages/evidence_extraction/model_call.json",
+    "sources/evidence_cards.jsonl"
+  ],
+  "offline": false,
+  "audited_at": "2026-09-02T04:02:03.643890+00:00",
+  "model_audit": {
+    "stage": "evidence_extraction",
+    "model": "qwen3.8-max",
+    "created_at": "2026-09-02T04:02:03.631725Z",
+    "request_id": "chatcmpl-b2305253-f66f-9f43-aeaf-7cfc2983169e",
+    "latency_ms": 110749.5,
+    "input_tokens": 9602,
+    "output_tokens": 5237,
+    "prompt_version": "a7e47a3efd02",
+    "reasoning_effort": "medium",
+    "skill_hashes": {
+      "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254"
+    },
+    "error_type": null
+  }
+}

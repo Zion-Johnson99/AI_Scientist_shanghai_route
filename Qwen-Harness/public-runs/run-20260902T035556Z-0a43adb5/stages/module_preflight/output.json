@@ -1,0 +1,8 @@
+{
+  "preflight_statuses": {
+    "route": "ok",
+    "environment": "partial",
+    "evaluation": "ok",
+    "web": "ok"
+  }
+}

@@ -1,0 +1,27 @@
+
+=================================== ERRORS ====================================
+___________________ ERROR collecting tests/test_pipeline.py ___________________
+ImportError while importing test module '<run_root>\workspace\source\weather_api_data\tests\test_pipeline.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+<user_home>\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+weather_api_data\tests\test_pipeline.py:11: in <module>
+    from weather_api_data.pipeline import (
+E   ImportError: cannot import name 'PipelineConfig' from 'weather_api_data.pipeline' (<run_root>\workspace\source\weather_api_data\src\weather_api_data\pipeline.py)
+__________________ ERROR collecting tests/test_web_export.py __________________
+ImportError while importing test module '<run_root>\workspace\source\weather_api_data\tests\test_web_export.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+<user_home>\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+weather_api_data\tests\test_web_export.py:19: in <module>
+    from weather_api_data.web_export import (
+E   ImportError: cannot import name 'build_dashboard' from 'weather_api_data.web_export' (<run_root>\workspace\source\weather_api_data\src\weather_api_data\web_export.py)
+=========================== short test summary info ===========================
+ERROR weather_api_data\tests\test_pipeline.py
+ERROR weather_api_data\tests\test_web_export.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!
+2 errors in 0.79s

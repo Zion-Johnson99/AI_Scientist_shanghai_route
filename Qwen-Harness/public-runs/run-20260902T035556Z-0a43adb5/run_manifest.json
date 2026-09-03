@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260902T035556Z-0a43adb5",
+  "created_at": "2026-09-02T03:55:56.681901Z",
+  "repo_root": "<repo_root>",
+  "git_branch": "Qwen_Harness_Build",
+  "git_head": "52cd03950b7b31e4fe8ae194bdf11b6ff36bc37e",
+  "worktree_clean": false,
+  "harness_version": "0.1.0",
+  "python_version": "3.13.12",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "model_name": "qwen3.8-max",
+  "temperature": 0.2,
+  "seed": 1234,
+  "stage_reasoning_effort": {
+    "problem_framing": "medium",
+    "evidence_extraction": "medium",
+    "gap_analysis": "medium",
+    "hypothesis_generation": "medium",
+    "hypothesis_critique": "medium",
+    "experiment_design": "medium",
+    "experiment_analysis": "medium",
+    "feedback_decision": "medium",
+    "scientific_report": "medium",
+    "generation_architecture": "high",
+    "generation_file": "high",
+    "generation_repair": "high"
+  },
+  "workflow_name": "full-research",
+  "workflow_version": "1.0",
+  "skills_hashes": {
+    "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+    "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+    "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+    "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+    "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+    "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+  },
+  "config_hashes": {
+    "config/experiment_variants.json": "9c88d6b0caf85021548e18fbd5e8a8ad726c348b3b116278ce7c0cc9e9fbead7",
+    "config/harness.json": "33077e2c33c917b5fa0b5c53998d0ce7f94829f79e91bc7b0a1b7dab4350e51c",
+    "config/quality_gates.json": "d43be8f5ed67a282addde2823cc559b6323bcb5455d9ccb18980ebd6b42170ae",
+    "config/source_policy.json": "e239423f54350a9cb2cdc4249c97aadc21ccf457cbad91402da191043248dade",
+    "config/workflows/full-research.json": "c15f3d1fa316f900e113606cbb4cec25b15cd17e215f8efd303ec0ae34c40054",
+    "config/workflows/reproduce-existing.json": "dded2b7266dcf1f2d7540783de77358f5a17593e62c36e63eeadb2d131ce88ac",
+    "config/workflows/research-only.json": "239791def59bd8ba249d6dc4b7553586c9ed3aaabe83e42f27e4ae0a79e7f49a"
+  },
+  "module_data_hashes": {
+    "environment/runtime/exports/environment_latest.json": "3297a08b3922d8093f4314ed06a65d51899c698ba2765ccf4c74c6146e90f76c",
+    "environment/runtime/exports/route_environment.json": "af3b34de92a8a7949d108287cf25b88c0cdea8d81571a3a373f1fe6c16c4f2d7",
+    "route/data/web/access_cases.json": "4c73cb363bb795dde25f227fa2a39d7727e50666908c6474f2090f3821387ec3",
+    "route/data/web/environment_dashboard.json": "5694bf27d4fcdd4252eff2629836d015abda77bb96165c15216f689f15d15790",
+    "route/data/web/poi_catalog.json": "40370ad328ad341b258b2299872d81daabfcfb16b85e96c1f5d399ee608be439",
+    "route/data/web/route_catalog.json": "6328419ba1909c199bb2775895844c8f26ac71196e700037d4c6a6e6863b6ade",
+    "route/data/web/xuhui_entries.geojson": "ab2b34746d077edf4040f798476dcfcbe5376532c8c1b7706de19204923c0366",
+    "route/data/web/xuhui_routes.geojson": "fdf0b18196aa23e967ed078cc92d8d411cdd2413fcde3006a7ab153270ba9fc5"
+  },
+  "network_enabled": true,
+  "module_write_enabled": false,
+  "publish_enabled": false,
+  "approval_mode": "auto",
+  "offline": false
+}

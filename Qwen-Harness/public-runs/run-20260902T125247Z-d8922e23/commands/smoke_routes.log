@@ -1,0 +1,144 @@
+== generating portfolio ==
+generate_portfolio elapsed_s=283.9
+write_artifacts elapsed_s=0.2
+
+== routes ==
+route_count 86
+kind_counts {"strict_loop": 46, "one_way": 40}
+area_coverage {"west_bund": 9, "longhua": 22, "xujiahui": 4, "hengfu": 17, "shanghai_botanical_garden": 7, "kangjian": 13, "caohejing": 6, "huajing": 8}
+band_counts {"walk": {"0": 10, "1": 10, "2": 10}, "run": {"0": 10, "1": 10, "2": 10}, "bike": {"0": 10, "1": 10, "2": 6}}
+attempts {"anchor_tries": 580, "search_miss": 434, "candidates": 146, "accepted": 86, "walk:b0:anchor_tries": 100, "walk:b0:search_miss": 76, "walk:b0:candidates": 24, "screen:geometric_overlap": 8, "screen:edge_containment": 23, "walk:b0:screen:edge_containment": 5, "gate:outside_district_ratio": 3, "walk:b1:anchor_tries": 24, "walk:b1:search_miss": 13, "walk:b1:candidates": 11, "walk:b1:screen:edge_containment": 1, "walk:b2:anchor_tries": 55, "walk:b2:search_miss": 39, "walk:b2:candidates": 16, "gate:branch_or_self_intersection": 4, "run:b0:anchor_tries": 15, "run:b0:search_miss": 5, "run:b0:candidates": 10, "run:b1:anchor_tries": 18, "run:b1:search_miss": 8, "run:b1:candidates": 10, "run:b2:anchor_tries": 23, "run:b2:search_miss": 10, "run:b2:candidates": 13, "screen:local_uturn": 10, "run:b2:screen:local_uturn": 1, "screen:local_return_loop": 12, "run:b2:screen:local_return_loop": 2, "bike:b0:anchor_tries": 11, "bike:b0:candidates": 10, "bike:b0:search_miss": 1, "bike:b1:anchor_tries": 32, "bike:b1:search_miss": 2, "bike:b1:candidates": 30, "bike:b1:screen:local_uturn": 7, "bike:b1:screen:local_return_loop": 8, "bike:b1:screen:edge_containment": 5, "bike:b2:anchor_tries": 302, "bike:b2:candidates": 22, "bike:b2:screen:local_return_loop": 2, "bike:b2:search_miss": 280, "bike:b2:screen:edge_containment": 12, "bike:b2:screen:local_uturn": 2}
+kind_swaps [{"mode": "bike", "slot_index": 25, "band": 2, "planned_kind": "one_way", "actual_kind": "strict_loop", "reason": "no anchor produced an acceptable route of the planned kind"}]
+unfilled_slots [{"mode": "bike", "slot_index": 26, "band": 2, "planned_kind": "one_way", "target_m": 25000.0, "preferred_area_id": "xujiahui"}, {"mode": "bike", "slot_index": 27, "band": 2, "planned_kind": "one_way", "target_m": 25000.0, "preferred_area_id": "hengfu"}, {"mode": "bike", "slot_index": 28, "band": 2, "planned_kind": "one_way", "target_m": 25000.0, "preferred_area_id": "shanghai_botanical_garden"}, {"mode": "bike", "slot_index": 29, "band": 2, "planned_kind": "one_way", "target_m": 25000.0, "preferred_area_id": "kangjian"}]
+graph_stats {"walk": {"mode": "walk", "crs": "CRS84/WGS84", "node_count": 10819, "edge_count": 12234, "source_way_count": 3001, "rejected_way_count": 256, "total_length_km": 526.153, "isolated_node_count": 0}, "run": {"mode": "run", "crs": "CRS84/WGS84", "node_count": 10716, "edge_count": 12116, "source_way_count": 2950, "rejected_way_count": 307, "total_length_km": 524.154, "isolated_node_count": 0}, "bike": {"mode": "bike", "crs": "CRS84/WGS84", "node_count": 7815, "edge_count": 8655, "source_way_count": 2120, "rejected_way_count": 1137, "total_length_km": 470.883, "isolated_node_count": 0}}
+
+== portfolio gate ==
+{
+  "route_count": 86,
+  "counts_by_mode": {
+    "walk": 30,
+    "run": 30,
+    "bike": 26
+  },
+  "counts_by_band": {
+    "walk:band0": 10,
+    "walk:band1": 10,
+    "walk:band2": 10,
+    "run:band0": 10,
+    "run:band1": 10,
+    "run:band2": 10,
+    "bike:band0": 10,
+    "bike:band1": 10,
+    "bike:band2": 6
+  },
+  "counts_by_kind": {
+    "walk:strict_loop": 15,
+    "walk:one_way": 15,
+    "run:strict_loop": 15,
+    "run:one_way": 15,
+    "bike:strict_loop": 16,
+    "bike:one_way": 10
+  },
+  "counts_by_status": {
+    "accepted": 86
+  },
+  "area_coverage": {
+    "west_bund": 9,
+    "longhua": 22,
+    "xujiahui": 4,
+    "hengfu": 17,
+    "shanghai_botanical_garden": 7,
+    "kangjian": 13,
+    "caohejing": 6,
+    "huajing": 8
+  },
+  "missing_areas": [],
+  "duplicate_pairs": [],
+  "same_mode_overlap_violations": [],
+  "failures": [
+    "total_route_count",
+    "mode_count:bike",
+    "band_count:bike:2"
+  ],
+  "passed": false,
+  "thresholds": {
+    "routes_per_mode": 30,
+    "routes_per_band": 10,
+    "loop_count_range": [
+      14,
+      16
+    ],
+    "in_district_min_ratio": 0.9,
+    "road_snap_min_ratio": 0.98,
+    "same_mode_overlap_max": 0.9,
+    "target_error_max": 0.15,
+    "api_distance_error_max": 0.03,
+    "loop_endpoint_max_m": 30.0,
+    "marker_endpoint_max_m": 30.0,
+    "strict_loop_closure_margin_m": 75.0,
+    "one_way_endpoint_min_m": 200.0,
+    "retrace_ratio_max": 0.02,
+    "retrace_edge_max_m": 30.0,
+    "round_digits": 5,
+    "one_way_circuity_max": 2.5,
+    "waypoint_offset_m": {
+      "walk": 50.0,
+      "run": 50.0,
+      "bike": 100.0
+    },
+    "nav_node_range": [
+      2,
+      6
+    ],
+    "nav_node_long_bike_max": 8,
+    "min_geometry_coords": 2
+  }
+}
+
+== per-route failures ==
+routes_with_failures 0
+
+== distance stats ==
+XH_WALK_0001 walk strict_loop target=1250 actual=1332 coords=31
+XH_WALK_0002 walk strict_loop target=1250 actual=1390 coords=9
+XH_WALK_0003 walk strict_loop target=1250 actual=1388 coords=5
+XH_WALK_0004 walk strict_loop target=1250 actual=1330 coords=9
+XH_WALK_0005 walk strict_loop target=1250 actual=1409 coords=16
+XH_WALK_0006 walk one_way target=1250 actual=1403 coords=14
+
+== artifacts ==
+route_catalog.json workspace\source\xuhui_route_builder\data\web\route_catalog.json 228080
+xuhui_routes.geojson workspace\source\xuhui_route_builder\data\web\xuhui_routes.geojson 488053
+xuhui_boundary.geojson workspace\source\xuhui_route_builder\data\web\xuhui_boundary.geojson 26894
+xuhui_entries.geojson workspace\source\xuhui_route_builder\data\web\xuhui_entries.geojson 16933
+access_cases.json workspace\source\xuhui_route_builder\data\web\access_cases.json 10585
+poi_catalog.json workspace\source\xuhui_route_builder\data\web\poi_catalog.json 24680
+{"catalog_route_count": 86, "geojson_route_count": 86, "sets_equal": true, "only_in_catalog": [], "only_in_geojson": [], "unique_ids": true}
+
+== generation log tail ==
+bike slot6 one_way band0 -> area:caohejing 8434 m (primary)
+bike slot7 one_way band0 -> area:huajing 8531 m (primary)
+bike slot8 one_way band0 -> area:west_bund 8515 m (primary)
+bike slot9 one_way band0 -> area:longhua 8523 m (primary)
+bike slot10 strict_loop band1 -> area:hengfu 16952 m (primary)
+bike slot11 strict_loop band1 -> area:hengfu 15926 m (primary)
+bike slot12 strict_loop band1 -> area:shanghai_botanical_garden 16972 m (primary)
+bike slot13 strict_loop band1 -> area:kangjian 17068 m (primary)
+bike slot14 strict_loop band1 -> area:longhua 16567 m (primary)
+bike slot15 one_way band1 -> area:huajing 13068 m (primary)
+bike slot16 one_way band1 -> area:hengfu 13291 m (primary)
+bike slot17 one_way band1 -> area:hengfu 13086 m (primary)
+bike slot18 one_way band1 -> area:kangjian 12939 m (primary)
+bike slot19 one_way band1 -> area:caohejing 13293 m (primary)
+bike slot20 strict_loop band2 -> area:kangjian 21697 m (primary)
+bike slot21 strict_loop band2 -> area:kangjian 22364 m (primary)
+bike slot22 strict_loop band2 -> area:hengfu 27360 m (primary)
+bike slot23 strict_loop band2 -> area:shanghai_botanical_garden 26240 m (primary)
+bike slot24 strict_loop band2 -> area:shanghai_botanical_garden 24383 m (primary)
+bike slot25 kind swap one_way -> strict_loop
+bike slot26 UNFILLED
+bike slot27 UNFILLED
+bike slot28 UNFILLED
+bike slot29 UNFILLED
+portfolio routes=86 accepted=None failures=['total_route_count', 'mode_count:bike', 'band_count:bike:2']
+EXIT=0

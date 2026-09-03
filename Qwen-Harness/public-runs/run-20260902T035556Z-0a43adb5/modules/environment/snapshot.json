@@ -1,0 +1,21 @@
+{
+  "module": "environment",
+  "status": "partial",
+  "input_artifacts": [
+    "xuhui_route_builder/data/web/environment_dashboard.json"
+  ],
+  "output_artifacts": [],
+  "data_hashes": {
+    "environment_dashboard.json": "60a1c35bff1c015a31c9efc3ebe92a73c737aec6e8968fc6e56813cd5fe3af74"
+  },
+  "commands": [],
+  "warnings": [
+    "快照缺少导出文件: runtime/exports/environment_latest.json",
+    "快照缺少导出文件: runtime/exports/environment_hourly.json",
+    "快照缺少导出文件: runtime/exports/grid_environment_latest.json",
+    "快照缺少导出文件: runtime/exports/pollen_grid_scores.json",
+    "快照缺少导出文件: runtime/exports/noise_segments.json",
+    "快照缺少导出文件: runtime/exports/route_environment.json"
+  ],
+  "errors": []
+}

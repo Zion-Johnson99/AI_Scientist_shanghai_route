@@ -1,0 +1,1107 @@
+{
+  "version": 1,
+  "generated_at": "2026-09-03T07:34:13Z",
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "crs": "CRS84/WGS84 (lon,lat)",
+  "source": "OpenStreetMap contributors",
+  "licence": "ODbL 1.0",
+  "provenance": "public_osm_data_fetched_in_this_run",
+  "entries": [
+    {
+      "poi_id": 47013031,
+      "osm_type": "way",
+      "name_zh": "龙漕路",
+      "coord": [
+        121.439769,
+        31.171473
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 71799638,
+      "osm_type": "way",
+      "name_zh": "宜山路",
+      "coord": [
+        121.42261,
+        31.188504
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 71799647,
+      "osm_type": "way",
+      "name_zh": "漕溪路",
+      "coord": [
+        121.433734,
+        31.178638
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 95222724,
+      "osm_type": "way",
+      "name_zh": "石龙路",
+      "coord": [
+        121.438563,
+        31.159846
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 95222731,
+      "osm_type": "way",
+      "name_zh": "上海南站",
+      "coord": [
+        121.42654,
+        31.155215
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 264051326,
+      "osm_type": "way",
+      "name_zh": "上海南站",
+      "coord": [
+        121.425504,
+        31.156646
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 264106785,
+      "osm_type": "way",
+      "name_zh": "漕宝路",
+      "coord": [
+        121.430321,
+        31.170006
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 264109694,
+      "osm_type": "way",
+      "name_zh": "上海体育馆",
+      "coord": [
+        121.431653,
+        31.183641
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 471013952,
+      "osm_type": "node",
+      "name_zh": "徐家汇",
+      "coord": [
+        121.433903,
+        31.195076
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 471014085,
+      "osm_type": "node",
+      "name_zh": "衡山路",
+      "coord": [
+        121.441941,
+        31.206453
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 482002481,
+      "osm_type": "way",
+      "name_zh": "龙华中路",
+      "coord": [
+        121.452542,
+        31.186328
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 482002482,
+      "osm_type": "way",
+      "name_zh": "东安路",
+      "coord": [
+        121.450122,
+        31.192604
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 482002483,
+      "osm_type": "way",
+      "name_zh": "肇嘉浜路",
+      "coord": [
+        121.445868,
+        31.201288
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 482002484,
+      "osm_type": "way",
+      "name_zh": "常熟路",
+      "coord": [
+        121.44445,
+        31.215516
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 513228698,
+      "osm_type": "way",
+      "name_zh": "上海体育场",
+      "coord": [
+        121.439282,
+        31.187538
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 513228699,
+      "osm_type": "way",
+      "name_zh": "宜山路",
+      "coord": [
+        121.422869,
+        31.188594
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 513247385,
+      "osm_type": "way",
+      "name_zh": "大木桥路",
+      "coord": [
+        121.458806,
+        31.195945
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 551397819,
+      "osm_type": "way",
+      "name_zh": "上海体育馆",
+      "coord": [
+        121.43259,
+        31.184677
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 551876119,
+      "osm_type": "way",
+      "name_zh": "肇嘉浜路",
+      "coord": [
+        121.445912,
+        31.200345
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 551881912,
+      "osm_type": "way",
+      "name_zh": "龙华中路",
+      "coord": [
+        121.451599,
+        31.186258
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 551892154,
+      "osm_type": "way",
+      "name_zh": "东安路",
+      "coord": [
+        121.449972,
+        31.193165
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 551894141,
+      "osm_type": "way",
+      "name_zh": "大木桥路",
+      "coord": [
+        121.459504,
+        31.195471
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 766165365,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.439001,
+        31.172126
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 900800809,
+      "osm_type": "way",
+      "name_zh": "朱梅路",
+      "coord": [
+        121.433271,
+        31.126482
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 900800810,
+      "osm_type": "way",
+      "name_zh": "罗秀路",
+      "coord": [
+        121.431122,
+        31.133831
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 900800811,
+      "osm_type": "way",
+      "name_zh": "华东理工大学",
+      "coord": [
+        121.424062,
+        31.14625
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 900800812,
+      "osm_type": "way",
+      "name_zh": "上海南站",
+      "coord": [
+        121.425871,
+        31.158606
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 900800813,
+      "osm_type": "way",
+      "name_zh": "桂林公园",
+      "coord": [
+        121.413587,
+        31.16989
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 900800814,
+      "osm_type": "way",
+      "name_zh": "桂林路",
+      "coord": [
+        121.411143,
+        31.177318
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 1350825376,
+      "osm_type": "way",
+      "name_zh": "桂林路",
+      "coord": [
+        121.413533,
+        31.176708
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 1350825377,
+      "osm_type": "way",
+      "name_zh": "漕河泾开发区",
+      "coord": [
+        121.393032,
+        31.17249
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 1475449217,
+      "osm_type": "way",
+      "name_zh": "上海体育场（在建）",
+      "coord": [
+        121.438854,
+        31.184967
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 1475449218,
+      "osm_type": "way",
+      "name_zh": "龙漕路（在建）",
+      "coord": [
+        121.440379,
+        31.170842
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 1475449219,
+      "osm_type": "way",
+      "name_zh": "龙启路（在建）",
+      "coord": [
+        121.44406,
+        31.161996
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 1475449220,
+      "osm_type": "way",
+      "name_zh": "上海植物园（在建）",
+      "coord": [
+        121.445475,
+        31.152127
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 1475449221,
+      "osm_type": "way",
+      "name_zh": "龙吴路（在建）",
+      "coord": [
+        121.447873,
+        31.138549
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 1475449222,
+      "osm_type": "way",
+      "name_zh": "徐浦大桥（在建）",
+      "coord": [
+        121.451961,
+        31.129267
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 1475449223,
+      "osm_type": "way",
+      "name_zh": "华泾路（在建）",
+      "coord": [
+        121.451927,
+        31.120632
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 1475449224,
+      "osm_type": "way",
+      "name_zh": "景联路（在建）",
+      "coord": [
+        121.449248,
+        31.104783
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    },
+    {
+      "poi_id": 2448270613,
+      "osm_type": "node",
+      "name_zh": "龙华",
+      "coord": [
+        121.448689,
+        31.174845
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "station",
+      "category": "transit_entry"
+    }
+  ],
+  "parks": [
+    {
+      "poi_id": 12271429,
+      "osm_type": "way",
+      "name_zh": "徐家汇公园",
+      "coord": [
+        121.437492,
+        31.198692
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 47011871,
+      "osm_type": "way",
+      "name_zh": "龙华烈士陵园",
+      "coord": [
+        121.445397,
+        31.177321
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 50330793,
+      "osm_type": "way",
+      "name_zh": "龙华滨江休闲广场",
+      "coord": [
+        121.453934,
+        31.153234
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 72233364,
+      "osm_type": "way",
+      "name_zh": "襄阳公园",
+      "coord": [
+        121.451994,
+        31.218879
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 163799520,
+      "osm_type": "way",
+      "name_zh": "漕溪公园",
+      "coord": [
+        121.431552,
+        31.173974
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 202758815,
+      "osm_type": "way",
+      "name_zh": "桂林公园",
+      "coord": [
+        121.413544,
+        31.167467
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 256182986,
+      "osm_type": "way",
+      "name_zh": "康健园",
+      "coord": [
+        121.417897,
+        31.166051
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 294929012,
+      "osm_type": "way",
+      "name_zh": "日晖绿地公园",
+      "coord": [
+        121.455363,
+        31.19883
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 297060238,
+      "osm_type": "way",
+      "name_zh": "华泾公园",
+      "coord": [
+        121.446874,
+        31.123277
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 298217019,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.449715,
+        31.199014
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 298772311,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.436604,
+        31.190716
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 339693055,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.412699,
+        31.153884
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 404719693,
+      "osm_type": "way",
+      "name_zh": "上体篮球公园",
+      "coord": [
+        121.432336,
+        31.183927
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 404719694,
+      "osm_type": "way",
+      "name_zh": "上体篮球公园",
+      "coord": [
+        121.432284,
+        31.182804
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 407156605,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.441112,
+        31.147612
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 477138725,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.447132,
+        31.210781
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 477138726,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.443266,
+        31.210818
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 488967847,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.450557,
+        31.214232
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "garden",
+      "category": "park"
+    },
+    {
+      "poi_id": 499565664,
+      "osm_type": "way",
+      "name_zh": "世博绿色出行林",
+      "coord": [
+        121.459672,
+        31.124236
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 499565665,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.45637,
+        31.115121
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 544048836,
+      "osm_type": "way",
+      "name_zh": "黄道婆纪念公园",
+      "coord": [
+        121.443653,
+        31.126326
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 577243784,
+      "osm_type": "way",
+      "name_zh": "龙华烈士陵园(龙华警备司令部旧址)",
+      "coord": [
+        121.447647,
+        31.179263
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 619829470,
+      "osm_type": "way",
+      "name_zh": "青之杰花园",
+      "coord": [
+        121.427077,
+        31.193021
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "garden",
+      "category": "park"
+    },
+    {
+      "poi_id": 694638920,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.447968,
+        31.184042
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "garden",
+      "category": "park"
+    },
+    {
+      "poi_id": 694638922,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.447886,
+        31.183737
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "garden",
+      "category": "park"
+    },
+    {
+      "poi_id": 694651541,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.454898,
+        31.185071
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "garden",
+      "category": "park"
+    },
+    {
+      "poi_id": 868402192,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.450652,
+        31.143986
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 868440442,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.394517,
+        31.173506
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 870546902,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.457891,
+        31.175096
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 870546911,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.454395,
+        31.110544
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 899417942,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.432268,
+        31.186473
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "garden",
+      "category": "park"
+    },
+    {
+      "poi_id": 1012300047,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.411326,
+        31.153201
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "garden",
+      "category": "park"
+    },
+    {
+      "poi_id": 1153659642,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.446087,
+        31.212991
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "garden",
+      "category": "park"
+    },
+    {
+      "poi_id": 1211499394,
+      "osm_type": "way",
+      "name_zh": "徐汇跑道公园",
+      "coord": [
+        121.453091,
+        31.170887
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 1274376623,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.447081,
+        31.208196
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "garden",
+      "category": "park"
+    },
+    {
+      "poi_id": 1276093695,
+      "osm_type": "way",
+      "name_zh": "",
+      "coord": [
+        121.449875,
+        31.212107
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "garden",
+      "category": "park"
+    },
+    {
+      "poi_id": 1430475329,
+      "osm_type": "way",
+      "name_zh": "康健绿苑",
+      "coord": [
+        121.415912,
+        31.15532
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "park",
+      "category": "park"
+    },
+    {
+      "poi_id": 12008684562,
+      "osm_type": "node",
+      "name_zh": "和风园",
+      "coord": [
+        121.444791,
+        31.151021
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "garden",
+      "category": "park"
+    },
+    {
+      "poi_id": 12008684563,
+      "osm_type": "node",
+      "name_zh": "等风来",
+      "coord": [
+        121.444877,
+        31.15057
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "garden",
+      "category": "park"
+    }
+  ],
+  "services": [
+    {
+      "poi_id": 1754759846,
+      "osm_type": "node",
+      "name_zh": "",
+      "coord": [
+        121.442097,
+        31.150507
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "toilets",
+      "label": "公共卫生间",
+      "category": "service"
+    },
+    {
+      "poi_id": 4449442866,
+      "osm_type": "node",
+      "name_zh": "",
+      "coord": [
+        121.451427,
+        31.219575
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "toilets",
+      "label": "公共卫生间",
+      "category": "service"
+    },
+    {
+      "poi_id": 4540845398,
+      "osm_type": "node",
+      "name_zh": "喜士多",
+      "coord": [
+        121.449114,
+        31.201546
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "convenience",
+      "label": "便利店",
+      "category": "service"
+    },
+    {
+      "poi_id": 6874949485,
+      "osm_type": "node",
+      "name_zh": "",
+      "coord": [
+        121.445532,
+        31.15039
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "toilets",
+      "label": "公共卫生间",
+      "category": "service"
+    },
+    {
+      "poi_id": 7140556152,
+      "osm_type": "node",
+      "name_zh": "Kaffeine Coffee",
+      "coord": [
+        121.451109,
+        31.219121
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "cafe",
+      "label": "咖啡补给",
+      "category": "service"
+    },
+    {
+      "poi_id": 9385768360,
+      "osm_type": "node",
+      "name_zh": "Nonna",
+      "coord": [
+        121.452044,
+        31.212338
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "cafe",
+      "label": "咖啡补给",
+      "category": "service"
+    },
+    {
+      "poi_id": 9385779165,
+      "osm_type": "node",
+      "name_zh": "全家",
+      "coord": [
+        121.451078,
+        31.219191
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "convenience",
+      "label": "便利店",
+      "category": "service"
+    },
+    {
+      "poi_id": 9385783037,
+      "osm_type": "node",
+      "name_zh": "Coucou Paris",
+      "coord": [
+        121.451685,
+        31.212193
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "cafe",
+      "label": "咖啡补给",
+      "category": "service"
+    },
+    {
+      "poi_id": 13368682862,
+      "osm_type": "node",
+      "name_zh": "星巴克",
+      "coord": [
+        121.394788,
+        31.163747
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "cafe",
+      "label": "咖啡补给",
+      "category": "service"
+    },
+    {
+      "poi_id": 13368718795,
+      "osm_type": "node",
+      "name_zh": "Lavazza",
+      "coord": [
+        121.394972,
+        31.163834
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "cafe",
+      "label": "咖啡补给",
+      "category": "service"
+    },
+    {
+      "poi_id": 13746801001,
+      "osm_type": "node",
+      "name_zh": "",
+      "coord": [
+        121.451188,
+        31.219783
+      ],
+      "crs": "CRS84/WGS84 (lon,lat)",
+      "kind": "cafe",
+      "label": "咖啡补给",
+      "category": "service"
+    }
+  ],
+  "count": 90
+}

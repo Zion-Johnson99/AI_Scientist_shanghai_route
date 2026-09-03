@@ -1,0 +1,187 @@
+{
+  "provenance": "qwen",
+  "repairs": [
+    {
+      "round": 1,
+      "issue": {
+        "check": "weather_pipeline_pytest_contract",
+        "summary": "pytest 收集失败且 pipeline 公开契约与生成测试不一致",
+        "details": "pytest 报错：cannot import PipelineConfig。请完整重写目标生产文件，使下列既有测试全部满足。测试源码：\n\"\"\"Tests for weather_api_data pipeline: fallback logic, snapshot generation, missing data marking.\"\"\"\n\nimport json\nimport os\nimport tempfile\nfrom pathlib import Path\nfrom datetime import datetime, timezone\n\nimport pytest\n\nfrom weather_api_data.pipeline import (\n    PipelineConfig,\n    PipelineResult,\n    run_pipeline,\n    load_last_known_good,\n    save_snapshot,\n    check_api_keys,\n)\n\n\n@pytest.fixture\ndef tmp_runtime(tmp_path):\n    \"\"\"Create a temporary runtime/exports directory.\"\"\"\n    exports_dir = tmp_path / \"runtime\" / \"exports\"\n    exports_dir.mkdir(parents=True)\n    return exports_dir\n\n\n@pytest.fixture\ndef sample_snapshot(tmp_runtime):\n    \"\"\"Create a valid last-known-good snapshot file.\"\"\"\n    snapshot = {\n        \"generated_at\": \"2024-06-01T08:00:00Z\",\n        \"status\": \"ok\",\n        \"tier\": \"weather\",\n        \"data\": {\n            \"temperature\": 25.0,\n            \"humidity\": 60,\n            \"wind_speed\": 3.5,\n            \"aqi\": 55,\n        },\n    }\n    path = tmp_runtime / \"weather_latest.json\"\n    path.write_text(json.dumps(snapshot, ensure_ascii=False), encoding=\"utf-8\")\n    return path\n\n\n@pytest.fixture\ndef config_no_keys(tmp_runtime):\n    \"\"\"Pipeline config with no API keys configured.\"\"\"\n    return PipelineConfig(\n        exports_dir=tmp_runtime,\n        api_keys={},\n        allow_network=False,\n        tier=\"weather\",\n    )\n\n\n@pytest.fixture\ndef config_with_keys(tmp_runtime):\n    \"\"\"Pipeline config with API keys configured.\"\"\"\n    return PipelineConfig(\n        exports_dir=tmp_runtime,\n        api_keys={\"weather_api\": \"test-key-123\", \"aqi_api\": \"test-key-456\"},\n        allow_network=True,\n        tier=\"weather\",\n    )\n\n\nclass TestCheckApiKeys:\n    \"\"\"Tests for API key checking.\"\"\"\n\n    def test_no_keys_returns_missing_list(self, config_no_keys):\n        missing = check_api_keys(config_no_keys)\n        assert \"weather_api\" in missing\n        assert \"aqi_api\" in missing\n\n    def test_all_keys_present_returns_empty(self, config_with_keys):\n        missing = check_api_keys(config_with_keys)\n        assert missing == []\n\n    def test_partial_keys_returns_only_missing(self, tmp_runtime):\n        config = PipelineConfig(\n            exports_dir=tmp_runtime,\n            api_keys={\"weather_api\": \"key\"},\n            allow_network=True,\n            tier=\"weather\",\n        )\n        missing = check_api_keys(config)\n        assert \"weather_api\" not in missing\n        assert \"aqi_api\" in missing\n\n\nclass TestFallbackLogic:\n    \"\"\"Tests for last-known-good fallback when keys are missing or network unavailable.\"\"\"\n\n    def test_no_keys_uses_last_known_good(self, config_no_keys, sample_snapshot):\n        result = run_pipeline(config_no_keys)\n        assert result.status == \"stale\"\n        assert result.stale_reason is not None\n        assert \"key\" in result.stale_reason.lower() or \"network\" in result.stale_reason.lower()\n        assert result.data is not None\n        assert result.data[\"temperature\"] == 25.0\n\n    def test_no_network_uses_last_known_good(self, tmp_runtime, sample_snapshot):\n        config = PipelineConfig(\n            exports_dir=tmp_runtime,\n            api_keys={\"weather_api\": \"key\", \"aqi_api\": \"key\"},\n            allow_network=False,\n            tier=\"weather\",\n        )\n        result = run_pipeline(config)\n        assert result.status == \"stale\"\n        assert result.stale_reason is not None\n\n    def test_no_keys_no_snapshot_returns_partial(self, config_no_keys):\n        result = run_pipeline(config_no_keys)\n        assert result.status == \"partial\"\n        assert result.data is None\n        assert result.missing_items is not None\n        assert len(result.missing_items) > 0\n\n    def test_fallback_does_not_create_fill_values(self, config_no_keys, sample_snapshot):\n        result = run_pipeline(config_no_keys)\n        # Data should come from snapshot, not fabricated\n        assert result.data == json.loads(sample_snapshot.read_text(encoding=\"utf-8\"))[\"data\"]\n\n    def test_stale_reason_is_descriptive(self, config_no_keys, sample_snapshot):\n        result = run_pipeline(config_no_keys)\n        assert result.stale_reason is not None\n        assert len(result.stale_reason) > 10\n\n\nclass TestSnapshotGeneration:\n    \"\"\"Tests for snapshot file generation.\"\"\"\n\n    def test_save_snapshot_creates_file(self, tmp_runtime):\n        data = {\"temperature\": 20.0, \"humidity\": 50}\n        path = save_snapshot(\n            exports_dir=tmp_runtime,\n            tier=\"weather\",\n            data=data,\n            status=\"ok\",\n        )\n        assert path.exists()\n        content = json.loads(path.read_text(encoding=\"utf-8\"))\n        assert content[\"status\"] == \"ok\"\n        assert content[\"data\"][\"temperature\"] == 20.0\n        assert \"generated_at\" in content\n\n    def test_snapshot_contains_generated_at(self, tmp_runtime):\n        data = {\"temperature\": 22.0}\n        path = save_snapshot(\n            exports_dir=tmp_runtime,\n            tier=\"hourly\",\n            data=data,\n            status=\"ok\",\n        )\n        content = json.loads(path.read_text(encoding=\"utf-8\"))\n        assert \"generated_at\" in content\n        # Should be parseable as ISO datetime\n        datetime.fromisoformat(content[\"generated_at\"].replace(\"Z\", \"+00:00\"))\n\n    def test_snapshot_contains_status_field(self, tmp_runtime):\n        data = {\"aqi\": 42}\n        path = save_snapshot(\n            exports_dir=tmp_runtime,\n            tier=\"daily\",\n            data=data,\n            status=\"partial\",\n        )\n        content = json.loads(path.read_text(encoding=\"utf-8\"))\n        assert content[\"status\"] == \"partial\"\n\n    def test_snapshot_filename_includes_tier(self, tmp_runtime):\n        data = {\"temperature\": 18.0}\n        path = save_snapshot(\n            exports_dir=tmp_runtime,\n            tier=\"hourly\",\n            data=data,\n            status=\"ok\",\n        )\n        assert \"hourly\" in path.name\n\n    def test_snapshot_no_absolute_paths(self, tmp_runtime):\n        data = {\"temperature\": 19.0}\n        path = save_snapshot(\n            exports_dir=tmp_runtime,\n            tier=\"weather\",\n            data=data,\n            status=\"ok\",\n        )\n        content_str = path.read_text(encoding=\"utf-8\")\n        # Should not contain absolute paths\n        assert str(tmp_runtime) not in content_str\n\n    def test_snapshot_no_api_keys(self, tmp_runtime):\n        data = {\"temperature\": 21.0}\n        path = save_snapshot(\n            exports_dir=tmp_runtime,\n            tier=\"weather\",\n            data=data,\n            status=\"ok\",\n            api_keys={\"weather_api\": \"secret-key\"},\n        )\n        content_str = path.read_text(encoding=\"utf-8\")\n        assert \"secret-key\" not in content_str\n\n\nclass TestPartialStatusMarking:\n    \"\"\"Tests for partial/stale/estimated status marking.\"\"\"\n\n    def test_partial_when_some_sources_missing(self, tmp_runtime):\n        config = PipelineConfig(\n            exports_dir=tmp_runtime,\n            api_keys={\"weather_api\": \"key\"},\n            allow_network=False,\n            tier=\"daily\",\n        )\n        result = run_pipeline(config)\n        assert result.status in (\"partial\", \"stale\")\n        if result.missing_items:\n            assert len(result.missing_items) > 0\n\n    def test_estimated_flag_on_derived_values(self, tmp_runtime):\n        config = PipelineConfig(\n            exports_dir=tmp_runtime,\n            api_keys={},\n            allow_network=False,\n            tier=\"weather\",\n        )\n        result = run_pipeline(config)\n        # When no data available, result should be partial with missing items\n        if result.status == \"partial\":\n            assert result.missing_items is not None\n\n    def test_result_contains_tier_info(self, tmp_runtime, sample_snapshot):\n        config = PipelineConfig(\n            exports_dir=tmp_runtime,\n            api_keys={},\n            allow_network=False,\n            tier=\"weather\",\n        )\n        result = run_pipeline(config)\n        assert result.tier == \"weather\"\n\n    def test_result_status_in_valid_enum(self, tmp_runtime, sample_snapshot):\n        config = PipelineConfig(\n            exports_dir=tmp_runtime,\n            api_keys={},\n            allow_network=False,\n            tier=\"weather\",\n        )\n        result = run_pipeline(config)\n        assert result.status in (\"ok\", \"partial\", \"stale\", \"error\", \"no_data\")\n\n\nclass TestLoadLastKnownGood:\n    \"\"\"Tests for loading last-known-good snapshots.\"\"\"\n\n    def test_load_existing_snapshot(self, sample_snapshot):\n        data = load_last_known_good(sample_snapshot.parent, \"weather\")\n        assert data is not None\n        assert data[\"data\"][\"temperature\"] == 25.0\n\n    def test_load_missing_snapshot_returns_none(self, tmp_runtime):\n        data = load_last_known_good(tmp_runtime, \"weather\")\n        assert data is None\n\n    def test_load_corrupted_snapshot_returns_none(self, tmp_runtime):\n        path = tmp_runtime / \"weather_latest.json\"\n        path.write_text(\"not valid json {{{\", encoding=\"utf-8\")\n        data = load_last_known_good(tmp_runtime, \"weather\")\n        assert data is None\n\n    def test_load_snapshot_with_missing_data_field(self, tmp_runtime):\n        path = tmp_runtime / \"weather_latest.json\"\n        path.write_text(json.dumps({\"status\": \"ok\"}), encoding=\"utf-8\")\n        data = load_last_known_good(tmp_runtime, \"weather\")\n        # Should return None or handle gracefully when data field is missing\n        assert data is None or \"data\" not in data\n\n\nclass TestPipelineResult:\n    \"\"\"Tests for PipelineResult structure.\"\"\"\n\n    def test_result_has_required_fields(self, config_no_keys, sample_snapshot):\n        result = run_pipeline(config_no_keys)\n        assert hasattr(result, \"status\")\n        assert hasattr(result, \"tier\")\n        assert hasattr(result, \"data\")\n        assert hasattr(result, \"stale_reason\")\n        assert hasattr(result, \"missing_items\")\n\n    def test_result_serializable_to_dict(self, config_no_keys, sample_snapshot):\n        result = run_pipeline(config_no_keys)\n        d = result.to_dict()\n        assert isinstance(d, dict)\n        assert \"status\" in d\n        assert \"tier\" in d\n        # Should be JSON serializable\n        json.dumps(d, ensure_ascii=False)\n",
+        "severity": "error",
+        "files": [
+          "weather_api_data/src/weather_api_data/pipeline.py"
+        ]
+      },
+      "target_file": "weather_api_data/src/weather_api_data/pipeline.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:12:41.091610Z",
+        "request_id": "chatcmpl-2296c89b-61b5-9eac-b20b-6abbcb0f21f8",
+        "latency_ms": 98818.4,
+        "input_tokens": 6313,
+        "output_tokens": 5274,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 2,
+      "issue": {
+        "check": "weather_web_export_pytest_contract",
+        "summary": "web_export 缺少 build_dashboard 且验证器契约不符合生成测试",
+        "details": "pytest 报错：cannot import build_dashboard。请完整重写目标生产文件，使下列既有测试全部满足，并保留 publish_web 的文件导出能力。测试源码：\n\"\"\"Unit tests for weather_api_data.web_export module.\n\nVerifies:\n- Output structure (top-level keys: metadata, current, forecast, routes)\n- 90 route items coverage\n- Required semantic fields per route item\n- Graceful handling of missing/partial data\n\"\"\"\n\nfrom __future__ import annotations\n\nimport json\nfrom datetime import datetime, timezone\nfrom pathlib import Path\nfrom typing import Any\n\nimport pytest\n\nfrom weather_api_data.web_export import (\n    build_dashboard,\n    validate_dashboard,\n    DashboardValidationError,\n)\n\n\n# ---------------------------------------------------------------------------\n# Fixtures\n# ---------------------------------------------------------------------------\n\n\ndef _make_route_env(route_id: str, *, complete: bool = True) -> dict[str, Any]:\n    \"\"\"Build a single route environment record.\"\"\"\n    record: dict[str, Any] = {\n        \"route_id\": route_id,\n        \"pm2_5\": {\n            \"value\": 35.0,\n            \"unit\": \"ug/m3\",\n            \"estimated\": True,\n            \"status\": \"ok\",\n            \"confidence\": 0.75,\n        },\n        \"noise\": {\n            \"value\": 55,\n            \"unit\": \"risk_index_0_100\",\n            \"estimated\": True,\n            \"status\": \"ok\",\n            \"confidence\": 0.6,\n        },\n        \"pollen_daily\": {\n            \"value\": 42,\n            \"unit\": \"grains/m3_proxy\",\n            \"estimated\": True,\n            \"status\": \"ok\",\n            \"confidence\": 0.5,\n        },\n    }\n    if not complete:\n        del record[\"pollen_daily\"]\n    return record\n\n\ndef _make_route_ids(count: int = 90) -> list[str]:\n    \"\"\"Generate route IDs matching the catalog convention.\"\"\"\n    modes = [\"walk\", \"run\", \"bike\"]\n    ids: list[str] = []\n    for mode in modes:\n        for i in range(1, count // 3 + 1):\n            ids.append(f\"{mode}_{i:03d}\")\n    return ids[:count]\n\n\ndef _make_pipeline_result(\n    route_ids: list[str] | None = None,\n    *,\n    complete: bool = True,\n    status: str = \"ok\",\n) -> dict[str, Any]:\n    \"\"\"Build a minimal pipeline result dict consumed by build_dashboard.\"\"\"\n    if route_ids is None:\n        route_ids = _make_route_ids(90)\n\n    now_iso = datetime.now(timezone.utc).isoformat()\n\n    routes_items = [_make_route_env(rid, complete=complete) for rid in route_ids]\n\n    return {\n        \"generated_at\": now_iso,\n        \"status\": status,\n        \"weather\": {\n            \"temperature_c\": 22.0,\n            \"humidity_pct\": 65,\n            \"wind_speed_ms\": 3.2,\n            \"precipitation_mm\": 0.0,\n            \"condition\": \"partly_cloudy\",\n        },\n        \"aqi\": {\n            \"value\": 72,\n            \"primary_pollutant\": \"PM2.5\",\n            \"status\": \"ok\",\n        },\n        \"routes\": routes_items,\n    }\n\n\n@pytest.fixture()\ndef pipeline_result_full() -> dict[str, Any]:\n    return _make_pipeline_result()\n\n\n@pytest.fixture()\ndef pipeline_result_partial() -> dict[str, Any]:\n    return _make_pipeline_result(complete=False)\n\n\n@pytest.fixture()\ndef pipeline_result_few_routes() -> dict[str, Any]:\n    return _make_pipeline_result(route_ids=_make_route_ids(10))\n\n\n# ---------------------------------------------------------------------------\n# Tests: build_dashboard structure\n# ---------------------------------------------------------------------------\n\n\nclass TestBuildDashboardStructure:\n    \"\"\"Verify top-level structure of the dashboard output.\"\"\"\n\n    def test_top_level_keys_present(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        assert \"metadata\" in dashboard\n        assert \"current\" in dashboard\n        assert \"forecast\" in dashboard\n        assert \"routes\" in dashboard\n\n    def test_metadata_contains_generated_at(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        assert \"generated_at\" in dashboard[\"metadata\"]\n        # Must be parseable as ISO datetime\n        datetime.fromisoformat(dashboard[\"metadata\"][\"generated_at\"])\n\n    def test_metadata_contains_status(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        assert \"status\" in dashboard[\"metadata\"]\n        assert dashboard[\"metadata\"][\"status\"] in (\"ok\", \"partial\", \"stale\", \"error\", \"no_data\")\n\n    def test_metadata_contains_sources(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        assert \"sources\" in dashboard[\"metadata\"]\n\n    def test_current_contains_weather_summary(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        current = dashboard[\"current\"]\n        assert \"temperature_c\" in current\n        assert \"humidity_pct\" in current\n        assert \"wind_speed_ms\" in current\n\n    def test_forecast_is_list(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        assert isinstance(dashboard[\"forecast\"], list)\n\n\n# ---------------------------------------------------------------------------\n# Tests: routes coverage\n# ---------------------------------------------------------------------------\n\n\nclass TestRoutesCoverage:\n    \"\"\"Verify routes section covers 90 items with correct structure.\"\"\"\n\n    def test_routes_items_count_90(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        assert len(dashboard[\"routes\"][\"items\"]) == 90\n\n    def test_routes_items_have_route_id(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        for item in dashboard[\"routes\"][\"items\"]:\n            assert \"route_id\" in item\n            assert isinstance(item[\"route_id\"], str)\n            assert len(item[\"route_id\"]) > 0\n\n    def test_route_ids_unique(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        ids = [item[\"route_id\"] for item in dashboard[\"routes\"][\"items\"]]\n        assert len(ids) == len(set(ids))\n\n    def test_route_ids_match_input(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        expected_ids = set(_make_route_ids(90))\n        actual_ids = {item[\"route_id\"] for item in dashboard[\"routes\"][\"items\"]}\n        assert actual_ids == expected_ids\n\n    def test_fewer_routes_raises_or_marks_partial(\n        self, pipeline_result_few_routes: dict[str, Any]\n    ) -> None:\n        \"\"\"When fewer than 90 routes, build_dashboard should either raise or mark partial.\"\"\"\n        dashboard = build_dashboard(pipeline_result_few_routes)\n        # Accept either: metadata status is partial, or routes count < 90 is flagged\n        if dashboard[\"metadata\"][\"status\"] == \"ok\":\n            # If status is ok, it must still have the correct count\n            pytest.fail(\"Expected partial status when fewer than 90 routes provided\")\n        assert dashboard[\"metadata\"][\"status\"] in (\"partial\", \"error\")\n\n\n# ---------------------------------------------------------------------------\n# Tests: semantic fields per route item\n# ---------------------------------------------------------------------------\n\n\nclass TestSemanticFields:\n    \"\"\"Verify each route item contains required semantic fields.\"\"\"\n\n    REQUIRED_ENV_KEYS = (\"pm2_5\", \"noise\", \"pollen_daily\")\n    REQUIRED_SEMANTIC_FIELDS = (\"value\", \"unit\", \"estimated\", \"status\")\n\n    def test_all_env_keys_present(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        for item in dashboard[\"routes\"][\"items\"]:\n            for key in self.REQUIRED_ENV_KEYS:\n                assert key in item, f\"Missing key '{key}' in route {item['route_id']}\"\n\n    def test_semantic_fields_per_env_block(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        for item in dashboard[\"routes\"][\"items\"]:\n            for key in self.REQUIRED_ENV_KEYS:\n                block = item[key]\n                for field in self.REQUIRED_SEMANTIC_FIELDS:\n                    assert field in block, (\n                        f\"Missing semantic field '{field}' in \"\n                        f\"route {item['route_id']}.{key}\"\n                    )\n\n    def test_pm25_unit_is_ug_m3(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        for item in dashboard[\"routes\"][\"items\"]:\n            assert item[\"pm2_5\"][\"unit\"] == \"ug/m3\"\n\n    def test_noise_unit_is_risk_index(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        for item in dashboard[\"routes\"][\"items\"]:\n            assert item[\"noise\"][\"unit\"] == \"risk_index_0_100\"\n\n    def test_estimated_is_boolean(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        for item in dashboard[\"routes\"][\"items\"]:\n            for key in self.REQUIRED_ENV_KEYS:\n                assert isinstance(item[key][\"estimated\"], bool)\n\n    def test_status_in_enum(self, pipeline_result_full: dict[str, Any]) -> None:\n        valid_statuses = {\"ok\", \"stale\", \"estimated\", \"partial\", \"error\", \"no_data\"}\n        dashboard = build_dashboard(pipeline_result_full)\n        for item in dashboard[\"routes\"][\"items\"]:\n            for key in self.REQUIRED_ENV_KEYS:\n                assert item[key][\"status\"] in valid_statuses\n\n    def test_confidence_present_and_numeric(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        for item in dashboard[\"routes\"][\"items\"]:\n            for key in self.REQUIRED_ENV_KEYS:\n                block = item[key]\n                if \"confidence\" in block:\n                    assert isinstance(block[\"confidence\"], (int, float))\n                    assert 0.0 <= block[\"confidence\"] <= 1.0\n\n\n# ---------------------------------------------------------------------------\n# Tests: partial / missing data handling\n# ---------------------------------------------------------------------------\n\n\nclass TestPartialData:\n    \"\"\"Verify graceful handling when data is incomplete.\"\"\"\n\n    def test_partial_marks_missing_fields(self, pipeline_result_partial: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_partial)\n        # When pollen_daily is missing from input, output should mark it\n        for item in dashboard[\"routes\"][\"items\"]:\n            if \"pollen_daily\" not in item:\n                # Acceptable: field absent but metadata status is partial\n                assert dashboard[\"metadata\"][\"status\"] in (\"partial\", \"stale\")\n            else:\n                # If present, must have semantic fields\n                assert \"value\" in item[\"pollen_daily\"]\n\n    def test_empty_routes_list(self) -> None:\n        result = _make_pipeline_result(route_ids=[])\n        dashboard = build_dashboard(result)\n        assert dashboard[\"metadata\"][\"status\"] in (\"partial\", \"error\", \"no_data\")\n        assert len(dashboard[\"routes\"][\"items\"]) == 0\n\n    def test_status_error_propagates(self) -> None:\n        result = _make_pipeline_result(status=\"error\")\n        dashboard = build_dashboard(result)\n        assert dashboard[\"metadata\"][\"status\"] == \"error\"\n\n\n# ---------------------------------------------------------------------------\n# Tests: validate_dashboard\n# ---------------------------------------------------------------------------\n\n\nclass TestValidateDashboard:\n    \"\"\"Verify the validation function catches structural issues.\"\"\"\n\n    def test_valid_dashboard_passes(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        # Should not raise\n        validate_dashboard(dashboard)\n\n    def test_missing_top_level_key_fails(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        del dashboard[\"routes\"]\n        with pytest.raises(DashboardValidationError, match=\"routes\"):\n            validate_dashboard(dashboard)\n\n    def test_wrong_route_count_fails(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        dashboard[\"routes\"][\"items\"] = dashboard[\"routes\"][\"items\"][:50]\n        with pytest.raises(DashboardValidationError):\n            validate_dashboard(dashboard, expected_route_count=90)\n\n    def test_missing_semantic_field_fails(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        # Remove a required semantic field from first item\n        del dashboard[\"routes\"][\"items\"][0][\"pm2_5\"][\"unit\"]\n        with pytest.raises(DashboardValidationError):\n            validate_dashboard(dashboard)\n\n    def test_no_sensitive_fields_in_output(self, pipeline_result_full: dict[str, Any]) -> None:\n        \"\"\"Ensure no absolute paths or keys leak into the dashboard.\"\"\"\n        dashboard = build_dashboard(pipeline_result_full)\n        raw = json.dumps(dashboard)\n        # No absolute paths (Windows or Unix)\n        assert \"C:\\\\\" not in raw\n        assert \"/home/\" not in raw\n        assert \"/Users/\" not in raw\n        # No API key patterns\n        assert \"api_key\" not in raw.lower() or \"api_key\" in (\"\", \"\")\n        assert \"Authorization\" not in raw\n\n\n# ---------------------------------------------------------------------------\n# Tests: JSON serializability\n# ---------------------------------------------------------------------------\n\n\nclass TestSerialization:\n    \"\"\"Verify output is JSON-serializable for file export.\"\"\"\n\n    def test_json_roundtrip(self, pipeline_result_full: dict[str, Any]) -> None:\n        dashboard = build_dashboard(pipeline_result_full)\n        serialized = json.dumps(dashboard, ensure_ascii=False)\n        deserialized = json.loads(serialized)\n        assert deserialized[\"metadata\"][\"generated_at\"] == dashboard[\"metadata\"][\"generated_at\"]\n        assert len(deserialized[\"routes\"][\"items\"]) == 90\n\n    def test_no_datetime_objects_in_output(self, pipeline_result_full: dict[str, Any]) -> None:\n        \"\"\"All datetime values must be serialized as ISO strings.\"\"\"\n        dashboard = build_dashboard(pipeline_result_full)\n\n        def check_no_datetime(obj: Any, path: str = \"root\") -> None:\n            if isinstance(obj, datetime):\n                pytest.fail(f\"Found datetime object at {path}\")\n            elif isinstance(obj, dict):\n                for k, v in obj.items():\n                    check_no_datetime(v, f\"{path}.{k}\")\n            elif isinstance(obj, list):\n                for i, v in enumerate(obj):\n                    check_no_datetime(v, f\"{path}[{i}]\")\n\n        check_no_datetime(dashboard)\n",
+        "severity": "error",
+        "files": [
+          "weather_api_data/src/weather_api_data/web_export.py"
+        ]
+      },
+      "target_file": "weather_api_data/src/weather_api_data/web_export.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:15:25.271947Z",
+        "request_id": "chatcmpl-d9425a74-1f21-9ea5-9081-dcc77c5da753",
+        "latency_ms": 134085.5,
+        "input_tokens": 7373,
+        "output_tokens": 7157,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 3,
+      "issue": {
+        "check": "weather_cli_runtime_contract",
+        "summary": "CLI 导入已被替换的旧 pipeline API，所有子命令无法启动",
+        "details": "真实命令 `weather-api-data --help` 当前在导入阶段失败：ImportError: cannot import name check_config from weather_api_data.pipeline。当前可用 API：pipeline.PipelineConfig(exports_dir, api_keys, allow_network, tier)、PipelineResult、check_api_keys、run_pipeline、save_snapshot；route_environment.generate_route_environment(route_catalog_path, geojson_path)、records_to_dashboard_items；web_export.publish_web(pipeline_result, output_path)->Path。请完整重写 cli.py，保留四个子命令并对齐这些真实接口。publish-web 输出对象需含 generated_at/status/weather/aqi/routes，其中 routes 为恰好 90 条时应通过 dashboard 验证。config-check 缺 Key 属于可预期警告，退出码 0。dry-run 禁止调用 save_snapshot/publish_web。全局 --json 与子命令后的 --json 均需自然可用。",
+        "severity": "error",
+        "files": [
+          "weather_api_data/src/weather_api_data/cli.py"
+        ]
+      },
+      "target_file": "weather_api_data/src/weather_api_data/cli.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:18:00.288848Z",
+        "request_id": "chatcmpl-cb8f05a2-5695-929e-a59d-372799696938",
+        "latency_ms": 76642.6,
+        "input_tokens": 3861,
+        "output_tokens": 4152,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 4,
+      "issue": {
+        "check": "weather_cli_runtime_contract",
+        "summary": "CLI 首轮修复仍使用不存在字段和错误结果类型，真实四命令契约未通过",
+        "details": "真实验收失败：1) scheduled-refresh: AttributeError: PipelineResult has no attribute warnings；2) publish-web: TypeError: RouteEnvironmentResult object is not iterable；3) 无 Key config-check 错误输出 warnings=[]。请重写 cli.py 并删除所有 isinstance 兼容分支。精确接口如下：\n- check_api_keys(PipelineConfig) -> list[str]，键名固定 weather_api/aqi_api。\n- PipelineResult 字段仅 status,tier,data,stale_reason,missing_items；to_dict() 可用。\n- save_snapshot(exports_dir, tier, data, status, api_keys=None)->Path。\n- generate_route_environment(catalog_path, geojson_path)->RouteEnvironmentResult；记录列表是其 records 字段。\n- records_to_dashboard_items(env_result.records)->list[dict]。\n- publish_web(pipeline_result: dict, output_path)->Path。\npublish-web 应把 items 放进 payload[\"routes\"]，payload 至少含 generated_at ISO 字符串、status（90 条时 ok）、weather（temperature_c/humidity_pct/wind_speed_ms）、aqi、routes。参数增加 --route-catalog 与 --geojson，未指定时查找同一 workspace/source/xuhui_route_builder/data/web。输出路径由 --output 控制。scheduled-refresh 调用 run_pipeline 后，使用具名参数 save_snapshot(exports_dir=config.exports_dir,tier=args.tier,data=result.data or {},status=result.status)。config-check 直接把 missing=list 变成 warning。全局 --json 和子命令后 --json 使用两个 dest 后取逻辑或，避免子解析器覆盖。",
+        "severity": "error",
+        "files": [
+          "weather_api_data/src/weather_api_data/cli.py"
+        ]
+      },
+      "target_file": "weather_api_data/src/weather_api_data/cli.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:20:15.633068Z",
+        "request_id": "chatcmpl-09ad0651-dbfc-9dff-9ca2-1f396771580d",
+        "latency_ms": 72150.6,
+        "input_tokens": 3956,
+        "output_tokens": 3829,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 5,
+      "issue": {
+        "check": "weather_pipeline_ruff",
+        "summary": "pipeline.py import block 未按 Ruff I001 排序",
+        "details": "只调整 import block 顺序。当前 52 项 pytest 已通过，任何功能逻辑改动都属于回归。",
+        "severity": "error",
+        "files": [
+          "weather_api_data/src/weather_api_data/pipeline.py"
+        ]
+      },
+      "target_file": "weather_api_data/src/weather_api_data/pipeline.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:23:26.424367Z",
+        "request_id": "chatcmpl-3e567676-bee1-9117-a5c7-92f6f4ed0e99",
+        "latency_ms": 111721.7,
+        "input_tokens": 3597,
+        "output_tokens": 5476,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 6,
+      "issue": {
+        "check": "weather_cli_ruff",
+        "summary": "cli.py 有 10 处 E501 长行",
+        "details": "将超过 100 字符的行用括号规范换行。保持四个 CLI 子命令、退出码、90 路线导出、参数解析完全不变。当前 52 项 pytest 和真实 CLI 已通过。",
+        "severity": "error",
+        "files": [
+          "weather_api_data/src/weather_api_data/cli.py"
+        ]
+      },
+      "target_file": "weather_api_data/src/weather_api_data/cli.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:22:46.121133Z",
+        "request_id": "chatcmpl-0a9f100a-8c70-95b7-865a-be6013b2d9ee",
+        "latency_ms": 71418.8,
+        "input_tokens": 3687,
+        "output_tokens": 3893,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 7,
+      "issue": {
+        "check": "weather_cli_pyright_and_runtime_regression",
+        "summary": "CLI 格式修复回归，Pyright 7 错且两个真实子命令失败",
+        "details": "上一轮纯格式改动造成真实回归。当前证据：Pyright 7 errors，包括 PipelineResult 无 warnings/errors、generate_route_environment 缺 route_catalog_path/geojson_path、records_to_dashboard_items 调用参数错误；scheduled-refresh 真实命令 AttributeError；publish-web 不识别 --route-catalog/--geojson。请完整重写 cli.py。\n唯一正确接口：PipelineResult 只有 status,tier,data,stale_reason,missing_items；save_snapshot(exports_dir,tier,data,status,api_keys=None)；generate_route_environment(route_catalog_path,geojson_path) 返回对象，记录在 .records；records_to_dashboard_items(result.records)；publish_web(pipeline_result: dict, output_path)。\n精确行为：\n1. config-check: check_api_keys 返回 list[str]，missing 非空写 warnings，退出 0。\n2. dry-run: 只 check_api_keys，不调用 run_pipeline/save_snapshot/publish_web，零写入。\n3. scheduled-refresh: result=run_pipeline(config)；save_snapshot(exports_dir=config.exports_dir,tier=args.tier,data=result.data or {},status=result.status)；输出 result 的现有字段，ok/partial/stale 均退出0。\n4. publish-web: argparse 明确定义 --route-catalog、--geojson、--output；生成 env_result，再 records_to_dashboard_items(env_result.records)；构造 payload={generated_at: UTC ISO,status: ok if len(items)==90 else partial,weather:{temperature_c:None,humidity_pct:None,wind_speed_ms:None},aqi:{status:no_data},routes:items}；publish_web(payload, Path(output))；输出 route_count。\n5. api_keys 字典键必须是 weather_api、aqi_api。全局和子命令后的 --json 都支持。所有行 <=100 字符。严禁恢复 warnings/errors、items/output_dir/metadata 等旧调用。",
+        "severity": "error",
+        "files": [
+          "weather_api_data/src/weather_api_data/cli.py"
+        ]
+      },
+      "target_file": "weather_api_data/src/weather_api_data/cli.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:26:10.904710Z",
+        "request_id": "chatcmpl-ed8da003-1914-9ef2-be47-e8b6a5bde27a",
+        "latency_ms": 115995.1,
+        "input_tokens": 4048,
+        "output_tokens": 6351,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    }
+  ]
+}

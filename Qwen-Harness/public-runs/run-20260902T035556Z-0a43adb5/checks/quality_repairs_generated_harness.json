@@ -1,0 +1,179 @@
+{
+  "provenance": "qwen",
+  "repairs": [
+    {
+      "round": 1,
+      "target_file": "Qwen-Harness/src/qwen_harness/experiment/metrics.py",
+      "audit": {
+        "model": "qwen3.8-max",
+        "status": "response_applied_before_parent_interrupt",
+        "sha256": "d7c5c5507974efda862d4d4e8fc07b22d1042493a5752364c763aa37c2003e26"
+      }
+    },
+    {
+      "round": 2,
+      "issue": {
+        "check": "generated_harness_run_store_contract",
+        "summary": "生成子工程公共接口与测试契约不一致",
+        "details": "实现测试要求的 RunManifest、RunState、LockConflictError、atomic_write_json、read_json_safe、RunStore。RunStore 接受 base_dir 与 run_id；实现 create_manifest、init_state、advance_stage、load_state、mark_stage_failed、mark_completed、acquire_lock、release_lock、recover、append_event。JSON 原子写入需要 flush、fsync、os.replace，失败清理 .tmp；活进程锁冲突、死进程锁回收；损坏与缺失 state 分别抛 ValueError 和 FileNotFoundError；events.jsonl 追加 event_type/data/timestamp。",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/run_store.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/run_store.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:33:04.089121Z",
+        "request_id": "chatcmpl-621a0ada-3bfd-9e06-b7d7-ea5501537388",
+        "latency_ms": 111908.0,
+        "input_tokens": 13680,
+        "output_tokens": 5860,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    },
+    {
+      "round": 3,
+      "issue": {
+        "check": "generated_harness_workflow_contract",
+        "summary": "生成子工程公共接口与测试契约不一致",
+        "details": "实现测试要求并导出 WorkflowEngine、StageResult、StageStatus、WorkflowConfig、StageConfig、GateConfig。配置对象接受 name/version/stages、每阶段 input_schema/output_schema/gate，gate.condition 支持 always_pass 与 always_fail。WorkflowEngine(workflow, run_dir) 实现 set_executor、run_all、run_stage、get_state、load_state、mark_stage_completed、mark_stage_retryable；顺序执行、未知阶段 ValueError、门禁失败停止、输出 schema 失败重试 1 次、非 dict 输出失败、输入哈希不变时跳过已完成阶段、输入变化或 retryable 时重跑；写 stages/名称/input.json、output.json、audit.json；异常结果包含 failed_stage 与 error_message。",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/workflow/engine.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/workflow/engine.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:35:42.755734Z",
+        "request_id": "chatcmpl-7d033e51-5fbf-9840-9b22-a261ada408ba",
+        "latency_ms": 158639.7,
+        "input_tokens": 13727,
+        "output_tokens": 8540,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    },
+    {
+      "round": 4,
+      "issue": {
+        "check": "generated_harness_metrics_feedback",
+        "summary": "pytest 反馈显示生成实现仍偏离本轮测试",
+        "details": "当前仅 1 项失败：jaccard_top_k(a=[r1,r2], b=[r1,r2,r3], k=5) 期望 1.0，实际 2/3。有效截断长度取 min(k,len(a),len(b))，两边都按该长度取 top 集合；保留其他已通过指标函数。",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/experiment/metrics.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/experiment/metrics.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:37:10.581909Z",
+        "request_id": "chatcmpl-f0d1f872-5f3b-94fd-85c9-c4e604611e85",
+        "latency_ms": 49376.2,
+        "input_tokens": 13939,
+        "output_tokens": 2653,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    },
+    {
+      "round": 5,
+      "issue": {
+        "check": "generated_harness_run_store_feedback",
+        "summary": "pytest 反馈显示生成实现仍偏离本轮测试",
+        "details": "当前 run_store 16 项失败。read_json_safe 对缺失、损坏、空文件均需返回 None。create_manifest 必须接受 goal,workflow,model,temperature,seed,reasoning_effort 关键字。init_state 必须接受 workflow。mark_stage_failed 接受 stage,error。advance_stage(current,next)。活进程 lock.json 包含当前 pid 时 acquire_lock 必须抛 LockConflictError；死 pid 可回收。recover 的缺失 state 抛 FileNotFoundError、损坏 state 抛含 state.json 的 ValueError、failed 转 retryable。完整生命周期 mark_completed 后 completed_stages 应包含最后 publish 阶段。保持原子写入相关测试已通过。",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/run_store.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/run_store.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:39:12.125293Z",
+        "request_id": "chatcmpl-59a52476-594d-91bc-a49b-ed53b1f45455",
+        "latency_ms": 121525.7,
+        "input_tokens": 13725,
+        "output_tokens": 6495,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    },
+    {
+      "round": 6,
+      "issue": {
+        "check": "generated_harness_workflow_feedback",
+        "summary": "pytest 反馈显示生成实现仍偏离本轮测试",
+        "details": "当前 workflow 15 项几乎都因 eng.set_executor(func) 报 TypeError missing executor。检查类定义与缩进：set_executor 必须是正常实例方法 def set_executor(self, executor)，不能被 staticmethod/classmethod，也不能误嵌套。修复后确保 run_stage 与 run_all 调用保存的 executor(stage_name,stage_input)，并满足该文件原有阶段顺序、门禁、一次重试、输入哈希跳过、状态持久化、异常传播测试。",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/workflow/engine.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/workflow/engine.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:40:17.205027Z",
+        "request_id": "chatcmpl-272b5888-fe14-9ebd-a6c4-766ea844140f",
+        "latency_ms": 65062.3,
+        "input_tokens": 13653,
+        "output_tokens": 3449,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    }
+  ]
+}

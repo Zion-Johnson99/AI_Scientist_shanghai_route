@@ -1,0 +1,17 @@
+== check_route_spatial ==
+routes=90 accepted=90 modes={'walk': 30, 'run': 30, 'bike': 30} overlap_violations=0
+ROUTE_SPATIAL_QUALITY_PASSED=true
+EXIT_check_route_spatial=0
+== check_environment_contract ==
+cells=54/54 dashboard_routes=90 catalog_routes=90 sets_equal=True worst_missing_rate=0.0
+ENVIRONMENT_CONTRACT_PASSED=true
+EXIT_check_environment_contract=0
+== check_output_boundary ==
+branch=Qwen_Harness_Build head=a7c0fc6ae13b status_lines=1
+ignore_rule=Qwen-Harness/.gitignore:5:runtime/*	Qwen-Harness/runtime/runs
+OUTPUT_BOUNDARY_PASSED=true
+EXIT_check_output_boundary=0
+== check_secret_scan ==
+scanned=451 violations=0 warnings=0 env_files=0
+SECRET_SCAN_PASSED=true
+EXIT_check_secret_scan=0

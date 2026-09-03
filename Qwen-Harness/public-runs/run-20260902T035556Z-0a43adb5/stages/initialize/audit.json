@@ -1,0 +1,11 @@
+{
+  "handler": "qwen_harness.workflow.stages:initialize_stage",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 236.3,
+  "status": "passed",
+  "summary": "初始化完成：快照技能 6 个",
+  "artifacts": [],
+  "offline": false,
+  "audited_at": "2026-09-02T03:56:13.928782+00:00"
+}

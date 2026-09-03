@@ -1,0 +1,220 @@
+{
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "stage": "stage6_reference_visible_gap",
+  "generated_at": "2026-09-03T02:06:00Z",
+  "reference_url": "https://zion-johnson99.github.io/AI_Scientist_shanghai_route/web/",
+  "access_allowed_because_blind_checkpoint_frozen": true,
+  "blind_checkpoint_frozen_at": "2026-09-02T19:13:04Z",
+  "observation_method": {
+    "driver": "playwright chromium",
+    "allowed_operations_used": ["navigate", "set_viewport", "screenshot", "screen_coordinate_click", "keyboard_input"],
+    "forbidden_operations": [
+      "view_source",
+      "dom_query",
+      "page_evaluate",
+      "element_structure_extraction",
+      "accessibility_tree_export",
+      "devtools",
+      "network_panel_or_request_interception",
+      "curl_wget_invoke_webrequest_download",
+      "asset_url_or_data_file_extraction",
+      "copying_product_images_icons_styles_copy_or_layout_code"
+    ],
+    "forbidden_operations_used": [],
+    "screenshots": [
+      "checks/reference-desktop-01.png",
+      "checks/reference-desktop-02.png"
+    ],
+    "viewports": { "desktop": [1440, 900], "mobile": [500, 700] },
+    "observation_coverage_zh": "只渲染并观察了两屏：一屏是首次进入时弹出的健康档案表单，一屏是地图加推荐面板主界面。未在成品页上触发筛选切换、路线详情、地图联动、错误状态等交互，因此这些项目在下方标记为 not_observed，而不是凭猜测填写差距。",
+    "second_reference_comparison_performed": false
+  },
+  "ours_blind_evidence": "blind_checkpoint/product_matrix.json",
+  "matrix": [
+    {
+      "index": 1,
+      "name_zh": "地图首屏与徐汇区边界",
+      "reference_observed_zh": "地图为浅米色道路底图，叠加绿色公园斑块，带道路与地标文字标注（可见「武康大楼」「衡仁路」「9号线」），蓝色路线覆盖其上；右上角有「图层」按钮。",
+      "ours_blind_status": "pass",
+      "ours_blind_evidence_zh": "canvas 首屏 271918 字符，徐汇边界与 86 条路线均渲染。",
+      "gap_zh": "我们的地图是自绘等距圆柱投影 canvas，只画边界、路线、入口和环境网格，没有公园绿地斑块底图，没有道路名与地标文字标注，也没有图层开关。首屏信息密度低于成品。",
+      "severity": "major",
+      "gap_type": "functional_and_visual",
+      "planned_action_zh": "在地图工具条加入图层开关，允许独立显示或隐藏徐汇边界、路线、入口点与 54 格环境网格；公园斑块与道路文字标注需要新的绿地与标注数据源，本轮不引入，记为未改善项。",
+      "in_correction_batch": true
+    },
+    {
+      "index": 2,
+      "name_zh": "路线列表和路线卡片",
+      "reference_observed_zh": "卡片带真实照片缩略图、名次徽标（首选／备选1／备选2）、运动方式图标、标签、标题、「33 min · 2.5 km」式时长距离行，以及「PM2.5 6.1 μg/m³」式环境数值行。",
+      "ours_blind_status": "pass",
+      "ours_blind_evidence_zh": "路线列表与卡片可渲染、可点击、可选中，卡片展示距离、时长、风险与推荐理由。",
+      "gap_zh": "卡片上没有直接读出 PM2.5 等具体环境数值，只给风险等级文字；没有缩略图。",
+      "severity": "minor",
+      "gap_type": "information_hierarchy",
+      "planned_action_zh": "在卡片环境行直接写出 PM2.5 数值与单位，数据已存在于 environment.routes[route_id].exposure，不需要新数据源。照片缩略图属于成品素材，按规则不复制，改用按路线几何程序化绘制的形状缩略图。",
+      "in_correction_batch": true
+    },
+    {
+      "index": 3,
+      "name_zh": "运动、距离和偏好筛选",
+      "reference_observed_zh": "筛选行为 7 个圆角图标按钮：时间、距离、运动目标、搜索范围、路线形态、休息与补给、景观与环境。顶栏另有运动方式下拉。",
+      "ours_blind_status": "pass",
+      "ours_blind_evidence_zh": "「临水」偏好筛选把 86 张卡片收窄到 83 张，运动方式与距离档筛选均生效。",
+      "gap_zh": "成品暴露 7 个筛选维度，我们只有运动方式、距离档、偏好（滨江／公园／安静／城市风景）与环境条件。缺少时间（时段暴露）、搜索范围（半径）与休息与补给（服务 POI）三个维度。",
+      "severity": "major",
+      "gap_type": "functional",
+      "planned_action_zh": "不在本次修正内实现。时段暴露需要按小时的环境时间序列，当前 54 格 dashboard 只有一个时间戳；搜索范围需要以起点为圆心的空间过滤；休息与补给需要一套经核实的服务 POI 清单。三者都需要新数据接入，超出一次集中修正的范围，记为未改善项。",
+      "in_correction_batch": false
+    },
+    {
+      "index": 4,
+      "name_zh": "用户需求输入",
+      "reference_observed_zh": "首次进入弹出「建立健康档案」表单：年龄（18岁以下／18–39岁／40–59岁／60岁及以上／暂不填写）、性别（男／女／暂不填写）、运动经验（初学／日常运动／高频训练）、环境敏感项（空气／花粉／高温／噪声），并注明「仅保存在本机，暂不参与推荐。」，按钮为「暂时跳过」与「保存档案」。面板底部另有「补充需求（可跳过）」自由文本框，占位提示「例如：想走梧桐树多、回程方便的路线」，以及绿色主按钮「为我推荐路线」。",
+      "ours_blind_status": "pass",
+      "ours_blind_evidence_zh": "起点输入框可输入「徐家汇」并给出 2 条建议，回填坐标 121.4339, 31.1951。",
+      "gap_zh": "我们没有自由文本补充需求入口，用户只能用固定的偏好标签表达需求；也没有健康档案式的环境敏感项采集。",
+      "severity": "major",
+      "gap_type": "functional",
+      "planned_action_zh": "在推荐流程加入自由文本补充需求输入框，把输入按既有关键词映射解析为偏好标签后参与 user_preference 维度，未命中时明确说明被忽略而不是静默丢弃。健康档案涉及本机持久化与新的敏感项语义，本轮不实现，记为未改善项。文案与版式独立撰写，不复制成品用词。",
+      "in_correction_batch": true
+    },
+    {
+      "index": 5,
+      "name_zh": "推荐主路线与备选路线",
+      "reference_observed_zh": "「附近路线」下列出 3 张卡片，分别带首选／备选1／备选2 徽标，均含时长、距离与 PM2.5 数值。",
+      "ours_blind_status": "pass",
+      "ours_blind_evidence_zh": "首选 8.4 km、总分 76.0、环境 72、运动 100，另有 2 条备选。",
+      "gap_zh": "结构与名次徽标已对齐，差距只在卡片环境数值的直读性，与第 2 项同源。",
+      "severity": "minor",
+      "gap_type": "information_hierarchy",
+      "planned_action_zh": "随第 2 项一并处理：卡片直接写出 PM2.5 数值与单位。",
+      "in_correction_batch": true
+    },
+    {
+      "index": 6,
+      "name_zh": "路线详情与环境解释",
+      "reference_observed_zh": "顶栏右侧有深绿色天气与空气质量摘要卡（可见「阴 25.6°」「90%」「12」「优」并带下拉），把当前环境条件常驻在主界面上。",
+      "ours_blind_status": "fail",
+      "ours_blind_evidence_zh": "盲测详情面板可打开并显示门禁指标，但评分分解区域提示「评估模块结果缺失」，无法展示五维分解；而 54 格环境 dashboard 实际完整、各字段缺失率为 0.0。",
+      "gap_zh": "这一项的差距来自我们自己的实现缺陷，不是成品对照才发现的：评分只在推荐响应的候选集里存在，浏览流程打开任意路线时拿不到分解。另外成品把天气与空气质量摘要常驻顶栏，我们只在详情面板内展示环境。",
+      "severity": "major",
+      "gap_type": "own_defect",
+      "planned_action_zh": "在 payload 中为全部 90 条路线生成与请求无关的目录级基线评分（环境健康与路线质量两维，权重按两维重归一），运动匹配、接驳便利与用户偏好三维显式记为 unavailable 而不是代入假设值；详情面板改为优先取本次请求的候选评分，取不到时回退到目录级基线，并标注评分口径。顶栏常驻环境摘要卡不在本次修正内实现，记为未改善项。",
+      "in_correction_batch": true
+    },
+    {
+      "index": 7,
+      "name_zh": "地图和列表联动",
+      "reference_observed_zh": "",
+      "ours_blind_status": "pass",
+      "ours_blind_evidence_zh": "选中列表卡片后地图高亮同一条路线，选中态卡片恰好 1 张。",
+      "gap_zh": "",
+      "severity": "none",
+      "gap_type": "not_observed",
+      "planned_action_zh": "未在成品页上触发该项交互，不凭猜测记录差距；我们的实现盲测已通过，保持现状。",
+      "in_correction_batch": false
+    },
+    {
+      "index": 8,
+      "name_zh": "路线高亮和视野调整",
+      "reference_observed_zh": "右上角可见「图层」按钮；未观察到选中路线后的高亮与视野调整表现。",
+      "ours_blind_status": "pass",
+      "ours_blind_evidence_zh": "选中路线后 canvas 重绘为 143798 字符，其余路线弱化并按 bbox 适配视野。",
+      "gap_zh": "仅图层开关一项与第 1 项同源。",
+      "severity": "minor",
+      "gap_type": "functional",
+      "planned_action_zh": "随第 1 项的图层开关一并处理。",
+      "in_correction_batch": true
+    },
+    {
+      "index": 9,
+      "name_zh": "地点输入与起点接驳",
+      "reference_observed_zh": "顶栏中部为「搜索地点」输入框并带定位图标。",
+      "ours_blind_status": "pass",
+      "ours_blind_evidence_zh": "起点输入「徐家汇」给出 2 条建议并回填坐标，详情面板提供前往起点的接驳信息。",
+      "gap_zh": "成品把地点搜索放在顶栏中央常驻位置，视觉权重更高；我们放在侧栏筛选区。这是信息层级差异，功能等价。",
+      "severity": "minor",
+      "gap_type": "visual_hierarchy",
+      "planned_action_zh": "不调整位置。视觉方案按原创设计语言保持独立，不做逐像素复刻。",
+      "in_correction_batch": false
+    },
+    {
+      "index": 10,
+      "name_zh": "桌面信息层级",
+      "reference_observed_zh": "桌面视口下渲染出的是首次进入的健康档案弹层，背景被虚化，主界面的桌面层级未被清晰观察到。",
+      "ours_blind_status": "pass",
+      "ours_blind_evidence_zh": "1440×900 下 7 张桌面截图均无横向溢出、遮挡、空白首屏或失效按钮。",
+      "gap_zh": "",
+      "severity": "none",
+      "gap_type": "not_observed",
+      "planned_action_zh": "成品桌面主界面层级未取得清晰观察，不凭猜测记录差距。",
+      "in_correction_batch": false
+    },
+    {
+      "index": 11,
+      "name_zh": "移动端布局与操作",
+      "reference_observed_zh": "窄视口下顶栏为图形标志加运动方式下拉、中央搜索框、右侧天气空气质量卡与设置齿轮；其下为 7 个筛选按钮横排；地图占据中部；底部面板含「帮我推荐」与「浏览路线」双子标签、「附近路线」卡片区、「补充需求（可跳过）」输入框与绿色主行动按钮；右缘有滚动条。",
+      "ours_blind_status": "pass",
+      "ours_blind_evidence_zh": "500×700 下 4 张移动截图通过，底部动作条切换地图／列表／筛选／详情四视图，详情以底部抽屉展示。",
+      "gap_zh": "成品在移动端保留完整筛选横排与自由文本补充需求；我们的筛选与补充输入收在独立视图里，多一次切换。",
+      "severity": "minor",
+      "gap_type": "interaction_cost",
+      "planned_action_zh": "第 4 项的自由文本补充需求输入会同时出现在移动端推荐视图，减少一次切换。筛选横排常驻不改动，避免在 500×700 下挤压地图。",
+      "in_correction_batch": true
+    },
+    {
+      "index": 12,
+      "name_zh": "加载、空结果和失败反馈",
+      "reference_observed_zh": "",
+      "ours_blind_status": "pass",
+      "ours_blind_evidence_zh": "错误态显示「读取失败：Failed to fetch」并提供重试按钮。",
+      "gap_zh": "",
+      "severity": "none",
+      "gap_type": "not_observed",
+      "planned_action_zh": "未在成品页上构造失败场景，不凭猜测记录差距；我们的实现盲测已通过，保持现状。",
+      "in_correction_batch": false
+    }
+  ],
+  "deliberate_non_replication": [
+    {
+      "reference_element_zh": "路线卡片真实照片缩略图",
+      "reason_zh": "提示词第五节禁止复制成品图片、图标、样式、文案或布局代码，也禁止提取资源文件与图片地址。",
+      "our_substitute_zh": "按路线自身几何程序化绘制的形状缩略图，来自本次 run 的 xuhui_routes.geojson，不引入任何外部图像素材。"
+    },
+    {
+      "reference_element_zh": "图标、橄榄绿选中态、深绿天气卡等视觉样式",
+      "reason_zh": "同上，且要求形成独立视觉语言、禁止逐像素复刻。",
+      "our_substitute_zh": "沿用本次 run 自建的 styles.css 配色与组件形态，只在信息层级上对齐，不搬运样式值。"
+    },
+    {
+      "reference_element_zh": "「建立健康档案」「补充需求（可跳过）」「为我推荐路线」等界面文案",
+      "reason_zh": "禁止复制成品文案。",
+      "our_substitute_zh": "等价功能使用自行撰写的中文标签，语义对齐、用词不同。"
+    }
+  ],
+  "summary": {
+    "item_count": 12,
+    "counting_rule_zh": "gap_items 按 gap_zh 非空计数；severity_counts 按 matrix 中每项的 severity 字段计数；reference_observed_items 按 reference_observed_zh 非空计数；not_observed_items 按 gap_type == not_observed 计数。两组口径不重合，因为第 10 项确实观察到了成品首屏（健康档案弹层），但没有观察到它要评判的桌面主界面层级，所以 reference_observed_zh 非空而 gap_type 仍为 not_observed。",
+    "reference_observed_items": 10,
+    "reference_not_observed_items": 2,
+    "gap_items": 9,
+    "gap_item_indices": [1, 2, 3, 4, 5, 6, 8, 9, 11],
+    "no_gap_items": 3,
+    "no_gap_item_indices": [7, 10, 12],
+    "severity_counts": { "major": 4, "minor": 5, "none": 3 },
+    "severity_major_indices": [1, 3, 4, 6],
+    "severity_minor_indices": [2, 5, 8, 9, 11],
+    "not_observed_indices": [7, 10, 12],
+    "planned_in_correction_batch": [1, 2, 4, 5, 6, 8, 11],
+    "not_in_correction_batch": [3, 7, 9, 10, 12],
+    "deferred_gap_items": [3, 9],
+    "deferred_reason_zh": "第 3 项缺少的时间、搜索范围与休息补给三个筛选维度需要新的数据接入，第 9 项只是地点搜索框的摆放位置差异且功能等价，两者都不在一次集中修正的范围内。第 7、10、12 项没有记录差距，因此不属于被推迟的差距项。",
+    "own_defect_items": [6],
+    "ours_blind_pass_count_before_reference": 11,
+    "ours_blind_fail_items_before_reference": [6],
+    "meets_eight_of_twelve_before_correction": true,
+    "coverage_estimate_zh": "盲测口径下 11/12 项已达同等级可用状态，约 91.7%，高于 66.7% 的门槛。成品对照后新识别出的差距共 9 项，其中 4 项 major（地图底图信息量、筛选维度数量、自由文本需求输入、详情五维评分分解）、5 项 minor（卡片环境数值直读、备选卡片同源问题、图层开关、地点搜索位置、移动端多一次切换）。major 项里的第 6 项属于我们自己的实现缺陷而非成品对照才发现，已在本次修正中修好。"
+  },
+  "correction_batch_scope_decision_zh": "本次集中修正同时处理三类问题：一是盲测自身失败的强制门禁（90 条路线组合门禁与第 6 项五维评分分解），二是成品对照中可用现有数据低风险补齐的可见差距（第 1／2／4／5／8／11 项），三是明确记录不做的部分（第 3 项三个筛选维度需要新数据源，第 6 项顶栏常驻环境摘要卡，第 9 项位置调整，以及全部素材与文案的非复制决定）。所有改动合并为一个 correction_batch，修正期间不再第二次读取成品页面。"
+}

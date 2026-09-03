@@ -1,0 +1,171 @@
+{
+  "workflow_id": "full-research",
+  "version": "1.0.0",
+  "description": "完整研究工作流：从研究目标到科学计划与网页发布的全闭环",
+  "stages": [
+    {
+      "name": "goal",
+      "description": "解析并验证研究目标，生成结构化研究问题",
+      "input_schema": "schemas/research-goal.schema.json",
+      "output_schema": "schemas/goal-output.schema.json",
+      "gate": {
+        "type": "required_fields",
+        "fields": ["question", "domain", "constraints"],
+        "on_failure": "abort"
+      },
+      "retry": {
+        "max_attempts": 1,
+        "on_failure": "mark_retryable"
+      }
+    },
+    {
+      "name": "evidence",
+      "description": "收集与整理证据，生成证据卡与来源记录",
+      "input_schema": "schemas/goal-output.schema.json",
+      "output_schema": "schemas/evidence-output.schema.json",
+      "gate": {
+        "type": "required_fields",
+        "fields": ["evidence_cards", "source_count"],
+        "on_failure": "abort"
+      },
+      "retry": {
+        "max_attempts": 1,
+        "on_failure": "mark_retryable"
+      }
+    },
+    {
+      "name": "hypothesis",
+      "description": "基于证据生成可检验假设，标记支持状态",
+      "input_schema": "schemas/evidence-output.schema.json",
+      "output_schema": "schemas/hypothesis-output.schema.json",
+      "gate": {
+        "type": "required_fields",
+        "fields": ["hypothesis_id", "statement", "testable"],
+        "on_failure": "abort"
+      },
+      "retry": {
+        "max_attempts": 1,
+        "on_failure": "mark_retryable"
+      }
+    },
+    {
+      "name": "experiment",
+      "description": "执行实验矩阵：基线对比、权重扰动、指标计算",
+      "input_schema": "schemas/hypothesis-output.schema.json",
+      "output_schema": "schemas/experiment-output.schema.json",
+      "gate": {
+        "type": "composite",
+        "conditions": [
+          {
+            "type": "required_fields",
+            "fields": ["experiment_results", "metrics_summary"]
+          },
+          {
+            "type": "hash_consistency",
+            "description": "数据文件哈希与冻结快照一致"
+          },
+          {
+            "type": "constraint_invariant",
+            "description": "权重扰动前后硬约束通过率一致"
+          }
+        ],
+        "on_failure": "abort"
+      },
+      "retry": {
+        "max_attempts": 1,
+        "on_failure": "mark_retryable"
+      },
+      "stop_conditions": [
+        {
+          "condition": "candidate_count_below_minimum",
+          "threshold": 5,
+          "action": "stop_and_report"
+        },
+        {
+          "condition": "environment_status_error",
+          "action": "stop_dimension_perturbation"
+        },
+        {
+          "condition": "constraint_pass_rate_changed",
+          "action": "stop_and_investigate"
+        },
+        {
+          "condition": "missing_dimension_scores",
+          "action": "stop_and_report_contract_violation"
+        },
+        {
+          "condition": "jaccard_below_threshold_exceeds_limit",
+          "threshold": 0.6,
+          "max_dimensions": 2,
+          "action": "falsify_and_report"
+        },
+        {
+          "condition": "data_hash_mismatch",
+          "action": "stop_and_report"
+        }
+      ]
+    },
+    {
+      "name": "analysis",
+      "description": "汇总实验结果，判定假设支持状态，生成科学计划",
+      "input_schema": "schemas/experiment-output.schema.json",
+      "output_schema": "schemas/analysis-output.schema.json",
+      "gate": {
+        "type": "composite",
+        "conditions": [
+          {
+            "type": "required_fields",
+            "fields": ["support_status", "scientific_plan", "negative_results_reported"]
+          },
+          {
+            "type": "support_status_enum",
+            "allowed_values": ["supported", "partially_supported", "unsupported", "inconclusive"]
+          }
+        ],
+        "on_failure": "abort"
+      },
+      "retry": {
+        "max_attempts": 1,
+        "on_failure": "mark_retryable"
+      }
+    },
+    {
+      "name": "publish",
+      "description": "生成网页发布 payload 与研究报告",
+      "input_schema": "schemas/analysis-output.schema.json",
+      "output_schema": "schemas/publish-output.schema.json",
+      "gate": {
+        "type": "composite",
+        "conditions": [
+          {
+            "type": "required_fields",
+            "fields": ["web_payload", "report_paths"]
+          },
+          {
+            "type": "sanitization",
+            "description": "不含绝对路径、Key、内部日志"
+          },
+          {
+            "type": "route_id_exists",
+            "description": "selected_route.route_id 存在于 route_catalog.json"
+          }
+        ],
+        "on_failure": "abort"
+      },
+      "retry": {
+        "max_attempts": 1,
+        "on_failure": "mark_retryable"
+      }
+    }
+  ],
+  "recovery": {
+    "strategy": "resume_from_last_success",
+    "skip_if_input_hash_unchanged": true,
+    "atomic_write": true
+  },
+  "permissions": {
+    "default_network": false,
+    "default_module_write": false,
+    "publish_web_requires_flag": true
+  }
+}

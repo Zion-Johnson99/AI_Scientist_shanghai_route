@@ -1,0 +1,296 @@
+{
+  "schema": "ExperimentPlan",
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "generated_at": "2026-09-02T13:16:11Z",
+  "hypothesis_id": "H1",
+  "secondary_hypothesis_ids": [
+    "H2",
+    "H3",
+    "H4"
+  ],
+  "detour_limit": 0.2,
+  "target_distance_tolerance": 0.15,
+  "profiles": [
+    {
+      "profile_id": "p01_walk_balanced",
+      "mode": "walk",
+      "label": "步行 · 均衡",
+      "bands_km": [
+        [
+          0.5,
+          2.0
+        ],
+        [
+          2.0,
+          3.5
+        ],
+        [
+          3.5,
+          5.0
+        ]
+      ],
+      "routes_per_band": 10,
+      "target_loops": 15,
+      "accepted_loop_range": [
+        14,
+        16
+      ],
+      "speed_kmh": 4.8,
+      "waypoint_offset_m": 50,
+      "preferred_edges": [
+        "footway",
+        "path",
+        "pedestrian",
+        "living_street",
+        "residential",
+        "cycleway",
+        "track"
+      ],
+      "discouraged_edges": [
+        "motorway",
+        "trunk",
+        "primary"
+      ]
+    },
+    {
+      "profile_id": "p02_run_balanced",
+      "mode": "run",
+      "label": "跑步 · 均衡",
+      "bands_km": [
+        [
+          1.0,
+          5.0
+        ],
+        [
+          5.0,
+          10.0
+        ],
+        [
+          10.0,
+          15.0
+        ]
+      ],
+      "routes_per_band": 10,
+      "target_loops": 15,
+      "accepted_loop_range": [
+        14,
+        16
+      ],
+      "speed_kmh": 9.6,
+      "waypoint_offset_m": 50,
+      "preferred_edges": [
+        "cycleway",
+        "footway",
+        "path",
+        "residential",
+        "living_street",
+        "track"
+      ],
+      "discouraged_edges": [
+        "motorway",
+        "trunk",
+        "primary",
+        "steps"
+      ]
+    },
+    {
+      "profile_id": "p03_bike_balanced",
+      "mode": "bike",
+      "label": "骑行 · 均衡",
+      "bands_km": [
+        [
+          5.0,
+          10.0
+        ],
+        [
+          10.0,
+          20.0
+        ],
+        [
+          20.0,
+          30.0
+        ]
+      ],
+      "routes_per_band": 10,
+      "target_loops": 15,
+      "accepted_loop_range": [
+        14,
+        16
+      ],
+      "speed_kmh": 16.0,
+      "waypoint_offset_m": 100,
+      "preferred_edges": [
+        "cycleway",
+        "residential",
+        "tertiary",
+        "secondary",
+        "unclassified",
+        "living_street"
+      ],
+      "discouraged_edges": [
+        "footway",
+        "path",
+        "steps",
+        "pedestrian",
+        "motorway"
+      ]
+    }
+  ],
+  "baselines": [
+    {
+      "baseline_id": "B0",
+      "name": "shortest_path",
+      "definition": "Minimum-length route in the same OSM graph for the same start/end and target distance, ignoring every environment and preference term.",
+      "role": "primary comparison for detour and environment win rate"
+    },
+    {
+      "baseline_id": "B1",
+      "name": "first_candidate",
+      "definition": "The first geometrically valid candidate emitted by the generator before ranking.",
+      "role": "isolates the contribution of the ranking step"
+    },
+    {
+      "baseline_id": "B2",
+      "name": "random_candidate",
+      "definition": "A candidate drawn with random.Random(1234) from the valid pool.",
+      "role": "sanity floor"
+    },
+    {
+      "baseline_id": "B3",
+      "name": "environment_only",
+      "definition": "Ranking on the environment proxy alone, with preference and access weights set to zero.",
+      "role": "ablation of the preference and access dimensions"
+    },
+    {
+      "baseline_id": "M1",
+      "name": "round1_reported",
+      "definition": "The round-1 reported values (detour_pass_rate 0.00, environment_win_rate 0.00, preference_win_rate 0.50, constraint_pass_rate 0.00, fatal_data_errors 1, no_candidate 18/45).",
+      "role": "historical reference; read from allowed round-1 diagnostics only, never re-executed"
+    }
+  ],
+  "variants": [
+    {
+      "variant_id": "V0",
+      "name": "contract_default",
+      "changes": "Weights exactly as declared in the scorer; nothing else.",
+      "is_default": true
+    },
+    {
+      "variant_id": "V1",
+      "name": "environment_heavy",
+      "changes": "Environment dimension weight raised, preference lowered; tests whether the ranking is dominated by one term."
+    },
+    {
+      "variant_id": "V2",
+      "name": "preference_heavy",
+      "changes": "Preference dimension weight raised; tests sensitivity to the user profile input."
+    }
+  ],
+  "metrics": [
+    {
+      "metric_id": "M_detour_pass_rate",
+      "definition": "fraction of cells where selected route length <= shortest * (1 + detour_limit)",
+      "threshold": ">= 0.90",
+      "evidence_class": "deterministic_computation"
+    },
+    {
+      "metric_id": "M_env_win_rate",
+      "definition": "fraction of cells where the selected route's environment proxy score beats B0",
+      "threshold": ">= 0.60",
+      "evidence_class": "deterministic_computation"
+    },
+    {
+      "metric_id": "M_pref_win_rate",
+      "definition": "fraction of cells where the selected route beats B0 on the preference dimension",
+      "threshold": ">= 0.60",
+      "evidence_class": "deterministic_computation"
+    },
+    {
+      "metric_id": "M_constraint_pass_rate",
+      "definition": "fraction of selected routes whose actual distance is within target_distance_tolerance of the band midpoint",
+      "threshold": "= 1.00",
+      "evidence_class": "deterministic_computation"
+    },
+    {
+      "metric_id": "M_reference_verification_rate",
+      "definition": "fraction of routes whose geometry, endpoints and distance were re-verified by the independent gate script",
+      "threshold": "= 1.00",
+      "evidence_class": "deterministic_computation"
+    },
+    {
+      "metric_id": "M_fatal_data_errors",
+      "definition": "count of contract violations (unit, CRS, ID set, status, missing-value) found by the environment contract check",
+      "threshold": "= 0",
+      "evidence_class": "deterministic_computation"
+    },
+    {
+      "metric_id": "M_in_district_ratio",
+      "definition": "share of each route's length inside the declared Xuhui boundary",
+      "threshold": ">= 0.90",
+      "evidence_class": "deterministic_computation"
+    },
+    {
+      "metric_id": "M_road_snapping",
+      "definition": "share of route vertices lying on an OSM highway way",
+      "threshold": "= 1.00 (satisfied_by_construction)",
+      "evidence_class": "deterministic_computation"
+    },
+    {
+      "metric_id": "M_product_matrix_pass",
+      "definition": "count of the 12 visible product-matrix items passing browser acceptance",
+      "threshold": ">= 8",
+      "evidence_class": "qoder_judgement"
+    }
+  ],
+  "module_operations": [
+    "build_road_graph: OSM highway ways -> undirected weighted graph with snapped node keys",
+    "generate_candidates: per profile, per band, cycle search (strict_loop) and path search (one_way)",
+    "filter_geometry: apply every hard geometry gate from EV-004",
+    "attribute_area: assign each route to one or more of the 8 mandated coverage areas",
+    "dedupe: reject identical, reverse-identical and >= 90% overlapping same-mode pairs",
+    "build_environment_grid: 54 cells over the district bbox, declared units and status",
+    "join_exposure: route x grid contract join on ID/unit/time/status/missing-value",
+    "score_and_rank: deterministic five-dimension scorer, fixed weights, seed 1234",
+    "compare_baselines: B0-B3 plus M1 reference table",
+    "export_web_payload: route_catalog.json + route GeoJSON + research payload for the local product"
+  ],
+  "acceptance_criteria": [
+    "90 routes, 30 per mode, 10 per band, all validation_status = accepted, needs_review = 0",
+    "14-16 strict_loop per mode with cycle rank 1 and degree-2 nodes; no false_loop_topology",
+    "in-district ratio >= 0.90 for every route",
+    "repeated undirected edges <= 2% cumulative, < 30 m single edge; zero self-intersection and zero branch",
+    "one_way endpoint distance > 200 m; strict_loop endpoint distance <= 30 m",
+    "actual vs target distance error <= 15%; one_way circuity <= 2.5",
+    "no duplicate or reverse-duplicate pair inside a mode",
+    "each of the 8 mandated areas covered by >= 1 route",
+    "54 environment cells with zero unit/CRS/status/ID contract violations and per-field missing rate <= 10%",
+    "detour_pass_rate >= 0.90, environment_win_rate >= 0.60, preference_win_rate >= 0.60, fatal_data_errors = 0",
+    "pytest, Ruff, Pyright and the Node contract suite all clean; evaluation API local health check passes",
+    "browser acceptance reports non-empty desktop and 500x700 mobile results with >= 8 of 12 matrix items passing"
+  ],
+  "stop_conditions": [
+    {
+      "condition": "Overpass mirrors return 429/504/502 clusters after 5 attempts per layer",
+      "action": "stop acquisition, record attempted_unavailable in the source registry, continue with whatever was cached"
+    },
+    {
+      "condition": "A distance band cannot be filled with 10 clean routes after the full candidate search",
+      "action": "leave the shortfall as needs_review and report failed_quality_gate; do not pad with a false loop"
+    },
+    {
+      "condition": "A route passes every numeric gate but is visually confusing (double loop, dumbbell, gourd, long stem, local retrace)",
+      "action": "keep it needs_review; visual inspection overrides the metrics"
+    },
+    {
+      "condition": "Any environment contract violation appears",
+      "action": "fix the contract declaration, not the threshold"
+    },
+    {
+      "condition": "Credits exhaustion, a real permission denial, or an unrecoverable environment fault",
+      "action": "freeze the run, write the partial manifest, set status implementation_complete_unverified"
+    }
+  ],
+  "seed": 1234,
+  "bootstrap_confidence": 0.95,
+  "notes": "M1 (round1_reported) is a reference row built only from the round-1 diagnostics listed in the run prompt's allowed-read section. No round-1 generated source or product file was opened."
+}

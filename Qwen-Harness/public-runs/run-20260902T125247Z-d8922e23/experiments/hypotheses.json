@@ -1,0 +1,99 @@
+{
+  "schema": "HypothesisSet",
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "generated_at": "2026-09-02T13:16:11Z",
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "statement": "Generating every route as a path or simple cycle in an OSM-derived road graph, then filtering with the contract's topology gates, yields 90 routes that pass all geometry, portfolio and in-district gates with road_snapping = 1.00 and zero false_loop_topology flags.",
+      "type": "engineering_existence",
+      "falsifiable": true,
+      "falsification_test": "Run the spatial gate script over the exported 90 routes; any single failed gate falsifies H1.",
+      "predicted_metrics": {
+        "route_count": 90,
+        "accepted": 90,
+        "needs_review": 0,
+        "road_snapping_rate": 1.0,
+        "false_loop_topology_count": 0,
+        "in_district_ratio_min": 0.9
+      },
+      "evidence_class": "qoder_judgement",
+      "prior_support": [
+        "EV-002",
+        "EV-004"
+      ],
+      "risks": [
+        "OSM way density in Xuhui may not admit 10 clean routes in every distance band, especially the 20-30 km bike band.",
+        "A graph cycle search can return double-loop or dumbbell cycles; the cycle-rank-1 and degree-2 filter is what rejects them, and rejection may exhaust the candidate pool."
+      ]
+    },
+    {
+      "hypothesis_id": "H2",
+      "statement": "A single declared unit/CRS/status contract, machine-checked before scoring, removes the class of failures that produced 270 unit-mismatch warnings and environment_interface 0/10 in round 1.",
+      "type": "process_improvement",
+      "falsifiable": true,
+      "falsification_test": "The environment contract check must report unit_mismatch_count = 0 and grid/route ID set equality; any mismatch falsifies H2.",
+      "predicted_metrics": {
+        "environment_grid_cells": 54,
+        "unit_mismatch_count": 0,
+        "id_set_symmetric_difference": 0,
+        "missing_value_rate_max": 0.1
+      },
+      "evidence_class": "qoder_judgement",
+      "prior_support": [
+        "EV-005"
+      ],
+      "risks": [
+        "Declaring the contract is cheap; the risk is that the web layer re-derives units and drifts again. The contract file must be the single import point."
+      ]
+    },
+    {
+      "hypothesis_id": "H3",
+      "statement": "A deterministic five-dimension scorer with fixed weights and a fixed seed produces environment_win_rate >= 0.60 and detour_pass_rate >= 0.90 against the shortest-path baseline over the same candidate pool.",
+      "type": "quantitative_effect",
+      "falsifiable": true,
+      "falsification_test": "Run the baseline comparison over all mode x band cells; win rates below the thresholds falsify H3.",
+      "predicted_metrics": {
+        "detour_pass_rate_min": 0.9,
+        "environment_win_rate_min": 0.6,
+        "preference_win_rate_min": 0.6,
+        "fatal_data_errors_max": 0
+      },
+      "evidence_class": "qoder_judgement",
+      "prior_support": [
+        "EV-003",
+        "EV-005"
+      ],
+      "risks": [
+        "Round 1 measured detour_pass_rate = 0.00 and environment_win_rate = 0.00, so this is the hypothesis most likely to fail.",
+        "Because the environment score is an ordinal proxy (GAP-001), a win means 'better proxy score', not 'healthier'. The claim must be worded accordingly.",
+        "A pool with 18/45 no_candidate cells cannot produce a win rate at all; candidate coverage must be fixed first (H1 is a precondition of H3)."
+      ]
+    },
+    {
+      "hypothesis_id": "H4",
+      "statement": "A locally served single-page product with stable data-testid anchors and an original visual language passes desktop and 500x700 mobile browser acceptance on all 12 product-matrix items that are testable offline.",
+      "type": "product_acceptance",
+      "falsifiable": true,
+      "falsification_test": "Browser acceptance must record a non-empty per-viewport result and >= 8 of 12 matrix items passed; empty viewports or < 8 passes falsify H4.",
+      "predicted_metrics": {
+        "viewports_reported": [
+          "desktop",
+          "mobile_500x700"
+        ],
+        "product_matrix_pass_min": 8,
+        "console_errors_max": 0,
+        "horizontal_overflow": false
+      },
+      "evidence_class": "qoder_judgement",
+      "prior_support": [
+        "EV-005"
+      ],
+      "risks": [
+        "Round 1 failed with viewports={} and a missing route-card anchor; the mitigation is to make the anchors part of the contract test, not an afterthought."
+      ]
+    }
+  ],
+  "recommended_hypothesis_id": "H1",
+  "selection_rationale": "H1 is selected as the primary hypothesis because H3 and H4 are both conditionally dependent on it: without a 90-route accepted portfolio there is no candidate pool to score (H3) and nothing for the product to display (H4). H2 is a process hypothesis that can be verified in parallel at negligible cost. H1 is also the only hypothesis whose falsification test is fully offline, deterministic and cheap to re-run, which matters because this run may not call any paid model. If H1 fails, the correct outcome is a recorded failed_quality_gate, not a silent rewrite."
+}

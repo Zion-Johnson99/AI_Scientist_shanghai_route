@@ -1,0 +1,14 @@
+{
+  "case_id": "P08_run_scenery",
+  "route_mode": "run",
+  "goal": "scenery",
+  "target_distance_m": 5000,
+  "sensitivities": [
+    "pm25"
+  ],
+  "interests": [
+    "waterside",
+    "quiet"
+  ],
+  "notes": "跑步景观画像，空气敏感与滨水安静偏好"
+}

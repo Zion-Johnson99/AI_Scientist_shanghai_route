@@ -1,0 +1,282 @@
+{
+  "hypothesis_id": "hyp-001",
+  "profiles": [
+    {
+      "case_id": "P01_walk_balanced",
+      "route_mode": "walk",
+      "goal": "balanced",
+      "target_distance_m": 3000,
+      "sensitivities": [],
+      "interests": [],
+      "notes": "步行平衡画像，无敏感项与偏好项，作为权重扰动稳健性的中性参照"
+    },
+    {
+      "case_id": "P02_run_balanced",
+      "route_mode": "run",
+      "goal": "balanced",
+      "target_distance_m": 5000,
+      "sensitivities": [],
+      "interests": [],
+      "notes": "跑步平衡画像，无敏感项与偏好项"
+    },
+    {
+      "case_id": "P03_bike_balanced",
+      "route_mode": "bike",
+      "goal": "balanced",
+      "target_distance_m": 8000,
+      "sensitivities": [],
+      "interests": [],
+      "notes": "骑行平衡画像，无敏感项与偏好项"
+    },
+    {
+      "case_id": "P04_walk_health_environment",
+      "route_mode": "walk",
+      "goal": "health_environment",
+      "target_distance_m": 3000,
+      "sensitivities": [
+        "pm25",
+        "pollen",
+        "noise"
+      ],
+      "interests": [
+        "waterside",
+        "park"
+      ],
+      "notes": "步行健康环境画像，三项敏感（空气/花粉/噪声）与滨水公园偏好，检验敏感项权重扰动影响"
+    },
+    {
+      "case_id": "P05_run_health_environment",
+      "route_mode": "run",
+      "goal": "health_environment",
+      "target_distance_m": 5000,
+      "sensitivities": [
+        "pm25",
+        "noise"
+      ],
+      "interests": [
+        "quiet",
+        "park"
+      ],
+      "notes": "跑步健康环境画像，空气与噪声敏感、安静与公园偏好"
+    },
+    {
+      "case_id": "P06_bike_nearby",
+      "route_mode": "bike",
+      "goal": "nearby",
+      "target_distance_m": 8000,
+      "sensitivities": [],
+      "interests": [
+        "convenience",
+        "toilet"
+      ],
+      "notes": "骑行就近画像，便利设施与厕所偏好，检验 access_convenience 维度权重扰动"
+    },
+    {
+      "case_id": "P07_walk_scenery",
+      "route_mode": "walk",
+      "goal": "scenery",
+      "target_distance_m": 3000,
+      "sensitivities": [
+        "pollen"
+      ],
+      "interests": [
+        "waterside",
+        "park",
+        "quiet"
+      ],
+      "notes": "步行景观画像，花粉敏感与滨水公园安静偏好，检验 interest_service 维度权重扰动"
+    },
+    {
+      "case_id": "P08_run_scenery",
+      "route_mode": "run",
+      "goal": "scenery",
+      "target_distance_m": 5000,
+      "sensitivities": [
+        "pm25"
+      ],
+      "interests": [
+        "waterside",
+        "quiet"
+      ],
+      "notes": "跑步景观画像，空气敏感与滨水安静偏好"
+    },
+    {
+      "case_id": "P09_bike_health_environment",
+      "route_mode": "bike",
+      "goal": "health_environment",
+      "target_distance_m": 8000,
+      "sensitivities": [
+        "pm25",
+        "pollen",
+        "noise"
+      ],
+      "interests": [
+        "park",
+        "convenience"
+      ],
+      "notes": "骑行健康环境画像，三项敏感与公园便利偏好，覆盖骑行模式下环境维度极端情形"
+    }
+  ],
+  "baselines": [
+    {
+      "baseline_id": "B0_shortest_feasible",
+      "name": "最短可行基线",
+      "selection_rule": "在可行候选中最小化目标距离偏差，其次最小化接驳距离，再按 route_id 字典序；不使用环境、兴趣或个性化信息。",
+      "required_fields": [
+        "route.distance_m",
+        "access_distance_m",
+        "profile.target_distance_m"
+      ]
+    },
+    {
+      "baseline_id": "B1_pm25_only",
+      "name": "单一 PM2.5 基线",
+      "selection_rule": "在目标距离偏差门禁内最小化 PM2.5 浓度（网格/站点融合估计值）；PM2.5 缺失的候选不参与选择，全部缺失时回退 B0 规则并记录降级。",
+      "required_fields": [
+        "environment_summary.pm2_5.value",
+        "route.distance_m",
+        "profile.target_distance_m"
+      ]
+    },
+    {
+      "baseline_id": "B3_non_personalized",
+      "name": "默认权重非个性化基线",
+      "selection_rule": "使用评价模块默认平衡权重，不提升敏感项与兴趣项；按 route_quality、sport_match、data_confidence 依次降序选择并以 route_id 字典序决出平局。候选文件必须由默认平衡权重生成（记录 weights_sha256）；若检测到权重被个性化覆盖，按契约违规上报。",
+      "required_fields": [
+        "dimension_scores.route_quality",
+        "dimension_scores.sport_match",
+        "data_confidence"
+      ]
+    }
+  ],
+  "variants": [
+    "B0_shortest_feasible",
+    "B1_pm25_only",
+    "B2_multi_environment",
+    "B3_non_personalized",
+    "M1_personalized_constrained"
+  ],
+  "metrics": [
+    {
+      "metric_id": "jaccard_top5",
+      "name": "前 5 名路线集合 Jaccard 相似度",
+      "direction": "higher",
+      "formula": "J(A,B) = |A ∩ B| / |A ∪ B|，其中 A 为基准权重下某运动类型前 5 名路线 ID 集合，B 为单维度权重 ±30% 扰动后同运动类型前 5 名路线 ID 集合；对每个画像、每个被扰动维度、每个扰动方向（+30%、−30%）分别计算，报告最小值与中位数",
+      "primary": true,
+      "data_source": "evaluation.score_candidates 输出的候选排序列表（基准权重与扰动权重各运行一次），路线 ID 来自 route.read_snapshot 快照"
+    },
+    {
+      "metric_id": "spearman_rank_all90",
+      "name": "全部 90 条路线 Spearman 秩相关系数",
+      "direction": "higher",
+      "formula": "ρ = 1 − 6Σd_i² / (n(n²−1))，其中 d_i 为基准权重与扰动权重下第 i 条路线的排名差，n 为该运动类型可行候选数（≤30）；对每个画像、每个被扰动维度、每个扰动方向分别计算",
+      "primary": false,
+      "data_source": "evaluation.score_candidates 输出的候选排序列表"
+    },
+    {
+      "metric_id": "dimension_variance",
+      "name": "被扰动维度在候选集内的方差",
+      "direction": "target",
+      "formula": "Var(x_dim) = Σ(x_i − x̄)² / (n−1)，x_i 为第 i 条可行候选在该维度的归一化分值；用于解释排序翻转与维度方差的关系（调节变量）",
+      "primary": false,
+      "data_source": "evaluation.score_candidates 输出的维度分（dimension_scores）"
+    },
+    {
+      "metric_id": "constraint_pass_rate",
+      "name": "硬约束通过率",
+      "direction": "higher",
+      "formula": "通过硬约束的候选数 / 该运动类型全部候选数；权重扰动不应改变硬约束过滤结果，若扰动前后通过率不一致则标记异常",
+      "primary": false,
+      "data_source": "evaluation.score_candidates 输出的候选计数与约束状态"
+    },
+    {
+      "metric_id": "candidate_count",
+      "name": "可行候选数",
+      "direction": "target",
+      "formula": "该画像与运动类型下通过硬约束与距离门禁的候选路线数；用于判断样本是否足以计算前 5 名集合（需 ≥5）",
+      "primary": false,
+      "data_source": "evaluation.score_candidates 输出的 candidate_count"
+    }
+  ],
+  "detour_limit": 0.2,
+  "target_distance_tolerance": 0.15,
+  "module_operations": [
+    {
+      "operation_id": "route.read_snapshot",
+      "module": "route",
+      "parameters": {
+        "scope": "route_catalog.json + xuhui_routes.geojson",
+        "expected_route_count": 90,
+        "mode_distribution": {
+          "walk": 30,
+          "run": 30,
+          "bike": 30
+        },
+        "record_sha256": true
+      },
+      "reason": "冻结 90 条路线快照作为实验候选池，记录数据哈希确保可复现"
+    },
+    {
+      "operation_id": "environment.read_snapshot",
+      "module": "environment",
+      "parameters": {
+        "scope": "environment_dashboard.json",
+        "required_layers": [
+          "current",
+          "grids",
+          "routes"
+        ],
+        "record_sha256": true,
+        "record_status_fields": [
+          "status",
+          "estimated",
+          "confidence",
+          "business_time",
+          "valid_until"
+        ]
+      },
+      "reason": "冻结环境快照（PM2.5、花粉、噪声代理），记录数据语义字段与哈希；缺失或 stale 数据如实标记，不创建填充值"
+    },
+    {
+      "operation_id": "evaluation.score_candidates",
+      "module": "evaluation",
+      "parameters": {
+        "profiles": "9 个固定画像（P01–P09）",
+        "weight_scenarios": "基准权重 1 次 + 5 维度 × 2 方向（+30%、−30%）= 11 组权重配置",
+        "total_runs_per_profile": 11,
+        "record_weights_sha256": true,
+        "output": "全部通过硬约束的候选及维度分，不调用 Qwen，不改变 recommend"
+      },
+      "reason": "对每个画像在基准权重与 10 组单维度扰动权重下分别导出全部可行候选排序，作为 Jaccard 与 Spearman 计算的输入"
+    },
+    {
+      "operation_id": "web.export_payload",
+      "module": "web",
+      "parameters": {
+        "content": "实验结果摘要（原始指标、维度分、统计摘要、支持状态）",
+        "no_write_to_module_data": true
+      },
+      "reason": "将实验结果导出为可审计的交付载荷，不写入模块数据"
+    }
+  ],
+  "acceptance_criteria": [
+    "对全部 9 个画像 × 3 种运动类型 × 5 个被扰动维度 × 2 个扰动方向（+30%、−30%），前 5 名路线集合 Jaccard 相似度均 ≥ 0.6，则假设获得支持",
+    "对全部组合，可行候选的 Spearman 秩相关系数均 ≥ 0.85",
+    "5 个维度中至多 2 个维度的 ±30% 扰动导致任一运动类型 Jaccard < 0.6；超过 2 个则假设被证伪",
+    "权重扰动前后硬约束通过率一致（constraint_pass_rate 差异为 0），否则标记异常并排查",
+    "每个画像每个运动类型的可行候选数 ≥ 5，否则该组合标记为样本不足、不参与 Jaccard 计算并如实报告",
+    "综合效用（base_score）不作为唯一验证指标；Jaccard 与 Spearman 为独立排序指标",
+    "环境数据缺失或标记为 stale/estimated 的候选在报告中如实标注，不隐藏",
+    "全部权重配置记录 weights_sha256，基准与扰动权重的 before/after 完整记录",
+    "负结果（任一维度扰动导致 Jaccard < 0.6 或 Spearman < 0.85）如实报告，不省略"
+  ],
+  "stop_conditions": [
+    "任一画像在基准权重下可行候选数 < 5，无法构成前 5 名集合，该组合停止并报告",
+    "环境快照 status 为 error 或 no_data 且无 last-known-good 回退，环境维度分不可用，停止该维度扰动并记录",
+    "权重扰动后硬约束通过率发生变化，表明扰动影响了约束逻辑而非排序，停止并排查模块行为",
+    "evaluation.score_candidates 输出缺少任一维度分（environment_health、sport_match、access_convenience、route_quality、interest_service），停止并报告数据契约违规",
+    "5 个维度中超过 2 个维度的扰动导致 Jaccard < 0.6，假设被证伪，停止后续扰动并进入负结果报告",
+    "数据文件哈希与冻结快照不一致，表明数据在运行期被修改，停止实验并上报",
+    "预设画像案例被解释为独立人群样本或外推临床结论"
+  ]
+}

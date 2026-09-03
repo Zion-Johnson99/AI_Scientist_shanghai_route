@@ -1,0 +1,28 @@
+{
+  "handler": "qwen_harness.agents.critic_agent:stage_handler",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 119015.6,
+  "status": "passed",
+  "summary": "评审完成：5 个候选，冲突 4 项",
+  "artifacts": [
+    "stages/hypothesis_critique/model_call.json"
+  ],
+  "offline": false,
+  "audited_at": "2026-09-02T04:08:01.001144+00:00",
+  "model_audit": {
+    "stage": "hypothesis_critique",
+    "model": "qwen3.8-max",
+    "created_at": "2026-09-02T04:08:00.993705Z",
+    "request_id": "chatcmpl-7a73225c-9073-9466-9909-7a36811819af",
+    "latency_ms": 119001.6,
+    "input_tokens": 12106,
+    "output_tokens": 5058,
+    "prompt_version": "c05ecf4b9f25",
+    "reasoning_effort": "medium",
+    "skill_hashes": {
+      "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254"
+    },
+    "error_type": null
+  }
+}

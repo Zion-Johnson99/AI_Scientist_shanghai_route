@@ -1,0 +1,116 @@
+{
+  "check": "route_spatial_quality",
+  "checked_at": "2026-09-03T07:56:51Z",
+  "rule": "90 条路线的空间与组合门禁，全部指标从已发布的 GeoJSON 几何重新推导",
+  "method": "recompute_from_shipped_geometry",
+  "artifacts": {
+    "route_catalog": "workspace/source/xuhui_route_builder/data/web/route_catalog.json",
+    "routes_geojson": "workspace/source/xuhui_route_builder/data/web/xuhui_routes.geojson",
+    "boundary": "sources/xuhui_boundary.geojson"
+  },
+  "thresholds": {
+    "expected_total": 90,
+    "routes_per_mode": 30,
+    "routes_per_band": 10,
+    "loop_count_range": [
+      14,
+      16
+    ],
+    "in_district_min_ratio": 0.9,
+    "road_snap_min_ratio": 0.98,
+    "same_mode_overlap_max": 0.9,
+    "bands_km": {
+      "walk": [
+        [
+          0.5,
+          2.0
+        ],
+        [
+          2.0,
+          3.5
+        ],
+        [
+          3.5,
+          5.0
+        ]
+      ],
+      "run": [
+        [
+          1.0,
+          5.0
+        ],
+        [
+          5.0,
+          10.0
+        ],
+        [
+          10.0,
+          15.0
+        ]
+      ],
+      "bike": [
+        [
+          5.0,
+          10.0
+        ],
+        [
+          10.0,
+          20.0
+        ],
+        [
+          20.0,
+          30.0
+        ]
+      ]
+    },
+    "catalog_agreement_tolerance": 0.02
+  },
+  "passed": true,
+  "route_count": 90,
+  "counts_by_mode": {
+    "walk": 30,
+    "run": 30,
+    "bike": 30
+  },
+  "counts_by_band": {
+    "walk:band0": 10,
+    "walk:band1": 10,
+    "walk:band2": 10,
+    "run:band0": 10,
+    "run:band1": 10,
+    "run:band2": 10,
+    "bike:band0": 10,
+    "bike:band1": 10,
+    "bike:band2": 10
+  },
+  "counts_by_kind": {
+    "walk:strict_loop": 15,
+    "walk:one_way": 15,
+    "run:strict_loop": 15,
+    "run:one_way": 15,
+    "bike:strict_loop": 15,
+    "bike:one_way": 15
+  },
+  "counts_by_status": {
+    "accepted": 90
+  },
+  "area_coverage": {
+    "west_bund": 8,
+    "longhua": 23,
+    "xujiahui": 4,
+    "hengfu": 18,
+    "shanghai_botanical_garden": 9,
+    "kangjian": 11,
+    "caohejing": 6,
+    "huajing": 11
+  },
+  "crs_values": [
+    "CRS84/WGS84 (lon,lat)"
+  ],
+  "boundary_vertex_count": 316,
+  "failures": [],
+  "routes_failing_spatial_gate": [],
+  "catalog_metric_disagreements": [],
+  "same_mode_overlap_violations": [],
+  "notes": []
+}

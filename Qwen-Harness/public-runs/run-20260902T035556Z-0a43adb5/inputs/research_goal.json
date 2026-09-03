@@ -1,0 +1,24 @@
+{
+  "title": "多源环境暴露与有限附加距离约束下的个性化健康路线决策（上海徐汇）",
+  "question": "在满足运动方式、目标距离、安全阈值、搜索范围和有限附加距离约束的候选路线中，融合 PM2.5、花粉、噪声、天气、绿地水体、路线质量、接驳成本和用户偏好的多源模型，相较最短或单一 PM2.5 基线，能否降低环境暴露风险并提高个性化匹配度？",
+  "domain": "urban_environmental_health",
+  "region": "Shanghai Xuhui",
+  "target_population": "outdoor walkers, runners and cyclists",
+  "desired_outcome": "在预注册基线与指标下给出支持状态（supported / partially_supported / unsupported / inconclusive），并产出可解释的当前候选集约束最优路线案例与复现材料。",
+  "constraints": [
+    "PM2.5 为网格/站点融合估计，不是逐地址观测值",
+    "花粉为日级背景/代理指标，不是实时浓度",
+    "噪声为 0-100 风险代理，不是实测分贝",
+    "同端点附加距离上限不超过 20%，目标距离偏差上限不超过 15%",
+    "最优路线限定为当前候选集中的约束最优解，不宣称全路网最优",
+    "预设画像案例不作为独立人群样本，不做人群外推",
+    "证据不足时结论为 inconclusive，部分支持为 partially_supported，方向相反为 unsupported"
+  ],
+  "seed_sources": [
+    "doi:10.1056/NEJMoa1702747",
+    "doi:10.1016/S0140-6736(08)61689-X",
+    "pmid:16805392",
+    "https://www.who.int/publications/i/item/9789240034228",
+    "repo:Qwen-Harness/config/source_policy.json"
+  ]
+}

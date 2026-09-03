@@ -1,0 +1,85 @@
+{
+  "version": "1.0.0",
+  "description": "默认五维权重配置。权重值总和为 1.0，用于 score_routes 的加权求和。归一化规则：若外部传入权重总和不为 1.0，由 load_weights 在加载时自动归一化（各权重除以总和）。",
+  "normalization": "sum_to_one",
+  "dimensions": {
+    "environment_health": 0.30,
+    "sport_match": 0.20,
+    "access_convenience": 0.15,
+    "route_quality": 0.20,
+    "interest_service": 0.15
+  },
+  "dimension_descriptions": {
+    "environment_health": "环境健康维度：综合 PM2.5、花粉、噪声、绿地水体等环境暴露指标",
+    "sport_match": "运动匹配维度：路线模式、距离带与用户运动目标的匹配程度",
+    "access_convenience": "接驳便利维度：出发点到达路线起点的接驳成本与公共交通可达性",
+    "route_quality": "路线质量维度：路面条件、连续性、安全性、坡度等路线本身质量",
+    "interest_service": "兴趣服务维度：沿途兴趣点覆盖（水岸、公园、安静区域、便利设施等）"
+  },
+  "goal_overrides": {
+    "balanced": {
+      "environment_health": 0.20,
+      "sport_match": 0.20,
+      "access_convenience": 0.20,
+      "route_quality": 0.20,
+      "interest_service": 0.20
+    },
+    "health_environment": {
+      "environment_health": 0.40,
+      "sport_match": 0.15,
+      "access_convenience": 0.10,
+      "route_quality": 0.15,
+      "interest_service": 0.20
+    },
+    "nearby": {
+      "environment_health": 0.15,
+      "sport_match": 0.15,
+      "access_convenience": 0.40,
+      "route_quality": 0.15,
+      "interest_service": 0.15
+    },
+    "scenery": {
+      "environment_health": 0.25,
+      "sport_match": 0.15,
+      "access_convenience": 0.10,
+      "route_quality": 0.20,
+      "interest_service": 0.30
+    }
+  },
+  "sensitivity_boosts": {
+    "pm25": {
+      "dimension": "environment_health",
+      "boost_factor": 1.3
+    },
+    "pollen": {
+      "dimension": "environment_health",
+      "boost_factor": 1.2
+    },
+    "noise": {
+      "dimension": "environment_health",
+      "boost_factor": 1.2
+    }
+  },
+  "interest_boosts": {
+    "waterside": {
+      "dimension": "interest_service",
+      "boost_factor": 1.2
+    },
+    "park": {
+      "dimension": "interest_service",
+      "boost_factor": 1.2
+    },
+    "quiet": {
+      "dimension": "interest_service",
+      "boost_factor": 1.1
+    },
+    "convenience": {
+      "dimension": "access_convenience",
+      "boost_factor": 1.2
+    },
+    "toilet": {
+      "dimension": "access_convenience",
+      "boost_factor": 1.1
+    }
+  }
+}

@@ -1,0 +1,3 @@
+== routes ==
+   ok 557.8s {'route_count': 86, 'kind_counts': {'strict_loop': 46, 'one_way': 40}, 'accepted': 86, 'gate_failures': ['total_route_count', 'mode_count:bike', 'band_count:bike:2']}
+STAGES_FAILED=0

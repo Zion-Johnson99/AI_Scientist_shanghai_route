@@ -1,0 +1,786 @@
+[
+  {
+    "poi_id": "poi-0001",
+    "poi_type": "toilet",
+    "name": "公共厕所1号",
+    "lng": 121.442957,
+    "lat": 31.19099,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0002",
+    "poi_type": "toilet",
+    "name": "公共厕所2号",
+    "lng": 121.412276,
+    "lat": 31.214222,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0003",
+    "poi_type": "toilet",
+    "name": "公共厕所3号",
+    "lng": 121.468262,
+    "lat": 31.174596,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0004",
+    "poi_type": "toilet",
+    "name": "公共厕所4号",
+    "lng": 121.418503,
+    "lat": 31.145398,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0005",
+    "poi_type": "toilet",
+    "name": "公共厕所5号",
+    "lng": 121.405386,
+    "lat": 31.180296,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0006",
+    "poi_type": "toilet",
+    "name": "公共厕所6号",
+    "lng": 121.483175,
+    "lat": 31.157734,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0007",
+    "poi_type": "toilet",
+    "name": "公共厕所7号",
+    "lng": 121.441112,
+    "lat": 31.213917,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0008",
+    "poi_type": "toilet",
+    "name": "公共厕所8号",
+    "lng": 121.417299,
+    "lat": 31.210323,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0009",
+    "poi_type": "toilet",
+    "name": "公共厕所9号",
+    "lng": 121.406548,
+    "lat": 31.155455,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0010",
+    "poi_type": "toilet",
+    "name": "公共厕所10号",
+    "lng": 121.471712,
+    "lat": 31.190467,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0011",
+    "poi_type": "toilet",
+    "name": "公共厕所11号",
+    "lng": 121.409203,
+    "lat": 31.215604,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0012",
+    "poi_type": "toilet",
+    "name": "公共厕所12号",
+    "lng": 121.396137,
+    "lat": 31.211257,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0013",
+    "poi_type": "toilet",
+    "name": "公共厕所13号",
+    "lng": 121.493144,
+    "lat": 31.151658,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0014",
+    "poi_type": "toilet",
+    "name": "公共厕所14号",
+    "lng": 121.396797,
+    "lat": 31.169725,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0015",
+    "poi_type": "toilet",
+    "name": "公共厕所15号",
+    "lng": 121.498694,
+    "lat": 31.209935,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0016",
+    "poi_type": "water_station",
+    "name": "饮水点1号",
+    "lng": 121.467276,
+    "lat": 31.174577,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0017",
+    "poi_type": "water_station",
+    "name": "饮水点2号",
+    "lng": 121.42919,
+    "lat": 31.178789,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0018",
+    "poi_type": "water_station",
+    "name": "饮水点3号",
+    "lng": 121.425401,
+    "lat": 31.181612,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0019",
+    "poi_type": "water_station",
+    "name": "饮水点4号",
+    "lng": 121.410527,
+    "lat": 31.141821,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0020",
+    "poi_type": "water_station",
+    "name": "饮水点5号",
+    "lng": 121.416917,
+    "lat": 31.200368,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0021",
+    "poi_type": "water_station",
+    "name": "饮水点6号",
+    "lng": 121.425515,
+    "lat": 31.195491,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0022",
+    "poi_type": "water_station",
+    "name": "饮水点7号",
+    "lng": 121.465681,
+    "lat": 31.191015,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0023",
+    "poi_type": "water_station",
+    "name": "饮水点8号",
+    "lng": 121.440241,
+    "lat": 31.167459,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0024",
+    "poi_type": "water_station",
+    "name": "饮水点9号",
+    "lng": 121.480469,
+    "lat": 31.187061,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0025",
+    "poi_type": "water_station",
+    "name": "饮水点10号",
+    "lng": 121.441001,
+    "lat": 31.195711,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0026",
+    "poi_type": "water_station",
+    "name": "饮水点11号",
+    "lng": 121.41896,
+    "lat": 31.212185,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0027",
+    "poi_type": "water_station",
+    "name": "饮水点12号",
+    "lng": 121.446074,
+    "lat": 31.199674,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0028",
+    "poi_type": "bench",
+    "name": "休息座椅1号",
+    "lng": 121.398319,
+    "lat": 31.180299,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0029",
+    "poi_type": "bench",
+    "name": "休息座椅2号",
+    "lng": 121.39889,
+    "lat": 31.151204,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0030",
+    "poi_type": "bench",
+    "name": "休息座椅3号",
+    "lng": 121.464497,
+    "lat": 31.167162,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0031",
+    "poi_type": "bench",
+    "name": "休息座椅4号",
+    "lng": 121.486795,
+    "lat": 31.158653,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0032",
+    "poi_type": "bench",
+    "name": "休息座椅5号",
+    "lng": 121.413819,
+    "lat": 31.168339,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0033",
+    "poi_type": "bench",
+    "name": "休息座椅6号",
+    "lng": 121.38726,
+    "lat": 31.144818,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0034",
+    "poi_type": "bench",
+    "name": "休息座椅7号",
+    "lng": 121.453186,
+    "lat": 31.184642,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0035",
+    "poi_type": "bench",
+    "name": "休息座椅8号",
+    "lng": 121.439225,
+    "lat": 31.143596,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0036",
+    "poi_type": "bench",
+    "name": "休息座椅9号",
+    "lng": 121.457252,
+    "lat": 31.168528,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0037",
+    "poi_type": "bench",
+    "name": "休息座椅10号",
+    "lng": 121.419197,
+    "lat": 31.219687,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0038",
+    "poi_type": "bench",
+    "name": "休息座椅11号",
+    "lng": 121.444167,
+    "lat": 31.157801,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0039",
+    "poi_type": "bench",
+    "name": "休息座椅12号",
+    "lng": 121.483525,
+    "lat": 31.176852,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0040",
+    "poi_type": "bench",
+    "name": "休息座椅13号",
+    "lng": 121.475146,
+    "lat": 31.178761,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0041",
+    "poi_type": "bench",
+    "name": "休息座椅14号",
+    "lng": 121.464017,
+    "lat": 31.213598,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0042",
+    "poi_type": "bench",
+    "name": "休息座椅15号",
+    "lng": 121.408146,
+    "lat": 31.179895,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0043",
+    "poi_type": "bench",
+    "name": "休息座椅16号",
+    "lng": 121.414567,
+    "lat": 31.202924,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0044",
+    "poi_type": "bench",
+    "name": "休息座椅17号",
+    "lng": 121.389195,
+    "lat": 31.216203,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0045",
+    "poi_type": "bench",
+    "name": "休息座椅18号",
+    "lng": 121.388113,
+    "lat": 31.187562,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0046",
+    "poi_type": "bench",
+    "name": "休息座椅19号",
+    "lng": 121.463908,
+    "lat": 31.179931,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0047",
+    "poi_type": "bench",
+    "name": "休息座椅20号",
+    "lng": 121.401078,
+    "lat": 31.151422,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0048",
+    "poi_type": "park_entrance",
+    "name": "公园入口1号",
+    "lng": 121.386003,
+    "lat": 31.215355,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0049",
+    "poi_type": "park_entrance",
+    "name": "公园入口2号",
+    "lng": 121.492623,
+    "lat": 31.214115,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0050",
+    "poi_type": "park_entrance",
+    "name": "公园入口3号",
+    "lng": 121.392509,
+    "lat": 31.211902,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0051",
+    "poi_type": "park_entrance",
+    "name": "公园入口4号",
+    "lng": 121.436441,
+    "lat": 31.172552,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0052",
+    "poi_type": "park_entrance",
+    "name": "公园入口5号",
+    "lng": 121.45604,
+    "lat": 31.198701,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0053",
+    "poi_type": "park_entrance",
+    "name": "公园入口6号",
+    "lng": 121.465294,
+    "lat": 31.143248,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0054",
+    "poi_type": "park_entrance",
+    "name": "公园入口7号",
+    "lng": 121.449253,
+    "lat": 31.217976,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0055",
+    "poi_type": "park_entrance",
+    "name": "公园入口8号",
+    "lng": 121.456276,
+    "lat": 31.193086,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0056",
+    "poi_type": "park_entrance",
+    "name": "公园入口9号",
+    "lng": 121.383075,
+    "lat": 31.200076,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0057",
+    "poi_type": "park_entrance",
+    "name": "公园入口10号",
+    "lng": 121.402737,
+    "lat": 31.166819,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0058",
+    "poi_type": "convenience_store",
+    "name": "便利店1号",
+    "lng": 121.44223,
+    "lat": 31.140313,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0059",
+    "poi_type": "convenience_store",
+    "name": "便利店2号",
+    "lng": 121.449271,
+    "lat": 31.193521,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0060",
+    "poi_type": "convenience_store",
+    "name": "便利店3号",
+    "lng": 121.418437,
+    "lat": 31.206763,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0061",
+    "poi_type": "convenience_store",
+    "name": "便利店4号",
+    "lng": 121.448659,
+    "lat": 31.180167,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0062",
+    "poi_type": "convenience_store",
+    "name": "便利店5号",
+    "lng": 121.446051,
+    "lat": 31.141491,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0063",
+    "poi_type": "convenience_store",
+    "name": "便利店6号",
+    "lng": 121.437,
+    "lat": 31.154711,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0064",
+    "poi_type": "convenience_store",
+    "name": "便利店7号",
+    "lng": 121.446832,
+    "lat": 31.190637,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0065",
+    "poi_type": "convenience_store",
+    "name": "便利店8号",
+    "lng": 121.489948,
+    "lat": 31.19932,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0066",
+    "poi_type": "convenience_store",
+    "name": "便利店9号",
+    "lng": 121.464499,
+    "lat": 31.148955,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0067",
+    "poi_type": "convenience_store",
+    "name": "便利店10号",
+    "lng": 121.461215,
+    "lat": 31.217466,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0068",
+    "poi_type": "convenience_store",
+    "name": "便利店11号",
+    "lng": 121.451504,
+    "lat": 31.145214,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0069",
+    "poi_type": "convenience_store",
+    "name": "便利店12号",
+    "lng": 121.481128,
+    "lat": 31.192602,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0070",
+    "poi_type": "convenience_store",
+    "name": "便利店13号",
+    "lng": 121.427971,
+    "lat": 31.158937,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0071",
+    "poi_type": "convenience_store",
+    "name": "便利店14号",
+    "lng": 121.450099,
+    "lat": 31.181505,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0072",
+    "poi_type": "convenience_store",
+    "name": "便利店15号",
+    "lng": 121.391396,
+    "lat": 31.142497,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0073",
+    "poi_type": "convenience_store",
+    "name": "便利店16号",
+    "lng": 121.472809,
+    "lat": 31.173148,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0074",
+    "poi_type": "convenience_store",
+    "name": "便利店17号",
+    "lng": 121.487046,
+    "lat": 31.152145,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0075",
+    "poi_type": "convenience_store",
+    "name": "便利店18号",
+    "lng": 121.402234,
+    "lat": 31.149134,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0076",
+    "poi_type": "first_aid",
+    "name": "急救点1号",
+    "lng": 121.487341,
+    "lat": 31.140238,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0077",
+    "poi_type": "first_aid",
+    "name": "急救点2号",
+    "lng": 121.399427,
+    "lat": 31.184071,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0078",
+    "poi_type": "first_aid",
+    "name": "急救点3号",
+    "lng": 121.396218,
+    "lat": 31.168245,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0079",
+    "poi_type": "first_aid",
+    "name": "急救点4号",
+    "lng": 121.390468,
+    "lat": 31.14907,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0080",
+    "poi_type": "first_aid",
+    "name": "急救点5号",
+    "lng": 121.428582,
+    "lat": 31.199843,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0081",
+    "poi_type": "parking",
+    "name": "停车场1号",
+    "lng": 121.396748,
+    "lat": 31.202054,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0082",
+    "poi_type": "parking",
+    "name": "停车场2号",
+    "lng": 121.419342,
+    "lat": 31.163828,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0083",
+    "poi_type": "parking",
+    "name": "停车场3号",
+    "lng": 121.48574,
+    "lat": 31.207059,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0084",
+    "poi_type": "parking",
+    "name": "停车场4号",
+    "lng": 121.403147,
+    "lat": 31.150767,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0085",
+    "poi_type": "parking",
+    "name": "停车场5号",
+    "lng": 121.457331,
+    "lat": 31.211069,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0086",
+    "poi_type": "parking",
+    "name": "停车场6号",
+    "lng": 121.49223,
+    "lat": 31.149382,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0087",
+    "poi_type": "parking",
+    "name": "停车场7号",
+    "lng": 121.41368,
+    "lat": 31.211899,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0088",
+    "poi_type": "parking",
+    "name": "停车场8号",
+    "lng": 121.47935,
+    "lat": 31.175916,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0089",
+    "poi_type": "bike_station",
+    "name": "自行车租赁点1号",
+    "lng": 121.392238,
+    "lat": 31.166812,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0090",
+    "poi_type": "bike_station",
+    "name": "自行车租赁点2号",
+    "lng": 121.481881,
+    "lat": 31.184034,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0091",
+    "poi_type": "bike_station",
+    "name": "自行车租赁点3号",
+    "lng": 121.429016,
+    "lat": 31.20291,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0092",
+    "poi_type": "bike_station",
+    "name": "自行车租赁点4号",
+    "lng": 121.39408,
+    "lat": 31.163317,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0093",
+    "poi_type": "bike_station",
+    "name": "自行车租赁点5号",
+    "lng": 121.462097,
+    "lat": 31.182877,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0094",
+    "poi_type": "bike_station",
+    "name": "自行车租赁点6号",
+    "lng": 121.465366,
+    "lat": 31.200621,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0095",
+    "poi_type": "bike_station",
+    "name": "自行车租赁点7号",
+    "lng": 121.403707,
+    "lat": 31.171959,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0096",
+    "poi_type": "bike_station",
+    "name": "自行车租赁点8号",
+    "lng": 121.472794,
+    "lat": 31.198712,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0097",
+    "poi_type": "bike_station",
+    "name": "自行车租赁点9号",
+    "lng": 121.464842,
+    "lat": 31.145766,
+    "coordinate_system": "GCJ-02"
+  },
+  {
+    "poi_id": "poi-0098",
+    "poi_type": "bike_station",
+    "name": "自行车租赁点10号",
+    "lng": 121.482867,
+    "lat": 31.205614,
+    "coordinate_system": "GCJ-02"
+  }
+]

@@ -1,0 +1,125 @@
+{
+  "supported_thresholds": {
+    "detour_pass_rate_min": 0.9,
+    "environment_win_rate_min": 0.6,
+    "preference_win_rate_min": 0.6,
+    "reference_verification_rate_min": 1.0,
+    "fatal_data_errors_max": 0,
+    "require_module_provenance": true,
+    "composite_utility_as_sole_metric": false,
+    "require_negative_result_reporting": true
+  },
+  "weights": {},
+  "experiment_variants": {
+    "schema_version": "1.0",
+    "registered_at": "2026-07-06T00:00:00+00:00",
+    "pre_registration_note": "五个变体的选择规则、所需字段与权重来源在运行前冻结；运行期模型只能从预注册变体中选择，不能修改规则、字段或权重。权重或绕路上限的任何调整只能经反馈迭代写入当前 run 的派生配置并记录 before/after。",
+    "exposure_risk_coefficients": {
+      "alpha_pm25": 0.5,
+      "beta_noise": 0.3,
+      "gamma_pollen": 0.2
+    },
+    "normalization": {
+      "pm25_breakpoints_ug_m3": [
+        [
+          0,
+          0.0
+        ],
+        [
+          15,
+          0.15
+        ],
+        [
+          35,
+          0.35
+        ],
+        [
+          75,
+          0.6
+        ],
+        [
+          115,
+          0.8
+        ],
+        [
+          150,
+          0.95
+        ],
+        [
+          250,
+          1.0
+        ]
+      ],
+      "noise_scale": 100.0,
+      "pollen_scale": 100.0
+    },
+    "variants": [
+      {
+        "variant_id": "B0_shortest_feasible",
+        "name": "最短可行基线",
+        "selection_rule": "在可行候选中最小化目标距离偏差，其次最小化接驳距离，再按 route_id 字典序；不使用环境、兴趣或个性化信息。",
+        "required_fields": [
+          "route.distance_m",
+          "access_distance_m",
+          "profile.target_distance_m"
+        ],
+        "weights_source": "none:选择规则不使用权重"
+      },
+      {
+        "variant_id": "B1_pm25_only",
+        "name": "单一 PM2.5 基线",
+        "selection_rule": "在目标距离偏差门禁内最小化 PM2.5 浓度（网格/站点融合估计值）；PM2.5 缺失的候选不参与选择，全部缺失时回退 B0 规则并记录降级。",
+        "required_fields": [
+          "environment_summary.pm2_5.value",
+          "route.distance_m",
+          "profile.target_distance_m"
+        ],
+        "weights_source": "none:单指标最小化"
+      },
+      {
+        "variant_id": "B2_multi_environment",
+        "name": "多环境非个性化基线",
+        "selection_rule": "在目标距离偏差门禁内最小化综合暴露风险 R_env=alpha*R_pm25+beta*R_noise+gamma*R_pollen（预注册归一化），忽略个人兴趣；任一环境分量缺失的候选不参与选择，全部缺失时回退 B0 规则并记录降级。",
+        "required_fields": [
+          "environment_summary.pm2_5.value",
+          "environment_summary.noise.value",
+          "environment_summary.pollen.value",
+          "route.distance_m",
+          "profile.target_distance_m"
+        ],
+        "weights_source": "experiment_variants.json:exposure_risk_coefficients"
+      },
+      {
+        "variant_id": "B3_non_personalized",
+        "name": "默认权重非个性化基线",
+        "selection_rule": "使用评价模块默认平衡权重，不提升敏感项与兴趣项；按 route_quality、sport_match、data_confidence 依次降序选择并以 route_id 字典序决出平局。候选文件必须由默认平衡权重生成（记录 weights_sha256）；若检测到权重被个性化覆盖，按契约违规上报。",
+        "required_fields": [
+          "dimension_scores.route_quality",
+          "dimension_scores.sport_match",
+          "data_confidence"
+        ],
+        "weights_source": "evaluation_module:config/default_weights.json(goal=balanced)"
+      },
+      {
+        "variant_id": "M1_personalized_constrained",
+        "name": "个性化约束模型",
+        "selection_rule": "使用用户目标、敏感项、兴趣、接驳距离和数据可信度的个性化综合分：先按目标距离偏差、接驳半径与绕路上限门禁过滤，再按匹配偏好数、base_score、data_confidence 依次降序选择并以 route_id 字典序决出平局；门禁过滤清空候选集时回退无门禁选择并记录降级。",
+        "required_fields": [
+          "base_score",
+          "matched_preferences",
+          "data_confidence",
+          "access_distance_m",
+          "route.distance_m",
+          "profile.target_distance_m",
+          "profile.interests"
+        ],
+        "weights_source": "derived_config.weights 覆盖下的评价模块权重（记录 weights_sha256，无覆盖时为默认权重）"
+      }
+    ],
+    "distance_constraints": {
+      "detour_ratio_max_default": 0.2,
+      "target_deviation_max_default": 0.15,
+      "notes": "同端点附加距离上限、目标距离偏差上限默认值；实际运行取值以 ExperimentPlan 与派生配置为准，接驳距离同时服从用户搜索半径与评价模块硬约束。"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "handler": "qwen_harness.reporting.web_payload:stage_handler",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 124.8,
+  "status": "passed",
+  "summary": "网页 payload 就绪（status=inconclusive）",
+  "artifacts": [
+    "publish/research_harness_latest.json"
+  ],
+  "offline": false,
+  "audited_at": "2026-09-02T06:58:08.175337+00:00"
+}

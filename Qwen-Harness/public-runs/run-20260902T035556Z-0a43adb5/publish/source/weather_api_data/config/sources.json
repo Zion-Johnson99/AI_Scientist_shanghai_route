@@ -1,0 +1,120 @@
+{
+  "version": "1.0.0",
+  "description": "Multi-source environment data pipeline source configuration. Key fields reference environment variable names, never plaintext secrets.",
+  "sources": {
+    "weather": {
+      "provider": "openweathermap",
+      "endpoint": "https://api.openweathermap.org/data/3.0/onecall",
+      "key_env": "OPENWEATHER_API_KEY",
+      "refresh_interval_minutes": 60,
+      "timeout_seconds": 15,
+      "max_retries": 2,
+      "retry_backoff_base_seconds": 2,
+      "fallback": {
+        "strategy": "last_known_good",
+        "snapshot_dir": "runtime/exports/weather",
+        "max_age_hours": 48
+      },
+      "parameters": {
+        "lat": 31.19,
+        "lon": 121.44,
+        "units": "metric",
+        "exclude": ["minutely"]
+      }
+    },
+    "aqi": {
+      "provider": "aqicn",
+      "endpoint": "https://api.waqi.info/feed/geo:{lat};{lon}/",
+      "key_env": "WAQI_API_KEY",
+      "refresh_interval_minutes": 60,
+      "timeout_seconds": 15,
+      "max_retries": 2,
+      "retry_backoff_base_seconds": 2,
+      "fallback": {
+        "strategy": "last_known_good",
+        "snapshot_dir": "runtime/exports/aqi",
+        "max_age_hours": 24
+      },
+      "parameters": {
+        "lat": 31.19,
+        "lon": 121.44
+      }
+    },
+    "pm25": {
+      "provider": "internal_fusion",
+      "endpoint": null,
+      "key_env": null,
+      "refresh_interval_minutes": 60,
+      "timeout_seconds": 30,
+      "max_retries": 1,
+      "retry_backoff_base_seconds": 1,
+      "fallback": {
+        "strategy": "last_known_good",
+        "snapshot_dir": "runtime/exports/pm25",
+        "max_age_hours": 24
+      },
+      "parameters": {
+        "grid_resolution_m": 500,
+        "fusion_method": "inverse_distance_weighted",
+        "station_sources": ["aqi"],
+        "spatial_scale": "grid_estimate",
+        "note": "PM2.5 values are grid/station fusion estimates, not per-address observations"
+      }
+    },
+    "pollen": {
+      "provider": "proxy_model",
+      "endpoint": null,
+      "key_env": null,
+      "refresh_interval_minutes": 1440,
+      "timeout_seconds": 30,
+      "max_retries": 1,
+      "retry_backoff_base_seconds": 1,
+      "fallback": {
+        "strategy": "last_known_good",
+        "snapshot_dir": "runtime/exports/pollen",
+        "max_age_hours": 72
+      },
+      "parameters": {
+        "model_type": "seasonal_proxy",
+        "temporal_scale": "daily",
+        "note": "Pollen values are daily background proxy indicators, not real-time concentrations"
+      }
+    },
+    "noise": {
+      "provider": "proxy_model",
+      "endpoint": null,
+      "key_env": null,
+      "refresh_interval_minutes": 1440,
+      "timeout_seconds": 30,
+      "max_retries": 1,
+      "retry_backoff_base_seconds": 1,
+      "fallback": {
+        "strategy": "last_known_good",
+        "snapshot_dir": "runtime/exports/noise",
+        "max_age_hours": 168
+      },
+      "parameters": {
+        "model_type": "land_use_regression_proxy",
+        "scale": "0-100 risk proxy",
+        "note": "Noise values are 0-100 risk proxy scores, not measured decibels"
+      }
+    }
+  },
+  "global_defaults": {
+    "offline_mode": {
+      "enabled_when": "no network or missing key",
+      "behavior": "use last-known-good snapshot",
+      "status_label": "stale",
+      "require_stale_reason": true
+    },
+    "rate_limit": {
+      "max_consecutive_429": 3,
+      "action_on_limit": "stop_and_preserve_context"
+    },
+    "sensitivity": {
+      "never_log_keys": true,
+      "never_store_plaintext_keys": true,
+      "snapshot_excludes": ["api_key", "authorization", "token"]
+    }
+  }
+}

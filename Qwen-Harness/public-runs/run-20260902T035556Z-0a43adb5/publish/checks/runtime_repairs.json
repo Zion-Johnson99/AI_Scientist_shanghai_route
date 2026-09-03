@@ -1,0 +1,269 @@
+{
+  "provenance": "qwen",
+  "repairs": [
+    {
+      "round": 1,
+      "issue": {
+        "check": "runtime_evaluation_score_candidates",
+        "summary": "生成模块命令失败，需要修复 evaluation_model_qwen/pyproject.toml",
+        "details": "固定命令 evaluation.score_candidates.p01_walk_balanced 失败: 退出码 1\nwarning: `VIRTUAL_ENV=<repo_root>\\Qwen-Harness\\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n   Building evaluation-model-qwen @ <run_root>/workspace/source/evaluation_model_qwen\n  × Failed to build `evaluation-model-qwen @\n  │ <run_root>/workspace/source/evaluation_model_qwen`\n  ├─▶ The build backend returned an error\n  ╰─▶ Call to `hatchling.build.build_editable` failed (exit code: 1)\n\n      [stderr]\n      Traceback (most recent call last):\n        File \"<string>\", line 11, in <module>\n        File\n      \"<user_home>\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp1RGU1X\\Lib\\site-packages\\hatchling\\build.py\",\n      line 83, in build_editable\n          return os.path.basename(next(builder.build(directory=wheel_directory,\n      versions=[\"editable\"])))\n      \n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        File\n      \"<user_home>\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp1RGU1X\\Lib\\site-packages\\hatchling\\builders\\plugin\\interface.py\",\n      line 92, in build\n          self.metadata.validate_fields()\n        File\n      \"<user_home>\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp1RGU1X\\Lib\\site-packages\\hatchling\\metadata\\core.py\",\n      line 267, in validate_fields\n          self.core.validate_fields()\n        File\n      \"<user_home>\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp1RGU1X\\Lib\\site-packages\\hatchling\\metadata\\core.py\",\n      line 1444, in validate_fields\n          getattr(self, attribute)\n        File\n      \"<user_home>\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp1RGU1X\\Lib\\site-packages\\hatchling\\metadata\\core.py\",\n      line 537, in readme\n          raise OSError(message)\n      OSError: Readme file does not exist: README.md\n\n\nhint: Build failures usually indicate a problem with the package or the build environment",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/pyproject.toml"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/pyproject.toml",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T06:38:24.689826Z",
+        "request_id": "chatcmpl-af39eb73-6e69-9f7c-9031-d54bfc7629ca",
+        "latency_ms": 13275.8,
+        "input_tokens": 15831,
+        "output_tokens": 546,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    },
+    {
+      "round": 2,
+      "issue": {
+        "check": "runtime_evaluation_score_candidates",
+        "summary": "生成模块命令失败，需要修复 Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+        "details": "固定命令 evaluation.score_candidates.p01_walk_balanced 失败: 退出码 1\nwarning: `VIRTUAL_ENV=<repo_root>\\Qwen-Harness\\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n   Building evaluation-model-qwen @ <run_root>/workspace/source/evaluation_model_qwen\n      Built evaluation-model-qwen @ <run_root>/workspace/source/evaluation_model_qwen\nwarning: Failed to hardlink files; falling back to full copy. This may lead to degraded performance.\n         If the cache and target directories are on different filesystems, hardlinking may not be supported.\n         If this is intentional, set `export UV_LINK_MODE=copy` or use `--link-mode=copy` to suppress this warning.\nInstalled 22 packages in 3.12s\nTraceback (most recent call last):\n  File \"<run_root>\\workspace\\source\\Qwen-Harness\\src\\qwen_harness\\adapters\\evaluation_score_candidates.py\", line 17, in <module>\n    from qwen_harness.subprocess_runner import SafeSubprocessRunner, CommandAudit\nModuleNotFoundError: No module named 'qwen_harness'\n",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T06:39:27.763540Z",
+        "request_id": "chatcmpl-e70521cb-a571-9e0b-a35d-c89bb7ebf033",
+        "latency_ms": 56540.8,
+        "input_tokens": 16684,
+        "output_tokens": 3023,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    },
+    {
+      "round": 1,
+      "issue": {
+        "check": "runtime_evaluation_score_candidates",
+        "summary": "生成模块命令失败，需要修复 Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+        "details": "模块 evaluation 返回错误结果: score-candidates 输出不是合法 JSON: Expecting value: line 1 column 1 (char 0)\nwarning: `VIRTUAL_ENV=<repo_root>\\Qwen-Harness\\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T06:43:08.691541Z",
+        "request_id": "chatcmpl-d5a4b761-f7ad-9b58-ba99-18ee54dce6a9",
+        "latency_ms": 73471.6,
+        "input_tokens": 16207,
+        "output_tokens": 3727,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    },
+    {
+      "round": 2,
+      "issue": {
+        "check": "runtime_evaluation_score_candidates",
+        "summary": "生成模块命令失败，需要修复 Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+        "details": "模块 evaluation 返回错误结果: score-candidates 输出不是合法 JSON: Expecting value: line 1 column 1 (char 0)\nwarning: `VIRTUAL_ENV=<repo_root>\\Qwen-Harness\\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T06:44:17.049083Z",
+        "request_id": "chatcmpl-fca9f75e-af03-97df-8750-19125d1f4978",
+        "latency_ms": 67904.5,
+        "input_tokens": 16233,
+        "output_tokens": 3535,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    },
+    {
+      "round": 1,
+      "issue": {
+        "check": "runtime_evaluation_score_candidates",
+        "summary": "生成模块命令失败，需要修复 Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+        "details": "模块 evaluation 返回错误结果: score-candidates 输出不是合法 JSON: Expecting value: line 1 column 1 (char 0)\nwarning: `VIRTUAL_ENV=<repo_root>\\Qwen-Harness\\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T06:45:26.214215Z",
+        "request_id": "chatcmpl-1a2589ee-c8cf-9048-b656-f50d00b9eb4f",
+        "latency_ms": 66770.9,
+        "input_tokens": 16233,
+        "output_tokens": 3512,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    },
+    {
+      "round": 2,
+      "issue": {
+        "check": "runtime_evaluation_score_candidates",
+        "summary": "生成模块命令失败，需要修复 Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+        "details": "模块 evaluation 返回错误结果: score-candidates 输出不是合法 JSON: Expecting value: line 1 column 1 (char 0)\nwarning: `VIRTUAL_ENV=<repo_root>\\Qwen-Harness\\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T06:46:23.386659Z",
+        "request_id": "chatcmpl-69f099ec-9be6-9611-b719-122a28903e60",
+        "latency_ms": 56703.9,
+        "input_tokens": 16236,
+        "output_tokens": 2959,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    },
+    {
+      "round": 1,
+      "issue": {
+        "check": "runtime_evaluation_score_candidates",
+        "summary": "生成模块的运行或输出契约失败，需要修复 Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+        "details": "目标脚本由 Harness 通过 python <script> --profile <json> --weights <json> --route-catalog <json> --environment-dashboard <json> 直接执行。脚本需要提供 __main__ 入口并解析这些参数；成功时 stdout 只输出一个 JSON 对象，字段至少包含 profile、risk、data_generated_at、candidate_count、candidates、weights_sha256。\n\n真实运行诊断：\n模块 evaluation 返回错误结果: score-candidates 输出不是合法 JSON: Expecting value: line 1 column 1 (char 0)\nwarning: `VIRTUAL_ENV=<repo_root>\\Qwen-Harness\\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T06:51:15.364870Z",
+        "request_id": "chatcmpl-89184f77-4445-984d-ba53-2e174b870acf",
+        "latency_ms": 144318.1,
+        "input_tokens": 16325,
+        "output_tokens": 7440,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    },
+    {
+      "round": 2,
+      "issue": {
+        "check": "runtime_evaluation_score_candidates",
+        "summary": "生成模块的运行或输出契约失败，需要修复 Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+        "details": "目标脚本由 Harness 通过 python <script> --profile <json> --weights <json> --route-catalog <json> --environment-dashboard <json> 直接执行。脚本需要提供 __main__ 入口并解析这些参数；成功时 stdout 只输出一个 JSON 对象，字段至少包含 profile、risk、data_generated_at、candidate_count、candidates、weights_sha256。\n\n真实运行诊断：\n模块 evaluation 返回错误结果: score-candidates 输出无法读取: 'utf-8' codec can't decode byte 0xb2 in position 162: invalid start byte\nwarning: `VIRTUAL_ENV=<repo_root>\\Qwen-Harness\\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n\n{\"profile\": {\"case_id\": \"P01_walk_balanced\", \"route_mode\": \"walk\", \"goal\": \"balanced\", \"target_distance_m\": 3000, \"sensitivities\": [], \"interests\": [], \"notes\": \"����ƽ�⻭������������ƫ�����ΪȨ���Ŷ��Ƚ��Ե����Բ���\"}, \"risk\": {\"paused\": false, \"reasons\": [], \"level\": \"normal\"}, \"data_generated_at\": \"2026-09-02T06:23:30.129983+00:00\", \"candidate_count\": 9, \"candidates\": [{\"route_id\": \"walk-002\", \"route_name\": \"��԰����2\", \"route_mode\": \"walk\", \"dimensions\": {\"environment_health\": 70.0, \"sport_match\": 100.0, \"access_convenience\": 60.0, \"route_quality\": 85.0, \"interest_service\": 60.0}, \"base_score\": 75.5}, {\"route_id\": \"walk-003\", \"route_name\": \"��������3\", \"route_mode\": \"walk\", \"dimensions\": {\"environment_health\": 70.0, \"sport_match\": 100.0, \"access_convenience\": 60.0, \"route_quality\": 85.0, \"interest_service\": 60.0}, \"base_score\": 75.5}, {\"route_id\": \"walk-004\", \"route_name\": \"�ӱ��̵�4\", \"route_mode\": \"walk\", \"dimensions\": {\"environment_health\": 70.0, \"sport_match\": 100.0, \"access_convenience\": 60.0, \"route_quality\": 85.0, \"interest_service\": 60.0}, \"base_score\": 75.5}, {\"route_id\": \"walk-011\", \"route_name\": \"��������11\", \"route_mode\": \"walk\", \"dimensions\": {\"environment_health\": 70.0, \"sport_match\": 100.0, \"access_convenience\": 60.0, \"route_quality\": 85.0, \"interest_service\": 60.0}, \"base_score\": 75.5}, {\"route_id\": \"walk-013\", \"route_name\": \"��������13\", \"route_mode\": \"walk\", \"dimensions\": {\"environment_health\": 70.0, \"sport_match\": 100.0, \"access_convenience\": 60.0, \"route_quality\": 85.0, \"interest_service\": 60.0}, \"base_score\": 75.5}, {\"route_id\": \"walk-017\", \"route_name\": \"��ҵ����17\", \"route_mode\": \"walk\", \"dimensions\": {\"environment_health\": 70.0, \"sport_match\": 100.0, \"access_convenience\": 60.0, \"route_quality\": 85.0, \"interest_service\": 60.0}, \"base_score\": 75.5}, {\"route_id\": \"walk-019\", \"route_name\": \"���ϻ���19\", \"route_mode\": \"walk\", \"dimensions\": {\"environment_health\": 70.0, \"sport_match\": 100.0, \"access_convenience\": 60.0, \"route_quality\": 85.0, \"interest_service\": 60.0}, \"base_score\": 75.5}, {\"route_id\": \"walk-022\", \"route_name\": \"��԰����22\", \"route_mode\": \"walk\", \"dimensions\": {\"environment_health\": 70.0, \"sport_match\": 100.0, \"access_convenience\": 60.0, \"route_quality\": 85.0, \"interest_service\": 60.0}, \"base_score\": 75.5}, {\"route_id\": \"walk-023\", \"route_name\": \"��������23\", \"route_mode\": \"walk\", \"dimensions\": {\"environment_health\": 70.0, \"sport_match\": 100.0, \"access_convenience\": 60.0, \"route_quality\": 85.0, \"interest_service\": 60.0}, \"base_score\": 75.5}], \"weights_sha256\": \"59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f\"}",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T06:53:09.881166Z",
+        "request_id": "chatcmpl-2d2330a4-b793-91ac-857b-3d5780dfaa6b",
+        "latency_ms": 114003.9,
+        "input_tokens": 17432,
+        "output_tokens": 6139,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    }
+  ]
+}

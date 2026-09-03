@@ -1,0 +1,145 @@
+{
+  "schema": "ScientificPlan",
+  "schema_version": "1.0",
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "git_head": "a7c0fc6ae13b124a69bae7909cb095ba2003eda8",
+  "generated_at": "2026-09-02T13:16:11Z",
+  "problem_statement": "Round 1 of this project reported 19/19 workflow stages passed while every required engineering quality gate failed: pytest collected 0 tests across 6 ImportErrors, Ruff reported 83 errors, Pyright 279, the evaluation API raised ImportError, browser architecture smoke returned an empty viewport map with no route-card anchor, and the experiment support was inconclusive (detour_pass_rate 0.00, environment_win_rate 0.00, constraint_pass_rate 0.00, 18 of 45 cells with no candidate, 270 environment unit mismatches, environment_interface 0/10). The problem is therefore not a missing feature list but a missing machine-checkable contract between geometry, units and acceptance evidence.",
+  "rationale": "A healthy-route recommender is only useful if its routes are real, its numbers are consistent and its acceptance is decidable. Round 2 attacks those three properties in order: routes are generated as paths and simple cycles inside a public OSM road graph so that road-snapping holds by construction; a single declared unit/CRS/status contract is machine-checked before any scoring; and the web product carries stable test anchors so that browser acceptance produces a per-viewport result instead of an empty map. Health-effect language is deliberately avoided because no dose-response evidence was retrieved in this run.",
+  "technical_details": "Road graph: OSM highway ways are merged across a 3x3 bbox grid, deduplicated by (type, id), and snapped to a 1e-6 degree node key. Route search: for strict_loop, a cycle search constrained to cycle rank 1 with every node of degree 2 in the route subgraph; for one_way, a bounded Dijkstra between anchors whose straight-line endpoint separation exceeds 200 m. Geometry gates are applied before ranking, duplicates and reverse duplicates are rejected, and each surviving route is attributed to one of the 8 mandated coverage areas. Environment: a 54-cell grid over the district bbox carries an ordinal 0-100 proxy per cell with declared unit 'proxy_0_100', status 'estimated' and reliability multiplier 0.9; routes join the grid by cell overlap. Ranking: five dimensions with fixed weights, missing_metric_score 50.0, seed 1234, no network access. Product: a locally served single-page app with an original visual language, a self-contained boundary-plus-road map renderer, and data-testid anchors on every interactive element.",
+  "datasets": [
+    {
+      "dataset_id": "SRC-001",
+      "name": "Xuhui administrative boundary",
+      "kind": "public_geographic_data",
+      "licence": "ODbL 1.0",
+      "crs": "CRS84/WGS84",
+      "sha256": "3fec446326409ab53345a3cbb2f8b02f6a3c58298ca72c47136049bc78807a6f",
+      "access_status": "accessed"
+    },
+    {
+      "dataset_id": "SRC-002",
+      "name": "Xuhui passable highway network",
+      "kind": "public_geographic_data",
+      "licence": "ODbL 1.0",
+      "crs": "CRS84/WGS84",
+      "sha256": null,
+      "access_status": "accessed"
+    },
+    {
+      "dataset_id": "SRC-003",
+      "name": "Xuhui POIs",
+      "kind": "public_geographic_data",
+      "licence": "ODbL 1.0",
+      "crs": "CRS84/WGS84",
+      "sha256": null,
+      "access_status": "accessed"
+    },
+    {
+      "dataset_id": "derived",
+      "name": "sources/xuhui_boundary.geojson",
+      "kind": "derived_geometry",
+      "licence": "derived from ODbL 1.0 data",
+      "crs": "CRS84/WGS84",
+      "sha256": "f4c5782b8d14bf34898414e446e643fb662db736c2c40fe7c6e62e71bd5ae5e6",
+      "access_status": "computed_in_run"
+    }
+  ],
+  "paper_title": "Contract-First Healthy-Route Generation: A Deterministic, Road-Snapped Recomposition of the Xuhui District Walking, Running and Cycling Portfolio",
+  "paper_abstract": "We present a fully deterministic, offline pipeline that reconstructs a 90-route walking, running and cycling portfolio for Xuhui District, Shanghai, from public OpenStreetMap data alone. Routes are generated as paths and simple cycles in an OSM-derived road graph, so road-snapping holds by construction rather than by repair. A single declared unit, coordinate-reference and status contract is machine-checked before any scoring, which removes the 270 unit-mismatch warnings and the 0/10 environment-interface score observed in a prior round. Environment exposure is published as an explicitly labelled ordinal 0-100 proxy over a 54-cell grid: no dose-response coefficient was retrieved, so no health-effect claim is made. Ranking uses five fixed-weight dimensions with seed 1234 and is compared against a shortest-path baseline in the same graph. The resulting product is served locally and graded against a 12-item visible product matrix at desktop and 500x700 mobile viewports. We report gate outcomes as measured, including the gates that could not be evaluated without credentials, and we record the divergence between workflow-stage completion and engineering-quality completion as a first-class result rather than an operational detail.",
+  "methods": [
+    "Public data acquisition with mirror rotation, retry backoff and bbox chunking after district-wide area queries returned HTTP 502",
+    "Boundary ring assembly by snapped endpoint chaining of all outer member ways",
+    "Graph-based route generation with topology-constrained cycle search",
+    "Contract-first unit/CRS/status declaration checked before scoring",
+    "Deterministic five-dimension scoring with fixed weights and a fixed seed",
+    "Baseline comparison against shortest-path, first-candidate, random-candidate and environment-only rankings",
+    "Frozen blind checkpoint before any consultation of the online reference product"
+  ],
+  "experiments": [
+    {
+      "experiment_id": "EXP-1",
+      "hypothesis_id": "H1",
+      "design": "Generate and gate the full 90-route portfolio; report every gate as pass/fail/not_applicable.",
+      "primary_metric": "accepted route count and spatial gate pass rate"
+    },
+    {
+      "experiment_id": "EXP-2",
+      "hypothesis_id": "H2",
+      "design": "Run the environment contract check over the 54-cell grid joined to the 90 routes.",
+      "primary_metric": "unit_mismatch_count and ID set symmetric difference"
+    },
+    {
+      "experiment_id": "EXP-3",
+      "hypothesis_id": "H3",
+      "design": "Compare the selected route against B0-B3 in each of the 9 mode x band cells with seed 1234 and 95% bootstrap.",
+      "primary_metric": "detour_pass_rate, environment_win_rate, preference_win_rate"
+    },
+    {
+      "experiment_id": "EXP-4",
+      "hypothesis_id": "H4",
+      "design": "Serve the local product and run desktop plus 500x700 mobile browser acceptance against the 12-item matrix.",
+      "primary_metric": "product_matrix_pass count and per-viewport evidence"
+    }
+  ],
+  "results": "pending_execution",
+  "references": [
+    {
+      "reference_id": "SRC-001",
+      "citation": "OpenStreetMap contributors. Relation 1278188: 徐汇区 / Xuhui District, Shanghai. https://www.openstreetmap.org/relation/1278188 (accessed 2026-09-02). Licence ODbL 1.0."
+    },
+    {
+      "reference_id": "SRC-002",
+      "citation": "Overpass API. https://overpass-api.de/api/interpreter (accessed 2026-09-02). Data (c) OpenStreetMap contributors, ODbL 1.0."
+    },
+    {
+      "reference_id": "SRC-005",
+      "citation": "AI_Scientist project team. optimize-xuhui-routes skill and route-quality-contract.md. Repository internal quality contract (accessed 2026-09-02)."
+    },
+    {
+      "reference_id": "SRC-006",
+      "citation": "AI_Scientist project team. Qwen-Harness JSON Schemas. Qwen-Harness/schemas/ (accessed 2026-09-02)."
+    }
+  ],
+  "reference_honesty_note": "No DOI, PMID, arXiv identifier or bibliographic entry is listed, because no literature retrieval was executed in this run. Every reference above is a data source or a repository contract that was actually read. Sources that were attempted and failed, or never contacted, are registered in sources/source_registry.jsonl with an explicit access_status.",
+  "evidence_map": {
+    "EV-001": [
+      "SRC-001"
+    ],
+    "EV-002": [
+      "SRC-002",
+      "SRC-005"
+    ],
+    "EV-003": [
+      "SRC-007",
+      "SRC-008"
+    ],
+    "EV-004": [
+      "SRC-005"
+    ],
+    "EV-005": [
+      "SRC-006"
+    ]
+  },
+  "limitations": [
+    "GAP-001: no dose-response evidence, so the environment score is ordinal only and must never be read as a health-risk estimate.",
+    "GAP-002: the OSM boundary is the sole reference; no independent boundary was available for cross-validation (DataV.GeoAtlas returned HTTP 404).",
+    "GAP-003: the AMap-distance vs geometry-length <= 3% gate is not_applicable_no_credentials.",
+    "GAP-004: no live weather, AQI or pollen observation; the related pause thresholds are declared but report no_data.",
+    "Self-grading: the product matrix is assessed by the same agent that built the product; the mitigation is the frozen blind checkpoint, not an independent reviewer.",
+    "Single boundary source plus single road source means a systematic OSM error would propagate undetected."
+  ],
+  "reproducibility": {
+    "seed": 1234,
+    "deterministic": true,
+    "network_at_scoring_time": false,
+    "entry_point": "workspace/source/ (see reports/复现说明.md)",
+    "environment": "Python 3.11, uv, pytest, Ruff, Pyright, Node.js v24; no paid model call; provider=qoder_session, model_name=qwen3.8-max"
+  },
+  "data_snapshot_hashes": {
+    "osm_xuhui_admin_relation.json": "3fec446326409ab53345a3cbb2f8b02f6a3c58298ca72c47136049bc78807a6f",
+    "osm_xuhui_highways.json": null,
+    "osm_xuhui_pois.json": null,
+    "xuhui_boundary.geojson": "f4c5782b8d14bf34898414e446e643fb662db736c2c40fe7c6e62e71bd5ae5e6"
+  }
+}

@@ -1,0 +1,37 @@
+warning: `VIRTUAL_ENV=<repo_root>\Qwen-Harness\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+   Building evaluation-model-qwen @ <run_root>/workspace/source/evaluation_model_qwen
+  × Failed to build `evaluation-model-qwen @
+  │ <run_root>/workspace/source/evaluation_model_qwen`
+  ├─▶ The build backend returned an error
+  ╰─▶ Call to `hatchling.build.build_editable` failed (exit code: 1)
+
+      [stderr]
+      Traceback (most recent call last):
+        File "<string>", line 11, in <module>
+        File
+      "<user_home>\AppData\Local\uv\cache\builds-v0\.tmp1RGU1X\Lib\site-packages\hatchling\build.py",
+      line 83, in build_editable
+          return os.path.basename(next(builder.build(directory=wheel_directory,
+      versions=["editable"])))
+
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File
+      "<user_home>\AppData\Local\uv\cache\builds-v0\.tmp1RGU1X\Lib\site-packages\hatchling\builders\plugin\interface.py",
+      line 92, in build
+          self.metadata.validate_fields()
+        File
+      "<user_home>\AppData\Local\uv\cache\builds-v0\.tmp1RGU1X\Lib\site-packages\hatchling\metadata\core.py",
+      line 267, in validate_fields
+          self.core.validate_fields()
+        File
+      "<user_home>\AppData\Local\uv\cache\builds-v0\.tmp1RGU1X\Lib\site-packages\hatchling\metadata\core.py",
+      line 1444, in validate_fields
+          getattr(self, attribute)
+        File
+      "<user_home>\AppData\Local\uv\cache\builds-v0\.tmp1RGU1X\Lib\site-packages\hatchling\metadata\core.py",
+      line 537, in readme
+          raise OSError(message)
+      OSError: Readme file does not exist: README.md
+
+
+hint: Build failures usually indicate a problem with the package or the build environment

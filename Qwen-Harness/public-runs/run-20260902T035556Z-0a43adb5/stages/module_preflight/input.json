@@ -1,0 +1,11 @@
+{
+  "stage": "module_preflight",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.workflow.stages:module_preflight_stage",
+  "dependencies": {
+    "project_generation": "2e3fede826b266e15cef2a99856470c258af2f24b7b06467020bfdec777408e5"
+  },
+  "prepared_at": "2026-09-02T06:24:00.101989+00:00"
+}

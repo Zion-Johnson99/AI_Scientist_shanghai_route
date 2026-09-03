@@ -1,0 +1,11 @@
+{
+  "stage": "final_validation",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.workflow.stages:final_validation_stage",
+  "dependencies": {
+    "web_payload": "5b3298710ddd8f6b15b0195466289bbc1bf4d77bc4ef79bc6321f34929b5781d"
+  },
+  "prepared_at": "2026-09-02T06:58:08.286792+00:00"
+}

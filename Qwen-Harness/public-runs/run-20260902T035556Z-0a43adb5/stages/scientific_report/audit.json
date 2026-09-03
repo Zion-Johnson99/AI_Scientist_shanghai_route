@@ -1,0 +1,53 @@
+{
+  "handler": "qwen_harness.agents.report_agent:stage_handler",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 155958.3,
+  "status": "passed",
+  "summary": "科学计划就绪：参考文献 6 条",
+  "artifacts": [
+    "stages/scientific_report/model_call.json",
+    "reports/scientific_plan.json",
+    "reports/full_run_report.md"
+  ],
+  "offline": false,
+  "audited_at": "2026-09-02T06:58:07.893664+00:00",
+  "gate_result": {
+    "gate": "citation",
+    "passed": true,
+    "checks": [
+      {
+        "name": "references_deduplicated",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "reference_identifier_format",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "evidence_map_traceable",
+        "passed": true,
+        "detail": null
+      }
+    ],
+    "summary": "科学计划引用核验通过"
+  },
+  "model_audit": {
+    "stage": "scientific_report",
+    "model": "qwen3.8-max",
+    "created_at": "2026-09-02T06:58:07.671374Z",
+    "request_id": "chatcmpl-245dea8e-3061-92fe-a0ae-f91a5c27b344",
+    "latency_ms": 154131.4,
+    "input_tokens": 41119,
+    "output_tokens": 6914,
+    "prompt_version": "d72d1334205d",
+    "reasoning_effort": "medium",
+    "skill_hashes": {
+      "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+      "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc"
+    },
+    "error_type": null
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "handler": "qwen_harness.workflow.stages:final_validation_stage",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 52.4,
+  "status": "passed",
+  "summary": "最终门禁通过",
+  "artifacts": [],
+  "offline": false,
+  "audited_at": "2026-09-02T06:58:08.369671+00:00",
+  "gate_result": {
+    "gate": "publish",
+    "passed": true,
+    "checks": [
+      {
+        "name": "schema_version",
+        "passed": true,
+        "detail": "schema_version=1.0"
+      },
+      {
+        "name": "selected_route_exists",
+        "passed": true,
+        "detail": "selected_route=None"
+      },
+      {
+        "name": "no_absolute_paths",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "no_sensitive_tokens",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "references_https_or_local",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "artifacts_relative_or_url",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "generated_project_functional_score",
+        "passed": true,
+        "detail": "生成工程功能契约得分 90/100（门槛 85）"
+      }
+    ],
+    "summary": "全部检查通过"
+  }
+}

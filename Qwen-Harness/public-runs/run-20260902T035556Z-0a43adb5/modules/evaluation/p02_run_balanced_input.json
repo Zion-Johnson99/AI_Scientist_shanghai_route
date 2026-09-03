@@ -1,0 +1,9 @@
+{
+  "case_id": "P02_run_balanced",
+  "route_mode": "run",
+  "goal": "balanced",
+  "target_distance_m": 5000,
+  "sensitivities": [],
+  "interests": [],
+  "notes": "跑步平衡画像，无敏感项与偏好项"
+}

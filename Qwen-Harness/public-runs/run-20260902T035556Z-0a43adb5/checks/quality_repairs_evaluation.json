@@ -1,0 +1,405 @@
+{
+  "provenance": "qwen",
+  "repairs": [
+    {
+      "round": 1,
+      "issue": {
+        "check": "evaluation_models_contract",
+        "summary": "统一评价模块的数据模型契约",
+        "details": "pytest 收集失败：ImportError: cannot import name EnvironmentBlock。请完整重写当前 models.py，使其成为其余生成模块和现有生成测试的单一数据契约。需要定义 EnvironmentBlock(value,unit,estimated)、EnvironmentRouteRecord(route_id,pm2_5,noise,pollen_daily)、EnvironmentRecord 兼容名称、EnvironmentDashboard(metadata,current,forecast,routes,route_records)、EnvironmentData(temperature_c,feels_like_c,precipitation_mm,wind_gust_ms,aqi,可选 pm25)、RouteEntry(route_id,route_name,route_mode,distance_m,validation_status,geometry_status，并允许路线扩展字段)、UserProfile、RiskAssessment(paused,reasons,thresholds_applied)、ScoredRoute，且 ScoredRoute 直接暴露 environment_health、sport_match、access_convenience、route_quality、interest_service、base_score。所有模型使用 Pydantic v2，枚举字段应能与普通字符串比较，支持 model_dump(mode=json)。请保持 CandidateScoreResult、CommandAudit、ModuleResult 可用。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/models.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/models.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:12:27.637357Z",
+        "request_id": "chatcmpl-5adc10b2-8b94-93c0-bbf5-ad36cc517734",
+        "latency_ms": 102533.2,
+        "input_tokens": 3887,
+        "output_tokens": 5533,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 2,
+      "issue": {
+        "check": "evaluation_scoring_contract",
+        "summary": "统一风险判断与五维评分实现",
+        "details": "请完整重写当前 scoring.py，与已生成 models.py 和 tests/test_scoring.py 契约一致。evaluate_risk 只接收一个 EnvironmentData，返回 RiskAssessment，安全条件 paused=False，危险条件 paused=True 且 reasons 非空；AQI 210、降水 12、阵风 18、体感温度 41 均触发暂停，原因包含指标名。score_routes 签名为 (routes: list[RouteEntry], env_records: list[EnvironmentRouteRecord], profile: UserProfile, weights: dict[str,float]) -> list[ScoredRoute]。它需为所有路线输出五个 0..100 的直接字段并计算 base_score，按分数降序；缺失环境记录仍评分；环境权重提高时清洁路线与污染路线的分差要扩大；权重正负 30% 扰动可改变总分。只依赖生成评价模块，日志包含上下文，空输入返回空列表。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/scoring.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/scoring.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:14:33.542578Z",
+        "request_id": "chatcmpl-ec7d4df5-5afc-9ca9-b921-990a72992c0a",
+        "latency_ms": 82009.1,
+        "input_tokens": 4061,
+        "output_tokens": 4336,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 3,
+      "issue": {
+        "check": "evaluation_constraints_contract",
+        "summary": "统一硬约束与安全阈值接口",
+        "details": "请完整重写 constraints.py，与 models.py、scoring.py、生成测试以及 service/cli 调用契约一致。对外提供 apply_hard_constraints(routes: list[RouteEntry], profile: UserProfile, environment: EnvironmentData|dict|None=None, detour_limit: float=0.20) -> list[RouteEntry]，按路线模式相同、目标距离偏差不超过含边界 15% 过滤，空输入返回空列表；不要把 detour_limit 错当距离容差。还需导出 evaluate_safety_thresholds，接收 EnvironmentData 或 dict，返回 RiskAssessment；可保留 evaluate_safety 别名供内部调用。代码不得依赖外部项目。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/constraints.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/constraints.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:16:23.358619Z",
+        "request_id": "chatcmpl-5c0ecaed-1991-9a75-b720-593030e118be",
+        "latency_ms": 70041.7,
+        "input_tokens": 3585,
+        "output_tokens": 3489,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 4,
+      "issue": {
+        "check": "evaluation_service_contract",
+        "summary": "统一评价服务与 score-candidates 主实现",
+        "details": "请完整重写 service.py，以生成模块自身的 loaders、constraints、scoring 为唯一评分实现。score_candidates 对外签名必须接受 profile_path、weights_path、route_catalog_path、environment_dashboard_path 四个 Path 或字符串；读取 profile 后返回 CandidateScoreResult，候选含 route_id、route_mode、base_score 以及 scores 字典中的五维分数，candidate_count 与列表长度相等，weights_sha256 为 64 位小写十六进制。缺文件抛 FileNotFoundError；模式无匹配或距离超差返回成功空列表。recommend 接受 UserProfile 与可选数据路径，调用同一 score_candidates/评分管线，返回 API 可用的非空 recommendations、risk_assessment、paused 字段。默认路径定位到当前生成 source 下 xuhui_route_builder/data/web。严禁复制评分算法、严禁本地评分后备、严禁外部项目导入。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/service.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/service.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:19:12.955494Z",
+        "request_id": "chatcmpl-4ee28ad2-9ee1-9729-8d1a-2ec88455695a",
+        "latency_ms": 105113.5,
+        "input_tokens": 3696,
+        "output_tokens": 5692,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 5,
+      "issue": {
+        "check": "evaluation_api_contract",
+        "summary": "修复 FastAPI 健康检查与推荐接口",
+        "details": "请完整重写 api.py，保留 FastAPI app，并让 GET /api/v1/health 返回 HTTP 200 和 status=ok。POST /api/v1/recommendations 接收 route_mode、goal、target_distance_m、sensitivities、interests 等用户画像，调用当前生成 service.recommend 的主实现，使用当前生成项目默认数据，正常 walk/3000 请求返回 HTTP 200、status=ok、recommendations 非空；安全暂停可返回 status=paused。响应需包含 recommendations、risk_assessment、paused，错误用 HTTPException 并记录上下文。不得嵌入评分算法、不得使用本地评分后备、不得引用外部项目。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/api.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/api.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:21:02.859872Z",
+        "request_id": "chatcmpl-7836ca77-1231-96a9-afb5-bdab541d82c6",
+        "latency_ms": 39864.3,
+        "input_tokens": 3096,
+        "output_tokens": 1934,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 6,
+      "issue": {
+        "check": "evaluation_bridge_main_only",
+        "summary": "移除评分桥接中的本地算法后备",
+        "details": "请完整重写评分桥接脚本，作为可独立执行的窄适配器。命令行参数仅需 --profile、--weights、--route-catalog、--environment-dashboard；运行在生成 evaluation_model_qwen 的 uv 环境中，直接导入并调用 evaluation_model_qwen.service.score_candidates(profile_path=..., weights_path=..., route_catalog_path=..., environment_dashboard_path=...)，将返回 Pydantic 模型 model_dump(mode=json) 后输出单个 UTF-8 JSON 对象。校验 candidate_count 与 candidates 长度、每个候选五维 scores 或 dimension_scores 完整且 0..100。失败写 stderr 并退出 2。文件中严禁实现任何评分公式、DEFAULT_WEIGHTS、_score_candidates_local、subprocess 重试、外部项目导入或本地评分后备；生成 evaluation service 是唯一业务实现。",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py"
+        ]
+      },
+      "target_file": "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:22:22.822579Z",
+        "request_id": "chatcmpl-a0b9d62e-ae1d-968d-a258-300b65561062",
+        "latency_ms": 38823.9,
+        "input_tokens": 3616,
+        "output_tokens": 1902,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 7,
+      "issue": {
+        "check": "evaluation_models_test_feedback",
+        "summary": "根据 33 项失败修正数据模型",
+        "details": "反馈测试显示 models 字段仍阻塞服务。请修正当前 models.py：EnvironmentBlock.value 允许 None；EnvironmentDashboard.forecast 允许 dict 或 list；UserProfile.route_mode 使用非空 str，以便 swim 等无候选模式能正常进入过滤，goal/sensitivities/interests 同样保持普通字符串集合语义；RiskAssessment.thresholds_applied 接受 dict[str,float]；ScoredRoute 保留 route_name、route_mode、distance_m 和五个直接分数字段，并提供 scores: dict[str,float]（可由五个字段自动填充），供 service 与 JSON 输出使用；CandidateScoreResult.candidates 声明为 list[ScoredRoute]，candidate_count 校验列表长度，data_generated_at 接受字符串并有有效默认值。EnvironmentRecord 与 EnvironmentRouteRecord 的字段契约保持，RouteEntry 允许额外字段。不要增加评分算法。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/models.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/models.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:24:17.963670Z",
+        "request_id": "chatcmpl-56653c97-49d1-9726-a601-7cf820cc0612",
+        "latency_ms": 64268.8,
+        "input_tokens": 3699,
+        "output_tokens": 3446,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 8,
+      "issue": {
+        "check": "evaluation_scoring_test_feedback",
+        "summary": "根据测试回溯修正风险与评分字段访问",
+        "details": "反馈回溯：evaluate_risk 访问不存在的 EnvironmentData.feels_like_temp；应访问 feels_like_c。环境路线的 pm2_5/noise/pollen_daily 是 EnvironmentBlock，应读取 .value 并处理 None。路线扩展字段可能缺失，应通过 getattr(route,name,default) 安全读取。请修正 scoring.py，保持 evaluate_risk(EnvironmentData) 单参数；score_routes(routes, env_records, profile, weights)；ScoredRoute 输出中写入原路线 route_name、route_mode、distance_m、五个直接分数和 scores 字典。权重计算不要重新归一化到恒定和导致正负 30% 单维权重扰动失效：按输入权重直接加权，合理限制 0..100；环境权重增加时清洁与污染路线分差扩大。仅实现评分，不复制服务逻辑。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/scoring.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/scoring.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:25:38.508640Z",
+        "request_id": "chatcmpl-36631d06-dcf4-945c-824c-453d1157d8a8",
+        "latency_ms": 61103.0,
+        "input_tokens": 4070,
+        "output_tokens": 3406,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 9,
+      "issue": {
+        "check": "evaluation_constraints_test_feedback",
+        "summary": "根据测试回溯修正硬约束字段",
+        "details": "反馈回溯明确显示 apply_hard_constraints 仍读取不存在的 profile.mode。请修正 constraints.py：始终读取 profile.route_mode；输入 routes 同时兼容 RouteEntry 与 ScoredRoute，并返回同类型对象；使用 route.route_mode 与 route.distance_m；目标距离偏差阈值固定为含边界 0.15，detour_limit 仅在显式 baseline_distance_m 存在时使用。evaluate_safety_thresholds 需委托 scoring.evaluate_risk 或以同一 EnvironmentData 字段工作，避免字段名分叉。不得修改模型、评分或服务逻辑。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/constraints.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/constraints.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:26:47.409886Z",
+        "request_id": "chatcmpl-54b637eb-eb8a-931a-90bf-eda83e438944",
+        "latency_ms": 50104.7,
+        "input_tokens": 3714,
+        "output_tokens": 2669,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 10,
+      "issue": {
+        "check": "evaluation_api_unsupported_offline",
+        "summary": "移除 API 对 service.recommend 的无效参数",
+        "details": "最小 TestClient 失败回溯：api.py 第 79 行调用 recommend(profile=profile, offline=True)，但当前生成 service.recommend 不接受 offline，POST 返回 500。仅修当前 api.py：调用 recommend(profile=profile) 或其现有受支持参数；GET health 保持 200；正常 walk/3000 推荐将 service 返回映射为 status=ok、recommendations 非空、risk_assessment 和 paused。不得修改评分逻辑，不得添加后备。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/api.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/api.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:32:10.635595Z",
+        "request_id": "chatcmpl-a9b0cbea-9ffc-9409-94ad-dbf1fd20cc16",
+        "latency_ms": 21655.6,
+        "input_tokens": 3024,
+        "output_tokens": 1109,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 11,
+      "issue": {
+        "check": "models_missing_target_distance",
+        "summary": "UserProfile 字段与测试不一致",
+        "details": "最小失败测试构造 UserProfile(target_distance_m=3000)，当前 Pydantic 因 extra=ignore 丢弃它，只保留 max_distance_m=None，随后 scoring 访问 target_distance_m 抛 AttributeError。请只修 models.py：UserProfile 必须显式定义 target_distance_m: float 且 gt=0，删除 max_distance_m；保留 case_id、route_mode:str、goal:str、sensitivities:list[str]、interests:list[str]、origin_lat/lng。RiskAssessment 对外字段固定 paused:bool、reasons:list[str]、thresholds_applied:dict、level；可加只读 risk_level 属性返回 level.value 供约束层。不要改其余已正确模型。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/models.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/models.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:33:57.589364Z",
+        "request_id": "chatcmpl-fd666118-f058-9b6e-a956-cb3e0b49c1ae",
+        "latency_ms": 60107.2,
+        "input_tokens": 3601,
+        "output_tokens": 3193,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 12,
+      "issue": {
+        "check": "models_removed_required_types",
+        "summary": "models 修复误删核心类型",
+        "details": "最新最小测试收集失败：cannot import name ScoredRoute。请完整重写 models.py，文件必须同时定义并导出以下全部类型，禁止用另一套五维命名替换：EnvironmentBlock(value:float|None, unit:str, estimated:bool, status可选)；EnvironmentRouteRecord(route_id,pm2_5,noise,pollen_daily) 与 EnvironmentRecord；EnvironmentRoutes(items)；EnvironmentDashboard(metadata,current,forecast可为dict或list,routes,route_records)；EnvironmentData(temperature_c,feels_like_c,precipitation_mm,wind_gust_ms,aqi,pm25可选)；RouteEntry(route_id,route_name,route_mode,distance_m,validation_status,geometry_status,extra allow)；RiskAssessment(paused,reasons,thresholds_applied dict,level，并有 risk_level 属性)；UserProfile(case_id可选默认None, route_mode:str, goal:str默认balanced,target_distance_m:float gt0,sensitivities:list[str],interests:list[str],origin可选,extra allow)；ScoredRoute(route_id,route_name,route_mode,distance_m,base_score,environment_health,sport_match,access_convenience,route_quality,interest_service,scores字典自动包含这五项，所有分数0..100)；CandidateScoreResult(profile:dict,risk:dict,data_generated_at:str,candidate_count,candidates:list[ScoredRoute],weights_sha256，校验数量相等)；CommandAudit 与 ModuleResult 可保留。不要定义 safety/environment/scenery/convenience/distance_fit 那套 0..1 分数。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/models.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/models.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:36:02.415339Z",
+        "request_id": "chatcmpl-2baf8490-369b-99f2-80d0-38e2b47c3474",
+        "latency_ms": 58892.1,
+        "input_tokens": 3795,
+        "output_tokens": 3234,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 13,
+      "issue": {
+        "check": "scoring_service_contract",
+        "summary": "统一 ScoredRoute 与 EnvironmentDashboard 调用",
+        "details": "最小测试当前只剩 ScoredRoute 错误：scoring 构造 total_score 并按 total_score 排序，但模型字段为 base_score，导致 base_score=0 且 AttributeError。请完整修正 scoring.py：构造和排序均只用 base_score；保留五个直接字段与 scores。evaluate_risk 需兼容 evaluate_risk(EnvironmentData) 测试，也兼容 service/cli 的 evaluate_risk(EnvironmentDashboard, profile) 调用：若输入 Dashboard，从 current 读取 temperature_c、feels_like_c（缺失时取 temperature_c）、precipitation_mm、wind_gust_ms（缺失时取 wind_speed_ms）、aqi、pm25（pm2_5_ug_m3），缺值用安全默认。score_routes 第二参数同时接受 list[EnvironmentRouteRecord] 或 EnvironmentDashboard，后者取 route_records。profile 可选参数只用于敏感性，不改变安全阈值。不得嵌入服务或后备逻辑。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/scoring.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/scoring.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:38:58.432072Z",
+        "request_id": "chatcmpl-b5e3a937-0007-9781-8ee1-592a01b092d4",
+        "latency_ms": 122788.2,
+        "input_tokens": 4028,
+        "output_tokens": 6300,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    },
+    {
+      "round": 14,
+      "issue": {
+        "check": "scoring_missing_weights_parameter",
+        "summary": "score_routes 缺少第四个 weights 参数",
+        "details": "最小测试明确失败：TypeError score_routes() takes 3 positional arguments but 4 were given。只修 scoring.py 的 score_routes：签名严格为 score_routes(routes, environment, profile, weights)，第四参数 weights:dict[str,float] 必填；environment 保持兼容 EnvironmentDashboard 或记录列表。base_score 必须按五维输入权重计算，采用 sum(score*weight)/sum(weight)；测试会把 environment_health 权重改为 0.6，需让清洁与污染路线分差扩大，也会单维正负30%扰动，分数需发生变化。结果仍按 base_score 降序。不得改变 evaluate_risk 已通过的行为。",
+        "severity": "error",
+        "files": [
+          "evaluation_model_qwen/src/evaluation_model_qwen/scoring.py"
+        ]
+      },
+      "target_file": "evaluation_model_qwen/src/evaluation_model_qwen/scoring.py",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:40:38.523175Z",
+        "request_id": "chatcmpl-18c5a05a-ed05-9975-b256-72a6f7aac76e",
+        "latency_ms": 64089.9,
+        "input_tokens": 3849,
+        "output_tokens": 3562,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {},
+        "error_type": null
+      }
+    }
+  ],
+  "validation": {
+    "pytest": {
+      "command": "uv run --directory workspace/source/evaluation_model_qwen --extra dev --frozen pytest -q",
+      "passed": false,
+      "passed_count": 13,
+      "failed_count": 27,
+      "summary": "27 failed, 13 passed in 7.63s"
+    },
+    "api": {
+      "command": "TestClient GET /api/v1/health and POST /api/v1/recommendations",
+      "health_status": 200,
+      "health_body": {
+        "status": "ok",
+        "version": "0.1.0"
+      },
+      "recommendations_status": 500,
+      "recommendations_non_empty": false,
+      "error": "recommend() got an unexpected keyword argument offline"
+    },
+    "bridge": {
+      "passed": false,
+      "fallback_markers_found": false,
+      "error": "score_candidates raised: evaluate_risk() takes 1 positional argument but 2 were given"
+    },
+    "repair_budget": {
+      "initial_repairs": 6,
+      "feedback_repairs": 3,
+      "exhausted": true
+    },
+    "remaining_root_causes": [
+      "cli/service pass EnvironmentDashboard and profile into single-argument evaluate_risk",
+      "constraints accesses RiskAssessment.risk_level though model exposes level/paused",
+      "UserProfile generated field is max_distance_m while tests and scoring require target_distance_m",
+      "api passes unsupported offline keyword to service.recommend"
+    ]
+  }
+}

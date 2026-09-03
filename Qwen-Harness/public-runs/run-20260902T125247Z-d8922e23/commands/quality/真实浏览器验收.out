@@ -1,0 +1,11 @@
+[serve] "GET /index.html HTTP/1.1" 200 -
+[serve] "GET /styles.css HTTP/1.1" 200 -
+[serve] "GET /app.js HTTP/1.1" 200 -
+[serve] "GET /map.js HTTP/1.1" 200 -
+[serve] "GET /data/app_payload.json HTTP/1.1" 200 -
+asset /index.html status=200 bytes=16119
+asset /styles.css status=200 bytes=21935
+asset /app.js status=200 bytes=56862
+asset /map.js status=200 bytes=18002
+asset /data/app_payload.json status=200 bytes=16246288
+BROWSER_ACCEPTANCE_PASSED=true

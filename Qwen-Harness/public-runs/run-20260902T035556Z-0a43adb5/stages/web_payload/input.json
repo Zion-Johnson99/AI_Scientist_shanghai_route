@@ -1,0 +1,11 @@
+{
+  "stage": "web_payload",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.reporting.web_payload:stage_handler",
+  "dependencies": {
+    "scientific_report": "a40afcc71c8a6949959fd128c94bdf6658067736a5879db109a17acce16005a2"
+  },
+  "prepared_at": "2026-09-02T06:58:08.013706+00:00"
+}

@@ -1,0 +1,11 @@
+{
+  "stage": "problem_framing",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.agents.problem_framer:stage_handler",
+  "dependencies": {
+    "initialize": "35cdce26f84fc2a8251940ef9e43f14f7f8ec0526064a9033c9bb8ed3651f342"
+  },
+  "prepared_at": "2026-09-02T03:57:16.385752+00:00"
+}

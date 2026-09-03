@@ -1,0 +1,440 @@
+{
+  "summary": "从空工作区规划四个顶层目录的完整工程：Qwen-Harness 提供科研闭环编排与实验引擎；evaluation_model_qwen 提供硬约束过滤、五维评分与 score-candidates 窄接口；weather_api_data 提供多源环境数据流水线与快照导出；xuhui_route_builder 提供 90 条路线数据、环境 dashboard、地图网页与本地启动。全部 90 条路线、90 项 GeoJSON Feature 和 90 条环境记录属于本轮生成文件。",
+  "technology_choices": [
+    "Python 3.11+ 标准库 + Pydantic v2（结构化模型与校验）",
+    "uv 作为包管理器与虚拟环境工具",
+    "原生 HTML / CSS / JavaScript（无前端框架）",
+    "Leaflet CDN 用于地图渲染",
+    "Node.js 内置 test runner 用于前端契约测试",
+    "pytest 用于 Python 测试",
+    "ruff 用于 lint 与 format",
+    "JSON 作为全部数据交换格式",
+    "PowerShell 脚本用于本地启动入口"
+  ],
+  "integration_contracts": [
+    "route_catalog.json 顶层为 90 项数组，walk/run/bike 各 30，每项含 route_id、route_name、route_mode、validation_status、geometry_status；xuhui_routes.geojson 为 FeatureCollection 含 90 个 Feature，properties.route_id 与目录一致",
+    "environment_dashboard.json 顶层含 metadata、current、forecast、routes；routes.items 为 90 项，逐项含 route_id、pm2_5、noise、pollen_daily 及语义字段（unit、estimated、status）",
+    "evaluation_model_qwen 的 score-candidates CLI 接收 --profile、--weights、--route-catalog、--environment-dashboard 参数，输出 JSON 含 profile、risk、data_generated_at、candidate_count、candidates（每项含 route_id 与五维分数）、weights_sha256",
+    "Qwen-Harness 通过 adapters/evaluation_score_candidates.py 以子进程方式调用 evaluation_model_qwen 的 score-candidates 命令，解析其 JSON 输出",
+    "Qwen-Harness 通过 adapters 读取 xuhui_route_builder/data/web/ 下的路线与环境快照并计算 SHA256",
+    "web/index.html 从 data/web/ 相对路径加载 route_catalog.json、xuhui_routes.geojson、environment_dashboard.json，无需构建步骤",
+    "launch-local.ps1 启动本地 HTTP 服务器服务 xuhui_route_builder/web/ 目录，浏览器访问即可使用地图",
+    "实验引擎冻结环境快照与权重文件哈希，运行期校验一致性，不一致则停止并上报"
+  ],
+  "files": [
+    {
+      "path": "Qwen-Harness/pyproject.toml",
+      "purpose": "Harness 包定义，声明 qwen-harness CLI 入口点、依赖（pydantic、click）与 dev extras（pytest、ruff、pyright）",
+      "acceptance_criteria": [
+        "uv sync --directory Qwen-Harness 成功",
+        "qwen-harness --help 输出帮助信息"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/config/harness.json",
+      "purpose": "全局配置：模型参数（qwen3.8-max、temperature=0.2、seed=1234、reasoning_effort=medium）、运行目录、权限默认值",
+      "acceptance_criteria": [
+        "JSON 可解析",
+        "含 model、temperature、seed、reasoning_effort、runtime_dir 字段"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/config/experiment_variants.json",
+      "purpose": "预注册实验变体配置：5 个变体（B0–B3、M1）的权重扰动规则、维度列表、扰动幅度（±30%）",
+      "acceptance_criteria": [
+        "JSON 可解析",
+        "含 5 个变体定义，每个含 variant_id、dimension、direction、magnitude"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/config/quality_gates.json",
+      "purpose": "实验门禁阈值：Jaccard≥0.6、Spearman≥0.85、constraint_pass_rate 差异为 0、最小候选数 5、最大失败维度数 2",
+      "acceptance_criteria": [
+        "JSON 可解析",
+        "含 jaccard_threshold、spearman_threshold、max_failed_dimensions、min_candidates 字段"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/config/workflows/full-research.json",
+      "purpose": "完整研究工作流定义：阶段顺序（goal→evidence→hypothesis→experiment→analysis→publish）、每阶段输入输出 Schema 引用",
+      "acceptance_criteria": [
+        "JSON 可解析",
+        "阶段列表含 experiment 与 publish",
+        "每阶段含 stage_id、input_schema、output_schema"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/src/qwen_harness/cli.py",
+      "purpose": "CLI 入口：run、resume、status、report、publish、doctor、validate、list-runs 子命令；解析 --goal、--workflow、--offline 等参数",
+      "acceptance_criteria": [
+        "qwen-harness run --offline --goal 'test' 可执行（离线模式）",
+        "退出码符合契约（0-5）",
+        "--help 列出全部子命令"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/src/qwen_harness/run_store.py",
+      "purpose": "运行目录管理：创建 run 目录、写入 run_manifest.json、state.json、lock.json、events.jsonl；原子写入（临时文件→flush→fsync→os.replace）",
+      "acceptance_criteria": [
+        "创建运行目录后 run_manifest.json 含 run_id、created_at、git_head、harness_version",
+        "state.json 含当前阶段与状态",
+        "原子写入测试通过（模拟中断后文件完整）"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/src/qwen_harness/workflow/engine.py",
+      "purpose": "工作流引擎：按阶段顺序驱动执行、状态转换、断点恢复（已通过阶段输入哈希未变则跳过）、门禁检查",
+      "acceptance_criteria": [
+        "离线端到端测试通过",
+        "中断后 resume 从最近成功阶段继续",
+        "输入哈希变化时重新执行该阶段"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+      "purpose": "评价模块适配器：构造 score-candidates 子进程命令、解析 JSON 输出、校验五维分数完整性、记录 CommandAudit",
+      "acceptance_criteria": [
+        "调用 evaluation_model_qwen score-candidates 并成功解析输出",
+        "输出缺少任一维度分时抛出契约违规异常",
+        "记录命令、参数、退出码与耗时"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/src/qwen_harness/adapters/route_snapshot.py",
+      "purpose": "路线模块适配器：读取 route_catalog.json 与 xuhui_routes.geojson、校验 90 条与模式分布、计算 SHA256、复制到 run 目录",
+      "acceptance_criteria": [
+        "校验通过时返回 RouteModuleResult 含 total=90、模式分布、哈希",
+        "路线数不符时返回 error 状态"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/src/qwen_harness/adapters/environment_snapshot.py",
+      "purpose": "环境模块适配器：读取 environment_dashboard.json、校验 90 条路线覆盖与语义字段、计算 SHA256、复制到 run 目录",
+      "acceptance_criteria": [
+        "校验通过时返回含 90 条路线环境数据的快照结果",
+        "缺失字段时标记 partial 并列出缺失项"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/src/qwen_harness/experiment/runner.py",
+      "purpose": "实验引擎：加载冻结快照与权重、对 9 画像×5 维度×2 方向执行扰动、调用 score-candidates、收集排序结果",
+      "acceptance_criteria": [
+        "对单个画像单维度扰动可产出候选排序",
+        "冻结快照哈希不一致时停止并上报",
+        "全部组合执行后输出结构化结果"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/src/qwen_harness/experiment/metrics.py",
+      "purpose": "指标计算：Jaccard top-5、Spearman 秩相关、维度方差、约束通过率、候选数；统计摘要（中位数、IQR、bootstrap 区间，seed=1234）",
+      "acceptance_criteria": [
+        "Jaccard 计算对已知集合返回正确值",
+        "Spearman 对完全一致排序返回 1.0",
+        "bootstrap 使用固定 seed 可复现"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/src/qwen_harness/experiment/gates.py",
+      "purpose": "门禁判定：按 quality_gates.json 阈值判定支持状态（supported/partially_supported/unsupported/inconclusive）、触发停止条件",
+      "acceptance_criteria": [
+        "全部通过时返回 supported",
+        "超过 2 个维度失败时返回 unsupported 并触发停止",
+        "候选数不足时标记样本不足并排除该组合"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/launch-local.ps1",
+      "purpose": "本地启动脚本：启动 Python HTTP 服务器服务 xuhui_route_builder/web/ 目录，输出访问地址",
+      "acceptance_criteria": [
+        "执行后浏览器可访问地图页面",
+        "服务器端口可配置",
+        "Ctrl+C 可正常退出"
+      ]
+    },
+    {
+      "path": "Qwen-Harness/tests/test_experiment_metrics.py",
+      "purpose": "指标计算单元测试：Jaccard、Spearman、方差、约束通过率的边界与正常用例",
+      "acceptance_criteria": [
+        "pytest 通过",
+        "覆盖空集、单元素、完全一致、完全不一致场景"
+      ]
+    },
+    {
+      "path": "evaluation_model_qwen/pyproject.toml",
+      "purpose": "评价模块包定义：声明 evaluation-model-qwen CLI 入口点、依赖（pydantic）、dev extras",
+      "acceptance_criteria": [
+        "uv sync --directory evaluation_model_qwen 成功",
+        "evaluation-model-qwen --help 输出帮助"
+      ]
+    },
+    {
+      "path": "evaluation_model_qwen/config/default_weights.json",
+      "purpose": "默认五维权重配置：environment_health、sport_match、access_convenience、route_quality、interest_service 各维度权重值",
+      "acceptance_criteria": [
+        "JSON 可解析",
+        "五个维度键齐全",
+        "权重和为 1.0（容差 0.001）"
+      ]
+    },
+    {
+      "path": "evaluation_model_qwen/src/evaluation_model_qwen/models.py",
+      "purpose": "数据模型：UserProfile、RiskAssessment、ScoredRoute、StrictModel、CandidateScoreResult（Pydantic BaseModel）",
+      "acceptance_criteria": [
+        "所有模型可实例化",
+        "CandidateScoreResult 含 profile、risk、data_generated_at、candidate_count、candidates、weights_sha256"
+      ]
+    },
+    {
+      "path": "evaluation_model_qwen/src/evaluation_model_qwen/constraints.py",
+      "purpose": "硬约束过滤：模式匹配、目标距离偏差≤15%、附加距离≤20%、安全阈值（PM2.5/AQI/温度/降水/阵风）",
+      "acceptance_criteria": [
+        "超出距离容差的路线被过滤",
+        "安全阈值超限时触发风险暂停",
+        "约束逻辑不受权重扰动影响"
+      ]
+    },
+    {
+      "path": "evaluation_model_qwen/src/evaluation_model_qwen/scoring.py",
+      "purpose": "五维评分：evaluate_risk 评估环境风险、score_routes 对通过硬约束的路线计算五维分数与加权总分",
+      "acceptance_criteria": [
+        "输出每条路线含五个维度分数",
+        "分数范围 0-100",
+        "加权总分等于各维度分数加权求和"
+      ]
+    },
+    {
+      "path": "evaluation_model_qwen/src/evaluation_model_qwen/loaders.py",
+      "purpose": "数据加载：load_data 读取 route_catalog.json 与 environment_dashboard.json，校验结构并返回类型化对象",
+      "acceptance_criteria": [
+        "加载 90 条路线成功",
+        "环境数据缺失时抛出明确异常",
+        "返回对象含路线列表与环境映射"
+      ]
+    },
+    {
+      "path": "evaluation_model_qwen/src/evaluation_model_qwen/service.py",
+      "purpose": "服务层：evaluation_root 定位数据目录、load_weights 加载权重文件、recommend 完整推荐链路、score_candidates 窄接口（复用 load_data/evaluate_risk/score_routes）",
+      "acceptance_criteria": [
+        "score_candidates 返回全部通过硬约束的候选",
+        "不调用 Qwen API",
+        "recommend 保持现有行为不变"
+      ]
+    },
+    {
+      "path": "evaluation_model_qwen/src/evaluation_model_qwen/cli.py",
+      "purpose": "CLI：api-check、recommend、score-candidates 子命令；score-candidates 接收 --profile、--weights、--route-catalog、--environment-dashboard、--json",
+      "acceptance_criteria": [
+        "score-candidates --json 输出合法 JSON",
+        "输出含 candidates 数组与 weights_sha256",
+        "缺少输入文件时退出码为 2 并给出明确错误"
+      ]
+    },
+    {
+      "path": "evaluation_model_qwen/tests/test_score_candidates.py",
+      "purpose": "score-candidates 集成测试：正常路径、无候选、缺文件、维度完整性校验",
+      "acceptance_criteria": [
+        "pytest 通过",
+        "覆盖正常、无候选、缺文件三种场景",
+        "验证输出 Schema 完整性"
+      ]
+    },
+    {
+      "path": "weather_api_data/pyproject.toml",
+      "purpose": "环境数据模块包定义：声明 weather-api-data CLI 入口点、依赖",
+      "acceptance_criteria": [
+        "uv sync --directory weather_api_data 成功",
+        "weather-api-data --help 输出帮助"
+      ]
+    },
+    {
+      "path": "weather_api_data/src/weather_api_data/pipeline.py",
+      "purpose": "数据流水线：协调天气、AQI、PM2.5 融合、花粉模型、噪声模型的获取与合并；离线模式使用 last-known-good 快照",
+      "acceptance_criteria": [
+        "离线模式不发起网络请求",
+        "输出含全部环境维度的合并结果",
+        "缺 Key 时标记 stale 并给出 stale_reason"
+      ]
+    },
+    {
+      "path": "weather_api_data/src/weather_api_data/web_export.py",
+      "purpose": "网页数据导出：将流水线结果转换为 environment_dashboard.json 格式（metadata、current、forecast、routes 含 90 项）",
+      "acceptance_criteria": [
+        "输出 JSON 含 metadata、current、forecast、routes 顶层键",
+        "routes.items 为 90 项",
+        "每项含 route_id、pm2_5、noise、pollen_daily、unit、estimated、status"
+      ]
+    },
+    {
+      "path": "weather_api_data/src/weather_api_data/cli.py",
+      "purpose": "CLI：config-check、dry-run、scheduled-refresh、publish-web 子命令",
+      "acceptance_criteria": [
+        "config-check 无 Key 时输出警告但不崩溃",
+        "publish-web 生成 environment_dashboard.json",
+        "dry-run 不写入文件"
+      ]
+    },
+    {
+      "path": "weather_api_data/config/sources.json",
+      "purpose": "数据源配置：各 API 端点、Key 环境变量名、刷新频率、回退策略",
+      "acceptance_criteria": [
+        "JSON 可解析",
+        "含 weather、aqi、pm25、pollen、noise 源定义",
+        "Key 字段为环境变量名引用，不含明文"
+      ]
+    },
+    {
+      "path": "weather_api_data/tests/test_web_export.py",
+      "purpose": "web_export 单元测试：验证输出结构、90 条路线覆盖、语义字段完整性",
+      "acceptance_criteria": [
+        "pytest 通过",
+        "验证顶层键、路线数、必填字段"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/data/web/route_catalog.json",
+      "purpose": "90 条路线目录：顶层数组，walk/run/bike 各 30 条；每项含 route_id、route_name、route_mode、validation_status、geometry_status、distance_m、coordinates 摘要",
+      "acceptance_criteria": [
+        "JSON 数组长度为 90",
+        "walk/run/bike 各 30 条",
+        "全部 validation_status 为 accepted",
+        "route_id 唯一且格式一致"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/data/web/xuhui_routes.geojson",
+      "purpose": "90 条路线几何：FeatureCollection 含 90 个 Feature，每个 Feature 的 properties.route_id 与 route_catalog.json 一致，geometry 为 LineString 且坐标在徐汇区范围内",
+      "acceptance_criteria": [
+        "type 为 FeatureCollection",
+        "features 长度为 90",
+        "每个 Feature 的 properties.route_id 存在于 route_catalog.json",
+        "坐标经度约 121.3-121.5、纬度约 31.1-31.25"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/data/web/environment_dashboard.json",
+      "purpose": "环境数据面板：含 metadata（generated_at、sources、status）、current（实时天气摘要）、forecast（未来 24h）、routes（90 项逐项含 route_id、pm2_5、noise、pollen_daily 及 unit、estimated、status）",
+      "acceptance_criteria": [
+        "顶层含 metadata、current、forecast、routes",
+        "routes.items 长度为 90",
+        "每项含 route_id、pm2_5、noise、pollen_daily",
+        "pm2_5 含 unit 和 estimated 字段"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/data/web/xuhui_entries.geojson",
+      "purpose": "路线入口点：FeatureCollection 含 90 个 Point Feature，properties 含 route_id 与 entry_name",
+      "acceptance_criteria": [
+        "features 长度为 90",
+        "geometry.type 为 Point",
+        "properties.route_id 与目录一致"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/data/web/poi_catalog.json",
+      "purpose": "POI 目录：徐汇区相关兴趣点（公园、水边、厕所、便利店等），每项含 poi_id、name、category、coordinates",
+      "acceptance_criteria": [
+        "JSON 数组非空",
+        "每项含 poi_id、name、category、coordinates",
+        "category 在预定义枚举内"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/web/index.html",
+      "purpose": "地图网页主入口：加载 Leaflet CDN、引用 JS 模块与 CSS、包含地图容器、路线筛选控件、推荐面板容器、研究面板容器",
+      "acceptance_criteria": [
+        "浏览器直接打开可渲染地图",
+        "路线切换与筛选功能可用",
+        "研究面板在数据缺失时隐藏",
+        "无 JavaScript 报错（控制台）"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/web/src/main.js",
+      "purpose": "前端主逻辑：初始化地图、加载数据、绑定事件、协调各 UI 模块",
+      "acceptance_criteria": [
+        "页面加载后地图显示徐汇区路线",
+        "路线点击可高亮并显示详情",
+        "筛选控件可按模式过滤路线"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/web/src/data-loader.js",
+      "purpose": "数据加载器：fetch route_catalog.json、xuhui_routes.geojson、environment_dashboard.json、research_harness_latest.json；缺失时优雅降级",
+      "acceptance_criteria": [
+        "全部文件存在时返回完整数据对象",
+        "research_harness_latest.json 缺失时不抛异常，返回 null",
+        "加载失败时控制台输出警告"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/web/src/map.js",
+      "purpose": "地图模块：Leaflet 地图初始化、GeoJSON 路线图层渲染、路线选中高亮、入口点标记",
+      "acceptance_criteria": [
+        "90 条路线在地图上可见",
+        "点击路线可选中并高亮",
+        "选中路线与目录 route_id 联动"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/web/src/recommendation-ui.js",
+      "purpose": "推荐面板：展示千问推荐结果（首选路线、理由、风险提醒）；数据缺失时隐藏",
+      "acceptance_criteria": [
+        "有推荐数据时展示路线名称与理由",
+        "无数据时面板隐藏",
+        "不执行未验证的 HTML"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/web/src/research-harness-ui.js",
+      "purpose": "研究面板：展示研究问题、假设与支持状态、基线对比、关键指标、候选集约束最优路线、数据限制说明；数据缺失时隐藏",
+      "acceptance_criteria": [
+        "research_harness_latest.json 存在且合法时展示面板",
+        "数据缺失或格式错误时隐藏面板",
+        "使用 textContent 渲染模型文本，不使用 innerHTML"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/web/styles/main.css",
+      "purpose": "主样式：地图布局、控件定位、路线列表、响应式（桌面与 500×700 窄屏）",
+      "acceptance_criteria": [
+        "桌面无横向溢出",
+        "500×700 视口下地图与面板可用",
+        "长文本可换行"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/web/styles/research-harness.css",
+      "purpose": "研究面板样式：面板定位、卡片布局、状态标签、可访问性（不只依赖颜色）",
+      "acceptance_criteria": [
+        "面板不覆盖地图核心控件",
+        "状态标签含文字说明",
+        "键盘可聚焦"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/tests/research_harness_data_contract.test.mjs",
+      "purpose": "数据契约测试：验证 research_harness_latest.json 的 Schema（若存在）、route_catalog.json 90 条与模式分布、environment_dashboard.json 结构",
+      "acceptance_criteria": [
+        "node --test 通过",
+        "验证路线数、模式分布、环境数据顶层键"
+      ]
+    },
+    {
+      "path": "xuhui_route_builder/tests/research_harness_ui_contract.test.mjs",
+      "purpose": "UI 契约测试：验证 research-harness-ui.js 在数据缺失时不抛异常、面板隐藏逻辑、textContent 安全渲染",
+      "acceptance_criteria": [
+        "node --test 通过",
+        "模拟缺失数据时不抛异常",
+        "验证不使用 innerHTML"
+      ]
+    },
+    {
+      "path": "evaluation_model_qwen/src/evaluation_model_qwen/api.py",
+      "purpose": "生成评价服务的 FastAPI health 与 recommendations 接口",
+      "acceptance_criteria": [
+        "GET /api/v1/health 返回 200",
+        "POST /api/v1/recommendations 返回非空推荐"
+      ]
+    }
+  ]
+}

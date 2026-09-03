@@ -1,0 +1,1445 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-001",
+        "route_id": "walk-001",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.46390407455377,
+          31.156496376812136
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-002",
+        "route_id": "walk-002",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45078116239394,
+          31.189831341346938
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-003",
+        "route_id": "walk-003",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.46661065018199,
+          31.164405675426003
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-004",
+        "route_id": "walk-004",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.41256655530124,
+          31.163175215609435
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-005",
+        "route_id": "walk-005",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.40027402791246,
+          31.205260540903975
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-006",
+        "route_id": "walk-006",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.39861947757001,
+          31.185644486915916
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-007",
+        "route_id": "walk-007",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.46348323846705,
+          31.196531777623207
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-008",
+        "route_id": "walk-008",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.40804234479126,
+          31.16430646655031
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-009",
+        "route_id": "walk-009",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.40319000418488,
+          31.195833752538324
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-010",
+        "route_id": "walk-010",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.40817697464509,
+          31.160681899493454
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-011",
+        "route_id": "walk-011",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45180634272171,
+          31.193604835437732
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-012",
+        "route_id": "walk-012",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.41824327717868,
+          31.156396705629685
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-013",
+        "route_id": "walk-013",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.40039931463923,
+          31.179546666784706
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-014",
+        "route_id": "walk-014",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.40596234309609,
+          31.150601247927987
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-015",
+        "route_id": "walk-015",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.39293423959249,
+          31.162254225580078
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-016",
+        "route_id": "walk-016",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.41100261139775,
+          31.152826230681637
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-017",
+        "route_id": "walk-017",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.41276498543881,
+          31.161149683155408
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-018",
+        "route_id": "walk-018",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.40361709234186,
+          31.181235432645757
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-019",
+        "route_id": "walk-019",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45843620925504,
+          31.17242798055859
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-020",
+        "route_id": "walk-020",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.46892318616864,
+          31.20232916215133
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-021",
+        "route_id": "walk-021",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.44679263330612,
+          31.162784001815062
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-022",
+        "route_id": "walk-022",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4435691759982,
+          31.167072582113228
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-023",
+        "route_id": "walk-023",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45641039913937,
+          31.172787027205977
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-024",
+        "route_id": "walk-024",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.42164100529904,
+          31.183443249124664
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-025",
+        "route_id": "walk-025",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.47121311881581,
+          31.17603858311029
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-026",
+        "route_id": "walk-026",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.43049250853838,
+          31.155130814975358
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-027",
+        "route_id": "walk-027",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45504573522412,
+          31.209858380458584
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-028",
+        "route_id": "walk-028",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.39324434963753,
+          31.18039687792116
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-029",
+        "route_id": "walk-029",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.47576860062345,
+          31.187176568367644
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-walk-030",
+        "route_id": "walk-030",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.47582950568251,
+          31.209880402415433
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-001",
+        "route_id": "run-001",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4405964351907,
+          31.199396396675922
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-002",
+        "route_id": "run-002",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.48744951212805,
+          31.194632413113368
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-003",
+        "route_id": "run-003",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.48791128030743,
+          31.16300584250177
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-004",
+        "route_id": "run-004",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4851179852206,
+          31.18240624779076
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-005",
+        "route_id": "run-005",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.39433440966661,
+          31.17109510121282
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-006",
+        "route_id": "run-006",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.40798297638068,
+          31.16708042775725
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-007",
+        "route_id": "run-007",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.43633678253634,
+          31.171799180299548
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-008",
+        "route_id": "run-008",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45471928560025,
+          31.16134921116233
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-009",
+        "route_id": "run-009",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4439770153117,
+          31.200787797219387
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-010",
+        "route_id": "run-010",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.42560267131597,
+          31.152994984763286
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-011",
+        "route_id": "run-011",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.42735554375798,
+          31.209641745913775
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-012",
+        "route_id": "run-012",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.42591313197005,
+          31.188843337837927
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-013",
+        "route_id": "run-013",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45931934805107,
+          31.204503823087293
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-014",
+        "route_id": "run-014",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.47309435629873,
+          31.198249107164454
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-015",
+        "route_id": "run-015",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45415115502972,
+          31.151313637586004
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-016",
+        "route_id": "run-016",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.42183404161888,
+          31.19801018793712
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-017",
+        "route_id": "run-017",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.39669077477562,
+          31.16611351318761
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-018",
+        "route_id": "run-018",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4239270138351,
+          31.191400643901794
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-019",
+        "route_id": "run-019",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.46645426773895,
+          31.201582380640616
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-020",
+        "route_id": "run-020",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4867283604257,
+          31.170995778377804
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-021",
+        "route_id": "run-021",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4784340969602,
+          31.155649154561374
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-022",
+        "route_id": "run-022",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4042675328491,
+          31.187667688205227
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-023",
+        "route_id": "run-023",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4443035333366,
+          31.176246718546484
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-024",
+        "route_id": "run-024",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.41907653246783,
+          31.1559023389314
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-025",
+        "route_id": "run-025",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.40201972303457,
+          31.191029618002453
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-026",
+        "route_id": "run-026",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.44324566861597,
+          31.16461615635566
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-027",
+        "route_id": "run-027",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4436086615671,
+          31.1585248836502
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-028",
+        "route_id": "run-028",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.46477644120345,
+          31.18274813572179
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-029",
+        "route_id": "run-029",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45301366274434,
+          31.15274688904423
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-run-030",
+        "route_id": "run-030",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.47556550320455,
+          31.207296386701394
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-001",
+        "route_id": "bike-001",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.47489477926072,
+          31.20812302257925
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-002",
+        "route_id": "bike-002",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45033990221908,
+          31.15543864911916
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-003",
+        "route_id": "bike-003",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45479218361326,
+          31.17356234145878
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-004",
+        "route_id": "bike-004",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.48381264302726,
+          31.16521276553811
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-005",
+        "route_id": "bike-005",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.47743602666097,
+          31.205103290291405
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-006",
+        "route_id": "bike-006",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.48716358495746,
+          31.206698560412526
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-007",
+        "route_id": "bike-007",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4249867753473,
+          31.160496054137116
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-008",
+        "route_id": "bike-008",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45939466710125,
+          31.15225688672685
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-009",
+        "route_id": "bike-009",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4134017463338,
+          31.155586024405736
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-010",
+        "route_id": "bike-010",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.48649496727411,
+          31.17170965252254
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-011",
+        "route_id": "bike-011",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.43215543991282,
+          31.16439963747555
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-012",
+        "route_id": "bike-012",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4605721523991,
+          31.17039470363428
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-013",
+        "route_id": "bike-013",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.44341949213609,
+          31.15047559579106
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-014",
+        "route_id": "bike-014",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.41277715196124,
+          31.16411995427431
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-015",
+        "route_id": "bike-015",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.39979941930511,
+          31.183487215181117
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-016",
+        "route_id": "bike-016",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.43926136607706,
+          31.19660087025682
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-017",
+        "route_id": "bike-017",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.44872219659118,
+          31.152229585537196
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-018",
+        "route_id": "bike-018",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.40371194215832,
+          31.208191170130956
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-019",
+        "route_id": "bike-019",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4002036937151,
+          31.200648242367265
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-020",
+        "route_id": "bike-020",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45606313422033,
+          31.20010268176318
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-021",
+        "route_id": "bike-021",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.47475110190126,
+          31.15767241145799
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-022",
+        "route_id": "bike-022",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4857234017212,
+          31.17455613440388
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-023",
+        "route_id": "bike-023",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.48910587186114,
+          31.19296666512998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-024",
+        "route_id": "bike-024",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.40002139774063,
+          31.155451893831632
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-025",
+        "route_id": "bike-025",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.4247493998087,
+          31.188051746493223
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-026",
+        "route_id": "bike-026",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.47185831272735,
+          31.1542248116499
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-027",
+        "route_id": "bike-027",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.40006828989317,
+          31.16580107441749
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-028",
+        "route_id": "bike-028",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.45673552154189,
+          31.205578036246894
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-029",
+        "route_id": "bike-029",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.43234736622784,
+          31.166765621865284
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "entry_id": "entry-bike-030",
+        "route_id": "bike-030",
+        "entry_type": "start",
+        "accessibility": "public"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.47555078204117,
+          31.171130710751378
+        ]
+      }
+    }
+  ]
+}

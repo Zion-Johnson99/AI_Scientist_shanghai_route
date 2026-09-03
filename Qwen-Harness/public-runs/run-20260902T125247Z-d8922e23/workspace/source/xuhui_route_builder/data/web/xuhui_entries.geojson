@@ -1,0 +1,734 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "name": "xuhui_entries",
+  "coordinate_reference_system": "CRS84/WGS84 (lon,lat)",
+  "feature_count": 40,
+  "features": [
+    {
+      "type": "Feature",
+      "id": "entry-47013031",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.439769,
+          31.171473
+        ]
+      },
+      "properties": {
+        "poi_id": 47013031,
+        "name_zh": "龙漕路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-71799638",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.42261,
+          31.188504
+        ]
+      },
+      "properties": {
+        "poi_id": 71799638,
+        "name_zh": "宜山路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-71799647",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.433734,
+          31.178638
+        ]
+      },
+      "properties": {
+        "poi_id": 71799647,
+        "name_zh": "漕溪路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-95222724",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.438563,
+          31.159846
+        ]
+      },
+      "properties": {
+        "poi_id": 95222724,
+        "name_zh": "石龙路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-95222731",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.42654,
+          31.155215
+        ]
+      },
+      "properties": {
+        "poi_id": 95222731,
+        "name_zh": "上海南站",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-264051326",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.425504,
+          31.156646
+        ]
+      },
+      "properties": {
+        "poi_id": 264051326,
+        "name_zh": "上海南站",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-264106785",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.430321,
+          31.170006
+        ]
+      },
+      "properties": {
+        "poi_id": 264106785,
+        "name_zh": "漕宝路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-264109694",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.431653,
+          31.183641
+        ]
+      },
+      "properties": {
+        "poi_id": 264109694,
+        "name_zh": "上海体育馆",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-471013952",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.433903,
+          31.195076
+        ]
+      },
+      "properties": {
+        "poi_id": 471013952,
+        "name_zh": "徐家汇",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-471014085",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.441941,
+          31.206453
+        ]
+      },
+      "properties": {
+        "poi_id": 471014085,
+        "name_zh": "衡山路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-482002481",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.452542,
+          31.186328
+        ]
+      },
+      "properties": {
+        "poi_id": 482002481,
+        "name_zh": "龙华中路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-482002482",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.450122,
+          31.192604
+        ]
+      },
+      "properties": {
+        "poi_id": 482002482,
+        "name_zh": "东安路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-482002483",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.445868,
+          31.201288
+        ]
+      },
+      "properties": {
+        "poi_id": 482002483,
+        "name_zh": "肇嘉浜路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-482002484",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.44445,
+          31.215516
+        ]
+      },
+      "properties": {
+        "poi_id": 482002484,
+        "name_zh": "常熟路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-513228698",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.439282,
+          31.187538
+        ]
+      },
+      "properties": {
+        "poi_id": 513228698,
+        "name_zh": "上海体育场",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-513228699",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.422869,
+          31.188594
+        ]
+      },
+      "properties": {
+        "poi_id": 513228699,
+        "name_zh": "宜山路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-513247385",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.458806,
+          31.195945
+        ]
+      },
+      "properties": {
+        "poi_id": 513247385,
+        "name_zh": "大木桥路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-551397819",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.43259,
+          31.184677
+        ]
+      },
+      "properties": {
+        "poi_id": 551397819,
+        "name_zh": "上海体育馆",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-551876119",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.445912,
+          31.200345
+        ]
+      },
+      "properties": {
+        "poi_id": 551876119,
+        "name_zh": "肇嘉浜路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-551881912",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.451599,
+          31.186258
+        ]
+      },
+      "properties": {
+        "poi_id": 551881912,
+        "name_zh": "龙华中路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-551892154",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.449972,
+          31.193165
+        ]
+      },
+      "properties": {
+        "poi_id": 551892154,
+        "name_zh": "东安路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-551894141",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.459504,
+          31.195471
+        ]
+      },
+      "properties": {
+        "poi_id": 551894141,
+        "name_zh": "大木桥路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-766165365",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.439001,
+          31.172126
+        ]
+      },
+      "properties": {
+        "poi_id": 766165365,
+        "name_zh": "",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-900800809",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.433271,
+          31.126482
+        ]
+      },
+      "properties": {
+        "poi_id": 900800809,
+        "name_zh": "朱梅路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-900800810",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.431122,
+          31.133831
+        ]
+      },
+      "properties": {
+        "poi_id": 900800810,
+        "name_zh": "罗秀路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-900800811",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.424062,
+          31.14625
+        ]
+      },
+      "properties": {
+        "poi_id": 900800811,
+        "name_zh": "华东理工大学",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-900800812",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.425871,
+          31.158606
+        ]
+      },
+      "properties": {
+        "poi_id": 900800812,
+        "name_zh": "上海南站",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-900800813",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.413587,
+          31.16989
+        ]
+      },
+      "properties": {
+        "poi_id": 900800813,
+        "name_zh": "桂林公园",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-900800814",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.411143,
+          31.177318
+        ]
+      },
+      "properties": {
+        "poi_id": 900800814,
+        "name_zh": "桂林路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-1350825376",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.413533,
+          31.176708
+        ]
+      },
+      "properties": {
+        "poi_id": 1350825376,
+        "name_zh": "桂林路",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-1350825377",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.393032,
+          31.17249
+        ]
+      },
+      "properties": {
+        "poi_id": 1350825377,
+        "name_zh": "漕河泾开发区",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-1475449217",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.438854,
+          31.184967
+        ]
+      },
+      "properties": {
+        "poi_id": 1475449217,
+        "name_zh": "上海体育场（在建）",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-1475449218",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.440379,
+          31.170842
+        ]
+      },
+      "properties": {
+        "poi_id": 1475449218,
+        "name_zh": "龙漕路（在建）",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-1475449219",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.44406,
+          31.161996
+        ]
+      },
+      "properties": {
+        "poi_id": 1475449219,
+        "name_zh": "龙启路（在建）",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-1475449220",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.445475,
+          31.152127
+        ]
+      },
+      "properties": {
+        "poi_id": 1475449220,
+        "name_zh": "上海植物园（在建）",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-1475449221",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.447873,
+          31.138549
+        ]
+      },
+      "properties": {
+        "poi_id": 1475449221,
+        "name_zh": "龙吴路（在建）",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-1475449222",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.451961,
+          31.129267
+        ]
+      },
+      "properties": {
+        "poi_id": 1475449222,
+        "name_zh": "徐浦大桥（在建）",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-1475449223",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.451927,
+          31.120632
+        ]
+      },
+      "properties": {
+        "poi_id": 1475449223,
+        "name_zh": "华泾路（在建）",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-1475449224",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.449248,
+          31.104783
+        ]
+      },
+      "properties": {
+        "poi_id": 1475449224,
+        "name_zh": "景联路（在建）",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "entry-2448270613",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          121.448689,
+          31.174845
+        ]
+      },
+      "properties": {
+        "poi_id": 2448270613,
+        "name_zh": "龙华",
+        "kind": "station",
+        "category": "transit_entry",
+        "crs": "CRS84/WGS84 (lon,lat)"
+      }
+    }
+  ]
+}

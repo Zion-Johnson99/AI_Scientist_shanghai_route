@@ -1,0 +1,4 @@
+[api] http://127.0.0.1:52762 (offline)
+health={"cell_count": 54, "data_generated_at": "2026-09-03T08:00:00+00:00", "missing_inputs": [], "offline": true, "route_count": 90, "service": "evaluation", "status": "ok", "weights_sha256": "ccf6151ac8fcc22e1341516fbfc7292673addbbb9ec602cf513c499e477d47b8"}
+recommend_keys=['alternatives', 'candidate_count', 'candidates', 'data_generated_at', 'empty_reason', 'filters_applied', 'ignored_request_keys', 'missing_inputs', 'offline', 'partial_data', 'primary', 'profile']
+EVALUATION_API_PASSED=true

@@ -1,0 +1,15 @@
+{
+  "handler": "qwen_harness.experiments.runner:stage_handler",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 855.9,
+  "status": "passed",
+  "summary": "实验分析完成: 单元 45 个，就绪 27 个，支持状态 inconclusive",
+  "artifacts": [
+    "experiments/experiment_results.json",
+    "experiments/metrics_summary.json",
+    "reports/metrics_summary.json"
+  ],
+  "offline": false,
+  "audited_at": "2026-09-02T06:53:16.612808+00:00"
+}

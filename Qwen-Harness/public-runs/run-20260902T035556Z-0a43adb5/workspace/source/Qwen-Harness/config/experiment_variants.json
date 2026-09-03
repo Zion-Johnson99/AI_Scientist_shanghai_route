@@ -1,0 +1,210 @@
+{
+  "schema_version": "1.0",
+  "description": "实验变体预注册：B0/B1/B2/B3/M1 的权重配置、扰动维度、扰动方向与幅度、停止条件阈值",
+  "frozen_at": null,
+  "profiles": [
+    {
+      "case_id": "P01_walk_balanced",
+      "route_mode": "walk",
+      "goal": "balanced",
+      "target_distance_m": 3000,
+      "sensitivities": [],
+      "interests": []
+    },
+    {
+      "case_id": "P02_run_balanced",
+      "route_mode": "run",
+      "goal": "balanced",
+      "target_distance_m": 5000,
+      "sensitivities": [],
+      "interests": []
+    },
+    {
+      "case_id": "P03_bike_balanced",
+      "route_mode": "bike",
+      "goal": "balanced",
+      "target_distance_m": 8000,
+      "sensitivities": [],
+      "interests": []
+    },
+    {
+      "case_id": "P04_walk_health_environment",
+      "route_mode": "walk",
+      "goal": "health_environment",
+      "target_distance_m": 3000,
+      "sensitivities": ["pm25", "pollen", "noise"],
+      "interests": ["waterside", "park"]
+    },
+    {
+      "case_id": "P05_run_health_environment",
+      "route_mode": "run",
+      "goal": "health_environment",
+      "target_distance_m": 5000,
+      "sensitivities": ["pm25", "noise"],
+      "interests": ["quiet", "park"]
+    },
+    {
+      "case_id": "P06_bike_nearby",
+      "route_mode": "bike",
+      "goal": "nearby",
+      "target_distance_m": 8000,
+      "sensitivities": [],
+      "interests": ["convenience", "toilet"]
+    },
+    {
+      "case_id": "P07_walk_scenery",
+      "route_mode": "walk",
+      "goal": "scenery",
+      "target_distance_m": 3000,
+      "sensitivities": ["pollen"],
+      "interests": ["waterside", "park", "quiet"]
+    },
+    {
+      "case_id": "P08_run_scenery",
+      "route_mode": "run",
+      "goal": "scenery",
+      "target_distance_m": 5000,
+      "sensitivities": ["pm25"],
+      "interests": ["waterside", "quiet"]
+    },
+    {
+      "case_id": "P09_bike_health_environment",
+      "route_mode": "bike",
+      "goal": "health_environment",
+      "target_distance_m": 8000,
+      "sensitivities": ["pm25", "pollen", "noise"],
+      "interests": ["park", "convenience"]
+    }
+  ],
+  "variants": [
+    {
+      "variant_id": "B0_shortest_feasible",
+      "name": "最短可行基线",
+      "type": "baseline",
+      "description": "在通过硬约束的候选中按路线距离升序排列，取最短可行路线",
+      "weights_override": null,
+      "selection_rule": "shortest_distance",
+      "perturbation": null
+    },
+    {
+      "variant_id": "B1_pm25_only",
+      "name": "单一 PM2.5 基线",
+      "type": "baseline",
+      "description": "在通过硬约束的候选中仅按 environment_health 维度中 PM2.5 子分升序排列",
+      "weights_override": {
+        "environment_health": 1.0,
+        "sport_match": 0.0,
+        "access_convenience": 0.0,
+        "route_quality": 0.0,
+        "interest_service": 0.0
+      },
+      "selection_rule": "weighted_score",
+      "perturbation": null
+    },
+    {
+      "variant_id": "B2_multi_environment",
+      "name": "多环境因子基线",
+      "type": "baseline",
+      "description": "使用默认权重但不应用个性化偏好调整，仅基于环境数据评分",
+      "weights_override": {
+        "environment_health": 0.4,
+        "sport_match": 0.1,
+        "access_convenience": 0.1,
+        "route_quality": 0.2,
+        "interest_service": 0.2
+      },
+      "selection_rule": "weighted_score",
+      "perturbation": null
+    },
+    {
+      "variant_id": "B3_non_personalized",
+      "name": "默认权重非个性化基线",
+      "type": "baseline",
+      "description": "使用默认权重文件，不根据画像的敏感项和兴趣偏好调整权重",
+      "weights_override": null,
+      "selection_rule": "weighted_score_default_weights",
+      "perturbation": null
+    },
+    {
+      "variant_id": "M1_personalized_constrained",
+      "name": "个性化约束最优",
+      "type": "model",
+      "description": "根据画像的敏感项和兴趣偏好调整权重，在硬约束内选择约束最优路线",
+      "weights_override": null,
+      "selection_rule": "weighted_score_personalized",
+      "perturbation": {
+        "dimensions": [
+          "environment_health",
+          "sport_match",
+          "access_convenience",
+          "route_quality",
+          "interest_service"
+        ],
+        "directions": ["increase", "decrease"],
+        "magnitude": 0.3,
+        "description": "对每个维度分别施加 +30% 和 -30% 的权重扰动，观察排序稳定性"
+      }
+    }
+  ],
+  "metrics": [
+    {
+      "metric_id": "jaccard_top5",
+      "name": "前 5 名路线集合 Jaccard 相似度",
+      "direction": "higher",
+      "primary": true,
+      "threshold": 0.6
+    },
+    {
+      "metric_id": "spearman_rank_all90",
+      "name": "全部 90 条路线 Spearman 秩相关系数",
+      "direction": "higher",
+      "primary": false,
+      "threshold": 0.85
+    },
+    {
+      "metric_id": "dimension_variance",
+      "name": "被扰动维度在候选集内的方差",
+      "direction": "target",
+      "primary": false,
+      "threshold": null
+    },
+    {
+      "metric_id": "constraint_pass_rate",
+      "name": "硬约束通过率",
+      "direction": "higher",
+      "primary": false,
+      "threshold": null
+    },
+    {
+      "metric_id": "candidate_count",
+      "name": "可行候选数",
+      "direction": "target",
+      "primary": false,
+      "threshold": null
+    }
+  ],
+  "constraints": {
+    "detour_limit": 0.2,
+    "target_distance_tolerance": 0.15,
+    "min_candidates_per_combo": 5
+  },
+  "stop_conditions": {
+    "jaccard_threshold": 0.6,
+    "spearman_threshold": 0.85,
+    "max_failing_dimensions": 2,
+    "min_candidates": 5,
+    "constraint_pass_rate_delta_max": 0.0,
+    "description": "任一画像在基准权重下可行候选数 < 5 时停止该组合；环境快照 status 为 error 或 no_data 且无回退时停止该维度扰动；权重扰动后硬约束通过率变化时停止并排查；5 个维度中超过 2 个维度的扰动导致 Jaccard < 0.6 时假设被证伪并停止"
+  },
+  "acceptance_criteria": [
+    "对全部 9 个画像 × 3 种运动类型 × 5 个被扰动维度 × 2 个扰动方向（+30%、−30%），前 5 名路线集合 Jaccard 相似度均 ≥ 0.6，则假设获得支持",
+    "对全部组合，可行候选的 Spearman 秩相关系数均 ≥ 0.85",
+    "5 个维度中至多 2 个维度的 ±30% 扰动导致任一运动类型 Jaccard < 0.6；超过 2 个则假设被证伪",
+    "权重扰动前后硬约束通过率一致（constraint_pass_rate 差异为 0），否则标记异常并排查",
+    "每个画像每个运动类型的可行候选数 ≥ 5，否则该组合标记为样本不足、不参与 Jaccard 计算并如实报告",
+    "综合效用（base_score）不作为唯一验证指标；Jaccard 与 Spearman 为独立排序指标",
+    "环境数据缺失或标记为 stale/estimated 的候选在报告中如实标注，不隐藏",
+    "全部权重配置记录 weights_sha256，基准与扰动权重的 before/after 完整记录",
+    "负结果（任一维度扰动导致 Jaccard < 0.6 或 Spearman < 0.85）如实报告，不省略"
+  ]
+}

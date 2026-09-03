@@ -1,0 +1,33 @@
+{
+  "run_id": "run-20260902T035556Z-0a43adb5",
+  "url": "http://127.0.0.1:8130/web/?v=7",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "passed": true,
+  "checks": {
+    "route_items": 90,
+    "route_layers": 90,
+    "loaded_map_tiles": 28,
+    "map_rect": {
+      "x": 360,
+      "y": 56,
+      "width": 920,
+      "height": 664
+    },
+    "run_filter_items": 30,
+    "run_filter_only_run": true,
+    "selected_route_id": "run-001",
+    "environment_detail_visible": true,
+    "environment_metrics": [
+      "PM2.5",
+      "噪声",
+      "花粉"
+    ],
+    "console_errors": 0
+  },
+  "recommendation_api": "failed_import_contract",
+  "launcher_mode": "web_only_degraded",
+  "note": "地图、路线、筛选和环境详情通过；启动器在评价 API 导入失败时给出警告并继续提供网页。"
+}

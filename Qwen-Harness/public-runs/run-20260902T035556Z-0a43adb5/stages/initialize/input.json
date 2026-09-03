@@ -1,0 +1,9 @@
+{
+  "stage": "initialize",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.workflow.stages:initialize_stage",
+  "dependencies": {},
+  "prepared_at": "2026-09-02T03:56:13.663300+00:00"
+}

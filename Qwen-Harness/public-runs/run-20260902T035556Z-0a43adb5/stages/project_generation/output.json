@@ -1,0 +1,12 @@
+{
+  "provenance": "qwen",
+  "score": 90,
+  "threshold": 85,
+  "passed": true,
+  "repair_rounds": 2,
+  "remaining_issues": [],
+  "architecture": "workspace/architecture.json",
+  "generation_result": "workspace/generation_result.json",
+  "checks": "checks/generation_contract.json",
+  "model_audits": "stages/project_generation/model_audits.json"
+}

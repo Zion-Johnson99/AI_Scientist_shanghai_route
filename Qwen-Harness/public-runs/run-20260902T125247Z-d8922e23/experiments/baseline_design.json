@@ -1,0 +1,133 @@
+{
+  "artifact": "baseline_design",
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "generated_at": "2026-09-02T13:16:11Z",
+  "principle": "Every comparison is against a route that exists in the same road graph and satisfies the same distance band, so the only difference between the selected route and the baseline is the ranking objective.",
+  "cells": [
+    {
+      "cell_id": "p01_walk_balanced__b1",
+      "profile_id": "p01_walk_balanced",
+      "band_index": 1,
+      "band_km": [
+        0.5,
+        2.0
+      ],
+      "candidate_target": 10
+    },
+    {
+      "cell_id": "p01_walk_balanced__b2",
+      "profile_id": "p01_walk_balanced",
+      "band_index": 2,
+      "band_km": [
+        2.0,
+        3.5
+      ],
+      "candidate_target": 10
+    },
+    {
+      "cell_id": "p01_walk_balanced__b3",
+      "profile_id": "p01_walk_balanced",
+      "band_index": 3,
+      "band_km": [
+        3.5,
+        5.0
+      ],
+      "candidate_target": 10
+    },
+    {
+      "cell_id": "p02_run_balanced__b1",
+      "profile_id": "p02_run_balanced",
+      "band_index": 1,
+      "band_km": [
+        1.0,
+        5.0
+      ],
+      "candidate_target": 10
+    },
+    {
+      "cell_id": "p02_run_balanced__b2",
+      "profile_id": "p02_run_balanced",
+      "band_index": 2,
+      "band_km": [
+        5.0,
+        10.0
+      ],
+      "candidate_target": 10
+    },
+    {
+      "cell_id": "p02_run_balanced__b3",
+      "profile_id": "p02_run_balanced",
+      "band_index": 3,
+      "band_km": [
+        10.0,
+        15.0
+      ],
+      "candidate_target": 10
+    },
+    {
+      "cell_id": "p03_bike_balanced__b1",
+      "profile_id": "p03_bike_balanced",
+      "band_index": 1,
+      "band_km": [
+        5.0,
+        10.0
+      ],
+      "candidate_target": 10
+    },
+    {
+      "cell_id": "p03_bike_balanced__b2",
+      "profile_id": "p03_bike_balanced",
+      "band_index": 2,
+      "band_km": [
+        10.0,
+        20.0
+      ],
+      "candidate_target": 10
+    },
+    {
+      "cell_id": "p03_bike_balanced__b3",
+      "profile_id": "p03_bike_balanced",
+      "band_index": 3,
+      "band_km": [
+        20.0,
+        30.0
+      ],
+      "candidate_target": 10
+    }
+  ],
+  "baselines": [
+    {
+      "baseline_id": "B0",
+      "name": "shortest_path",
+      "definition": "Minimum-length route in the same OSM graph for the same start/end and target distance, ignoring every environment and preference term.",
+      "role": "primary comparison for detour and environment win rate"
+    },
+    {
+      "baseline_id": "B1",
+      "name": "first_candidate",
+      "definition": "The first geometrically valid candidate emitted by the generator before ranking.",
+      "role": "isolates the contribution of the ranking step"
+    },
+    {
+      "baseline_id": "B2",
+      "name": "random_candidate",
+      "definition": "A candidate drawn with random.Random(1234) from the valid pool.",
+      "role": "sanity floor"
+    },
+    {
+      "baseline_id": "B3",
+      "name": "environment_only",
+      "definition": "Ranking on the environment proxy alone, with preference and access weights set to zero.",
+      "role": "ablation of the preference and access dimensions"
+    },
+    {
+      "baseline_id": "M1",
+      "name": "round1_reported",
+      "definition": "The round-1 reported values (detour_pass_rate 0.00, environment_win_rate 0.00, preference_win_rate 0.50, constraint_pass_rate 0.00, fatal_data_errors 1, no_candidate 18/45).",
+      "role": "historical reference; read from allowed round-1 diagnostics only, never re-executed"
+    }
+  ],
+  "pairing_rule": "Within a cell, B0 is computed for the same start node and target distance as the selected route; B1/B2/B3 are drawn from the same valid candidate pool.",
+  "statistical_plan": "Per-cell pass/fail plus a route-level bootstrap at 95% confidence with seed 1234 for win-rate intervals. No significance claim is made about health outcomes.",
+  "known_limitation": "M1 cannot be re-executed because round-1 generated source is on the isolated list; it is quoted as reported."
+}

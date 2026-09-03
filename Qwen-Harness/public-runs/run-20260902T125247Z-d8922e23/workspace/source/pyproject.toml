@@ -1,0 +1,52 @@
+[project]
+name = "xuhui-healthy-route-round2"
+version = "2.0.0"
+description = "Independent round-2 build: Xuhui healthy route generation, environment exposure, deterministic recommendation and a fully offline local web product."
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = [
+    "xuhui_route_builder/data",
+    "web",
+    "node",
+    ".venv",
+]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "BLE", "RUF", "TRY"]
+ignore = ["RUF001", "RUF002", "RUF003", "TRY003", "TRY301"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["routes", "environment", "evaluation"]
+
+[tool.pyright]
+typeCheckingMode = "basic"
+pythonVersion = "3.10"
+extraPaths = ["."]
+include = [
+    "routes",
+    "environment",
+    "evaluation",
+    "scripts",
+    "tests",
+    "xuhui_route_builder",
+    "weather_api_data",
+    "evaluation_model_qwen",
+]
+exclude = [
+    "**/__pycache__",
+    "**/node_modules",
+    "xuhui_route_builder/data",
+    "web",
+    "node",
+]
+reportMissingImports = "error"
+reportUnusedImport = "warning"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["error::DeprecationWarning"]

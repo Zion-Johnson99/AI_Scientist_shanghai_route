@@ -1,0 +1,11 @@
+{
+  "stage": "evidence_extraction",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.agents.evidence_agent:stage_handler",
+  "dependencies": {
+    "source_collection": "7dffdc8357795357f3abd5cfb71788858ff233b4e56c5ead3b982177a46f604e"
+  },
+  "prepared_at": "2026-09-02T03:58:23.759849+00:00"
+}

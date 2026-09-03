@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "name": "evaluation_default_weights",
+  "provenance": "manual_setting: five-dimension weights fixed by the evaluation design of run run-20260902T125247Z-d8922e23; no external service was consulted",
+  "description_zh": "五维评分模型默认权重：环境健康 0.30、运动匹配 0.20、接驳便利 0.15、路线质量 0.20、用户偏好 0.15，总和为 1.0",
+  "weights": {
+    "environment_health": 0.3,
+    "sport_match": 0.2,
+    "access_convenience": 0.15,
+    "route_quality": 0.2,
+    "user_preference": 0.15
+  }
+}

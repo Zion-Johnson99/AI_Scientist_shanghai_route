@@ -1,0 +1,28 @@
+{
+  "handler": "qwen_harness.agents.feedback_agent:stage_handler",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 29897.6,
+  "status": "passed",
+  "summary": "迭代决策: stop_inconclusive",
+  "artifacts": [
+    "stages/feedback_decision/model_call.json"
+  ],
+  "offline": false,
+  "audited_at": "2026-09-02T06:53:46.707938+00:00",
+  "model_audit": {
+    "stage": "feedback_decision",
+    "model": "qwen3.8-max",
+    "created_at": "2026-09-02T06:53:46.694785Z",
+    "request_id": "chatcmpl-396c1293-3aa0-9b6d-9935-c42fb6ce6d5d",
+    "latency_ms": 29876.4,
+    "input_tokens": 14502,
+    "output_tokens": 1266,
+    "prompt_version": "107e7b09a1b3",
+    "reasoning_effort": "medium",
+    "skill_hashes": {
+      "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc"
+    },
+    "error_type": null
+  }
+}

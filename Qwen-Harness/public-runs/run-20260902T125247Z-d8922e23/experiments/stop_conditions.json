@@ -1,0 +1,33 @@
+{
+  "artifact": "stop_conditions",
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "generated_at": "2026-09-02T13:16:11Z",
+  "conditions": [
+    {
+      "condition": "Overpass mirrors return 429/504/502 clusters after 5 attempts per layer",
+      "action": "stop acquisition, record attempted_unavailable in the source registry, continue with whatever was cached"
+    },
+    {
+      "condition": "A distance band cannot be filled with 10 clean routes after the full candidate search",
+      "action": "leave the shortfall as needs_review and report failed_quality_gate; do not pad with a false loop"
+    },
+    {
+      "condition": "A route passes every numeric gate but is visually confusing (double loop, dumbbell, gourd, long stem, local retrace)",
+      "action": "keep it needs_review; visual inspection overrides the metrics"
+    },
+    {
+      "condition": "Any environment contract violation appears",
+      "action": "fix the contract declaration, not the threshold"
+    },
+    {
+      "condition": "Credits exhaustion, a real permission denial, or an unrecoverable environment fault",
+      "action": "freeze the run, write the partial manifest, set status implementation_complete_unverified"
+    }
+  ],
+  "run_level_rules": [
+    "One Goal, one run ID, one independent build, one blind_checkpoint, one correction_batch.",
+    "blind_checkpoint is frozen once its manifest, hashes and check results are written.",
+    "The online reference product may be visited only after that freeze, and only once.",
+    "Process completion is never recorded as a quality pass."
+  ]
+}

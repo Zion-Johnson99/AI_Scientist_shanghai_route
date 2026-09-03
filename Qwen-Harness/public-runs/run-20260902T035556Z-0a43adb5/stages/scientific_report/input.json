@@ -1,0 +1,11 @@
+{
+  "stage": "scientific_report",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.agents.report_agent:stage_handler",
+  "dependencies": {
+    "feedback_decision": "bb9e08eb0577fde55dee5573e3b1909b8ebee8cf624e73bbc3ac9758453e42f7"
+  },
+  "prepared_at": "2026-09-02T06:55:31.722831+00:00"
+}

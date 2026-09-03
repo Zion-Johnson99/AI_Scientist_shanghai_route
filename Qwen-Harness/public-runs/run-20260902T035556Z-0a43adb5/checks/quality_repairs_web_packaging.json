@@ -1,0 +1,69 @@
+{
+  "provenance": "qwen",
+  "repairs": [
+    {
+      "issue": {
+        "check": "node_ui_contract",
+        "summary": "动态文本 UI 禁止 innerHTML 赋值",
+        "details": "research_harness_ui_contract.test.mjs 检测到 innerHTML 赋值。清空容器使用 replaceChildren()，所有模型生成文本继续使用 textContent，保持缺失数据时隐藏面板与现有导出接口。",
+        "severity": "error",
+        "files": [
+          "xuhui_route_builder/web/src/research-harness-ui.js"
+        ]
+      },
+      "target_file": "xuhui_route_builder/web/src/research-harness-ui.js",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:10:45.889048Z",
+        "request_id": "chatcmpl-05aee60e-518c-9a79-8017-614530c724be",
+        "latency_ms": 67735.4,
+        "input_tokens": 13559,
+        "output_tokens": 3758,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    },
+    {
+      "issue": {
+        "check": "package_build_qwen_harness",
+        "summary": "Qwen-Harness 构建元数据引用了未生成的 README.md",
+        "details": "Hatch editable build 报 OSError: Readme file does not exist: README.md。架构计划中没有 README.md，目标仅为 pyproject.toml；调整项目元数据后仍需保留脚本入口、依赖、dev extra 与 Hatch src 包配置。",
+        "severity": "error",
+        "files": [
+          "Qwen-Harness/pyproject.toml"
+        ]
+      },
+      "target_file": "Qwen-Harness/pyproject.toml",
+      "audit": {
+        "stage": "generation_runtime_repair",
+        "model": "qwen3.8-max",
+        "created_at": "2026-09-02T07:10:56.944457Z",
+        "request_id": "chatcmpl-fe17c7b8-ff4b-91ae-b970-dbb8d2fae840",
+        "latency_ms": 11011.9,
+        "input_tokens": 12399,
+        "output_tokens": 505,
+        "prompt_version": "552c93e8e611",
+        "reasoning_effort": "medium",
+        "skill_hashes": {
+          "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+          "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254",
+          "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+          "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+          "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+          "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+        },
+        "error_type": null
+      }
+    }
+  ]
+}

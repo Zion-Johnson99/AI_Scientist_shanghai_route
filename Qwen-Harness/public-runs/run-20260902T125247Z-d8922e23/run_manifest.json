@@ -1,0 +1,28 @@
+{
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "round": 2,
+  "provider": "qoder_session",
+  "model_name": "qwen3.8-max",
+  "billing_channel": "qoder_credits",
+  "dashscope_api_used": false,
+  "created_at": "2026-09-02T12:57:05Z",
+  "workspace_root": "<repo_root>",
+  "branch": "Qwen_Harness_Build",
+  "head_commit": "a7c0fc6ae13b124a69bae7909cb095ba2003eda8",
+  "git_status_at_start": [],
+  "task_prompt_path": "inputs/task_prompt.md",
+  "task_prompt_sha256": "b8038eebfdc6fc6226df0c72037165d96169165ebc1d38bff117a28150db254e",
+  "qoder_task_id": "unknown",
+  "qoder_credits_consumed": "evidence_pending_user_capture",
+  "dashscope_request_ids": [],
+  "dashscope_call_count": 0,
+  "online_harness_commands_executed": [],
+  "sensitive_env_keys_present": {
+    "DASHSCOPE_API_KEY": false,
+    "OPENAI_API_KEY": false,
+    "BAILIAN_API_KEY": false,
+    "QWEN_API_KEY": false
+  },
+  "sensitive_env_keys_removed_in_subprocess": true,
+  "final_status": "passed"
+}

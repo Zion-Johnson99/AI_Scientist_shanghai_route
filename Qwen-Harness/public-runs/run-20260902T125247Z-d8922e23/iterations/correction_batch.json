@@ -1,0 +1,168 @@
+{
+  "batch_id": "correction_batch_1",
+  "stage": "correction",
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "created_at": "2026-09-03T07:52:59Z",
+  "generated_at_pin": "2026-09-03T07:34:13Z",
+  "is_single_batch": true,
+  "scope_decision_zh": "本批为本次运行唯一一次集中修正，输入为 blind_checkpoint 与 checks/reference_visible_gap_list.json。修正期间未再次读取在线成品页面，未做第二次成品对照，也未重新生成整个工程；改动只落在 workspace/source 内的两个文件，其余产物由既有脚本按固定时间戳重跑得到。",
+  "reference_gap_list_sha256_source": "checks/reference_visible_gap_list.json",
+  "gap_list_planned_in_correction_batch": null,
+  "constraints_honored": {
+    "no_second_product_comparison": true,
+    "no_full_regeneration": true,
+    "no_paid_llm_api": true,
+    "dashscope_call_count": 0,
+    "writes_confined_to_run_directory": true,
+    "no_git_commit_or_push": true,
+    "quality_thresholds_unchanged": true
+  },
+  "root_cause_zh": "盲测版本的路线组合只有 87 条，bike 第 3 档（20-30 km）只出 7 条，导致三条强制门禁失败：pytest:weather_api_data 断言 route_count == 90、Node 契约测试断言 bike 分档为 [10,10,10]、评价 API 健康检查 /health 返回 route_count=87。三者同源，都是生成器在 bike 长距离单向路线上的供给不足。物理原因是徐汇区 bbox 仅 8.1 km x 13.2 km，一条 25 km 单向路线必须依赖极高绕行系数，16 个 bike 锚点中只有 3 个存在可行的 25 km 端点对（commands/probe_bike_band2.json，66/285/333 对），而 band 0 与 band 1 的 20 条路线先被写入 accepted_edges/accepted_coords/used_edges，把这些长南北走廊切碎，band 2 再跑时已无可用走廊。",
+  "levers_measured": [
+    {
+      "id": "L0",
+      "lever": "扩大 bike 可用道路等级 MODE_ALLOWED",
+      "decision": "rejected_by_reading",
+      "outcome_zh": "road_graph.py 已收录所需 highway 类型，图本身不是瓶颈，未改动代码。"
+    },
+    {
+      "id": "L1",
+      "lever": "提高 LONG_BIKE_SWEEP_TURNAROUND_LIMIT / ideal_outbound",
+      "decision": "rejected",
+      "outcome_zh": "上一会话已测：候选由 22 升至 38，但组合数不变，故不是有效杠杆。"
+    },
+    {
+      "id": "L2",
+      "lever": "把重叠筛查移入 sweep 内部（routes/generator.py 的 sweep_screen 闭包）",
+      "decision": "kept",
+      "outcome_zh": "一次拒绝只损失一个候选而不再损失整个锚点，组合数 87 -> 88。"
+    },
+    {
+      "id": "L3",
+      "lever": "band 2 内部先试单向再试环线",
+      "decision": "replaced",
+      "outcome_zh": "中性：两种顺序都是 88 条、601 次 screen:geometric_overlap，说明竞争者不是本档环线。被 L5 取代。"
+    },
+    {
+      "id": "L4",
+      "lever": "LONG_BIKE_SWEEP_SCREEN_ACCEPT_LIMIT 48 -> 400",
+      "decision": "reverted",
+      "outcome_zh": "负向：多检查约 2800 个候选全部被拒，新增 564 次 screen:local_uturn 与 1284 次 gate:branch_or_self_intersection，bike:b2:candidates 仍为 11、组合仍为 88，阶段耗时由 290 s 翻倍到 556 s。已完整回退。"
+    },
+    {
+      "id": "L5",
+      "lever": "把 bike band 2 的单向槽位提到所有其他 bike 槽位之前尝试（generate_portfolio 的 attempt_order）",
+      "decision": "kept",
+      "outcome_zh": "成功：组合 88 -> 90，gate_failures 为空，bike 回到 15 环线 + 15 单向，band 2 锚点尝试由 210 降至 55，阶段耗时由 290 s 降至 112 s。band 0 与 band 1 仍各满 10 条，因为环线是可控种类，build_loop 通过 corridor_weight 对 used_edges 加权回程。"
+    }
+  ],
+  "code_changes": [
+    {
+      "file": "workspace/source/routes/generator.py",
+      "change": "_attempt 内新增 sweep_screen 闭包，把几何重叠筛查提前到 sweep 内部（L2）",
+      "kept": true
+    },
+    {
+      "file": "workspace/source/routes/generator.py",
+      "change": "generate_portfolio 在 slots = slot_plan(mode) 之后为 bike 构造 attempt_order，把 band 2 单向槽位前置（L5）；slots 顺序与 filled 的 slot.index 键不变，路线编号保持稳定",
+      "kept": true
+    },
+    {
+      "file": "workspace/source/scripts/generate_all.py",
+      "change": "stage_web 与 stage_checks 的 subprocess.run 增加 encoding='utf-8', errors='replace'",
+      "reason_zh": "父进程原先用 Windows 区域编码 cp936 解码子进程输出，子进程打印中文门禁名时 reader 线程抛 UnicodeDecodeError，stdout 变成 None，最终以 TypeError: 'NoneType' object is not subscriptable 记为 STAGES_FAILED=1。子进程其实已成功写出 checks/generated_quality.json（passed=True，14/14），失败只在父进程侧。",
+      "kept": true
+    },
+    {
+      "file": "workspace/source/scripts/generate_all.py",
+      "change": "重写 stage_routes 文档字符串",
+      "reason_zh": "原文仍宣称 87 条，与修复后的 90 条契约不符。",
+      "kept": true
+    },
+    {
+      "file": "workspace/source/web/app.js",
+      "change": "无",
+      "kept": null,
+      "reason_zh": "盲测阶段产品矩阵第 6 项判为不通过。复查后确认 renderRouteCard 从不读取 note_zh/scored_dimensions，拓宽 candidateFields 白名单不会渲染出任何内容；评分分解实际由详情面板渲染。集中修正后重跑浏览器验收，详情面板已输出「评分分解 · 目录级基线（总分 80.8）/ 环境健康 72.6 × 0.30 / PM2.5 17.3 ug/m3」，第 6 项据实改判通过，无需改动前端代码。"
+    }
+  ],
+  "route_portfolio": {
+    "before": {
+      "route_count": 87,
+      "bike_band_counts": [
+        3,
+        7,
+        7
+      ],
+      "gate_failures": 3
+    },
+    "after": {
+      "route_count": 90,
+      "band_counts": {
+        "walk": {
+          "0": 10,
+          "1": 10,
+          "2": 10
+        },
+        "run": {
+          "0": 10,
+          "1": 10,
+          "2": 10
+        },
+        "bike": {
+          "0": 10,
+          "1": 10,
+          "2": 10
+        }
+      },
+      "kind_counts": {
+        "walk": {
+          "strict_loop": 15,
+          "one_way": 15
+        },
+        "run": {
+          "strict_loop": 15,
+          "one_way": 15
+        },
+        "bike": {
+          "strict_loop": 15,
+          "one_way": 15
+        }
+      },
+      "kind_swaps": [],
+      "unfilled_slots": [],
+      "bike_b2_anchor_tries": 55,
+      "bike_b2_candidates": 14,
+      "gate_failures": []
+    }
+  },
+  "thresholds_unchanged": {
+    "in_district_min_ratio": 0.9,
+    "road_snap_min_ratio": 0.98,
+    "same_mode_overlap_max": 0.9,
+    "loop_count_range": [
+      14,
+      16
+    ],
+    "catalog_agreement_tolerance": 0.02,
+    "edge_containment_max": 0.8,
+    "note_zh": "所有空间质量阈值保持原值，未放宽任何门禁，也未用近似重复路线凑数；overlap_violations=0。"
+  },
+  "residual_issues": [
+    {
+      "issue_zh": "评价实验 detour_pass_rate = 0.851852，低于 0.9 阈值",
+      "status": "not_fixed",
+      "handling_zh": "它不在 14 项强制门禁之内，generated_quality.passed 为 True；按事实写入实验报告，support_status 保持 partially_supported，未通过调阈值掩盖。"
+    },
+    {
+      "issue_zh": "目录级基线下 sport_match / access_convenience / user_preference 三维为 null（status=unavailable）",
+      "status": "by_design",
+      "handling_zh": "build_web_payload.py 的 BASELINE_NOTE_ZH 已明确说明，详情面板据此显示「目录级基线」标签。"
+    },
+    {
+      "issue_zh": "Qoder Credits 消耗与百炼调用量缺少用户截图",
+      "status": "evidence_pending_user_capture",
+      "handling_zh": "run_manifest.json 中 qoder_task_id=unknown、qoder_credits_consumed=evidence_pending_user_capture，待用户补截图，未编造任何请求 ID。"
+    }
+  ]
+}

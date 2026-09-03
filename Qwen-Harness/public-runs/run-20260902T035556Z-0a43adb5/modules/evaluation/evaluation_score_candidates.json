@@ -1,0 +1,12 @@
+{
+  "module": "evaluation",
+  "status": "error",
+  "input_artifacts": [],
+  "output_artifacts": [],
+  "data_hashes": {},
+  "commands": [],
+  "warnings": [],
+  "errors": [
+    "操作参数缺少 profile（文件路径或内联对象）"
+  ]
+}

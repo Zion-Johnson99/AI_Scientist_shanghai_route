@@ -1,0 +1,11 @@
+{
+  "stage": "hypothesis_generation",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.agents.hypothesis_agent:stage_handler",
+  "dependencies": {
+    "gap_analysis": "a0b04fe880eeba60867fe771da5a2b0cbe1d8e127a2f7113bf43f5978c2fa894"
+  },
+  "prepared_at": "2026-09-02T04:03:25.187592+00:00"
+}

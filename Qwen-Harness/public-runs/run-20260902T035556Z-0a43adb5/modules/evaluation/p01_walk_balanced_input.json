@@ -1,0 +1,9 @@
+{
+  "case_id": "P01_walk_balanced",
+  "route_mode": "walk",
+  "goal": "balanced",
+  "target_distance_m": 3000,
+  "sensitivities": [],
+  "interests": [],
+  "notes": "步行平衡画像，无敏感项与偏好项，作为权重扰动稳健性的中性参照"
+}

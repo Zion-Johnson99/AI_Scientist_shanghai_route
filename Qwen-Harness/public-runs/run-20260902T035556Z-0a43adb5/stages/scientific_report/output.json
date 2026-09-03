@@ -1,0 +1,335 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260902T035556Z-0a43adb5",
+  "git_head": "",
+  "problem_statement": "本研究面向上海市徐汇区户外步行、跑步与骑行人群，检验在满足运动方式、目标距离、安全阈值、搜索范围及有限附加距离约束（同端点附加距离≤20%、目标距离偏差≤15%）的当前候选路线集中，融合 PM2.5（网格/站点融合估计）、花粉（日级背景代理）、噪声（0-100 风险代理）、天气、绿地水体邻近度、路线质量、接驳成本与用户偏好的多源环境暴露模型，相较最短路径基线与单一 PM2.5 基线，能否降低综合环境暴露风险并提高个性化偏好匹配度。研究结论限定为当前候选集中的约束最优路线，不宣称全路网全局最优；预设画像案例不作为独立人群样本，不做人群外推。",
+  "rationale": "WHO 全球空气质量指南确认空气污染在比以往认知更低的浓度下仍影响健康的多个方面，且每年造成数百万人死亡及健康生命年损失，疾病负担已与不健康饮食和吸烟相当（clm-001、clm-002、clm-003，src-web-www-who-int-b625d67c6f53）。项目文档将核心假设定义为多源融合模型相较最短或单一 PM2.5 基线能降低环境风险并提高个性化匹配度（clm-006），并将最优路线操作定义为当前候选集上的约束最优解（clm-007）。当前证据存在 7 项知识缺口，其中权重敏感性未量化（gap-004）为高可测性缺口，可在仓库内离线检验。实验计划针对假设 hyp-001（单维度权重 ±30% 扰动下排序稳健性）设计，但执行结果判定为 inconclusive：detour_pass_rate=0.00、environment_win_rate=0.00、constraint_pass_rate=0.00、no_candidate_rate=0.40，9 个画像在 M1 距离门禁下候选集被清空并降级，18 个变体×画像单元无候选。数据质量同时下降：environment 模块预检为 partial，缺少 6 个导出快照文件，270 个指标块为 estimated 估算值，全部 90 条路线的 pm2_5/noise/pollen_daily 单位与文档化单位不一致。因此本轮迭代以 stop_inconclusive 终止，不继续迭代。",
+  "technical_details": [
+    "多源环境暴露评分：54 个约 1 km 环境网格→路线路段匹配→90 条路线暴露汇总；PM2.5 为网格/站点融合估计（代理变量），花粉为日级背景代理，噪声为 0-100 风险代理（非实测分贝）",
+    "约束最优化：r* = argmax_{r ∈ R_feasible} U(r | p, t)，R_feasible 为通过运动方式、距离、安全、区域、路线形态与数据可用性门禁的路线集合；结论限定为当前候选集中的约束最优路线",
+    "硬约束阈值：同端点附加距离上限 ρ_detour ≤ 0.20，目标距离偏差 ρ_target ≤ 0.15；接驳距离服从用户搜索半径与现有硬约束",
+    "权重扰动实验设计：基准权重 1 次 + 5 维度 × 2 方向（+30%、−30%）= 11 组权重配置，对 9 个固定画像分别运行；主指标为前 5 名路线集合 Jaccard 相似度（阈值 ≥ 0.6），辅指标为全部路线 Spearman 秩相关（阈值 ≥ 0.85）",
+    "评价模块五维度：environment_health、sport_match、access_convenience、route_quality、interest_service；基线包括最短可行基线（B0）、单一 PM2.5 基线（B1）、默认权重非个性化基线（B3）",
+    "数据质量限制：environment 模块预检为 partial，缺少 6 个导出快照文件，270 个指标块为 estimated 估算值，全部 90 条路线的 pm2_5/noise/pollen_daily 单位标注与文档化单位不一致；存在 1 个致命数据错误"
+  ],
+  "datasets": {
+    "source": [
+      "徐汇区候选路线库（90 条已验收路线：步行/跑步/骑行各 30 条，route_catalog.json + xuhui_routes.geojson）",
+      "环境快照（environment_dashboard.json：PM2.5 网格/站点融合估计、日级花粉代理、0-100 噪声风险代理、天气）",
+      "评价模块输出（evaluation.score_candidates：维度分、候选排序、约束状态）",
+      "来源注册表（9 条 SourceRecord：WHO 指南、PubMed 元数据、Crossref 元数据、项目文档、仓库配置文件）",
+      "项目文档（00-需求与总体架构 §5.2–§5.4）",
+      "来源策略配置（Qwen-Harness/config/source_policy.json）"
+    ],
+    "target": [
+      "reports/scientific_plan.json（本文件）",
+      "reports/scientific_plan.md",
+      "experiments/experiment_results.json",
+      "experiments/metrics_summary.json",
+      "publish/research_harness_latest.json（web_payload 阶段未运行，尚未生成）"
+    ]
+  },
+  "paper_title": "多源环境暴露加权模型在徐汇区户外运动路线候选集中的排序稳健性检验：一项离线预注册实验（inconclusive）",
+  "paper_abstract": "背景：WHO 确认空气污染在低浓度下仍影响健康，户外运动路线选择需综合多源环境暴露信息。目的：在上海市徐汇区 90 条候选路线（步行/跑步/骑行各 30 条）中，检验多源加权复合指标在单维度权重 ±30% 扰动下的排序稳健性（假设 hyp-001）。方法：对 9 个固定画像在基准权重与 10 组单维度扰动权重下分别导出可行候选排序，计算前 5 名路线集合 Jaccard 相似度与全部路线 Spearman 秩相关。结果：本轮实验判定为 inconclusive（置信度 low）。detour_pass_rate=0.00、environment_win_rate=0.00、constraint_pass_rate=0.00、no_candidate_rate=0.40；9 个画像在 M1 距离门禁下候选集被清空并降级为无门禁个性化选择；18 个变体×画像单元硬约束过滤后无候选。environment 模块预检为 partial，缺少 6 个导出快照文件，270 个指标块为 estimated 估算值，全部路线的 pm2_5/noise/pollen_daily 单位与文档化单位不一致。结论：当前证据不足以支持或证伪假设，支持状态为 inconclusive。路线结论仅适用于当前候选集中的约束最优路线，不宣称全路网全局最优。预设画像案例为固定案例矩阵，不作为独立人群样本，不外推至其他区域或人群。",
+  "methods": [
+    "步骤 1：冻结数据快照。读取 90 条候选路线（route.read_snapshot）与环境快照（environment.read_snapshot），记录 SHA256 哈希与数据语义字段（status、estimated、confidence、business_time、valid_until）。",
+    "步骤 2：定义 9 个固定画像（P01–P09），覆盖步行/跑步/骑行 × 平衡/健康环境/就近/景观目标组合，含敏感项与兴趣项设定。",
+    "步骤 3：对每个画像在基准权重下运行 evaluation.score_candidates，导出全部通过硬约束的候选及五维度分（environment_health、sport_match、access_convenience、route_quality、interest_service）。",
+    "步骤 4：对每个画像执行 5 维度 × 2 方向（+30%、−30%）共 10 组单维度权重扰动，重复步骤 3，记录每组权重的 weights_sha256。",
+    "步骤 5：计算主指标——前 5 名路线集合 Jaccard 相似度：J(A,B) = |A ∩ B| / |A ∪ B|，其中 A 为基准权重下某运动类型前 5 名路线 ID 集合，B 为扰动后同运动类型前 5 名路线 ID 集合；对每个画像、每个被扰动维度、每个扰动方向分别计算，报告最小值与中位数。",
+    "步骤 6：计算辅指标——全部路线 Spearman 秩相关系数：ρ = 1 − 6Σd_i² / (n(n²−1))，d_i 为基准与扰动权重下第 i 条路线排名差，n 为该运动类型可行候选数（≤30）。",
+    "步骤 7：计算调节变量——被扰动维度在候选集内的方差：Var(x_dim) = Σ(x_i − x̄)² / (n−1)。",
+    "步骤 8：验证硬约束通过率一致性：权重扰动前后约束通过率差异应为 0，否则标记异常。",
+    "步骤 9：基线对照。B0 最短可行基线：最小化目标距离偏差→接驳距离→route_id 字典序。B1 单一 PM2.5 基线：距离门禁内最小化 PM2.5 网格估计值。B3 默认权重非个性化基线：默认平衡权重，不提升敏感项与兴趣项。",
+    "步骤 10：支持状态判定。按预注册阈值（Jaccard ≥ 0.6、Spearman ≥ 0.85、至多 2 个维度触发证伪）判定 supported / partially_supported / unsupported / inconclusive。",
+    "步骤 11：数据质量审计。记录 environment 模块预检状态、缺失导出文件、单位不一致告警、estimated 标记数量与致命数据错误。",
+    "步骤 12：迭代决策。证据不足且数据质量下降时执行 stop_inconclusive，不继续迭代。"
+  ],
+  "experiments": {
+    "baselines": [
+      {
+        "baseline_id": "B0_shortest_feasible",
+        "name": "最短可行基线",
+        "selection_rule": "在可行候选中最小化目标距离偏差，其次最小化接驳距离，再按 route_id 字典序；不使用环境、兴趣或个性化信息。",
+        "required_fields": [
+          "route.distance_m",
+          "access_distance_m",
+          "profile.target_distance_m"
+        ]
+      },
+      {
+        "baseline_id": "B1_pm25_only",
+        "name": "单一 PM2.5 基线",
+        "selection_rule": "在目标距离偏差门禁内最小化 PM2.5 浓度（网格/站点融合估计值）；PM2.5 缺失的候选不参与选择，全部缺失时回退 B0 规则并记录降级。",
+        "required_fields": [
+          "environment_summary.pm2_5.value",
+          "route.distance_m",
+          "profile.target_distance_m"
+        ]
+      },
+      {
+        "baseline_id": "B3_non_personalized",
+        "name": "默认权重非个性化基线",
+        "selection_rule": "使用评价模块默认平衡权重，不提升敏感项与兴趣项；按 route_quality、sport_match、data_confidence 依次降序选择并以 route_id 字典序决出平局。候选文件必须由默认平衡权重生成（记录 weights_sha256）；若检测到权重被个性化覆盖，按契约违规上报。",
+        "required_fields": [
+          "dimension_scores.route_quality",
+          "dimension_scores.sport_match",
+          "data_confidence"
+        ]
+      }
+    ],
+    "metrics": [
+      {
+        "metric_id": "jaccard_top5",
+        "name": "前 5 名路线集合 Jaccard 相似度",
+        "direction": "higher",
+        "formula": "J(A,B) = |A ∩ B| / |A ∪ B|，其中 A 为基准权重下某运动类型前 5 名路线 ID 集合，B 为单维度权重 ±30% 扰动后同运动类型前 5 名路线 ID 集合；对每个画像、每个被扰动维度、每个扰动方向（+30%、−30%）分别计算，报告最小值与中位数",
+        "primary": true,
+        "data_source": "evaluation.score_candidates 输出的候选排序列表（基准权重与扰动权重各运行一次），路线 ID 来自 route.read_snapshot 快照"
+      },
+      {
+        "metric_id": "spearman_rank_all90",
+        "name": "全部 90 条路线 Spearman 秩相关系数",
+        "direction": "higher",
+        "formula": "ρ = 1 − 6Σd_i² / (n(n²−1))，其中 d_i 为基准权重与扰动权重下第 i 条路线的排名差，n 为该运动类型可行候选数（≤30）；对每个画像、每个被扰动维度、每个扰动方向分别计算",
+        "primary": false,
+        "data_source": "evaluation.score_candidates 输出的候选排序列表"
+      },
+      {
+        "metric_id": "dimension_variance",
+        "name": "被扰动维度在候选集内的方差",
+        "direction": "target",
+        "formula": "Var(x_dim) = Σ(x_i − x̄)² / (n−1)，x_i 为第 i 条可行候选在该维度的归一化分值；用于解释排序翻转与维度方差的关系（调节变量）",
+        "primary": false,
+        "data_source": "evaluation.score_candidates 输出的维度分（dimension_scores）"
+      },
+      {
+        "metric_id": "constraint_pass_rate",
+        "name": "硬约束通过率",
+        "direction": "higher",
+        "formula": "通过硬约束的候选数 / 该运动类型全部候选数；权重扰动不应改变硬约束过滤结果，若扰动前后通过率不一致则标记异常",
+        "primary": false,
+        "data_source": "evaluation.score_candidates 输出的候选计数与约束状态"
+      },
+      {
+        "metric_id": "candidate_count",
+        "name": "可行候选数",
+        "direction": "target",
+        "formula": "该画像与运动类型下通过硬约束与距离门禁的候选路线数；用于判断样本是否足以计算前 5 名集合（需 ≥5）",
+        "primary": false,
+        "data_source": "evaluation.score_candidates 输出的 candidate_count"
+      }
+    ]
+  },
+  "results": {
+    "support_status": "inconclusive",
+    "confidence": "low",
+    "metric_highlights": [
+      {
+        "metric_id": "detour_pass_rate",
+        "value": 0.0
+      },
+      {
+        "metric_id": "environment_win_rate",
+        "value": 0.0
+      },
+      {
+        "metric_id": "preference_win_rate",
+        "value": 0.5
+      },
+      {
+        "metric_id": "constraint_pass_rate",
+        "value": 0.0
+      },
+      {
+        "metric_id": "reference_verification_rate",
+        "value": 1.0
+      },
+      {
+        "metric_id": "no_candidate_rate",
+        "value": 0.4
+      }
+    ],
+    "negative_results": [
+      "18 个变体×画像单元无候选（硬约束过滤后为空）",
+      "M1 距离门禁未通过的画像: P01_walk_balanced, P02_run_balanced, P03_bike_balanced, P04_walk_health_environment, P05_run_health_environment, P06_bike_nearby, P07_walk_scenery, P08_run_scenery, P09_bike_health_environment"
+    ],
+    "data_quality_summary": "结果来源: module_outputs；致命数据错误 1 个；来源核验率 1.00。模块 environment 预检为 partial。缺少 6 个导出快照文件（environment_latest.json、environment_hourly.json、grid_environment_latest.json、pollen_grid_scores.json、noise_segments.json、route_environment.json）。270 个指标块为 estimated 估算值（非站点实测）。全部 90 条路线的 pm2_5.unit='ug/m3' 与文档化单位 'µg/m³' 不一致；noise.unit='proxy_0_100' 与文档化单位 '0-100 risk index' 不一致；pollen_daily.unit='index' 与文档化单位 '0-100 risk index' 不一致。evaluation 多组候选风险状态为未知。web: publish/research_harness_latest.json 尚未生成（web_payload 阶段未运行）。",
+    "degradation_notes": "9 个画像在 M1_personalized_constrained 下距离门禁清空候选集，回退为无门禁个性化选择（降级记录，不伪造候选）。",
+    "iteration_decision": "stop_inconclusive：证据不足且数据质量下降，不继续迭代。"
+  },
+  "references": [
+    {
+      "source_id": "src-web-www-who-int-b625d67c6f53",
+      "title": "WHO global air quality guidelines: particulate matter (‎PM2.5 and PM10)‎, ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide",
+      "authors": [],
+      "year": null,
+      "doi": null,
+      "pmid": null,
+      "url": "https://www.who.int/publications/i/item/9789240034228"
+    },
+    {
+      "source_id": "src-pubmed-18994660",
+      "title": "The role of welfare state principles and generosity in social policy programmes for public health: an international comparative study.",
+      "authors": [
+        "Lundberg Olle",
+        "Yngwe Monica Aberg",
+        "Stjärne Maria Kölegård",
+        "Elstad Jon Ivar",
+        "Ferrarini Tommy",
+        "Kangas Olli",
+        "Norström Thor",
+        "Palme Joakim",
+        "Fritzell Johan"
+      ],
+      "year": 2008,
+      "doi": "10.1016/S0140-6736(08)61686-4",
+      "pmid": "18994660",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18994660/"
+    },
+    {
+      "source_id": "src-local-00-需求与总体架构",
+      "title": "00-需求与总体架构",
+      "authors": [],
+      "year": null,
+      "doi": null,
+      "pmid": null,
+      "url": null
+    },
+    {
+      "source_id": "src-repo-Qwen-Harness-config-source-policy-json",
+      "title": "Qwen-Harness/config/source_policy.json",
+      "authors": [],
+      "year": null,
+      "doi": null,
+      "pmid": null,
+      "url": null
+    },
+    {
+      "source_id": "src-crossref-10-1056-nejmoa1702747",
+      "title": "Air Pollution and Mortality in the Medicare Population",
+      "authors": [
+        "Di Qian",
+        "Wang Yan",
+        "Zanobetti Antonella",
+        "Wang Yun",
+        "Koutrakis Petros",
+        "Choirat Christine",
+        "Dominici Francesca",
+        "Schwartz Joel D."
+      ],
+      "year": 2017,
+      "doi": "10.1056/nejmoa1702747",
+      "pmid": null,
+      "url": "https://doi.org/10.1056/nejmoa1702747"
+    },
+    {
+      "source_id": "src-crossref-10-1016-s0140-6736-08-61689-x",
+      "title": "Effect of exposure to natural environment on health inequalities: an observational population study",
+      "authors": [
+        "Mitchell Richard",
+        "Popham Frank"
+      ],
+      "year": 2008,
+      "doi": "10.1016/s0140-6736(08)61689-x",
+      "pmid": null,
+      "url": "https://doi.org/10.1016/s0140-6736(08)61689-x"
+    }
+  ],
+  "evidence_map": {
+    "空气污染在低浓度下仍影响健康，全球疾病负担与不健康饮食和吸烟相当": [
+      "clm-001",
+      "clm-002",
+      "clm-003"
+    ],
+    "多源融合模型假设与五维度评分框架定义": [
+      "clm-006",
+      "clm-013"
+    ],
+    "最优路线操作定义为当前候选集约束最优解": [
+      "clm-007"
+    ],
+    "硬约束阈值：ρ_detour ≤ 0.20、ρ_target ≤ 0.15": [
+      "clm-008"
+    ],
+    "结果表述纪律：使用'当前候选集中的约束最优路线'，不宣称全路网全局最优": [
+      "clm-009"
+    ],
+    "实验边界：不开展问卷、盲评、传感器或线下实测": [
+      "clm-010"
+    ],
+    "环境模块主链路与三类代理数据定义": [
+      "clm-011"
+    ],
+    "候选集为 90 条已验收路线（步行/跑步/骑行各 30 条）": [
+      "clm-012"
+    ],
+    "来源策略配置约束": [
+      "clm-014"
+    ],
+    "支持状态判定为 inconclusive，置信度 low": [
+      "clm-006",
+      "clm-007",
+      "clm-010"
+    ],
+    "M1 距离门禁清空候选集并降级": [
+      "clm-008",
+      "clm-012"
+    ],
+    "environment 模块预检为 partial，缺少导出快照文件": [
+      "clm-011"
+    ],
+    "PM2.5/噪声/花粉为代理变量，非实测值": [
+      "clm-011"
+    ]
+  },
+  "limitations": [
+    "代理变量限制：PM2.5 为网格/站点融合估计（约 1 km 空间分辨率），非逐地址或逐道路段实测浓度；花粉为日级背景代理，非实时逐点浓度；噪声为 0-100 风险代理分值，非实测分贝值。三类代理与真实暴露之间的校准关系在仓库内无实测数据支撑（gap-001、gap-002、gap-003）。",
+    "候选集限定：结论仅适用于当前 90 条候选路线集内的约束最优解，不宣称全路网全局最优。候选集覆盖度是否足以代表徐汇区户外运动路线多样性无法在当前证据下判定（gap-005）。",
+    "画像非人群样本：9 个预设画像案例为固定案例矩阵，不作为独立人群样本，不外推至其他区域或人群。",
+    "权重主观性：多源加权复合指标中权重为项目预注册设定，缺乏外部实证依据；±30% 扰动范围、Jaccard ≥ 0.6、Spearman ≥ 0.85 等阈值均为研究者预设（gap-004）。",
+    "数据质量下降：environment 模块预检为 partial，缺少 6 个导出快照文件，270 个指标块为 estimated 估算值，全部 90 条路线的 pm2_5/noise/pollen_daily 单位与文档化单位不一致，存在 1 个致命数据错误。",
+    "实验结果 inconclusive：detour_pass_rate=0.00、environment_win_rate=0.00、constraint_pass_rate=0.00、no_candidate_rate=0.40；9 个画像在 M1 距离门禁下候选集被清空并降级，18 个变体×画像单元无候选。",
+    "健康结局映射缺失：现有证据未提供户外运动场景下多源环境暴露与健康结局的定量暴露-反应关系，无法将路线暴露差异转化为健康收益估计（gap-006）。",
+    "天气调节效应未量化：天气数据在复合指标中的调节效应方向与幅度缺乏实证支撑（gap-007）。",
+    "实验边界限制：不开展用户问卷、人工盲评、移动传感器或线下实测，限制了代理校准与人群外推能力。"
+  ],
+  "reproducibility": {
+    "workflow": "full-research",
+    "run_id": "run-20260902T035556Z-0a43adb5",
+    "offline": false,
+    "random_seed": "1234（编排层预注册设定，模型 temperature=0.2）",
+    "model": "qwen3.8-max",
+    "reasoning_effort": "medium",
+    "commands": [
+      "uv run --directory Qwen-Harness --frozen qwen-harness run --goal-file examples/goals/multisource-route.json",
+      "uv run --directory Qwen-Harness --frozen qwen-harness status run-20260902T035556Z-0a43adb5 --json",
+      "uv run --directory Qwen-Harness --frozen qwen-harness report run-20260902T035556Z-0a43adb5",
+      "python .qoder/skills/scientific-evidence-hypothesis/scripts/validate_source_registry.py Qwen-Harness/runtime/runs/run-20260902T035556Z-0a43adb5",
+      "python .qoder/skills/scientific-evidence-hypothesis/scripts/validate_evidence_links.py Qwen-Harness/runtime/runs/run-20260902T035556Z-0a43adb5",
+      "python .qoder/skills/scientific-evidence-hypothesis/scripts/validate_scientific_plan.py Qwen-Harness/runtime/runs/run-20260902T035556Z-0a43adb5"
+    ],
+    "fixture_notes": "当前为离线夹具语义下的固定案例矩阵：9 个画像（P01–P09）为预注册固定案例，90 条候选路线为已验收快照，环境数据为快照冻结值。不触发网络刷新类动作。",
+    "iteration_decision": "stop_inconclusive：证据不足且数据质量下降，不继续迭代。",
+    "proposed_code_changes": [
+      {
+        "action": "propose_environment_model_change",
+        "description": "补齐 environment 模块缺失的 6 个导出快照文件，并统一 pm2_5/noise/pollen_daily 的单位标注。"
+      },
+      {
+        "action": "propose_scoring_code_change",
+        "description": "复核 M1_personalized_constrained 的距离门禁阈值与候选路线距离分布的匹配性。"
+      },
+      {
+        "action": "propose_route_data_change",
+        "description": "核查候选路线数据覆盖度与硬约束字段完整性，降低 no_candidate_rate（当前 0.40）。"
+      }
+    ]
+  },
+  "data_snapshot_hashes": {
+    "route_catalog": "sha256 记录于 route.read_snapshot 操作（具体哈希见运行目录 run_manifest.json）",
+    "environment_dashboard": "sha256 记录于 environment.read_snapshot 操作（具体哈希见运行目录 run_manifest.json）",
+    "source_registry_sha256": "d876c8cd6c73b512495ccc9385eb615021dc1efeb3f5a6865bf86136fbcd8146 (src-web-www-who-int-b625d67c6f53); 4536c8aea95bdfb1b78786bad05537cb209e7c01407f2db853ca71b86cb933a9 (src-pubmed-18994660); ab5a6818c64308ae4d01c57770c6c7c7e092b68897a7dc24dda881361fd17fce (src-local-00-需求与总体架构); e239423f54350a9cb2cdc4249c97aadc21ccf457cbad91402da191043248dade (src-repo-Qwen-Harness-config-source-policy-json)"
+  },
+  "generated_at": "2026-09-02T06:58:07.671890Z"
+}

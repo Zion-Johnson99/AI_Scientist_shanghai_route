@@ -1,0 +1,14 @@
+{
+  "handler": "qwen_harness.sources.base:source_collection_stage",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 24997.0,
+  "status": "passed",
+  "summary": "采集来源 11 个（已验证 11）",
+  "artifacts": [
+    "sources/source_registry.jsonl",
+    "sources/extracted_texts.json"
+  ],
+  "offline": false,
+  "audited_at": "2026-09-02T03:58:23.705006+00:00"
+}

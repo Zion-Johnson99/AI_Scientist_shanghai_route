@@ -1,0 +1,19 @@
+STAMP=2026-09-03T07:34:13Z
+== checks ==
+   ok 17.7s {'exit_code': 0, 'stdout_tail': 'PASS pytest:Qwen-Harness exit=0 1.0s\nPASS pytest:evaluation_model_qwen exit=0 1.0s\nPASS pytest:weather_api_data exit=0 0.8s\nPASS ruff:Qwen-Harness exit=0 0.1s\nPASS pyright:Qwen-Harness exit=0 2.7s\nPASS ruff:xuhui_route_builder exit=0 0.1s\nPASS pyright:xuhui_route_builder exit=0 2.8s\nPASS ruff:weather_api_data exit=0 0.1s\nPASS pyright:weather_api_data exit=0 2.9s\nPASS ruff:evaluation_model_qwen exit=0 0.1s\nPASS pyright:evaluation_model_qwen exit=0 2.8s\nPASS Node 契约测试 exit=0 0.9s\nPASS 评价 API 健康检查 exit=0 1.0s\nPASS 真实浏览器验收 exit=0 1.1s\nGENERATED_QUALITY_PASSED=true\n'}
+STAGES_FAILED=0
+STAGE_checks_EXIT=0
+== check_route_spatial ==
+routes=90 accepted=90 modes={'walk': 30, 'run': 30, 'bike': 30} overlap_violations=0
+ROUTE_SPATIAL_QUALITY_PASSED=true
+== check_environment_contract ==
+cells=54/54 dashboard_routes=90 catalog_routes=90 sets_equal=True worst_missing_rate=0.0
+ENVIRONMENT_CONTRACT_PASSED=true
+== check_output_boundary ==
+branch=Qwen_Harness_Build head=a7c0fc6ae13b status_lines=1
+ignore_rule=Qwen-Harness/.gitignore:5:runtime/*	Qwen-Harness/runtime/runs
+OUTPUT_BOUNDARY_PASSED=true
+== check_secret_scan ==
+scanned=455 violations=0 warnings=0 env_files=0
+SECRET_SCAN_PASSED=true
+EXIT=0

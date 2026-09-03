@@ -1,0 +1,12 @@
+{
+  "module": "web",
+  "status": "skipped",
+  "input_artifacts": [],
+  "output_artifacts": [],
+  "data_hashes": {},
+  "commands": [],
+  "warnings": [
+    "publish/research_harness_latest.json 尚未生成（web_payload 阶段未运行）"
+  ],
+  "errors": []
+}

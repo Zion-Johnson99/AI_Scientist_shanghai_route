@@ -1,0 +1,11 @@
+{
+  "stage": "project_generation",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.generation.stage_handlers:stage_handler",
+  "dependencies": {
+    "experiment_design": "66d9e2f37f185ee82f42c45fffe96a7456d11ef2ecf719a9432f84e5aaafb453"
+  },
+  "prepared_at": "2026-09-02T06:16:04.059171+00:00"
+}

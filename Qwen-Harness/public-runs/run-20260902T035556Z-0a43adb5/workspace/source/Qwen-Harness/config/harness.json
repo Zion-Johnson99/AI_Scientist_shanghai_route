@@ -1,0 +1,29 @@
+{
+  "model": "qwen3.8-max",
+  "temperature": 0.2,
+  "seed": 1234,
+  "reasoning_effort": "medium",
+  "run_dir": "runtime/runs",
+  "permissions": {
+    "network": false,
+    "module_write": false,
+    "publish_web": false,
+    "approval_mode": "auto"
+  },
+  "retry": {
+    "max_retries": 2,
+    "backoff_base_seconds": 1.0,
+    "backoff_max_seconds": 30.0
+  },
+  "structured_output": {
+    "max_parse_retries": 1,
+    "fallback_to_free_text": false
+  },
+  "logging": {
+    "level": "INFO",
+    "events_file": "events.jsonl"
+  },
+  "lock": {
+    "stale_timeout_seconds": 3600
+  }
+}

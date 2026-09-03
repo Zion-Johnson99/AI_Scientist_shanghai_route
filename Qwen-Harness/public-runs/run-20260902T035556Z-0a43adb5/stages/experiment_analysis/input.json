@@ -1,0 +1,11 @@
+{
+  "stage": "experiment_analysis",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.experiments.runner:stage_handler",
+  "dependencies": {
+    "module_execution": "a61c44c51b0a3a203a2d1d041595a1bb5508d03abaa058dd15bd2aeb6a15671d"
+  },
+  "prepared_at": "2026-09-02T06:53:15.730675+00:00"
+}

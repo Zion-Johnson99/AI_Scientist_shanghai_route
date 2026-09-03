@@ -1,0 +1,385 @@
+{
+  "mode": "bike",
+  "band": 2,
+  "target_m": 25000.0,
+  "low_m": 21550.0,
+  "high_m": 28450.0,
+  "min_separation_m": 8979.2,
+  "base_cap_m": 19500.0,
+  "circuity_prescreen": 2.4,
+  "graph": {
+    "mode": "bike",
+    "crs": "CRS84/WGS84",
+    "node_count": 7815,
+    "edge_count": 8655,
+    "source_way_count": 2120,
+    "rejected_way_count": 1137,
+    "total_length_km": 470.883,
+    "isolated_node_count": 0
+  },
+  "anchor_count": 16,
+  "pool_count": 1332,
+  "anchors": [
+    {
+      "origin": "area:west_bund",
+      "anchor_key": 3724696697921457810,
+      "early_out": true,
+      "max_separation_m": 7939.1
+    },
+    {
+      "origin": "area:longhua",
+      "anchor_key": 3724700189921445548,
+      "early_out": true,
+      "max_separation_m": 8011.5
+    },
+    {
+      "origin": "area:xujiahui",
+      "anchor_key": 3724803729921447875,
+      "early_out": false,
+      "max_separation_m": 10880.7,
+      "turnarounds_in_window": 1363,
+      "prefix_10": {
+        "turnarounds_tried": 10,
+        "turnarounds_with_endpoint": 0,
+        "out_length_min_m": 12365.0,
+        "out_length_max_m": 12549.6,
+        "best": null
+      },
+      "prefix_48": {
+        "turnarounds_tried": 48,
+        "turnarounds_with_endpoint": 0,
+        "out_length_min_m": 12021.2,
+        "out_length_max_m": 12549.6,
+        "best": null
+      },
+      "stride_48": {
+        "turnarounds_tried": 48,
+        "turnarounds_with_endpoint": 0,
+        "out_length_min_m": 8668.4,
+        "out_length_max_m": 12549.6,
+        "best": null
+      },
+      "all_turnarounds": {
+        "turnarounds_tried": 1363,
+        "turnarounds_with_endpoint": 0,
+        "out_length_min_m": 8620.1,
+        "out_length_max_m": 12549.6,
+        "best": null
+      }
+    },
+    {
+      "origin": "area:hengfu",
+      "anchor_key": 3724847321921450986,
+      "early_out": false,
+      "max_separation_m": 12091.1,
+      "turnarounds_in_window": 2083,
+      "prefix_10": {
+        "turnarounds_tried": 10,
+        "turnarounds_with_endpoint": 0,
+        "out_length_min_m": 13573.1,
+        "out_length_max_m": 13801.2,
+        "best": null
+      },
+      "prefix_48": {
+        "turnarounds_tried": 48,
+        "turnarounds_with_endpoint": 1,
+        "out_length_min_m": 13255.4,
+        "out_length_max_m": 13801.2,
+        "best": {
+          "turn_node": 3724417761921449716,
+          "out_length_m": 13297.0,
+          "end_node": 3724546737921411110,
+          "return_length_m": 8520.8,
+          "total_m": 21817.8,
+          "separation_end_m": 9176.7,
+          "circuity": 2.378,
+          "endpoint_candidates": 1
+        }
+      },
+      "stride_48": {
+        "turnarounds_tried": 48,
+        "turnarounds_with_endpoint": 2,
+        "out_length_min_m": 8676.2,
+        "out_length_max_m": 13801.2,
+        "best": {
+          "turn_node": 3724417761921449716,
+          "out_length_m": 13297.0,
+          "end_node": 3724546737921411110,
+          "return_length_m": 8520.8,
+          "total_m": 21817.8,
+          "separation_end_m": 9176.7,
+          "circuity": 2.378,
+          "endpoint_candidates": 1
+        }
+      },
+      "all_turnarounds": {
+        "turnarounds_tried": 2083,
+        "turnarounds_with_endpoint": 66,
+        "out_length_min_m": 8620.0,
+        "out_length_max_m": 13801.2,
+        "best": {
+          "turn_node": 3724463513921451545,
+          "out_length_m": 12004.2,
+          "end_node": 3724557365921403569,
+          "return_length_m": 10119.6,
+          "total_m": 22123.8,
+          "separation_end_m": 9236.8,
+          "circuity": 2.395,
+          "endpoint_candidates": 1
+        }
+      }
+    },
+    {
+      "origin": "area:shanghai_botanical_garden",
+      "anchor_key": 3724603953921445282,
+      "early_out": true,
+      "max_separation_m": 7810.9
+    },
+    {
+      "origin": "area:kangjian",
+      "anchor_key": 3724625709921412115,
+      "early_out": true,
+      "max_separation_m": 8137.4
+    },
+    {
+      "origin": "area:caohejing",
+      "anchor_key": 3724651957921405621,
+      "early_out": true,
+      "max_separation_m": 7903.8
+    },
+    {
+      "origin": "area:huajing",
+      "anchor_key": 3724490985921447864,
+      "early_out": false,
+      "max_separation_m": 10938.7,
+      "turnarounds_in_window": 1922,
+      "prefix_10": {
+        "turnarounds_tried": 10,
+        "turnarounds_with_endpoint": 0,
+        "out_length_min_m": 12563.4,
+        "out_length_max_m": 12711.3,
+        "best": null
+      },
+      "prefix_48": {
+        "turnarounds_tried": 48,
+        "turnarounds_with_endpoint": 0,
+        "out_length_min_m": 12281.1,
+        "out_length_max_m": 12711.3,
+        "best": null
+      },
+      "stride_48": {
+        "turnarounds_tried": 48,
+        "turnarounds_with_endpoint": 1,
+        "out_length_min_m": 8689.6,
+        "out_length_max_m": 12711.3,
+        "best": {
+          "turn_node": 3724730353921409510,
+          "out_length_m": 9301.7,
+          "end_node": 3724884381921450423,
+          "return_length_m": 13648.8,
+          "total_m": 22950.5,
+          "separation_end_m": 10938.7,
+          "circuity": 2.098,
+          "endpoint_candidates": 280
+        }
+      },
+      "all_turnarounds": {
+        "turnarounds_tried": 1922,
+        "turnarounds_with_endpoint": 18,
+        "out_length_min_m": 8621.2,
+        "out_length_max_m": 12711.3,
+        "best": {
+          "turn_node": 3724719341921397792,
+          "out_length_m": 10421.5,
+          "end_node": 3724884381921450423,
+          "return_length_m": 14012.5,
+          "total_m": 24434.0,
+          "separation_end_m": 10938.7,
+          "circuity": 2.234,
+          "endpoint_candidates": 462
+        }
+      }
+    },
+    {
+      "origin": "spread",
+      "anchor_key": 3724417709921449579,
+      "early_out": false,
+      "max_separation_m": 12973.2,
+      "turnarounds_in_window": 3821,
+      "prefix_10": {
+        "turnarounds_tried": 10,
+        "turnarounds_with_endpoint": 2,
+        "out_length_min_m": 14391.8,
+        "out_length_max_m": 14539.7,
+        "best": {
+          "turn_node": 3724884381921450423,
+          "out_length_m": 14432.5,
+          "end_node": 3724712513921391850,
+          "return_length_m": 8785.4,
+          "total_m": 23217.9,
+          "separation_end_m": 9866.5,
+          "circuity": 2.353,
+          "endpoint_candidates": 49
+        }
+      },
+      "prefix_48": {
+        "turnarounds_tried": 48,
+        "turnarounds_with_endpoint": 30,
+        "out_length_min_m": 14109.5,
+        "out_length_max_m": 14539.7,
+        "best": {
+          "turn_node": 3724884381921450423,
+          "out_length_m": 14432.5,
+          "end_node": 3724712513921391850,
+          "return_length_m": 8785.4,
+          "total_m": 23217.9,
+          "separation_end_m": 9866.5,
+          "circuity": 2.353,
+          "endpoint_candidates": 49
+        }
+      },
+      "stride_48": {
+        "turnarounds_tried": 48,
+        "turnarounds_with_endpoint": 4,
+        "out_length_min_m": 8703.0,
+        "out_length_max_m": 14539.7,
+        "best": {
+          "turn_node": 3724866185921442656,
+          "out_length_m": 13690.1,
+          "end_node": 3724708653921390555,
+          "return_length_m": 8380.0,
+          "total_m": 22070.1,
+          "separation_end_m": 9847.3,
+          "circuity": 2.241,
+          "endpoint_candidates": 16
+        }
+      },
+      "all_turnarounds": {
+        "turnarounds_tried": 3821,
+        "turnarounds_with_endpoint": 285,
+        "out_length_min_m": 8620.0,
+        "out_length_max_m": 14539.7,
+        "best": {
+          "turn_node": 3724719341921397792,
+          "out_length_m": 11971.9,
+          "end_node": 3724884381921450423,
+          "return_length_m": 14012.5,
+          "total_m": 25984.4,
+          "separation_end_m": 12973.2,
+          "circuity": 2.003,
+          "endpoint_candidates": 1573
+        }
+      }
+    },
+    {
+      "origin": "spread",
+      "anchor_key": 3724878461921451174,
+      "early_out": false,
+      "max_separation_m": 12957.0,
+      "turnarounds_in_window": 2940,
+      "prefix_10": {
+        "turnarounds_tried": 10,
+        "turnarounds_with_endpoint": 0,
+        "out_length_min_m": 14519.7,
+        "out_length_max_m": 14747.7,
+        "best": null
+      },
+      "prefix_48": {
+        "turnarounds_tried": 48,
+        "turnarounds_with_endpoint": 1,
+        "out_length_min_m": 14201.9,
+        "out_length_max_m": 14747.7,
+        "best": {
+          "turn_node": 3724417761921449716,
+          "out_length_m": 14243.6,
+          "end_node": 3724529973921414514,
+          "return_length_m": 7926.5,
+          "total_m": 22170.0,
+          "separation_end_m": 10296.3,
+          "circuity": 2.153,
+          "endpoint_candidates": 115
+        }
+      },
+      "stride_48": {
+        "turnarounds_tried": 48,
+        "turnarounds_with_endpoint": 6,
+        "out_length_min_m": 8722.3,
+        "out_length_max_m": 14747.7,
+        "best": {
+          "turn_node": 3724536965921436504,
+          "out_length_m": 11460.7,
+          "end_node": 3724412385921449933,
+          "return_length_m": 11324.0,
+          "total_m": 22784.7,
+          "separation_end_m": 12957.0,
+          "circuity": 1.758,
+          "endpoint_candidates": 151
+        }
+      },
+      "all_turnarounds": {
+        "turnarounds_tried": 2940,
+        "turnarounds_with_endpoint": 333,
+        "out_length_min_m": 8620.8,
+        "out_length_max_m": 14747.7,
+        "best": {
+          "turn_node": 3724497985921433668,
+          "out_length_m": 13195.7,
+          "end_node": 3724557365921403569,
+          "return_length_m": 10212.5,
+          "total_m": 23408.3,
+          "separation_end_m": 10009.2,
+          "circuity": 2.339,
+          "endpoint_candidates": 14
+        }
+      }
+    },
+    {
+      "origin": "spread",
+      "anchor_key": 3724651037921394192,
+      "early_out": true,
+      "max_separation_m": 8554.8
+    },
+    {
+      "origin": "spread",
+      "anchor_key": 3724649285921460521,
+      "early_out": true,
+      "max_separation_m": 7068.0
+    },
+    {
+      "origin": "spread",
+      "anchor_key": 3724525865921418792,
+      "early_out": false,
+      "max_separation_m": 10430.1,
+      "turnarounds_in_window": 1523,
+      "prefix_10": {
+        "turnarounds_tried": 10,
+        "turnarounds_with_endpoint": 0,
+        "out_length_min_m": 12207.5,
+        "out_length_max_m": 12413.9,
+        "best": null
+      },
+      "prefix_48": {
+        "turnarounds_tried": 48,
+        "turnarounds_with_endpoint": 0,
+        "out_length_min_m": 11944.2,
+        "out_length_max_m": 12413.9,
+        "best": null
+      },
+      "stride_48": {
+        "turnarounds_tried": 48,
+        "turnarounds_with_endpoint": 0,
+        "out_length_min_m": 8648.3,
+        "out_length_max_m": 12413.9,
+        "best": null
+      },
+      "all_turnarounds": {
+        "turnarounds_tried": 1523,
+        "turnarounds_with_endpoint": 0,
+        "out_length_min_m": 8620.3,
+        "out_length_max_m": 12413.9,
+        "best": null
+      }
+    }
+  ],
+  "qualified_anchors_examined": 6
+}

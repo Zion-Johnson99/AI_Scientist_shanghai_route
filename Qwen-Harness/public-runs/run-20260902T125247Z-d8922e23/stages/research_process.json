@@ -1,0 +1,62 @@
+{
+  "stage": "research_process",
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "generated_at": "2026-09-02T13:16:11Z",
+  "chain": [
+    "research_goal_definition",
+    "public_evidence_collection",
+    "source_registry",
+    "evidence_cards",
+    "knowledge_gaps",
+    "candidate_hypotheses",
+    "hypothesis_critique",
+    "experiment_design",
+    "baseline_design",
+    "evaluation_metrics",
+    "stop_conditions"
+  ],
+  "artifacts": {
+    "research_goal": "experiments/research_goal.json",
+    "source_registry": "sources/source_registry.jsonl",
+    "evidence_cards": "experiments/evidence_cards.jsonl",
+    "knowledge_gaps": "experiments/knowledge_gaps.json",
+    "hypotheses": "experiments/hypotheses.json",
+    "hypothesis_critique": "experiments/hypothesis_critique.json",
+    "experiment_design": "experiments/experiment_design.json",
+    "baseline_design": "experiments/baseline_design.json",
+    "evaluation_metrics": "experiments/evaluation_metrics.json",
+    "stop_conditions": "experiments/stop_conditions.json",
+    "scientific_plan": "experiments/scientific_plan.json",
+    "scientific_plan_report": "reports/科学计划.md"
+  },
+  "counts": {
+    "sources": 8,
+    "sources_accessed": 5,
+    "sources_attempted_unavailable": 1,
+    "sources_not_accessed": 2,
+    "evidence_cards": 5,
+    "claims": 18,
+    "claims_inconclusive": 2,
+    "knowledge_gaps": 4,
+    "hypotheses": 4,
+    "experiment_cells": 9,
+    "baselines": 5,
+    "variants": 3,
+    "metrics": 9,
+    "stop_conditions": 5
+  },
+  "evidence_class_coverage": [
+    "raw_data",
+    "deterministic_computation",
+    "qoder_judgement",
+    "manual_setting"
+  ],
+  "fabrication_controls": [
+    "no DOI/PMID/arXiv id emitted",
+    "no invented numeric exposure value",
+    "uncontacted sources carry access_status=not_accessed and support no claim",
+    "failed sources carry access_status=attempted_unavailable with the observed HTTP status",
+    "unevaluable gates carry status not_applicable_no_credentials, never passed"
+  ],
+  "status": "passed"
+}

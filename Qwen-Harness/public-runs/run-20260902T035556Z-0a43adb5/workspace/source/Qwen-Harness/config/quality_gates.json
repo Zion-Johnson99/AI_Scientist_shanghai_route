@@ -1,0 +1,241 @@
+{
+  "version": "1.0.0",
+  "description": "Quality gate definitions for Qwen-Harness workflow stages. Each gate specifies pass conditions, failure behavior, and scope.",
+  "gates": {
+    "offline_e2e": {
+      "id": "offline_e2e",
+      "name": "Offline End-to-End",
+      "description": "The full workflow must complete successfully with --offline flag, no network access, and no real API keys.",
+      "scope": "global",
+      "pass_conditions": [
+        {
+          "condition_id": "offline_run_completes",
+          "description": "qwen-harness run --offline completes all stages without network calls",
+          "check": "exit_code == 0",
+          "failure_exit_code": 2
+        },
+        {
+          "condition_id": "no_network_calls",
+          "description": "No HTTP requests to external services are made during offline run",
+          "check": "audit_log contains zero external_http_call events",
+          "failure_exit_code": 2
+        },
+        {
+          "condition_id": "no_api_key_required",
+          "description": "No API key environment variables are required for offline execution",
+          "check": "all model calls use mock or cached responses",
+          "failure_exit_code": 2
+        },
+        {
+          "condition_id": "all_stages_produce_output",
+          "description": "Every stage in the workflow produces a valid output file in stages/<stage>/output.json",
+          "check": "all stage output files exist and are valid JSON",
+          "failure_exit_code": 5
+        }
+      ],
+      "failure_behavior": "Block workflow completion; report which condition failed with stage context",
+      "retry": false
+    },
+    "hash_consistency": {
+      "id": "hash_consistency",
+      "name": "Data Hash Consistency",
+      "description": "All data files referenced during a run must match their frozen snapshot hashes. Detects mid-run data mutation.",
+      "scope": "per_stage",
+      "pass_conditions": [
+        {
+          "condition_id": "route_catalog_hash",
+          "description": "route_catalog.json SHA256 matches the hash recorded at run start",
+          "check": "sha256(route_catalog.json) == manifest.route_catalog_sha256",
+          "failure_exit_code": 5
+        },
+        {
+          "condition_id": "geojson_hash",
+          "description": "xuhui_routes.geojson SHA256 matches the hash recorded at run start",
+          "check": "sha256(xuhui_routes.geojson) == manifest.geojson_sha256",
+          "failure_exit_code": 5
+        },
+        {
+          "condition_id": "environment_dashboard_hash",
+          "description": "environment_dashboard.json SHA256 matches the hash recorded at snapshot time",
+          "check": "sha256(environment_dashboard.json) == manifest.environment_dashboard_sha256",
+          "failure_exit_code": 5
+        },
+        {
+          "condition_id": "weights_hash",
+          "description": "Weights file SHA256 matches the hash recorded in experiment variant config",
+          "check": "sha256(weights_file) == variant.weights_sha256",
+          "failure_exit_code": 5
+        },
+        {
+          "condition_id": "skills_hash",
+          "description": "Skills files SHA256 matches the hash recorded in run manifest",
+          "check": "sha256(skills_files) == manifest.skills_sha256",
+          "failure_exit_code": 5
+        },
+        {
+          "condition_id": "config_hash",
+          "description": "Configuration files SHA256 matches the hash recorded in run manifest",
+          "check": "sha256(config_files) == manifest.config_sha256",
+          "failure_exit_code": 5
+        }
+      ],
+      "failure_behavior": "Immediately stop the run; record drift details in events.jsonl; suggest creating a new run",
+      "retry": false,
+      "on_drift": {
+        "action": "stop_and_report",
+        "message_template": "Data file '{file}' hash mismatch: expected {expected}, got {actual}. Data was modified during run. Create a new run or investigate the change."
+      }
+    },
+    "structured_output": {
+      "id": "structured_output",
+      "name": "Structured Output Validation",
+      "description": "Every stage must produce output conforming to its declared JSON Schema. Free-text responses are never accepted.",
+      "scope": "per_stage",
+      "pass_conditions": [
+        {
+          "condition_id": "schema_valid",
+          "description": "Stage output JSON validates against the stage's declared output_schema",
+          "check": "jsonschema.validate(output, stage.output_schema) passes",
+          "failure_exit_code": 5
+        },
+        {
+          "condition_id": "required_fields_present",
+          "description": "All required fields defined in the output schema are present and non-null",
+          "check": "no required field is missing or null",
+          "failure_exit_code": 5
+        },
+        {
+          "condition_id": "no_free_text_fallback",
+          "description": "Output does not contain unstructured free-text where structured fields are expected",
+          "check": "output matches Pydantic model without extra unparsed text fields",
+          "failure_exit_code": 5
+        },
+        {
+          "condition_id": "enum_values_valid",
+          "description": "All enum-typed fields contain values within the declared enumeration",
+          "check": "all enum fields pass validation",
+          "failure_exit_code": 5
+        }
+      ],
+      "failure_behavior": "Retry once with validation error context appended to prompt; if retry fails, mark stage as retryable and record failure details",
+      "retry": true,
+      "max_retries": 1,
+      "retry_strategy": {
+        "include_validation_errors": true,
+        "include_schema_excerpt": true,
+        "temperature_override": 0.1
+      }
+    },
+    "stage_gates": {
+      "goal": {
+        "gate_id": "gate_goal",
+        "description": "Research goal is well-formed with clear question, domain, and constraints",
+        "conditions": [
+          "goal.question is non-empty string",
+          "goal.domain is a recognized domain identifier",
+          "goal.constraints is a non-empty list"
+        ]
+      },
+      "evidence": {
+        "gate_id": "gate_evidence",
+        "description": "Evidence cards reference valid sources with source_id",
+        "conditions": [
+          "each evidence card has source_id",
+          "no fabricated DOI/PMID/author/year",
+          "evidence gaps are explicitly listed"
+        ]
+      },
+      "hypothesis": {
+        "gate_id": "gate_hypothesis",
+        "description": "Hypothesis is testable with defined acceptance and stop conditions",
+        "conditions": [
+          "hypothesis has hypothesis_id",
+          "acceptance_criteria is non-empty",
+          "stop_conditions is non-empty"
+        ]
+      },
+      "experiment": {
+        "gate_id": "gate_experiment",
+        "description": "Experiment design is pre-registered and executable",
+        "conditions": [
+          "all variants reference valid baseline_ids",
+          "profiles cover required route modes",
+          "metrics have direction and primary flag",
+          "module_operations reference valid operation_ids"
+        ]
+      },
+      "analysis": {
+        "gate_id": "gate_analysis",
+        "description": "Analysis results are complete and support status is determined",
+        "conditions": [
+          "all metrics computed for all profile-variant combinations",
+          "support_status is one of: supported, partially_supported, unsupported, inconclusive",
+          "negative results are reported without omission",
+          "data limitations are explicitly noted"
+        ]
+      },
+      "publish": {
+        "gate_id": "gate_publish",
+        "description": "Published payload passes schema validation and sanitization",
+        "conditions": [
+          "payload passes web payload schema",
+          "no absolute paths in payload",
+          "no API keys or secrets in payload",
+          "selected_route.route_id exists in route_catalog.json",
+          "all artifact paths are repository-relative or public URLs"
+        ]
+      }
+    },
+    "experiment_gates": {
+      "jaccard_threshold": {
+        "metric": "jaccard_top5",
+        "threshold": 0.6,
+        "direction": "minimum",
+        "description": "Top-5 route set Jaccard similarity must be >= 0.6 for all profile-mode-dimension-direction combinations",
+        "on_failure": "If more than 2 dimensions fail, hypothesis is falsified; stop and enter negative result reporting"
+      },
+      "spearman_threshold": {
+        "metric": "spearman_rank_all90",
+        "threshold": 0.85,
+        "direction": "minimum",
+        "description": "Spearman rank correlation across all 90 routes must be >= 0.85",
+        "on_failure": "Report as negative result; do not omit"
+      },
+      "constraint_pass_rate_consistency": {
+        "metric": "constraint_pass_rate",
+        "expected_difference": 0,
+        "description": "Hard constraint pass rate must not change after weight perturbation; any change indicates perturbation affected constraint logic rather than ranking",
+        "on_failure": "Stop and investigate module behavior"
+      },
+      "minimum_candidates": {
+        "metric": "candidate_count",
+        "threshold": 5,
+        "description": "Each profile-mode combination must have at least 5 feasible candidates to form a top-5 set",
+        "on_failure": "Mark combination as insufficient sample; exclude from Jaccard calculation and report honestly"
+      },
+      "dimension_failure_limit": {
+        "max_failing_dimensions": 2,
+        "total_dimensions": 5,
+        "description": "At most 2 of 5 dimensions may have any perturbation causing Jaccard < 0.6; exceeding 2 falsifies the hypothesis",
+        "on_failure": "Stop all remaining perturbations; enter negative result reporting"
+      }
+    },
+    "security_gates": {
+      "no_shell_injection": {
+        "description": "No user or model input is concatenated into shell command strings",
+        "check": "all subprocess calls use fixed command templates with argument lists",
+        "failure_exit_code": 2
+      },
+      "path_boundary": {
+        "description": "All write paths resolve within the repository boundary",
+        "check": "resolved path starts with repository root",
+        "failure_exit_code": 2
+      },
+      "no_sensitive_output": {
+        "description": "No API keys, authorization headers, or full free-text profiles appear in any output file",
+        "check": "output files pass sensitive pattern scan",
+        "failure_exit_code": 2
+      }
+    }
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260902T035556Z-0a43adb5",
+  "generated_at": "2026-09-02T06:53:16.592591+00:00",
+  "provenance": "module_outputs",
+  "metric_names": [
+    "pm25_exposure",
+    "pm25_health_score",
+    "noise_proxy",
+    "pollen_risk",
+    "env_reliability",
+    "target_deviation",
+    "access_distance",
+    "preference_hit_rate",
+    "env_risk",
+    "composite_score",
+    "dimension_scores"
+  ],
+  "cells_total": 45,
+  "cell_status_counts": {
+    "ready": 27,
+    "no_candidate": 18
+  },
+  "no_candidate_rate": 0.4,
+  "constraint_pass_rate": 0.0,
+  "detour_pass_rate": 0.0,
+  "environment_win_rate": 0.0,
+  "preference_win_rate": 0.5,
+  "reference_verification_rate": 1.0,
+  "fatal_data_errors": 1,
+  "mean_data_reliability_m1": null,
+  "detour_pass_rate_min": 0.9,
+  "environment_win_rate_min": 0.6,
+  "preference_win_rate_min": 0.6,
+  "reference_verification_rate_min": 1.0,
+  "fatal_data_errors_max": 0,
+  "require_module_provenance": true,
+  "composite_utility_as_sole_metric": false,
+  "require_negative_result_reporting": true,
+  "comparisons": {
+    "B1_pm25_only": {
+      "env_risk": {
+        "m1_or_variant_mean": null,
+        "b0_mean": null,
+        "paired": {
+          "pairs": 0,
+          "mean_difference": null,
+          "median_difference": null,
+          "win": {
+            "wins": 0.0,
+            "ties": 0.0,
+            "losses": 0.0,
+            "pairs": 0.0,
+            "rate": 0.0
+          },
+          "differences_summary": {
+            "n": 0,
+            "mean": null,
+            "median": null,
+            "iqr": null
+          },
+          "ci_95": null,
+          "seed": 1234,
+          "iterations": 2000
+        }
+      },
+      "preference_hit_rate": {
+        "m1_or_variant_mean": null,
+        "b0_mean": null,
+        "paired": {
+          "pairs": 0,
+          "mean_difference": null,
+          "median_difference": null,
+          "win": {
+            "wins": 0.0,
+            "ties": 0.0,
+            "losses": 0.0,
+            "pairs": 0.0,
+            "rate": 0.0
+          },
+          "differences_summary": {
+            "n": 0,
+            "mean": null,
+            "median": null,
+            "iqr": null
+          },
+          "ci_95": null,
+          "seed": 1234,
+          "iterations": 2000
+        }
+      }
+    },
+    "B2_multi_environment": {
+      "env_risk": {
+        "m1_or_variant_mean": null,
+        "b0_mean": null,
+        "paired": {
+          "pairs": 0,
+          "mean_difference": null,
+          "median_difference": null,
+          "win": {
+            "wins": 0.0,
+            "ties": 0.0,
+            "losses": 0.0,
+            "pairs": 0.0,
+            "rate": 0.0
+          },
+          "differences_summary": {
+            "n": 0,
+            "mean": null,
+            "median": null,
+            "iqr": null
+          },
+          "ci_95": null,
+          "seed": 1234,
+          "iterations": 2000
+        }
+      },
+      "preference_hit_rate": {
+        "m1_or_variant_mean": null,
+        "b0_mean": null,
+        "paired": {
+          "pairs": 0,
+          "mean_difference": null,
+          "median_difference": null,
+          "win": {
+            "wins": 0.0,
+            "ties": 0.0,
+            "losses": 0.0,
+            "pairs": 0.0,
+            "rate": 0.0
+          },
+          "differences_summary": {
+            "n": 0,
+            "mean": null,
+            "median": null,
+            "iqr": null
+          },
+          "ci_95": null,
+          "seed": 1234,
+          "iterations": 2000
+        }
+      }
+    },
+    "B3_non_personalized": {
+      "env_risk": {
+        "m1_or_variant_mean": null,
+        "b0_mean": null,
+        "paired": {
+          "pairs": 0,
+          "mean_difference": null,
+          "median_difference": null,
+          "win": {
+            "wins": 0.0,
+            "ties": 0.0,
+            "losses": 0.0,
+            "pairs": 0.0,
+            "rate": 0.0
+          },
+          "differences_summary": {
+            "n": 0,
+            "mean": null,
+            "median": null,
+            "iqr": null
+          },
+          "ci_95": null,
+          "seed": 1234,
+          "iterations": 2000
+        }
+      },
+      "preference_hit_rate": {
+        "m1_or_variant_mean": 0.0,
+        "b0_mean": 0.0,
+        "paired": {
+          "pairs": 9,
+          "mean_difference": 0.0,
+          "median_difference": 0.0,
+          "win": {
+            "wins": 0.0,
+            "ties": 9.0,
+            "losses": 0.0,
+            "pairs": 9.0,
+            "rate": 0.5
+          },
+          "differences_summary": {
+            "n": 9,
+            "mean": 0.0,
+            "median": 0.0,
+            "iqr": 0.0
+          },
+          "ci_95": [
+            0.0,
+            0.0
+          ],
+          "seed": 1234,
+          "iterations": 2000
+        }
+      }
+    },
+    "M1_personalized_constrained": {
+      "env_risk": {
+        "m1_or_variant_mean": null,
+        "b0_mean": null,
+        "paired": {
+          "pairs": 0,
+          "mean_difference": null,
+          "median_difference": null,
+          "win": {
+            "wins": 0.0,
+            "ties": 0.0,
+            "losses": 0.0,
+            "pairs": 0.0,
+            "rate": 0.0
+          },
+          "differences_summary": {
+            "n": 0,
+            "mean": null,
+            "median": null,
+            "iqr": null
+          },
+          "ci_95": null,
+          "seed": 1234,
+          "iterations": 2000
+        }
+      },
+      "preference_hit_rate": {
+        "m1_or_variant_mean": 0.0,
+        "b0_mean": 0.0,
+        "paired": {
+          "pairs": 9,
+          "mean_difference": 0.0,
+          "median_difference": 0.0,
+          "win": {
+            "wins": 0.0,
+            "ties": 9.0,
+            "losses": 0.0,
+            "pairs": 9.0,
+            "rate": 0.5
+          },
+          "differences_summary": {
+            "n": 9,
+            "mean": 0.0,
+            "median": 0.0,
+            "iqr": 0.0
+          },
+          "ci_95": [
+            0.0,
+            0.0
+          ],
+          "seed": 1234,
+          "iterations": 2000
+        }
+      }
+    }
+  },
+  "negative_results": {
+    "no_candidate_cells": 18,
+    "missing_cells": 0,
+    "paused_cells": 0,
+    "invalid_cells": 0
+  },
+  "module_statuses": {
+    "route": "ok",
+    "environment": "partial",
+    "evaluation": "ok",
+    "web": "ok"
+  },
+  "support_status": "inconclusive"
+}

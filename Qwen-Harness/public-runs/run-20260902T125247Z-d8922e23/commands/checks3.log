@@ -1,0 +1,23 @@
+=== route_spatial ===
+FAIL total_route_count:87
+FAIL mode_count:bike=27
+FAIL band_count:bike:2=7
+routes=87 accepted=87 modes={'walk': 30, 'run': 30, 'bike': 27} overlap_violations=0
+ROUTE_SPATIAL_QUALITY_PASSED=false
+EXIT_spatial=1
+=== environment_contract ===
+FAIL generated_at_mismatch
+cells=54/54 dashboard_routes=87 catalog_routes=87 sets_equal=True worst_missing_rate=0.0
+ENVIRONMENT_CONTRACT_PASSED=false
+EXIT_env=1
+=== output_boundary ===
+FAIL git status 非空：1 条仓库变更
+branch=Qwen_Harness_Build head=a7c0fc6ae13b status_lines=1
+ignore_rule=Qwen-Harness/.gitignore:5:runtime/*	Qwen-Harness/runtime/runs
+OUTPUT_BOUNDARY_PASSED=false
+EXIT_boundary=1
+=== secret_scan ===
+scanned=442 violations=0 warnings=4 env_files=0
+SECRET_SCAN_PASSED=true
+EXIT_secret=0
+ALL_CHECKS_DONE

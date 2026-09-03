@@ -1,0 +1,10 @@
+{
+  "passed": false,
+  "reference_url": "https://zion-johnson99.github.io/AI_Scientist_shanghai_route/",
+  "viewports": {},
+  "reference_screenshots": {
+    "desktop": "<run_root>\\checks\\browser-architecture-smoke\\online-desktop.png",
+    "mobile": "<run_root>\\checks\\browser-architecture-smoke\\online-mobile.png"
+  },
+  "error": "AssertionError: desktop: data-testid=route-card 未在 5 秒内出现"
+}

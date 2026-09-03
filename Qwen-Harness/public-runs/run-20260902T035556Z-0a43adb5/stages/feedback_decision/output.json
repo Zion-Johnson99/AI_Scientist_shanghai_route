@@ -1,0 +1,20 @@
+{
+  "status": "stop_inconclusive",
+  "reason": "结果解释判定为 inconclusive（置信度 low）：detour_pass_rate=0.00、environment_win_rate=0.00、constraint_pass_rate=0.00、no_candidate_rate=0.40，仅 reference_verification_rate=1.00 通过；9 个画像（P01–P09）在 M1 距离门禁下候选集被清空并降级，18 个变体×画像单元无候选。数据质量同时下降：environment 模块预检为 partial，缺少 6 个导出快照文件（environment_latest.json、environment_hourly.json、grid_environment_latest.json、pollen_grid_scores.json、noise_segments.json、route_environment.json），270 个指标块为 estimated 估算值，且全部 90 条路线的 pm2_5/noise/pollen_daily 单位与文档化单位不一致；evaluation 多组候选风险状态为未知；存在 1 个致命数据错误。按决策规则，证据不足且数据质量下降时应停止（stop_inconclusive），不继续迭代；且当前为离线夹具语义下的固定案例矩阵，不触发网络刷新类动作。",
+  "automatic_actions": [],
+  "proposed_code_changes": [
+    {
+      "action": "propose_environment_model_change",
+      "description": "补齐 environment 模块缺失的 6 个导出快照文件（environment_latest.json、environment_hourly.json、grid_environment_latest.json、pollen_grid_scores.json、noise_segments.json、route_environment.json），并统一 pm2_5（'ug/m3' vs 'µg/m³'）、noise（'proxy_0_100' vs '0-100 risk index'）、pollen_daily（'index' vs '0-100 risk index'）的单位标注，消除门禁单位不一致告警。"
+    },
+    {
+      "action": "propose_scoring_code_change",
+      "description": "复核 M1_personalized_constrained 的距离门禁阈值与候选路线距离分布的匹配性：9 个画像在 M1 下候选集被清空并回退为无门禁个性化选择，建议在下一次运行前评估门禁阈值或候选生成范围，避免约束最优路线退化为无门禁选择。"
+    },
+    {
+      "action": "propose_route_data_change",
+      "description": "针对 18 个变体×画像单元硬约束过滤后为空的情况，核查候选路线数据覆盖度与硬约束字段完整性，补充或修正路线属性以降低 no_candidate_rate（当前 0.40）。"
+    }
+  ],
+  "next_iteration_goal": null
+}

@@ -1,0 +1,13 @@
+STAMP=2026-09-03T07:34:13Z
+== environment ==
+   ok 0.6s {'dashboard': 'environment_dashboard.json', 'bytes': 629551, 'cell_count': 54, 'route_count': 90, 'field_count': 14, 'excluded_fields': []}
+STAGES_FAILED=0
+STAGE_environment_EXIT=0
+== evaluation ==
+   ok 1.7s {'case_count': 81, 'ready_count': 81, 'no_candidate_count': 0, 'ready_share': 1.0, 'detour_pass_rate': 0.851852, 'environment_win_rate': 0.802469, 'preference_win_rate': 1.0, 'constraint_pass_rate': 1.0, 'mean_detour_ratio': 0.06047, 'detour_ratio_case_count': 81, 'fatal_data_errors': [], 'fatal_data_error_count': 0, 'thresholds': {'detour_pass_rate': {'comparator': '>=', 'threshold': 0.9, 'value': 0.851852, 'passed': False}, 'environment_win_rate': {'comparator': '>=', 'threshold': 0.6, 'value': 0.802469, 'passed': True}, 'preference_win_rate': {'comparator': '>=', 'threshold': 0.6, 'value': 1.0, 'passed': True}, 'constraint_pass_rate': {'comparator': '>=', 'threshold': 0.9, 'value': 1.0, 'passed': True}, 'mean_detour_ratio': {'comparator': '<=', 'threshold': 0.2, 'value': 0.06047, 'passed': True}}, 'passed': {'detour_pass_rate': False, 'environment_win_rate': True, 'preference_win_rate': True, 'constraint_pass_rate': True, 'mean_detour_ratio': True}, 'support_status': 'partially_supported', 'provenance': 'deterministic_computation', 'write_dir': 'experiments/score_candidates'}
+STAGES_FAILED=0
+STAGE_evaluation_EXIT=0
+== web ==
+   ok 1.9s {'exit_code': 0, 'stdout_tail': '{\n  "status": "completed",\n  "route_count": 90,\n  "entry_count": 90,\n  "recommendation_count": 108,\n  "environment_cells": 54,\n  "missing_inputs": [],\n  "partial_data": false,\n  "payload_bytes": 16246288\n}\n'}
+STAGES_FAILED=0
+STAGE_web_EXIT=0

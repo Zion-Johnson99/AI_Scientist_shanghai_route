@@ -1,0 +1,155 @@
+{
+  "stage": "blind_checkpoint",
+  "generated_at": "2026-09-02T19:13:04Z",
+  "checks": [
+    {
+      "check": "browser_acceptance",
+      "passed": true,
+      "failure_count": null,
+      "path": "checks/browser_acceptance.json"
+    },
+    {
+      "check": "environment_contract",
+      "passed": true,
+      "failure_count": 0,
+      "path": "checks/environment_contract.json"
+    },
+    {
+      "check": "output_boundary",
+      "passed": true,
+      "failure_count": null,
+      "path": "checks/output_boundary.json"
+    },
+    {
+      "check": "product_matrix",
+      "passed": null,
+      "failure_count": null,
+      "path": "checks/product_matrix.json"
+    },
+    {
+      "check": "round1_defect_baseline",
+      "passed": null,
+      "failure_count": null,
+      "path": "checks/round1_defect_baseline.json"
+    },
+    {
+      "check": "route_spatial_quality",
+      "passed": false,
+      "failure_count": 3,
+      "path": "checks/route_spatial_quality.json"
+    },
+    {
+      "check": "secret_scan",
+      "passed": true,
+      "failure_count": null,
+      "path": "checks/secret_scan.json"
+    }
+  ],
+  "generated_quality": {
+    "available": false
+  },
+  "product_matrix": {
+    "matrix": "12 项可见产品矩阵",
+    "assessed_at": "2026-09-02T19:11:00Z",
+    "stage": "blind",
+    "assessed_from": "Playwright Chromium 真实浏览器会话，桌面 1440x900 与移动 500x700 两套视口",
+    "evidence_source": "checks/browser_acceptance.json 与 blind_checkpoint/screenshots/",
+    "note": "本矩阵在访问在线成品之前完成，仅依据本地产品的真实渲染与交互结果判定。",
+    "items": [
+      {
+        "id": 1,
+        "name": "地图首屏与徐汇区边界",
+        "passed": true,
+        "evidence": "首屏 canvas 编码后 271918 字符，边界多边形与 86 条路线均已绘制；desktop-01-first-screen.png"
+      },
+      {
+        "id": 2,
+        "name": "路线列表和路线卡片",
+        "passed": true,
+        "evidence": "86 张 route-card 全部渲染，含名称、运动方式、距离、时长、环线系数、环境风险与操作按钮"
+      },
+      {
+        "id": 3,
+        "name": "运动、距离和偏好筛选",
+        "passed": true,
+        "evidence": "rec-mode/rec-band 下拉可用；点击「临水」后卡片数由 86 降至 83，清除筛选可恢复"
+      },
+      {
+        "id": 4,
+        "name": "用户需求输入",
+        "passed": true,
+        "evidence": "origin-input 输入「徐家汇」后状态行显示当前位置 121.4339, 31.1951，并给出 2 条候选建议"
+      },
+      {
+        "id": 5,
+        "name": "推荐主路线与备选路线",
+        "passed": true,
+        "evidence": "生成推荐返回主路线（8.4 km，总分 76.0，环境健康 72，运动匹配 100）与 2 张备选卡片"
+      },
+      {
+        "id": 6,
+        "name": "路线详情与环境解释",
+        "passed": false,
+        "evidence": "详情面板可打开并显示门禁指标，但评分分解区域提示环境维度缺失、无法展示五维分解；54 格环境 dashboard 实际已完整，说明 per-route 评分与环境数据未接通"
+      },
+      {
+        "id": 7,
+        "name": "地图和列表联动",
+        "passed": true,
+        "evidence": "点击卡片后恰好 1 张卡片带 is-selected，canvas 重绘（143798 字符）"
+      },
+      {
+        "id": 8,
+        "name": "路线高亮和视野调整",
+        "passed": true,
+        "evidence": "选中高亮唯一，show-all/复位后 canvas 仍为 125174 字符，未出现空白视野"
+      },
+      {
+        "id": 9,
+        "name": "地点输入与起点接驳",
+        "passed": true,
+        "evidence": "地点输入解析为真实坐标；详情面板提供「前往起点」接驳入口与 access 面板"
+      },
+      {
+        "id": 10,
+        "name": "桌面信息层级",
+        "passed": true,
+        "evidence": "1440x900 下 scrollWidth 未超过 clientWidth，无横向溢出，加载骨架在数据到达后正确隐藏"
+      },
+      {
+        "id": 11,
+        "name": "移动端布局与操作",
+        "passed": true,
+        "evidence": "500x700 下 mobile-action-bar 可见，地图/路线/筛选/详情四个页签均可切换且无横向溢出"
+      },
+      {
+        "id": 12,
+        "name": "加载、空结果和失败反馈",
+        "passed": true,
+        "evidence": "骨架屏在数据到达后隐藏；拦截 app_payload.json 后 error-state 显示「读取失败：Failed to fetch」并提供重试按钮；empty-state 与 partial-banner 均按数据状态正确显隐"
+      }
+    ],
+    "passed_count": 11,
+    "item_count": 12,
+    "meets_eight_of_twelve": true,
+    "open_items": [
+      6
+    ],
+    "available": true
+  },
+  "screenshots": [
+    "blind_checkpoint/screenshots/desktop-01-first-screen.png",
+    "blind_checkpoint/screenshots/desktop-02-recommend.png",
+    "blind_checkpoint/screenshots/desktop-03-origin-input.png",
+    "blind_checkpoint/screenshots/desktop-04-filter.png",
+    "blind_checkpoint/screenshots/desktop-05-route-detail.png",
+    "blind_checkpoint/screenshots/desktop-06-map-linkage.png",
+    "blind_checkpoint/screenshots/desktop-07-error-state.png",
+    "blind_checkpoint/screenshots/mobile-01-first-screen.png",
+    "blind_checkpoint/screenshots/mobile-02-route-list.png",
+    "blind_checkpoint/screenshots/mobile-03-filters.png",
+    "blind_checkpoint/screenshots/mobile-04-detail.png"
+  ],
+  "screenshot_count": 11,
+  "source_file_count": 88
+}

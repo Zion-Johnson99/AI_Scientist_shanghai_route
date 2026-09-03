@@ -1,0 +1,17 @@
+[serve] http://127.0.0.1:8765/index.html
+[serve] "GET /index.html HTTP/1.1" 200 -
+[serve] "GET /styles.css HTTP/1.1" 200 -
+[serve] "GET /app.js HTTP/1.1" 200 -
+[serve] "GET /map.js HTTP/1.1" 200 -
+[serve] "GET /data/app_payload.json HTTP/1.1" 200 -
+[serve] "GET /data/web/research_harness_latest.json HTTP/1.1" 200 -
+[serve] "GET /index.html HTTP/1.1" 200 -
+[serve] "GET /styles.css HTTP/1.1" 200 -
+[serve] "GET /app.js HTTP/1.1" 200 -
+[serve] "GET /map.js HTTP/1.1" 200 -
+[serve] "GET /index.html HTTP/1.1" 200 -
+[serve] "GET /styles.css HTTP/1.1" 200 -
+[serve] "GET /app.js HTTP/1.1" 200 -
+[serve] "GET /map.js HTTP/1.1" 200 -
+[serve] "GET /data/app_payload.json HTTP/1.1" 200 -
+[serve] "GET /data/web/research_harness_latest.json HTTP/1.1" 200 -

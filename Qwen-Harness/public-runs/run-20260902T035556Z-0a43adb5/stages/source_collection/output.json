@@ -1,0 +1,19 @@
+{
+  "source_count": 11,
+  "source_ids": [
+    "src-web-www-who-int-b625d67c6f53",
+    "src-web-www-who-int-74719c668276",
+    "src-pubmed-16805392",
+    "src-pubmed-28657866",
+    "src-pubmed-18994660",
+    "src-local-00-需求与总体架构",
+    "src-crossref-10-1056-nejmoa1702747",
+    "src-crossref-10-1016-s0140-6736-08-61689-x",
+    "src-pubmed-16805392",
+    "src-web-www-who-int-b625d67c6f53",
+    "src-repo-Qwen-Harness-config-source-policy-json"
+  ],
+  "verified_count": 11,
+  "network_enabled": true,
+  "network_skipped": 0
+}

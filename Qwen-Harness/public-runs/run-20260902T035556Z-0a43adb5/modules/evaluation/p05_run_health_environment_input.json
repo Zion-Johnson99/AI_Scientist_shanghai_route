@@ -1,0 +1,15 @@
+{
+  "case_id": "P05_run_health_environment",
+  "route_mode": "run",
+  "goal": "health_environment",
+  "target_distance_m": 5000,
+  "sensitivities": [
+    "pm25",
+    "noise"
+  ],
+  "interests": [
+    "quiet",
+    "park"
+  ],
+  "notes": "跑步健康环境画像，空气与噪声敏感、安静与公园偏好"
+}

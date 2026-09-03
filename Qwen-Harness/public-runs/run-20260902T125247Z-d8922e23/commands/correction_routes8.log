@@ -1,0 +1,6 @@
+COMPILE_OK
+STAMP=2026-09-03T07:34:13Z
+== routes ==
+   ok 111.8s {'route_count': 90, 'kind_counts': {'strict_loop': 45, 'one_way': 45}, 'accepted': 90, 'gate_failures': []}
+STAGES_FAILED=0
+EXIT=0

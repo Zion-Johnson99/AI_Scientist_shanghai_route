@@ -1,0 +1,25 @@
+{
+  "run_id": "run-20260902T035556Z-0a43adb5",
+  "new_run_created": false,
+  "qwen_called": false,
+  "generated_harness_self_tests": {
+    "passed": 90,
+    "failed": 0
+  },
+  "evaluation_api": {
+    "health_status": 200,
+    "recommendations_status": 200,
+    "recommendation_count": 9
+  },
+  "browser_smoke": {
+    "map_visible": true,
+    "route_list_visible": true,
+    "environment_details_visible_after_route_click": true,
+    "recommendation_request_status": 200,
+    "recommendation_cards_visible": true
+  },
+  "notes": [
+    "浏览器控制台仅保留 favicon.ico 缺失的非功能性 404。",
+    "当前验证范围为启动、地图、路线详情、环境数据和核心推荐。"
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "run_id": "run-20260902T035556Z-0a43adb5",
+  "status": "passed",
+  "current_stage": "publish_web",
+  "iteration": 1,
+  "max_iterations": 2,
+  "stage_statuses": {
+    "initialize": "passed",
+    "problem_framing": "passed",
+    "source_collection": "passed",
+    "evidence_extraction": "passed",
+    "citation_validation": "passed",
+    "gap_analysis": "passed",
+    "hypothesis_generation": "passed",
+    "hypothesis_critique": "passed",
+    "hypothesis_selection": "passed",
+    "experiment_design": "passed",
+    "project_generation": "passed",
+    "module_preflight": "passed",
+    "module_execution": "passed",
+    "experiment_analysis": "passed",
+    "feedback_decision": "passed",
+    "scientific_report": "passed",
+    "web_payload": "passed",
+    "final_validation": "passed",
+    "publish_web": "passed"
+  },
+  "stage_input_hashes": {
+    "initialize": "6d9232a4a72924f1a7b9fe0afc40a66c2625f2ab8ac11c7b682a797430e00e8c",
+    "problem_framing": "5c43f7f1eefbb4075f4e9679ff49e7a5053d3913771cb59e218123d0dca28fdc",
+    "source_collection": "99179ebad7b411dbc45995bd0326f0a8f5dd91f7e5929dbcd4d21bd374231e8a",
+    "evidence_extraction": "323e1fb3cf274a9b9d43e8be1c5b33d87a9fcf02d1e0578f5ffd1f3c9f582d87",
+    "citation_validation": "f61f5dcb686b96e1f152056a13ef76d4483f8d1b980e7287e3a98b6dc5893b82",
+    "gap_analysis": "4f168495bcc77ebfd1bc1434b4db57a1daf410cd1374fb262394bb2238b43935",
+    "hypothesis_generation": "9716b6504901203f1f43ecab8d3462dd41c37e74f13191967d8b64c9c218599f",
+    "hypothesis_critique": "220c02b011593e4c4c3fa5d362d071240701dc2e41e5e94d1cb79f1874465ac1",
+    "hypothesis_selection": "dc685d0b995cb813373b55ef9ae1f7bde540dd5c800a706ab688d3139489b4fa",
+    "experiment_design": "8830ea527f539df2ebc8e495c04c6de4a687067c3e0bda4637d12fd193512e0a",
+    "project_generation": "93681f865c850c87f3190d1364f073779571df5e1d05044f25eae0d1c5e958d0",
+    "module_preflight": "4967f94cc4615e0199e238039f7f162412f5b777e4e5255dafb0a73c064894ce",
+    "module_execution": "0bd2e76185837ce67bbf3c6129a63c6775cb17c08b1b630f31165b714112ff7f",
+    "experiment_analysis": "2366ea7fed1ad2dc1ee3c90e8808bc5cf9964226b744f561a9848b89d9af5976",
+    "feedback_decision": "a3459f11f14e4822b6edf41f6231c5e434470e2920c6b02dabab7962c3d6903c",
+    "scientific_report": "f02cede058eebb2a4f9318494d9e7b20d4147da15ff56f2214a1c77ec945a58b",
+    "web_payload": "608f5283d430d40d402605b03d99203e000bb844d2fb79001480b3c3cda355ff",
+    "final_validation": "13ba04d24043ca8f9ba63ff733ce1a644d31265ebf30fb183db3c1084c2d1e66",
+    "publish_web": "bc955bfb3cc7725aeeb126eec3e21b308f0a763db28d015d58ccffc77b0e073c"
+  },
+  "drift_records": [
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T04:35:35.597916+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T04:46:04.058486+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T04:50:48.508441+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T05:24:44.157365+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T05:36:08.096201+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T05:43:53.358527+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T05:50:32.699373+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T06:02:11.771315+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T06:16:00.213262+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T06:23:56.935050+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T06:29:33.101952+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T06:38:05.362839+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T06:41:51.678648+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T06:48:46.641952+00:00"
+    },
+    {
+      "drift": "配置变化: config/harness.json",
+      "recorded_at": "2026-09-02T06:55:28.709958+00:00"
+    }
+  ],
+  "applied_action_log": [],
+  "started_at": "2026-09-02T03:55:56.681901Z",
+  "updated_at": "2026-09-02T06:58:11.255703Z",
+  "finished_at": "2026-09-02T06:58:11.255579Z",
+  "final_support_status": null,
+  "notes": []
+}

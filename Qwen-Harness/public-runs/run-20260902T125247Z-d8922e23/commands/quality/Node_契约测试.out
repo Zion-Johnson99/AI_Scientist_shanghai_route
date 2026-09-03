@@ -1,0 +1,47 @@
+✔ [dev] payload parses and exposes schema_version 1 (0.7872ms)
+✔ [dev] crs is exactly "CRS84/WGS84 (lon,lat)" (0.0844ms)
+✔ [dev] payload contains 90 routes (0.0549ms)
+✔ [dev] each mode has exactly 30 routes (0.1353ms)
+✔ [dev] band counts per mode are 10/10/10 (0.637ms)
+✔ [dev] route_id unique and matches XH_(WALK|RUN|BIKE)_dddd (0.3968ms)
+✔ [dev] every route has >= 2 in-range [lon,lat] coordinates (3.0946ms)
+✔ [dev] boundary ring has >= 100 vertices and is closed (0.1587ms)
+✔ [dev] environment grid has exactly 54 cells (0.2169ms)
+✔ [dev] environment route keys all exist in route id set (0.2758ms)
+✔ [dev] env units match canonical field_specs units and statuses in domain (5.868ms)
+✔ [dev] missing_rate per field <= 0.10 (0.2457ms)
+✔ [dev] no NaN/Infinity numbers in serialised payload (163.2805ms)
+✔ [dev] no absolute user paths leak into payload strings (90.2852ms)
+✔ [dev] index.html/css reference no external script/style/img/font/tile resource (0.744ms)
+✔ [dev] js avoids innerHTML/eval/document.write (1.2223ms)
+✔ [published] payload parses and exposes schema_version 1 (0.0832ms)
+✔ [published] crs is exactly "CRS84/WGS84 (lon,lat)" (0.0439ms)
+✔ [published] payload contains 90 routes (0.0279ms)
+✔ [published] each mode has exactly 30 routes (0.0469ms)
+✔ [published] band counts per mode are 10/10/10 (0.0814ms)
+✔ [published] route_id unique and matches XH_(WALK|RUN|BIKE)_dddd (0.1173ms)
+✔ [published] every route has >= 2 in-range [lon,lat] coordinates (0.7486ms)
+✔ [published] boundary ring has >= 100 vertices and is closed (0.0454ms)
+✔ [published] environment grid has exactly 54 cells (0.0349ms)
+✔ [published] environment route keys all exist in route id set (0.043ms)
+✔ [published] env units match canonical field_specs units and statuses in domain (0.659ms)
+✔ [published] missing_rate per field <= 0.10 (0.0283ms)
+✔ [published] no NaN/Infinity numbers in serialised payload (134.6205ms)
+✔ [published] no absolute user paths leak into payload strings (85.0814ms)
+✔ [published] index.html/css reference no external script/style/img/font/tile resource (0.1532ms)
+✔ [published] js avoids innerHTML/eval/document.write (1.0143ms)
+✔ research_harness_latest.json exists and parses (0.1575ms)
+✔ research_harness_latest.json has non-empty run_id (0.0668ms)
+✔ research_harness_latest.json has non-empty generated_at (0.0229ms)
+✔ research_harness_latest.json has non-empty status (0.0577ms)
+✔ research_harness_latest.json has non-empty research_question (0.0289ms)
+✔ research_harness_latest.json has non-empty hypothesis (0.0234ms)
+✔ research_harness_latest.json declares offline qoder_session provenance (0.0546ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 791.2806

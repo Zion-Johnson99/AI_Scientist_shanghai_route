@@ -1,0 +1,33 @@
+{
+  "artifact": "hypothesis_critique",
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "generated_at": "2026-09-02T13:16:11Z",
+  "method": "Qoder self-critique against the round-1 defect baseline and the optimize-xuhui-routes contract. No external reviewer was consulted.",
+  "critiques": [
+    {
+      "hypothesis_id": "H1",
+      "objection": "road_snapping = 1.00 is trivially true and therefore uninformative: it is a property of the construction, not a measurement.",
+      "response": "Accepted. The metric is reported as construction_guaranteed rather than measured, and the contract's >= 0.98 gate is marked satisfied_by_construction. The informative gates remain in-district ratio, repeated edges, self-intersection, retrace, endpoint offset and loop topology.",
+      "residual_risk": "medium"
+    },
+    {
+      "hypothesis_id": "H1",
+      "objection": "The 20-30 km bike band may not be satisfiable inside Xuhui alone; the district is small.",
+      "response": "The contract permits approved cross-district connectors and excludes them from the in-district ratio. If a band still cannot be filled with clean geometry, the route stays needs_review and the run reports failed_quality_gate instead of padding the band with a false loop.",
+      "residual_risk": "high"
+    },
+    {
+      "hypothesis_id": "H3",
+      "objection": "Testing a scorer against a baseline derived from the same static proxy is close to circular: the recommended route wins because it was selected by the same function.",
+      "response": "Partly accepted. The honest comparison is against the shortest-path route in the same road graph, which is independent of the environment proxy. environment_win_rate is then a real statement: 'the environment-selected route scores better on the proxy than the shortest route, while detour stays within 20%'. It is not a health claim.",
+      "residual_risk": "medium"
+    },
+    {
+      "hypothesis_id": "H4",
+      "objection": "Self-graded product-matrix items are not acceptance; the grader is the same agent that wrote the page.",
+      "response": "Accepted as a limitation. Every matrix item is therefore tied to an observable browser evidence file (screenshot plus a DOM-free interaction record) and the blind_checkpoint is frozen before the reference product is consulted, so the grade cannot be revised after seeing the answer.",
+      "residual_risk": "medium"
+    }
+  ],
+  "overall_assessment": "The hypothesis set is engineering-existence and process oriented rather than scientifically novel. That is the correct shape for this run: the prompt asks for a reproducible, gate-passing system built without paid model calls and without touching the isolated answer modules, not for a new health-exposure finding. The principal epistemic weakness is GAP-001, which caps every environment claim at ordinal-proxy level."
+}

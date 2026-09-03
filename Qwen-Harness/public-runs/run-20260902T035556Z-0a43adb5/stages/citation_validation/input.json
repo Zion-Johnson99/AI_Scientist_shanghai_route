@@ -1,0 +1,11 @@
+{
+  "stage": "citation_validation",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.sources.citation_gate:stage_handler",
+  "dependencies": {
+    "evidence_extraction": "5d9024789f7c77fbabff913669d35ae227548f92b575bb972e3ecc7069e7b231"
+  },
+  "prepared_at": "2026-09-02T04:02:03.676097+00:00"
+}

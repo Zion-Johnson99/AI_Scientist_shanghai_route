@@ -1,0 +1,255 @@
+{
+  "stage": "final_checkpoint",
+  "generated_at": "2026-09-03T07:34:13Z",
+  "checks": [
+    {
+      "check": "browser_acceptance",
+      "passed": true,
+      "failure_count": null,
+      "path": "checks/browser_acceptance.json"
+    },
+    {
+      "check": "environment_contract",
+      "passed": true,
+      "failure_count": 0,
+      "path": "checks/environment_contract.json"
+    },
+    {
+      "check": "generated_quality",
+      "passed": true,
+      "failure_count": null,
+      "path": "checks/generated_quality.json"
+    },
+    {
+      "check": "output_boundary",
+      "passed": true,
+      "failure_count": null,
+      "path": "checks/output_boundary.json"
+    },
+    {
+      "check": "product_matrix",
+      "passed": null,
+      "failure_count": null,
+      "path": "checks/product_matrix.json"
+    },
+    {
+      "check": "reference_visible_gap_list",
+      "passed": null,
+      "failure_count": null,
+      "path": "checks/reference_visible_gap_list.json"
+    },
+    {
+      "check": "round1_defect_baseline",
+      "passed": null,
+      "failure_count": null,
+      "path": "checks/round1_defect_baseline.json"
+    },
+    {
+      "check": "route_spatial_quality",
+      "passed": true,
+      "failure_count": 0,
+      "path": "checks/route_spatial_quality.json"
+    },
+    {
+      "check": "secret_scan",
+      "passed": true,
+      "failure_count": null,
+      "path": "checks/secret_scan.json"
+    }
+  ],
+  "generated_quality": {
+    "available": true,
+    "passed": true,
+    "check_count": 14,
+    "checks": [
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      },
+      {
+        "id": null,
+        "passed": true,
+        "required": true,
+        "exit_code": 0
+      }
+    ],
+    "required_failed": [],
+    "path": "checks/generated_quality.json"
+  },
+  "product_matrix": {
+    "matrix": "12 项可见产品矩阵",
+    "assessed_at": "2026-09-03T07:52:59Z",
+    "stage": "final",
+    "assessed_from": "Playwright Chromium 真实浏览器会话，桌面 1440x900 与移动 500x700 两套视口，集中修正后重跑",
+    "evidence_source": "checks/browser_acceptance.json（stage=final）与 final_checkpoint/screenshots/",
+    "note": "集中修正后的最终评定。第 6 项在盲测阶段判为不通过，原因是当时 per-route 评分未把 54 格环境 dashboard 接进详情面板；修正后详情面板渲染出「评分分解 · 目录级基线」并给出环境健康维度分值、权重与 PM2.5 解释文本，故改判通过。本矩阵不再读取在线成品页面，仅依据本地产品的真实渲染与交互结果判定。",
+    "items": [
+      {
+        "id": 1,
+        "name": "地图首屏与徐汇区边界",
+        "passed": true,
+        "evidence": "首屏 canvas 编码后 269922 字符，徐汇区边界多边形与 90 条路线全部绘制；desktop-01-first-screen.png"
+      },
+      {
+        "id": 2,
+        "name": "路线列表和路线卡片",
+        "passed": true,
+        "evidence": "90 张 route-card 全部渲染，含名称、运动方式、距离、时长、环线系数、环境风险与操作按钮；desktop-02-recommend.png"
+      },
+      {
+        "id": 3,
+        "name": "运动、距离和偏好筛选",
+        "passed": true,
+        "evidence": "rec-mode/rec-band 与偏好筛选可用，before=90 after=87 empty_state=False，清除筛选可恢复；desktop-04-filter.png"
+      },
+      {
+        "id": 4,
+        "name": "用户需求输入",
+        "passed": true,
+        "evidence": "origin-input value=徐家汇 status='当前出发点：徐家汇（121.4339, 31.1951）' suggestions=2；desktop-03-origin-input.png"
+      },
+      {
+        "id": 5,
+        "name": "推荐主路线与备选路线",
+        "passed": true,
+        "evidence": "生成推荐返回主路线（龙华·中距离跑闭环路线11 / 首选 / 跑步 / 中距离跑 / 闭环路线 / 环境风险：正常 / 总分 75.5 / 8.4 / 公里 / 56 / 分钟 / — / 环线系数 / 17 / µg/m³ /  / 排名第 1，总分 75.）与 alternative_cards=2 张备选卡片；desktop-02-recommend.png"
+      },
+      {
+        "id": 6,
+        "name": "路线详情与环境解释",
+        "passed": true,
+        "evidence": "详情面板打开后渲染完整评分分解：breakdown='评分分解 · 目录级基线（总分 80.8）\\n环境健康\\n72.6 × 0.30\\n\\n环境健康 72.6 分：PM2.5 17.3 ug/m3（归'；环境健康维度已从 54 格 dashboard 接通到 per-route 展示，运动匹配/接驳便利/用户偏好在目录级基线下按设计标记为 unavailable 并给出说明；desktop-05-route-detail.png"
+      },
+      {
+        "id": 7,
+        "name": "地图和列表联动",
+        "passed": true,
+        "evidence": "selected=1 canvas_before=132914 canvas_after=114178，点击卡片后恰好 1 张卡片带 is-selected，canvas 重绘；desktop-06-map-linkage.png"
+      },
+      {
+        "id": 8,
+        "name": "路线高亮和视野调整",
+        "passed": true,
+        "evidence": "选中高亮唯一（selected=1），复位后 canvas 由 132914 变为 114178 字符，未出现空白视野；desktop-06-map-linkage.png"
+      },
+      {
+        "id": 9,
+        "name": "地点输入与起点接驳",
+        "passed": true,
+        "evidence": "地点输入解析为真实坐标（value=徐家汇 status='当前出发点：徐家汇（121.4339, 31.1951）' suggestions=2）；详情面板提供「前往起点」接驳入口与 access 面板；desktop-03-origin-input.png"
+      },
+      {
+        "id": 10,
+        "name": "桌面信息层级",
+        "passed": true,
+        "evidence": "1440x900 视口 passed=True，desktop_pass 的横向溢出与骨架屏断言全部通过（failed=[]）；desktop-01-first-screen.png"
+      },
+      {
+        "id": 11,
+        "name": "移动端布局与操作",
+        "passed": true,
+        "evidence": "500x700 下 cards=90 action_bar=visible；detail tab reachable without overflow；mobile-01..04 四张截图"
+      },
+      {
+        "id": 12,
+        "name": "加载、空结果和失败反馈",
+        "passed": true,
+        "evidence": "骨架屏在数据到达后隐藏；拦截 app_payload.json 后 error-state 显示「数据加载失败 /  / 读取 data/app_payload.json 失败：Failed to fetch /  /」并提供重试按钮；筛选后 empty_state=False，partial-banner 按数据状态显隐；desktop-07-error-state.png"
+      }
+    ],
+    "passed_count": 12,
+    "item_count": 12,
+    "meets_eight_of_twelve": true,
+    "open_items": [],
+    "available": true
+  },
+  "screenshots": [
+    "final_checkpoint/screenshots/desktop-01-first-screen.png",
+    "final_checkpoint/screenshots/desktop-02-recommend.png",
+    "final_checkpoint/screenshots/desktop-03-origin-input.png",
+    "final_checkpoint/screenshots/desktop-04-filter.png",
+    "final_checkpoint/screenshots/desktop-05-route-detail.png",
+    "final_checkpoint/screenshots/desktop-06-map-linkage.png",
+    "final_checkpoint/screenshots/desktop-07-error-state.png",
+    "final_checkpoint/screenshots/mobile-01-first-screen.png",
+    "final_checkpoint/screenshots/mobile-02-route-list.png",
+    "final_checkpoint/screenshots/mobile-03-filters.png",
+    "final_checkpoint/screenshots/mobile-04-detail.png"
+  ],
+  "screenshot_count": 11,
+  "source_file_count": 88
+}

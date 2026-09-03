@@ -1,0 +1,302 @@
+[
+  {
+    "case_id": "access-001",
+    "route_id": "walk-001",
+    "origin_type": "residential",
+    "origin_name": "示例起点1",
+    "distance_to_route_m": 118.0,
+    "walk_time_min": 3.9,
+    "has_bike_parking": false,
+    "has_toilet_nearby": false
+  },
+  {
+    "case_id": "access-002",
+    "route_id": "walk-004",
+    "origin_type": "metro_station",
+    "origin_name": "示例起点2",
+    "distance_to_route_m": 491.2,
+    "walk_time_min": 6.7,
+    "has_bike_parking": true,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-003",
+    "route_id": "walk-007",
+    "origin_type": "bus_stop",
+    "origin_name": "示例起点3",
+    "distance_to_route_m": 204.2,
+    "walk_time_min": 7.0,
+    "has_bike_parking": false,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-004",
+    "route_id": "walk-010",
+    "origin_type": "metro_station",
+    "origin_name": "示例起点4",
+    "distance_to_route_m": 124.7,
+    "walk_time_min": 4.7,
+    "has_bike_parking": false,
+    "has_toilet_nearby": false
+  },
+  {
+    "case_id": "access-005",
+    "route_id": "walk-013",
+    "origin_type": "residential",
+    "origin_name": "示例起点5",
+    "distance_to_route_m": 141.6,
+    "walk_time_min": 5.7,
+    "has_bike_parking": true,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-006",
+    "route_id": "walk-016",
+    "origin_type": "metro_station",
+    "origin_name": "示例起点6",
+    "distance_to_route_m": 450.9,
+    "walk_time_min": 3.1,
+    "has_bike_parking": false,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-007",
+    "route_id": "walk-019",
+    "origin_type": "residential",
+    "origin_name": "示例起点7",
+    "distance_to_route_m": 458.3,
+    "walk_time_min": 3.5,
+    "has_bike_parking": false,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-008",
+    "route_id": "walk-022",
+    "origin_type": "bus_stop",
+    "origin_name": "示例起点8",
+    "distance_to_route_m": 60.9,
+    "walk_time_min": 2.0,
+    "has_bike_parking": false,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-009",
+    "route_id": "walk-025",
+    "origin_type": "metro_station",
+    "origin_name": "示例起点9",
+    "distance_to_route_m": 312.8,
+    "walk_time_min": 3.0,
+    "has_bike_parking": false,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-010",
+    "route_id": "walk-028",
+    "origin_type": "bus_stop",
+    "origin_name": "示例起点10",
+    "distance_to_route_m": 461.5,
+    "walk_time_min": 4.1,
+    "has_bike_parking": true,
+    "has_toilet_nearby": false
+  },
+  {
+    "case_id": "access-011",
+    "route_id": "run-001",
+    "origin_type": "metro_station",
+    "origin_name": "示例起点11",
+    "distance_to_route_m": 298.9,
+    "walk_time_min": 6.8,
+    "has_bike_parking": true,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-012",
+    "route_id": "run-004",
+    "origin_type": "commercial",
+    "origin_name": "示例起点12",
+    "distance_to_route_m": 202.0,
+    "walk_time_min": 5.2,
+    "has_bike_parking": false,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-013",
+    "route_id": "run-007",
+    "origin_type": "commercial",
+    "origin_name": "示例起点13",
+    "distance_to_route_m": 463.3,
+    "walk_time_min": 2.4,
+    "has_bike_parking": false,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-014",
+    "route_id": "run-010",
+    "origin_type": "residential",
+    "origin_name": "示例起点14",
+    "distance_to_route_m": 381.0,
+    "walk_time_min": 1.1,
+    "has_bike_parking": true,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-015",
+    "route_id": "run-013",
+    "origin_type": "metro_station",
+    "origin_name": "示例起点15",
+    "distance_to_route_m": 493.9,
+    "walk_time_min": 6.0,
+    "has_bike_parking": false,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-016",
+    "route_id": "run-016",
+    "origin_type": "bus_stop",
+    "origin_name": "示例起点16",
+    "distance_to_route_m": 447.9,
+    "walk_time_min": 2.9,
+    "has_bike_parking": true,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-017",
+    "route_id": "run-019",
+    "origin_type": "bus_stop",
+    "origin_name": "示例起点17",
+    "distance_to_route_m": 383.8,
+    "walk_time_min": 2.2,
+    "has_bike_parking": true,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-018",
+    "route_id": "run-022",
+    "origin_type": "bus_stop",
+    "origin_name": "示例起点18",
+    "distance_to_route_m": 413.5,
+    "walk_time_min": 5.7,
+    "has_bike_parking": true,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-019",
+    "route_id": "run-025",
+    "origin_type": "bus_stop",
+    "origin_name": "示例起点19",
+    "distance_to_route_m": 400.8,
+    "walk_time_min": 2.8,
+    "has_bike_parking": false,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-020",
+    "route_id": "run-028",
+    "origin_type": "metro_station",
+    "origin_name": "示例起点20",
+    "distance_to_route_m": 340.9,
+    "walk_time_min": 1.2,
+    "has_bike_parking": false,
+    "has_toilet_nearby": false
+  },
+  {
+    "case_id": "access-021",
+    "route_id": "bike-001",
+    "origin_type": "commercial",
+    "origin_name": "示例起点21",
+    "distance_to_route_m": 97.4,
+    "walk_time_min": 3.9,
+    "has_bike_parking": false,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-022",
+    "route_id": "bike-004",
+    "origin_type": "commercial",
+    "origin_name": "示例起点22",
+    "distance_to_route_m": 255.2,
+    "walk_time_min": 1.9,
+    "has_bike_parking": true,
+    "has_toilet_nearby": false
+  },
+  {
+    "case_id": "access-023",
+    "route_id": "bike-007",
+    "origin_type": "bus_stop",
+    "origin_name": "示例起点23",
+    "distance_to_route_m": 268.6,
+    "walk_time_min": 5.8,
+    "has_bike_parking": true,
+    "has_toilet_nearby": false
+  },
+  {
+    "case_id": "access-024",
+    "route_id": "bike-010",
+    "origin_type": "bus_stop",
+    "origin_name": "示例起点24",
+    "distance_to_route_m": 157.2,
+    "walk_time_min": 5.0,
+    "has_bike_parking": true,
+    "has_toilet_nearby": false
+  },
+  {
+    "case_id": "access-025",
+    "route_id": "bike-013",
+    "origin_type": "residential",
+    "origin_name": "示例起点25",
+    "distance_to_route_m": 496.2,
+    "walk_time_min": 3.9,
+    "has_bike_parking": true,
+    "has_toilet_nearby": false
+  },
+  {
+    "case_id": "access-026",
+    "route_id": "bike-016",
+    "origin_type": "residential",
+    "origin_name": "示例起点26",
+    "distance_to_route_m": 270.3,
+    "walk_time_min": 2.7,
+    "has_bike_parking": true,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-027",
+    "route_id": "bike-019",
+    "origin_type": "residential",
+    "origin_name": "示例起点27",
+    "distance_to_route_m": 211.1,
+    "walk_time_min": 6.9,
+    "has_bike_parking": false,
+    "has_toilet_nearby": false
+  },
+  {
+    "case_id": "access-028",
+    "route_id": "bike-022",
+    "origin_type": "metro_station",
+    "origin_name": "示例起点28",
+    "distance_to_route_m": 447.1,
+    "walk_time_min": 3.9,
+    "has_bike_parking": false,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-029",
+    "route_id": "bike-025",
+    "origin_type": "residential",
+    "origin_name": "示例起点29",
+    "distance_to_route_m": 175.8,
+    "walk_time_min": 5.8,
+    "has_bike_parking": true,
+    "has_toilet_nearby": true
+  },
+  {
+    "case_id": "access-030",
+    "route_id": "bike-028",
+    "origin_type": "commercial",
+    "origin_name": "示例起点30",
+    "distance_to_route_m": 314.7,
+    "walk_time_min": 3.4,
+    "has_bike_parking": false,
+    "has_toilet_nearby": true
+  }
+]

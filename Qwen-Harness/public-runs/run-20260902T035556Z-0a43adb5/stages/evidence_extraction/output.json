@@ -1,0 +1,189 @@
+{
+  "card_id": "card-001",
+  "research_question": "本研究面向上海市徐汇区户外步行、跑步与骑行人群，检验在满足运动方式、目标距离、安全阈值、搜索范围及有限附加距离约束（同端点附加距离≤20%、目标距离偏差≤15%）的当前候选路线集中，融合 PM2.5（网格/站点融合估计）、花粉（日级背景代理）、噪声（0-100 风险代理）、天气、绿地水体邻近度、路线质量、接驳成本与用户偏好的多源环境暴露模型，相较最短路径基线与单一 PM2.5 基线，能否降低综合环境暴露风险并提高个性化偏好匹配度。研究结论限定为当前候选集中的约束最优路线，不宣称全路网全局最优；预设画像案例不作为独立人群样本，不做人群外推。",
+  "source_ids": [
+    "src-web-www-who-int-b625d67c6f53",
+    "src-pubmed-18994660",
+    "src-local-00-需求与总体架构",
+    "src-repo-Qwen-Harness-config-source-policy-json"
+  ],
+  "claims": [
+    {
+      "claim_id": "clm-001",
+      "source_id": "src-web-www-who-int-b625d67c6f53",
+      "claim": "WHO 全球空气质量指南指出，与 15 年前上一版指南发布时相比，现有证据更强地表明空气污染在比以往认知更低的浓度下仍会影响健康的多个方面。",
+      "evidence_location": "WHO 指南网页页面 Overview 段落",
+      "short_excerpt": "Compared to 15 years ago, when the previous edition of these guidelines was published, there is now a much stronger body of evidence to show how air pollution affects different aspects of health at even lower concentrations than previously understood.",
+      "evidence_type": "policy",
+      "support_strength": "high",
+      "caveats": [
+        "该陈述为 WHO 指南概述层面的政策/证据总结，未提供具体浓度阈值数值",
+        "来源文本未给出与徐汇区户外运动场景直接对应的暴露-反应关系"
+      ]
+    },
+    {
+      "claim_id": "clm-002",
+      "source_id": "src-web-www-who-int-b625d67c6f53",
+      "claim": "WHO 指出，每年暴露于空气污染仍估计造成数百万人死亡及健康生命年的损失，且空气污染所致疾病负担估计已与不健康饮食和吸烟等其他重大全球健康风险相当。",
+      "evidence_location": "WHO 指南网页页面 Overview 段落",
+      "short_excerpt": "every year, exposure to air pollution is still estimated to cause millions of deaths and the loss of healthy years of life. The burden of disease attributable to air pollution is now estimated to be on a par with other major global health risks such as unhealthy diets and tobacco smoking.",
+      "evidence_type": "policy",
+      "support_strength": "high",
+      "caveats": [
+        "数值表述为“数百万”，来源未给出精确数字",
+        "为全球层面估计，非上海市或徐汇区本地观测"
+      ]
+    },
+    {
+      "claim_id": "clm-003",
+      "source_id": "src-web-www-who-int-b625d67c6f53",
+      "claim": "2015 年世界卫生大会通过关于空气质量与健康的里程碑决议，将空气污染认定为缺血性心脏病、卒中、慢性阻塞性肺病、哮喘和癌症等非传染性疾病的风险因素。",
+      "evidence_location": "WHO 指南网页页面 Overview 段落",
+      "short_excerpt": "In 2015, the World Health Assembly adopted a landmark resolution on air quality and health, recognizing air pollution as a risk factor for noncommunicable diseases such as ischaemic heart disease, stroke, chronic obstructive pulmonary disease, asthma and cancer",
+      "evidence_type": "policy",
+      "support_strength": "high",
+      "caveats": [
+        "为政策/决议层面陈述，非针对运动暴露场景的实证结果"
+      ]
+    },
+    {
+      "claim_id": "clm-004",
+      "source_id": "src-pubmed-18994660",
+      "claim": "该国际比较研究对 18 个 OECD 国家 1970-2000 年家庭政策与 1950-2000 年养老金政策进行合并横截面时间序列分析，考察社会福利政策特征与慷慨程度同婴儿死亡率及老年超额死亡率的关系。",
+      "evidence_location": "PubMed 摘要方法与结果部分",
+      "short_excerpt": "We did pooled cross-sectional time-series analyses of 18 OECD (Organisation for Economic Co-operation and Development) countries during the period 1970-2000 for family policies and 1950-2000 for pension policies.",
+      "evidence_type": "method",
+      "support_strength": "medium",
+      "caveats": [
+        "研究对象为国家层面社会政策与死亡率，非户外运动路线或环境暴露",
+        "与本研究问题关联度低，仅可作为社会决定因素背景证据"
+      ]
+    },
+    {
+      "claim_id": "clm-005",
+      "source_id": "src-pubmed-18994660",
+      "claim": "该研究发现，支持双薪家庭的家庭政策慷慨程度每提高一个百分点，婴儿死亡率每 1000 名出生降低 0.04 例死亡；基础保障型养老金慷慨程度每提高一个百分点，男女老年超额死亡率均降低 0.02。",
+      "evidence_location": "PubMed 摘要结果部分",
+      "short_excerpt": "An increase by one percentage point in dual-earner support lowers infant mortality by 0.04 deaths per 1000 births. ... An increase by one percentage point in basic security pensions is associated with a decrease in the old age excess mortality by 0.02 for men as well as for women.",
+      "evidence_type": "result",
+      "support_strength": "medium",
+      "caveats": [
+        "数值来自国家层面回归估计，非个体或路线暴露测量",
+        "与徐汇区路线选择无直接因果链"
+      ]
+    },
+    {
+      "claim_id": "clm-006",
+      "source_id": "src-local-00-需求与总体架构",
+      "claim": "项目文档将核心假设表述为：在满足运动方式、目标距离、安全阈值、搜索范围和有限附加距离约束的候选路线中，融合 PM2.5、花粉、噪声、天气、绿地水体、路线质量、接驳成本和用户偏好的模型，相较最短或单一 PM2.5 基线，能够降低环境风险并提高个性化匹配度。",
+      "evidence_location": "00-需求与总体架构 §5.2 核心假设",
+      "short_excerpt": "在满足运动方式、目标距离、安全阈值、搜索范围和有限附加距离约束的候选路线中，融合 PM2.5、花粉、噪声、天气、绿地水体、路线质量、接驳成本和用户偏好的模型，相较最短或单一 PM2.5 基线，能够降低环境风险并提高个性化匹配度。",
+      "evidence_type": "definition",
+      "support_strength": "high",
+      "caveats": [
+        "为项目内部假设定义，非外部实证结果",
+        "需由后续实验阶段检验"
+      ]
+    },
+    {
+      "claim_id": "clm-007",
+      "source_id": "src-local-00-需求与总体架构",
+      "claim": "项目文档将最优路线操作定义为当前可用候选集上的约束最优解，即 r* = argmax_{r ∈ R_feasible} U(r | p, t)，其中 R_feasible 为通过运动方式、距离、安全、区域、路线形态与数据可用性门禁的路线集合。",
+      "evidence_location": "00-需求与总体架构 §5.3 “最优路线”的操作定义",
+      "short_excerpt": "项目中的最优路线限定为当前可用候选集上的约束最优解：r* = argmax_{r ∈ R_feasible} U(r | p, t) 其中：R_feasible 为通过运动方式、距离、安全、区域、路线形态与数据可用性门禁的路线集合。",
+      "evidence_type": "definition",
+      "support_strength": "high",
+      "caveats": [
+        "限定为当前候选集约束最优，不宣称全路网全局最优"
+      ]
+    },
+    {
+      "claim_id": "clm-008",
+      "source_id": "src-local-00-需求与总体架构",
+      "claim": "项目文档设定默认实验阈值为同端点附加距离上限 ρ_detour ≤ 0.20，运动路线目标距离偏差 ρ_target ≤ 0.15，接驳距离服从用户搜索半径与现有硬约束。",
+      "evidence_location": "00-需求与总体架构 §5.4 有限附加距离",
+      "short_excerpt": "默认实验阈值建议为：同端点附加距离上限：ρ_detour ≤ 0.20；运动路线目标距离偏差：ρ_target ≤ 0.15；接驳距离服从用户搜索半径与现有硬约束",
+      "evidence_type": "definition",
+      "support_strength": "high",
+      "caveats": [
+        "阈值为项目配置建议值，非外部实证标准",
+        "阈值放入配置文件，研究报告需记录实际取值和敏感性分析"
+      ]
+    },
+    {
+      "claim_id": "clm-009",
+      "source_id": "src-local-00-需求与总体架构",
+      "claim": "项目文档规定结果表述应使用“当前候选集中的约束最优路线”“环境暴露估计”“代理风险”，避免扩大到全路网全局最优或道路实测真值。",
+      "evidence_location": "00-需求与总体架构 §2 已确认的项目决策“结果表述”行",
+      "short_excerpt": "结果表述 | 使用“当前候选集中的约束最优路线”“环境暴露估计”“代理风险”，避免扩大到全路网全局最优或道路实测真值",
+      "evidence_type": "policy",
+      "support_strength": "high",
+      "caveats": [
+        "为项目内部表述纪律，非外部证据"
+      ]
+    },
+    {
+      "claim_id": "clm-010",
+      "source_id": "src-local-00-需求与总体架构",
+      "claim": "项目文档确认实验边界为不开展用户问卷、人工盲评、移动传感器或线下实测；保留单元测试、契约测试、集成测试与离线复现实验。",
+      "evidence_location": "00-需求与总体架构 §2 已确认的项目决策“实验边界”行",
+      "short_excerpt": "实验边界 | 不开展用户问卷、人工盲评、移动传感器或线下实测；保留单元测试、契约测试、集成测试与离线复现实验",
+      "evidence_type": "limitation",
+      "support_strength": "high",
+      "caveats": [
+        "该边界限制了人群外推与现场验证能力"
+      ]
+    },
+    {
+      "claim_id": "clm-011",
+      "source_id": "src-local-00-需求与总体架构",
+      "claim": "多源环境模块主链路为多源数据采集→54 个约 1 km 环境网格→路线路段匹配→90 条路线暴露汇总→网页发布，当前能力覆盖天气、AQI、PM2.5 融合、花粉、噪声代理、路线环境暴露、历史存储、分层刷新和 last-known-good 回退。",
+      "evidence_location": "00-需求与总体架构 §4.2 多源环境模块",
+      "short_excerpt": "多源数据采集 → 54 个约 1 km 环境网格 → 路线路段匹配 → 90 条路线暴露汇总 → 网页发布 当前能力覆盖天气、AQI、PM2.5 融合、花粉、噪声代理、路线环境暴露、历史存储、分层刷新和 last-known-good 回退。",
+      "evidence_type": "dataset",
+      "support_strength": "high",
+      "caveats": [
+        "PM2.5 为网格/站点融合估计，非道路实测值",
+        "花粉为日级背景代理，噪声为 0-100 风险代理",
+        "空间粒度约 1 km，非逐米道路浓度"
+      ]
+    },
+    {
+      "claim_id": "clm-012",
+      "source_id": "src-local-00-需求与总体架构",
+      "claim": "路线与网页模块当前包含 90 条已验收路线，步行、跑步、骑行各 30 条。",
+      "evidence_location": "00-需求与总体架构 §4.1 路线与网页模块",
+      "short_excerpt": "90 条已验收路线，步行、跑步、骑行各 30 条。",
+      "evidence_type": "dataset",
+      "support_strength": "high",
+      "caveats": [
+        "路线集合为当前候选集，不代表全路网"
+      ]
+    },
+    {
+      "claim_id": "clm-013",
+      "source_id": "src-local-00-需求与总体架构",
+      "claim": "评价与千问推荐模块的五个评分维度为 environment_health、sport_match、access_convenience、route_quality、interest_service。",
+      "evidence_location": "00-需求与总体架构 §4.3 评价与千问推荐模块",
+      "short_excerpt": "五个维度为：1. environment_health 2. sport_match 3. access_convenience 4. route_quality 5. interest_service",
+      "evidence_type": "method",
+      "support_strength": "high",
+      "caveats": [
+        "为项目内部评分框架定义"
+      ]
+    },
+    {
+      "claim_id": "clm-014",
+      "source_id": "src-repo-Qwen-Harness-config-source-policy-json",
+      "claim": "来源策略配置规定摘录最大字符数为 400，允许的来源类型包括 local_file、pubmed、crossref、https_url、repository_file，并要求 license_note 与 accessed_at。",
+      "evidence_location": "Qwen-Harness/config/source_policy.json 顶层字段",
+      "short_excerpt": "\"excerpt_max_chars\": 400, \"allowed_source_types\": [\"local_file\",\"pubmed\",\"crossref\",\"https_url\",\"repository_file\"], \"require_license_note\": true, \"require_accessed_at\": true",
+      "evidence_type": "policy",
+      "support_strength": "high",
+      "caveats": [
+        "为项目配置文件，约束证据抽取流程而非科学结论"
+      ]
+    }
+  ],
+  "notes": "来源列表中 src-web-www-who-int-74719c668276（WHO 剖宫产指南）、src-pubmed-16805392（酒精中毒脂蛋白代谢）、src-pubmed-28657866（NEJM 病例报告）、src-crossref-10-1056-nejmoa1702747（Medicare 空气污染与死亡率，仅有元数据无正文）、src-crossref-10-1016-s0140-6736-08-61689-x（自然环境与健康不平等，仅有元数据无正文）与本研究问题直接相关性不足或缺少可摘录正文，未生成证据卡条目。证据缺口：缺少针对上海市徐汇区户外运动场景的 PM2.5、花粉、噪声实测暴露-反应关系来源；缺少多源环境路线推荐系统的直接对照实证文献。"
+}

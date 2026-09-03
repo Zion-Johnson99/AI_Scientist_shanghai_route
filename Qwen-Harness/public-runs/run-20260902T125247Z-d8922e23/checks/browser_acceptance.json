@@ -1,0 +1,93 @@
+{
+  "check": "browser_acceptance",
+  "checked_at": "2026-09-03T07:52:59Z",
+  "driver": "playwright chromium, explicit viewport per context",
+  "base_url": "http://127.0.0.1:8765/index.html",
+  "stage": "final",
+  "passed": true,
+  "viewports": [
+    {
+      "id": "desktop",
+      "width": 1440,
+      "height": 900,
+      "passed": true,
+      "screenshots": [
+        "final_checkpoint/screenshots/desktop-01-first-screen.png",
+        "final_checkpoint/screenshots/desktop-02-recommend.png",
+        "final_checkpoint/screenshots/desktop-03-origin-input.png",
+        "final_checkpoint/screenshots/desktop-04-filter.png",
+        "final_checkpoint/screenshots/desktop-05-route-detail.png",
+        "final_checkpoint/screenshots/desktop-06-map-linkage.png",
+        "final_checkpoint/screenshots/desktop-07-error-state.png"
+      ]
+    },
+    {
+      "id": "mobile",
+      "width": 500,
+      "height": 700,
+      "passed": true,
+      "screenshots": [
+        "final_checkpoint/screenshots/mobile-01-first-screen.png",
+        "final_checkpoint/screenshots/mobile-02-route-list.png",
+        "final_checkpoint/screenshots/mobile-03-filters.png",
+        "final_checkpoint/screenshots/mobile-04-detail.png"
+      ]
+    }
+  ],
+  "interactions": [
+    {
+      "id": "recommend",
+      "passed": true,
+      "detail": "龙华·中距离跑闭环路线11 / 首选 / 跑步 / 中距离跑 / 闭环路线 / 环境风险：正常 / 总分 75.5 / 8.4 / 公里 / 56 / 分钟 / — / 环线系数 / 17 / µg/m³ /  / 排名第 1，总分 75.5；主要贡献：环境健康 71 分、运动匹配 100 分；实测 8"
+    },
+    {
+      "id": "alternatives",
+      "passed": true,
+      "detail": "alternative_cards=2"
+    },
+    {
+      "id": "origin_input",
+      "passed": true,
+      "detail": "value=徐家汇 status='当前出发点：徐家汇（121.4339, 31.1951）' suggestions=2"
+    },
+    {
+      "id": "filter",
+      "passed": true,
+      "detail": "before=90 after=87 empty_state=False"
+    },
+    {
+      "id": "route_detail",
+      "passed": true,
+      "detail": "breakdown='评分分解 · 目录级基线（总分 80.8）\\n环境健康\\n72.6 × 0.30\\n\\n环境健康 72.6 分：PM2.5 17.3 ug/m3（归'"
+    },
+    {
+      "id": "map_linkage",
+      "passed": true,
+      "detail": "selected=1 canvas_before=132914 canvas_after=114178"
+    },
+    {
+      "id": "error_state",
+      "passed": true,
+      "detail": "数据加载失败 /  / 读取 data/app_payload.json 失败：Failed to fetch /  / 请先运行 python scripts/build_web_payload"
+    }
+  ],
+  "page_health": [
+    {
+      "id": "first_screen",
+      "passed": true,
+      "detail": "cards=90 canvas_chars=269922"
+    },
+    {
+      "id": "mobile_layout",
+      "passed": true,
+      "detail": "cards=90 action_bar=visible"
+    },
+    {
+      "id": "mobile_detail_tab",
+      "passed": true,
+      "detail": "detail tab reachable without overflow"
+    }
+  ],
+  "failed": [],
+  "screenshot_count": 11
+}

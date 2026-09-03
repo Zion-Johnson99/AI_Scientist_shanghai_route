@@ -1,0 +1,81 @@
+{
+  "provenance": "qwen",
+  "audits": [
+    {
+      "stage": "generation_repair",
+      "model": "qwen3.8-max",
+      "created_at": "2026-09-02T06:17:23.688158Z",
+      "request_id": "chatcmpl-767228d7-3070-99b8-9664-f2954b318040",
+      "latency_ms": 76036.4,
+      "input_tokens": 14782,
+      "output_tokens": 3624,
+      "prompt_version": "552c93e8e611",
+      "reasoning_effort": "low",
+      "skill_hashes": {
+        "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+        "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+        "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+        "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+        "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+      },
+      "error_type": null
+    },
+    {
+      "stage": "generation_repair",
+      "model": "qwen3.8-max",
+      "created_at": "2026-09-02T06:16:52.270390Z",
+      "request_id": "chatcmpl-9059bf54-cfb4-9843-9160-07a269cfe3a7",
+      "latency_ms": 44618.0,
+      "input_tokens": 14494,
+      "output_tokens": 2161,
+      "prompt_version": "552c93e8e611",
+      "reasoning_effort": "low",
+      "skill_hashes": {
+        "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+        "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+        "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+        "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+        "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+      },
+      "error_type": null
+    },
+    {
+      "stage": "generation_repair",
+      "model": "qwen3.8-max",
+      "created_at": "2026-09-02T06:17:00.567318Z",
+      "request_id": "chatcmpl-23415c2a-2a77-9a74-81df-ff6b5e048bf1",
+      "latency_ms": 52914.7,
+      "input_tokens": 14556,
+      "output_tokens": 2562,
+      "prompt_version": "552c93e8e611",
+      "reasoning_effort": "low",
+      "skill_hashes": {
+        "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+        "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+        "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+        "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+        "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+      },
+      "error_type": null
+    },
+    {
+      "stage": "generation_repair",
+      "model": "qwen3.8-max",
+      "created_at": "2026-09-02T06:18:47.221885Z",
+      "request_id": "chatcmpl-be9d56c1-d2cc-969a-bac4-939f166adbdf",
+      "latency_ms": 82448.9,
+      "input_tokens": 14946,
+      "output_tokens": 4176,
+      "prompt_version": "552c93e8e611",
+      "reasoning_effort": "low",
+      "skill_hashes": {
+        "qwen-harness-orchestration": "e4fb291345d00a6a2923f9c5417e684b6b2ba379ca84d3664869370f35757efc",
+        "xuhui-route-builder-engineering": "e99c3bfa2f7bf4b1773437555da3351d154bf900d1d7e440328e06bdb81d6a13",
+        "weather-environment-pipeline": "5e4095be680478c5be94cdf6f20872fbb0f7eae89ab3bd055d63198cd0e7b241",
+        "evaluation-qwen-experiments": "d7fceb3bf5b934d00a4abda6be38c638d0ddfc916197bc5633be69114a8505a0",
+        "web-product-integration": "7a1cf100fa5b75a481981b13ec0904ff8ccaa2e15c8a104ba02f1a291a62a55e"
+      },
+      "error_type": null
+    }
+  ]
+}

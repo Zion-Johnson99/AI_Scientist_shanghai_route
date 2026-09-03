@@ -1,0 +1,16 @@
+{
+  "case_id": "P04_walk_health_environment",
+  "route_mode": "walk",
+  "goal": "health_environment",
+  "target_distance_m": 3000,
+  "sensitivities": [
+    "pm25",
+    "pollen",
+    "noise"
+  ],
+  "interests": [
+    "waterside",
+    "park"
+  ],
+  "notes": "步行健康环境画像，三项敏感（空气/花粉/噪声）与滨水公园偏好，检验敏感项权重扰动影响"
+}

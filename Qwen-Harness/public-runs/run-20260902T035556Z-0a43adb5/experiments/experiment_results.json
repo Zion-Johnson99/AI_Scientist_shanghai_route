@@ -1,0 +1,2638 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260902T035556Z-0a43adb5",
+  "generated_at": "2026-09-02T06:53:16.592591+00:00",
+  "provenance": "module_outputs",
+  "profiles": [
+    {
+      "case_id": "P01_walk_balanced",
+      "route_mode": "walk",
+      "goal": "balanced",
+      "target_distance_m": 3000,
+      "sensitivities": [],
+      "interests": [],
+      "notes": "步行平衡画像，无敏感项与偏好项，作为权重扰动稳健性的中性参照"
+    },
+    {
+      "case_id": "P02_run_balanced",
+      "route_mode": "run",
+      "goal": "balanced",
+      "target_distance_m": 5000,
+      "sensitivities": [],
+      "interests": [],
+      "notes": "跑步平衡画像，无敏感项与偏好项"
+    },
+    {
+      "case_id": "P03_bike_balanced",
+      "route_mode": "bike",
+      "goal": "balanced",
+      "target_distance_m": 8000,
+      "sensitivities": [],
+      "interests": [],
+      "notes": "骑行平衡画像，无敏感项与偏好项"
+    },
+    {
+      "case_id": "P04_walk_health_environment",
+      "route_mode": "walk",
+      "goal": "health_environment",
+      "target_distance_m": 3000,
+      "sensitivities": [
+        "pm25",
+        "pollen",
+        "noise"
+      ],
+      "interests": [
+        "waterside",
+        "park"
+      ],
+      "notes": "步行健康环境画像，三项敏感（空气/花粉/噪声）与滨水公园偏好，检验敏感项权重扰动影响"
+    },
+    {
+      "case_id": "P05_run_health_environment",
+      "route_mode": "run",
+      "goal": "health_environment",
+      "target_distance_m": 5000,
+      "sensitivities": [
+        "pm25",
+        "noise"
+      ],
+      "interests": [
+        "quiet",
+        "park"
+      ],
+      "notes": "跑步健康环境画像，空气与噪声敏感、安静与公园偏好"
+    },
+    {
+      "case_id": "P06_bike_nearby",
+      "route_mode": "bike",
+      "goal": "nearby",
+      "target_distance_m": 8000,
+      "sensitivities": [],
+      "interests": [
+        "convenience",
+        "toilet"
+      ],
+      "notes": "骑行就近画像，便利设施与厕所偏好，检验 access_convenience 维度权重扰动"
+    },
+    {
+      "case_id": "P07_walk_scenery",
+      "route_mode": "walk",
+      "goal": "scenery",
+      "target_distance_m": 3000,
+      "sensitivities": [
+        "pollen"
+      ],
+      "interests": [
+        "waterside",
+        "park",
+        "quiet"
+      ],
+      "notes": "步行景观画像，花粉敏感与滨水公园安静偏好，检验 interest_service 维度权重扰动"
+    },
+    {
+      "case_id": "P08_run_scenery",
+      "route_mode": "run",
+      "goal": "scenery",
+      "target_distance_m": 5000,
+      "sensitivities": [
+        "pm25"
+      ],
+      "interests": [
+        "waterside",
+        "quiet"
+      ],
+      "notes": "跑步景观画像，空气敏感与滨水安静偏好"
+    },
+    {
+      "case_id": "P09_bike_health_environment",
+      "route_mode": "bike",
+      "goal": "health_environment",
+      "target_distance_m": 8000,
+      "sensitivities": [
+        "pm25",
+        "pollen",
+        "noise"
+      ],
+      "interests": [
+        "park",
+        "convenience"
+      ],
+      "notes": "骑行健康环境画像，三项敏感与公园便利偏好，覆盖骑行模式下环境维度极端情形"
+    }
+  ],
+  "plan": {
+    "hypothesis_id": "hyp-001",
+    "variants": [
+      "B0_shortest_feasible",
+      "B1_pm25_only",
+      "B2_multi_environment",
+      "B3_non_personalized",
+      "M1_personalized_constrained"
+    ],
+    "detour_limit": 0.2,
+    "target_distance_tolerance": 0.15
+  },
+  "variants_registry": {
+    "schema_version": "1.0",
+    "registered_at": "2026-07-06T00:00:00+00:00",
+    "pre_registration_note": "五个变体的选择规则、所需字段与权重来源在运行前冻结；运行期模型只能从预注册变体中选择，不能修改规则、字段或权重。权重或绕路上限的任何调整只能经反馈迭代写入当前 run 的派生配置并记录 before/after。",
+    "exposure_risk_coefficients": {
+      "alpha_pm25": 0.5,
+      "beta_noise": 0.3,
+      "gamma_pollen": 0.2
+    },
+    "normalization": {
+      "pm25_breakpoints_ug_m3": [
+        [
+          0,
+          0.0
+        ],
+        [
+          15,
+          0.15
+        ],
+        [
+          35,
+          0.35
+        ],
+        [
+          75,
+          0.6
+        ],
+        [
+          115,
+          0.8
+        ],
+        [
+          150,
+          0.95
+        ],
+        [
+          250,
+          1.0
+        ]
+      ],
+      "noise_scale": 100.0,
+      "pollen_scale": 100.0
+    },
+    "variants": [
+      {
+        "variant_id": "B0_shortest_feasible",
+        "name": "最短可行基线",
+        "selection_rule": "在可行候选中最小化目标距离偏差，其次最小化接驳距离，再按 route_id 字典序；不使用环境、兴趣或个性化信息。",
+        "required_fields": [
+          "route.distance_m",
+          "access_distance_m",
+          "profile.target_distance_m"
+        ],
+        "weights_source": "none:选择规则不使用权重"
+      },
+      {
+        "variant_id": "B1_pm25_only",
+        "name": "单一 PM2.5 基线",
+        "selection_rule": "在目标距离偏差门禁内最小化 PM2.5 浓度（网格/站点融合估计值）；PM2.5 缺失的候选不参与选择，全部缺失时回退 B0 规则并记录降级。",
+        "required_fields": [
+          "environment_summary.pm2_5.value",
+          "route.distance_m",
+          "profile.target_distance_m"
+        ],
+        "weights_source": "none:单指标最小化"
+      },
+      {
+        "variant_id": "B2_multi_environment",
+        "name": "多环境非个性化基线",
+        "selection_rule": "在目标距离偏差门禁内最小化综合暴露风险 R_env=alpha*R_pm25+beta*R_noise+gamma*R_pollen（预注册归一化），忽略个人兴趣；任一环境分量缺失的候选不参与选择，全部缺失时回退 B0 规则并记录降级。",
+        "required_fields": [
+          "environment_summary.pm2_5.value",
+          "environment_summary.noise.value",
+          "environment_summary.pollen.value",
+          "route.distance_m",
+          "profile.target_distance_m"
+        ],
+        "weights_source": "experiment_variants.json:exposure_risk_coefficients"
+      },
+      {
+        "variant_id": "B3_non_personalized",
+        "name": "默认权重非个性化基线",
+        "selection_rule": "使用评价模块默认平衡权重，不提升敏感项与兴趣项；按 route_quality、sport_match、data_confidence 依次降序选择并以 route_id 字典序决出平局。候选文件必须由默认平衡权重生成（记录 weights_sha256）；若检测到权重被个性化覆盖，按契约违规上报。",
+        "required_fields": [
+          "dimension_scores.route_quality",
+          "dimension_scores.sport_match",
+          "data_confidence"
+        ],
+        "weights_source": "evaluation_module:config/default_weights.json(goal=balanced)"
+      },
+      {
+        "variant_id": "M1_personalized_constrained",
+        "name": "个性化约束模型",
+        "selection_rule": "使用用户目标、敏感项、兴趣、接驳距离和数据可信度的个性化综合分：先按目标距离偏差、接驳半径与绕路上限门禁过滤，再按匹配偏好数、base_score、data_confidence 依次降序选择并以 route_id 字典序决出平局；门禁过滤清空候选集时回退无门禁选择并记录降级。",
+        "required_fields": [
+          "base_score",
+          "matched_preferences",
+          "data_confidence",
+          "access_distance_m",
+          "route.distance_m",
+          "profile.target_distance_m",
+          "profile.interests"
+        ],
+        "weights_source": "derived_config.weights 覆盖下的评价模块权重（记录 weights_sha256，无覆盖时为默认权重）"
+      }
+    ],
+    "distance_constraints": {
+      "detour_ratio_max_default": 0.2,
+      "target_deviation_max_default": 0.15,
+      "notes": "同端点附加距离上限、目标距离偏差上限默认值；实际运行取值以 ExperimentPlan 与派生配置为准，接驳距离同时服从用户搜索半径与评价模块硬约束。"
+    }
+  },
+  "module_statuses": {
+    "route": "ok",
+    "environment": "partial",
+    "evaluation": "ok",
+    "web": "ok"
+  },
+  "data_hashes": {
+    "modules": {
+      "route_catalog.json": "16144b795952bd652eac48088d00d8f7d1e259062e2ba9c33a924b2de1359517",
+      "xuhui_routes.geojson": "9026dca95125cdcbf3068ae8ad6841568b8b9d285466124c6b2b85cd4b0764da",
+      "xuhui_entries.geojson": "5f9e468fd135a6e3ba7d22df8cdfbf5f1a8e425d55db222a88ae115f6d897479",
+      "poi_catalog.json": "445ba786bee8dd4fbc7ddf8e2c69c6f343d620c8622ae3527542f2bae46e35a6",
+      "access_cases.json": "949e54b5ff1ff9545c3fd4095d3877cd0ae3ce2ef53b9f908ad07fb9929d0d5f",
+      "environment_dashboard.json": "60a1c35bff1c015a31c9efc3ebe92a73c737aec6e8968fc6e56813cd5fe3af74",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f"
+    },
+    "weights_sha256": {
+      "B0_shortest_feasible": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "B1_pm25_only": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "B2_multi_environment": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "B3_non_personalized": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "M1_personalized_constrained": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f"
+    }
+  },
+  "cells": [
+    {
+      "case_id": "P01_walk_balanced",
+      "variant_id": "B0_shortest_feasible",
+      "status": "ready",
+      "profile": {
+        "case_id": "P01_walk_balanced",
+        "route_mode": "walk",
+        "goal": "balanced",
+        "target_distance_m": 3000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "步行平衡画像，无敏感项与偏好项，作为权重扰动稳健性的中性参照"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:10+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P01_walk_balanced__B0_shortest_feasible.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 75.5,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 75.5
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P01_walk_balanced",
+      "variant_id": "B1_pm25_only",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P01_walk_balanced",
+        "route_mode": "walk",
+        "goal": "balanced",
+        "target_distance_m": 3000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "步行平衡画像，无敏感项与偏好项，作为权重扰动稳健性的中性参照"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:10+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P01_walk_balanced__B1_pm25_only.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P01_walk_balanced",
+      "variant_id": "B2_multi_environment",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P01_walk_balanced",
+        "route_mode": "walk",
+        "goal": "balanced",
+        "target_distance_m": 3000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "步行平衡画像，无敏感项与偏好项，作为权重扰动稳健性的中性参照"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:10+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P01_walk_balanced__B2_multi_environment.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P01_walk_balanced",
+      "variant_id": "B3_non_personalized",
+      "status": "ready",
+      "profile": {
+        "case_id": "P01_walk_balanced",
+        "route_mode": "walk",
+        "goal": "balanced",
+        "target_distance_m": 3000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "步行平衡画像，无敏感项与偏好项，作为权重扰动稳健性的中性参照"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:10+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P01_walk_balanced__B3_non_personalized.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 75.5,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 75.5
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P01_walk_balanced",
+      "variant_id": "M1_personalized_constrained",
+      "status": "ready",
+      "profile": {
+        "case_id": "P01_walk_balanced",
+        "route_mode": "walk",
+        "goal": "balanced",
+        "target_distance_m": 3000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "步行平衡画像，无敏感项与偏好项，作为权重扰动稳健性的中性参照"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:10+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P01_walk_balanced__M1_personalized_constrained.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 75.5,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 75.5
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": [
+        "M1 距离门禁清空候选集，回退为无门禁个性化选择（降级记录，不伪造候选）"
+      ]
+    },
+    {
+      "case_id": "P02_run_balanced",
+      "variant_id": "B0_shortest_feasible",
+      "status": "ready",
+      "profile": {
+        "case_id": "P02_run_balanced",
+        "route_mode": "run",
+        "goal": "balanced",
+        "target_distance_m": 5000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "跑步平衡画像，无敏感项与偏好项"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:11+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P02_run_balanced__B0_shortest_feasible.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 75.5,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 75.5
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P02_run_balanced",
+      "variant_id": "B1_pm25_only",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P02_run_balanced",
+        "route_mode": "run",
+        "goal": "balanced",
+        "target_distance_m": 5000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "跑步平衡画像，无敏感项与偏好项"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:11+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P02_run_balanced__B1_pm25_only.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P02_run_balanced",
+      "variant_id": "B2_multi_environment",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P02_run_balanced",
+        "route_mode": "run",
+        "goal": "balanced",
+        "target_distance_m": 5000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "跑步平衡画像，无敏感项与偏好项"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:11+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P02_run_balanced__B2_multi_environment.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P02_run_balanced",
+      "variant_id": "B3_non_personalized",
+      "status": "ready",
+      "profile": {
+        "case_id": "P02_run_balanced",
+        "route_mode": "run",
+        "goal": "balanced",
+        "target_distance_m": 5000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "跑步平衡画像，无敏感项与偏好项"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:11+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P02_run_balanced__B3_non_personalized.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 75.5,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 75.5
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P02_run_balanced",
+      "variant_id": "M1_personalized_constrained",
+      "status": "ready",
+      "profile": {
+        "case_id": "P02_run_balanced",
+        "route_mode": "run",
+        "goal": "balanced",
+        "target_distance_m": 5000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "跑步平衡画像，无敏感项与偏好项"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:11+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P02_run_balanced__M1_personalized_constrained.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 75.5,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 75.5
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": [
+        "M1 距离门禁清空候选集，回退为无门禁个性化选择（降级记录，不伪造候选）"
+      ]
+    },
+    {
+      "case_id": "P03_bike_balanced",
+      "variant_id": "B0_shortest_feasible",
+      "status": "ready",
+      "profile": {
+        "case_id": "P03_bike_balanced",
+        "route_mode": "bike",
+        "goal": "balanced",
+        "target_distance_m": 8000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "骑行平衡画像，无敏感项与偏好项"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:11+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P03_bike_balanced__B0_shortest_feasible.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 75.5,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 75.5
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P03_bike_balanced",
+      "variant_id": "B1_pm25_only",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P03_bike_balanced",
+        "route_mode": "bike",
+        "goal": "balanced",
+        "target_distance_m": 8000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "骑行平衡画像，无敏感项与偏好项"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:11+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P03_bike_balanced__B1_pm25_only.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P03_bike_balanced",
+      "variant_id": "B2_multi_environment",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P03_bike_balanced",
+        "route_mode": "bike",
+        "goal": "balanced",
+        "target_distance_m": 8000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "骑行平衡画像，无敏感项与偏好项"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:11+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P03_bike_balanced__B2_multi_environment.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P03_bike_balanced",
+      "variant_id": "B3_non_personalized",
+      "status": "ready",
+      "profile": {
+        "case_id": "P03_bike_balanced",
+        "route_mode": "bike",
+        "goal": "balanced",
+        "target_distance_m": 8000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "骑行平衡画像，无敏感项与偏好项"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:11+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P03_bike_balanced__B3_non_personalized.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 75.5,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 75.5
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P03_bike_balanced",
+      "variant_id": "M1_personalized_constrained",
+      "status": "ready",
+      "profile": {
+        "case_id": "P03_bike_balanced",
+        "route_mode": "bike",
+        "goal": "balanced",
+        "target_distance_m": 8000,
+        "sensitivities": [],
+        "interests": [],
+        "notes": "骑行平衡画像，无敏感项与偏好项"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:11+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P03_bike_balanced__M1_personalized_constrained.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 75.5,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 75.5
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": [
+        "M1 距离门禁清空候选集，回退为无门禁个性化选择（降级记录，不伪造候选）"
+      ]
+    },
+    {
+      "case_id": "P04_walk_health_environment",
+      "variant_id": "B0_shortest_feasible",
+      "status": "ready",
+      "profile": {
+        "case_id": "P04_walk_health_environment",
+        "route_mode": "walk",
+        "goal": "health_environment",
+        "target_distance_m": 3000,
+        "sensitivities": [
+          "pm25",
+          "pollen",
+          "noise"
+        ],
+        "interests": [
+          "waterside",
+          "park"
+        ],
+        "notes": "步行健康环境画像，三项敏感（空气/花粉/噪声）与滨水公园偏好，检验敏感项权重扰动影响"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:12+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P04_walk_health_environment__B0_shortest_feasible.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P04_walk_health_environment",
+      "variant_id": "B1_pm25_only",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P04_walk_health_environment",
+        "route_mode": "walk",
+        "goal": "health_environment",
+        "target_distance_m": 3000,
+        "sensitivities": [
+          "pm25",
+          "pollen",
+          "noise"
+        ],
+        "interests": [
+          "waterside",
+          "park"
+        ],
+        "notes": "步行健康环境画像，三项敏感（空气/花粉/噪声）与滨水公园偏好，检验敏感项权重扰动影响"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:12+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P04_walk_health_environment__B1_pm25_only.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P04_walk_health_environment",
+      "variant_id": "B2_multi_environment",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P04_walk_health_environment",
+        "route_mode": "walk",
+        "goal": "health_environment",
+        "target_distance_m": 3000,
+        "sensitivities": [
+          "pm25",
+          "pollen",
+          "noise"
+        ],
+        "interests": [
+          "waterside",
+          "park"
+        ],
+        "notes": "步行健康环境画像，三项敏感（空气/花粉/噪声）与滨水公园偏好，检验敏感项权重扰动影响"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:12+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P04_walk_health_environment__B2_multi_environment.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P04_walk_health_environment",
+      "variant_id": "B3_non_personalized",
+      "status": "ready",
+      "profile": {
+        "case_id": "P04_walk_health_environment",
+        "route_mode": "walk",
+        "goal": "health_environment",
+        "target_distance_m": 3000,
+        "sensitivities": [
+          "pm25",
+          "pollen",
+          "noise"
+        ],
+        "interests": [
+          "waterside",
+          "park"
+        ],
+        "notes": "步行健康环境画像，三项敏感（空气/花粉/噪声）与滨水公园偏好，检验敏感项权重扰动影响"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:12+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P04_walk_health_environment__B3_non_personalized.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P04_walk_health_environment",
+      "variant_id": "M1_personalized_constrained",
+      "status": "ready",
+      "profile": {
+        "case_id": "P04_walk_health_environment",
+        "route_mode": "walk",
+        "goal": "health_environment",
+        "target_distance_m": 3000,
+        "sensitivities": [
+          "pm25",
+          "pollen",
+          "noise"
+        ],
+        "interests": [
+          "waterside",
+          "park"
+        ],
+        "notes": "步行健康环境画像，三项敏感（空气/花粉/噪声）与滨水公园偏好，检验敏感项权重扰动影响"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:12+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P04_walk_health_environment__M1_personalized_constrained.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": [
+        "M1 距离门禁清空候选集，回退为无门禁个性化选择（降级记录，不伪造候选）"
+      ]
+    },
+    {
+      "case_id": "P05_run_health_environment",
+      "variant_id": "B0_shortest_feasible",
+      "status": "ready",
+      "profile": {
+        "case_id": "P05_run_health_environment",
+        "route_mode": "run",
+        "goal": "health_environment",
+        "target_distance_m": 5000,
+        "sensitivities": [
+          "pm25",
+          "noise"
+        ],
+        "interests": [
+          "quiet",
+          "park"
+        ],
+        "notes": "跑步健康环境画像，空气与噪声敏感、安静与公园偏好"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:13+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P05_run_health_environment__B0_shortest_feasible.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P05_run_health_environment",
+      "variant_id": "B1_pm25_only",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P05_run_health_environment",
+        "route_mode": "run",
+        "goal": "health_environment",
+        "target_distance_m": 5000,
+        "sensitivities": [
+          "pm25",
+          "noise"
+        ],
+        "interests": [
+          "quiet",
+          "park"
+        ],
+        "notes": "跑步健康环境画像，空气与噪声敏感、安静与公园偏好"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:13+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P05_run_health_environment__B1_pm25_only.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P05_run_health_environment",
+      "variant_id": "B2_multi_environment",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P05_run_health_environment",
+        "route_mode": "run",
+        "goal": "health_environment",
+        "target_distance_m": 5000,
+        "sensitivities": [
+          "pm25",
+          "noise"
+        ],
+        "interests": [
+          "quiet",
+          "park"
+        ],
+        "notes": "跑步健康环境画像，空气与噪声敏感、安静与公园偏好"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:13+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P05_run_health_environment__B2_multi_environment.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P05_run_health_environment",
+      "variant_id": "B3_non_personalized",
+      "status": "ready",
+      "profile": {
+        "case_id": "P05_run_health_environment",
+        "route_mode": "run",
+        "goal": "health_environment",
+        "target_distance_m": 5000,
+        "sensitivities": [
+          "pm25",
+          "noise"
+        ],
+        "interests": [
+          "quiet",
+          "park"
+        ],
+        "notes": "跑步健康环境画像，空气与噪声敏感、安静与公园偏好"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:13+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P05_run_health_environment__B3_non_personalized.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P05_run_health_environment",
+      "variant_id": "M1_personalized_constrained",
+      "status": "ready",
+      "profile": {
+        "case_id": "P05_run_health_environment",
+        "route_mode": "run",
+        "goal": "health_environment",
+        "target_distance_m": 5000,
+        "sensitivities": [
+          "pm25",
+          "noise"
+        ],
+        "interests": [
+          "quiet",
+          "park"
+        ],
+        "notes": "跑步健康环境画像，空气与噪声敏感、安静与公园偏好"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:13+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P05_run_health_environment__M1_personalized_constrained.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": [
+        "M1 距离门禁清空候选集，回退为无门禁个性化选择（降级记录，不伪造候选）"
+      ]
+    },
+    {
+      "case_id": "P06_bike_nearby",
+      "variant_id": "B0_shortest_feasible",
+      "status": "ready",
+      "profile": {
+        "case_id": "P06_bike_nearby",
+        "route_mode": "bike",
+        "goal": "nearby",
+        "target_distance_m": 8000,
+        "sensitivities": [],
+        "interests": [
+          "convenience",
+          "toilet"
+        ],
+        "notes": "骑行就近画像，便利设施与厕所偏好，检验 access_convenience 维度权重扰动"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:13+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P06_bike_nearby__B0_shortest_feasible.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P06_bike_nearby",
+      "variant_id": "B1_pm25_only",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P06_bike_nearby",
+        "route_mode": "bike",
+        "goal": "nearby",
+        "target_distance_m": 8000,
+        "sensitivities": [],
+        "interests": [
+          "convenience",
+          "toilet"
+        ],
+        "notes": "骑行就近画像，便利设施与厕所偏好，检验 access_convenience 维度权重扰动"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:13+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P06_bike_nearby__B1_pm25_only.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P06_bike_nearby",
+      "variant_id": "B2_multi_environment",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P06_bike_nearby",
+        "route_mode": "bike",
+        "goal": "nearby",
+        "target_distance_m": 8000,
+        "sensitivities": [],
+        "interests": [
+          "convenience",
+          "toilet"
+        ],
+        "notes": "骑行就近画像，便利设施与厕所偏好，检验 access_convenience 维度权重扰动"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:13+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P06_bike_nearby__B2_multi_environment.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P06_bike_nearby",
+      "variant_id": "B3_non_personalized",
+      "status": "ready",
+      "profile": {
+        "case_id": "P06_bike_nearby",
+        "route_mode": "bike",
+        "goal": "nearby",
+        "target_distance_m": 8000,
+        "sensitivities": [],
+        "interests": [
+          "convenience",
+          "toilet"
+        ],
+        "notes": "骑行就近画像，便利设施与厕所偏好，检验 access_convenience 维度权重扰动"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:13+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P06_bike_nearby__B3_non_personalized.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P06_bike_nearby",
+      "variant_id": "M1_personalized_constrained",
+      "status": "ready",
+      "profile": {
+        "case_id": "P06_bike_nearby",
+        "route_mode": "bike",
+        "goal": "nearby",
+        "target_distance_m": 8000,
+        "sensitivities": [],
+        "interests": [
+          "convenience",
+          "toilet"
+        ],
+        "notes": "骑行就近画像，便利设施与厕所偏好，检验 access_convenience 维度权重扰动"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:13+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P06_bike_nearby__M1_personalized_constrained.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": [
+        "M1 距离门禁清空候选集，回退为无门禁个性化选择（降级记录，不伪造候选）"
+      ]
+    },
+    {
+      "case_id": "P07_walk_scenery",
+      "variant_id": "B0_shortest_feasible",
+      "status": "ready",
+      "profile": {
+        "case_id": "P07_walk_scenery",
+        "route_mode": "walk",
+        "goal": "scenery",
+        "target_distance_m": 3000,
+        "sensitivities": [
+          "pollen"
+        ],
+        "interests": [
+          "waterside",
+          "park",
+          "quiet"
+        ],
+        "notes": "步行景观画像，花粉敏感与滨水公园安静偏好，检验 interest_service 维度权重扰动"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:14+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P07_walk_scenery__B0_shortest_feasible.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P07_walk_scenery",
+      "variant_id": "B1_pm25_only",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P07_walk_scenery",
+        "route_mode": "walk",
+        "goal": "scenery",
+        "target_distance_m": 3000,
+        "sensitivities": [
+          "pollen"
+        ],
+        "interests": [
+          "waterside",
+          "park",
+          "quiet"
+        ],
+        "notes": "步行景观画像，花粉敏感与滨水公园安静偏好，检验 interest_service 维度权重扰动"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:14+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P07_walk_scenery__B1_pm25_only.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P07_walk_scenery",
+      "variant_id": "B2_multi_environment",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P07_walk_scenery",
+        "route_mode": "walk",
+        "goal": "scenery",
+        "target_distance_m": 3000,
+        "sensitivities": [
+          "pollen"
+        ],
+        "interests": [
+          "waterside",
+          "park",
+          "quiet"
+        ],
+        "notes": "步行景观画像，花粉敏感与滨水公园安静偏好，检验 interest_service 维度权重扰动"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:14+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P07_walk_scenery__B2_multi_environment.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P07_walk_scenery",
+      "variant_id": "B3_non_personalized",
+      "status": "ready",
+      "profile": {
+        "case_id": "P07_walk_scenery",
+        "route_mode": "walk",
+        "goal": "scenery",
+        "target_distance_m": 3000,
+        "sensitivities": [
+          "pollen"
+        ],
+        "interests": [
+          "waterside",
+          "park",
+          "quiet"
+        ],
+        "notes": "步行景观画像，花粉敏感与滨水公园安静偏好，检验 interest_service 维度权重扰动"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:14+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P07_walk_scenery__B3_non_personalized.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P07_walk_scenery",
+      "variant_id": "M1_personalized_constrained",
+      "status": "ready",
+      "profile": {
+        "case_id": "P07_walk_scenery",
+        "route_mode": "walk",
+        "goal": "scenery",
+        "target_distance_m": 3000,
+        "sensitivities": [
+          "pollen"
+        ],
+        "interests": [
+          "waterside",
+          "park",
+          "quiet"
+        ],
+        "notes": "步行景观画像，花粉敏感与滨水公园安静偏好，检验 interest_service 维度权重扰动"
+      },
+      "candidate_count": 9,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:14+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P07_walk_scenery__M1_personalized_constrained.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": [
+        "M1 距离门禁清空候选集，回退为无门禁个性化选择（降级记录，不伪造候选）"
+      ]
+    },
+    {
+      "case_id": "P08_run_scenery",
+      "variant_id": "B0_shortest_feasible",
+      "status": "ready",
+      "profile": {
+        "case_id": "P08_run_scenery",
+        "route_mode": "run",
+        "goal": "scenery",
+        "target_distance_m": 5000,
+        "sensitivities": [
+          "pm25"
+        ],
+        "interests": [
+          "waterside",
+          "quiet"
+        ],
+        "notes": "跑步景观画像，空气敏感与滨水安静偏好"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:14+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P08_run_scenery__B0_shortest_feasible.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P08_run_scenery",
+      "variant_id": "B1_pm25_only",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P08_run_scenery",
+        "route_mode": "run",
+        "goal": "scenery",
+        "target_distance_m": 5000,
+        "sensitivities": [
+          "pm25"
+        ],
+        "interests": [
+          "waterside",
+          "quiet"
+        ],
+        "notes": "跑步景观画像，空气敏感与滨水安静偏好"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:14+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P08_run_scenery__B1_pm25_only.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P08_run_scenery",
+      "variant_id": "B2_multi_environment",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P08_run_scenery",
+        "route_mode": "run",
+        "goal": "scenery",
+        "target_distance_m": 5000,
+        "sensitivities": [
+          "pm25"
+        ],
+        "interests": [
+          "waterside",
+          "quiet"
+        ],
+        "notes": "跑步景观画像，空气敏感与滨水安静偏好"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:14+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P08_run_scenery__B2_multi_environment.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P08_run_scenery",
+      "variant_id": "B3_non_personalized",
+      "status": "ready",
+      "profile": {
+        "case_id": "P08_run_scenery",
+        "route_mode": "run",
+        "goal": "scenery",
+        "target_distance_m": 5000,
+        "sensitivities": [
+          "pm25"
+        ],
+        "interests": [
+          "waterside",
+          "quiet"
+        ],
+        "notes": "跑步景观画像，空气敏感与滨水安静偏好"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:14+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P08_run_scenery__B3_non_personalized.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P08_run_scenery",
+      "variant_id": "M1_personalized_constrained",
+      "status": "ready",
+      "profile": {
+        "case_id": "P08_run_scenery",
+        "route_mode": "run",
+        "goal": "scenery",
+        "target_distance_m": 5000,
+        "sensitivities": [
+          "pm25"
+        ],
+        "interests": [
+          "waterside",
+          "quiet"
+        ],
+        "notes": "跑步景观画像，空气敏感与滨水安静偏好"
+      },
+      "candidate_count": 6,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:14+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P08_run_scenery__M1_personalized_constrained.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": [
+        "M1 距离门禁清空候选集，回退为无门禁个性化选择（降级记录，不伪造候选）"
+      ]
+    },
+    {
+      "case_id": "P09_bike_health_environment",
+      "variant_id": "B0_shortest_feasible",
+      "status": "ready",
+      "profile": {
+        "case_id": "P09_bike_health_environment",
+        "route_mode": "bike",
+        "goal": "health_environment",
+        "target_distance_m": 8000,
+        "sensitivities": [
+          "pm25",
+          "pollen",
+          "noise"
+        ],
+        "interests": [
+          "park",
+          "convenience"
+        ],
+        "notes": "骑行健康环境画像，三项敏感与公园便利偏好，覆盖骑行模式下环境维度极端情形"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:15+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P09_bike_health_environment__B0_shortest_feasible.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P09_bike_health_environment",
+      "variant_id": "B1_pm25_only",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P09_bike_health_environment",
+        "route_mode": "bike",
+        "goal": "health_environment",
+        "target_distance_m": 8000,
+        "sensitivities": [
+          "pm25",
+          "pollen",
+          "noise"
+        ],
+        "interests": [
+          "park",
+          "convenience"
+        ],
+        "notes": "骑行健康环境画像，三项敏感与公园便利偏好，覆盖骑行模式下环境维度极端情形"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:15+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P09_bike_health_environment__B1_pm25_only.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P09_bike_health_environment",
+      "variant_id": "B2_multi_environment",
+      "status": "no_candidate",
+      "profile": {
+        "case_id": "P09_bike_health_environment",
+        "route_mode": "bike",
+        "goal": "health_environment",
+        "target_distance_m": 8000,
+        "sensitivities": [
+          "pm25",
+          "pollen",
+          "noise"
+        ],
+        "interests": [
+          "park",
+          "convenience"
+        ],
+        "notes": "骑行健康环境画像，三项敏感与公园便利偏好，覆盖骑行模式下环境维度极端情形"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:15+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P09_bike_health_environment__B2_multi_environment.json",
+      "messages": [
+        "选择规则未选出候选"
+      ]
+    },
+    {
+      "case_id": "P09_bike_health_environment",
+      "variant_id": "B3_non_personalized",
+      "status": "ready",
+      "profile": {
+        "case_id": "P09_bike_health_environment",
+        "route_mode": "bike",
+        "goal": "health_environment",
+        "target_distance_m": 8000,
+        "sensitivities": [
+          "pm25",
+          "pollen",
+          "noise"
+        ],
+        "interests": [
+          "park",
+          "convenience"
+        ],
+        "notes": "骑行健康环境画像，三项敏感与公园便利偏好，覆盖骑行模式下环境维度极端情形"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:15+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P09_bike_health_environment__B3_non_personalized.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": []
+    },
+    {
+      "case_id": "P09_bike_health_environment",
+      "variant_id": "M1_personalized_constrained",
+      "status": "ready",
+      "profile": {
+        "case_id": "P09_bike_health_environment",
+        "route_mode": "bike",
+        "goal": "health_environment",
+        "target_distance_m": 8000,
+        "sensitivities": [
+          "pm25",
+          "pollen",
+          "noise"
+        ],
+        "interests": [
+          "park",
+          "convenience"
+        ],
+        "notes": "骑行健康环境画像，三项敏感与公园便利偏好，覆盖骑行模式下环境维度极端情形"
+      },
+      "candidate_count": 5,
+      "risk_status": null,
+      "data_generated_at": "2026-09-02T06:53:15+00:00",
+      "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+      "source_file": "P09_bike_health_environment__M1_personalized_constrained.json",
+      "chosen": {
+        "route_id": null,
+        "route_name": null,
+        "distance_m": null,
+        "access_distance_m": null,
+        "base_score": 74.0,
+        "data_confidence": null,
+        "matched_preferences": null,
+        "dimension_scores": null,
+        "environment_summary": null
+      },
+      "metrics": {
+        "pm25_value": null,
+        "pm25_health_score": null,
+        "noise_proxy": null,
+        "pollen_risk": null,
+        "pm25_risk": null,
+        "noise_risk": null,
+        "pollen_risk_norm": null,
+        "env_risk": null,
+        "data_reliability": null,
+        "target_deviation": null,
+        "access_distance_m": null,
+        "preference_hit_rate": 0.0,
+        "composite_score": 74.0
+      },
+      "dimension_scores": {},
+      "constraints": {
+        "target_deviation": null,
+        "target_ok": false,
+        "access_ok": null,
+        "detour_ratio": null,
+        "detour_ok": true,
+        "constraint_pass": false
+      },
+      "selection_gate_passed": false,
+      "messages": [
+        "M1 距离门禁清空候选集，回退为无门禁个性化选择（降级记录，不伪造候选）"
+      ]
+    }
+  ],
+  "metrics_summary": {
+    "schema_version": "1.0",
+    "run_id": "run-20260902T035556Z-0a43adb5",
+    "generated_at": "2026-09-02T06:53:16.592591+00:00",
+    "provenance": "module_outputs",
+    "metric_names": [
+      "pm25_exposure",
+      "pm25_health_score",
+      "noise_proxy",
+      "pollen_risk",
+      "env_reliability",
+      "target_deviation",
+      "access_distance",
+      "preference_hit_rate",
+      "env_risk",
+      "composite_score",
+      "dimension_scores"
+    ],
+    "cells_total": 45,
+    "cell_status_counts": {
+      "ready": 27,
+      "no_candidate": 18
+    },
+    "no_candidate_rate": 0.4,
+    "constraint_pass_rate": 0.0,
+    "detour_pass_rate": 0.0,
+    "environment_win_rate": 0.0,
+    "preference_win_rate": 0.5,
+    "reference_verification_rate": 1.0,
+    "fatal_data_errors": 1,
+    "mean_data_reliability_m1": null,
+    "detour_pass_rate_min": 0.9,
+    "environment_win_rate_min": 0.6,
+    "preference_win_rate_min": 0.6,
+    "reference_verification_rate_min": 1.0,
+    "fatal_data_errors_max": 0,
+    "require_module_provenance": true,
+    "composite_utility_as_sole_metric": false,
+    "require_negative_result_reporting": true,
+    "comparisons": {
+      "B1_pm25_only": {
+        "env_risk": {
+          "m1_or_variant_mean": null,
+          "b0_mean": null,
+          "paired": {
+            "pairs": 0,
+            "mean_difference": null,
+            "median_difference": null,
+            "win": {
+              "wins": 0.0,
+              "ties": 0.0,
+              "losses": 0.0,
+              "pairs": 0.0,
+              "rate": 0.0
+            },
+            "differences_summary": {
+              "n": 0,
+              "mean": null,
+              "median": null,
+              "iqr": null
+            },
+            "ci_95": null,
+            "seed": 1234,
+            "iterations": 2000
+          }
+        },
+        "preference_hit_rate": {
+          "m1_or_variant_mean": null,
+          "b0_mean": null,
+          "paired": {
+            "pairs": 0,
+            "mean_difference": null,
+            "median_difference": null,
+            "win": {
+              "wins": 0.0,
+              "ties": 0.0,
+              "losses": 0.0,
+              "pairs": 0.0,
+              "rate": 0.0
+            },
+            "differences_summary": {
+              "n": 0,
+              "mean": null,
+              "median": null,
+              "iqr": null
+            },
+            "ci_95": null,
+            "seed": 1234,
+            "iterations": 2000
+          }
+        }
+      },
+      "B2_multi_environment": {
+        "env_risk": {
+          "m1_or_variant_mean": null,
+          "b0_mean": null,
+          "paired": {
+            "pairs": 0,
+            "mean_difference": null,
+            "median_difference": null,
+            "win": {
+              "wins": 0.0,
+              "ties": 0.0,
+              "losses": 0.0,
+              "pairs": 0.0,
+              "rate": 0.0
+            },
+            "differences_summary": {
+              "n": 0,
+              "mean": null,
+              "median": null,
+              "iqr": null
+            },
+            "ci_95": null,
+            "seed": 1234,
+            "iterations": 2000
+          }
+        },
+        "preference_hit_rate": {
+          "m1_or_variant_mean": null,
+          "b0_mean": null,
+          "paired": {
+            "pairs": 0,
+            "mean_difference": null,
+            "median_difference": null,
+            "win": {
+              "wins": 0.0,
+              "ties": 0.0,
+              "losses": 0.0,
+              "pairs": 0.0,
+              "rate": 0.0
+            },
+            "differences_summary": {
+              "n": 0,
+              "mean": null,
+              "median": null,
+              "iqr": null
+            },
+            "ci_95": null,
+            "seed": 1234,
+            "iterations": 2000
+          }
+        }
+      },
+      "B3_non_personalized": {
+        "env_risk": {
+          "m1_or_variant_mean": null,
+          "b0_mean": null,
+          "paired": {
+            "pairs": 0,
+            "mean_difference": null,
+            "median_difference": null,
+            "win": {
+              "wins": 0.0,
+              "ties": 0.0,
+              "losses": 0.0,
+              "pairs": 0.0,
+              "rate": 0.0
+            },
+            "differences_summary": {
+              "n": 0,
+              "mean": null,
+              "median": null,
+              "iqr": null
+            },
+            "ci_95": null,
+            "seed": 1234,
+            "iterations": 2000
+          }
+        },
+        "preference_hit_rate": {
+          "m1_or_variant_mean": 0.0,
+          "b0_mean": 0.0,
+          "paired": {
+            "pairs": 9,
+            "mean_difference": 0.0,
+            "median_difference": 0.0,
+            "win": {
+              "wins": 0.0,
+              "ties": 9.0,
+              "losses": 0.0,
+              "pairs": 9.0,
+              "rate": 0.5
+            },
+            "differences_summary": {
+              "n": 9,
+              "mean": 0.0,
+              "median": 0.0,
+              "iqr": 0.0
+            },
+            "ci_95": [
+              0.0,
+              0.0
+            ],
+            "seed": 1234,
+            "iterations": 2000
+          }
+        }
+      },
+      "M1_personalized_constrained": {
+        "env_risk": {
+          "m1_or_variant_mean": null,
+          "b0_mean": null,
+          "paired": {
+            "pairs": 0,
+            "mean_difference": null,
+            "median_difference": null,
+            "win": {
+              "wins": 0.0,
+              "ties": 0.0,
+              "losses": 0.0,
+              "pairs": 0.0,
+              "rate": 0.0
+            },
+            "differences_summary": {
+              "n": 0,
+              "mean": null,
+              "median": null,
+              "iqr": null
+            },
+            "ci_95": null,
+            "seed": 1234,
+            "iterations": 2000
+          }
+        },
+        "preference_hit_rate": {
+          "m1_or_variant_mean": 0.0,
+          "b0_mean": 0.0,
+          "paired": {
+            "pairs": 9,
+            "mean_difference": 0.0,
+            "median_difference": 0.0,
+            "win": {
+              "wins": 0.0,
+              "ties": 9.0,
+              "losses": 0.0,
+              "pairs": 9.0,
+              "rate": 0.5
+            },
+            "differences_summary": {
+              "n": 9,
+              "mean": 0.0,
+              "median": 0.0,
+              "iqr": 0.0
+            },
+            "ci_95": [
+              0.0,
+              0.0
+            ],
+            "seed": 1234,
+            "iterations": 2000
+          }
+        }
+      }
+    },
+    "negative_results": {
+      "no_candidate_cells": 18,
+      "missing_cells": 0,
+      "paused_cells": 0,
+      "invalid_cells": 0
+    },
+    "module_statuses": {
+      "route": "ok",
+      "environment": "partial",
+      "evaluation": "ok",
+      "web": "ok"
+    },
+    "support_status": "inconclusive"
+  }
+}

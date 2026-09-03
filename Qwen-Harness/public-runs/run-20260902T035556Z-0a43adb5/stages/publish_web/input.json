@@ -1,0 +1,11 @@
+{
+  "stage": "publish_web",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.workflow.stages:publish_web_stage",
+  "dependencies": {
+    "final_validation": "23bb0b6dc98f70537a23610134ea7483411e9fb7c4fbf12e4f269bd1aaf10949"
+  },
+  "prepared_at": "2026-09-02T06:58:08.489459+00:00"
+}

@@ -1,0 +1,80 @@
+{
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "generated_at": "2026-09-03T07:41:42Z",
+  "status": "completed",
+  "research_question": "Can a fully deterministic pipeline that builds routes directly on a public OSM road graph, attaches a declared ordinal environment-exposure proxy to a 54-cell grid, and ranks candidates with fixed weights produce a 90-route Xuhui portfolio that passes every numeric route-quality gate and exposes its reasoning in a locally served web product - without any paid LLM call and without copying the existing repository answer modules?",
+  "hypothesis": "Generating every route as a path or simple cycle in an OSM-derived road graph, then filtering with the contract's topology gates, yields 90 routes that pass all geometry, portfolio and in-district gates with road_snapping = 1.00 and zero false_loop_topology flags.",
+  "product": {
+    "name": "xuhui-healthy-routes-local",
+    "entry": "publish/local-product/index.html",
+    "serve_hint": "python -m http.server rooted at publish/local-product",
+    "offline": true,
+    "external_runtime_requests": false,
+    "renderer": "hand-written canvas equirectangular projection, vanilla ES2020 modules"
+  },
+  "metrics": {
+    "available": true,
+    "scoring_dimensions": [
+      "environment_health",
+      "sport_match",
+      "access_convenience",
+      "route_quality",
+      "preference_fit"
+    ],
+    "reliability_multipliers": {
+      "ok": 1.0,
+      "partial": 0.7,
+      "estimated": 0.9,
+      "stale": 0.0,
+      "no_data": 0.0,
+      "error": 0.0
+    },
+    "missing_metric_score": 50.0
+  },
+  "routes_summary": {
+    "route_count": 90,
+    "mode_counts": {
+      "walk": 30,
+      "run": 30,
+      "bike": 30
+    },
+    "band_counts": {
+      "0": 30,
+      "1": 30,
+      "2": 30
+    }
+  },
+  "environment_summary": {
+    "available": true,
+    "cell_count": 54,
+    "missing_rate": {
+      "pm25_ug_m3": 0.0,
+      "aqi_us": 0.0,
+      "temperature_c": 0.0,
+      "feels_like_c": 0.0,
+      "humidity_pct": 0.0,
+      "wind_speed_kmh": 0.0,
+      "wind_gust_kmh": 0.0,
+      "precipitation_mm": 0.0,
+      "green_ratio_0_1": 0.0,
+      "water_ratio_0_1": 0.0,
+      "road_density_km_per_km2": 0.0,
+      "major_road_density_km_per_km2": 0.0,
+      "traffic_exposure_0_1": 0.0,
+      "noise_proxy_db": 0.0
+    },
+    "excluded_fields": [],
+    "data_generated_at": "2026-09-03T08:00:00+00:00"
+  },
+  "report_paths": [
+    "workspace/source/web/data/app_payload.json",
+    "publish/research_harness_latest.json",
+    "publish/local-product/index.html",
+    "publish/local-product/data/app_payload.json"
+  ],
+  "data_generated_at": "2026-09-03T08:00:00+00:00",
+  "provider": "qoder_session",
+  "model_name": "qwen3.8-max",
+  "dashscope_api_used": false,
+  "missing_inputs": []
+}

@@ -1,0 +1,84 @@
+{
+  "artifact": "evaluation_metrics",
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "generated_at": "2026-09-02T13:16:11Z",
+  "scoring_dimensions": [
+    {
+      "dimension": "environment_health",
+      "direction": "higher_is_better",
+      "sub_weights": {
+        "pm2_5": 45,
+        "noise": 35,
+        "pollen": 20
+      },
+      "unit": "proxy_0_100",
+      "status_default": "estimated",
+      "evidence_class": "manual_setting"
+    },
+    {
+      "dimension": "sport_match",
+      "direction": "higher_is_better",
+      "unit": "score_0_100",
+      "evidence_class": "manual_setting"
+    },
+    {
+      "dimension": "access_convenience",
+      "direction": "higher_is_better",
+      "unit": "score_0_100",
+      "sensitivity_boost": 30,
+      "evidence_class": "manual_setting"
+    },
+    {
+      "dimension": "route_quality",
+      "direction": "higher_is_better",
+      "unit": "score_0_100",
+      "evidence_class": "manual_setting"
+    },
+    {
+      "dimension": "preference_fit",
+      "direction": "higher_is_better",
+      "unit": "score_0_100",
+      "core_interest_weight_floor": 60.0,
+      "evidence_class": "manual_setting"
+    }
+  ],
+  "missing_metric_score": 50.0,
+  "reliability_multipliers": {
+    "ok": 1.0,
+    "partial": 0.7,
+    "estimated": 0.9,
+    "stale": 0.0,
+    "no_data": 0.0,
+    "error": 0.0
+  },
+  "risk_pause_thresholds": {
+    "precipitation_mm": [
+      2.5,
+      10.0
+    ],
+    "feels_like_c": [
+      35,
+      40
+    ],
+    "wind_gust_kmh": [
+      40,
+      62
+    ],
+    "aqi": [
+      100,
+      150,
+      200
+    ],
+    "alert_penalty": {
+      "blue": 8,
+      "yellow": 15
+    }
+  },
+  "note_on_live_thresholds": "The precipitation / feels-like / gust / AQI pause thresholds are declared for contract completeness. This run fetches no live weather or AQI observation, so every one of those inputs is reported as no_data with multiplier 0.0 and the pause logic degrades to 'unknown, not blocking' rather than silently claiming safe conditions.",
+  "provenance_legend": {
+    "raw_data": "value read directly from a fetched public source",
+    "deterministic_computation": "value computed by a seeded, offline script in this run",
+    "qoder_judgement": "design or interpretation decision made by the agent",
+    "manual_setting": "threshold or weight copied from a human-authored project contract"
+  }
+}

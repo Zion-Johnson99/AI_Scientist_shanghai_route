@@ -1,0 +1,27 @@
+{
+  "support_status": null,
+  "route_ids_checked": 90,
+  "generation_score": 90,
+  "result_gate": {
+    "gate": "result",
+    "passed": true,
+    "checks": [
+      {
+        "name": "module_provenance",
+        "passed": true,
+        "detail": "provenance='module_outputs'"
+      },
+      {
+        "name": "composite_not_sole_metric",
+        "passed": true,
+        "detail": "指标数 11"
+      },
+      {
+        "name": "negative_results_reported",
+        "passed": true,
+        "detail": null
+      }
+    ],
+    "summary": "全部检查通过"
+  }
+}

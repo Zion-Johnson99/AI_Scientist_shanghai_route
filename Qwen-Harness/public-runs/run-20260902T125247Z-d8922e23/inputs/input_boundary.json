@@ -1,0 +1,78 @@
+{
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "recorded_at": "2026-09-02T12:57:05Z",
+  "allowed_reads": [
+    "Qwen-Harness/README.md",
+    "Qwen-Harness/src/**",
+    "Qwen-Harness/config/**",
+    "Qwen-Harness/schemas/**",
+    "Qwen-Harness/prompts/**",
+    "Qwen-Harness/tests/**",
+    "Qwen-Harness/scripts/**",
+    "docs/qwen-harness-build/**",
+    ".qoder/skills/** (rules and thresholds only)",
+    "AISci模板和文档/0902文档架构构建.md",
+    "round1 run-20260902T035556Z-0a43adb5: run_manifest.json, state.json, events.jsonl, checks/**, commands test logs, metrics summaries",
+    "public papers, government pages, public geographic data, OSM, public map services"
+  ],
+  "forbidden_reads_all_phases": [
+    "xuhui_route_builder/** (implementation, web source, route data, media manifests)",
+    "weather_api_data/** (implementation and generated data)",
+    "evaluation_model_qwen/** (implementation and recommendation results)",
+    "round1 workspace/source/**",
+    "round1 publish/local-product/**",
+    "round1 generated source, page implementations, reusable product files",
+    "online product HTML/CSS/JS, API responses, GeoJSON, JSON, static asset URLs",
+    "Qwen-Harness/.env and any key inside it"
+  ],
+  "reference_page": {
+    "url": "https://zion-johnson99.github.io/AI_Scientist_shanghai_route/web/",
+    "accessible_before_blind_checkpoint": false,
+    "blind_checkpoint_frozen_at": null,
+    "allowed_after_freeze": [
+      "desktop and mobile visible UI",
+      "ordinary click, scroll, keyboard, navigation",
+      "visible behaviour of recommend/filter/detail/map-linkage/environment/location/mobile",
+      "browser rendered screenshots"
+    ],
+    "forbidden_after_freeze": [
+      "view page source",
+      "DOM query, evaluate_script, element structure extraction, a11y tree export",
+      "developer tools",
+      "network panel, request interception, response reading",
+      "curl/wget/Invoke-WebRequest download of the product page",
+      "asset, image URL, data file, media manifest extraction",
+      "copying product images, icons, styles, copy text or layout code"
+    ]
+  },
+  "write_boundary": {
+    "only_path": "Qwen-Harness/runtime/runs/run-20260902T125247Z-d8922e23/",
+    "readonly_paths": [
+      "Qwen-Harness source and config",
+      "xuhui_route_builder",
+      "weather_api_data",
+      "evaluation_model_qwen",
+      "run-20260902T035556Z-0a43adb5",
+      "all other existing runs"
+    ],
+    "toolchain_venv_location_outside_repo": true
+  },
+  "model_cost_boundary": {
+    "provider": "qoder_session",
+    "model_name": "qwen3.8-max",
+    "billing_channel": "qoder_credits",
+    "dashscope_api_used": false,
+    "sensitive_env_keys_present": {
+      "DASHSCOPE_API_KEY": false,
+      "OPENAI_API_KEY": false,
+      "BAILIAN_API_KEY": false,
+      "QWEN_API_KEY": false
+    },
+    "subprocess_env_scrub_list": [
+      "DASHSCOPE_API_KEY",
+      "OPENAI_API_KEY",
+      "BAILIAN_API_KEY",
+      "QWEN_API_KEY"
+    ]
+  }
+}

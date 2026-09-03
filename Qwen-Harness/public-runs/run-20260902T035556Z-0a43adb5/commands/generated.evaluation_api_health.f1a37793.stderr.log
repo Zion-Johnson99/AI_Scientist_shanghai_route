@@ -1,0 +1,12 @@
+warning: `VIRTUAL_ENV=<repo_root>\Qwen-Harness\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+<run_root>\workspace\source\evaluation_model_qwen\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "<run_root>\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\api.py", line 15, in <module>
+    from evaluation_model_qwen.service import recommend
+  File "<run_root>\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\service.py", line 18, in <module>
+    from .loaders import load_data
+  File "<run_root>\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\loaders.py", line 17, in <module>
+    from evaluation_model_qwen.models import (
+ImportError: cannot import name 'EnvironmentRecord' from 'evaluation_model_qwen.models' (<run_root>\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\models.py)

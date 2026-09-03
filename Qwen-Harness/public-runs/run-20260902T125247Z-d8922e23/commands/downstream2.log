@@ -1,0 +1,21 @@
+=== STAGE environment ===
+== environment ==
+   ok 0.8s {'dashboard': 'environment_dashboard.json', 'bytes': 615682, 'cell_count': 54, 'route_count': 87, 'field_count': 14, 'excluded_fields': []}
+STAGES_FAILED=0
+EXIT_environment=0
+=== STAGE evaluation ===
+== evaluation ==
+   ok 2.3s {'case_count': 81, 'ready_count': 81, 'no_candidate_count': 0, 'ready_share': 1.0, 'detour_pass_rate': 0.851852, 'environment_win_rate': 0.777778, 'preference_win_rate': 1.0, 'constraint_pass_rate': 1.0, 'mean_detour_ratio': 0.065849, 'detour_ratio_case_count': 81, 'fatal_data_errors': [], 'fatal_data_error_count': 0, 'thresholds': {'detour_pass_rate': {'comparator': '>=', 'threshold': 0.9, 'value': 0.851852, 'passed': False}, 'environment_win_rate': {'comparator': '>=', 'threshold': 0.6, 'value': 0.777778, 'passed': True}, 'preference_win_rate': {'comparator': '>=', 'threshold': 0.6, 'value': 1.0, 'passed': True}, 'constraint_pass_rate': {'comparator': '>=', 'threshold': 0.9, 'value': 1.0, 'passed': True}, 'mean_detour_ratio': {'comparator': '<=', 'threshold': 0.2, 'value': 0.065849, 'passed': True}}, 'passed': {'detour_pass_rate': False, 'environment_win_rate': True, 'preference_win_rate': True, 'constraint_pass_rate': True, 'mean_detour_ratio': True}, 'support_status': 'partially_supported', 'provenance': 'deterministic_computation', 'write_dir': 'experiments/score_candidates'}
+STAGES_FAILED=0
+EXIT_evaluation=0
+=== STAGE web ===
+== web ==
+   ok 2.2s {'exit_code': 0, 'stdout_tail': '{\n  "status": "completed",\n  "route_count": 87,\n  "entry_count": 90,\n  "recommendation_count": 108,\n  "environment_cells": 54,\n  "missing_inputs": [],\n  "partial_data": false,\n  "payload_bytes": 15869641\n}\n'}
+STAGES_FAILED=0
+EXIT_web=0
+=== STAGE checks ===
+== checks ==
+   ok 25.8s {'exit_code': 1, 'stdout_tail': 'PASS pytest:Qwen-Harness exit=0 3.7s\nPASS pytest:evaluation_model_qwen exit=0 1.1s\nFAIL pytest:weather_api_data exit=1 1.2s\nPASS ruff:Qwen-Harness exit=0 0.9s\nPASS pyright:Qwen-Harness exit=0 4.4s\nPASS ruff:xuhui_route_builder exit=0 0.1s\nPASS pyright:xuhui_route_builder exit=0 3.5s\nPASS ruff:weather_api_data exit=0 0.1s\nPASS pyright:weather_api_data exit=0 3.4s\nPASS ruff:evaluation_model_qwen exit=0 0.1s\nPASS pyright:evaluation_model_qwen exit=0 4.7s\nFAIL Node 契约测试 exit=1 0.2s\nFAIL 评价 API 健康检查 exit=1 1.1s\nPASS 真实浏览器验收 exit=0 1.1s\nGENERATED_QUALITY_PASSED=false\n'}
+STAGES_FAILED=1
+EXIT_checks=1
+ALL_DOWNSTREAM_DONE

@@ -1,0 +1,88 @@
+{
+  "handler": "qwen_harness.generation.stage_handlers:stage_handler",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 164499.8,
+  "status": "passed",
+  "summary": "生成工程功能契约得分 90/100",
+  "artifacts": [
+    "workspace/architecture.json",
+    "workspace/generation_result.json",
+    "checks/generation_contract.json",
+    "stages/project_generation/model_audits.json"
+  ],
+  "offline": false,
+  "audited_at": "2026-09-02T06:18:48.637092+00:00",
+  "gate_result": {
+    "gate": "generation_functional_contract",
+    "passed": true,
+    "checks": [
+      {
+        "name": "project_roots",
+        "passed": true,
+        "detail": "四源码目录: 8/8；已找到 4/4 个目录"
+      },
+      {
+        "name": "environment_interface",
+        "passed": false,
+        "detail": "环境数据接口: 0/10；缺少可识别的环境数据入口"
+      },
+      {
+        "name": "route_generation",
+        "passed": true,
+        "detail": "路线生成能力: 10/10；已检测路线生成入口"
+      },
+      {
+        "name": "evaluation_api",
+        "passed": true,
+        "detail": "评价 API 与健康端点: 12/12；评价与健康端点齐全"
+      },
+      {
+        "name": "route_catalog_90",
+        "passed": true,
+        "detail": "90 条路线: 12/12；检测到 90 条结构合格路线"
+      },
+      {
+        "name": "map_web",
+        "passed": true,
+        "detail": "地图网页: 12/12；地图容器与地图实现齐全"
+      },
+      {
+        "name": "core_interactions",
+        "passed": true,
+        "detail": "核心交互: 8/8；检测到 3/4 类交互标记"
+      },
+      {
+        "name": "local_launcher",
+        "passed": true,
+        "detail": "本地启动: 8/8；本地启动脚本已就绪"
+      },
+      {
+        "name": "tests_present",
+        "passed": true,
+        "detail": "自动化测试: 8/8；检测到 10 个测试文件"
+      },
+      {
+        "name": "absolute_paths",
+        "passed": true,
+        "detail": "绝对路径检查: 3/3；未发现机器绝对路径"
+      },
+      {
+        "name": "sensitive_information",
+        "passed": true,
+        "detail": "敏感信息检查: 5/5；未发现硬编码凭据"
+      },
+      {
+        "name": "path_boundary",
+        "passed": true,
+        "detail": "源码路径边界: 2/2；全部文件位于源码根目录"
+      },
+      {
+        "name": "path_traversal",
+        "passed": true,
+        "detail": "路径穿越检查: 2/2；未发现父级穿越片段"
+      }
+    ],
+    "summary": "功能契约得分 90/100，门槛 85"
+  }
+}

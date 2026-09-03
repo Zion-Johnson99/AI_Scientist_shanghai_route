@@ -1,0 +1,87 @@
+{
+  "source": "workspace/source/xuhui_route_builder/data/web/xuhui_routes.geojson",
+  "families": [
+    {
+      "family": "bike:b0",
+      "route_count": 10,
+      "probe_route_id": "XH_BIKE_0070",
+      "seconds_mean": 0.0124,
+      "seconds_max": 0.0179,
+      "seconds_total": 0.1236,
+      "worst_overlap_ratio": 0.31
+    },
+    {
+      "family": "bike:b1",
+      "route_count": 10,
+      "probe_route_id": "XH_BIKE_0080",
+      "seconds_mean": 0.0288,
+      "seconds_max": 0.0395,
+      "seconds_total": 0.2885,
+      "worst_overlap_ratio": 0.5182
+    },
+    {
+      "family": "bike:b2",
+      "route_count": 7,
+      "probe_route_id": "XH_BIKE_0087",
+      "seconds_mean": 0.0415,
+      "seconds_max": 0.064,
+      "seconds_total": 0.2906,
+      "worst_overlap_ratio": 0.6102
+    },
+    {
+      "family": "run:b0",
+      "route_count": 10,
+      "probe_route_id": "XH_RUN_0040",
+      "seconds_mean": 0.0033,
+      "seconds_max": 0.0068,
+      "seconds_total": 0.0335,
+      "worst_overlap_ratio": 0.896
+    },
+    {
+      "family": "run:b1",
+      "route_count": 10,
+      "probe_route_id": "XH_RUN_0050",
+      "seconds_mean": 0.0102,
+      "seconds_max": 0.0148,
+      "seconds_total": 0.1022,
+      "worst_overlap_ratio": 0.4286
+    },
+    {
+      "family": "run:b2",
+      "route_count": 10,
+      "probe_route_id": "XH_RUN_0060",
+      "seconds_mean": 0.0245,
+      "seconds_max": 0.0304,
+      "seconds_total": 0.2455,
+      "worst_overlap_ratio": 0.8517
+    },
+    {
+      "family": "walk:b0",
+      "route_count": 10,
+      "probe_route_id": "XH_WALK_0010",
+      "seconds_mean": 0.0005,
+      "seconds_max": 0.0018,
+      "seconds_total": 0.005,
+      "worst_overlap_ratio": 0.4
+    },
+    {
+      "family": "walk:b1",
+      "route_count": 10,
+      "probe_route_id": "XH_WALK_0020",
+      "seconds_mean": 0.0012,
+      "seconds_max": 0.0027,
+      "seconds_total": 0.0121,
+      "worst_overlap_ratio": 0.1681
+    },
+    {
+      "family": "walk:b2",
+      "route_count": 10,
+      "probe_route_id": "XH_WALK_0030",
+      "seconds_mean": 0.0028,
+      "seconds_max": 0.0054,
+      "seconds_total": 0.0276,
+      "worst_overlap_ratio": 0.2254
+    }
+  ],
+  "seconds_total": 1.129
+}

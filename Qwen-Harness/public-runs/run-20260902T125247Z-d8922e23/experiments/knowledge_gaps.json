@@ -1,0 +1,51 @@
+{
+  "schema": "KnowledgeGapSet",
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "generated_at": "2026-09-02T13:16:11Z",
+  "summary": "Three gaps are open and are carried into the experiment design as declared limitations rather than as silently assumed facts: no health dose-response evidence, no independent second administrative boundary, and no AMap credential for the road-distance cross-check. A fourth gap - live environment observations for the run date - is closed by design, not by evidence: the run deliberately uses a static declared proxy so that it stays deterministic and offline.",
+  "gaps": [
+    {
+      "gap_id": "GAP-001",
+      "topic": "Health effect size of PM2.5 / noise / pollen exposure during outdoor exercise",
+      "status": "inconclusive",
+      "why_it_matters": "Without a coefficient the environment score cannot be expressed as a health-risk increment, only as an ordinal ranking.",
+      "blocking": false,
+      "mitigation": "Score is published as a 0-100 ordinal proxy with unit label 'proxy_0_100', status 'estimated', reliability multiplier 0.9, and an explicit UI badge stating that it is not a health-effect estimate.",
+      "source_ids": [
+        "SRC-007"
+      ]
+    },
+    {
+      "gap_id": "GAP-002",
+      "topic": "Independent cross-validation of the Xuhui administrative boundary",
+      "status": "inconclusive",
+      "why_it_matters": "The in-district ratio >= 90% gate is only as good as the boundary polygon it is measured against.",
+      "blocking": false,
+      "mitigation": "The OSM boundary is the single declared reference, its CRS is stated, and the gate report names the boundary source. DataV.GeoAtlas is registered as attempted_unavailable (HTTP 404).",
+      "source_ids": [
+        "SRC-001",
+        "SRC-004"
+      ]
+    },
+    {
+      "gap_id": "GAP-003",
+      "topic": "AMap road distance for the <= 3% geometry-vs-routing error gate",
+      "status": "not_applicable_no_credentials",
+      "why_it_matters": "It is the only contract gate that can detect a geometrically valid route that no navigation engine would actually route.",
+      "blocking": false,
+      "mitigation": "Gate recorded as not_applicable_no_credentials in route_spatial_quality.json. Partial substitute: routes are built from the OSM passable network itself, so geometry and routability share one source.",
+      "source_ids": [
+        "SRC-008"
+      ]
+    },
+    {
+      "gap_id": "GAP-004",
+      "topic": "Live AQI, weather and pollen observations for the run date",
+      "status": "closed_by_design",
+      "why_it_matters": "Live values would make the run non-reproducible and would require contacting external services at scoring time.",
+      "blocking": false,
+      "mitigation": "Deliberate design choice: a static, seeded, declared proxy grid with observation_time set to the run generation timestamp and status 'estimated'. Reproducibility is preferred over freshness and the trade-off is stated in the reports.",
+      "source_ids": []
+    }
+  ]
+}

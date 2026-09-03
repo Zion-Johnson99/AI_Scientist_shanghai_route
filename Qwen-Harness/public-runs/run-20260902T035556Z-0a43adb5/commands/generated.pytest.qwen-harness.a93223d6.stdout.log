@@ -1,0 +1,38 @@
+
+=================================== ERRORS ====================================
+______________ ERROR collecting tests/test_experiment_metrics.py ______________
+ImportError while importing test module '<run_root>\workspace\source\Qwen-Harness\tests\test_experiment_metrics.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+<user_home>\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Qwen-Harness\tests\test_experiment_metrics.py:12: in <module>
+    from qwen_harness.experiment.metrics import (
+E   ModuleNotFoundError: No module named 'qwen_harness.experiment'
+__________________ ERROR collecting tests/test_run_store.py ___________________
+ImportError while importing test module '<run_root>\workspace\source\Qwen-Harness\tests\test_run_store.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+<user_home>\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Qwen-Harness\tests\test_run_store.py:24: in <module>
+    from qwen_harness.run_store import (
+E   ImportError: cannot import name 'LockConflictError' from 'qwen_harness.run_store' (<repo_root>\Qwen-Harness\src\qwen_harness\run_store.py)
+_______________ ERROR collecting tests/test_workflow_engine.py ________________
+ImportError while importing test module '<run_root>\workspace\source\Qwen-Harness\tests\test_workflow_engine.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+<user_home>\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Qwen-Harness\tests\test_workflow_engine.py:11: in <module>
+    from qwen_harness.workflow.engine import (
+E   ImportError: cannot import name 'StageStatus' from 'qwen_harness.workflow.engine' (<repo_root>\Qwen-Harness\src\qwen_harness\workflow\engine.py)
+=========================== short test summary info ===========================
+ERROR Qwen-Harness\tests\test_experiment_metrics.py
+ERROR Qwen-Harness\tests\test_run_store.py
+ERROR Qwen-Harness\tests\test_workflow_engine.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 3 errors during collection !!!!!!!!!!!!!!!!!!!
+3 errors in 0.99s

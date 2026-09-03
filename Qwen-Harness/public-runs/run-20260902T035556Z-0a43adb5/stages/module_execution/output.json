@@ -1,0 +1,16 @@
+{
+  "executed_operations": [
+    "route:route.read_snapshot",
+    "environment:environment.read_snapshot",
+    "evaluation:evaluation.score_candidates",
+    "evaluation:evaluation.score_candidates",
+    "evaluation:evaluation.score_candidates",
+    "evaluation:evaluation.score_candidates",
+    "evaluation:evaluation.score_candidates",
+    "evaluation:evaluation.score_candidates",
+    "evaluation:evaluation.score_candidates",
+    "evaluation:evaluation.score_candidates",
+    "evaluation:evaluation.score_candidates",
+    "web:web.export_payload"
+  ]
+}

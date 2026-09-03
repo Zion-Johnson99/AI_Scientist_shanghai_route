@@ -1,0 +1,101 @@
+{
+  "profile": {
+    "case_id": "P02_run_balanced",
+    "route_mode": "run",
+    "goal": "balanced",
+    "target_distance_m": 5000,
+    "sensitivities": [],
+    "interests": [],
+    "notes": "跑步平衡画像，无敏感项与偏好项"
+  },
+  "risk": {
+    "paused": false,
+    "reasons": [],
+    "level": "normal"
+  },
+  "data_generated_at": "2026-09-02T06:53:11+00:00",
+  "candidate_count": 6,
+  "candidates": [
+    {
+      "route_id": "run-011",
+      "route_name": "滨江跑道11",
+      "route_mode": "run",
+      "dimensions": {
+        "environment_health": 70.0,
+        "sport_match": 100.0,
+        "access_convenience": 60.0,
+        "route_quality": 85.0,
+        "interest_service": 60.0
+      },
+      "base_score": 75.5
+    },
+    {
+      "route_id": "run-013",
+      "route_name": "绿道竞速13",
+      "route_mode": "run",
+      "dimensions": {
+        "environment_health": 70.0,
+        "sport_match": 100.0,
+        "access_convenience": 60.0,
+        "route_quality": 85.0,
+        "interest_service": 60.0
+      },
+      "base_score": 75.5
+    },
+    {
+      "route_id": "run-017",
+      "route_name": "林荫跑道17",
+      "route_mode": "run",
+      "dimensions": {
+        "environment_health": 70.0,
+        "sport_match": 100.0,
+        "access_convenience": 60.0,
+        "route_quality": 85.0,
+        "interest_service": 60.0
+      },
+      "base_score": 75.5
+    },
+    {
+      "route_id": "run-021",
+      "route_name": "滨江跑道21",
+      "route_mode": "run",
+      "dimensions": {
+        "environment_health": 70.0,
+        "sport_match": 100.0,
+        "access_convenience": 60.0,
+        "route_quality": 85.0,
+        "interest_service": 60.0
+      },
+      "base_score": 75.5
+    },
+    {
+      "route_id": "run-022",
+      "route_name": "公园环线22",
+      "route_mode": "run",
+      "dimensions": {
+        "environment_health": 70.0,
+        "sport_match": 100.0,
+        "access_convenience": 60.0,
+        "route_quality": 85.0,
+        "interest_service": 60.0
+      },
+      "base_score": 75.5
+    },
+    {
+      "route_id": "run-029",
+      "route_name": "社区环跑29",
+      "route_mode": "run",
+      "dimensions": {
+        "environment_health": 70.0,
+        "sport_match": 100.0,
+        "access_convenience": 60.0,
+        "route_quality": 85.0,
+        "interest_service": 60.0
+      },
+      "base_score": 75.5
+    }
+  ],
+  "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f",
+  "case_id": "P02_run_balanced",
+  "variant_id": "B0_shortest_feasible"
+}

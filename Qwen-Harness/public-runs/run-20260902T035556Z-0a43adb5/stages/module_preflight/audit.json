@@ -1,0 +1,11 @@
+{
+  "handler": "qwen_harness.workflow.stages:module_preflight_stage",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 256.2,
+  "status": "passed",
+  "summary": "预检状态: route=ok, environment=partial, evaluation=ok, web=ok",
+  "artifacts": [],
+  "offline": false,
+  "audited_at": "2026-09-02T06:24:00.387517+00:00"
+}

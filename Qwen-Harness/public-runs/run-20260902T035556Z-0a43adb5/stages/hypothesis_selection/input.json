@@ -1,0 +1,11 @@
+{
+  "stage": "hypothesis_selection",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.agents.critic_agent:selection_stage_handler",
+  "dependencies": {
+    "hypothesis_critique": "913272cb9a91cf7669b222aed278e3e96c258205547a0bc9f9e790327944673a"
+  },
+  "prepared_at": "2026-09-02T04:08:01.035856+00:00"
+}

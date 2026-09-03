@@ -1,0 +1,22 @@
+{
+  "module": "route",
+  "status": "ok",
+  "input_artifacts": [
+    "xuhui_route_builder/data/web/route_catalog.json",
+    "xuhui_route_builder/data/web/xuhui_routes.geojson",
+    "xuhui_route_builder/data/web/xuhui_entries.geojson",
+    "xuhui_route_builder/data/web/poi_catalog.json",
+    "xuhui_route_builder/data/web/access_cases.json"
+  ],
+  "output_artifacts": [],
+  "data_hashes": {
+    "route_catalog.json": "16144b795952bd652eac48088d00d8f7d1e259062e2ba9c33a924b2de1359517",
+    "xuhui_routes.geojson": "9026dca95125cdcbf3068ae8ad6841568b8b9d285466124c6b2b85cd4b0764da",
+    "xuhui_entries.geojson": "5f9e468fd135a6e3ba7d22df8cdfbf5f1a8e425d55db222a88ae115f6d897479",
+    "poi_catalog.json": "445ba786bee8dd4fbc7ddf8e2c69c6f343d620c8622ae3527542f2bae46e35a6",
+    "access_cases.json": "949e54b5ff1ff9545c3fd4095d3877cd0ae3ce2ef53b9f908ad07fb9929d0d5f"
+  },
+  "commands": [],
+  "warnings": [],
+  "errors": []
+}

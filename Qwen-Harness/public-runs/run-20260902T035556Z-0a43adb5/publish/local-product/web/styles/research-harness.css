@@ -1,0 +1,411 @@
+/* research-harness.css — Research Harness panel styles */
+
+/* ===== Panel container ===== */
+.research-harness-panel {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  width: 340px;
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  background: var(--rh-bg, #ffffff);
+  border: 1px solid var(--rh-border, #d0d7de);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--rh-text, #1f2328);
+}
+
+.research-harness-panel[hidden] {
+  display: none;
+}
+
+/* ===== Panel header ===== */
+.rh-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px 8px;
+  border-bottom: 1px solid var(--rh-border, #d0d7de);
+}
+
+.rh-header h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.rh-close-btn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--rh-text-muted, #656d76);
+  border-radius: 4px;
+}
+
+.rh-close-btn:hover,
+.rh-close-btn:focus-visible {
+  background: var(--rh-hover, #f3f4f6);
+}
+
+.rh-close-btn:focus-visible {
+  outline: 2px solid var(--rh-focus, #0969da);
+  outline-offset: 1px;
+}
+
+/* ===== Section blocks ===== */
+.rh-section {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rh-border-light, #e8ecf0);
+}
+
+.rh-section:last-child {
+  border-bottom: none;
+}
+
+.rh-section-title {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--rh-text-muted, #656d76);
+}
+
+/* ===== Research question ===== */
+.rh-question {
+  margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ===== Hypothesis & support status ===== */
+.rh-hypothesis {
+  margin: 0 0 6px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.rh-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Status uses icon + text, not color alone */
+.rh-status-badge::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.rh-status--supported {
+  background: var(--rh-supported-bg, #dafbe1);
+  color: var(--rh-supported-text, #116329);
+}
+
+.rh-status--supported::before {
+  background: var(--rh-supported-text, #116329);
+}
+
+.rh-status--partially-supported {
+  background: var(--rh-partial-bg, #fff8c5);
+  color: var(--rh-partial-text, #7d4e00);
+}
+
+.rh-status--partially-supported::before {
+  background: var(--rh-partial-text, #7d4e00);
+}
+
+.rh-status--unsupported {
+  background: var(--rh-unsupported-bg, #ffebe9);
+  color: var(--rh-unsupported-text, #cf222e);
+}
+
+.rh-status--unsupported::before {
+  background: var(--rh-unsupported-text, #cf222e);
+}
+
+.rh-status--inconclusive {
+  background: var(--rh-inconclusive-bg, #f6f8fa);
+  color: var(--rh-inconclusive-text, #656d76);
+}
+
+.rh-status--inconclusive::before {
+  background: var(--rh-inconclusive-text, #656d76);
+}
+
+/* ===== Metrics cards ===== */
+.rh-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.rh-metric-card {
+  padding: 8px 10px;
+  background: var(--rh-card-bg, #f6f8fa);
+  border: 1px solid var(--rh-border-light, #e8ecf0);
+  border-radius: 6px;
+}
+
+.rh-metric-label {
+  margin: 0 0 2px;
+  font-size: 11px;
+  color: var(--rh-text-muted, #656d76);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.rh-metric-value {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  overflow-wrap: break-word;
+}
+
+.rh-metric-unit {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--rh-text-muted, #656d76);
+}
+
+/* ===== Baseline comparison table ===== */
+.rh-baseline-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.rh-baseline-table th,
+.rh-baseline-table td {
+  padding: 4px 6px;
+  text-align: left;
+  border-bottom: 1px solid var(--rh-border-light, #e8ecf0);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.rh-baseline-table th {
+  font-weight: 600;
+  color: var(--rh-text-muted, #656d76);
+}
+
+/* ===== Selected route ===== */
+.rh-selected-route {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--rh-card-bg, #f6f8fa);
+  border: 1px solid var(--rh-border-light, #e8ecf0);
+  border-radius: 6px;
+}
+
+.rh-route-name {
+  font-weight: 600;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.rh-route-mode {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: var(--rh-mode-bg, #ddf4ff);
+  color: var(--rh-mode-text, #0969da);
+  white-space: nowrap;
+}
+
+.rh-route-link {
+  color: var(--rh-link, #0969da);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.rh-route-link:focus-visible {
+  outline: 2px solid var(--rh-focus, #0969da);
+  outline-offset: 1px;
+}
+
+/* ===== Timeline ===== */
+.rh-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rh-timeline-item {
+  position: relative;
+  padding: 0 0 12px 16px;
+}
+
+.rh-timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--rh-timeline-dot, #0969da);
+}
+
+.rh-timeline-item::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 14px;
+  bottom: 0;
+  width: 2px;
+  background: var(--rh-border-light, #e8ecf0);
+}
+
+.rh-timeline-item:last-child::after {
+  display: none;
+}
+
+.rh-timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.rh-timeline-time {
+  font-size: 11px;
+  color: var(--rh-text-muted, #656d76);
+}
+
+.rh-timeline-label {
+  margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ===== Evidence & citations ===== */
+.rh-evidence-count {
+  font-weight: 600;
+}
+
+.rh-citation-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rh-citation-list li {
+  margin-bottom: 4px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.rh-citation-list a {
+  color: var(--rh-link, #0969da);
+  text-decoration: none;
+}
+
+.rh-citation-list a:hover {
+  text-decoration: underline;
+}
+
+.rh-citation-list a:focus-visible {
+  outline: 2px solid var(--rh-focus, #0969da);
+  outline-offset: 1px;
+}
+
+/* ===== Data limitations ===== */
+.rh-limitations {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.rh-limitations li {
+  margin-bottom: 4px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ===== Report link ===== */
+.rh-report-link {
+  display: inline-block;
+  margin-top: 4px;
+  color: var(--rh-link, #0969da);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.rh-report-link:hover {
+  text-decoration: underline;
+}
+
+.rh-report-link:focus-visible {
+  outline: 2px solid var(--rh-focus, #0969da);
+  outline-offset: 1px;
+}
+
+/* ===== Degraded / fallback message ===== */
+.rh-degraded-msg {
+  padding: 8px 10px;
+  background: var(--rh-warning-bg, #fff8c5);
+  border: 1px solid var(--rh-warning-border, #d4a72c);
+  border-radius: 6px;
+  font-size: 12px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ===== Responsive: narrow screens (500×700) ===== */
+@media (max-width: 540px) {
+  .research-harness-panel {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 45vh;
+    border-radius: 12px 12px 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .rh-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .research-harness-panel,
+  .rh-metric-card,
+  .rh-timeline-item {
+    transition: none;
+  }
+}
+
+/* ===== High contrast / forced colors ===== */
+@media (forced-colors: active) {
+  .rh-status-badge {
+    border: 1px solid CanvasText;
+  }
+
+  .rh-metric-card,
+  .rh-selected-route {
+    border: 1px solid CanvasText;
+  }
+}

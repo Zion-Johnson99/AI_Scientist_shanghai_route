@@ -1,0 +1,14 @@
+{
+  "handler": "qwen_harness.workflow.stages:publish_web_stage",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 2613.0,
+  "status": "passed",
+  "summary": "本地产品与源码交付包已生成",
+  "artifacts": [
+    "publish/local-product/web/index.html",
+    "publish/source_manifest.json"
+  ],
+  "offline": false,
+  "audited_at": "2026-09-02T06:58:11.133989+00:00"
+}

@@ -1,0 +1,78 @@
+{
+  "handler": "qwen_harness.sources.citation_gate:stage_handler",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 17.0,
+  "status": "passed",
+  "summary": "引用核验通过：14 条 Claim / 9 个来源",
+  "artifacts": [],
+  "offline": false,
+  "audited_at": "2026-09-02T04:02:03.712202+00:00",
+  "gate_result": {
+    "gate": "citation_validation",
+    "passed": true,
+    "checks": [
+      {
+        "name": "source_id_registered",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "evidence_location_present",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "verification_status_sufficient",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "numbers_traceable",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "references_deduplicated",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "identifier_consistency",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "verified_source_count",
+        "passed": true,
+        "detail": "已验证来源 9/5"
+      },
+      {
+        "name": "reference_verification_rate",
+        "passed": true,
+        "detail": "验证率 1.00（阈值 1.00）"
+      },
+      {
+        "name": "no_rejected_sources_used",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "claims_reference_registered_sources",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "claims_have_evidence_location",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "excerpt_length_within_policy",
+        "passed": true,
+        "detail": null
+      }
+    ],
+    "summary": "引用与证据核验通过; 全部检查通过"
+  }
+}

@@ -1,0 +1,99 @@
+▶ research_harness_latest.json data contract
+  ✔ payload file missing does not throw - page should hide panel gracefully (1.0323ms)
+  ✔ if payload exists it must be a valid JSON object (0.2311ms)
+  ✔ if payload exists it must contain required top-level fields (0.1875ms)
+  ✔ support_status must be a valid enum value (0.1687ms)
+  ✔ selected_route.route_id must exist in route_catalog.json when both are present (0.1903ms)
+  ✔ selected_route.route_id not in catalog triggers degradation (documented behavior) (1.0504ms)
+  ✔ payload must not contain local absolute paths (0.2545ms)
+  ✔ payload must not contain API keys or authorization headers (0.24ms)
+  ✔ payload artifacts must only contain repository-relative paths or public URLs (0.2598ms)
+  ✔ payload must not contain raw model internal reasoning (0.2901ms)
+  ✔ baselines array must reference known baseline IDs when present (0.2363ms)
+  ✔ metrics must include primary metric jaccard_top5 when present (0.8256ms)
+  ✔ generated_at must be a parseable ISO 8601 timestamp when present (0.1249ms)
+  ✔ hypothesis must contain hypothesis_id and statement when present (0.0928ms)
+  ✔ evidence and citations counts must be non-negative integers when present (0.1075ms)
+  ✔ iteration_timeline must be an array of objects with timestamp when present (0.1279ms)
+  ✔ data_limitations must be present and non-empty when payload exists (0.0827ms)
+  ✔ payload must not contain free-text model profiles (0.0812ms)
+✔ research_harness_latest.json data contract (6.969ms)
+▶ research-harness-ui.js UI contract
+  ✔ source file exists (1.4423ms)
+  ✖ source does not use innerHTML for model-generated text (1.7722ms)
+  ✔ source uses textContent for text rendering (0.8304ms)
+  ✔ module exports an init or render function (0.6882ms)
+  ✔ module handles null/undefined data without throwing (0.5949ms)
+  ✔ module contains hide/hidden logic for missing data (0.5475ms)
+  ✔ no eval or Function constructor usage (1.424ms)
+  ✔ no document.write usage (0.6701ms)
+✖ research-harness-ui.js UI contract (9.0898ms)
+▶ research-harness-ui.js integration with data-loader
+  ✔ data-loader gracefully handles missing research_harness_latest.json (0.5752ms)
+  ✔ data-loader references research_harness_latest.json (0.4838ms)
+✔ research-harness-ui.js integration with data-loader (1.2292ms)
+▶ research-harness.css contract
+  ✔ stylesheet file exists (0.6531ms)
+  ✔ stylesheet does not use !important excessively (0.48ms)
+✔ research-harness.css contract (1.3045ms)
+▶ route_catalog.json contract
+  ✔ should be an array (1.1119ms)
+  ✔ should contain exactly 90 routes (0.2184ms)
+  ✔ should have 30 walk routes (0.1799ms)
+  ✔ should have 30 run routes (0.1451ms)
+  ✔ should have 30 bike routes (0.1025ms)
+  ✔ should have no duplicate route_ids (0.1087ms)
+  ✔ each route should have required fields (0.2763ms)
+  ✔ all routes should have validation_status accepted (0.1965ms)
+  ✔ route_mode should only be walk, run, or bike (0.1628ms)
+✔ route_catalog.json contract (3.8844ms)
+▶ xuhui_routes.geojson contract
+  ✔ should be a valid GeoJSON FeatureCollection (0.2814ms)
+  ✔ should contain exactly 90 features (0.1254ms)
+  ✔ each feature should have properties.route_id (0.2317ms)
+  ✔ each feature should have LineString geometry with non-empty coordinates (0.2395ms)
+  ✔ GeoJSON route_ids should match catalog route_ids exactly (0.2077ms)
+  ✔ GeoJSON should have no duplicate route_ids (0.1145ms)
+  ✔ coordinates should be within reasonable longitude/latitude range for Shanghai Xuhui (3.1963ms)
+✔ xuhui_routes.geojson contract (4.71ms)
+▶ cross-file consistency
+  ✔ catalog and GeoJSON should have the same number of entries (0.2022ms)
+  ✔ every catalog route_id should appear exactly once in GeoJSON (0.1817ms)
+✔ cross-file consistency (0.4923ms)
+ℹ tests 48
+ℹ suites 7
+ℹ pass 47
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 166.7266
+
+✖ failing tests:
+
+test at xuhui_route_builder\tests\research_harness_ui_contract.test.mjs:131:3
+✖ source does not use innerHTML for model-generated text (1.7722ms)
+  AssertionError [ERR_ASSERTION]: research-harness-ui.js must not assign dynamic content via innerHTML; use textContent instead
+  + actual - expected
+
+  + [
+  +   '.innerHTML ='
+  + ]
+  - null
+
+      at TestContext.<anonymous> (<run_root>/workspace/source/xuhui_route_builder/tests/research_harness_ui_contract.test.mjs:140:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Suite.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1619:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ '.innerHTML =' ],
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

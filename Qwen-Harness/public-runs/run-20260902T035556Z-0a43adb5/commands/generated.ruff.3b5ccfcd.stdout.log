@@ -1,0 +1,1460 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> Qwen-Harness\src\qwen_harness\adapters\environment_adapter.py:8:1
+   |
+ 6 |   """
+ 7 |
+ 8 | / from __future__ import annotations
+ 9 | |
+10 | | import hashlib
+11 | | import json
+12 | | import shutil
+13 | | from dataclasses import dataclass, field
+14 | | from pathlib import Path
+15 | | from typing import Any
+   | |______________________^
+help: Organize imports
+   |
+16 |
+   -
+17 | REQUIRED_TOP_LEVEL_KEYS = ("metadata", "current", "forecast", "routes")
+   |
+
+F841 Local variable `missing_route_ids` is assigned to but never used
+   --> Qwen-Harness\src\qwen_harness\adapters\environment_adapter.py:111:5
+    |
+109 |     # Check each route item for required fields
+110 |     seen_route_ids: set[str] = set()
+111 |     missing_route_ids: list[str] = []
+    |     ^^^^^^^^^^^^^^^^^
+112 |     missing_fields_set: set[str] = set()
+    |
+help: Remove assignment to unused variable `missing_route_ids`
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> Qwen-Harness\src\qwen_harness\adapters\environment_snapshot.py:3:1
+   |
+ 1 |   """Environment module adapter: read, validate, hash and snapshot environment_dashboard.json."""
+ 2 |
+ 3 | / from __future__ import annotations
+ 4 | |
+ 5 | | import hashlib
+ 6 | | import json
+ 7 | | import shutil
+ 8 | | from dataclasses import dataclass, field
+ 9 | | from pathlib import Path
+10 | | from typing import Any
+   | |______________________^
+help: Organize imports
+   |
+11 |
+   -
+12 | REQUIRED_TOP_LEVEL_KEYS = frozenset({"metadata", "current", "forecast", "routes"})
+   |
+
+F401 [*] `math` imported but unused
+  --> Qwen-Harness\src\qwen_harness\adapters\evaluation_score_candidates.py:33:8
+   |
+31 | import json
+32 | import logging
+33 | import math
+   |        ^^^^
+34 | import os
+35 | import subprocess
+   |
+help: Remove unused import: `math`
+   |
+32 | import logging
+   - import math
+33 | import os
+   |
+
+F401 [*] `os` imported but unused
+  --> Qwen-Harness\src\qwen_harness\adapters\evaluation_score_candidates.py:34:8
+   |
+32 | import logging
+33 | import math
+34 | import os
+   |        ^^
+35 | import subprocess
+36 | import sys
+   |
+help: Remove unused import: `os`
+   |
+33 | import math
+   - import os
+34 | import subprocess
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> Qwen-Harness\src\qwen_harness\adapters\evaluation_score_candidates.py:49:5
+   |
+48 | try:
+49 |     from qwen_harness.subprocess_runner import SafeSubprocessRunner, CommandAudit  # type: ignore[import-untyped]
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+50 | except ModuleNotFoundError:  # pragma: no cover – runtime fallback
+51 |     @dataclass
+   |
+help: Organize imports
+   |
+48 | try:
+   -     from qwen_harness.subprocess_runner import SafeSubprocessRunner, CommandAudit  # type: ignore[import-untyped]
+49 +     from qwen_harness.subprocess_runner import (  # type: ignore[import-untyped]
+50 +         CommandAudit,
+51 +         SafeSubprocessRunner,
+52 +     )
+53 | except ModuleNotFoundError:  # pragma: no cover – runtime fallback
+   |
+
+TRY300 Consider moving this statement to an `else` block
+   --> Qwen-Harness\src\qwen_harness\adapters\evaluation_score_candidates.py:163:9
+    |
+161 |     try:
+162 |         json.loads(stripped)
+163 |         return stripped
+    |         ^^^^^^^^^^^^^^^
+164 |     except (json.JSONDecodeError, ValueError):
+165 |         pass
+    |
+
+TRY300 Consider moving this statement to an `else` block
+   --> Qwen-Harness\src\qwen_harness\adapters\evaluation_score_candidates.py:176:13
+    |
+174 |         try:
+175 |             json.loads(candidate)
+176 |             return candidate
+    |             ^^^^^^^^^^^^^^^^
+177 |         except (json.JSONDecodeError, ValueError):
+178 |             idx += 1
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> Qwen-Harness\src\qwen_harness\adapters\route_adapter.py:9:1
+   |
+ 7 |   """
+ 8 |
+ 9 | / from __future__ import annotations
+10 | |
+11 | | import hashlib
+12 | | import json
+13 | | import os
+14 | | import shutil
+15 | | import subprocess
+16 | | from dataclasses import dataclass, field
+17 | | from pathlib import Path
+18 | | from typing import Any
+   | |______________________^
+help: Organize imports
+   |
+19 |
+   -
+20 | # ---------------------------------------------------------------------------
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> Qwen-Harness\src\qwen_harness\adapters\route_snapshot.py:3:1
+   |
+ 1 |   """Route module adapter: snapshot, validate, and hash route data files."""
+ 2 |
+ 3 | / from __future__ import annotations
+ 4 | |
+ 5 | | import hashlib
+ 6 | | import json
+ 7 | | import shutil
+ 8 | | from dataclasses import dataclass, field
+ 9 | | from pathlib import Path
+10 | | from typing import Any
+   | |______________________^
+help: Organize imports
+   |
+11 |
+   -
+12 | EXPECTED_TOTAL = 90
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> Qwen-Harness\src\qwen_harness\cli.py:13:1
+   |
+11 |   """
+12 |
+13 | / from __future__ import annotations
+14 | |
+15 | | import json
+16 | | import sys
+17 | | from pathlib import Path
+18 | | from typing import Any
+19 | |
+20 | | import click
+21 | |
+22 | | from qwen_harness.run_store import RunStore, RunState, RunManifest
+23 | | from qwen_harness.workflow.engine import WorkflowEngine
+   | |_______________________________________________________^
+help: Organize imports
+   |
+21 |
+   - from qwen_harness.run_store import RunStore, RunState, RunManifest
+22 + from qwen_harness.run_store import RunManifest, RunState, RunStore
+23 | from qwen_harness.workflow.engine import WorkflowEngine
+   -
+24 |
+   |
+
+F401 [*] `qwen_harness.run_store.RunState` imported but unused
+  --> Qwen-Harness\src\qwen_harness\cli.py:22:46
+   |
+20 | import click
+21 |
+22 | from qwen_harness.run_store import RunStore, RunState, RunManifest
+   |                                              ^^^^^^^^
+23 | from qwen_harness.workflow.engine import WorkflowEngine
+   |
+help: Remove unused import
+   |
+21 |
+   - from qwen_harness.run_store import RunStore, RunState, RunManifest
+22 + from qwen_harness.run_store import RunStore
+23 | from qwen_harness.workflow.engine import WorkflowEngine
+   |
+
+F401 [*] `qwen_harness.run_store.RunManifest` imported but unused
+  --> Qwen-Harness\src\qwen_harness\cli.py:22:56
+   |
+20 | import click
+21 |
+22 | from qwen_harness.run_store import RunStore, RunState, RunManifest
+   |                                                        ^^^^^^^^^^^
+23 | from qwen_harness.workflow.engine import WorkflowEngine
+   |
+help: Remove unused import
+   |
+21 |
+   - from qwen_harness.run_store import RunStore, RunState, RunManifest
+22 + from qwen_harness.run_store import RunStore
+23 | from qwen_harness.workflow.engine import WorkflowEngine
+   |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> Qwen-Harness\src\qwen_harness\cli.py:199:12
+    |
+197 |             max_iterations=max_iterations,
+198 |         )
+199 |     except Exception as exc:
+    |            ^^^^^^^^^
+200 |         emit_error(
+201 |             error_type="state_error",
+    |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> Qwen-Harness\src\qwen_harness\cli.py:226:12
+    |
+224 |         )
+225 |         sys.exit(EXIT_STATE_CORRUPT)
+226 |     except Exception as exc:
+    |            ^^^^^^^^^
+227 |         error_type = _classify_exception(exc)
+228 |         emit_error(
+    |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> Qwen-Harness\src\qwen_harness\cli.py:292:12
+    |
+290 |         )
+291 |         sys.exit(EXIT_STATE_CORRUPT)
+292 |     except Exception as exc:
+    |            ^^^^^^^^^
+293 |         emit_error(
+294 |             error_type="state_error",
+    |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> Qwen-Harness\src\qwen_harness\cli.py:331:12
+    |
+329 |         )
+330 |         result = engine.resume()
+331 |     except Exception as exc:
+    |            ^^^^^^^^^
+332 |         error_type = _classify_exception(exc)
+333 |         emit_error(
+    |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> Qwen-Harness\src\qwen_harness\cli.py:619:12
+    |
+617 |         store = RunStore(config)
+618 |         runs = store.list_runs(limit=limit)
+619 |     except Exception as exc:
+    |            ^^^^^^^^^
+620 |         emit_error(
+621 |             error_type="state_error",
+    |
+
+F821 Undefined name `os`
+   --> Qwen-Harness\src\qwen_harness\cli.py:683:14
+    |
+681 |     fd, tmp_path = tempfile.mkstemp(dir=str(path.parent), suffix=".tmp")
+682 |     try:
+683 |         with os.fdopen(fd, "w", encoding="utf-8") as f:
+    |              ^^
+684 |             json.dump(data, f, ensure_ascii=False, indent=2)
+685 |             f.flush()
+    |
+
+F821 Undefined name `os`
+   --> Qwen-Harness\src\qwen_harness\cli.py:686:13
+    |
+684 |             json.dump(data, f, ensure_ascii=False, indent=2)
+685 |             f.flush()
+686 |             os.fsync(f.fileno())
+    |             ^^
+687 |         os.replace(tmp_path, str(path))
+688 |     except Exception:
+    |
+
+F821 Undefined name `os`
+   --> Qwen-Harness\src\qwen_harness\cli.py:687:9
+    |
+685 |             f.flush()
+686 |             os.fsync(f.fileno())
+687 |         os.replace(tmp_path, str(path))
+    |         ^^
+688 |     except Exception:
+689 |         # Clean up temp file on failure
+    |
+
+F821 Undefined name `os`
+   --> Qwen-Harness\src\qwen_harness\cli.py:691:13
+    |
+689 |         # Clean up temp file on failure
+690 |         try:
+691 |             os.unlink(tmp_path)
+    |             ^^
+692 |         except OSError:
+693 |             pass
+    |
+
+F841 Local variable `jaccard_threshold` is assigned to but never used
+   --> Qwen-Harness\src\qwen_harness\experiment\runner.py:242:9
+    |
+241 |         max_failed_dimensions = self._quality_gates.get("max_failed_dimensions", 2)
+242 |         jaccard_threshold = self._quality_gates.get("jaccard_threshold", 0.6)
+    |         ^^^^^^^^^^^^^^^^^
+243 |         min_candidates = self._quality_gates.get("min_candidates", 5)
+    |
+help: Remove assignment to unused variable `jaccard_threshold`
+
+TRY400 Use `logging.exception` instead of `logging.error`
+   --> Qwen-Harness\src\qwen_harness\experiment\runner.py:277:25
+    |
+275 |                         result.stopped = True
+276 |                         result.stop_reason = str(e)
+277 |                         logger.error("Snapshot integrity failure: %s", e)
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+278 |                         return result
+    |
+help: Replace with `exception`
+
+BLE001 Do not catch blind exception: `Exception`
+   --> Qwen-Harness\src\qwen_harness\experiment\runner.py:373:16
+    |
+371 |                 environment_dashboard=self._environment_dashboard,
+372 |             )
+373 |         except Exception as e:
+    |                ^^^^^^^^^
+374 |             logger.error(
+375 |                 "score_candidates failed for %s %s: %s",
+    |
+
+TRY400 Use `logging.exception` instead of `logging.error`
+   --> Qwen-Harness\src\qwen_harness\experiment\runner.py:374:13
+    |
+372 |               )
+373 |           except Exception as e:
+374 | /             logger.error(
+375 | |                 "score_candidates failed for %s %s: %s",
+376 | |                 profile.case_id,
+377 | |                 variant_id,
+378 | |                 e,
+379 | |             )
+    | |_____________^
+380 |               return CombinationResult(
+381 |                   profile_case_id=profile.case_id,
+    |
+help: Replace with `exception`
+
+F401 [*] `time` imported but unused
+  --> Qwen-Harness\src\qwen_harness\run_store.py:15:8
+   |
+13 | import sys
+14 | import tempfile
+15 | import time
+   |        ^^^^
+16 | import uuid
+17 | from datetime import datetime, timezone
+   |
+help: Remove unused import: `time`
+   |
+14 | import tempfile
+   - import time
+15 | import uuid
+   |
+
+RUF022 [*] `__all__` is not sorted
+  --> Qwen-Harness\src\qwen_harness\run_store.py:21:11
+   |
+19 |   from typing import Any
+20 |
+21 |   __all__ = [
+   |  ___________^
+22 | |     "RunStore",
+23 | |     "RunManifest",
+24 | |     "RunState",
+25 | |     "RunLock",
+26 | |     "atomic_write_json",
+27 | |     "compute_file_sha256",
+28 | | ]
+   | |_^
+29 |
+30 |   HARNESS_VERSION = "0.1.0"
+   |
+help: Apply an isort-style sorting to `__all__`
+   |
+21 | __all__ = [
+   -     "RunStore",
+22 +     "RunLock",
+23 |     "RunManifest",
+24 |     "RunState",
+   -     "RunLock",
+25 +     "RunStore",
+26 |     "atomic_write_json",
+   |
+
+TRY300 Consider moving this statement to an `else` block
+   --> Qwen-Harness\src\qwen_harness\run_store.py:397:13
+    |
+395 |         try:
+396 |             os.kill(pid, 0)
+397 |             return True
+    |             ^^^^^^^^^^^
+398 |         except (OSError, ProcessLookupError):
+399 |             return False
+    |
+
+TRY400 Use `logging.exception` instead of `logging.error`
+   --> Qwen-Harness\src\qwen_harness\workflow\engine.py:492:17
+    |
+490 |               except GateFailure as exc:
+491 |                   last_error = str(exc)
+492 | /                 logger.error(
+493 | |                     "Stage '%s' gate failed: %s", stage_def.name, exc.reason
+494 | |                 )
+    | |_________________^
+495 |                   return StageResult(
+496 |                       stage_name=stage_def.name,
+    |
+help: Replace with `exception`
+
+BLE001 Do not catch blind exception: `Exception`
+   --> Qwen-Harness\src\qwen_harness\workflow\engine.py:503:20
+    |
+501 |                 )
+502 |
+503 |             except Exception as exc:
+    |                    ^^^^^^^^^
+504 |                 last_error = f"{type(exc).__name__}: {exc}"
+505 |                 logger.error(
+    |
+
+TRY400 Use `logging.exception` instead of `logging.error`
+   --> Qwen-Harness\src\qwen_harness\workflow\engine.py:505:17
+    |
+503 |               except Exception as exc:
+504 |                   last_error = f"{type(exc).__name__}: {exc}"
+505 | /                 logger.error(
+506 | |                     "Stage '%s' raised unexpected error (attempt %d): %s",
+507 | |                     stage_def.name,
+508 | |                     attempt,
+509 | |                     last_error,
+510 | |                 )
+    | |_________________^
+511 |                   if attempt <= max_retries:
+512 |                       continue
+    |
+help: Replace with `exception`
+
+F401 [*] `math` imported but unused
+ --> Qwen-Harness\tests\test_experiment_metrics.py:3:8
+  |
+1 | """Unit tests for experiment metrics: Jaccard, Spearman, variance, constraint pass rate."""
+2 |
+3 | import math
+  |        ^^^^
+4 | import sys
+5 | from pathlib import Path
+  |
+help: Remove unused import: `math`
+  |
+2 |
+  - import math
+3 | import sys
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> Qwen-Harness\tests\test_experiment_metrics.py:12:1
+   |
+10 |   sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+11 |
+12 | / from qwen_harness.experiment.metrics import (
+13 | |     jaccard_top_k,
+14 | |     spearman_rank_correlation,
+15 | |     dimension_variance,
+16 | |     constraint_pass_rate,
+17 | |     median,
+18 | |     interquartile_range,
+19 | |     bootstrap_confidence_interval,
+20 | | )
+   | |_^
+help: Organize imports
+   |
+12 | from qwen_harness.experiment.metrics import (
+   -     jaccard_top_k,
+   -     spearman_rank_correlation,
+13 +     bootstrap_confidence_interval,
+14 +     constraint_pass_rate,
+15 |     dimension_variance,
+   -     constraint_pass_rate,
+   -     median,
+16 |     interquartile_range,
+   -     bootstrap_confidence_interval,
+17 +     jaccard_top_k,
+18 +     median,
+19 +     spearman_rank_correlation,
+20 | )
+   -
+21 |
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> Qwen-Harness\tests\test_run_store.py:11:1
+   |
+ 9 |   """
+10 |
+11 | / from __future__ import annotations
+12 | |
+13 | | import json
+14 | | import os
+15 | | import signal
+16 | | import tempfile
+17 | | import threading
+18 | | import time
+19 | | from pathlib import Path
+20 | | from unittest.mock import patch
+21 | |
+22 | | import pytest
+23 | |
+24 | | from qwen_harness.run_store import (
+25 | |     RunStore,
+26 | |     RunManifest,
+27 | |     RunState,
+28 | |     LockConflictError,
+29 | |     atomic_write_json,
+30 | |     read_json_safe,
+31 | | )
+   | |_^
+help: Organize imports
+   |
+24 | from qwen_harness.run_store import (
+   -     RunStore,
+25 +     LockConflictError,
+26 |     RunManifest,
+27 |     RunState,
+   -     LockConflictError,
+28 +     RunStore,
+29 |     atomic_write_json,
+30 |     read_json_safe,
+31 | )
+   -
+32 |
+   |
+
+F401 [*] `signal` imported but unused
+  --> Qwen-Harness\tests\test_run_store.py:15:8
+   |
+13 | import json
+14 | import os
+15 | import signal
+   |        ^^^^^^
+16 | import tempfile
+17 | import threading
+   |
+help: Remove unused import: `signal`
+   |
+14 | import os
+   - import signal
+15 | import tempfile
+   |
+
+F401 [*] `tempfile` imported but unused
+  --> Qwen-Harness\tests\test_run_store.py:16:8
+   |
+14 | import os
+15 | import signal
+16 | import tempfile
+   |        ^^^^^^^^
+17 | import threading
+18 | import time
+   |
+help: Remove unused import: `tempfile`
+   |
+15 | import signal
+   - import tempfile
+16 | import threading
+   |
+
+F401 [*] `time` imported but unused
+  --> Qwen-Harness\tests\test_run_store.py:18:8
+   |
+16 | import tempfile
+17 | import threading
+18 | import time
+   |        ^^^^
+19 | from pathlib import Path
+20 | from unittest.mock import patch
+   |
+help: Remove unused import: `time`
+   |
+17 | import threading
+   - import time
+18 | from pathlib import Path
+   |
+
+F401 [*] `qwen_harness.run_store.RunManifest` imported but unused
+  --> Qwen-Harness\tests\test_run_store.py:26:5
+   |
+24 | from qwen_harness.run_store import (
+25 |     RunStore,
+26 |     RunManifest,
+   |     ^^^^^^^^^^^
+27 |     RunState,
+28 |     LockConflictError,
+   |
+help: Remove unused import
+   |
+25 |     RunStore,
+   -     RunManifest,
+   -     RunState,
+26 |     LockConflictError,
+   |
+
+F401 [*] `qwen_harness.run_store.RunState` imported but unused
+  --> Qwen-Harness\tests\test_run_store.py:27:5
+   |
+25 |     RunStore,
+26 |     RunManifest,
+27 |     RunState,
+   |     ^^^^^^^^
+28 |     LockConflictError,
+29 |     atomic_write_json,
+   |
+help: Remove unused import
+   |
+25 |     RunStore,
+   -     RunManifest,
+   -     RunState,
+26 |     LockConflictError,
+   |
+
+F841 Local variable `original_replace` is assigned to but never used
+  --> Qwen-Harness\tests\test_run_store.py:80:9
+   |
+78 |         """Simulate interruption during write: target must not exist or be valid."""
+79 |         target = tmp_path / "data.json"
+80 |         original_replace = os.replace
+   |         ^^^^^^^^^^^^^^^^
+81 |
+82 |         def failing_replace(src: str, dst: str) -> None:
+   |
+help: Remove assignment to unused variable `original_replace`
+
+F841 Local variable `rejected` is assigned to but never used
+   --> Qwen-Harness\tests\test_run_store.py:331:9
+    |
+330 |         acquired = [r for r in results if "_acquired" in r]
+331 |         rejected = [r for r in results if "_rejected" in r]
+    |         ^^^^^^^^
+332 |         # At least one acquired; if both ran concurrently, one rejected
+333 |         assert len(acquired) >= 1
+    |
+help: Remove assignment to unused variable `rejected`
+
+RUF043 Pattern passed to `match=` contains metacharacters but is neither escaped nor raw
+   --> Qwen-Harness\tests\test_run_store.py:373:46
+    |
+371 |         state_path.write_text("{corrupt", encoding="utf-8")
+372 |
+373 |         with pytest.raises(ValueError, match="state.json"):
+    |                                              ^^^^^^^^^^^^
+374 |             store.recover()
+    |
+help: Use a raw string or `re.escape()` to make the intention explicit
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> Qwen-Harness\tests\test_workflow_engine.py:3:1
+   |
+ 1 |   """Tests for the workflow engine: stage ordering, gate failures, retry, and skip logic."""
+ 2 |
+ 3 | / import json
+ 4 | | import hashlib
+ 5 | | import tempfile
+ 6 | | from pathlib import Path
+ 7 | | from unittest.mock import MagicMock, patch
+ 8 | |
+ 9 | | import pytest
+10 | |
+11 | | from qwen_harness.workflow.engine import (
+12 | |     WorkflowEngine,
+13 | |     StageResult,
+14 | |     StageStatus,
+15 | |     WorkflowConfig,
+16 | |     StageConfig,
+17 | |     GateConfig,
+18 | | )
+   | |_^
+help: Organize imports
+   |
+2  |
+3  + import hashlib
+4  | import json
+   - import hashlib
+5  | import tempfile
+--------------------------------------------------------------------------------
+11 | from qwen_harness.workflow.engine import (
+   -     WorkflowEngine,
+12 +     GateConfig,
+13 +     StageConfig,
+14 |     StageResult,
+15 |     StageStatus,
+16 |     WorkflowConfig,
+   -     StageConfig,
+   -     GateConfig,
+17 +     WorkflowEngine,
+18 | )
+   -
+19 |
+   |
+
+F401 [*] `tempfile` imported but unused
+ --> Qwen-Harness\tests\test_workflow_engine.py:5:8
+  |
+3 | import json
+4 | import hashlib
+5 | import tempfile
+  |        ^^^^^^^^
+6 | from pathlib import Path
+7 | from unittest.mock import MagicMock, patch
+  |
+help: Remove unused import: `tempfile`
+  |
+4 | import hashlib
+  - import tempfile
+5 | from pathlib import Path
+  |
+
+F401 [*] `unittest.mock.MagicMock` imported but unused
+ --> Qwen-Harness\tests\test_workflow_engine.py:7:27
+  |
+5 | import tempfile
+6 | from pathlib import Path
+7 | from unittest.mock import MagicMock, patch
+  |                           ^^^^^^^^^
+8 |
+9 | import pytest
+  |
+help: Remove unused import
+  |
+6 | from pathlib import Path
+  - from unittest.mock import MagicMock, patch
+7 |
+  |
+
+F401 [*] `unittest.mock.patch` imported but unused
+ --> Qwen-Harness\tests\test_workflow_engine.py:7:38
+  |
+5 | import tempfile
+6 | from pathlib import Path
+7 | from unittest.mock import MagicMock, patch
+  |                                      ^^^^^
+8 |
+9 | import pytest
+  |
+help: Remove unused import
+  |
+6 | from pathlib import Path
+  - from unittest.mock import MagicMock, patch
+7 |
+  |
+
+F401 [*] `qwen_harness.workflow.engine.StageResult` imported but unused
+  --> Qwen-Harness\tests\test_workflow_engine.py:13:5
+   |
+11 | from qwen_harness.workflow.engine import (
+12 |     WorkflowEngine,
+13 |     StageResult,
+   |     ^^^^^^^^^^^
+14 |     StageStatus,
+15 |     WorkflowConfig,
+   |
+help: Remove unused import: `qwen_harness.workflow.engine.StageResult`
+   |
+12 |     WorkflowEngine,
+   -     StageResult,
+13 |     StageStatus,
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> evaluation_model_qwen\src\evaluation_model_qwen\api.py:6:1
+   |
+ 4 |   """
+ 5 |
+ 6 | / from __future__ import annotations
+ 7 | |
+ 8 | | import logging
+ 9 | | from typing import Any
+10 | |
+11 | | from fastapi import FastAPI, HTTPException
+12 | | from pydantic import BaseModel, Field
+13 | |
+14 | | from evaluation_model_qwen.models import UserProfile
+15 | | from evaluation_model_qwen.service import recommend
+   | |___________________________________________________^
+16 |
+17 |   logger = logging.getLogger(__name__)
+   |
+help: Organize imports
+   |
+10 |
+   - from fastapi import FastAPI, HTTPException
+   - from pydantic import BaseModel, Field
+   -
+11 | from evaluation_model_qwen.models import UserProfile
+12 | from evaluation_model_qwen.service import recommend
+13 + from fastapi import FastAPI, HTTPException
+14 + from pydantic import BaseModel, Field
+15 |
+   |
+
+TRY400 Use `logging.exception` instead of `logging.error`
+  --> evaluation_model_qwen\src\evaluation_model_qwen\api.py:82:9
+   |
+80 |         result = recommend(profile=profile, offline=True)
+81 |     except FileNotFoundError as exc:
+82 |         logger.error("Data file not found: %s", exc)
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+83 |         raise HTTPException(
+84 |             status_code=503,
+   |
+help: Replace with `exception`
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> evaluation_model_qwen\src\evaluation_model_qwen\cli.py:9:1
+   |
+ 7 |   """
+ 8 |
+ 9 | / from __future__ import annotations
+10 | |
+11 | | import json
+12 | | import sys
+13 | | from pathlib import Path
+14 | | from typing import Optional
+15 | |
+16 | | import click
+17 | |
+18 | | from evaluation_model_qwen.models import (
+19 | |     CandidateScoreResult,
+20 | |     RiskAssessment,
+21 | |     ScoredRoute,
+22 | |     UserProfile,
+23 | | )
+24 | | from evaluation_model_qwen.loaders import load_data
+25 | | from evaluation_model_qwen.scoring import evaluate_risk, score_routes
+26 | | from evaluation_model_qwen.service import evaluation_root, load_weights
+27 | | from evaluation_model_qwen.constraints import apply_hard_constraints
+   | |____________________________________________________________________^
+help: Organize imports
+   |
+16 | import click
+   -
+17 + from evaluation_model_qwen.constraints import apply_hard_constraints
+18 + from evaluation_model_qwen.loaders import load_data
+19 | from evaluation_model_qwen.models import (
+--------------------------------------------------------------------------------
+24 | )
+   - from evaluation_model_qwen.loaders import load_data
+25 | from evaluation_model_qwen.scoring import evaluate_risk, score_routes
+26 | from evaluation_model_qwen.service import evaluation_root, load_weights
+   - from evaluation_model_qwen.constraints import apply_hard_constraints
+27 |
+   |
+
+F401 [*] `evaluation_model_qwen.models.RiskAssessment` imported but unused
+  --> evaluation_model_qwen\src\evaluation_model_qwen\cli.py:20:5
+   |
+18 | from evaluation_model_qwen.models import (
+19 |     CandidateScoreResult,
+20 |     RiskAssessment,
+   |     ^^^^^^^^^^^^^^
+21 |     ScoredRoute,
+22 |     UserProfile,
+   |
+help: Remove unused import
+   |
+19 |     CandidateScoreResult,
+   -     RiskAssessment,
+   -     ScoredRoute,
+20 |     UserProfile,
+   |
+
+F401 [*] `evaluation_model_qwen.models.ScoredRoute` imported but unused
+  --> evaluation_model_qwen\src\evaluation_model_qwen\cli.py:21:5
+   |
+19 |     CandidateScoreResult,
+20 |     RiskAssessment,
+21 |     ScoredRoute,
+   |     ^^^^^^^^^^^
+22 |     UserProfile,
+23 | )
+   |
+help: Remove unused import
+   |
+19 |     CandidateScoreResult,
+   -     RiskAssessment,
+   -     ScoredRoute,
+20 |     UserProfile,
+   |
+
+BLE001 Do not catch blind exception: `Exception`
+  --> evaluation_model_qwen\src\evaluation_model_qwen\cli.py:68:12
+   |
+66 |         )
+67 |         sys.exit(1)
+68 |     except Exception as exc:
+   |            ^^^^^^^^^
+69 |         click.echo(
+70 |             json.dumps(
+   |
+
+BLE001 Do not catch blind exception: `Exception`
+  --> evaluation_model_qwen\src\evaluation_model_qwen\cli.py:97:12
+   |
+95 |     try:
+96 |         profile = UserProfile.model_validate_json(Path(profile_path).read_text(encoding="utf-8"))
+97 |     except Exception as exc:
+   |            ^^^^^^^^^
+98 |         click.echo(json.dumps({"error_type": "input_error", "message": f"Invalid profile: {exc}"}, ensure_ascii=False), err=True)
+99 |         sys.exit(2)
+   |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> evaluation_model_qwen\src\evaluation_model_qwen\cli.py:114:12
+    |
+112 |     try:
+113 |         routes, env_data = load_data(Path(route_catalog_path), Path(env_dashboard_path))
+114 |     except Exception as exc:
+    |            ^^^^^^^^^
+115 |         click.echo(json.dumps({"error_type": "data_error", "message": str(exc)}, ensure_ascii=False), err=True)
+116 |         sys.exit(2)
+    |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> evaluation_model_qwen\src\evaluation_model_qwen\cli.py:154:16
+    |
+152 |             from evaluation_model_qwen.qwen_client import qwen_review
+153 |             scored = qwen_review(scored, profile)
+154 |         except Exception as exc:
+    |                ^^^^^^^^^
+155 |             click.echo(f"[WARN] Qwen 服务异常，回退本地排序: {exc}", err=True)
+    |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> evaluation_model_qwen\src\evaluation_model_qwen\cli.py:204:12
+    |
+202 |     try:
+203 |         profile = UserProfile.model_validate_json(Path(profile_path).read_text(encoding="utf-8"))
+204 |     except Exception as exc:
+    |            ^^^^^^^^^
+205 |         click.echo(
+206 |             json.dumps({"error_type": "input_error", "message": f"Invalid profile: {exc}"}, ensure_ascii=False),
+    |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> evaluation_model_qwen\src\evaluation_model_qwen\cli.py:214:12
+    |
+212 |     try:
+213 |         weights = load_weights(weights_file)
+214 |     except Exception as exc:
+    |            ^^^^^^^^^
+215 |         click.echo(
+216 |             json.dumps({"error_type": "input_error", "message": f"Invalid weights: {exc}"}, ensure_ascii=False),
+    |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> evaluation_model_qwen\src\evaluation_model_qwen\cli.py:225:12
+    |
+223 |     try:
+224 |         routes, env_data = load_data(Path(route_catalog_path), Path(env_dashboard_path))
+225 |     except Exception as exc:
+    |            ^^^^^^^^^
+226 |         click.echo(
+227 |             json.dumps({"error_type": "data_error", "message": str(exc)}, ensure_ascii=False),
+    |
+
+F401 [*] `evaluation_model_qwen.models.RiskAssessment` imported but unused
+  --> evaluation_model_qwen\src\evaluation_model_qwen\constraints.py:20:46
+   |
+19 | if TYPE_CHECKING:
+20 |     from evaluation_model_qwen.models import RiskAssessment, UserProfile
+   |                                              ^^^^^^^^^^^^^^
+help: Remove unused import
+   |
+19 | if TYPE_CHECKING:
+   -     from evaluation_model_qwen.models import RiskAssessment, UserProfile
+20 +     pass
+21 |
+   |
+
+F401 [*] `evaluation_model_qwen.models.UserProfile` imported but unused
+  --> evaluation_model_qwen\src\evaluation_model_qwen\constraints.py:20:62
+   |
+19 | if TYPE_CHECKING:
+20 |     from evaluation_model_qwen.models import RiskAssessment, UserProfile
+   |                                                              ^^^^^^^^^^^
+help: Remove unused import
+   |
+19 | if TYPE_CHECKING:
+   -     from evaluation_model_qwen.models import RiskAssessment, UserProfile
+20 +     pass
+21 |
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> evaluation_model_qwen\src\evaluation_model_qwen\loaders.py:8:1
+   |
+ 6 |   """
+ 7 |
+ 8 | / from __future__ import annotations
+ 9 | |
+10 | | import json
+11 | | import logging
+12 | | from pathlib import Path
+13 | | from typing import Any
+14 | |
+15 | | from pydantic import ValidationError
+16 | |
+17 | | from evaluation_model_qwen.models import (
+18 | |     EnvironmentRecord,
+19 | |     EnvironmentDashboard,
+20 | |     RouteEntry,
+21 | | )
+   | |_^
+22 |
+23 |   logger = logging.getLogger(__name__)
+   |
+help: Organize imports
+   |
+14 |
+   - from pydantic import ValidationError
+   -
+15 | from evaluation_model_qwen.models import (
+   -     EnvironmentRecord,
+16 |     EnvironmentDashboard,
+17 +     EnvironmentRecord,
+18 |     RouteEntry,
+19 | )
+20 + from pydantic import ValidationError
+21 |
+   |
+
+F401 [*] `math` imported but unused
+  --> evaluation_model_qwen\src\evaluation_model_qwen\scoring.py:17:8
+   |
+15 | from __future__ import annotations
+16 |
+17 | import math
+   |        ^^^^
+18 | from typing import Any
+   |
+help: Remove unused import: `math`
+   |
+16 |
+   - import math
+17 | from typing import Any
+   |
+
+F401 [*] `.models.RiskAssessment` imported but unused
+  --> evaluation_model_qwen\src\evaluation_model_qwen\service.py:21:5
+   |
+19 | from .models import (
+20 |     CandidateScoreResult,
+21 |     RiskAssessment,
+   |     ^^^^^^^^^^^^^^
+22 |     ScoredRoute,
+23 |     UserProfile,
+   |
+help: Remove unused import: `.models.RiskAssessment`
+   |
+20 |     CandidateScoreResult,
+   -     RiskAssessment,
+21 |     ScoredRoute,
+   |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> evaluation_model_qwen\src\evaluation_model_qwen\service.py:179:16
+    |
+177 |         try:
+178 |             qwen_review = _call_qwen_review(top, alternatives, profile)
+179 |         except Exception as e:
+    |                ^^^^^^^^^
+180 |             logger.warning("Qwen service unavailable, falling back to local ranking: %s", e)
+181 |             degraded = True
+    |
+
+F401 [*] `tempfile` imported but unused
+  --> evaluation_model_qwen\tests\test_score_candidates.py:13:8
+   |
+11 | import subprocess
+12 | import sys
+13 | import tempfile
+   |        ^^^^^^^^
+14 | from pathlib import Path
+   |
+help: Remove unused import: `tempfile`
+   |
+12 | import sys
+   - import tempfile
+13 | from pathlib import Path
+   |
+
+RUF005 Consider iterable unpacking instead of concatenation
+   --> evaluation_model_qwen\tests\test_score_candidates.py:147:11
+    |
+145 | ) -> subprocess.CompletedProcess:
+146 |     """Run the evaluation-model-qwen CLI as a subprocess."""
+147 |     cmd = [sys.executable, "-m", "evaluation_model_qwen.cli"] + args
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+148 |     return subprocess.run(
+149 |         cmd,
+    |
+help: Replace with iterable unpacking
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> evaluation_model_qwen\tests\test_scoring.py:3:1
+   |
+ 1 |   """Tests for evaluation_model_qwen scoring and constraints."""
+ 2 |
+ 3 | / import pytest
+ 4 | |
+ 5 | | from evaluation_model_qwen.models import (
+ 6 | |     EnvironmentBlock,
+ 7 | |     EnvironmentData,
+ 8 | |     EnvironmentRouteRecord,
+ 9 | |     RiskAssessment,
+10 | |     RouteEntry,
+11 | |     ScoredRoute,
+12 | |     UserProfile,
+13 | | )
+14 | | from evaluation_model_qwen.constraints import (
+15 | |     apply_hard_constraints,
+16 | |     evaluate_safety_thresholds,
+17 | | )
+18 | | from evaluation_model_qwen.scoring import evaluate_risk, score_routes
+   | |_____________________________________________________________________^
+help: Organize imports
+   |
+3  | import pytest
+   -
+4  + from evaluation_model_qwen.constraints import (
+5  +     apply_hard_constraints,
+6  +     evaluate_safety_thresholds,
+7  + )
+8  | from evaluation_model_qwen.models import (
+--------------------------------------------------------------------------------
+16 | )
+   - from evaluation_model_qwen.constraints import (
+   -     apply_hard_constraints,
+   -     evaluate_safety_thresholds,
+   - )
+17 | from evaluation_model_qwen.scoring import evaluate_risk, score_routes
+   -
+18 |
+   |
+
+F401 [*] `pytest` imported but unused
+ --> evaluation_model_qwen\tests\test_scoring.py:3:8
+  |
+1 | """Tests for evaluation_model_qwen scoring and constraints."""
+2 |
+3 | import pytest
+  |        ^^^^^^
+4 |
+5 | from evaluation_model_qwen.models import (
+  |
+help: Remove unused import: `pytest`
+  |
+2 |
+  - import pytest
+3 |
+  |
+
+F401 [*] `evaluation_model_qwen.constraints.evaluate_safety_thresholds` imported but unused
+  --> evaluation_model_qwen\tests\test_scoring.py:16:5
+   |
+14 | from evaluation_model_qwen.constraints import (
+15 |     apply_hard_constraints,
+16 |     evaluate_safety_thresholds,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+17 | )
+18 | from evaluation_model_qwen.scoring import evaluate_risk, score_routes
+   |
+help: Remove unused import: `evaluation_model_qwen.constraints.evaluate_safety_thresholds`
+   |
+15 |     apply_hard_constraints,
+   -     evaluate_safety_thresholds,
+16 | )
+   |
+
+RUF005 Consider `[current.parent, *list(current.parents)]` instead of concatenation
+  --> weather_api_data\src\weather_api_data\cli.py:31:19
+   |
+29 |     """Walk up from this file to find the repository root (contains pyproject.toml)."""
+30 |     current = Path(__file__).resolve()
+31 |     for parent in [current.parent] + list(current.parents):
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+32 |         if (parent / "pyproject.toml").exists() and (parent / "src").exists():
+33 |             return parent
+   |
+help: Replace with `[current.parent, *list(current.parents)]`
+
+F401 [*] `hashlib` imported but unused
+  --> weather_api_data\src\weather_api_data\route_environment.py:17:8
+   |
+15 | from __future__ import annotations
+16 |
+17 | import hashlib
+   |        ^^^^^^^
+18 | import json
+19 | import logging
+   |
+help: Remove unused import: `hashlib`
+   |
+16 |
+   - import hashlib
+17 | import json
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> weather_api_data\tests\test_pipeline.py:3:1
+   |
+ 1 |   """Tests for weather_api_data pipeline: fallback logic, snapshot generation, missing data marking."""
+ 2 |
+ 3 | / import json
+ 4 | | import os
+ 5 | | import tempfile
+ 6 | | from pathlib import Path
+ 7 | | from datetime import datetime, timezone
+ 8 | |
+ 9 | | import pytest
+10 | |
+11 | | from weather_api_data.pipeline import (
+12 | |     PipelineConfig,
+13 | |     PipelineResult,
+14 | |     run_pipeline,
+15 | |     load_last_known_good,
+16 | |     save_snapshot,
+17 | |     check_api_keys,
+18 | | )
+   | |_^
+help: Organize imports
+   |
+5  | import tempfile
+6  + from datetime import datetime, timezone
+7  | from pathlib import Path
+   - from datetime import datetime, timezone
+8  |
+9  | import pytest
+   -
+10 | from weather_api_data.pipeline import (
+11 |     PipelineConfig,
+12 |     PipelineResult,
+   -     run_pipeline,
+13 +     check_api_keys,
+14 |     load_last_known_good,
+15 +     run_pipeline,
+16 |     save_snapshot,
+   -     check_api_keys,
+17 | )
+   |
+
+F401 [*] `os` imported but unused
+ --> weather_api_data\tests\test_pipeline.py:4:8
+  |
+3 | import json
+4 | import os
+  |        ^^
+5 | import tempfile
+6 | from pathlib import Path
+  |
+help: Remove unused import: `os`
+  |
+3 | import json
+  - import os
+4 | import tempfile
+  |
+
+F401 [*] `tempfile` imported but unused
+ --> weather_api_data\tests\test_pipeline.py:5:8
+  |
+3 | import json
+4 | import os
+5 | import tempfile
+  |        ^^^^^^^^
+6 | from pathlib import Path
+7 | from datetime import datetime, timezone
+  |
+help: Remove unused import: `tempfile`
+  |
+4 | import os
+  - import tempfile
+5 | from pathlib import Path
+  |
+
+F401 [*] `pathlib.Path` imported but unused
+ --> weather_api_data\tests\test_pipeline.py:6:21
+  |
+4 | import os
+5 | import tempfile
+6 | from pathlib import Path
+  |                     ^^^^
+7 | from datetime import datetime, timezone
+  |
+help: Remove unused import: `pathlib.Path`
+  |
+5 | import tempfile
+  - from pathlib import Path
+6 | from datetime import datetime, timezone
+  |
+
+F401 [*] `datetime.timezone` imported but unused
+ --> weather_api_data\tests\test_pipeline.py:7:32
+  |
+5 | import tempfile
+6 | from pathlib import Path
+7 | from datetime import datetime, timezone
+  |                                ^^^^^^^^
+8 |
+9 | import pytest
+  |
+help: Remove unused import: `datetime.timezone`
+  |
+6 | from pathlib import Path
+  - from datetime import datetime, timezone
+7 + from datetime import datetime
+8 |
+  |
+
+F401 [*] `weather_api_data.pipeline.PipelineResult` imported but unused
+  --> weather_api_data\tests\test_pipeline.py:13:5
+   |
+11 | from weather_api_data.pipeline import (
+12 |     PipelineConfig,
+13 |     PipelineResult,
+   |     ^^^^^^^^^^^^^^
+14 |     run_pipeline,
+15 |     load_last_known_good,
+   |
+help: Remove unused import: `weather_api_data.pipeline.PipelineResult`
+   |
+12 |     PipelineConfig,
+   -     PipelineResult,
+13 |     run_pipeline,
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> weather_api_data\tests\test_web_export.py:10:1
+   |
+ 8 |   """
+ 9 |
+10 | / from __future__ import annotations
+11 | |
+12 | | import json
+13 | | from datetime import datetime, timezone
+14 | | from pathlib import Path
+15 | | from typing import Any
+16 | |
+17 | | import pytest
+18 | |
+19 | | from weather_api_data.web_export import (
+20 | |     build_dashboard,
+21 | |     validate_dashboard,
+22 | |     DashboardValidationError,
+23 | | )
+   | |_^
+help: Organize imports
+   |
+17 | import pytest
+   -
+18 | from weather_api_data.web_export import (
+19 +     DashboardValidationError,
+20 |     build_dashboard,
+21 |     validate_dashboard,
+   -     DashboardValidationError,
+22 | )
+   -
+23 |
+   |
+
+F401 [*] `pathlib.Path` imported but unused
+  --> weather_api_data\tests\test_web_export.py:14:21
+   |
+12 | import json
+13 | from datetime import datetime, timezone
+14 | from pathlib import Path
+   |                     ^^^^
+15 | from typing import Any
+   |
+help: Remove unused import: `pathlib.Path`
+   |
+13 | from datetime import datetime, timezone
+   - from pathlib import Path
+14 | from typing import Any
+   |
+
+TRY004 Prefer `TypeError` exception for invalid type
+   --> xuhui_route_builder\src\xuhui_route_builder\models.py:171:13
+    |
+169 |         data = json.loads(json_str)
+170 |         if not isinstance(data, list):
+171 |             raise ValueError("route_catalog.json must be a top-level array")
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+172 |         routes = [RouteEntry.from_dict(item) for item in data]
+173 |         return cls(routes=routes)
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> xuhui_route_builder\src\xuhui_route_builder\validation.py:11:1
+   |
+ 9 |   """
+10 |
+11 | / from __future__ import annotations
+12 | |
+13 | | import json
+14 | | from dataclasses import dataclass, field
+15 | | from pathlib import Path
+16 | | from typing import Any
+   | |______________________^
+help: Organize imports
+   |
+17 |
+   -
+18 | # Expected contract constants
+   |
+
+Found 83 errors.
+[*] 48 fixable with the `--fix` option (11 hidden fixes can be enabled with the `--unsafe-fixes` option).

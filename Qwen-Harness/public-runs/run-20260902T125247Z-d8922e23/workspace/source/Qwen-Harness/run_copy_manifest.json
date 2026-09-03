@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "source_run_id": "run-20260902T125247Z-d8922e23",
+  "copy_root": "workspace/source/Qwen-Harness",
+  "purpose": "offline_run_copy_and_reproduction_entry",
+  "offline": true,
+  "provider": "qoder_session",
+  "model_name": "qwen3.8-max",
+  "billing_channel": "qoder_credits",
+  "dashscope_api_used": false,
+  "model_client_initialised": false,
+  "network_calls": false,
+  "stage_count": 19,
+  "copied_files": [
+    {
+      "relative_path": "__init__.py",
+      "bytes": 76,
+      "sha256": "35fbd57d1b086acbe11d627a19b3bb5e798693a4f9e4d023a3472416556ea0df"
+    },
+    {
+      "relative_path": "reproduce_harness.py",
+      "bytes": 5003,
+      "sha256": "abcf7c3270b08c152c256dc4fb1d6e70c913c938cafe71b375675cf485aa3dbd"
+    },
+    {
+      "relative_path": "tests/conftest.py",
+      "bytes": 371,
+      "sha256": "0ec04d2a4add050a458d557bf3babe600a511d286d9c3e992273eae78089a9f3"
+    },
+    {
+      "relative_path": "tests/test_run_copy.py",
+      "bytes": 2249,
+      "sha256": "6fe1b36a88b379a91db9a27f7a4af615d573e88de909ec353362190744fb6984"
+    }
+  ],
+  "file_count": 4,
+  "manifest_refreshed_at": "2026-09-02T18:32:33Z",
+  "manifest_refresh_reason": "tests/test_run_copy.py 修正了 RUN_ROOT 层级与 dashscope 断言，重新计算该文件的哈希与字节数",
+  "manifest_refreshed_files": [
+    "tests/test_run_copy.py"
+  ]
+}

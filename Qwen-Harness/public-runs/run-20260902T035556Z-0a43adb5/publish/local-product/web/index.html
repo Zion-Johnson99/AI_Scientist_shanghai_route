@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>徐汇健康路线地图</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/research-harness.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>徐汇健康路线地图</h1>
+    <p class="subtitle">多源环境暴露与个性化健康路线决策</p>
+  </header>
+
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <section class="filter-section" id="filter-section">
+        <h2>筛选</h2>
+        <div class="filter-controls">
+          <label for="mode-filter">运动方式</label>
+          <select id="mode-filter">
+            <option value="all">全部</option>
+            <option value="walk">步行</option>
+            <option value="run">跑步</option>
+            <option value="bike">骑行</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="route-list-section" id="route-list-section">
+        <h2>路线列表</h2>
+        <ul id="route-list" class="route-list" role="listbox" aria-label="路线列表"></ul>
+      </section>
+
+      <section class="route-detail-section">
+        <div id="route-detail" class="route-detail" aria-live="polite"></div>
+      </section>
+
+      <section class="recommendation-section" id="recommendation-section">
+        <h2>千问推荐</h2>
+        <div id="recommendation-panel" class="recommendation-panel">
+          <button id="recommend-btn" class="btn-primary">获取推荐</button>
+          <div id="recommendation-result" class="recommendation-result" hidden></div>
+        </div>
+      </section>
+
+      <section class="research-section" id="research-section" hidden>
+        <h2>AI Scientist 实验</h2>
+        <div id="research-panel" class="research-panel"></div>
+      </section>
+    </aside>
+
+    <main class="map-container" id="map-container">
+      <div id="map" class="map" role="application" aria-label="路线地图"></div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin=""></script>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

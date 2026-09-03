@@ -1,0 +1,132 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260902T035556Z-0a43adb5",
+  "generated_at": "2026-09-02T06:58:08.154670Z",
+  "status": "inconclusive",
+  "research_question": "在满足运动方式、目标距离、安全阈值、搜索范围和有限附加距离约束的候选路线中，融合 PM2.5、花粉、噪声、天气、绿地水体、路线质量、接驳成本和用户偏好的多源模型，相较最短或单一 PM2.5 基线，能否降低环境暴露风险并提高个性化匹配度？",
+  "hypothesis": "在徐汇区 90 条候选路线中，当多源加权复合指标中任一维度权重在基准值 ±30% 范围内扰动时，各运动类型（步行/跑步/骑行）前 5 名路线集合的 Jaccard 相似度不低于 0.6，即路线排序对单维度权重扰动具有稳健性。",
+  "selected_route": null,
+  "key_metrics": [
+    {
+      "metric_id": "detour_pass_rate",
+      "name": "绕路约束通过率",
+      "value": 0.0,
+      "unit": "比例",
+      "direction": "higher"
+    },
+    {
+      "metric_id": "environment_win_rate",
+      "name": "环境改善胜率（M1 vs B0）",
+      "value": 0.0,
+      "unit": "比例",
+      "direction": "higher"
+    },
+    {
+      "metric_id": "preference_win_rate",
+      "name": "偏好命中率胜率（M1 vs B0）",
+      "value": 0.5,
+      "unit": "比例",
+      "direction": "higher"
+    },
+    {
+      "metric_id": "constraint_pass_rate",
+      "name": "约束通过率",
+      "value": 0.0,
+      "unit": "比例",
+      "direction": "higher"
+    },
+    {
+      "metric_id": "no_candidate_rate",
+      "name": "无候选率",
+      "value": 0.4,
+      "unit": "比例",
+      "direction": "lower"
+    }
+  ],
+  "baseline_comparison": [
+    {
+      "baseline_id": "B3_non_personalized",
+      "name": "B3_non_personalized vs B0（偏好命中率）",
+      "metric_id": "preference_hit_rate",
+      "value": 0.0,
+      "delta": 0.0
+    },
+    {
+      "baseline_id": "M1_personalized_constrained",
+      "name": "M1_personalized_constrained vs B0（偏好命中率）",
+      "metric_id": "preference_hit_rate",
+      "value": 0.0,
+      "delta": 0.0
+    }
+  ],
+  "iterations": [
+    {
+      "iteration": "1",
+      "status": "stop_inconclusive",
+      "reason": "结果解释判定为 inconclusive（置信度 low）：detour_pass_rate=0.00、environment_win_rate=0.00、constraint_pass_rate=0.00、no_candidate_rate=0.40，仅 reference_verification_rate=1.00 通过；9 个画像（P01–P09）在 M1 距离门禁下候选集被清空并降级，18 个变体×画像单元无候选。数据质量同时下降：environment 模块预检为 partial，缺少 6 个导出快照文件（environment_latest.json、environment_hourly.json、grid_environment_latest.json、pollen_grid_scores.json、noise_segments.json、route_environment.json），270 个指标块为 estimated 估算值，且全部 90 条路线的 pm2_5/noise/pollen_daily 单位与文档化单位不一致；evaluation 多组候选风险状态为未知；存在 1 个致命数据错误。按决策规则，证据不足且数据质量下降时应停止（stop_inconclusive），不继续迭代；且当前为离线夹具语义下的固定案例矩阵，不触发网络刷新类动作。"
+    }
+  ],
+  "references": [
+    {
+      "source_id": "src-crossref-10-1016-s0140-6736-08-61689-x",
+      "title": "Effect of exposure to natural environment on health inequalities: an observational population study",
+      "year": 2008
+    },
+    {
+      "source_id": "src-crossref-10-1056-nejmoa1702747",
+      "title": "Air Pollution and Mortality in the Medicare Population",
+      "year": 2017
+    },
+    {
+      "source_id": "src-local-00-需求与总体架构",
+      "title": "00-需求与总体架构",
+      "year": null
+    },
+    {
+      "source_id": "src-pubmed-16805392",
+      "title": "[Changes in the lipoprotein metabolism in alcoholism do not recover during of prolonged remission].",
+      "year": 2006
+    },
+    {
+      "source_id": "src-pubmed-18994660",
+      "title": "The role of welfare state principles and generosity in social policy programmes for public health: an international comparative study.",
+      "year": 2008
+    },
+    {
+      "source_id": "src-pubmed-28657866",
+      "title": "Case 20-2017 - A 48-Year-Old Man with Weight Loss, Confusion, Skin Lesions, and Pancytopenia.",
+      "year": 2017
+    },
+    {
+      "source_id": "src-repo-Qwen-Harness-config-source-policy-json",
+      "title": "Qwen-Harness/config/source_policy.json",
+      "year": null
+    },
+    {
+      "source_id": "src-web-www-who-int-74719c668276",
+      "title": "WHO recommendations: non-clinical interventions to reduce unnecessary caesarean sections",
+      "year": null
+    },
+    {
+      "source_id": "src-web-www-who-int-b625d67c6f53",
+      "title": "WHO global air quality guidelines: particulate matter (‎PM2.5 and PM10)‎, ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide",
+      "year": null
+    }
+  ],
+  "limitations": [
+    "PM2.5 为网格/站点融合估计，不是站点实测或传感器实测值",
+    "花粉为日级背景/代理指标，不是逐时实测浓度",
+    "噪声为 0-100 风险代理，不是声级计实测",
+    "接驳距离为 GCJ-02 直线估算，实际道路距离通常更长",
+    "预设画像为固定案例矩阵，不解释为独立人群样本，不外推临床或人群结论",
+    "存在 18 个无候选单元，已如实记录"
+  ],
+  "artifacts": [
+    "Qwen-Harness/runtime/runs/run-20260902T035556Z-0a43adb5/reports/scientific_plan.json",
+    "Qwen-Harness/runtime/runs/run-20260902T035556Z-0a43adb5/reports/scientific_plan.md",
+    "Qwen-Harness/runtime/runs/run-20260902T035556Z-0a43adb5/reports/experiment_report.md",
+    "Qwen-Harness/runtime/runs/run-20260902T035556Z-0a43adb5/reports/reproducibility.md",
+    "Qwen-Harness/runtime/runs/run-20260902T035556Z-0a43adb5/experiments/experiment_results.json",
+    "Qwen-Harness/runtime/runs/run-20260902T035556Z-0a43adb5/experiments/metrics_summary.json"
+  ]
+}

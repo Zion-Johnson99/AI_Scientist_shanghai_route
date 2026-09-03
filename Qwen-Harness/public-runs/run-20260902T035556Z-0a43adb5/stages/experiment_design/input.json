@@ -1,0 +1,11 @@
+{
+  "stage": "experiment_design",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.agents.experiment_agent:stage_handler",
+  "dependencies": {
+    "hypothesis_selection": "91c910149095f7da52ae035bb761e8f947d43fa5878c573c4ed4c5bece3a4df0"
+  },
+  "prepared_at": "2026-09-02T04:13:05.082619+00:00"
+}

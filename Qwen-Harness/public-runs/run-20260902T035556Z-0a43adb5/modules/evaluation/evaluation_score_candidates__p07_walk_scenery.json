@@ -1,0 +1,52 @@
+{
+  "module": "evaluation",
+  "status": "ok",
+  "input_artifacts": [
+    "p07_walk_scenery_input.json",
+    "evaluation_model_qwen/config/default_weights.json",
+    "xuhui_route_builder/data/web/route_catalog.json",
+    "xuhui_route_builder/data/web/environment_dashboard.json"
+  ],
+  "output_artifacts": [
+    "experiments/score_candidates/P07_walk_scenery__B0_shortest_feasible.json",
+    "experiments/score_candidates/P07_walk_scenery__B1_pm25_only.json",
+    "experiments/score_candidates/P07_walk_scenery__B2_multi_environment.json",
+    "experiments/score_candidates/P07_walk_scenery__B3_non_personalized.json",
+    "experiments/score_candidates/P07_walk_scenery__M1_personalized_constrained.json"
+  ],
+  "data_hashes": {
+    "weights_sha256": "59c6c3d4001f9c2456148fec1ec86bd2919fa117c0cf2a14622e182639f0a47f"
+  },
+  "commands": [
+    {
+      "command_id": "evaluation.score_candidates.p07_walk_scenery",
+      "argv": [
+        "uv",
+        "run",
+        "--directory",
+        "<run_root>\\workspace\\source\\evaluation_model_qwen",
+        "python",
+        "<run_root>\\workspace\\source\\Qwen-Harness\\src\\qwen_harness\\adapters\\evaluation_score_candidates.py",
+        "--profile",
+        "<run_root>\\modules\\evaluation\\p07_walk_scenery_input.json",
+        "--weights",
+        "<run_root>\\workspace\\source\\evaluation_model_qwen\\config\\default_weights.json",
+        "--route-catalog",
+        "<run_root>\\workspace\\source\\xuhui_route_builder\\data\\web\\route_catalog.json",
+        "--environment-dashboard",
+        "<run_root>\\workspace\\source\\xuhui_route_builder\\data\\web\\environment_dashboard.json"
+      ],
+      "cwd": "<run_root>\\workspace\\source\\evaluation_model_qwen",
+      "started_at": "2026-09-02T06:53:13.746272Z",
+      "finished_at": "2026-09-02T06:53:14.153361Z",
+      "exit_code": 0,
+      "stdout_path": "<run_root>\\commands\\evaluation.score_candidates.p07_walk_scenery.4b55a275.stdout.log",
+      "stderr_path": "<run_root>\\commands\\evaluation.score_candidates.p07_walk_scenery.4b55a275.stderr.log",
+      "timeout": false
+    }
+  ],
+  "warnings": [
+    "候选数 9（风险状态 未知）"
+  ],
+  "errors": []
+}

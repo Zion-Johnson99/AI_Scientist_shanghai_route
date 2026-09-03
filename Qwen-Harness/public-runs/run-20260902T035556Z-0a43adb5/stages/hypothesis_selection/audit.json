@@ -1,0 +1,60 @@
+{
+  "handler": "qwen_harness.agents.critic_agent:selection_stage_handler",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 99367.6,
+  "status": "passed",
+  "summary": "选定假设 hyp-001",
+  "artifacts": [
+    "stages/hypothesis_selection/model_call.json"
+  ],
+  "offline": false,
+  "audited_at": "2026-09-02T04:09:40.423095+00:00",
+  "gate_result": {
+    "gate": "hypothesis",
+    "passed": true,
+    "checks": [
+      {
+        "name": "candidate_count",
+        "passed": true,
+        "detail": "候选假设 5/3"
+      },
+      {
+        "name": "falsifiable",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "complete_fields",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "name": "recommended_exists",
+        "passed": true,
+        "detail": "recommended_hypothesis_id='hyp-001'"
+      },
+      {
+        "name": "selected_exists",
+        "passed": true,
+        "detail": "评审已选出假设"
+      }
+    ],
+    "summary": "全部检查通过"
+  },
+  "model_audit": {
+    "stage": "hypothesis_selection",
+    "model": "qwen3.8-max",
+    "created_at": "2026-09-02T04:09:40.413892Z",
+    "request_id": "chatcmpl-4fa1b4d9-4ab0-978c-8d4b-07fc8a57b890",
+    "latency_ms": 99354.2,
+    "input_tokens": 11991,
+    "output_tokens": 4797,
+    "prompt_version": "c05ecf4b9f25",
+    "reasoning_effort": "medium",
+    "skill_hashes": {
+      "scientific-evidence-hypothesis": "fc24cebd192b5a8aa60857b7b58040c27e8dabb4d100adc23c40a09e0840f254"
+    },
+    "error_type": null
+  }
+}

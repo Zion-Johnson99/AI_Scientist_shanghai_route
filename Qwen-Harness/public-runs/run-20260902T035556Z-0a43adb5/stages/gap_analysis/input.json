@@ -1,0 +1,11 @@
+{
+  "stage": "gap_analysis",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.agents.gap_agent:stage_handler",
+  "dependencies": {
+    "citation_validation": "e595e94a32bb3b681fd16e1a38cf1f147e6b6726e3a093a08d7f5623e8983c86"
+  },
+  "prepared_at": "2026-09-02T04:02:03.738094+00:00"
+}

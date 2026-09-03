@@ -1,0 +1,31 @@
+{
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "round": 2,
+  "provider": "qoder_session",
+  "model_name": "qwen3.8-max",
+  "billing_channel": "qoder_credits",
+  "dashscope_api_used": false,
+  "recorded_at": "2026-09-02T12:57:05Z",
+  "model_channel": {
+    "execution_surface": "Qoder Goal session (interactive agent turn loop)",
+    "model_family_recorded": "qwen3.8-max",
+    "billed_through": "qoder_credits",
+    "dashscope_http_calls": 0,
+    "bailian_openai_compatible_calls": 0,
+    "bailian_sdk_calls": 0,
+    "qwen_model_client_from_env_invocations": 0,
+    "request_id_policy": "no synthetic request ids; empty list means zero calls"
+  },
+  "prohibited_actions_observed": {
+    "read_qwen_harness_dotenv": false,
+    "called_paid_llm_api": false,
+    "ran_online_qwen_harness_run": false,
+    "ran_online_resume": false,
+    "created_git_commit": false,
+    "created_git_branch": false,
+    "opened_pull_request": false,
+    "pushed_to_remote": false
+  },
+  "leaked_key_names": [],
+  "credits_evidence_status": "evidence_pending_user_capture"
+}

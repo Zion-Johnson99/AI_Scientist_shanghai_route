@@ -1,0 +1,11 @@
+{
+  "handler": "qwen_harness.workflow.stages:module_execution_stage",
+  "attempt": 1,
+  "retries_allowed": 2,
+  "elapsed_ms": 266665.4,
+  "status": "passed",
+  "summary": "执行模块操作 12 个",
+  "artifacts": [],
+  "offline": false,
+  "audited_at": "2026-09-02T06:53:15.687163+00:00"
+}

@@ -1,0 +1,27 @@
+{
+  "check": "output_boundary",
+  "checked_at": "2026-09-03T08:17:45Z",
+  "rule": "本次 run 只允许写入 Qwen-Harness/runtime/runs/<run-id>/，仓库其余部分保持只读且不得产生提交",
+  "authority": "git（工作树状态 + .gitignore 规则 + 与 run_manifest.json 的 HEAD/分支比对）",
+  "passed": true,
+  "violations": [],
+  "repo_toplevel": "<repo_root>",
+  "branch": "Qwen_Harness_Build",
+  "head": "a7c0fc6ae13b124a69bae7909cb095ba2003eda8",
+  "manifest_branch": "Qwen_Harness_Build",
+  "manifest_head": "a7c0fc6ae13b124a69bae7909cb095ba2003eda8",
+  "status_lines": [
+    "?? .vscode/"
+  ],
+  "editor_local_status_lines": [
+    "?? .vscode/"
+  ],
+  "editor_local_prefixes": [
+    ".vscode/"
+  ],
+  "unstaged_files": [],
+  "staged_files": [],
+  "run_ignore_rule": "Qwen-Harness/.gitignore:5:runtime/*\tQwen-Harness/runtime/runs",
+  "run_ignore_target": "Qwen-Harness/runtime/runs",
+  "run_dir_relative": "Qwen-Harness/runtime/runs/run-20260902T125247Z-d8922e23"
+}

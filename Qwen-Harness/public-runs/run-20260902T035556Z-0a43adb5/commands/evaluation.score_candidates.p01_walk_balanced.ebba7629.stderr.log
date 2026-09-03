@@ -1,0 +1,11 @@
+warning: `VIRTUAL_ENV=<repo_root>\Qwen-Harness\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+   Building evaluation-model-qwen @ <run_root>/workspace/source/evaluation_model_qwen
+      Built evaluation-model-qwen @ <run_root>/workspace/source/evaluation_model_qwen
+warning: Failed to hardlink files; falling back to full copy. This may lead to degraded performance.
+         If the cache and target directories are on different filesystems, hardlinking may not be supported.
+         If this is intentional, set `export UV_LINK_MODE=copy` or use `--link-mode=copy` to suppress this warning.
+Installed 22 packages in 3.12s
+Traceback (most recent call last):
+  File "<run_root>\workspace\source\Qwen-Harness\src\qwen_harness\adapters\evaluation_score_candidates.py", line 17, in <module>
+    from qwen_harness.subprocess_runner import SafeSubprocessRunner, CommandAudit
+ModuleNotFoundError: No module named 'qwen_harness'

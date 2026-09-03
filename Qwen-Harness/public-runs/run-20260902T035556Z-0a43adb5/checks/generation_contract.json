@@ -1,0 +1,230 @@
+{
+  "score": 90,
+  "threshold": 85,
+  "passed": true,
+  "provenance": "qwen",
+  "checks": [
+    {
+      "name": "project_roots",
+      "label": "四源码目录",
+      "weight": 8,
+      "earned": 8,
+      "passed": true,
+      "critical": false,
+      "detail": "已找到 4/4 个目录",
+      "evidence": [
+        "Qwen-Harness",
+        "evaluation_model_qwen",
+        "weather_api_data",
+        "xuhui_route_builder"
+      ]
+    },
+    {
+      "name": "environment_interface",
+      "label": "环境数据接口",
+      "weight": 10,
+      "earned": 0,
+      "passed": false,
+      "critical": false,
+      "detail": "缺少可识别的环境数据入口",
+      "evidence": [
+        "weather_api_data/config/sources.json",
+        "weather_api_data/pyproject.toml",
+        "weather_api_data/src/weather_api_data/cli.py",
+        "weather_api_data/src/weather_api_data/pipeline.py",
+        "weather_api_data/src/weather_api_data/route_environment.py",
+        "weather_api_data/src/weather_api_data/web_export.py",
+        "weather_api_data/tests/test_pipeline.py",
+        "weather_api_data/tests/test_web_export.py",
+        "xuhui_route_builder/data/web/environment_dashboard.json"
+      ]
+    },
+    {
+      "name": "route_generation",
+      "label": "路线生成能力",
+      "weight": 10,
+      "earned": 10,
+      "passed": true,
+      "critical": false,
+      "detail": "已检测路线生成入口",
+      "evidence": [
+        "xuhui_route_builder/data/web/access_cases.json",
+        "xuhui_route_builder/data/web/environment_dashboard.json",
+        "xuhui_route_builder/data/web/poi_catalog.json",
+        "xuhui_route_builder/data/web/route_catalog.json",
+        "xuhui_route_builder/data/web/xuhui_routes.geojson",
+        "xuhui_route_builder/pyproject.toml",
+        "xuhui_route_builder/src/xuhui_route_builder/cli.py",
+        "xuhui_route_builder/src/xuhui_route_builder/generate_data.py",
+        "xuhui_route_builder/src/xuhui_route_builder/models.py",
+        "xuhui_route_builder/src/xuhui_route_builder/validation.py",
+        "xuhui_route_builder/tests/research_harness_data_contract.test.mjs",
+        "xuhui_route_builder/tests/research_harness_ui_contract.test.mjs",
+        "xuhui_route_builder/tests/route_data_contract.test.mjs",
+        "xuhui_route_builder/web/index.html",
+        "xuhui_route_builder/web/src/data-loader.js",
+        "xuhui_route_builder/web/src/main.js",
+        "xuhui_route_builder/web/src/map.js",
+        "xuhui_route_builder/web/src/recommendation-ui.js",
+        "xuhui_route_builder/web/src/research-harness-ui.js",
+        "xuhui_route_builder/web/styles/main.css",
+        "xuhui_route_builder/web/styles/research-harness.css"
+      ]
+    },
+    {
+      "name": "evaluation_api",
+      "label": "评价 API 与健康端点",
+      "weight": 12,
+      "earned": 12,
+      "passed": true,
+      "critical": false,
+      "detail": "评价与健康端点齐全",
+      "evidence": [
+        "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py",
+        "evaluation_model_qwen/config/default_weights.json",
+        "evaluation_model_qwen/pyproject.toml",
+        "evaluation_model_qwen/src/evaluation_model_qwen/api.py",
+        "evaluation_model_qwen/src/evaluation_model_qwen/cli.py",
+        "evaluation_model_qwen/src/evaluation_model_qwen/constraints.py",
+        "evaluation_model_qwen/src/evaluation_model_qwen/loaders.py",
+        "evaluation_model_qwen/src/evaluation_model_qwen/models.py",
+        "evaluation_model_qwen/src/evaluation_model_qwen/scoring.py",
+        "evaluation_model_qwen/src/evaluation_model_qwen/service.py",
+        "evaluation_model_qwen/tests/test_score_candidates.py",
+        "evaluation_model_qwen/tests/test_scoring.py"
+      ]
+    },
+    {
+      "name": "route_catalog_90",
+      "label": "90 条路线",
+      "weight": 12,
+      "earned": 12,
+      "passed": true,
+      "critical": false,
+      "detail": "检测到 90 条结构合格路线",
+      "evidence": [
+        "xuhui_route_builder/data/web/access_cases.json",
+        "xuhui_route_builder/data/web/route_catalog.json"
+      ]
+    },
+    {
+      "name": "map_web",
+      "label": "地图网页",
+      "weight": 12,
+      "earned": 12,
+      "passed": true,
+      "critical": false,
+      "detail": "地图容器与地图实现齐全",
+      "evidence": [
+        "xuhui_route_builder/data/web/access_cases.json",
+        "xuhui_route_builder/data/web/environment_dashboard.json",
+        "xuhui_route_builder/data/web/poi_catalog.json",
+        "xuhui_route_builder/data/web/route_catalog.json",
+        "xuhui_route_builder/web/index.html",
+        "xuhui_route_builder/web/src/data-loader.js",
+        "xuhui_route_builder/web/src/main.js",
+        "xuhui_route_builder/web/src/map.js",
+        "xuhui_route_builder/web/src/recommendation-ui.js",
+        "xuhui_route_builder/web/src/research-harness-ui.js",
+        "xuhui_route_builder/web/styles/main.css",
+        "xuhui_route_builder/web/styles/research-harness.css"
+      ]
+    },
+    {
+      "name": "core_interactions",
+      "label": "核心交互",
+      "weight": 8,
+      "earned": 8,
+      "passed": true,
+      "critical": false,
+      "detail": "检测到 3/4 类交互标记",
+      "evidence": [
+        "xuhui_route_builder/data/web/access_cases.json",
+        "xuhui_route_builder/data/web/environment_dashboard.json",
+        "xuhui_route_builder/data/web/poi_catalog.json",
+        "xuhui_route_builder/data/web/route_catalog.json",
+        "xuhui_route_builder/web/index.html",
+        "xuhui_route_builder/web/src/data-loader.js",
+        "xuhui_route_builder/web/src/main.js",
+        "xuhui_route_builder/web/src/map.js",
+        "xuhui_route_builder/web/src/recommendation-ui.js",
+        "xuhui_route_builder/web/src/research-harness-ui.js",
+        "xuhui_route_builder/web/styles/main.css",
+        "xuhui_route_builder/web/styles/research-harness.css"
+      ]
+    },
+    {
+      "name": "local_launcher",
+      "label": "本地启动",
+      "weight": 8,
+      "earned": 8,
+      "passed": true,
+      "critical": false,
+      "detail": "本地启动脚本已就绪",
+      "evidence": [
+        "Qwen-Harness/launch-local.ps1"
+      ]
+    },
+    {
+      "name": "tests_present",
+      "label": "自动化测试",
+      "weight": 8,
+      "earned": 8,
+      "passed": true,
+      "critical": false,
+      "detail": "检测到 10 个测试文件",
+      "evidence": [
+        "Qwen-Harness/tests/test_experiment_metrics.py",
+        "Qwen-Harness/tests/test_run_store.py",
+        "Qwen-Harness/tests/test_workflow_engine.py",
+        "evaluation_model_qwen/tests/test_score_candidates.py",
+        "evaluation_model_qwen/tests/test_scoring.py",
+        "weather_api_data/tests/test_pipeline.py",
+        "weather_api_data/tests/test_web_export.py",
+        "xuhui_route_builder/tests/research_harness_data_contract.test.mjs",
+        "xuhui_route_builder/tests/research_harness_ui_contract.test.mjs",
+        "xuhui_route_builder/tests/route_data_contract.test.mjs"
+      ]
+    },
+    {
+      "name": "absolute_paths",
+      "label": "绝对路径检查",
+      "weight": 3,
+      "earned": 3,
+      "passed": true,
+      "critical": true,
+      "detail": "未发现机器绝对路径",
+      "evidence": []
+    },
+    {
+      "name": "sensitive_information",
+      "label": "敏感信息检查",
+      "weight": 5,
+      "earned": 5,
+      "passed": true,
+      "critical": true,
+      "detail": "未发现硬编码凭据",
+      "evidence": []
+    },
+    {
+      "name": "path_boundary",
+      "label": "源码路径边界",
+      "weight": 2,
+      "earned": 2,
+      "passed": true,
+      "critical": true,
+      "detail": "全部文件位于源码根目录",
+      "evidence": []
+    },
+    {
+      "name": "path_traversal",
+      "label": "路径穿越检查",
+      "weight": 2,
+      "earned": 2,
+      "passed": true,
+      "critical": true,
+      "detail": "未发现父级穿越片段",
+      "evidence": []
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "skills_snapshotted": [
+    "qwen-harness-orchestration",
+    "scientific-evidence-hypothesis",
+    "evaluation-qwen-experiments",
+    "xuhui-route-builder-engineering",
+    "weather-environment-pipeline",
+    "web-product-integration"
+  ],
+  "skills_missing": [],
+  "derived_config_keys": [
+    "supported_thresholds",
+    "weights"
+  ]
+}

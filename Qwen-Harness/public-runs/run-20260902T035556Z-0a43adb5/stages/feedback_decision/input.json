@@ -1,0 +1,11 @@
+{
+  "stage": "feedback_decision",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.agents.feedback_agent:stage_handler",
+  "dependencies": {
+    "experiment_analysis": "2605504713dab25f76e263dff336f194492dcfea8595693fc3808f8ed1c59251"
+  },
+  "prepared_at": "2026-09-02T06:53:16.655535+00:00"
+}

@@ -1,0 +1,38 @@
+### environment
+  },
+  "validation_passed": true,
+  "validation_errors": [],
+  "validation_warnings": []
+}
+### evaluation
+== evaluation ==
+   FAILED ModuleNotFoundError: No module named 'evaluation'
+STAGES_FAILED=1
+### web
+  "environment_cells": 54,
+  "missing_inputs": [],
+  "partial_data": false,
+  "payload_bytes": 15104994
+}
+### route_spatial
+FAIL total_route_count:86
+FAIL mode_count:bike=26
+FAIL band_count:bike:2=6
+routes=86 accepted=86 modes={'walk': 30, 'run': 30, 'bike': 26} overlap_violations=0
+ROUTE_SPATIAL_QUALITY_PASSED=false
+### env_contract
+cells=54/54 dashboard_routes=86 catalog_routes=86 sets_equal=True worst_missing_rate=0.0
+ENVIRONMENT_CONTRACT_PASSED=true
+### eval_api
+recommend_keys=['alternatives', 'candidate_count', 'candidates', 'data_generated_at', 'empty_reason', 'filters_applied', 'ignored_request_keys', 'missing_inputs', 'offline', 'partial_data', 'primary', 'profile']
+FAIL /health missing_inputs=None
+FAIL /health route_count=86
+EVALUATION_API_PASSED=false
+### pytest_weather
+=========================== short test summary info ===========================
+FAILED weather_api_data/tests/test_environment_contract.py::test_route_join
+### pytest_builder
+FAILED xuhui_route_builder/tests/test_route_artifacts.py::test_portfolio_composition
+FAILED xuhui_route_builder/tests/test_route_artifacts.py::test_distance_band_counts
+FAILED xuhui_route_builder/tests/test_route_artifacts.py::test_geojson_coordinates_in_district_bbox
+EXIT=0

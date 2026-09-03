@@ -1,0 +1,11 @@
+{
+  "stage": "source_collection",
+  "iteration": 1,
+  "workflow": "full-research",
+  "offline": false,
+  "handler": "qwen_harness.sources.base:source_collection_stage",
+  "dependencies": {
+    "problem_framing": "7becce12fedbe913847c89c22d971b36b66f0d6aa85f3998b17b3fe11db1cb7c"
+  },
+  "prepared_at": "2026-09-02T03:57:58.673623+00:00"
+}

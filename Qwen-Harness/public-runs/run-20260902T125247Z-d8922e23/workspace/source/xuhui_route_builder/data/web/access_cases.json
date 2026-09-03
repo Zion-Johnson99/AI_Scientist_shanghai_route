@@ -1,0 +1,372 @@
+{
+  "version": 1,
+  "generated_at": "2026-09-03T07:34:13Z",
+  "run_id": "run-20260902T125247Z-d8922e23",
+  "crs": "CRS84/WGS84 (lon,lat)",
+  "provenance": "deterministic_estimate",
+  "detour_factor": 1.35,
+  "access_speed_kmh": 4.8,
+  "case_count": 12,
+  "cases": [
+    {
+      "case_id": "ACC_001",
+      "origin": {
+        "poi_id": 47013031,
+        "name_zh": "龙漕路",
+        "kind": "station",
+        "coord": [
+          121.439769,
+          31.171473
+        ]
+      },
+      "destination": {
+        "route_id": "XH_WALK_0001",
+        "route_name": "龙华·轻松短程闭环路线01",
+        "mode": "walk",
+        "coord": [
+          121.445549,
+          31.175047
+        ]
+      },
+      "straight_line_m": 678.5,
+      "estimated_access_m": 915.9,
+      "estimated_access_min": 11.4,
+      "detour_factor": 1.35,
+      "access_speed_kmh": 4.8,
+      "access_mode": "walk",
+      "provenance": "deterministic_estimate",
+      "note": "直线距离乘 1.35 绕行系数估算，未调用任何在线路径规划接口",
+      "crs": "CRS84/WGS84 (lon,lat)"
+    },
+    {
+      "case_id": "ACC_002",
+      "origin": {
+        "poi_id": 71799638,
+        "name_zh": "宜山路",
+        "kind": "station",
+        "coord": [
+          121.42261,
+          31.188504
+        ]
+      },
+      "destination": {
+        "route_id": "XH_WALK_0025",
+        "route_name": "徐家汇·长距健行闭环路线25",
+        "mode": "walk",
+        "coord": [
+          121.418144,
+          31.195249
+        ]
+      },
+      "straight_line_m": 862.0,
+      "estimated_access_m": 1163.6,
+      "estimated_access_min": 14.5,
+      "detour_factor": 1.35,
+      "access_speed_kmh": 4.8,
+      "access_mode": "walk",
+      "provenance": "deterministic_estimate",
+      "note": "直线距离乘 1.35 绕行系数估算，未调用任何在线路径规划接口",
+      "crs": "CRS84/WGS84 (lon,lat)"
+    },
+    {
+      "case_id": "ACC_003",
+      "origin": {
+        "poi_id": 71799647,
+        "name_zh": "漕溪路",
+        "kind": "station",
+        "coord": [
+          121.433734,
+          31.178638
+        ]
+      },
+      "destination": {
+        "route_id": "XH_WALK_0001",
+        "route_name": "龙华·轻松短程闭环路线01",
+        "mode": "walk",
+        "coord": [
+          121.445549,
+          31.175047
+        ]
+      },
+      "straight_line_m": 1192.8,
+      "estimated_access_m": 1610.3,
+      "estimated_access_min": 20.1,
+      "detour_factor": 1.35,
+      "access_speed_kmh": 4.8,
+      "access_mode": "walk",
+      "provenance": "deterministic_estimate",
+      "note": "直线距离乘 1.35 绕行系数估算，未调用任何在线路径规划接口",
+      "crs": "CRS84/WGS84 (lon,lat)"
+    },
+    {
+      "case_id": "ACC_004",
+      "origin": {
+        "poi_id": 95222724,
+        "name_zh": "石龙路",
+        "kind": "station",
+        "coord": [
+          121.438563,
+          31.159846
+        ]
+      },
+      "destination": {
+        "route_id": "XH_WALK_0029",
+        "route_name": "上海植物园·长距健行单程路线29",
+        "mode": "walk",
+        "coord": [
+          121.443445,
+          31.150653
+        ]
+      },
+      "straight_line_m": 1122.8,
+      "estimated_access_m": 1515.8,
+      "estimated_access_min": 18.9,
+      "detour_factor": 1.35,
+      "access_speed_kmh": 4.8,
+      "access_mode": "walk",
+      "provenance": "deterministic_estimate",
+      "note": "直线距离乘 1.35 绕行系数估算，未调用任何在线路径规划接口",
+      "crs": "CRS84/WGS84 (lon,lat)"
+    },
+    {
+      "case_id": "ACC_005",
+      "origin": {
+        "poi_id": 95222731,
+        "name_zh": "上海南站",
+        "kind": "station",
+        "coord": [
+          121.42654,
+          31.155215
+        ]
+      },
+      "destination": {
+        "route_id": "XH_WALK_0002",
+        "route_name": "康健园·轻松短程闭环路线02",
+        "mode": "walk",
+        "coord": [
+          121.412115,
+          31.156427
+        ]
+      },
+      "straight_line_m": 1379.2,
+      "estimated_access_m": 1862.0,
+      "estimated_access_min": 23.3,
+      "detour_factor": 1.35,
+      "access_speed_kmh": 4.8,
+      "access_mode": "walk",
+      "provenance": "deterministic_estimate",
+      "note": "直线距离乘 1.35 绕行系数估算，未调用任何在线路径规划接口",
+      "crs": "CRS84/WGS84 (lon,lat)"
+    },
+    {
+      "case_id": "ACC_006",
+      "origin": {
+        "poi_id": 264051326,
+        "name_zh": "上海南站",
+        "kind": "station",
+        "coord": [
+          121.425504,
+          31.156646
+        ]
+      },
+      "destination": {
+        "route_id": "XH_WALK_0002",
+        "route_name": "康健园·轻松短程闭环路线02",
+        "mode": "walk",
+        "coord": [
+          121.412115,
+          31.156427
+        ]
+      },
+      "straight_line_m": 1274.3,
+      "estimated_access_m": 1720.3,
+      "estimated_access_min": 21.5,
+      "detour_factor": 1.35,
+      "access_speed_kmh": 4.8,
+      "access_mode": "walk",
+      "provenance": "deterministic_estimate",
+      "note": "直线距离乘 1.35 绕行系数估算，未调用任何在线路径规划接口",
+      "crs": "CRS84/WGS84 (lon,lat)"
+    },
+    {
+      "case_id": "ACC_007",
+      "origin": {
+        "poi_id": 264106785,
+        "name_zh": "漕宝路",
+        "kind": "station",
+        "coord": [
+          121.430321,
+          31.170006
+        ]
+      },
+      "destination": {
+        "route_id": "XH_WALK_0001",
+        "route_name": "龙华·轻松短程闭环路线01",
+        "mode": "walk",
+        "coord": [
+          121.445549,
+          31.175047
+        ]
+      },
+      "straight_line_m": 1553.4,
+      "estimated_access_m": 2097.2,
+      "estimated_access_min": 26.2,
+      "detour_factor": 1.35,
+      "access_speed_kmh": 4.8,
+      "access_mode": "walk",
+      "provenance": "deterministic_estimate",
+      "note": "直线距离乘 1.35 绕行系数估算，未调用任何在线路径规划接口",
+      "crs": "CRS84/WGS84 (lon,lat)"
+    },
+    {
+      "case_id": "ACC_008",
+      "origin": {
+        "poi_id": 264109694,
+        "name_zh": "上海体育馆",
+        "kind": "station",
+        "coord": [
+          121.431653,
+          31.183641
+        ]
+      },
+      "destination": {
+        "route_id": "XH_WALK_0001",
+        "route_name": "龙华·轻松短程闭环路线01",
+        "mode": "walk",
+        "coord": [
+          121.445549,
+          31.175047
+        ]
+      },
+      "straight_line_m": 1631.2,
+      "estimated_access_m": 2202.1,
+      "estimated_access_min": 27.5,
+      "detour_factor": 1.35,
+      "access_speed_kmh": 4.8,
+      "access_mode": "walk",
+      "provenance": "deterministic_estimate",
+      "note": "直线距离乘 1.35 绕行系数估算，未调用任何在线路径规划接口",
+      "crs": "CRS84/WGS84 (lon,lat)"
+    },
+    {
+      "case_id": "ACC_009",
+      "origin": {
+        "poi_id": 471013952,
+        "name_zh": "徐家汇",
+        "kind": "station",
+        "coord": [
+          121.433903,
+          31.195076
+        ]
+      },
+      "destination": {
+        "route_id": "XH_WALK_0019",
+        "route_name": "徐家汇·中等距离单程路线19",
+        "mode": "walk",
+        "coord": [
+          121.447875,
+          31.200932
+        ]
+      },
+      "straight_line_m": 1479.9,
+      "estimated_access_m": 1997.9,
+      "estimated_access_min": 25.0,
+      "detour_factor": 1.35,
+      "access_speed_kmh": 4.8,
+      "access_mode": "walk",
+      "provenance": "deterministic_estimate",
+      "note": "直线距离乘 1.35 绕行系数估算，未调用任何在线路径规划接口",
+      "crs": "CRS84/WGS84 (lon,lat)"
+    },
+    {
+      "case_id": "ACC_010",
+      "origin": {
+        "poi_id": 471014085,
+        "name_zh": "衡山路",
+        "kind": "station",
+        "coord": [
+          121.441941,
+          31.206453
+        ]
+      },
+      "destination": {
+        "route_id": "XH_WALK_0019",
+        "route_name": "徐家汇·中等距离单程路线19",
+        "mode": "walk",
+        "coord": [
+          121.447875,
+          31.200932
+        ]
+      },
+      "straight_line_m": 833.9,
+      "estimated_access_m": 1125.8,
+      "estimated_access_min": 14.1,
+      "detour_factor": 1.35,
+      "access_speed_kmh": 4.8,
+      "access_mode": "walk",
+      "provenance": "deterministic_estimate",
+      "note": "直线距离乘 1.35 绕行系数估算，未调用任何在线路径规划接口",
+      "crs": "CRS84/WGS84 (lon,lat)"
+    },
+    {
+      "case_id": "ACC_011",
+      "origin": {
+        "poi_id": 482002481,
+        "name_zh": "龙华中路",
+        "kind": "station",
+        "coord": [
+          121.452542,
+          31.186328
+        ]
+      },
+      "destination": {
+        "route_id": "XH_WALK_0001",
+        "route_name": "龙华·轻松短程闭环路线01",
+        "mode": "walk",
+        "coord": [
+          121.445549,
+          31.175047
+        ]
+      },
+      "straight_line_m": 1419.9,
+      "estimated_access_m": 1916.8,
+      "estimated_access_min": 24.0,
+      "detour_factor": 1.35,
+      "access_speed_kmh": 4.8,
+      "access_mode": "walk",
+      "provenance": "deterministic_estimate",
+      "note": "直线距离乘 1.35 绕行系数估算，未调用任何在线路径规划接口",
+      "crs": "CRS84/WGS84 (lon,lat)"
+    },
+    {
+      "case_id": "ACC_012",
+      "origin": {
+        "poi_id": 482002482,
+        "name_zh": "东安路",
+        "kind": "station",
+        "coord": [
+          121.450122,
+          31.192604
+        ]
+      },
+      "destination": {
+        "route_id": "XH_WALK_0019",
+        "route_name": "徐家汇·中等距离单程路线19",
+        "mode": "walk",
+        "coord": [
+          121.447875,
+          31.200932
+        ]
+      },
+      "straight_line_m": 950.4,
+      "estimated_access_m": 1283.0,
+      "estimated_access_min": 16.0,
+      "detour_factor": 1.35,
+      "access_speed_kmh": 4.8,
+      "access_mode": "walk",
+      "provenance": "deterministic_estimate",
+      "note": "直线距离乘 1.35 绕行系数估算，未调用任何在线路径规划接口",
+      "crs": "CRS84/WGS84 (lon,lat)"
+    }
+  ]
+}

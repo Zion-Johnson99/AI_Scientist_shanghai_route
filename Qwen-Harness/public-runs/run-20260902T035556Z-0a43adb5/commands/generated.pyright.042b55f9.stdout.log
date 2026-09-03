@@ -1,0 +1,428 @@
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:20:8 - error: Import "click" could not be resolved (reportMissingImports)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:188:17 - error: Arguments missing for parameters "settings", "config" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:189:18 - error: Arguments missing for parameters "goal", "options" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:190:13 - error: No parameter named "goal_text" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:191:13 - error: No parameter named "workflow_name" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:192:13 - error: No parameter named "offline" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:193:13 - error: No parameter named "network_allowed" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:194:13 - error: No parameter named "refresh_environment" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:195:13 - error: No parameter named "approval_mode" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:196:13 - error: No parameter named "publish_web" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:197:13 - error: No parameter named "max_iterations" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:210:13 - error: No parameter named "store" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:211:13 - error: No parameter named "run_id" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:212:13 - error: No parameter named "workflow_def" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:213:13 - error: No parameter named "config" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:214:13 - error: No parameter named "offline" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:215:13 - error: No parameter named "network_allowed" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:217:25 - error: Cannot access attribute "execute" for class "WorkflowEngine"
+    Attribute "execute" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:282:17 - error: Arguments missing for parameters "settings", "config" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:283:23 - error: Cannot access attribute "load_state" for class "RunStore"
+    Attribute "load_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:301:14 - error: Cannot access attribute "is_locked" for class "RunStore"
+    Attribute "is_locked" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:323:13 - error: No parameter named "store" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:324:13 - error: No parameter named "run_id" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:325:13 - error: No parameter named "workflow_def" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:326:13 - error: No parameter named "config" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:327:13 - error: No parameter named "offline" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:328:13 - error: No parameter named "network_allowed" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:330:18 - error: Argument missing for parameter "run_id" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:373:17 - error: Arguments missing for parameters "settings", "config" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:374:23 - error: Cannot access attribute "load_state" for class "RunStore"
+    Attribute "load_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:408:17 - error: Arguments missing for parameters "settings", "config" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:409:23 - error: Cannot access attribute "load_state" for class "RunStore"
+    Attribute "load_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:428:19 - error: Object of type "Path" is not callable
+    Attribute "__call__" is unknown (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:460:17 - error: Arguments missing for parameters "settings", "config" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:461:23 - error: Cannot access attribute "load_state" for class "RunStore"
+    Attribute "load_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:479:19 - error: Object of type "Path" is not callable
+    Attribute "__call__" is unknown (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:617:17 - error: Arguments missing for parameters "settings", "config" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:618:22 - error: Cannot access attribute "list_runs" for class "RunStore"
+    Attribute "list_runs" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:683:14 - error: "os" is not defined (reportUndefinedVariable)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:686:13 - error: "os" is not defined (reportUndefinedVariable)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:687:9 - error: "os" is not defined (reportUndefinedVariable)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\src\qwen_harness\cli.py:691:13 - error: "os" is not defined (reportUndefinedVariable)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_experiment_metrics.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_experiment_metrics.py:12:6 - error: Import "qwen_harness.experiment.metrics" could not be resolved (reportMissingImports)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:28:5 - error: "LockConflictError" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:29:5 - error: "atomic_write_json" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:30:5 - error: "read_json_safe" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:50:12 - error: Arguments missing for parameters "paths", "settings", "config" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:50:21 - error: No parameter named "base_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:50:50 - error: No parameter named "run_id" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:156:26 - error: Cannot access attribute "create_manifest" for class "RunStore"
+    Attribute "create_manifest" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:175:15 - error: Cannot access attribute "create_manifest" for class "RunStore"
+    Attribute "create_manifest" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:200:26 - error: Cannot access attribute "create_manifest" for class "RunStore"
+    Attribute "create_manifest" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:222:23 - error: Cannot access attribute "init_state" for class "RunStore"
+    Attribute "init_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:228:15 - error: Cannot access attribute "init_state" for class "RunStore"
+    Attribute "init_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:229:15 - error: Cannot access attribute "advance_stage" for class "RunStore"
+    Attribute "advance_stage" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:230:23 - error: Cannot access attribute "load_state" for class "RunStore"
+    Attribute "load_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:236:15 - error: Cannot access attribute "init_state" for class "RunStore"
+    Attribute "init_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:237:15 - error: Cannot access attribute "mark_stage_failed" for class "RunStore"
+    Attribute "mark_stage_failed" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:238:23 - error: Cannot access attribute "load_state" for class "RunStore"
+    Attribute "load_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:244:15 - error: Cannot access attribute "init_state" for class "RunStore"
+    Attribute "init_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:245:15 - error: Cannot access attribute "mark_completed" for class "RunStore"
+    Attribute "mark_completed" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:246:23 - error: Cannot access attribute "load_state" for class "RunStore"
+    Attribute "load_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:251:15 - error: Cannot access attribute "init_state" for class "RunStore"
+    Attribute "init_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:346:15 - error: Cannot access attribute "init_state" for class "RunStore"
+    Attribute "init_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:347:15 - error: Cannot access attribute "advance_stage" for class "RunStore"
+    Attribute "advance_stage" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:348:15 - error: Cannot access attribute "advance_stage" for class "RunStore"
+    Attribute "advance_stage" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:351:27 - error: Cannot access attribute "recover" for class "RunStore"
+    Attribute "recover" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:359:15 - error: Cannot access attribute "init_state" for class "RunStore"
+    Attribute "init_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:360:15 - error: Cannot access attribute "advance_stage" for class "RunStore"
+    Attribute "advance_stage" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:361:15 - error: Cannot access attribute "mark_stage_failed" for class "RunStore"
+    Attribute "mark_stage_failed" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:363:27 - error: Cannot access attribute "recover" for class "RunStore"
+    Attribute "recover" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:374:19 - error: Cannot access attribute "recover" for class "RunStore"
+    Attribute "recover" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:384:19 - error: Cannot access attribute "recover" for class "RunStore"
+    Attribute "recover" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:396:15 - error: Cannot access attribute "append_event" for class "RunStore"
+    Attribute "append_event" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:397:15 - error: Cannot access attribute "append_event" for class "RunStore"
+    Attribute "append_event" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:410:15 - error: Cannot access attribute "append_event" for class "RunStore"
+    Attribute "append_event" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:411:15 - error: Cannot access attribute "append_event" for class "RunStore"
+    Attribute "append_event" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:430:15 - error: Cannot access attribute "create_manifest" for class "RunStore"
+    Attribute "create_manifest" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:439:15 - error: Cannot access attribute "init_state" for class "RunStore"
+    Attribute "init_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:444:19 - error: Cannot access attribute "append_event" for class "RunStore"
+    Attribute "append_event" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:446:23 - error: Cannot access attribute "advance_stage" for class "RunStore"
+    Attribute "advance_stage" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:447:19 - error: Cannot access attribute "append_event" for class "RunStore"
+    Attribute "append_event" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:449:15 - error: Cannot access attribute "mark_completed" for class "RunStore"
+    Attribute "mark_completed" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_run_store.py:453:23 - error: Cannot access attribute "load_state" for class "RunStore"
+    Attribute "load_state" is unknown (reportAttributeAccessIssue)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:14:5 - error: "StageStatus" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:16:5 - error: "StageConfig" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:17:5 - error: "GateConfig" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:62:27 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:62:40 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:79:16 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:80:16 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:99:16 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:100:16 - error: Cannot access attribute "run_stage" for class "WorkflowEngine"
+    Attribute "run_stage" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:107:20 - error: Cannot access attribute "run_stage" for class "WorkflowEngine"
+    Attribute "run_stage" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:124:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:124:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:132:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:133:22 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:147:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:147:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:152:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:153:13 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:155:21 - error: Cannot access attribute "get_state" for class "WorkflowEngine"
+    Attribute "get_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:170:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:170:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:183:22 - error: Cannot assign to attribute "output_schema" for class "StageSpec"
+    Attribute "output_schema" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:188:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:189:22 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:198:22 - error: Cannot assign to attribute "output_schema" for class "StageSpec"
+    Attribute "output_schema" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:202:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:202:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:207:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:208:22 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:217:22 - error: Cannot assign to attribute "output_schema" for class "StageSpec"
+    Attribute "output_schema" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:221:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:221:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:226:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:227:22 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:246:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:246:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:254:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:257:13 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:266:13 - error: Cannot access attribute "mark_stage_completed" for class "WorkflowEngine"
+    Attribute "mark_stage_completed" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:267:13 - error: Cannot access attribute "mark_stage_completed" for class "WorkflowEngine"
+    Attribute "mark_stage_completed" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:271:31 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:271:44 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:272:14 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:273:14 - error: Cannot access attribute "load_state" for class "WorkflowEngine"
+    Attribute "load_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:274:23 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:283:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:283:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:291:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:295:13 - error: Cannot access attribute "mark_stage_completed" for class "WorkflowEngine"
+    Attribute "mark_stage_completed" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:299:31 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:299:44 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:300:14 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:301:14 - error: Cannot access attribute "load_state" for class "WorkflowEngine"
+    Attribute "load_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:302:14 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:313:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:313:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:321:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:325:13 - error: Cannot access attribute "mark_stage_completed" for class "WorkflowEngine"
+    Attribute "mark_stage_completed" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:326:13 - error: Cannot access attribute "mark_stage_retryable" for class "WorkflowEngine"
+    Attribute "mark_stage_retryable" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:328:31 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:328:44 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:329:14 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:330:14 - error: Cannot access attribute "load_state" for class "WorkflowEngine"
+    Attribute "load_state" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:331:14 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:348:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:348:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:353:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:354:13 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:365:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:365:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:370:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:371:13 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:382:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:382:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:387:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:388:13 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:408:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:408:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:413:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:414:22 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:426:30 - error: No parameter named "workflow" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:426:43 - error: No parameter named "run_dir" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:433:13 - error: Cannot access attribute "set_executor" for class "WorkflowEngine"
+    Attribute "set_executor" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\Qwen-Harness\tests\test_workflow_engine.py:434:22 - error: Cannot access attribute "run_all" for class "WorkflowEngine"
+    Attribute "run_all" is unknown (reportAttributeAccessIssue)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\api.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\api.py:11:6 - error: Import "fastapi" could not be resolved (reportMissingImports)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\api.py:67:19 - error: Argument missing for parameter "case_id" (reportCallIssue)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\cli.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\cli.py:16:8 - error: Import "click" could not be resolved (reportMissingImports)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\cli.py:118:12 - error: Argument missing for parameter "profile" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\cli.py:133:16 - error: Arguments missing for parameters "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\cli.py:148:37 - error: Argument of type "UserProfile" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "UserProfile" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\cli.py:148:46 - error: Argument of type "dict[str, float]" cannot be assigned to parameter "profile" of type "UserProfile" in function "score_routes"
+    "dict[str, float]" is not assignable to "UserProfile" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\cli.py:152:18 - error: Import "evaluation_model_qwen.qwen_client" could not be resolved (reportMissingImports)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\cli.py:232:12 - error: Argument missing for parameter "profile" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\cli.py:246:16 - error: Arguments missing for parameters "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\cli.py:260:37 - error: Argument of type "UserProfile" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "UserProfile" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\cli.py:260:46 - error: Argument of type "dict[str, float]" cannot be assigned to parameter "profile" of type "UserProfile" in function "score_routes"
+    "dict[str, float]" is not assignable to "UserProfile" (reportArgumentType)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\loaders.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\loaders.py:18:5 - error: "EnvironmentRecord" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\loaders.py:19:5 - error: "EnvironmentDashboard" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\loaders.py:20:5 - error: "RouteEntry" is unknown import symbol (reportAttributeAccessIssue)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\scoring.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\scoring.py:103:12 - error: Arguments missing for parameters "level", "should_pause", "pause_reason" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\scoring.py:104:9 - error: No parameter named "paused" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\scoring.py:105:9 - error: No parameter named "reasons" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\scoring.py:106:9 - error: No parameter named "thresholds_applied" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\scoring.py:333:24 - error: Arguments missing for parameters "distance_m", "dimensions", "rank", "data_reliability", "constraint_passed" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\scoring.py:337:13 - error: No parameter named "dimension_scores" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\scoring.py:339:13 - error: No parameter named "weights_used" (reportCallIssue)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\service.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\service.py:138:13 - error: Cannot access attribute "paused" for class "RiskAssessment"
+    Attribute "paused" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\service.py:154:16 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\service.py:239:13 - error: Cannot access attribute "paused" for class "RiskAssessment"
+    Attribute "paused" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\service.py:254:16 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\src\evaluation_model_qwen\service.py:311:14 - error: Import ".qwen_client" could not be resolved (reportMissingImports)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_score_candidates.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_score_candidates.py:473:22 - error: Argument missing for parameter "profile" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_score_candidates.py:474:17 - error: No parameter named "profile_path" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_score_candidates.py:506:22 - error: Argument missing for parameter "profile" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_score_candidates.py:507:17 - error: No parameter named "profile_path" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_score_candidates.py:524:17 - error: Argument missing for parameter "profile" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_score_candidates.py:525:21 - error: No parameter named "profile_path" (reportCallIssue)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:6:5 - error: "EnvironmentBlock" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:7:5 - error: "EnvironmentData" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:8:5 - error: "EnvironmentRouteRecord" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:10:5 - error: "RouteEntry" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:16:5 - error: "evaluate_safety_thresholds" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:62:12 - error: Arguments missing for parameters "case_id", "origin_lat", "origin_lng" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:115:18 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:123:18 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:130:18 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:137:18 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:144:18 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:156:18 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:175:16 - error: Argument missing for parameter "profile" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:177:21 - error: Cannot access attribute "paused" for class "RiskAssessment"
+    Attribute "paused" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:182:16 - error: Argument missing for parameter "profile" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:195:16 - error: Argument missing for parameter "profile" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:208:16 - error: Argument missing for parameter "profile" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:220:16 - error: Argument missing for parameter "profile" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:232:16 - error: Argument missing for parameter "profile" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:251:40 - error: Argument of type "list[Unknown]" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "list[Unknown]" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:262:34 - error: Cannot access attribute "environment_health" for class "ScoredRoute"
+    Attribute "environment_health" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:263:34 - error: Cannot access attribute "sport_match" for class "ScoredRoute"
+    Attribute "sport_match" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:264:34 - error: Cannot access attribute "access_convenience" for class "ScoredRoute"
+    Attribute "access_convenience" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:265:34 - error: Cannot access attribute "route_quality" for class "ScoredRoute"
+    Attribute "route_quality" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:266:34 - error: Cannot access attribute "interest_service" for class "ScoredRoute"
+    Attribute "interest_service" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:283:40 - error: Argument of type "list[Unknown]" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "list[Unknown]" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:309:44 - error: Argument of type "list[Unknown]" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "list[Unknown]" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:310:44 - error: Argument of type "list[Unknown]" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "list[Unknown]" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:337:45 - error: Argument of type "list[Unknown]" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "list[Unknown]" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:338:43 - error: Argument of type "list[Unknown]" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "list[Unknown]" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:339:45 - error: Argument of type "list[Unknown]" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "list[Unknown]" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:355:36 - error: Argument of type "list[Any]" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "list[Any]" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:365:40 - error: Argument of type "list[Unknown]" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "list[Unknown]" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:385:18 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:395:18 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:401:18 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:407:16 - error: Argument missing for parameter "profile" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:444:20 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:451:41 - error: Argument of type "list[Unknown]" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "list[Unknown]" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:456:37 - error: Cannot access attribute "environment_health" for class "ScoredRoute"
+    Attribute "environment_health" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:456:80 - error: Cannot access attribute "environment_health" for class "ScoredRoute"
+    Attribute "environment_health" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:478:20 - error: Arguments missing for parameters "route_distance_m", "profile_mode", "target_distance_m" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:486:41 - error: Argument of type "list[Unknown]" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "list[Unknown]" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:496:40 - error: Argument of type "list[Unknown]" cannot be assigned to parameter "route_environments" of type "dict[str, dict[str, Any]]" in function "score_routes"
+    "list[Unknown]" is not assignable to "dict[str, dict[str, Any]]" (reportArgumentType)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:500:20 - error: Cannot access attribute "environment_health" for class "ScoredRoute"
+    Attribute "environment_health" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:501:20 - error: Cannot access attribute "sport_match" for class "ScoredRoute"
+    Attribute "sport_match" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:502:20 - error: Cannot access attribute "access_convenience" for class "ScoredRoute"
+    Attribute "access_convenience" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:503:20 - error: Cannot access attribute "route_quality" for class "ScoredRoute"
+    Attribute "route_quality" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\evaluation_model_qwen\tests\test_scoring.py:504:20 - error: Cannot access attribute "interest_service" for class "ScoredRoute"
+    Attribute "interest_service" is unknown (reportAttributeAccessIssue)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:19:5 - error: "PipelineConfig" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:21:5 - error: "check_config" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:22:5 - error: "dry_run" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:23:5 - error: "scheduled_refresh" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:122:18 - error: Arguments missing for parameters "tier", "generated_at" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:124:13 - error: No parameter named "steps" (reportCallIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:135:25 - error: Cannot access attribute "steps" for class "PipelineResult"
+    Attribute "steps" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:144:28 - error: Cannot access attribute "steps" for class "PipelineResult"
+    Attribute "steps" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:189:26 - error: Cannot access attribute "status" for class "Path"
+    Attribute "status" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:191:31 - error: Cannot access attribute "route_count" for class "Path"
+    Attribute "route_count" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:192:28 - error: Cannot access attribute "warnings" for class "Path"
+    Attribute "warnings" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:193:26 - error: Cannot access attribute "errors" for class "Path"
+    Attribute "errors" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:199:38 - error: Cannot access attribute "status" for class "Path"
+    Attribute "status" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:201:35 - error: Cannot access attribute "route_count" for class "Path"
+    Attribute "route_count" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:202:31 - error: Cannot access attribute "warnings" for class "Path"
+    Attribute "warnings" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:204:29 - error: Cannot access attribute "errors" for class "Path"
+    Attribute "errors" is unknown (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\src\weather_api_data\cli.py:207:24 - error: Cannot access attribute "status" for class "Path"
+    Attribute "status" is unknown (reportAttributeAccessIssue)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\tests\test_pipeline.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\tests\test_pipeline.py:12:5 - error: "PipelineConfig" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\tests\test_pipeline.py:14:5 - error: "run_pipeline" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\tests\test_pipeline.py:15:5 - error: "load_last_known_good" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\tests\test_pipeline.py:16:5 - error: "save_snapshot" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\tests\test_pipeline.py:17:5 - error: "check_api_keys" is unknown import symbol (reportAttributeAccessIssue)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\tests\test_web_export.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\tests\test_web_export.py:20:5 - error: "build_dashboard" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\tests\test_web_export.py:22:5 - error: "DashboardValidationError" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\weather_api_data\tests\test_web_export.py:319:43 - error: No parameter named "expected_route_count" (reportCallIssue)
+d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\xuhui_route_builder\src\xuhui_route_builder\cli.py
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\xuhui_route_builder\src\xuhui_route_builder\cli.py:11:5 - error: "validate_catalog" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\xuhui_route_builder\src\xuhui_route_builder\cli.py:12:5 - error: "validate_geojson" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\xuhui_route_builder\src\xuhui_route_builder\cli.py:13:5 - error: "validate_mode_distribution" is unknown import symbol (reportAttributeAccessIssue)
+  d:\SJTU\交大\揭榜挂帅\AI_Scientist_develop\Qwen-Harness\runtime\runs\run-20260902T035556Z-0a43adb5\workspace\source\xuhui_route_builder\src\xuhui_route_builder\cli.py:14:5 - error: "validate_route_id_consistency" is unknown import symbol (reportAttributeAccessIssue)
+279 errors, 0 warnings, 0 informations

@@ -1,0 +1,16 @@
+{
+  "case_id": "P09_bike_health_environment",
+  "route_mode": "bike",
+  "goal": "health_environment",
+  "target_distance_m": 8000,
+  "sensitivities": [
+    "pm25",
+    "pollen",
+    "noise"
+  ],
+  "interests": [
+    "park",
+    "convenience"
+  ],
+  "notes": "骑行健康环境画像，三项敏感与公园便利偏好，覆盖骑行模式下环境维度极端情形"
+}

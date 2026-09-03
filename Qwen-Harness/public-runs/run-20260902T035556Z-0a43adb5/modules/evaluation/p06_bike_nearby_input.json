@@ -1,0 +1,12 @@
+{
+  "case_id": "P06_bike_nearby",
+  "route_mode": "bike",
+  "goal": "nearby",
+  "target_distance_m": 8000,
+  "sensitivities": [],
+  "interests": [
+    "convenience",
+    "toilet"
+  ],
+  "notes": "骑行就近画像，便利设施与厕所偏好，检验 access_convenience 维度权重扰动"
+}

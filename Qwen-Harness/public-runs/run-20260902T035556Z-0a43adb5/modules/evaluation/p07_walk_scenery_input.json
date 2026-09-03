@@ -1,0 +1,15 @@
+{
+  "case_id": "P07_walk_scenery",
+  "route_mode": "walk",
+  "goal": "scenery",
+  "target_distance_m": 3000,
+  "sensitivities": [
+    "pollen"
+  ],
+  "interests": [
+    "waterside",
+    "park",
+    "quiet"
+  ],
+  "notes": "步行景观画像，花粉敏感与滨水公园安静偏好，检验 interest_service 维度权重扰动"
+}

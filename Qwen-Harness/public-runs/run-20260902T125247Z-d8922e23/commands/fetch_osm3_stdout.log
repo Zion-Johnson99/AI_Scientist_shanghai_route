@@ -1,0 +1,4 @@
+[21:25:53] bbox = (121.3868848, 31.102562, 121.4719269, 31.2220274)
+[21:26:03]   fail osm_xuhui_highways cell 1/16 via https://overpass-api.de/api/interpreter attempt=1: HTTP 504
+[21:26:19]   fail osm_xuhui_highways cell 1/16 via https://overpass.kumi.systems/api/interpreter attempt=2: HTTP 502
+[21:27:38]   fail osm_xuhui_highways cell 1/16 via https://overpass.private.coffee/api/interpreter attempt=3: HTTP 500
