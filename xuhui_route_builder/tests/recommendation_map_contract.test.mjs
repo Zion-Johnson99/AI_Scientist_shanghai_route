@@ -8,6 +8,7 @@ import {
   routePreviewCardModel,
   setBaseMapMode,
   showHealthMapPlaces,
+  showSingleRoute,
   startPointMarkerContent,
 } from "../web/src/map.js";
 
@@ -186,6 +187,28 @@ test("聚焦路线使用临时图层从起点逐段揭示到终点", () => {
   assert.deepEqual(sourceLayers.main.options.path, routes[0].geometry.coordinates);
   assert.equal(sourceLayers.main.options.strokeOpacity, 1);
   assert.equal(removedCalls.every((overlays) => !Array.isArray(overlays)), true);
+  assert.equal(pendingFrameCount(), 0);
+});
+
+test("浏览路线详情复用逐段揭示动画", () => {
+  const { mapContext, added, flushFrame, pendingFrameCount } = createMapContext();
+
+  showSingleRoute(mapContext, routes[0], { features: [] }, { features: [] });
+
+  const sourceLayers = mapContext.routeLayers.get("XH_WALK_0001");
+  const revealMain = added.find((overlay) => overlay.options.extData?.layerRole === "reveal-main");
+  assert.ok(revealMain);
+  assert.equal(sourceLayers.main.options.strokeOpacity, 0);
+  assert.deepEqual(revealMain.options.path, [[121.42, 31.18], [121.42, 31.18]]);
+  assert.equal(pendingFrameCount(), 1);
+
+  flushFrame(0);
+  flushFrame(600);
+  assert.ok(revealMain.options.path.at(-1)[0] > 121.42);
+  assert.ok(revealMain.options.path.at(-1)[0] < 121.425);
+
+  flushFrame(1200);
+  assert.equal(sourceLayers.main.options.strokeOpacity, 1);
   assert.equal(pendingFrameCount(), 0);
 });
 

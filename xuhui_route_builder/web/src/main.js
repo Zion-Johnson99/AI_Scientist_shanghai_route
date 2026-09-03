@@ -24,7 +24,7 @@ import {
   showRoutePreviews,
   showSingleRoute,
   startPointMarkerContent,
-} from "./map.js?v=20260831-ui-35";
+} from "./map.js?v=20260901-ui-36";
 import { createNavigationController } from "./navigation-session.js?v=20260831-ui-35";
 import {
   buildLocalLocationCandidates,

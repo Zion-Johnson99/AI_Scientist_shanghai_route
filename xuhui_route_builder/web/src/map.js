@@ -662,9 +662,11 @@ export function showSingleRoute(mapContext, route, entries, pois, selectedPrefer
   }
 
   renderRouteSemanticMarkers(mapContext, route, pois, selectedPreferences, true);
-  const activeRoute = mapContext.routeLayers.get(routeId)?.main;
+  const activeLayers = mapContext.routeLayers.get(routeId);
+  const activeRoute = activeLayers?.main;
   const focusOverlays = [activeRoute, ...mapContext.semanticMarkerLayers].filter(Boolean);
   mapContext.amap.setFitView(focusOverlays, true, [110, 90, 180, 90], 18);
+  startRouteReveal(mapContext, route, activeLayers);
 }
 
 function renderRouteSemanticMarkers(mapContext, route, pois, selectedPreferences, includeLandmarks) {
