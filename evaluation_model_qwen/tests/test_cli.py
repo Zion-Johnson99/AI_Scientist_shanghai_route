@@ -84,7 +84,10 @@ def test_human_environment_summary_is_encodable_by_windows_console() -> None:
 
 
 def test_cli_subprocess_emits_utf8_text() -> None:
-    executable = Path(sys.executable).with_name("evaluation-model-qwen.exe")
+    executable_name = (
+        "evaluation-model-qwen.exe" if sys.platform == "win32" else "evaluation-model-qwen"
+    )
+    executable = Path(sys.executable).with_name(executable_name)
 
     completed = subprocess.run(
         [str(executable), "--help"],
