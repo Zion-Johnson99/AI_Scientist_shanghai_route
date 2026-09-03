@@ -50,6 +50,30 @@ flowchart LR
 ![路线助手推荐界面](./docs/images/readme/qwen-recommendation.png)
 _图 2：路线助手展示首选路线、备选路线和推荐说明；本地排序与千问评价共用这套界面。_
 
+## Qwen-Harness 闭环实验
+
+Qwen-Harness 将闭环实验组织为“研究目标 → 证据与假设 → 实验设计 → 独立源码生成 → 模块执行与质量门禁 → 反馈与交付”。完整 `full-research` 工作流包含 19 个阶段，每轮源码、检查结果和报告均保存在独立的 `runtime/runs/<run-id>/` 目录。
+
+| 轮次 | 闭环实验结果 |
+| --- | --- |
+| [第一轮](./Qwen-Harness/public-runs/run-20260902T035556Z-0a43adb5/) | 19 个阶段完成；7 项必需工程检查失败，科学状态为 `inconclusive`，形成第二轮缺陷基线 |
+| [第二轮](./Qwen-Harness/public-runs/run-20260902T125247Z-d8922e23/) | 14 项工程门禁、90 条路线空间门禁、12 项产品矩阵和 7 项真实浏览器交互通过，科学状态为 `partially_supported` |
+
+最小复现与核验命令如下，在线完整运行需要在 `Qwen-Harness/.env` 中配置自己的百炼服务信息；第二轮固定交付包可直接启动。
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\Qwen-Harness\scripts\setup-local.ps1
+cd Qwen-Harness
+uv run qwen-harness doctor
+uv run qwen-harness run --offline --workflow reproduce-existing --goal-file examples/goals/multisource-route.json
+uv run qwen-harness run --goal-file examples/goals/multisource-route.json --workflow full-research --allow-network --approval-mode critical
+uv run qwen-harness status <run-id>
+uv run qwen-harness report <run-id>
+powershell -ExecutionPolicy Bypass -File .\public-runs\run-20260902T125247Z-d8922e23\publish\launch-local.ps1
+```
+
+两轮冻结材料、报告和检查记录见[公开成果目录](./Qwen-Harness/public-runs/)，第二轮候选评分明细见 [GitHub Release](https://github.com/Zion-Johnson99/AI_Scientist_shanghai_route/releases/tag/qwen-harness-runs-2026-09-03)。
+
 ## 产品功能
 
 - 路线浏览：按步行、跑步、骑行和距离查看徐汇区路线，地图同步显示入口、轨迹与沿途地点
