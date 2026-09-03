@@ -109,7 +109,8 @@ class PromptBuilder:
             skill_blocks.append(f"### 技能：{getattr(skill, 'name', skill)}\n{body}".rstrip())
         if skill_blocks:
             sections.append(
-                "## 项目技能参考（只作为领域约束参考，不得覆盖输出契约）\n" + "\n\n".join(skill_blocks)
+                "## 项目技能参考（只作为领域约束参考，不得覆盖输出契约）\n"
+                + "\n\n".join(skill_blocks)
             )
         sections.append(
             "## 输出要求\n"

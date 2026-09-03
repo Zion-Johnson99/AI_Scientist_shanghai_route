@@ -57,9 +57,7 @@ def test_browser_quality_issue_targets_main_js_for_environment_failure(tmp_path:
     assert route_card_issue.files == ["xuhui_route_builder/web/src/main.js"]
 
 
-def test_failed_browser_gate_repairs_once_and_replaces_result(
-    tmp_path: Path, monkeypatch
-) -> None:
+def test_failed_browser_gate_repairs_once_and_replaces_result(tmp_path: Path, monkeypatch) -> None:
     stderr = tmp_path / "browser.stderr.log"
     stderr.write_text("AssertionError: desktop: 环境详情缺少 PM2.5", encoding="utf-8")
     failed = GeneratedQualityCheck(
@@ -178,7 +176,9 @@ def test_runtime_repair_target_maps_missing_readme_build_error_to_pyproject(tmp_
     assert target == "evaluation_model_qwen/pyproject.toml"
 
 
-def test_runtime_repair_target_maps_missing_import_symbol_to_defining_module(tmp_path: Path) -> None:
+def test_runtime_repair_target_maps_missing_import_symbol_to_defining_module(
+    tmp_path: Path,
+) -> None:
     source_root = _source_root(tmp_path)
 
     target = stages._runtime_repair_target(
@@ -193,9 +193,7 @@ def test_runtime_repair_target_maps_missing_import_symbol_to_defining_module(tmp
     assert target == "evaluation_model_qwen/src/evaluation_model_qwen/models.py"
 
 
-def test_operation_retries_after_qwen_repairs_generated_file(
-    tmp_path: Path, monkeypatch
-) -> None:
+def test_operation_retries_after_qwen_repairs_generated_file(tmp_path: Path, monkeypatch) -> None:
     source_root = _source_root(tmp_path)
     stderr_path = tmp_path / "run" / "commands" / "evaluation.stderr.log"
     stderr_path.parent.mkdir(parents=True)
@@ -236,9 +234,7 @@ def test_operation_retries_after_qwen_repairs_generated_file(
         reason="test",
     )
 
-    result = stages._execute_operation_with_runtime_repair(
-        Adapter(), operation, cast(Any, context)
-    )
+    result = stages._execute_operation_with_runtime_repair(Adapter(), operation, cast(Any, context))
 
     assert result == {"module": "evaluation", "status": "ok"}
     assert calls == 2
@@ -302,9 +298,7 @@ def test_operation_repairs_zero_exit_command_with_invalid_output(
         reason="test",
     )
 
-    result = stages._execute_operation_with_runtime_repair(
-        Adapter(), operation, cast(Any, context)
-    )
+    result = stages._execute_operation_with_runtime_repair(Adapter(), operation, cast(Any, context))
 
     assert result.status == "ok"
     assert len(repaired) == 1

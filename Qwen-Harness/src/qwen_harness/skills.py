@@ -192,8 +192,12 @@ class SkillRegistry:
                 LOGGER.warning("快照时技能缺失，已跳过: %s", name)
                 continue
             target_rel = f"skills/{name}/SKILL.md"
-            written.append(run_store.write_bytes_atomic(target_rel, document.skill_path.read_bytes()))
+            written.append(
+                run_store.write_bytes_atomic(target_rel, document.skill_path.read_bytes())
+            )
             for ref in document.referenced_files:
                 rel = ref.relative_to(document.root).as_posix()
-                written.append(run_store.write_bytes_atomic(f"skills/{name}/{rel}", ref.read_bytes()))
+                written.append(
+                    run_store.write_bytes_atomic(f"skills/{name}/{rel}", ref.read_bytes())
+                )
         return written

@@ -112,7 +112,9 @@ def _coerce_module_result(module: str, value: Any) -> ModuleResult:
         ) from exc
 
 
-def _save_module_result(context: "WorkflowContext", module: str, label: str, result: ModuleResult) -> str:
+def _save_module_result(
+    context: "WorkflowContext", module: str, label: str, result: ModuleResult
+) -> str:
     relative = f"modules/{module}/{label}.json"
     context.store.write_json_atomic(relative, result.model_dump(mode="json"))
     return relative
@@ -222,16 +224,17 @@ def _expand_plan_operations(plan: ExperimentPlan) -> list[ModuleOperation]:
     expanded: list[ModuleOperation] = []
     for raw_operation in plan.module_operations:
         operation = ModuleOperation.model_validate(raw_operation)
-        if (
-            operation.operation_id != "evaluation.score_candidates"
-            or isinstance(operation.parameters.get("profile"), (dict, str))
+        if operation.operation_id != "evaluation.score_candidates" or isinstance(
+            operation.parameters.get("profile"), (dict, str)
         ):
             expanded.append(operation)
             continue
         for index, profile in enumerate(plan.profiles, start=1):
             if not isinstance(profile, dict):
                 continue
-            case_id = str(profile.get("case_id") or profile.get("profile_id") or f"profile-{index:02d}")
+            case_id = str(
+                profile.get("case_id") or profile.get("profile_id") or f"profile-{index:02d}"
+            )
             parameters = dict(operation.parameters)
             parameters.update(
                 {
@@ -308,7 +311,11 @@ def _runtime_repair_target(*, module: str, diagnostics: str, source_root: Path) 
         "web": ["xuhui_route_builder/web/src/main.js", "xuhui_route_builder/web/index.html"],
     }
     return next(
-        (candidate for candidate in fallbacks.get(module, []) if (source_root / candidate).is_file()),
+        (
+            candidate
+            for candidate in fallbacks.get(module, [])
+            if (source_root / candidate).is_file()
+        ),
         None,
     )
 
@@ -406,7 +413,9 @@ def module_execution_stage(context: "WorkflowContext") -> StageResult:
     for operation in operations:
         if operation.operation_id in DISABLED_OPERATIONS_V1:
             warnings.append(f"操作 {operation.operation_id} 在 v1 中禁用，已跳过")
-            context.emit("operation_skipped", f"v1 禁用操作 {operation.operation_id}", status="warning")
+            context.emit(
+                "operation_skipped", f"v1 禁用操作 {operation.operation_id}", status="warning"
+            )
             continue
         if (
             operation.operation_id not in ALLOWED_OPERATION_IDS
@@ -420,7 +429,9 @@ def module_execution_stage(context: "WorkflowContext") -> StageResult:
             )
         adapter = adapters.get(operation.module)
         if adapter is None:
-            raise InputContractError(f"操作 {operation.operation_id} 指向未知模块 {operation.module}")
+            raise InputContractError(
+                f"操作 {operation.operation_id} 指向未知模块 {operation.module}"
+            )
         try:
             raw = _execute_operation_with_runtime_repair(adapter, operation, context)
         except ModuleCommandError:
@@ -508,8 +519,7 @@ def _generated_quality_gate(report: GeneratedQualityReport) -> GateResult:
                 name=f"generated_{check.category}_{check.name}",
                 passed=check.passed,
                 detail=(
-                    f"{check.status}; exit_code={check.exit_code}; "
-                    f"error={check.error or 'none'}"
+                    f"{check.status}; exit_code={check.exit_code}; error={check.error or 'none'}"
                 ),
             )
             for check in required
@@ -518,9 +528,7 @@ def _generated_quality_gate(report: GeneratedQualityReport) -> GateResult:
     )
 
 
-def _browser_quality_issue(
-    check: GeneratedQualityCheck, run_dir: Path
-) -> ValidationIssue:
+def _browser_quality_issue(check: GeneratedQualityCheck, run_dir: Path) -> ValidationIssue:
     """把浏览器断言转换成单文件千问修复任务。"""
     diagnostics = check.error or "真实浏览器验收失败"
     if check.stderr_path:

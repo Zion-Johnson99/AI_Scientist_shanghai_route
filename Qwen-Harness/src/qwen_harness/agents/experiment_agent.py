@@ -50,7 +50,9 @@ def _build_payload(context: "WorkflowContext") -> dict[str, Any]:
             suggested_action="检查 hypothesis_selection 输出",
         )
     detour_max = float(
-        (context.quality_gates.get("experiment") or {}).get("detour_limit_max", DEFAULT_DETOUR_LIMIT_MAX)
+        (context.quality_gates.get("experiment") or {}).get(
+            "detour_limit_max", DEFAULT_DETOUR_LIMIT_MAX
+        )
     )
     return {
         "stage": "experiment_design",
@@ -87,7 +89,9 @@ def _preregistration_checks(context: "WorkflowContext", plan: ExperimentPlan) ->
         )
     )
     detour_max = float(
-        (context.quality_gates.get("experiment") or {}).get("detour_limit_max", DEFAULT_DETOUR_LIMIT_MAX)
+        (context.quality_gates.get("experiment") or {}).get(
+            "detour_limit_max", DEFAULT_DETOUR_LIMIT_MAX
+        )
     )
     checks.append(
         GateCheck(

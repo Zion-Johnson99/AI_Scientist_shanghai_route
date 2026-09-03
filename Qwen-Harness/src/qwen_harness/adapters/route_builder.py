@@ -74,7 +74,10 @@ class RouteBuilderAdapter(ModuleAdapter):
                 continue
             paths.append(path)
         hashes = self.hash_files(paths)
-        if CATALOG_RELATIVE.split("/")[-1] not in hashes or GEOMETRY_RELATIVE.split("/")[-1] not in hashes:
+        if (
+            CATALOG_RELATIVE.split("/")[-1] not in hashes
+            or GEOMETRY_RELATIVE.split("/")[-1] not in hashes
+        ):
             return self.result(
                 "error",
                 data_hashes=hashes,
@@ -138,9 +141,7 @@ class RouteBuilderAdapter(ModuleAdapter):
 
         project_paths = self.project_paths(context)
         catalog_path = self.project_file(
-            project_paths.resolve_path(
-                project_paths.route_module / CATALOG_RELATIVE, "路线目录"
-            ),
+            project_paths.resolve_path(project_paths.route_module / CATALOG_RELATIVE, "路线目录"),
             "路线目录",
         )
         catalog = self.read_json(catalog_path, "路线目录")
@@ -178,9 +179,7 @@ class RouteBuilderAdapter(ModuleAdapter):
             errors.append(f"目录存在重复路线 ID: {', '.join(sorted(duplicated))}")
 
         geometry_path = self.project_file(
-            project_paths.resolve_path(
-                project_paths.route_module / GEOMETRY_RELATIVE, "路线几何"
-            ),
+            project_paths.resolve_path(project_paths.route_module / GEOMETRY_RELATIVE, "路线几何"),
             "路线几何",
         )
         geometry = self.read_json(geometry_path, "路线几何")
@@ -195,7 +194,11 @@ class RouteBuilderAdapter(ModuleAdapter):
             if unexpected:
                 errors.append(f"GeoJSON 含目录外路线: {', '.join(unexpected)}")
 
-        accepted = sum(1 for item in catalog if isinstance(item, dict) and item.get("validation_status") == "accepted")
+        accepted = sum(
+            1
+            for item in catalog
+            if isinstance(item, dict) and item.get("validation_status") == "accepted"
+        )
         if catalog and accepted != len([item for item in catalog if isinstance(item, dict)]):
             warnings.append(f"validation_status 非 accepted 的路线 {len(catalog) - accepted} 条")
         return errors, warnings

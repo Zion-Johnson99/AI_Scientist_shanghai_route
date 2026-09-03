@@ -88,7 +88,7 @@ def test_evaluation_adapter_invokes_harness_owned_score_script(tmp_path: Path) -
                 "evaluation": "evaluation_model_qwen",
                 "web": "xuhui_route_builder/web",
             }
-        )
+        ),
     )
 
     argv = EvaluationModelAdapter()._score_command_argv(
@@ -100,9 +100,7 @@ def test_evaluation_adapter_invokes_harness_owned_score_script(tmp_path: Path) -
     )
 
     assert "evaluation-model-qwen" not in argv
-    assert argv[3] == str(
-        (run_dir / "workspace/source/evaluation_model_qwen").resolve()
-    )
+    assert argv[3] == str((run_dir / "workspace/source/evaluation_model_qwen").resolve())
     assert argv[5].endswith("evaluation_score_candidates.py")
 
 
@@ -163,9 +161,7 @@ def test_evaluation_adapter_writes_one_candidate_cell_per_variant(tmp_path: Path
         "weights_sha256": "a" * 64,
     }
 
-    outputs = EvaluationModelAdapter()._write_candidate_cells(
-        operation, context, payload
-    )
+    outputs = EvaluationModelAdapter()._write_candidate_cells(operation, context, payload)
 
     assert outputs == [
         "experiments/score_candidates/P01__B0_shortest_feasible.json",

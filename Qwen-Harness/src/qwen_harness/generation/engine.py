@@ -124,9 +124,7 @@ class GenerationEngine:
         else:
             generated_results = []
         audits.extend(audit for _path, audit in generated_results)
-        written = [
-            path for path in planned_paths if self.workspace.resolve_file(path).is_file()
-        ]
+        written = [path for path in planned_paths if self.workspace.resolve_file(path).is_file()]
 
         issues = self._validate(validator)
         repair_rounds = 0
@@ -177,9 +175,7 @@ class GenerationEngine:
                     written.append(generated.path)
             issues = self._validate(validator)
 
-        written = [
-            path for path in planned_paths if self.workspace.resolve_file(path).is_file()
-        ]
+        written = [path for path in planned_paths if self.workspace.resolve_file(path).is_file()]
         return GenerationResult(
             source_root=str(self.workspace.source_root),
             architecture=architecture,
@@ -312,7 +308,9 @@ class GenerationEngine:
         if validator is None:
             return []
         issues = validator(self.workspace.source_root)
-        if not isinstance(issues, list) or any(not isinstance(issue, ValidationIssue) for issue in issues):
+        if not isinstance(issues, list) or any(
+            not isinstance(issue, ValidationIssue) for issue in issues
+        ):
             raise InputContractError("生成验证器需返回 list[ValidationIssue]")
         return issues
 

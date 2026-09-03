@@ -53,7 +53,9 @@ def _generated_context(tmp_path: Path) -> Any:
 
     external = tmp_path / "external-repository"
     _write_json(external / "xuhui_route_builder/data/web/route_catalog.json", [{"source": "bait"}])
-    _write_json(external / "xuhui_route_builder/data/web/environment_dashboard.json", {"source": "bait"})
+    _write_json(
+        external / "xuhui_route_builder/data/web/environment_dashboard.json", {"source": "bait"}
+    )
     legacy_paths = SimpleNamespace(
         repo_root=tmp_path,
         harness_root=external / "Qwen-Harness",
@@ -107,13 +109,19 @@ def test_all_adapters_read_generated_workspace_view(tmp_path: Path) -> None:
     assert web_result.status == "ok"
     generated_catalog = GeneratedProjectPaths.from_context(context).route_catalog_path
     generated_dashboard = GeneratedProjectPaths.from_context(context).environment_dashboard_path
-    assert route_result.data_hashes["route_catalog.json"] == hashlib.sha256(
-        generated_catalog.read_bytes()
-    ).hexdigest()
-    assert environment_result.data_hashes["environment_dashboard.json"] == hashlib.sha256(
-        generated_dashboard.read_bytes()
-    ).hexdigest()
-    assert all("bait" not in message for result in (route_result, environment_result) for message in result.errors)
+    assert (
+        route_result.data_hashes["route_catalog.json"]
+        == hashlib.sha256(generated_catalog.read_bytes()).hexdigest()
+    )
+    assert (
+        environment_result.data_hashes["environment_dashboard.json"]
+        == hashlib.sha256(generated_dashboard.read_bytes()).hexdigest()
+    )
+    assert all(
+        "bait" not in message
+        for result in (route_result, environment_result)
+        for message in result.errors
+    )
 
 
 def test_environment_preflight_accepts_generated_routes_items_contract(tmp_path: Path) -> None:
@@ -162,7 +170,9 @@ def test_environment_preflight_accepts_generated_routes_items_contract(tmp_path:
 
 def test_generated_project_paths_reject_module_outside_current_run(tmp_path: Path) -> None:
     context = _generated_context(tmp_path)
-    context.generated.module_paths["route"] = str(tmp_path / "external-repository/xuhui_route_builder")
+    context.generated.module_paths["route"] = str(
+        tmp_path / "external-repository/xuhui_route_builder"
+    )
 
     with pytest.raises(PathBoundaryError, match="越出当前 run 生成源码边界"):
         GeneratedProjectPaths.from_context(context)
@@ -194,9 +204,7 @@ def test_module_commands_use_generated_module_as_directory(tmp_path: Path, monke
     monkeypatch.setattr(route, "run_fixed_command", fake_run_fixed_command)
     monkeypatch.setattr(environment, "run_fixed_command", fake_run_fixed_command)
 
-    route.execute(
-        ModuleOperation(operation_id="route.validate_routes", module="route"), context
-    )
+    route.execute(ModuleOperation(operation_id="route.validate_routes", module="route"), context)
     environment.validate(context)
 
     source_root = GeneratedProjectPaths.from_context(context).source_root

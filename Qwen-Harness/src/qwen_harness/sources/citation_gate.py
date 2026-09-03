@@ -62,7 +62,9 @@ class CitationGate:
     ) -> GateResult:
         checks: list[GateCheck] = []
 
-        unregistered = sorted({claim.source_id for claim in claims if claim.source_id not in sources})
+        unregistered = sorted(
+            {claim.source_id for claim in claims if claim.source_id not in sources}
+        )
         checks.append(
             GateCheck(
                 name="source_id_registered",
@@ -71,12 +73,16 @@ class CitationGate:
             )
         )
 
-        missing_location = [claim.claim_id for claim in claims if not claim.evidence_location.strip()]
+        missing_location = [
+            claim.claim_id for claim in claims if not claim.evidence_location.strip()
+        ]
         checks.append(
             GateCheck(
                 name="evidence_location_present",
                 passed=not missing_location,
-                detail=f"缺少证据位置: {', '.join(missing_location[:8])}" if missing_location else None,
+                detail=f"缺少证据位置: {', '.join(missing_location[:8])}"
+                if missing_location
+                else None,
             )
         )
 
@@ -93,7 +99,9 @@ class CitationGate:
             GateCheck(
                 name="verification_status_sufficient",
                 passed=not below,
-                detail=f"来源核验未达标（要求 {self.min_verification}）: {', '.join(below[:8])}" if below else None,
+                detail=f"来源核验未达标（要求 {self.min_verification}）: {', '.join(below[:8])}"
+                if below
+                else None,
             )
         )
 
@@ -145,13 +153,16 @@ class CitationGate:
         bad_reference = [
             ref.source_id
             for ref in plan.references
-            if (ref.doi and not _DOI_RE.match(ref.doi)) or (ref.pmid and not _PMID_RE.match(ref.pmid))
+            if (ref.doi and not _DOI_RE.match(ref.doi))
+            or (ref.pmid and not _PMID_RE.match(ref.pmid))
         ]
         checks.append(
             GateCheck(
                 name="reference_identifier_format",
                 passed=not bad_reference,
-                detail=f"DOI/PMID 格式异常: {', '.join(bad_reference[:8])}" if bad_reference else None,
+                detail=f"DOI/PMID 格式异常: {', '.join(bad_reference[:8])}"
+                if bad_reference
+                else None,
             )
         )
         missing_claims = sorted(
@@ -166,7 +177,9 @@ class CitationGate:
             GateCheck(
                 name="evidence_map_traceable",
                 passed=not missing_claims,
-                detail=f"evidence_map 指向未知 claim: {', '.join(missing_claims[:8])}" if missing_claims else None,
+                detail=f"evidence_map 指向未知 claim: {', '.join(missing_claims[:8])}"
+                if missing_claims
+                else None,
             )
         )
         return self._result(checks, "科学计划引用核验")
@@ -302,7 +315,9 @@ def stage_handler(context: "WorkflowContext") -> StageResult:
     claims = [claim for card in cards for claim in card.claims]
 
     min_verification = str(
-        (context.quality_gates.get("evidence") or {}).get("min_verification_status", DEFAULT_MIN_VERIFICATION)
+        (context.quality_gates.get("evidence") or {}).get(
+            "min_verification_status", DEFAULT_MIN_VERIFICATION
+        )
     )
     citation = CitationGate(min_verification=min_verification).validate_claims(claims, sources)
     evidence = context.gates["evidence"].evaluate(sources, cards)
@@ -315,7 +330,9 @@ def stage_handler(context: "WorkflowContext") -> StageResult:
         checks=checks,
         summary=(citation.summary or "") + "; " + (evidence.summary or ""),
     )
-    context.store.write_json_atomic("stages/citation_validation/gate_detail.json", gate_result.model_dump(mode="json"))
+    context.store.write_json_atomic(
+        "stages/citation_validation/gate_detail.json", gate_result.model_dump(mode="json")
+    )
     if not passed:
         failed = [check.name for check in checks if not check.passed]
         return StageResult(
@@ -334,6 +351,10 @@ def stage_handler(context: "WorkflowContext") -> StageResult:
         stage="citation_validation",
         status="passed",
         summary=f"引用核验通过：{len(claims)} 条 Claim / {len(sources)} 个来源",
-        output={"claims_checked": len(claims), "sources_checked": len(sources), "cards": len(cards)},
+        output={
+            "claims_checked": len(claims),
+            "sources_checked": len(sources),
+            "cards": len(cards),
+        },
         gate_result=gate_result,
     )

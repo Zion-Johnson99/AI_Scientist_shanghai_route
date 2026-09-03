@@ -87,7 +87,9 @@ class ModelUnavailableError(HarnessError):
     error_type = "model_unavailable"
     exit_code = 3
     retryable = True
-    default_suggestion = "检查 .env 中的 DASHSCOPE_API_KEY / DASHSCOPE_BASE_URL，或使用 --offline 复现"
+    default_suggestion = (
+        "检查 .env 中的 DASHSCOPE_API_KEY / DASHSCOPE_BASE_URL，或使用 --offline 复现"
+    )
 
 
 class SourceUnavailableError(HarnessError):

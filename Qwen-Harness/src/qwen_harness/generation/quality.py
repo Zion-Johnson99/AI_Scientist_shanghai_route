@@ -167,9 +167,7 @@ def run_generated_quality_checks(
                 )
             )
 
-    node_tests = sorted(
-        (source_root / "xuhui_route_builder" / "tests").glob("*.test.mjs")
-    )
+    node_tests = sorted((source_root / "xuhui_route_builder" / "tests").glob("*.test.mjs"))
     if node_tests:
         checks.append(
             _run_check(
@@ -347,9 +345,7 @@ def _run_check(
     )
 
 
-def _local_failure(
-    *, name: str, category: QualityCategory, error: str
-) -> GeneratedQualityCheck:
+def _local_failure(*, name: str, category: QualityCategory, error: str) -> GeneratedQualityCheck:
     return GeneratedQualityCheck(
         name=name,
         category=category,

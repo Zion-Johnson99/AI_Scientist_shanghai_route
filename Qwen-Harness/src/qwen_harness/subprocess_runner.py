@@ -151,9 +151,10 @@ class SafeSubprocessRunner:
         )
 
         timed_out = False
-        with stdout_path.open("w", encoding="utf-8", errors="replace") as stdout_file, stderr_path.open(
-            "w", encoding="utf-8", errors="replace"
-        ) as stderr_file:
+        with (
+            stdout_path.open("w", encoding="utf-8", errors="replace") as stdout_file,
+            stderr_path.open("w", encoding="utf-8", errors="replace") as stderr_file,
+        ):
             process = subprocess.Popen(
                 [executable, *spec.argv[1:]],
                 stdout=stdout_file,

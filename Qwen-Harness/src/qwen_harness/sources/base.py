@@ -25,7 +25,6 @@ from ..logging_utils import get_logger
 from ..models import ExtractedDocument, SourceRecord, SourceRequest, StageResult
 
 if TYPE_CHECKING:  # pragma: no cover - 仅类型
-
     from ..workflow.engine import WorkflowContext
 
 LOGGER = get_logger("sources.base")
@@ -45,13 +44,19 @@ def sha256_bytes(data: bytes) -> str:
 # ---------------------------------------------------------------------------
 # 网络策略
 # ---------------------------------------------------------------------------
-def validate_https_url(url: str, policy: SourcePolicy, allowed_domains: list[str] | None = None) -> str:
+def validate_https_url(
+    url: str, policy: SourcePolicy, allowed_domains: list[str] | None = None
+) -> str:
     """仅 HTTPS、拒绝含凭证 URL、限定允许域名；返回规范化 URL。"""
     parsed = urlparse(url)
     if policy.https_only and parsed.scheme != "https":
         raise InputContractError(f"仅允许 HTTPS 来源: {url}", suggested_action="改用 https:// 链接")
-    if policy.reject_url_credentials and (parsed.username or parsed.password or "@" in parsed.netloc):
-        raise InputContractError("来源 URL 含凭证信息，已拒绝", suggested_action="移除 URL 中的用户名/密码")
+    if policy.reject_url_credentials and (
+        parsed.username or parsed.password or "@" in parsed.netloc
+    ):
+        raise InputContractError(
+            "来源 URL 含凭证信息，已拒绝", suggested_action="移除 URL 中的用户名/密码"
+        )
     domains = allowed_domains if allowed_domains else policy.allowed_domains
     host = (parsed.hostname or "").lower()
     if domains and not any(host == d or host.endswith("." + d) for d in domains):
@@ -91,7 +96,10 @@ class HttpFetcher:
                 continue
             finally:
                 self._last_request_at = time.monotonic()
-            if response.status_code in (429, 500, 502, 503, 504) and attempt < self.policy.max_retries:
+            if (
+                response.status_code in (429, 500, 502, 503, 504)
+                and attempt < self.policy.max_retries
+            ):
                 time.sleep(min(2.0 * (attempt + 1), 8.0))
                 continue
             if response.status_code != 200:
@@ -124,7 +132,9 @@ class SourceAdapter:
 
     source_type: str = "local_file"
 
-    def __init__(self, *, repo_root: Path, policy: SourcePolicy, network_enabled: bool = False) -> None:
+    def __init__(
+        self, *, repo_root: Path, policy: SourcePolicy, network_enabled: bool = False
+    ) -> None:
         self.repo_root = Path(repo_root).resolve()
         self.policy = policy
         self.network_enabled = network_enabled
@@ -139,7 +149,11 @@ class SourceAdapter:
 
     def boundary_path(self, candidate: str) -> Path:
         resolved = Path(candidate)
-        resolved = (self.repo_root / resolved).resolve() if not resolved.is_absolute() else resolved.resolve()
+        resolved = (
+            (self.repo_root / resolved).resolve()
+            if not resolved.is_absolute()
+            else resolved.resolve()
+        )
         try:
             resolved.relative_to(self.repo_root)
         except ValueError as exc:
@@ -246,11 +260,21 @@ def _collect_online(context: "WorkflowContext", policy: SourcePolicy) -> StageRe
 
     network_ok = bool(context.options.allow_network and context.settings.network_enabled)
     adapters: dict[str, SourceAdapter] = {
-        "local_file": LocalFileSource(repo_root=context.repo_root, policy=policy, network_enabled=network_ok),
-        "repository_file": RepositorySource(repo_root=context.repo_root, policy=policy, network_enabled=network_ok),
-        "pubmed": PubMedSource(repo_root=context.repo_root, policy=policy, network_enabled=network_ok),
-        "crossref": CrossrefSource(repo_root=context.repo_root, policy=policy, network_enabled=network_ok),
-        "https_url": HttpsSource(repo_root=context.repo_root, policy=policy, network_enabled=network_ok),
+        "local_file": LocalFileSource(
+            repo_root=context.repo_root, policy=policy, network_enabled=network_ok
+        ),
+        "repository_file": RepositorySource(
+            repo_root=context.repo_root, policy=policy, network_enabled=network_ok
+        ),
+        "pubmed": PubMedSource(
+            repo_root=context.repo_root, policy=policy, network_enabled=network_ok
+        ),
+        "crossref": CrossrefSource(
+            repo_root=context.repo_root, policy=policy, network_enabled=network_ok
+        ),
+        "https_url": HttpsSource(
+            repo_root=context.repo_root, policy=policy, network_enabled=network_ok
+        ),
     }
 
     entries: list[dict[str, Any]] = list(load_source_manifest(context.harness_root))
@@ -279,7 +303,13 @@ def _collect_online(context: "WorkflowContext", policy: SourcePolicy) -> StageRe
             max_results=10,
             allowed_domains=list(policy.allowed_domains),
             local_paths=[str(entry["local_path"])] if entry.get("local_path") else [],
-            notes=str(entry.get("doi") or entry.get("pmid") or entry.get("url") or entry.get("repo_path") or ""),
+            notes=str(
+                entry.get("doi")
+                or entry.get("pmid")
+                or entry.get("url")
+                or entry.get("repo_path")
+                or ""
+            ),
         )
         try:
             records = adapter.collect(request)

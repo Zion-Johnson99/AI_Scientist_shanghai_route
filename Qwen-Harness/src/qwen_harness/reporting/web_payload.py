@@ -73,9 +73,11 @@ def _route_catalog_ids(context: "WorkflowContext") -> set[str]:
 
 
 def _metrics_summary(context: "WorkflowContext") -> dict[str, Any]:
-    return _load_json(context, "reports/metrics_summary.json") or _load_json(
-        context, "experiments/metrics_summary.json"
-    ) or {}
+    return (
+        _load_json(context, "reports/metrics_summary.json")
+        or _load_json(context, "experiments/metrics_summary.json")
+        or {}
+    )
 
 
 def _selected_route(context: "WorkflowContext", catalog_ids: set[str]) -> SelectedRoute | None:
@@ -83,7 +85,10 @@ def _selected_route(context: "WorkflowContext", catalog_ids: set[str]) -> Select
     results = _load_json(context, "experiments/experiment_results.json") or {}
     cells = results.get("cells") if isinstance(results.get("cells"), list) else []
     for record in cells:
-        if not isinstance(record, dict) or record.get("variant_id") != "M1_personalized_constrained":
+        if (
+            not isinstance(record, dict)
+            or record.get("variant_id") != "M1_personalized_constrained"
+        ):
             continue
         if record.get("status") != "ready":
             continue
@@ -94,7 +99,9 @@ def _selected_route(context: "WorkflowContext", catalog_ids: set[str]) -> Select
             continue
         if catalog_ids and route_id not in catalog_ids:
             continue
-        return SelectedRoute(route_id=route_id, route_name=str(route_name), reason=SELECTED_ROUTE_REASON)
+        return SelectedRoute(
+            route_id=route_id, route_name=str(route_name), reason=SELECTED_ROUTE_REASON
+        )
     return None
 
 
@@ -167,7 +174,11 @@ def _build_iterations(context: "WorkflowContext") -> list[dict[str, object]]:
                 )
     if not iterations:
         iterations.append(
-            {"iteration": context.state.iteration, "status": context.state.status, "reason": "当前运行状态"}
+            {
+                "iteration": context.state.iteration,
+                "status": context.state.status,
+                "reason": "当前运行状态",
+            }
         )
     return iterations
 
@@ -204,11 +215,15 @@ def _build_limitations(context: "WorkflowContext") -> list[str]:
         "预设画像为固定案例矩阵，不解释为独立人群样本，不外推临床或人群结论",
     ]
     summary = _metrics_summary(context)
-    negative = summary.get("negative_results") if isinstance(summary.get("negative_results"), dict) else {}
+    negative = (
+        summary.get("negative_results") if isinstance(summary.get("negative_results"), dict) else {}
+    )
     if negative.get("no_candidate_cells"):
         limitations.append(f"存在 {negative['no_candidate_cells']} 个无候选单元，已如实记录")
     if negative.get("missing_cells"):
-        limitations.append(f"存在 {negative['missing_cells']} 个缺少候选输出的单元，相关指标标记缺失")
+        limitations.append(
+            f"存在 {negative['missing_cells']} 个缺少候选输出的单元，相关指标标记缺失"
+        )
     return limitations
 
 
@@ -252,7 +267,9 @@ def _resolve_hypothesis(context: "WorkflowContext") -> str:
             selected_id = candidate
     generation = context.read_stage_output("hypothesis_generation")
     if isinstance(generation, dict):
-        items = generation.get("hypotheses") if isinstance(generation.get("hypotheses"), list) else []
+        items = (
+            generation.get("hypotheses") if isinstance(generation.get("hypotheses"), list) else []
+        )
         if selected_id is None and isinstance(generation.get("recommended_hypothesis_id"), str):
             selected_id = generation["recommended_hypothesis_id"]
         for item in items:

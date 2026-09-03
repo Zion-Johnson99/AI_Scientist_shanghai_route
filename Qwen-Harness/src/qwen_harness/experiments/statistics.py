@@ -31,9 +31,17 @@ RATE_METRIC_IDS = (
 
 _CELL_READY = "ready"
 _METRIC_NAMES = (
-    "pm25_exposure", "pm25_health_score", "noise_proxy", "pollen_risk", "env_reliability",
-    "target_deviation", "access_distance", "preference_hit_rate", "env_risk",
-    "composite_score", "dimension_scores",
+    "pm25_exposure",
+    "pm25_health_score",
+    "noise_proxy",
+    "pollen_risk",
+    "env_reliability",
+    "target_deviation",
+    "access_distance",
+    "preference_hit_rate",
+    "env_risk",
+    "composite_score",
+    "dimension_scores",
 )
 
 
@@ -66,12 +74,21 @@ def win_rate(
             losses += 1
     total = wins + ties + losses
     rate = (wins + 0.5 * ties) / total if total else 0.0
-    return {"wins": float(wins), "ties": float(ties), "losses": float(losses), "pairs": float(total), "rate": rate}
+    return {
+        "wins": float(wins),
+        "ties": float(ties),
+        "losses": float(losses),
+        "pairs": float(total),
+        "rate": rate,
+    }
 
 
 def paired_differences(treatment: Sequence[float], baseline: Sequence[float]) -> list[float]:
     """配对差值（处理 - 基线），长度与配对数一致。"""
-    return [float(treated_value) - float(baseline_value) for treated_value, baseline_value in zip(treatment, baseline, strict=True)]
+    return [
+        float(treated_value) - float(baseline_value)
+        for treated_value, baseline_value in zip(treatment, baseline, strict=True)
+    ]
 
 
 def mean_difference(treatment: Sequence[float], baseline: Sequence[float]) -> float | None:
@@ -128,7 +145,9 @@ def paired_comparison(
     }
 
 
-def pair_values(cell_records: Sequence[Mapping[str, Any]], variant_id: str, metric_path: str) -> dict[str, float]:
+def pair_values(
+    cell_records: Sequence[Mapping[str, Any]], variant_id: str, metric_path: str
+) -> dict[str, float]:
     """收集某变体全部就绪单元的指标值（按 case_id 索引，供配对比较）。"""
     values: dict[str, float] = {}
     for record in cell_records:
@@ -151,11 +170,15 @@ def _detour_pass_rate(
     b0_by_case = {
         record["case_id"]: record
         for record in cell_records
-        if record.get("variant_id") == "B0_shortest_feasible" and record.get("status") == _CELL_READY
+        if record.get("variant_id") == "B0_shortest_feasible"
+        and record.get("status") == _CELL_READY
     }
     passed = pairs_seen = 0
     for record in cell_records:
-        if record.get("variant_id") != "M1_personalized_constrained" or record.get("status") != _CELL_READY:
+        if (
+            record.get("variant_id") != "M1_personalized_constrained"
+            or record.get("status") != _CELL_READY
+        ):
             continue
         b0 = b0_by_case.get(record.get("case_id"))
         if b0 is None:
@@ -194,17 +217,22 @@ def aggregate_summary(
     m1_ready = [
         record
         for record in cell_records
-        if record.get("variant_id") == "M1_personalized_constrained" and record.get("status") == _CELL_READY
+        if record.get("variant_id") == "M1_personalized_constrained"
+        and record.get("status") == _CELL_READY
     ]
     detour_pass, pairs_seen = _detour_pass_rate(cell_records, detour_limit)
     detour_pass_rate = detour_pass / pairs_seen if pairs_seen else 0.0
 
-    def _pair_block(baseline_map: dict[str, float], variant_map: dict[str, float], flip: bool) -> dict[str, Any]:
+    def _pair_block(
+        baseline_map: dict[str, float], variant_map: dict[str, float], flip: bool
+    ) -> dict[str, Any]:
         common = sorted(set(baseline_map) & set(variant_map))
         baseline = [baseline_map[case] for case in common]
         treatment = [variant_map[case] for case in common]
         # 环境风险越低越好：把“更低”翻转为“更高”后套用统一胜率/配对口径
-        treated, base = ([-v for v in treatment], [-v for v in baseline]) if flip else (treatment, baseline)
+        treated, base = (
+            ([-v for v in treatment], [-v for v in baseline]) if flip else (treatment, baseline)
+        )
         return {
             "m1_or_variant_mean": summary_stats(treatment)["mean"],
             "b0_mean": summary_stats(baseline)["mean"],
@@ -212,14 +240,21 @@ def aggregate_summary(
         }
 
     comparisons: dict[str, Any] = {}
-    env_values = {variant: pair_values(cell_records, variant, "metrics.env_risk") for variant in variant_ids}
-    pref_values = {variant: pair_values(cell_records, variant, "metrics.preference_hit_rate") for variant in variant_ids}
+    env_values = {
+        variant: pair_values(cell_records, variant, "metrics.env_risk") for variant in variant_ids
+    }
+    pref_values = {
+        variant: pair_values(cell_records, variant, "metrics.preference_hit_rate")
+        for variant in variant_ids
+    }
     env_win_rate = pref_win_rate = 0.0
     for variant in variant_ids:
         if variant == "B0_shortest_feasible":
             continue
         env_block = _pair_block(env_values["B0_shortest_feasible"], env_values[variant], flip=True)
-        pref_block = _pair_block(pref_values["B0_shortest_feasible"], pref_values[variant], flip=False)
+        pref_block = _pair_block(
+            pref_values["B0_shortest_feasible"], pref_values[variant], flip=False
+        )
         comparisons[variant] = {"env_risk": env_block, "preference_hit_rate": pref_block}
         if variant == "M1_personalized_constrained":
             env_win_rate = float(env_block["paired"]["win"]["rate"])  # type: ignore[index]
@@ -230,15 +265,24 @@ def aggregate_summary(
         sum(
             1
             for item in m1_metrics
-            if item.get("target_deviation") is not None and float(item["target_deviation"]) <= target_tolerance
+            if item.get("target_deviation") is not None
+            and float(item["target_deviation"]) <= target_tolerance
         )
         / len(m1_metrics)
         if m1_metrics
         else 0.0
     )
-    reliability_values = [float(item["data_reliability"]) for item in m1_metrics if isinstance(item.get("data_reliability"), (int, float))]
+    reliability_values = [
+        float(item["data_reliability"])
+        for item in m1_metrics
+        if isinstance(item.get("data_reliability"), (int, float))
+    ]
     no_candidate_rate = no_candidate / cells_total if cells_total else 0.0
-    verified = sum(1 for record in source_records.values() if getattr(record, "verification_status", None) == "verified")
+    verified = sum(
+        1
+        for record in source_records.values()
+        if getattr(record, "verification_status", None) == "verified"
+    )
     reference_verification_rate = verified / len(source_records) if source_records else 0.0
 
     summary: dict[str, Any] = {
@@ -260,16 +304,22 @@ def aggregate_summary(
         **dict(thresholds),
         "comparisons": comparisons,
         "negative_results": {
-            "no_candidate_cells": no_candidate, "missing_cells": missing,
-            "paused_cells": paused, "invalid_cells": invalid,
+            "no_candidate_cells": no_candidate,
+            "missing_cells": missing,
+            "paused_cells": paused,
+            "invalid_cells": invalid,
         },
-        "module_statuses": {m: r.get("preflight_status") for m, r in module_info["modules"].items()},
+        "module_statuses": {
+            m: r.get("preflight_status") for m, r in module_info["modules"].items()
+        },
     }
     summary["support_status"] = determine_support_status(summary)
     return summary
 
 
-def negative_results(summary: Mapping[str, Any], cell_records: Sequence[Mapping[str, Any]]) -> list[str]:
+def negative_results(
+    summary: Mapping[str, Any], cell_records: Sequence[Mapping[str, Any]]
+) -> list[str]:
     """负结果清单：无候选/缺失/暂停单元与方向相反指标（无则明确声明）。"""
     items: list[str] = []
     negative = summary.get("negative_results") or {}
@@ -304,11 +354,15 @@ def negative_results(summary: Mapping[str, Any], cell_records: Sequence[Mapping[
 
 
 def data_quality_notes(
-    module_info: Mapping[str, Any], summary: Mapping[str, Any], cell_records: Sequence[Mapping[str, Any]]
+    module_info: Mapping[str, Any],
+    summary: Mapping[str, Any],
+    cell_records: Sequence[Mapping[str, Any]],
 ) -> list[str]:
     """数据质量说明：来源、致命错误、模块预检降级与缺失单元（如实记录）。"""
     notes: list[str] = []
-    notes.append(f"结果来源: {summary['provenance']}；致命数据错误 {summary['fatal_data_errors']} 个；来源核验率 {float(summary['reference_verification_rate']):.2f}")
+    notes.append(
+        f"结果来源: {summary['provenance']}；致命数据错误 {summary['fatal_data_errors']} 个；来源核验率 {float(summary['reference_verification_rate']):.2f}"
+    )
     for module, record in module_info["modules"].items():
         if record["preflight_status"] == "partial":
             notes.append(f"模块 {module} 预检为 partial，相关指标需在解释时保留数据限制说明")
@@ -347,7 +401,9 @@ def build_interpretation(
         f"参考核验率 {float(summary.get('reference_verification_rate', 0.0)):.2f}，支持状态判定为 {status}。"
         "预设画像为固定案例矩阵，不作为独立人群样本外推。"
     )
-    highlights = [{"metric_id": metric_id, "value": summary.get(metric_id)} for metric_id in RATE_METRIC_IDS]
+    highlights = [
+        {"metric_id": metric_id, "value": summary.get(metric_id)} for metric_id in RATE_METRIC_IDS
+    ]
     highlights.append({"metric_id": "no_candidate_rate", "value": summary.get("no_candidate_rate")})
     ready_count = sum(1 for record in cell_records if record.get("status") == _CELL_READY)
     confidence = "medium" if ready_count >= 8 and summary.get("fatal_data_errors") == 0 else "low"
@@ -387,8 +443,10 @@ def experiment_summary_payload(
         "provenance": summary.get("provenance"),
         "profiles": [dict(item) for item in plan.profiles],
         "plan": {
-            "hypothesis_id": plan.hypothesis_id, "variants": list(plan.variants),
-            "detour_limit": detour_limit, "target_distance_tolerance": target_tolerance,
+            "hypothesis_id": plan.hypothesis_id,
+            "variants": list(plan.variants),
+            "detour_limit": detour_limit,
+            "target_distance_tolerance": target_tolerance,
         },
         "variants_registry": dict(registry),
         "module_statuses": summary.get("module_statuses"),

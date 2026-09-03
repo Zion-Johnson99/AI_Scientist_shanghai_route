@@ -15,11 +15,9 @@ def test_python_command_stdout_is_always_utf8(tmp_path: Path) -> None:
     audit = runner.run(
         CommandSpec(
             command_id="utf8-json",
-            argv=["python", "-c", "print('{\"名称\": \"徐汇滨江\"}')"],
+            argv=["python", "-c", 'print(\'{"名称": "徐汇滨江"}\')'],
             cwd=repo_root,
         )
     )
 
-    assert Path(audit.stdout_path).read_text(encoding="utf-8").strip() == (
-        '{"名称": "徐汇滨江"}'
-    )
+    assert Path(audit.stdout_path).read_text(encoding="utf-8").strip() == ('{"名称": "徐汇滨江"}')

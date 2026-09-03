@@ -47,14 +47,22 @@ def _builtin_specs() -> dict[str, dict[str, Any]]:
             "variant_id": "B0_shortest_feasible",
             "name": "最短可行基线",
             "selection_rule": "在可行候选中最小化目标距离偏差，其次最小化接驳距离，再按 route_id 字典序。",
-            "required_fields": ["route.distance_m", "access_distance_m", "profile.target_distance_m"],
+            "required_fields": [
+                "route.distance_m",
+                "access_distance_m",
+                "profile.target_distance_m",
+            ],
             "weights_source": "none:选择规则不使用权重",
         },
         "B1_pm25_only": {
             "variant_id": "B1_pm25_only",
             "name": "单一 PM2.5 基线",
             "selection_rule": "在目标距离偏差门禁内最小化 PM2.5 浓度；缺失候选不参与选择，全部缺失时回退 B0 并记录。",
-            "required_fields": ["environment_summary.pm2_5.value", "route.distance_m", "profile.target_distance_m"],
+            "required_fields": [
+                "environment_summary.pm2_5.value",
+                "route.distance_m",
+                "profile.target_distance_m",
+            ],
             "weights_source": "none:单指标最小化",
         },
         "B2_multi_environment": {
@@ -74,7 +82,11 @@ def _builtin_specs() -> dict[str, dict[str, Any]]:
             "variant_id": "B3_non_personalized",
             "name": "默认权重非个性化基线",
             "selection_rule": "默认平衡权重，不提升敏感项与兴趣项；按 route_quality、sport_match、data_confidence 与 route_id 选择。",
-            "required_fields": ["dimension_scores.route_quality", "dimension_scores.sport_match", "data_confidence"],
+            "required_fields": [
+                "dimension_scores.route_quality",
+                "dimension_scores.sport_match",
+                "data_confidence",
+            ],
             "weights_source": "evaluation_module:config/default_weights.json(goal=balanced)",
         },
         "M1_personalized_constrained": {
@@ -136,7 +148,11 @@ def load_experiment_variants(config_path: Path) -> dict[str, Any]:
 
 def validate_plan_against_registry(plan_variants: Sequence[str], registry: dict[str, Any]) -> None:
     """实验计划声明的变体必须全部在冻结注册表内（不允许新增或改名）。"""
-    known = {str(item.get("variant_id", "")) for item in registry.get("variants", []) if isinstance(item, dict)}
+    known = {
+        str(item.get("variant_id", ""))
+        for item in registry.get("variants", [])
+        if isinstance(item, dict)
+    }
     unknown = sorted({str(name) for name in plan_variants} - known)
     if unknown:
         raise InputContractError(
@@ -200,7 +216,9 @@ def candidate_env_risk(candidate: Candidate, normalization: dict[str, Any]) -> f
     return composite_env_risk(values, normalization)
 
 
-def _within_target_gate(candidates: Sequence[Candidate], profile: dict[str, Any], tolerance: float) -> list[Candidate]:
+def _within_target_gate(
+    candidates: Sequence[Candidate], profile: dict[str, Any], tolerance: float
+) -> list[Candidate]:
     target = float(profile.get("target_distance_m") or 0.0)
     if target <= 0:
         return []
@@ -213,7 +231,9 @@ def _within_target_gate(candidates: Sequence[Candidate], profile: dict[str, Any]
     return kept
 
 
-def select_b0(candidates: Sequence[Candidate], profile: dict[str, Any], params: dict[str, Any]) -> tuple[Candidate | None, list[str]]:
+def select_b0(
+    candidates: Sequence[Candidate], profile: dict[str, Any], params: dict[str, Any]
+) -> tuple[Candidate | None, list[str]]:
     target = float(profile.get("target_distance_m") or 0.0)
 
     def key(candidate: Candidate) -> tuple:
@@ -227,7 +247,9 @@ def select_b0(candidates: Sequence[Candidate], profile: dict[str, Any], params: 
     return (ordered[0], []) if ordered else (None, [])
 
 
-def select_b1(candidates: Sequence[Candidate], profile: dict[str, Any], params: dict[str, Any]) -> tuple[Candidate | None, list[str]]:
+def select_b1(
+    candidates: Sequence[Candidate], profile: dict[str, Any], params: dict[str, Any]
+) -> tuple[Candidate | None, list[str]]:
     tolerance = float(params["target_deviation"])
     gated = _within_target_gate(candidates, profile, tolerance)
     eligible = [c for c in gated if _env_value(c, "pm25") is not None]
@@ -239,7 +261,9 @@ def select_b1(candidates: Sequence[Candidate], profile: dict[str, Any], params: 
     return (ordered[0], notes) if ordered else (None, notes)
 
 
-def select_b2(candidates: Sequence[Candidate], profile: dict[str, Any], params: dict[str, Any]) -> tuple[Candidate | None, list[str]]:
+def select_b2(
+    candidates: Sequence[Candidate], profile: dict[str, Any], params: dict[str, Any]
+) -> tuple[Candidate | None, list[str]]:
     tolerance = float(params["target_deviation"])
     normalization = params["normalization"]
     gated = _within_target_gate(candidates, profile, tolerance)
@@ -247,15 +271,23 @@ def select_b2(candidates: Sequence[Candidate], profile: dict[str, Any], params: 
     eligible = [(risk, c) for risk, c in scored if risk is not None]
     notes: list[str] = []
     if gated and not eligible:
-        notes.append("所有候选的综合暴露风险不可计算（环境分量缺失），B2 回退为 B0 最短可行规则（降级，不伪造数值）")
+        notes.append(
+            "所有候选的综合暴露风险不可计算（环境分量缺失），B2 回退为 B0 最短可行规则（降级，不伪造数值）"
+        )
         return select_b0(candidates, profile, params)
     eligible.sort(key=lambda item: (float(item[0]), _route_id(item[1])))
     return (eligible[0][1], notes) if eligible else (None, notes)
 
 
-def select_b3(candidates: Sequence[Candidate], profile: dict[str, Any], params: dict[str, Any]) -> tuple[Candidate | None, list[str]]:
+def select_b3(
+    candidates: Sequence[Candidate], profile: dict[str, Any], params: dict[str, Any]
+) -> tuple[Candidate | None, list[str]]:
     def key(candidate: Candidate) -> tuple:
-        dimensions = candidate.get("dimension_scores") if isinstance(candidate.get("dimension_scores"), dict) else {}
+        dimensions = (
+            candidate.get("dimension_scores")
+            if isinstance(candidate.get("dimension_scores"), dict)
+            else {}
+        )
         quality = float(dimensions.get("route_quality") or 0.0)
         sport = float(dimensions.get("sport_match") or 0.0)
         confidence = float(candidate.get("data_confidence") or 0.0)
@@ -265,7 +297,9 @@ def select_b3(candidates: Sequence[Candidate], profile: dict[str, Any], params: 
     return (ordered[0], []) if ordered else (None, [])
 
 
-def select_m1(candidates: Sequence[Candidate], profile: dict[str, Any], params: dict[str, Any]) -> tuple[Candidate | None, list[str]]:
+def select_m1(
+    candidates: Sequence[Candidate], profile: dict[str, Any], params: dict[str, Any]
+) -> tuple[Candidate | None, list[str]]:
     tolerance = float(params["target_deviation"])
     detour_limit = float(params["detour_limit"])
     search_radius = profile.get("search_radius_m")
@@ -277,9 +311,15 @@ def select_m1(candidates: Sequence[Candidate], profile: dict[str, Any], params: 
         if target <= 0 or abs(distance - target) / target > tolerance:
             return False
         access = candidate.get("access_distance_m")
-        if search_radius is not None and access is not None and float(access) > float(search_radius):
+        if (
+            search_radius is not None
+            and access is not None
+            and float(access) > float(search_radius)
+        ):
             return False
-        shortest = float(params["min_feasible_distance"]) if params.get("min_feasible_distance") else None
+        shortest = (
+            float(params["min_feasible_distance"]) if params.get("min_feasible_distance") else None
+        )
         if shortest and shortest > 0 and (distance - shortest) / shortest > detour_limit:
             return False
         return True
@@ -318,5 +358,7 @@ def apply_selection_rule(
     """执行冻结的选择规则；未知变体直接报契约错误。"""
     rule = SELECTION_RULES.get(variant_id)
     if rule is None:
-        raise InputContractError(f"未知变体: {variant_id}", suggested_action="变体必须来自预注册列表")
+        raise InputContractError(
+            f"未知变体: {variant_id}", suggested_action="变体必须来自预注册列表"
+        )
     return rule(list(candidates), dict(profile), dict(params))

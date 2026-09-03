@@ -64,7 +64,9 @@ def stage_handler(context: "WorkflowContext") -> StageResult:
     hypothesis_set, audit = agent.run(context, _build_payload(context))
 
     min_candidates = int(
-        (context.quality_gates.get("hypothesis") or {}).get("min_candidates", MIN_CANDIDATES_DEFAULT)
+        (context.quality_gates.get("hypothesis") or {}).get(
+            "min_candidates", MIN_CANDIDATES_DEFAULT
+        )
     )
     if len(hypothesis_set.hypotheses) < min_candidates:
         raise InputContractError(

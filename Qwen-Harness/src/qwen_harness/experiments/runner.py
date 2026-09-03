@@ -54,18 +54,28 @@ def _module_records(context: "WorkflowContext") -> dict[str, Any]:
         preflight_path = modules_dir / module / "preflight.json"
         if preflight_path.is_file():
             try:
-                preflight_status = ModuleResult.model_validate_json(preflight_path.read_text(encoding="utf-8")).status
+                preflight_status = ModuleResult.model_validate_json(
+                    preflight_path.read_text(encoding="utf-8")
+                ).status
             except Exception as exc:  # noqa: BLE001 - 损坏记录降级为警告
-                context.emit("module_record_invalid", f"{module}/preflight.json 无法解析: {exc}", status="warning")
+                context.emit(
+                    "module_record_invalid",
+                    f"{module}/preflight.json 无法解析: {exc}",
+                    status="warning",
+                )
         results: list[ModuleResult] = []
         if modules_dir.is_dir() and (modules_dir / module).is_dir():
             for path in sorted((modules_dir / module).glob("*.json")):
                 if path.name == "preflight.json":
                     continue
                 try:
-                    results.append(ModuleResult.model_validate_json(path.read_text(encoding="utf-8")))
+                    results.append(
+                        ModuleResult.model_validate_json(path.read_text(encoding="utf-8"))
+                    )
                 except Exception as exc:  # noqa: BLE001
-                    context.emit("module_record_invalid", f"{path.name} 无法解析: {exc}", status="warning")
+                    context.emit(
+                        "module_record_invalid", f"{path.name} 无法解析: {exc}", status="warning"
+                    )
         hashes: dict[str, str] = {}
         warnings: list[str] = []
         errors: list[str] = []
@@ -104,7 +114,9 @@ def _collect_candidate_files(context: "WorkflowContext", canonical: list[Path]) 
                 continue
             for artifact in result.output_artifacts:
                 candidate = Path(str(artifact))
-                resolved = candidate if candidate.is_absolute() else (context.store.run_dir / candidate)
+                resolved = (
+                    candidate if candidate.is_absolute() else (context.store.run_dir / candidate)
+                )
                 if resolved.is_file():
                     extras.append(resolved)
     canonical_resolved = {path.resolve() for path in files if path.is_file()}
@@ -128,7 +140,9 @@ def _register_cell(
     cases: dict[str, dict[str, Any]],
 ) -> None:
     """解析单个候选单元体：定位 case/variant，校验必备字段并登记状态。"""
-    variant_id = variant or (body.get("variant_id") if isinstance(body.get("variant_id"), str) else None)
+    variant_id = variant or (
+        body.get("variant_id") if isinstance(body.get("variant_id"), str) else None
+    )
     case_id = case or (body.get("case_id") if isinstance(body.get("case_id"), str) else None)
     if not variant_id and "__" in origin:
         stem = origin.rsplit(".", 1)[0]
@@ -160,7 +174,15 @@ def _register_cell(
             }
         )
         return
-    cells.append({"case_id": case_id, "variant_id": variant_id, "status": CELL_STATUS_READY, "data": body, "source_file": origin})
+    cells.append(
+        {
+            "case_id": case_id,
+            "variant_id": variant_id,
+            "status": CELL_STATUS_READY,
+            "data": body,
+            "source_file": origin,
+        }
+    )
 
 
 def _index_cells(
@@ -199,11 +221,31 @@ def _index_cells(
         if isinstance(raw.get("cells"), list):
             for entry in raw["cells"]:
                 if isinstance(entry, dict):
-                    entry_case = entry.get("case_id") if isinstance(entry.get("case_id"), str) else None
-                    _register_cell(cells, warnings, entry, declared_variant, entry_case, path.name, variant_order, cases)
+                    entry_case = (
+                        entry.get("case_id") if isinstance(entry.get("case_id"), str) else None
+                    )
+                    _register_cell(
+                        cells,
+                        warnings,
+                        entry,
+                        declared_variant,
+                        entry_case,
+                        path.name,
+                        variant_order,
+                        cases,
+                    )
         else:
             declared_case = raw.get("case_id") if isinstance(raw.get("case_id"), str) else None
-            _register_cell(cells, warnings, raw, declared_variant, declared_case, path.name, variant_order, cases)
+            _register_cell(
+                cells,
+                warnings,
+                raw,
+                declared_variant,
+                declared_case,
+                path.name,
+                variant_order,
+                cases,
+            )
 
     known = {(cell["case_id"], cell["variant_id"]) for cell in cells}
     for case_id in cases or {}:
@@ -217,7 +259,12 @@ def _index_cells(
                         "messages": ["未找到该变体×画像的 score-candidates 输出（缺数据，不伪造）"],
                     }
                 )
-    cells.sort(key=lambda cell: (str(cell.get("case_id", "")), variant_order.get(str(cell.get("variant_id", "")), 99)))
+    cells.sort(
+        key=lambda cell: (
+            str(cell.get("case_id", "")),
+            variant_order.get(str(cell.get("variant_id", "")), 99),
+        )
+    )
     return {"cells": cells, "warnings": warnings}
 
 
@@ -236,7 +283,11 @@ def _apply_selection(
         normalization.update(normalization_block)
     out: list[dict[str, Any]] = []
     for cell in cells:
-        record: dict[str, Any] = {"case_id": cell["case_id"], "variant_id": cell["variant_id"], "status": cell["status"]}
+        record: dict[str, Any] = {
+            "case_id": cell["case_id"],
+            "variant_id": cell["variant_id"],
+            "status": cell["status"],
+        }
         if cell["status"] != CELL_STATUS_READY:
             record["messages"] = list(cell.get("messages", []))
             out.append(record)
@@ -247,7 +298,9 @@ def _apply_selection(
         profile_body = cases.get(cell["case_id"], {}).get("profile", {}) or profile
         record["profile"] = profile_body or profile
         record["candidate_count"] = len(candidates)
-        record["risk_status"] = (data.get("risk") or {}).get("status") if isinstance(data.get("risk"), dict) else None
+        record["risk_status"] = (
+            (data.get("risk") or {}).get("status") if isinstance(data.get("risk"), dict) else None
+        )
         record["data_generated_at"] = data.get("data_generated_at")
         record["weights_sha256"] = data.get("weights_sha256")
         record["source_file"] = cell.get("source_file")
@@ -265,7 +318,8 @@ def _apply_selection(
         distances = [
             float(candidate["route"].get("distance_m"))
             for candidate in candidates
-            if isinstance(candidate.get("route"), dict) and isinstance(candidate["route"].get("distance_m"), (int, float))
+            if isinstance(candidate.get("route"), dict)
+            and isinstance(candidate["route"].get("distance_m"), (int, float))
         ]
         min_feasible = min(distances) if distances else None
         params = {
@@ -274,7 +328,9 @@ def _apply_selection(
             "min_feasible_distance": min_feasible,
             "normalization": normalization,
         }
-        chosen, notes = apply_selection_rule(cell["variant_id"], candidates, profile_body or profile, params)
+        chosen, notes = apply_selection_rule(
+            cell["variant_id"], candidates, profile_body or profile, params
+        )
         messages.extend(notes)
         if chosen is None:
             record["status"] = CELL_STATUS_NO_CANDIDATE
@@ -348,10 +404,18 @@ def stage_handler(context: "WorkflowContext") -> StageResult:
     module_info = _module_records(context)
     indexed = _index_cells(context, registry, cases)
     warnings.extend(indexed["warnings"])
-    cell_records = _apply_selection(indexed["cells"], cases, registry, detour_limit, target_tolerance)
+    cell_records = _apply_selection(
+        indexed["cells"], cases, registry, detour_limit, target_tolerance
+    )
     if not any(record.get("status") == CELL_STATUS_READY for record in cell_records):
-        warnings.append("没有任何就绪的候选单元：全部指标标记缺失，支持状态判为 inconclusive（不伪造数据）")
-    variant_ids = [str(item.get("variant_id", "")) for item in registry.get("variants", []) if isinstance(item, dict)]
+        warnings.append(
+            "没有任何就绪的候选单元：全部指标标记缺失，支持状态判为 inconclusive（不伪造数据）"
+        )
+    variant_ids = [
+        str(item.get("variant_id", ""))
+        for item in registry.get("variants", [])
+        if isinstance(item, dict)
+    ]
     summary = aggregate_summary(
         cell_records,
         module_info=module_info,
@@ -365,7 +429,14 @@ def stage_handler(context: "WorkflowContext") -> StageResult:
     )
 
     results_payload = experiment_summary_payload(
-        context.run_id, plan, registry, cell_records, summary, module_info, detour_limit, target_tolerance
+        context.run_id,
+        plan,
+        registry,
+        cell_records,
+        summary,
+        module_info,
+        detour_limit,
+        target_tolerance,
     )
     context.store.write_json_atomic("experiments/experiment_results.json", results_payload)
     context.store.write_json_atomic("experiments/metrics_summary.json", summary)
@@ -387,6 +458,10 @@ def stage_handler(context: "WorkflowContext") -> StageResult:
         status="passed",
         summary=f"实验分析完成: 单元 {summary.get('cells_total')} 个，就绪 {ready_count} 个，支持状态 {interpretation.status}",
         output=interpretation.model_dump(mode="json"),
-        artifacts=["experiments/experiment_results.json", "experiments/metrics_summary.json", "reports/metrics_summary.json"],
+        artifacts=[
+            "experiments/experiment_results.json",
+            "experiments/metrics_summary.json",
+            "reports/metrics_summary.json",
+        ],
         warnings=warnings,
     )

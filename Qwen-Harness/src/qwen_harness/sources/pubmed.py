@@ -33,7 +33,9 @@ class PubMedSource(SourceAdapter):
         self.require_network()
         pmids: list[str] = []
         terms_used: list[str] = []
-        explicit = [item.strip() for item in (request.notes or "").split(",") if item.strip().isdigit()]
+        explicit = [
+            item.strip() for item in (request.notes or "").split(",") if item.strip().isdigit()
+        ]
         if explicit:
             pmids = explicit[: request.max_results]
         else:

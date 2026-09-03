@@ -63,25 +63,40 @@ class HarnessPaths:
     web_data_root: Path
 
     @classmethod
-    def resolve(cls, harness_root: Path, config: "HarnessConfig", runtime_root: str = "runtime") -> "HarnessPaths":
+    def resolve(
+        cls, harness_root: Path, config: "HarnessConfig", runtime_root: str = "runtime"
+    ) -> "HarnessPaths":
         harness_root = harness_root.resolve()
         repo_root = harness_root.parent
         cfg_paths = config.paths
 
-        skills_root = resolve_within(harness_root, cfg_paths.skills_root, "paths.skills_root", boundary=repo_root)
-        route_module = resolve_within(harness_root, cfg_paths.route_module, "paths.route_module", boundary=repo_root)
+        skills_root = resolve_within(
+            harness_root, cfg_paths.skills_root, "paths.skills_root", boundary=repo_root
+        )
+        route_module = resolve_within(
+            harness_root, cfg_paths.route_module, "paths.route_module", boundary=repo_root
+        )
         environment_module = resolve_within(
-            harness_root, cfg_paths.environment_module, "paths.environment_module", boundary=repo_root
+            harness_root,
+            cfg_paths.environment_module,
+            "paths.environment_module",
+            boundary=repo_root,
         )
         evaluation_module = resolve_within(
             harness_root, cfg_paths.evaluation_module, "paths.evaluation_module", boundary=repo_root
         )
-        web_root = resolve_within(harness_root, cfg_paths.web_root, "paths.web_root", boundary=repo_root)
-        web_data_root = resolve_within(harness_root, cfg_paths.web_data_root, "paths.web_data_root", boundary=repo_root)
+        web_root = resolve_within(
+            harness_root, cfg_paths.web_root, "paths.web_root", boundary=repo_root
+        )
+        web_data_root = resolve_within(
+            harness_root, cfg_paths.web_data_root, "paths.web_data_root", boundary=repo_root
+        )
 
         runtime = Path(runtime_root)
         runtime_abs = runtime if runtime.is_absolute() else (harness_root / runtime)
-        runtime_root_path = resolve_within(harness_root, runtime_abs, "runtime_root", boundary=repo_root)
+        runtime_root_path = resolve_within(
+            harness_root, runtime_abs, "runtime_root", boundary=repo_root
+        )
 
         return cls(
             repo_root=repo_root,

@@ -66,7 +66,12 @@ def _summary_exit_code(summary: RunSummary) -> int:
         error_type = str((summary.error or {}).get("error_type", ""))
         if error_type in {"gate_failed", "approval_pending"}:
             return 1
-        if error_type in {"config_error", "input_contract_error", "path_boundary_error", "skill_error"}:
+        if error_type in {
+            "config_error",
+            "input_contract_error",
+            "path_boundary_error",
+            "skill_error",
+        }:
             return 2
         if error_type in {"model_unavailable", "source_unavailable"}:
             return 3
@@ -80,7 +85,9 @@ def _summary_exit_code(summary: RunSummary) -> int:
 
 def _print_summary(summary: RunSummary, json_output: bool) -> None:
     if json_output:
-        _print_json({"ok": summary.status != "failed", "summary": json.loads(summary.model_dump_json())})
+        _print_json(
+            {"ok": summary.status != "failed", "summary": json.loads(summary.model_dump_json())}
+        )
         return
     print(f"运行 {summary.run_id} [{summary.workflow}] 状态: {summary.status}")
     print(f"  运行目录: {summary.run_dir}")
@@ -107,7 +114,9 @@ def _load_goal(args: argparse.Namespace) -> ResearchGoal:
     if args.goal_file:
         path = Path(args.goal_file)
         if not path.is_file():
-            raise InputContractError(f"目标文件不存在: {path}", suggested_action="检查 --goal-file 路径")
+            raise InputContractError(
+                f"目标文件不存在: {path}", suggested_action="检查 --goal-file 路径"
+            )
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
@@ -165,14 +174,20 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             ("paths.web_data_root", paths.web_data_root),
         ):
             if not target.is_dir():
-                problems.append({"level": "error", "item": label, "message": f"模块目录不存在: {target}"})
+                problems.append(
+                    {"level": "error", "item": label, "message": f"模块目录不存在: {target}"}
+                )
         try:
             registry = SkillRegistry(paths.repo_root)
             discovered = registry.discover()
             missing = [name for name in CORE_SKILLS if name not in discovered]
             if missing:
                 problems.append(
-                    {"level": "error", "item": "skills", "message": f"缺少项目技能: {', '.join(missing)}"}
+                    {
+                        "level": "error",
+                        "item": "skills",
+                        "message": f"缺少项目技能: {', '.join(missing)}",
+                    }
                 )
         except HarnessError as exc:
             problems.append({"level": "error", "item": "skills", "message": exc.message})
@@ -182,7 +197,9 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             probe.write_text("probe", encoding="utf-8")
             probe.unlink()
         except OSError as exc:
-            problems.append({"level": "error", "item": "runtime", "message": f"runtime 目录不可写: {exc}"})
+            problems.append(
+                {"level": "error", "item": "runtime", "message": f"runtime 目录不可写: {exc}"}
+            )
     has_error = any(problem["level"] == "error" for problem in problems)
     _print_json({"ok": not has_error, "version": __version__, "problems": problems})
     return 2 if has_error else 0
@@ -206,7 +223,9 @@ def _validate_config_scope(paths: HarnessPaths) -> list[dict[str, Any]]:
         try:
             load_workflow(paths.workflows_dir, name)
         except HarnessError as exc:
-            problems.append({"scope": "config", "item": f"workflows/{name}.json", "message": exc.message})
+            problems.append(
+                {"scope": "config", "item": f"workflows/{name}.json", "message": exc.message}
+            )
     return problems
 
 
@@ -226,7 +245,9 @@ def _validate_adapters_scope() -> list[dict[str, Any]]:
     try:
         module = importlib.import_module("qwen_harness.adapters")
     except ModuleNotFoundError:
-        return [{"scope": "adapters", "item": "qwen_harness.adapters", "message": "Adapter 包尚未实现"}]
+        return [
+            {"scope": "adapters", "item": "qwen_harness.adapters", "message": "Adapter 包尚未实现"}
+        ]
     adapters = getattr(module, "ADAPTERS", None)
     if not isinstance(adapters, dict):
         return [{"scope": "adapters", "item": "ADAPTERS", "message": "ADAPTERS 注册表必须是 dict"}]
@@ -238,7 +259,13 @@ def _validate_adapters_scope() -> list[dict[str, Any]]:
             continue
         for method in _ADAPTER_METHODS:
             if not callable(getattr(adapter, method, None)):
-                problems.append({"scope": "adapters", "item": f"{key}.{method}", "message": "方法缺失或不可调用"})
+                problems.append(
+                    {
+                        "scope": "adapters",
+                        "item": f"{key}.{method}",
+                        "message": "方法缺失或不可调用",
+                    }
+                )
     return problems
 
 
@@ -253,9 +280,16 @@ def _validate_runs_scope(settings: Any, config: Any, paths: HarnessPaths) -> lis
             store = RunStore(paths, settings, config)
             context = store.load_run(entry.name)
             for stage, status in context.state.stage_statuses.items():
-                if status in {"passed", "needs_approval"} and not store.stage_output_path(stage, "output").is_file():
+                if (
+                    status in {"passed", "needs_approval"}
+                    and not store.stage_output_path(stage, "output").is_file()
+                ):
                     problems.append(
-                        {"scope": "runs", "item": f"{entry.name}/{stage}", "message": "已通过阶段缺少输出文件"}
+                        {
+                            "scope": "runs",
+                            "item": f"{entry.name}/{stage}",
+                            "message": "已通过阶段缺少输出文件",
+                        }
                     )
         except HarnessError as exc:
             problems.append({"scope": "runs", "item": entry.name, "message": exc.message})
@@ -437,7 +471,9 @@ def _build_parser() -> argparse.ArgumentParser:
     run.add_argument("--workflow", choices=WORKFLOW_NAMES, default="full-research")
     run.add_argument("--offline", action="store_true", help="离线夹具模式")
     run.add_argument("--allow-network", action="store_true", help="允许网络访问")
-    run.add_argument("--refresh-environment", choices=("none", "weather", "hourly", "daily"), default="none")
+    run.add_argument(
+        "--refresh-environment", choices=("none", "weather", "hourly", "daily"), default="none"
+    )
     run.add_argument("--approval-mode", choices=("auto", "critical", "all"), default="critical")
     run.add_argument("--max-iterations", type=int, default=2)
     run.add_argument("--publish-web", action="store_true")
@@ -449,7 +485,9 @@ def _build_parser() -> argparse.ArgumentParser:
     doctor.set_defaults(func=cmd_doctor)
 
     validate = sub.add_parser("validate", help="按范围校验契约")
-    validate.add_argument("--scope", choices=("config", "skills", "adapters", "runs", "all"), default="all")
+    validate.add_argument(
+        "--scope", choices=("config", "skills", "adapters", "runs", "all"), default="all"
+    )
     validate.set_defaults(func=cmd_validate)
 
     status = sub.add_parser("status", help="查看运行状态")

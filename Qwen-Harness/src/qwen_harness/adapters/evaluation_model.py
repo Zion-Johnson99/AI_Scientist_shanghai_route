@@ -80,7 +80,9 @@ class EvaluationModelAdapter(ModuleAdapter):
             ("环境仪表盘", paths.environment_dashboard_path),
         ):
             if not path.is_file():
-                errors.append(f"score-candidates 输入缺失: {label}（{self.repo_relative(context, path)}）")
+                errors.append(
+                    f"score-candidates 输入缺失: {label}（{self.repo_relative(context, path)}）"
+                )
         if errors:
             return self.result("error", errors=errors)
         return self.result("ok")
@@ -118,7 +120,12 @@ class EvaluationModelAdapter(ModuleAdapter):
         warnings = list(preflight.warnings)
         if weights is not None:
             data = self.read_json(weights, "默认评分权重")
-            for key in ("goal_weights", "environment_weights", "risk_thresholds", "status_reliability"):
+            for key in (
+                "goal_weights",
+                "environment_weights",
+                "risk_thresholds",
+                "status_reliability",
+            ):
                 if key not in data:
                     warnings.append(f"默认权重缺少字段 {key}，score-candidates 可能失败")
         status = "partial" if warnings else "ok"
@@ -192,10 +199,13 @@ class EvaluationModelAdapter(ModuleAdapter):
         raw_case_id = str(
             operation.parameters.get("label") or profile.get("case_id") or "profile"
         ).strip()
-        case_id = "".join(
-            character if character.isalnum() or character in {"-", "_"} else "_"
-            for character in raw_case_id
-        )[:64] or "profile"
+        case_id = (
+            "".join(
+                character if character.isalnum() or character in {"-", "_"} else "_"
+                for character in raw_case_id
+            )[:64]
+            or "profile"
+        )
         requested = operation.parameters.get("variants")
         requested_set = (
             {str(item) for item in requested} if isinstance(requested, list) else set(VARIANT_IDS)
@@ -220,7 +230,9 @@ class EvaluationModelAdapter(ModuleAdapter):
     _OFFLINE_DATA_CONFIDENCE = 0.8
     _OFFLINE_DIMENSION_SCORE = 0.7
 
-    def _offline_fixture_cells(self, operation: "ModuleOperation", context: "WorkflowContext") -> Any:
+    def _offline_fixture_cells(
+        self, operation: "ModuleOperation", context: "WorkflowContext"
+    ) -> Any:
         """离线复现：由固定示例数据确定性生成候选单元，不执行任何命令。
 
         数据来自当前 run 的生成路线目录与环境仪表盘，每个
@@ -272,7 +284,9 @@ class EvaluationModelAdapter(ModuleAdapter):
         }
 
         requested = operation.parameters.get("variants")
-        requested_set = {str(item) for item in requested} if isinstance(requested, list) else set(VARIANT_IDS)
+        requested_set = (
+            {str(item) for item in requested} if isinstance(requested, list) else set(VARIANT_IDS)
+        )
         variants = [variant_id for variant_id in VARIANT_IDS if variant_id in requested_set]
         if not variants:
             return self.result("error", errors=["离线复现未收到任何预注册变体参数"])
@@ -284,14 +298,29 @@ class EvaluationModelAdapter(ModuleAdapter):
             if not isinstance(profile, dict):
                 continue
             profile_id = str(profile.get("profile_id") or profile.get("id") or "profile")
-            case_ids = [str(case) for case in (profile.get("case_ids") or []) if isinstance(case, str) and case]
-            sensitivity = [str(item) for item in (profile.get("sensitivity") or []) if isinstance(item, str)]
+            case_ids = [
+                str(case)
+                for case in (profile.get("case_ids") or [])
+                if isinstance(case, str) and case
+            ]
+            sensitivity = [
+                str(item) for item in (profile.get("sensitivity") or []) if isinstance(item, str)
+            ]
             for case_id in case_ids:
                 route = routes.get(case_id)
                 if route is None:
                     warnings.append(f"离线样例未收录路线 {case_id}，该画像单元记为无候选")
-                candidates = [self._offline_candidate(route, env_by_route.get(case_id, {}), sensitivity)] if route else []
-                interests = list(dict.fromkeys(sensitivity + list(candidates[0]["matched_preferences"] if candidates else [])))
+                candidates = (
+                    [self._offline_candidate(route, env_by_route.get(case_id, {}), sensitivity)]
+                    if route
+                    else []
+                )
+                interests = list(
+                    dict.fromkeys(
+                        sensitivity
+                        + list(candidates[0]["matched_preferences"] if candidates else [])
+                    )
+                )
                 cell = {
                     "variant_id": None,
                     "case_id": case_id,
@@ -331,7 +360,7 @@ class EvaluationModelAdapter(ModuleAdapter):
             warnings=[
                 *warnings,
                 "离线复现模式：候选来自当前 run 的生成夹具（fixture/reproduction），"
-                "未执行 score-candidates 命令，不代表真实评分输出"
+                "未执行 score-candidates 命令，不代表真实评分输出",
             ],
         )
 
@@ -340,7 +369,9 @@ class EvaluationModelAdapter(ModuleAdapter):
     ) -> dict[str, Any]:
         """构造一个满足实验指标契约的离线候选（字段来源均为固定样例）。"""
         preference_hits = [
-            str(item) for item in (route.get("preference_hits") or []) if isinstance(item, (str, int, float))
+            str(item)
+            for item in (route.get("preference_hits") or [])
+            if isinstance(item, (str, int, float))
         ]
         summary = {
             "pm2_5": {"value": self._offline_summary_value(env_item.get("pm2_5"))},

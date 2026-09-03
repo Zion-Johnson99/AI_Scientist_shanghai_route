@@ -96,9 +96,11 @@ class ModuleAdapter:
     def repo_relative(self, context: "WorkflowContext", path: Path) -> str:
         """把绝对路径转换为本 run 生成源码根相对路径。"""
         try:
-            return path.resolve().relative_to(
-                self.project_paths(context).source_root.resolve()
-            ).as_posix()
+            return (
+                path.resolve()
+                .relative_to(self.project_paths(context).source_root.resolve())
+                .as_posix()
+            )
         except ValueError:
             return path.name
 

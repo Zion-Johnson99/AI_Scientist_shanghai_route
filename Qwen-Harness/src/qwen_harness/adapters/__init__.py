@@ -23,7 +23,9 @@ def register_adapter(module_key: str, adapter: Any) -> Any:
     """把 Adapter 注册进 :data:`ADAPTERS`，注册前校验模块键与必需方法。"""
     if module_key not in _VALID_MODULE_KEYS:
         raise ValueError(f"未知模块键: {module_key!r}（允许: {', '.join(_VALID_MODULE_KEYS)}）")
-    missing = [name for name in REQUIRED_ADAPTER_METHODS if not callable(getattr(adapter, name, None))]
+    missing = [
+        name for name in REQUIRED_ADAPTER_METHODS if not callable(getattr(adapter, name, None))
+    ]
     if missing:
         raise ValueError(f"模块 {module_key} 的 Adapter 缺少方法: {', '.join(missing)}")
     ADAPTERS[module_key] = adapter

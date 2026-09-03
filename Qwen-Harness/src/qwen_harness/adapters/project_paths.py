@@ -100,10 +100,7 @@ def _extract_module_paths(context: Any) -> Mapping[str, Any]:
         key
         for key in _REQUIRED_MODULE_KEYS
         if key in module_paths
-        and (
-            not isinstance(module_paths[key], (str, Path))
-            or not str(module_paths[key]).strip()
-        )
+        and (not isinstance(module_paths[key], (str, Path)) or not str(module_paths[key]).strip())
     ]
     if missing or invalid:
         raise InputContractError(

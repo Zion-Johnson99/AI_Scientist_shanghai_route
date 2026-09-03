@@ -279,7 +279,7 @@ def test_materializer_builds_large_data_from_generated_source(tmp_path: Path) ->
         "from pathlib import Path\n"
         "def publish_web(data_dir, output_path):\n"
         " assert (Path(data_dir)/'route_catalog.json').is_file()\n"
-        " Path(output_path).write_text('{\\\"metadata\\\":{},\\\"current\\\":{},\\\"forecast\\\":{},\\\"routes\\\":{\\\"items\\\":[]}}', encoding='utf-8')\n",
+        ' Path(output_path).write_text(\'{\\"metadata\\":{},\\"current\\":{},\\"forecast\\":{},\\"routes\\":{\\"items\\":[]}}\', encoding=\'utf-8\')\n',
         encoding="utf-8",
     )
 

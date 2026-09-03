@@ -17,7 +17,22 @@ from .base import SourceAdapter, sha256_bytes, utc_now, validate_https_url
 LOGGER = get_logger("sources.web")
 
 _SKIP_TAGS = {"script", "style", "noscript", "nav", "footer", "header", "form", "iframe", "svg"}
-_BLOCK_TAGS = {"p", "div", "br", "li", "ul", "ol", "h1", "h2", "h3", "h4", "section", "article", "tr", "table"}
+_BLOCK_TAGS = {
+    "p",
+    "div",
+    "br",
+    "li",
+    "ul",
+    "ol",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "section",
+    "article",
+    "tr",
+    "table",
+}
 _WHITESPACE_RE = re.compile(r"[ \t\u3000]+")
 
 

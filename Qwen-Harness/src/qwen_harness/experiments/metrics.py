@@ -136,7 +136,14 @@ def metric_specs() -> list[MetricSpec]:
         ),
     ]
     return [
-        MetricSpec(metric_id=mid, name=name, direction=direction, formula=formula, primary=primary, data_source=source)
+        MetricSpec(
+            metric_id=mid,
+            name=name,
+            direction=direction,
+            formula=formula,
+            primary=primary,
+            data_source=source,
+        )
         for mid, name, direction, formula, primary, source in rows
     ]
 
@@ -194,7 +201,9 @@ def exposure_values(
     return {"pm25": pm25_value, "noise": noise_risk, "pollen": pollen_risk}
 
 
-def composite_env_risk(values: dict[str, float | None], normalization: dict[str, Any]) -> float | None:
+def composite_env_risk(
+    values: dict[str, float | None], normalization: dict[str, Any]
+) -> float | None:
     """R_env = alpha*R_pm25 + beta*R_noise + gamma*R_pollen；任一分量缺失返回 None。"""
     pm25 = pm25_risk_normalized(values.get("pm25"), normalization)
     noise = values.get("noise")
@@ -240,11 +249,19 @@ def compute_cell_metrics(
     env_risk = composite_env_risk(values, normalization)
     distance = route.get("distance_m")
     target = float(profile.get("target_distance_m") or 0.0)
-    deviation = abs(float(distance) - target) / target if distance is not None and target > 0 else None
+    deviation = (
+        abs(float(distance) - target) / target if distance is not None and target > 0 else None
+    )
     access = candidate.get("access_distance_m")
-    dimensions = candidate.get("dimension_scores") if isinstance(candidate.get("dimension_scores"), dict) else {}
+    dimensions = (
+        candidate.get("dimension_scores")
+        if isinstance(candidate.get("dimension_scores"), dict)
+        else {}
+    )
     normalized_dims = {
-        str(name): float(dimensions[name]) for name in DIMENSION_NAMES if isinstance(dimensions.get(name), (int, float))
+        str(name): float(dimensions[name])
+        for name in DIMENSION_NAMES
+        if isinstance(dimensions.get(name), (int, float))
     }
     return CellMetrics(
         pm25_value=pm25,
@@ -262,9 +279,13 @@ def compute_cell_metrics(
         ),
         target_deviation=deviation,
         access_distance_m=float(access) if access is not None else None,
-        preference_hit_rate=preference_hit_rate(candidate.get("matched_preferences"), profile.get("interests")),
+        preference_hit_rate=preference_hit_rate(
+            candidate.get("matched_preferences"), profile.get("interests")
+        ),
         composite_score=(
-            float(candidate["base_score"]) if isinstance(candidate.get("base_score"), (int, float)) else None
+            float(candidate["base_score"])
+            if isinstance(candidate.get("base_score"), (int, float))
+            else None
         ),
         dimension_scores=normalized_dims,
     )
@@ -282,7 +303,9 @@ def constraint_checks(
     route = candidate.get("route") if isinstance(candidate.get("route"), dict) else {}
     distance = route.get("distance_m")
     target = float(profile.get("target_distance_m") or 0.0)
-    deviation = abs(float(distance) - target) / target if distance is not None and target > 0 else None
+    deviation = (
+        abs(float(distance) - target) / target if distance is not None and target > 0 else None
+    )
     target_ok = deviation is not None and deviation <= target_tolerance
 
     access_ok: bool | None = None

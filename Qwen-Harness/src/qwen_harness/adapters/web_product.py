@@ -47,7 +47,13 @@ _SECRET_MARKERS = (
 )
 
 #: 疑似模型内部推理的键名片段（递归扫描 payload 键）。
-_REASONING_KEY_MARKERS = ("reasoning", "thinking", "chain_of_thought", "raw_completion", "raw_response")
+_REASONING_KEY_MARKERS = (
+    "reasoning",
+    "thinking",
+    "chain_of_thought",
+    "raw_completion",
+    "raw_response",
+)
 
 _WINDOWS_PATH_RE = re.compile(r"[A-Za-z]:[\\/]")
 _POSIX_HOME_RE = re.compile(r"(?:^|[\s\"',\[])(?:/(?:home|Users|mnt|opt|var|tmp)/|~/)")

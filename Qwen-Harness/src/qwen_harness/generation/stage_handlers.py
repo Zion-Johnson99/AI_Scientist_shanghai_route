@@ -207,11 +207,10 @@ def _fixture_environment_dashboard() -> str:
 
 _OFFLINE_FILE_CONTENTS: dict[str, str] = {
     "Qwen-Harness/pyproject.toml": (
-        "[project]\nname = \"generated-qwen-harness\"\nversion = \"0.1.0\"\n"
+        '[project]\nname = "generated-qwen-harness"\nversion = "0.1.0"\n'
     ),
     "Qwen-Harness/README.md": (
-        "# 离线生成夹具\n\n"
-        "该源码树仅服务自动化测试，来源标记为 offline_fixture。\n"
+        "# 离线生成夹具\n\n该源码树仅服务自动化测试，来源标记为 offline_fixture。\n"
     ),
     "Qwen-Harness/launch-local.ps1": (
         "$sourceRoot = Split-Path -Parent $PSScriptRoot\n"
@@ -219,8 +218,7 @@ _OFFLINE_FILE_CONTENTS: dict[str, str] = {
         "python -m http.server 8130 --directory $webRoot\n"
     ),
     "Qwen-Harness/tests/test_smoke.py": (
-        "def test_offline_fixture_marker():\n"
-        "    assert 'offline_fixture'.startswith('offline')\n"
+        "def test_offline_fixture_marker():\n    assert 'offline_fixture'.startswith('offline')\n"
     ),
     "Qwen-Harness/src/qwen_harness/adapters/evaluation_score_candidates.py": (
         "# offline_fixture marker; online generation must implement the scoring bridge\n"
@@ -230,7 +228,7 @@ _OFFLINE_FILE_CONTENTS: dict[str, str] = {
         "    return {'pm2.5': 18, 'aqi': 42, 'provenance': 'offline_fixture'}\n"
     ),
     "weather_api_data/pyproject.toml": (
-        "[project]\nname = \"generated-weather-api-data\"\nversion = \"0.1.0\"\n"
+        '[project]\nname = "generated-weather-api-data"\nversion = "0.1.0"\n'
     ),
     "weather_api_data/tests/test_environment.py": (
         "from weather_api_data.environment_api import get_environment\n\n"
@@ -244,7 +242,7 @@ _OFFLINE_FILE_CONTENTS: dict[str, str] = {
         "    return [{'route_id': route['route_id'], 'score': 85} for route in routes]\n"
     ),
     "evaluation_model_qwen/pyproject.toml": (
-        "[project]\nname = \"generated-evaluation-model-qwen\"\nversion = \"0.1.0\"\n"
+        '[project]\nname = "generated-evaluation-model-qwen"\nversion = "0.1.0"\n'
     ),
     "evaluation_model_qwen/config/default_weights.json": json.dumps(
         {
@@ -262,11 +260,10 @@ _OFFLINE_FILE_CONTENTS: dict[str, str] = {
         "    assert HEALTH_PATH == '/health'\n"
     ),
     "xuhui_route_builder/route_generator.py": (
-        "def generate_routes(route_catalog):\n"
-        "    return route_catalog['routes']\n"
+        "def generate_routes(route_catalog):\n    return route_catalog['routes']\n"
     ),
     "xuhui_route_builder/pyproject.toml": (
-        "[project]\nname = \"generated-xuhui-route-builder\"\nversion = \"0.1.0\"\n"
+        '[project]\nname = "generated-xuhui-route-builder"\nversion = "0.1.0"\n'
     ),
     "xuhui_route_builder/data/web/route_catalog.json": _fixture_routes(),
     "xuhui_route_builder/data/web/xuhui_routes.geojson": _fixture_route_geojson(),
@@ -372,7 +369,9 @@ def build_generation_requirements(context: "WorkflowContext", skills: Sequence[A
             return []
         return [compact_text(item) for item in value[:limit]]
 
-    def select_records(value: Any, keys: tuple[str, ...], *, limit: int = 12) -> list[dict[str, Any]]:
+    def select_records(
+        value: Any, keys: tuple[str, ...], *, limit: int = 12
+    ) -> list[dict[str, Any]]:
         if not isinstance(value, list):
             return []
         selected: list[dict[str, Any]] = []
@@ -413,9 +412,7 @@ def build_generation_requirements(context: "WorkflowContext", skills: Sequence[A
                 "interests",
             ),
         ),
-        "baselines": select_records(
-            experiment_design.get("baselines"), ("baseline_id", "name")
-        ),
+        "baselines": select_records(experiment_design.get("baselines"), ("baseline_id", "name")),
         "variants": compact_list(experiment_design.get("variants"), limit=12),
         "metrics": select_records(
             experiment_design.get("metrics"),
@@ -426,9 +423,7 @@ def build_generation_requirements(context: "WorkflowContext", skills: Sequence[A
         "module_operations": select_records(
             experiment_design.get("module_operations"), ("operation_id", "module")
         ),
-        "acceptance_criteria": compact_list(
-            experiment_design.get("acceptance_criteria"), limit=12
-        ),
+        "acceptance_criteria": compact_list(experiment_design.get("acceptance_criteria"), limit=12),
         "stop_conditions": compact_list(experiment_design.get("stop_conditions"), limit=8),
     }
     payload = {
@@ -588,7 +583,9 @@ def stage_handler(context: "WorkflowContext") -> StageResult:
             run_id=context.run_id,
         )
     if context.prompts is None:
-        raise ModelUnavailableError("工程生成阶段缺少 PromptBuilder", stage=stage_name, run_id=context.run_id)
+        raise ModelUnavailableError(
+            "工程生成阶段缺少 PromptBuilder", stage=stage_name, run_id=context.run_id
+        )
 
     validator = FunctionalContractValidator(provenance=provenance)
     max_repairs = min(
@@ -601,9 +598,7 @@ def stage_handler(context: "WorkflowContext") -> StageResult:
         prompts=context.prompts,
         max_parallel_files=1 if offline else 4,
     )
-    use_generated_builders = not offline and not isinstance(
-        model_client, OfflineFixtureModelClient
-    )
+    use_generated_builders = not offline and not isinstance(model_client, OfflineFixtureModelClient)
 
     def validate_generated_source(source_root: Path) -> list[ValidationIssue]:
         materialization_issues = (
@@ -621,7 +616,9 @@ def stage_handler(context: "WorkflowContext") -> StageResult:
     )
     report = validator.last_report
     if report is None:
-        raise InputContractError("工程生成验证器未产生功能契约报告", stage=stage_name, run_id=context.run_id)
+        raise InputContractError(
+            "工程生成验证器未产生功能契约报告", stage=stage_name, run_id=context.run_id
+        )
 
     architecture_path = context.store.write_json_atomic(
         "workspace/architecture.json", generation.architecture.model_dump(mode="json")
@@ -665,7 +662,9 @@ def stage_handler(context: "WorkflowContext") -> StageResult:
             "threshold": report.threshold,
             "passed": report.passed,
             "repair_rounds": generation.repair_rounds,
-            "remaining_issues": [issue.model_dump(mode="json") for issue in generation.remaining_issues],
+            "remaining_issues": [
+                issue.model_dump(mode="json") for issue in generation.remaining_issues
+            ],
             "architecture": "workspace/architecture.json",
             "generation_result": "workspace/generation_result.json",
             "checks": "checks/generation_contract.json",

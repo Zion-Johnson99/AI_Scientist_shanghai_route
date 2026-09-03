@@ -35,8 +35,12 @@ class RecordingRunner:
     def run(self, spec: Any, run_store: object | None = None) -> CommandAudit:
         self.specs.append(spec)
         now = datetime.now(timezone.utc)
-        stdout_path = Path(getattr(run_store, "run_dir")) / "commands" / f"{spec.command_id}.stdout.log"
-        stderr_path = Path(getattr(run_store, "run_dir")) / "commands" / f"{spec.command_id}.stderr.log"
+        stdout_path = (
+            Path(getattr(run_store, "run_dir")) / "commands" / f"{spec.command_id}.stdout.log"
+        )
+        stderr_path = (
+            Path(getattr(run_store, "run_dir")) / "commands" / f"{spec.command_id}.stderr.log"
+        )
         stdout_path.parent.mkdir(parents=True, exist_ok=True)
         stdout_path.write_text("ok\n", encoding="utf-8")
         stderr_path.write_text("", encoding="utf-8")
@@ -87,7 +91,9 @@ def _context(tmp_path: Path) -> SimpleNamespace:
         "import test from 'node:test'; test('ok', () => {});\n", encoding="utf-8"
     )
     (harness_root / "pyproject.toml").parent.mkdir(parents=True, exist_ok=True)
-    (harness_root / "pyproject.toml").write_text("[project]\nname='fixture'\nversion='0'\n", encoding="utf-8")
+    (harness_root / "pyproject.toml").write_text(
+        "[project]\nname='fixture'\nversion='0'\n", encoding="utf-8"
+    )
     browser_script = harness_root / "scripts" / "generated_browser_gate.py"
     browser_script.parent.mkdir()
     browser_script.write_text("raise SystemExit(0)\n", encoding="utf-8")
@@ -124,7 +130,9 @@ def test_quality_checks_use_generated_boundary_and_record_all_required_gates(
     source_root = (context.run_dir / "workspace" / "source").resolve()
     assert all(Path(spec.cwd).resolve().is_relative_to(source_root) for spec in runner.specs)
     assert all(spec.argv[0] in {"uv", "node"} for spec in runner.specs)
-    browser_spec = next(spec for spec in runner.specs if spec.command_id == "generated.browser_gate")
+    browser_spec = next(
+        spec for spec in runner.specs if spec.command_id == "generated.browser_gate"
+    )
     assert browser_spec.argv[:4] == ["uv", "run", "--with", "playwright==1.55.0"]
     assert "--source-root" in browser_spec.argv
     assert "--output-dir" in browser_spec.argv

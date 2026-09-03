@@ -93,7 +93,9 @@ class CrossrefSource(SourceAdapter):
         status: str = "verified"
         notes: list[str] = []
         if expected_title and title:
-            similarity = SequenceMatcher(None, normalize_title(title), normalize_title(expected_title)).ratio()
+            similarity = SequenceMatcher(
+                None, normalize_title(title), normalize_title(expected_title)
+            ).ratio()
             if similarity < _TITLE_SIMILARITY_MIN:
                 status = "partial"
                 notes.append(f"标题相似度 {similarity:.2f} 低于 {_TITLE_SIMILARITY_MIN:.2f}")
@@ -107,7 +109,8 @@ class CrossrefSource(SourceAdapter):
             url=f"https://doi.org/{resolved_doi}",
             accessed_at=utc_now(),
             sha256=sha256_bytes(metadata.encode("utf-8")),
-            license_note="Crossref metadata（开放 API）" + ("；" + "；".join(notes) if notes else ""),
+            license_note="Crossref metadata（开放 API）"
+            + ("；" + "；".join(notes) if notes else ""),
             verification_status=status,  # type: ignore[arg-type]
         )
 

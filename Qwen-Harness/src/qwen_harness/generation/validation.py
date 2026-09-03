@@ -124,13 +124,21 @@ class FunctionalContractValidator:
         route_contract_ok = self._route_contract(route_catalog_path, route_geojson_path)
         environment_contract_ok = self._environment_contract(environment_dashboard_path)
 
-        environment_ok = environment_contract_ok and bool(environment_files) and any(
-            marker in "\n".join(texts[path].lower() for path in environment_files)
-            for marker in ("get_environment", "/api/v1/environment", "pm2.5", "aqi")
+        environment_ok = (
+            environment_contract_ok
+            and bool(environment_files)
+            and any(
+                marker in "\n".join(texts[path].lower() for path in environment_files)
+                for marker in ("get_environment", "/api/v1/environment", "pm2.5", "aqi")
+            )
         )
-        route_ok = route_contract_ok and bool(route_files) and any(
-            marker in "\n".join(texts[path].lower() for path in route_files)
-            for marker in ("generate_route", "build_route", "/api/v1/routes")
+        route_ok = (
+            route_contract_ok
+            and bool(route_files)
+            and any(
+                marker in "\n".join(texts[path].lower() for path in route_files)
+                for marker in ("generate_route", "build_route", "/api/v1/routes")
+            )
         )
         evaluation_text = "\n".join(texts[path].lower() for path in evaluation_files)
         evaluation_ok = (
@@ -139,13 +147,15 @@ class FunctionalContractValidator:
             and evaluation_pyproject.is_file()
             and "/health" in evaluation_text
             and any(
-            marker in evaluation_text
-            for marker in ("/api/v1/recommendations", "/api/v1/score", "score_candidates")
+                marker in evaluation_text
+                for marker in ("/api/v1/recommendations", "/api/v1/score", "score_candidates")
             )
         )
-        map_structure_ok = any(path.lower().endswith("/web/index.html") for path in web_files) and any(
+        map_structure_ok = any(
+            path.lower().endswith("/web/index.html") for path in web_files
+        ) and any(
             marker in "\n".join(texts[path].lower() for path in web_files)
-            for marker in ("id=\"map\"", "id='map'", "amap", "leaflet", "maplibre")
+            for marker in ('id="map"', "id='map'", "amap", "leaflet", "maplibre")
         )
         web_runtime_ok = self._web_runtime_contract(texts, web_files)
         map_ok = map_structure_ok and web_runtime_ok
@@ -354,9 +364,7 @@ class FunctionalContractValidator:
             return False
         index_text = texts[index_path]
         javascript = {
-            path: texts[path]
-            for path in web_files
-            if Path(path).suffix.lower() in {".js", ".mjs"}
+            path: texts[path] for path in web_files if Path(path).suffix.lower() in {".js", ".mjs"}
         }
         uses_modules = any(
             re.search(r"(?m)^\s*(?:import|export)\b", text) for text in javascript.values()
@@ -364,7 +372,9 @@ class FunctionalContractValidator:
         script_tags = re.findall(r"<script\b[^>]*>", index_text, flags=re.IGNORECASE)
         module_entry_ok = not uses_modules or any(
             re.search(r"\btype\s*=\s*['\"]module['\"]", tag, flags=re.IGNORECASE)
-            and re.search(r"\bsrc\s*=\s*['\"][^'\"]*(?:main|app)\.js['\"]", tag, flags=re.IGNORECASE)
+            and re.search(
+                r"\bsrc\s*=\s*['\"][^'\"]*(?:main|app)\.js['\"]", tag, flags=re.IGNORECASE
+            )
             for tag in script_tags
         )
         loads_route_data = any("route_catalog.json" in text for text in javascript.values())
@@ -481,7 +491,11 @@ class FunctionalContractValidator:
         if mode_counts != {"walk": 30, "run": 30, "bike": 30}:
             return False
         features = geojson.get("features") if isinstance(geojson, dict) else None
-        return geojson.get("type") == "FeatureCollection" and isinstance(features, list) and len(features) == 90
+        return (
+            geojson.get("type") == "FeatureCollection"
+            and isinstance(features, list)
+            and len(features) == 90
+        )
 
     @staticmethod
     def _environment_contract(path: Path) -> bool:
@@ -491,7 +505,10 @@ class FunctionalContractValidator:
             return False
         if not isinstance(dashboard, dict):
             return False
-        if any(not isinstance(dashboard.get(key), dict) for key in ("metadata", "current", "forecast", "routes")):
+        if any(
+            not isinstance(dashboard.get(key), dict)
+            for key in ("metadata", "current", "forecast", "routes")
+        ):
             return False
         routes = dashboard["routes"]
         items = routes.get("items")

@@ -64,9 +64,7 @@ class EnvironmentDataAdapter(ModuleAdapter):
             if self.optional_project_file(path) is None:
                 missing_exports.append(relative)
         if missing_exports:
-            warnings.append(
-                "环境导出快照缺失（首次刷新前属正常）: " + ", ".join(missing_exports)
-            )
+            warnings.append("环境导出快照缺失（首次刷新前属正常）: " + ", ".join(missing_exports))
         if errors:
             return self.result("error", errors=errors, warnings=warnings)
         if warnings:
@@ -165,9 +163,7 @@ class EnvironmentDataAdapter(ModuleAdapter):
         if context.options.offline:
             return self.skipped("离线模式禁止刷新环境数据")
         if context.options.refresh_environment == "none":
-            return self.skipped(
-                "未提供 --refresh-environment 显式授权，使用 last-known-good 快照"
-            )
+            return self.skipped("未提供 --refresh-environment 显式授权，使用 last-known-good 快照")
         tier = tier or context.options.refresh_environment
         if tier not in REFRESH_TIERS:
             return self.result(
@@ -219,9 +215,7 @@ class EnvironmentDataAdapter(ModuleAdapter):
         elif metadata_status != "ok":
             stale_reason = metadata.get("stale_reason")
             detail = f"（{stale_reason}）" if isinstance(stale_reason, str) and stale_reason else ""
-            warnings.append(
-                f"环境数据整体状态为 {metadata_status}{detail}：评分可靠性会按权重收缩"
-            )
+            warnings.append(f"环境数据整体状态为 {metadata_status}{detail}：评分可靠性会按权重收缩")
 
         for section in ("current", "forecast"):
             status = dashboard[section].get("status")
@@ -269,7 +263,9 @@ class EnvironmentDataAdapter(ModuleAdapter):
                 f"{status_counts['partial']} 条路线环境状态为 partial（部分来源缺失，评分按可靠性收缩）"
             )
         if status_counts.get("stale", 0):
-            warnings.append(f"{status_counts['stale']} 条路线环境状态为 stale（超过有效期，评分按中性分计入）")
+            warnings.append(
+                f"{status_counts['stale']} 条路线环境状态为 stale（超过有效期，评分按中性分计入）"
+            )
         if estimated_count:
             warnings.append(f"{estimated_count} 个指标块为 estimated 估算值（非站点实测）")
 
@@ -290,7 +286,9 @@ class EnvironmentDataAdapter(ModuleAdapter):
         if not isinstance(noise, dict):
             errors.append(f"{where}.noise 缺失")
         else:
-            estimated_count += self._check_metric(noise, f"{where}.noise", "noise", errors, warnings)
+            estimated_count += self._check_metric(
+                noise, f"{where}.noise", "noise", errors, warnings
+            )
         if isinstance(pollen_daily, dict):
             estimated_count += self._check_metric(
                 pollen_daily, f"{where}.pollen_daily", "pollen", errors, warnings
@@ -315,7 +313,9 @@ class EnvironmentDataAdapter(ModuleAdapter):
             if isinstance(metric, dict) and isinstance(metric.get("status"), str):
                 statuses.append(metric["status"])
         pollen = item.get("pollen_daily")
-        pollen_items = [pollen] if isinstance(pollen, dict) else pollen if isinstance(pollen, list) else []
+        pollen_items = (
+            [pollen] if isinstance(pollen, dict) else pollen if isinstance(pollen, list) else []
+        )
         statuses.extend(
             day["status"]
             for day in pollen_items
@@ -351,7 +351,11 @@ class EnvironmentDataAdapter(ModuleAdapter):
         return 1 if metric.get("estimated") is True else 0
 
     def _cross_check_route_ids(
-        self, context: "WorkflowContext", environment_ids: set[str], errors: list[str], warnings: list[str]
+        self,
+        context: "WorkflowContext",
+        environment_ids: set[str],
+        errors: list[str],
+        warnings: list[str],
     ) -> None:
         from .route_builder import CATALOG_RELATIVE
 
@@ -381,7 +385,9 @@ class EnvironmentDataAdapter(ModuleAdapter):
         missing = sorted(catalog_ids - environment_ids)
         unexpected = sorted(environment_ids - catalog_ids)
         if missing:
-            errors.append(f"环境数据缺少路线: {', '.join(missing[:10])}{'…' if len(missing) > 10 else ''}")
+            errors.append(
+                f"环境数据缺少路线: {', '.join(missing[:10])}{'…' if len(missing) > 10 else ''}"
+            )
         if unexpected:
             errors.append(
                 f"环境数据含目录外路线: {', '.join(unexpected[:10])}{'…' if len(unexpected) > 10 else ''}"

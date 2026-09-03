@@ -23,7 +23,11 @@ def normalize_source_path(value: str) -> str:
     if not candidate or "\\" in candidate:
         raise ValueError("文件路径需使用非空 POSIX 相对路径")
     path = PurePosixPath(candidate)
-    if path.is_absolute() or len(path.parts) < 2 or any(part in {"", ".", ".."} for part in path.parts):
+    if (
+        path.is_absolute()
+        or len(path.parts) < 2
+        or any(part in {"", ".", ".."} for part in path.parts)
+    ):
         raise ValueError("文件路径需位于规定项目目录内")
     if path.parts[0] not in REQUIRED_PROJECT_ROOTS:
         raise ValueError(f"文件路径顶层目录需属于 {', '.join(REQUIRED_PROJECT_ROOTS)}")

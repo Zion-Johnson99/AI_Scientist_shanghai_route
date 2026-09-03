@@ -120,7 +120,11 @@ def passed_result(
         for key, value in extra_output.items():
             if key not in output:
                 output[key] = value
-    context.emit("stage_output_ready", f"{stage} 输出已通过契约校验", details={"model": type(output_model).__name__})
+    context.emit(
+        "stage_output_ready",
+        f"{stage} 输出已通过契约校验",
+        details={"model": type(output_model).__name__},
+    )
     return StageResult(
         stage=stage,
         status="passed",
@@ -132,7 +136,9 @@ def passed_result(
     )
 
 
-def gate_failed_result(context: "WorkflowContext", gate_result: GateResult, message: str) -> StageResult:
+def gate_failed_result(
+    context: "WorkflowContext", gate_result: GateResult, message: str
+) -> StageResult:
     """门禁未通过：阶段失败，违规项写入 GateResult。"""
     stage = context.stage_spec.name if context.stage_spec is not None else ""
     failed = [check.name for check in gate_result.checks if not check.passed]

@@ -239,7 +239,11 @@ class WorkflowContext:
     def write_derived_config(self, patch: dict[str, Any], reason: str = "") -> dict[str, Any]:
         merged = {**self.read_derived_config(), **patch}
         self.store.write_json_atomic("derived_config.json", merged)
-        self.emit("derived_config_updated", reason or "派生配置更新", details={"patch_keys": sorted(patch)})
+        self.emit(
+            "derived_config_updated",
+            reason or "派生配置更新",
+            details={"patch_keys": sorted(patch)},
+        )
         return merged
 
 
@@ -250,7 +254,9 @@ class WorkflowEngine:
         self.harness_root = Path(harness_root).resolve() if harness_root else _DEFAULT_HARNESS_ROOT
         self.settings = config_mod.load_settings(self.harness_root)
         self.harness_config = config_mod.load_harness_config(self.harness_root)
-        self.paths = HarnessPaths.resolve(self.harness_root, self.harness_config, self.settings.runtime_root)
+        self.paths = HarnessPaths.resolve(
+            self.harness_root, self.harness_config, self.settings.runtime_root
+        )
         self.registry = HandlerRegistry()
         self.skills = SkillRegistry(self.paths.repo_root)
         self.quality_gates = config_mod.load_quality_gates(self.harness_root)
@@ -260,7 +266,9 @@ class WorkflowEngine:
         workflow = load_workflow(self.paths.workflows_dir, options.workflow)
         setup_logging(self.paths.logs_dir)
         store = RunStore(self.paths, self.settings, self.harness_config)
-        seed = store.create_run(goal, options, workflow=workflow, skills_hashes=self._skills_hashes(workflow))
+        seed = store.create_run(
+            goal, options, workflow=workflow, skills_hashes=self._skills_hashes(workflow)
+        )
         store.acquire_lock()
         try:
             context = self._build_context(store, seed, workflow)
@@ -391,7 +399,10 @@ class WorkflowEngine:
         consent = self._explicit_consent(stage, context)
         if options.approval_mode == "auto":
             return ApprovalDecision(
-                approved=True, approver="auto", reason="approval-mode=auto 自动放行", decided_at=_utc_now()
+                approved=True,
+                approver="auto",
+                reason="approval-mode=auto 自动放行",
+                decided_at=_utc_now(),
             )
         if consent and (spec.approval == "critical" or options.approval_mode == "all"):
             return ApprovalDecision(
@@ -406,7 +417,10 @@ class WorkflowEngine:
             )
         if options.approval_mode == "all" and not consent:
             return ApprovalDecision(
-                approved=False, approver="policy", reason="approval-mode=all 需要显式授权", decided_at=_utc_now()
+                approved=False,
+                approver="policy",
+                reason="approval-mode=all 需要显式授权",
+                decided_at=_utc_now(),
             )
         return ApprovalDecision(
             approved=True, approver="policy", reason="审批策略放行", decided_at=_utc_now()
@@ -442,7 +456,9 @@ class WorkflowEngine:
             state.stage_input_hashes[stage.name] = input_sha
             store.save_state(state)
         resolved = self._resolve_handler(stage)
-        retries = min(stage.retry_limit if stage.retry_limit > 0 else DEFAULT_STAGE_RETRIES, MAX_RETRIES)
+        retries = min(
+            stage.retry_limit if stage.retry_limit > 0 else DEFAULT_STAGE_RETRIES, MAX_RETRIES
+        )
         attempt = 0
         while True:
             attempt += 1
@@ -473,7 +489,9 @@ class WorkflowEngine:
             if result.status == "retryable" and attempt <= retries:
                 delay = RETRY_BACKOFF_SECONDS[min(attempt - 1, len(RETRY_BACKOFF_SECONDS) - 1)]
                 context.emit(
-                    "stage_retry", f"阶段 {stage.name} 重试（{attempt}/{retries}），退避 {delay}s", status="warning"
+                    "stage_retry",
+                    f"阶段 {stage.name} 重试（{attempt}/{retries}），退避 {delay}s",
+                    status="warning",
                 )
                 print(f"  [重试] {attempt}/{retries}，{delay:.1f} s 后继续", flush=True)
                 time.sleep(delay)
@@ -553,10 +571,18 @@ class WorkflowEngine:
             )
         return result
 
-    def _offline_fixture_result(self, stage: StageSpec, context: WorkflowContext) -> StageResult | None:
+    def _offline_fixture_result(
+        self, stage: StageSpec, context: WorkflowContext
+    ) -> StageResult | None:
         from .. import models
 
-        path = self.paths.harness_root / "examples" / "fixtures" / "model-responses" / f"{stage.name}.json"
+        path = (
+            self.paths.harness_root
+            / "examples"
+            / "fixtures"
+            / "model-responses"
+            / f"{stage.name}.json"
+        )
         if not path.is_file():
             logger.info("离线夹具缺失，回退到阶段处理器: %s", path)
             return None
@@ -573,7 +599,9 @@ class WorkflowEngine:
         try:
             if isinstance(raw, list):
                 validated = [model_cls.model_validate(item) for item in raw]
-                payload: dict[str, Any] = {"items": [item.model_dump(mode="json") for item in validated]}
+                payload: dict[str, Any] = {
+                    "items": [item.model_dump(mode="json") for item in validated]
+                }
             else:
                 validated = model_cls.model_validate(raw)
                 payload = validated.model_dump(mode="json")
@@ -584,7 +612,9 @@ class WorkflowEngine:
                 summary=f"离线夹具不符合 {model_cls.__name__} 契约: {exc}",
                 output={"error_type": "input_contract_error", "error_message": str(exc)},
             )
-        context.audit_extras["fixture_source"] = path.relative_to(self.paths.harness_root).as_posix()
+        context.audit_extras["fixture_source"] = path.relative_to(
+            self.paths.harness_root
+        ).as_posix()
         context.audit_extras["offline_fixture"] = True
         if stage.name == "source_collection" and isinstance(raw, list):
             for record in validated:  # type: ignore[union-attr]
@@ -633,12 +663,18 @@ class WorkflowEngine:
                 ),
                 context,
             )
-            store.write_json_atomic(f"stages/{stage.name}/approval.json", decision.model_dump(mode="json"))
+            store.write_json_atomic(
+                f"stages/{stage.name}/approval.json", decision.model_dump(mode="json")
+            )
             if not decision.approved:
                 if stage.approval == "always":
                     context.state.stage_statuses[stage.name] = "skipped"
                     store.save_state(context.state)
-                    context.emit("stage_skipped", f"阶段 {stage.name} 未获显式授权: {decision.reason}", status="warning")
+                    context.emit(
+                        "stage_skipped",
+                        f"阶段 {stage.name} 未获显式授权: {decision.reason}",
+                        status="warning",
+                    )
                     self._print_stage_skipped(stage, context, decision.reason)
                     index += 1
                     continue
@@ -673,8 +709,7 @@ class WorkflowEngine:
         if status in {"passed", "failed", "needs_approval"}:
             elapsed = max(0.0, (_utc_now() - state.started_at).total_seconds())
             print(
-                f"\n[运行] {status} · {elapsed:.2f} s\n"
-                f"  产物目录: {context.run_dir}",
+                f"\n[运行] {status} · {elapsed:.2f} s\n  产物目录: {context.run_dir}",
                 flush=True,
             )
 
@@ -768,14 +803,18 @@ class WorkflowEngine:
             logger.warning("feedback_decision 输出无效，停止迭代: %s", exc)
             return None
         iteration = context.state.iteration
-        store.write_json_atomic(f"iterations/iteration-{iteration}/decision.json", decision.model_dump(mode="json"))
+        store.write_json_atomic(
+            f"iterations/iteration-{iteration}/decision.json", decision.model_dump(mode="json")
+        )
         if decision.status != "continue":
             context.conclusion_status = _DECISION_TO_CONCLUSION.get(decision.status)
             context.emit("iteration_stop", decision.reason, details={"status": decision.status})
             return None
         if iteration >= self._max_iterations(context):
             context.conclusion_status = "inconclusive"
-            context.emit("iteration_limit", "达到最大迭代次数，结果标记为 inconclusive", status="warning")
+            context.emit(
+                "iteration_limit", "达到最大迭代次数，结果标记为 inconclusive", status="warning"
+            )
             return None
         target = self._feedback_target(decision, names)
         if target is None:
@@ -783,7 +822,7 @@ class WorkflowEngine:
             context.emit("iteration_stop", "反馈动作未给出有效回跳目标", status="warning")
             return None
         self._apply_automatic_actions(decision, context)
-        self._archive_iteration_outputs(context, names[names.index(target):])
+        self._archive_iteration_outputs(context, names[names.index(target) :])
         context.state.iteration += 1
         store.save_state(context.state)
         context.emit(
@@ -807,28 +846,46 @@ class WorkflowEngine:
         for action in decision.automatic_actions:
             action_name = str(action.get("action", ""))
             explicit = action.get("target_stage")
-            if isinstance(explicit, str) and explicit in available and explicit in _FEEDBACK_ACTION_TARGETS.values():
+            if (
+                isinstance(explicit, str)
+                and explicit in available
+                and explicit in _FEEDBACK_ACTION_TARGETS.values()
+            ):
                 return explicit
             default = _FEEDBACK_ACTION_TARGETS.get(action_name)
             if default in available:
                 return default
         return None
 
-    def _apply_automatic_actions(self, decision: IterationDecision, context: WorkflowContext) -> None:
+    def _apply_automatic_actions(
+        self, decision: IterationDecision, context: WorkflowContext
+    ) -> None:
         previous = self._last_applied_actions(context)
         patch: dict[str, Any] = {}
         applied: list[str] = []
         for action in decision.automatic_actions:
             action_name = str(action.get("action", ""))
-            if action_name not in _FEEDBACK_ACTION_TARGETS and not action_name.startswith("propose_"):
-                context.emit("feedback_action_ignored", f"未知反馈动作: {action_name}", status="warning")
+            if action_name not in _FEEDBACK_ACTION_TARGETS and not action_name.startswith(
+                "propose_"
+            ):
+                context.emit(
+                    "feedback_action_ignored", f"未知反馈动作: {action_name}", status="warning"
+                )
                 continue
             if previous and previous[-1] == action_name:
-                context.emit("feedback_action_ignored", f"动作 {action_name} 连续重复，按规则忽略", status="warning")
+                context.emit(
+                    "feedback_action_ignored",
+                    f"动作 {action_name} 连续重复，按规则忽略",
+                    status="warning",
+                )
                 continue
             applied.append(action_name)
             parameters = action.get("parameters") or {}
-            if action_name == "adjust_registered_weights" and isinstance(parameters, dict) and parameters:
+            if (
+                action_name == "adjust_registered_weights"
+                and isinstance(parameters, dict)
+                and parameters
+            ):
                 patch["weights"] = parameters
             if action_name == "tighten_detour_limit" and isinstance(parameters, dict):
                 limit = parameters.get("detour_limit")
@@ -850,7 +907,9 @@ class WorkflowEngine:
         context.store.save_state(state)
 
     def _last_applied_actions(self, context: WorkflowContext) -> list[str]:
-        data = context.store.read_json(f"iterations/iteration-{context.state.iteration}/applied_actions.json")
+        data = context.store.read_json(
+            f"iterations/iteration-{context.state.iteration}/applied_actions.json"
+        )
         applied = data.get("applied") if isinstance(data, dict) else None
         return [str(name) for name in applied] if isinstance(applied, list) else []
 
@@ -859,7 +918,9 @@ class WorkflowEngine:
         for name in stage_names:
             data = store.read_stage_output(name)
             if data is not None:
-                store.write_json_atomic(f"stages/{name}/output.iter{context.state.iteration}.json", data)
+                store.write_json_atomic(
+                    f"stages/{name}/output.iter{context.state.iteration}.json", data
+                )
 
     # -- 汇总 ----------------------------------------------------------------
     def _summary(self, context: WorkflowContext) -> RunSummary:

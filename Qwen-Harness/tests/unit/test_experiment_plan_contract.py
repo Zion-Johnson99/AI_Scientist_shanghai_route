@@ -58,7 +58,6 @@ def test_score_operation_expands_to_each_declared_profile() -> None:
 
     assert [item.parameters["label"] for item in operations] == ["P01", "P02"]
     assert [
-        cast(dict[str, object], item.parameters["profile"])["case_id"]
-        for item in operations
+        cast(dict[str, object], item.parameters["profile"])["case_id"] for item in operations
     ] == ["P01", "P02"]
     assert all(item.parameters["variants"] == payload["variants"] for item in operations)

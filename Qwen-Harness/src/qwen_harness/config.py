@@ -128,7 +128,8 @@ def load_settings(harness_root: Path) -> HarnessSettings:
                 "QWEN_HARNESS_DEFAULT_REASONING_EFFORT", "medium"
             ).strip()
             or "medium",
-            runtime_root=os.environ.get("QWEN_HARNESS_RUNTIME_ROOT", "runtime").strip() or "runtime",
+            runtime_root=os.environ.get("QWEN_HARNESS_RUNTIME_ROOT", "runtime").strip()
+            or "runtime",
             env_file_exists=env_file.is_file(),
         )
     except ValidationError as exc:
@@ -143,11 +144,19 @@ def env_diagnostics(settings: HarnessSettings) -> list[dict[str, object]]:
     problems: list[dict[str, object]] = []
     if not settings.env_file_exists:
         problems.append(
-            {"level": "warn", "item": ".env", "message": "缺少 .env；仅离线模式可用（复制 .env.example 并填写）"}
+            {
+                "level": "warn",
+                "item": ".env",
+                "message": "缺少 .env；仅离线模式可用（复制 .env.example 并填写）",
+            }
         )
     if not settings.api_key_configured:
         problems.append(
-            {"level": "warn", "item": "DASHSCOPE_API_KEY", "message": "未配置 API Key；在线模型调用不可用"}
+            {
+                "level": "warn",
+                "item": "DASHSCOPE_API_KEY",
+                "message": "未配置 API Key；在线模型调用不可用",
+            }
         )
     if settings.base_url_has_placeholder:
         problems.append(
@@ -178,7 +187,9 @@ def _read_json(path: Path, label: str) -> dict[str, Any]:
         with path.open("r", encoding="utf-8") as handle:
             data = json.load(handle)
     except (OSError, json.JSONDecodeError) as exc:
-        raise ConfigError(f"配置文件 {path} 无法解析: {exc}", suggested_action="修复 JSON 语法") from exc
+        raise ConfigError(
+            f"配置文件 {path} 无法解析: {exc}", suggested_action="修复 JSON 语法"
+        ) from exc
     if not isinstance(data, dict):
         raise ConfigError(f"配置文件 {path} 顶层必须是 JSON 对象")
     return data

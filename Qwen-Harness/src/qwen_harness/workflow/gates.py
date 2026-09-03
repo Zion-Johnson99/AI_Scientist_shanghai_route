@@ -26,7 +26,9 @@ from ..models import (
 
 LOGGER = get_logger("gates")
 
-_ABSOLUTE_PATH_RE = re.compile(r"(?:(?<![A-Za-z0-9])[A-Za-z]:[\\/]|(?<![\w./-])/home/|(?<![\w.])~/)")
+_ABSOLUTE_PATH_RE = re.compile(
+    r"(?:(?<![A-Za-z0-9])[A-Za-z]:[\\/]|(?<![\w./-])/home/|(?<![\w.])~/)"
+)
 _DEFAULT_FORBIDDEN_TOKENS = ("DASHSCOPE_API_KEY", "Authorization:", "sk-")
 
 
@@ -61,7 +63,9 @@ class EvidenceGate(QualityGate):
         self, sources: Mapping[str, SourceRecord], cards: Sequence[EvidenceCard]
     ) -> GateResult:
         checks: list[GateCheck] = []
-        verified = [record for record in sources.values() if record.verification_status == "verified"]
+        verified = [
+            record for record in sources.values() if record.verification_status == "verified"
+        ]
         min_verified = int(self.thresholds.get("min_verified_sources", 5))
         checks.append(
             GateCheck(
@@ -139,7 +143,9 @@ class EvidenceGate(QualityGate):
             GateCheck(
                 name="excerpt_length_within_policy",
                 passed=not oversized,
-                detail=f"超过 {excerpt_max} 字符的摘录: {', '.join(oversized[:8])}" if oversized else None,
+                detail=f"超过 {excerpt_max} 字符的摘录: {', '.join(oversized[:8])}"
+                if oversized
+                else None,
             )
         )
         return self._result("evidence", checks)
@@ -177,7 +183,10 @@ class HypothesisGate(QualityGate):
         incomplete = [
             hypothesis.hypothesis_id
             for hypothesis in hypotheses.hypotheses
-            if (require_variables and not (hypothesis.independent_variables and hypothesis.dependent_variables))
+            if (
+                require_variables
+                and not (hypothesis.independent_variables and hypothesis.dependent_variables)
+            )
             or not hypothesis.expected_direction.strip()
             or not hypothesis.supporting_claim_ids
         ]
@@ -201,8 +210,10 @@ class HypothesisGate(QualityGate):
             )
         )
 
-        selected_ok = review is not None and bool(review.selected_hypothesis_id) and (
-            review.selected_hypothesis_id in ids
+        selected_ok = (
+            review is not None
+            and bool(review.selected_hypothesis_id)
+            and (review.selected_hypothesis_id in ids)
         )
         checks.append(
             GateCheck(
@@ -279,7 +290,8 @@ class ResultGate(QualityGate):
         checks.append(
             GateCheck(
                 name="module_provenance",
-                passed=(not require_provenance) or provenance in {"module_outputs", "offline_fixtures"},
+                passed=(not require_provenance)
+                or provenance in {"module_outputs", "offline_fixtures"},
                 detail=f"provenance={provenance!r}",
             )
         )
@@ -407,9 +419,7 @@ class PublishGate(QualityGate):
         )
 
         bad_artifacts = [
-            artifact
-            for artifact in payload.artifacts
-            if _ABSOLUTE_PATH_RE.search(artifact)
+            artifact for artifact in payload.artifacts if _ABSOLUTE_PATH_RE.search(artifact)
         ]
         checks.append(
             GateCheck(

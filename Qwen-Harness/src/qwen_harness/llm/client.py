@@ -122,7 +122,9 @@ class QwenModelClient:
 
     # -- 工厂 -----------------------------------------------------------------
     @classmethod
-    def from_env(cls, settings: "HarnessSettings", harness_config: "HarnessConfig | None" = None) -> "QwenModelClient":
+    def from_env(
+        cls, settings: "HarnessSettings", harness_config: "HarnessConfig | None" = None
+    ) -> "QwenModelClient":
         """引擎用 ``from_env(settings, harness_config)`` 构造；离线时不调用。"""
         if harness_config is not None:
             model_cfg = harness_config.model
@@ -207,9 +209,13 @@ class QwenModelClient:
             except (ValidationError, json.JSONDecodeError) as exc:
                 if round_index < SCHEMA_RETRY:
                     schema_hint = (
-                        _short_validation_error(exc) if isinstance(exc, ValidationError) else f"JSON 解析失败: {exc}"
+                        _short_validation_error(exc)
+                        if isinstance(exc, ValidationError)
+                        else f"JSON 解析失败: {exc}"
                     )
-                    LOGGER.warning("阶段 %s 结构化输出校验失败，携带错误重试: %s", stage_name, schema_hint)
+                    LOGGER.warning(
+                        "阶段 %s 结构化输出校验失败，携带错误重试: %s", stage_name, schema_hint
+                    )
                     continue
                 audit_failure = make_audit(
                     stage=stage_name,
@@ -232,7 +238,9 @@ class QwenModelClient:
         raise ModelCallError(
             "结构化调用异常退出重试循环",
             stage=stage_name,
-            details={"last_transport_error": str(last_transport_error)} if last_transport_error else {},
+            details={"last_transport_error": str(last_transport_error)}
+            if last_transport_error
+            else {},
         )
 
     # -- 底层调用 ------------------------------------------------------------

@@ -45,7 +45,9 @@ SCIENTIFIC_BOUNDARIES: tuple[str, ...] = (
     "预设画像为固定案例矩阵，不解释为独立人群样本，不外推临床或人群结论",
 )
 
-PAPER_TITLE = "多目标环境暴露约束与个性化城市健身出行路线选择：基于上海徐汇预设画像矩阵的预注册对照实验"
+PAPER_TITLE = (
+    "多目标环境暴露约束与个性化城市健身出行路线选择：基于上海徐汇预设画像矩阵的预注册对照实验"
+)
 
 
 def _utc_now() -> datetime:
@@ -58,9 +60,11 @@ def _read_json(context: "WorkflowContext", relative: str) -> dict[str, Any] | No
 
 
 def _metrics_summary(context: "WorkflowContext") -> dict[str, Any]:
-    return _read_json(context, "reports/metrics_summary.json") or _read_json(
-        context, "experiments/metrics_summary.json"
-    ) or {}
+    return (
+        _read_json(context, "reports/metrics_summary.json")
+        or _read_json(context, "experiments/metrics_summary.json")
+        or {}
+    )
 
 
 def _experiment_results(context: "WorkflowContext") -> dict[str, Any]:
@@ -124,7 +128,11 @@ def _references(context: "WorkflowContext") -> list[PlanReference]:
 def _evidence_map(context: "WorkflowContext") -> dict[str, list[str]]:
     """证据卡 -> 已核验来源映射（逐卡聚合，未核验来源剔除）。"""
     registry = context.source_registry()
-    verified = {source_id for source_id, record in registry.items() if record.verification_status == "verified"}
+    verified = {
+        source_id
+        for source_id, record in registry.items()
+        if record.verification_status == "verified"
+    }
     evidence_map: dict[str, list[str]] = {}
     for card in context.store.load_evidence_cards():
         source_ids = set(card.source_ids)
@@ -208,7 +216,9 @@ def _paper_abstract(summary: dict[str, Any], hypothesis: dict[str, str], status_
     )
 
 
-def _results_block(context: "WorkflowContext", summary: dict[str, Any], results: dict[str, Any]) -> dict[str, Any]:
+def _results_block(
+    context: "WorkflowContext", summary: dict[str, Any], results: dict[str, Any]
+) -> dict[str, Any]:
     interpretation = context.read_stage_output("experiment_analysis") or {}
     return {
         "support_status": summary.get("support_status", "inconclusive"),
@@ -229,7 +239,9 @@ def _results_block(context: "WorkflowContext", summary: dict[str, Any], results:
         "comparisons": summary.get("comparisons") or {},
         "negative_results": interpretation.get("negative_results") or [],
         "data_quality_notes": interpretation.get("data_quality_notes") or [],
-        "interpretation": interpretation.get("interpretation") or summary.get("support_status") or "inconclusive",
+        "interpretation": interpretation.get("interpretation")
+        or summary.get("support_status")
+        or "inconclusive",
         "provenance": results.get("provenance") or summary.get("provenance"),
     }
 
@@ -255,7 +267,11 @@ def _reproducibility(context: "WorkflowContext") -> dict[str, Any]:
         "statistics": {"seed": DEFAULT_SEED, "bootstrap_iterations": DEFAULT_BOOTSTRAP_ITERATIONS},
         "config_hashes": dict(manifest.config_hashes),
         "skills_hashes": dict(manifest.skills_hashes),
-        "git": {"branch": manifest.git_branch, "head": manifest.git_head, "worktree_clean": manifest.worktree_clean},
+        "git": {
+            "branch": manifest.git_branch,
+            "head": manifest.git_head,
+            "worktree_clean": manifest.worktree_clean,
+        },
     }
 
 
@@ -292,13 +308,20 @@ def build_scientific_plan(context: "WorkflowContext") -> ScientificPlan:
         "error": "执行错误",
     }.get(status, "证据不足")
 
-    problem_statement = str(frame.get("problem_statement") or context.goal.question or context.goal.title)
+    problem_statement = str(
+        frame.get("problem_statement") or context.goal.question or context.goal.title
+    )
     rationale_bits = [
         hypothesis.get("rationale") or "",
         hypothesis.get("mechanism") or "",
-        " ".join(frame.get("assumptions") or []) if isinstance(frame.get("assumptions"), list) else "",
+        " ".join(frame.get("assumptions") or [])
+        if isinstance(frame.get("assumptions"), list)
+        else "",
     ]
-    rationale = "；".join(bit for bit in rationale_bits if bit) or "依据问题界定与证据卡的既定假设生成流程选出候选假设。"
+    rationale = (
+        "；".join(bit for bit in rationale_bits if bit)
+        or "依据问题界定与证据卡的既定假设生成流程选出候选假设。"
+    )
 
     baselines_payload = results.get("variants_registry") or {}
     baselines = [
@@ -321,14 +344,20 @@ def build_scientific_plan(context: "WorkflowContext") -> ScientificPlan:
                 metrics=design_plan.metrics or metric_specs(),
             )
         except Exception:  # noqa: BLE001 - 设计输出损坏时回退注册表基线与冻结指标
-            context.emit("plan_contract_degraded", "experiment_design 输出不符合契约，回退注册表基线", status="warning")
+            context.emit(
+                "plan_contract_degraded",
+                "experiment_design 输出不符合契约，回退注册表基线",
+                status="warning",
+            )
 
     limitations = list(SCIENTIFIC_BOUNDARIES)
     if isinstance(frame.get("scope_boundaries"), list):
         limitations.extend(str(item) for item in frame["scope_boundaries"])
     negative = summary.get("negative_results") or {}
     if negative.get("missing_cells"):
-        limitations.append(f"存在 {negative['missing_cells']} 个缺少候选输出的单元，相关指标标记缺失（不伪造）")
+        limitations.append(
+            f"存在 {negative['missing_cells']} 个缺少候选输出的单元，相关指标标记缺失（不伪造）"
+        )
 
     return ScientificPlan(
         run_id=context.run_id,

@@ -66,7 +66,9 @@ def _table(headers: list[str], rows: list[list[str]]) -> str:
 
 
 def _metrics_summary(context: "WorkflowContext") -> dict[str, Any]:
-    return _read_json(context, "reports/metrics_summary.json") or _read_json(context, "experiments/metrics_summary.json")
+    return _read_json(context, "reports/metrics_summary.json") or _read_json(
+        context, "experiments/metrics_summary.json"
+    )
 
 
 def _manifest_field(context: "WorkflowContext", key: str) -> str:
@@ -89,7 +91,11 @@ def _hypothesis_statement(context: "WorkflowContext") -> str:
         if not selected_id and isinstance(generation.get("recommended_hypothesis_id"), str):
             selected_id = generation["recommended_hypothesis_id"]
         for item in generation.get("hypotheses") or []:
-            if isinstance(item, dict) and item.get("hypothesis_id") == selected_id and item.get("statement"):
+            if (
+                isinstance(item, dict)
+                and item.get("hypothesis_id") == selected_id
+                and item.get("statement")
+            ):
                 return f"{item['statement']}（{selected_id}）"
     return "（假设阶段输出缺失，未生成假设陈述）"
 
@@ -107,14 +113,22 @@ def _iterations(context: "WorkflowContext") -> list[dict[str, Any]]:
             except (OSError, json.JSONDecodeError):
                 continue
             if isinstance(decision, dict):
-                iterations.append({"iteration": child.name, "status": decision.get("status"), "reason": decision.get("reason")})
+                iterations.append(
+                    {
+                        "iteration": child.name,
+                        "status": decision.get("status"),
+                        "reason": decision.get("reason"),
+                    }
+                )
     return iterations
 
 
 def render_scientific_plan_md(plan: dict[str, Any]) -> str:
     """科研计划全文 Markdown（所有字段来自 ScientificPlan 载荷）。"""
     results = plan.get("results") if isinstance(plan.get("results"), dict) else {}
-    reproducibility = plan.get("reproducibility") if isinstance(plan.get("reproducibility"), dict) else {}
+    reproducibility = (
+        plan.get("reproducibility") if isinstance(plan.get("reproducibility"), dict) else {}
+    )
     experiments = plan.get("experiments") if isinstance(plan.get("experiments"), dict) else {}
     reference_lines = [
         f"{index}. {ref.get('title', '—')}（{', '.join(ref.get('authors') or []) or '作者未知'}，"
@@ -157,7 +171,12 @@ def render_scientific_plan_md(plan: dict[str, Any]) -> str:
         _table(
             ["编号", "名称", "选择规则", "必需字段"],
             [
-                [spec.get("baseline_id", "—"), spec.get("name", "—"), spec.get("selection_rule", "—"), ", ".join(spec.get("required_fields") or [])]
+                [
+                    spec.get("baseline_id", "—"),
+                    spec.get("name", "—"),
+                    spec.get("selection_rule", "—"),
+                    ", ".join(spec.get("required_fields") or []),
+                ]
                 for spec in experiments.get("baselines") or []
             ],
         ),
@@ -166,8 +185,12 @@ def render_scientific_plan_md(plan: dict[str, Any]) -> str:
             ["指标", "名称", "方向", "主指标", "公式", "数据来源"],
             [
                 [
-                    spec.get("metric_id", "—"), spec.get("name", "—"), spec.get("direction", "—"),
-                    "是" if spec.get("primary") else "否", spec.get("formula", "—"), spec.get("data_source", "—"),
+                    spec.get("metric_id", "—"),
+                    spec.get("name", "—"),
+                    spec.get("direction", "—"),
+                    "是" if spec.get("primary") else "否",
+                    spec.get("formula", "—"),
+                    spec.get("data_source", "—"),
                 ]
                 for spec in experiments.get("metrics") or []
             ],
@@ -189,8 +212,13 @@ def render_scientific_plan_md(plan: dict[str, Any]) -> str:
         "## 证据映射",
         _table(
             ["证据卡", "已核验来源"],
-            [[card, ", ".join(source_ids)] for card, source_ids in (plan.get("evidence_map") or {}).items()],
-        ) if plan.get("evidence_map") else "（无证据卡）",
+            [
+                [card, ", ".join(source_ids)]
+                for card, source_ids in (plan.get("evidence_map") or {}).items()
+            ],
+        )
+        if plan.get("evidence_map")
+        else "（无证据卡）",
         "",
         "## 局限",
         *[f"- {item}" for item in plan.get("limitations") or []],
@@ -201,11 +229,17 @@ def render_scientific_plan_md(plan: dict[str, Any]) -> str:
         "```",
         _table(
             ["项", "值"],
-            [[key, str(value)] for key, value in (reproducibility.get("environment") or {}).items()],
+            [
+                [key, str(value)]
+                for key, value in (reproducibility.get("environment") or {}).items()
+            ],
         ),
         "",
         "## 数据快照哈希",
-        _table(["数据", "sha256"], [[key, digest] for key, digest in (plan.get("data_snapshot_hashes") or {}).items()])
+        _table(
+            ["数据", "sha256"],
+            [[key, digest] for key, digest in (plan.get("data_snapshot_hashes") or {}).items()],
+        )
         if plan.get("data_snapshot_hashes")
         else "（无可用数据快照哈希）",
         "",
@@ -218,14 +252,22 @@ def render_experiment_report_md(context: "WorkflowContext", plan: dict[str, Any]
     summary = _metrics_summary(context)
     results = _experiment_results(context)
     cells = results.get("cells") if isinstance(results.get("cells"), list) else []
-    registry = results.get("variants_registry") if isinstance(results.get("variants_registry"), dict) else {}
+    registry = (
+        results.get("variants_registry")
+        if isinstance(results.get("variants_registry"), dict)
+        else {}
+    )
     plan_block = results.get("plan") if isinstance(results.get("plan"), dict) else {}
     profiles = results.get("profiles") if isinstance(results.get("profiles"), list) else []
     interpretation = context.read_stage_output("experiment_analysis") or {}
     plan_results = plan.get("results") if isinstance(plan.get("results"), dict) else {}
-    status = str(summary.get("support_status") or plan_results.get("support_status") or "inconclusive")
+    status = str(
+        summary.get("support_status") or plan_results.get("support_status") or "inconclusive"
+    )
     failed = [cell for cell in cells if cell.get("status") not in {"ready", None}]
-    generated_ats = sorted({str(cell.get("data_generated_at")) for cell in cells if cell.get("data_generated_at")})
+    generated_ats = sorted(
+        {str(cell.get("data_generated_at")) for cell in cells if cell.get("data_generated_at")}
+    )
     comparisons = summary.get("comparisons") if isinstance(summary.get("comparisons"), dict) else {}
     comparison_rows: list[list[str]] = []
     for variant_id, block in comparisons.items():
@@ -235,10 +277,15 @@ def render_experiment_report_md(context: "WorkflowContext", plan: dict[str, Any]
             interval = paired.get("ci_95")
             comparison_rows.append(
                 [
-                    variant_id, metric_id, str(paired.get("pairs", 0)),
-                    _fmt(metric.get("m1_or_variant_mean")), _fmt(metric.get("b0_mean")),
+                    variant_id,
+                    metric_id,
+                    str(paired.get("pairs", 0)),
+                    _fmt(metric.get("m1_or_variant_mean")),
+                    _fmt(metric.get("b0_mean")),
                     _fmt(paired.get("mean_difference")),
-                    f"[{_fmt(interval[0])}, {_fmt(interval[1])}]" if isinstance(interval, list) and len(interval) == 2 else "—",
+                    f"[{_fmt(interval[0])}, {_fmt(interval[1])}]"
+                    if isinstance(interval, list) and len(interval) == 2
+                    else "—",
                     _fmt(win.get("rate")),
                 ]
             )
@@ -271,7 +318,11 @@ def render_experiment_report_md(context: "WorkflowContext", plan: dict[str, Any]
             ["案例", "模式", "目标", "目标距离(m)", "偏差容忍", "搜索半径(m)"],
             [
                 [
-                    str((profile.get("profile") or profile).get("case_id", profile.get("case_id", "—"))),
+                    str(
+                        (profile.get("profile") or profile).get(
+                            "case_id", profile.get("case_id", "—")
+                        )
+                    ),
                     str((profile.get("profile") or profile).get("mode", "—")),
                     str((profile.get("profile") or profile).get("goal", "—")),
                     _fmt((profile.get("profile") or profile).get("target_distance_m"), 0),
@@ -280,30 +331,44 @@ def render_experiment_report_md(context: "WorkflowContext", plan: dict[str, Any]
                 ]
                 for profile in profiles
             ],
-        ) if profiles else "（实验计划缺少画像记录）",
+        )
+        if profiles
+        else "（实验计划缺少画像记录）",
         f"- 全局约束: 绕路上限 {plan_block.get('detour_limit', '—')}，目标距离偏差容忍 {plan_block.get('target_distance_tolerance', '—')}",
         "",
         "## 4. 基线与模型（预注册，冻结）",
         _table(
             ["变体", "名称", "选择规则", "权重来源"],
             [
-                [item.get("variant_id", "—"), item.get("name", "—"), item.get("selection_rule", "—"), item.get("weights_source", "—")]
+                [
+                    item.get("variant_id", "—"),
+                    item.get("name", "—"),
+                    item.get("selection_rule", "—"),
+                    item.get("weights_source", "—"),
+                ]
                 for item in registry.get("variants") or []
                 if isinstance(item, dict)
             ],
-        ) if registry.get("variants") else "（变体注册表缺失）",
+        )
+        if registry.get("variants")
+        else "（变体注册表缺失）",
         "",
         "## 5. 指标与公式",
         _table(
             ["指标", "名称", "方向", "主指标", "公式"],
             [
                 [
-                    spec.get("metric_id", "—"), spec.get("name", "—"), spec.get("direction", "—"),
-                    "是" if spec.get("primary") else "否", spec.get("formula", "—"),
+                    spec.get("metric_id", "—"),
+                    spec.get("name", "—"),
+                    spec.get("direction", "—"),
+                    "是" if spec.get("primary") else "否",
+                    spec.get("formula", "—"),
                 ]
                 for spec in (plan.get("experiments") or {}).get("metrics") or []
             ],
-        ) if (plan.get("experiments") or {}).get("metrics") else "（指标规格缺失：结果不依赖单一 base_score，见 metrics_summary.metric_names）",
+        )
+        if (plan.get("experiments") or {}).get("metrics")
+        else "（指标规格缺失：结果不依赖单一 base_score，见 metrics_summary.metric_names）",
         "",
         "## 6. 结果表",
         "**总体率**:",
@@ -312,8 +377,12 @@ def render_experiment_report_md(context: "WorkflowContext", plan: dict[str, Any]
             [
                 [key, _fmt(summary.get(key))]
                 for key in (
-                    "detour_pass_rate", "environment_win_rate", "preference_win_rate",
-                    "constraint_pass_rate", "no_candidate_rate", "reference_verification_rate",
+                    "detour_pass_rate",
+                    "environment_win_rate",
+                    "preference_win_rate",
+                    "constraint_pass_rate",
+                    "no_candidate_rate",
+                    "reference_verification_rate",
                     "mean_data_reliability_m1",
                 )
             ],
@@ -322,7 +391,9 @@ def render_experiment_report_md(context: "WorkflowContext", plan: dict[str, Any]
         _table(
             ["变体", "指标", "配对数", "变体均值", "B0 均值", "均值差", "95% CI", "胜率"],
             comparison_rows,
-        ) if comparison_rows else "（无就绪配对单元，无法计算配对统计）",
+        )
+        if comparison_rows
+        else "（无就绪配对单元，无法计算配对统计）",
         "",
         "## 7. 失败案例（如实记录，不伪造）",
         *failed_lines,
@@ -346,7 +417,9 @@ def render_experiment_report_md(context: "WorkflowContext", plan: dict[str, Any]
 
 def render_reproducibility_md(context: "WorkflowContext", plan: dict[str, Any]) -> str:
     """复现报告：命令、环境与哈希。"""
-    reproducibility = plan.get("reproducibility") if isinstance(plan.get("reproducibility"), dict) else {}
+    reproducibility = (
+        plan.get("reproducibility") if isinstance(plan.get("reproducibility"), dict) else {}
+    )
     statistics_block = reproducibility.get("statistics") or {}
     git_block = reproducibility.get("git") or {}
     lines = [
@@ -360,24 +433,36 @@ def render_reproducibility_md(context: "WorkflowContext", plan: dict[str, Any]) 
         "## 运行环境",
         _table(
             ["项", "值"],
-            [[key, str(value)] for key, value in (reproducibility.get("environment") or {}).items()],
+            [
+                [key, str(value)]
+                for key, value in (reproducibility.get("environment") or {}).items()
+            ],
         ),
         f"- 工作流: {json.dumps(reproducibility.get('workflow') or {}, ensure_ascii=False)}",
         f"- 统计: seed={statistics_block.get('seed', '—')}，bootstrap 迭代 {statistics_block.get('bootstrap_iterations', '—')}",
         f"- Git: 分支 {git_block.get('branch') or '—'}，HEAD {git_block.get('head') or '—'}，工作树干净={git_block.get('worktree_clean')}",
         "",
         "## 配置哈希",
-        _table(["配置", "sha256"], [[key, digest] for key, digest in (reproducibility.get("config_hashes") or {}).items()])
+        _table(
+            ["配置", "sha256"],
+            [[key, digest] for key, digest in (reproducibility.get("config_hashes") or {}).items()],
+        )
         if reproducibility.get("config_hashes")
         else "（无配置哈希）",
         "",
         "## 技能哈希",
-        _table(["技能", "sha256"], [[key, digest] for key, digest in (reproducibility.get("skills_hashes") or {}).items()])
+        _table(
+            ["技能", "sha256"],
+            [[key, digest] for key, digest in (reproducibility.get("skills_hashes") or {}).items()],
+        )
         if reproducibility.get("skills_hashes")
         else "（无技能哈希）",
         "",
         "## 数据快照哈希",
-        _table(["数据", "sha256"], [[key, digest] for key, digest in (plan.get("data_snapshot_hashes") or {}).items()])
+        _table(
+            ["数据", "sha256"],
+            [[key, digest] for key, digest in (plan.get("data_snapshot_hashes") or {}).items()],
+        )
         if plan.get("data_snapshot_hashes")
         else "（无可用数据快照哈希）",
         "",
@@ -401,5 +486,7 @@ def generate_report_artifacts(context: "WorkflowContext") -> list[str]:
     }
     for relative, text in outputs.items():
         context.store.write_bytes_atomic(relative, text.encode("utf-8"))
-    context.emit("markdown_reports_ready", "三份 Markdown 报告已生成", details={"artifacts": sorted(outputs)})
+    context.emit(
+        "markdown_reports_ready", "三份 Markdown 报告已生成", details={"artifacts": sorted(outputs)}
+    )
     return sorted(outputs)

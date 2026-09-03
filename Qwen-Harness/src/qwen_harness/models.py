@@ -14,7 +14,9 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 HARNESS_SCHEMA_VERSION = "1.0"
 
 SourceType = Literal["local_file", "pubmed", "crossref", "https_url", "repository_file"]
-StageStatus = Literal["pending", "running", "passed", "needs_approval", "retryable", "failed", "skipped"]
+StageStatus = Literal[
+    "pending", "running", "passed", "needs_approval", "retryable", "failed", "skipped"
+]
 SupportStatus = Literal["supported", "partially_supported", "unsupported", "inconclusive", "error"]
 RunStatus = Literal["running", "passed", "failed", "needs_approval"]
 ModuleKey = Literal["route", "environment", "evaluation", "web"]
@@ -382,6 +384,7 @@ class ExperimentPlan(StrictModel):
     acceptance_criteria: list[str] = Field(default_factory=list)
     stop_conditions: list[str] = Field(default_factory=list)
 
+
 # ---------------------------------------------------------------------------
 # Module execution
 # ---------------------------------------------------------------------------
@@ -412,7 +415,9 @@ class ModuleResult(StrictModel):
 # Iteration, interpretation and final plan
 # ---------------------------------------------------------------------------
 class IterationDecision(StrictModel):
-    status: Literal["continue", "stop_supported", "stop_partial", "stop_unsupported", "stop_inconclusive"]
+    status: Literal[
+        "continue", "stop_supported", "stop_partial", "stop_unsupported", "stop_inconclusive"
+    ]
     reason: str
     automatic_actions: list[dict[str, object]] = Field(default_factory=list)
     proposed_code_changes: list[dict[str, object]] = Field(default_factory=list)

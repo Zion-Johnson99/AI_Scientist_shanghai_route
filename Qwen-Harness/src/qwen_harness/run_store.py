@@ -42,7 +42,16 @@ from .provenance import config_hashes, git_snapshot, module_data_hashes, sha256_
 LOGGER = get_logger("run_store")
 
 RUN_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{2,63}$")
-RUN_SUBDIRS = ("inputs", "sources", "skills", "stages", "modules", "experiments", "reports", "publish")
+RUN_SUBDIRS = (
+    "inputs",
+    "sources",
+    "skills",
+    "stages",
+    "modules",
+    "experiments",
+    "reports",
+    "publish",
+)
 _STAGE_NAME_RE = re.compile(r"^[a-z][a-z0-9_]{0,63}$")
 _STAGE_KINDS = {"input": "input.json", "output": "output.json", "audit": "audit.json"}
 
@@ -83,7 +92,9 @@ def _is_pid_alive(pid: int) -> bool:
 class RunStore:
     """Bound to one run after create_run()/load_run()."""
 
-    def __init__(self, paths: HarnessPaths, settings: HarnessSettings, config: HarnessConfig) -> None:
+    def __init__(
+        self, paths: HarnessPaths, settings: HarnessSettings, config: HarnessConfig
+    ) -> None:
         self.paths = paths
         self.settings = settings
         self.config = config
@@ -94,13 +105,17 @@ class RunStore:
     @property
     def run_id(self) -> str:
         if self._run_id is None:
-            raise RunStateError("RunStore 尚未绑定运行", suggested_action="先调用 create_run 或 load_run")
+            raise RunStateError(
+                "RunStore 尚未绑定运行", suggested_action="先调用 create_run 或 load_run"
+            )
         return self._run_id
 
     @property
     def run_dir(self) -> Path:
         if self._run_dir is None:
-            raise RunStateError("RunStore 尚未绑定运行", suggested_action="先调用 create_run 或 load_run")
+            raise RunStateError(
+                "RunStore 尚未绑定运行", suggested_action="先调用 create_run 或 load_run"
+            )
         return self._run_dir
 
     def _resolve(self, relative: str) -> Path:
@@ -216,7 +231,9 @@ class RunStore:
             raise InputContractError(f"非法 run-id: {run_id!r}")
         run_dir = self.paths.runs_dir / run_id
         if not run_dir.is_dir():
-            raise RunStateError(f"运行不存在: {run_id}", run_id=run_id, suggested_action="用 list-runs 查看可用运行")
+            raise RunStateError(
+                f"运行不存在: {run_id}", run_id=run_id, suggested_action="用 list-runs 查看可用运行"
+            )
         self._run_id = run_id
         self._run_dir = run_dir
 
@@ -242,7 +259,12 @@ class RunStore:
         manifest = _required("run_manifest.json", RunManifest)
         state = _required("state.json", RunState)
         return RunContext(
-            run_id=run_id, run_dir=str(run_dir), goal=goal, options=options, manifest=manifest, state=state
+            run_id=run_id,
+            run_dir=str(run_dir),
+            goal=goal,
+            options=options,
+            manifest=manifest,
+            state=state,
         )
 
     def save_state(self, state: RunState) -> None:

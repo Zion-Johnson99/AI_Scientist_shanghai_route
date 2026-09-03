@@ -78,8 +78,7 @@ def _plan() -> ArchitecturePlan:
 
 def _generated_files() -> list[GeneratedFile]:
     return [
-        GeneratedFile(path=item.path, content=f"generated: {item.path}\n")
-        for item in _plan().files
+        GeneratedFile(path=item.path, content=f"generated: {item.path}\n") for item in _plan().files
     ]
 
 
@@ -162,10 +161,7 @@ def test_engine_reuses_cached_plan_existing_files_and_defers_large_data(tmp_path
     architecture_path.write_text(plan.model_dump_json(indent=2), encoding="utf-8")
     workspace.write_text(plan.files[0].path, "existing\n")
     deferred_path = plan.files[-1].path
-    responses = [
-        GeneratedFile(path=item.path, content="resumed\n")
-        for item in plan.files[1:-1]
-    ]
+    responses = [GeneratedFile(path=item.path, content="resumed\n") for item in plan.files[1:-1]]
     client = SequenceModelClient(responses)
     engine = GenerationEngine(
         workspace=workspace,
@@ -375,8 +371,10 @@ def test_engine_plans_and_generates_each_file_with_injected_responses(tmp_path: 
         "generation_file",
     ]
     for item in plan.files:
-        assert (engine.workspace.source_root / item.path).read_text(encoding="utf-8").startswith(
-            "generated:"
+        assert (
+            (engine.workspace.source_root / item.path)
+            .read_text(encoding="utf-8")
+            .startswith("generated:")
         )
 
 
@@ -424,9 +422,9 @@ def test_engine_repairs_validation_issues_until_validator_passes(tmp_path: Path)
 
     assert result.repair_rounds == 1
     assert result.remaining_issues == []
-    assert (
-        engine.workspace.source_root / "evaluation_model_qwen" / "app.py"
-    ).read_text(encoding="utf-8") == "SCORE = 85\n"
+    assert (engine.workspace.source_root / "evaluation_model_qwen" / "app.py").read_text(
+        encoding="utf-8"
+    ) == "SCORE = 85\n"
 
 
 def test_engine_returns_remaining_issues_after_repair_limit(tmp_path: Path) -> None:

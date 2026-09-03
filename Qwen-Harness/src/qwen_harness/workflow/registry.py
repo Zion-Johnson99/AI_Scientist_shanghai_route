@@ -90,7 +90,9 @@ def _validate_stage_graph(workflow: WorkflowConfig) -> None:
     for stage in workflow.stages:
         for dep in stage.dependencies:
             if dep not in seen:
-                raise ConfigError(f"工作流 {workflow.name} 阶段 {stage.name} 依赖不存在的阶段 {dep!r}")
+                raise ConfigError(
+                    f"工作流 {workflow.name} 阶段 {stage.name} 依赖不存在的阶段 {dep!r}"
+                )
             if names.index(dep) >= names.index(stage.name):
                 raise ConfigError(
                     f"工作流 {workflow.name} 阶段 {stage.name} 依赖其后定义的阶段 {dep!r}"
