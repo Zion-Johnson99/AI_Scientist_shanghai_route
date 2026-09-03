@@ -35,9 +35,7 @@ AUDIT_ROOT_ENV = "EVALUATION_MODEL_QWEN_AUDIT_ROOT"
 ALLOWED_ORIGINS_ENV = "EVALUATION_MODEL_QWEN_ALLOWED_ORIGINS"
 RATE_LIMIT_PER_MINUTE_ENV = "EVALUATION_MODEL_QWEN_RATE_LIMIT_PER_MINUTE"
 DAILY_REQUEST_LIMIT_ENV = "EVALUATION_MODEL_QWEN_DAILY_REQUEST_LIMIT"
-_RATE_LIMITED_PATHS = frozenset(
-    {"/api/v1/recommendation-intent", "/api/v1/recommendations"}
-)
+_RATE_LIMITED_PATHS = frozenset({"/api/v1/recommendation-intent", "/api/v1/recommendations"})
 
 _QWEN_ERROR_CODES = {
     "authentication": "qwen_authentication_failed",
