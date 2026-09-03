@@ -4,6 +4,11 @@ ROOT = Path(__file__).parents[2]
 DOCKERFILE = ROOT / "evaluation_model_qwen" / "Dockerfile"
 DOCKERIGNORE = ROOT / ".dockerignore"
 RENDER_BLUEPRINT = ROOT / "render.yaml"
+DEPLOY_GATE = ROOT / ".github" / "workflows" / "evaluation-api-deploy-gate.yml"
+ENVIRONMENT_URL = (
+    "https://xuhui-environment-data.cloudflare-environment-worker.workers.dev/"
+    "environment_dashboard.json"
+)
 
 
 def test_qwen_container_uses_frozen_runtime_and_public_bind() -> None:
@@ -58,9 +63,28 @@ def test_render_blueprint_keeps_qwen_secrets_out_of_git() -> None:
     assert "key: DASHSCOPE_API_KEY\n        sync: false" in blueprint
     assert "key: DASHSCOPE_BASE_URL\n        sync: false" in blueprint
     assert 'key: FORWARDED_ALLOW_IPS\n        value: "*"' in blueprint
-    assert "key: EVALUATION_MODEL_QWEN_ENVIRONMENT_URL\n        sync: false" in blueprint
+    assert "autoDeployTrigger: checksPass" in blueprint
+    assert (
+        f"key: EVALUATION_MODEL_QWEN_ENVIRONMENT_URL\n        value: {ENVIRONMENT_URL}"
+    ) in blueprint
     assert 'key: EVALUATION_MODEL_QWEN_ENVIRONMENT_CACHE_SECONDS\n        value: "60"' in blueprint
     assert (
         "github.io/AI_Scientist_shanghai_route/data/web/environment_dashboard.json" not in blueprint
     )
     assert "DASHSCOPE_API_KEY=" not in blueprint
+
+
+def test_evaluation_api_deploy_gate_covers_quality_data_and_container() -> None:
+    workflow = DEPLOY_GATE.read_text(encoding="utf-8")
+
+    assert "push:" in workflow
+    assert "branches: [main]" in workflow
+    assert "uv sync --directory evaluation_model_qwen --frozen --extra dev" in workflow
+    assert "pytest -q" in workflow
+    assert "ruff check src tests" in workflow
+    assert "ruff format --check src tests" in workflow
+    assert "pyright --project pyproject.toml" in workflow
+    assert ENVIRONMENT_URL in workflow
+    assert "load_data()" in workflow
+    assert "route_count=90" in workflow
+    assert "docker build" in workflow

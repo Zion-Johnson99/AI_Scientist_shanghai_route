@@ -5,7 +5,7 @@ services:
     plan: free
     region: singapore
     branch: main
-    autoDeployTrigger: commit
+    autoDeployTrigger: checksPass
     dockerfilePath: ./evaluation_model_qwen/Dockerfile
     dockerContext: .
     healthCheckPath: /api/v1/health
@@ -29,6 +29,6 @@ services:
       - key: FORWARDED_ALLOW_IPS
         value: "*"
       - key: EVALUATION_MODEL_QWEN_ENVIRONMENT_URL
-        sync: false
+        value: https://xuhui-environment-data.cloudflare-environment-worker.workers.dev/environment_dashboard.json
       - key: EVALUATION_MODEL_QWEN_ENVIRONMENT_CACHE_SECONDS
         value: "60"

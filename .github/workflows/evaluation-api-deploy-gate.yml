@@ -1,0 +1,93 @@
+name: Evaluation API Deploy Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [develop, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  EVALUATION_MODEL_QWEN_ENVIRONMENT_URL: https://xuhui-environment-data.cloudflare-environment-worker.workers.dev/environment_dashboard.json
+  EVALUATION_MODEL_QWEN_ENVIRONMENT_CACHE_SECONDS: "300"
+
+jobs:
+  verify:
+    name: Test data contract and container
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install frozen development environment
+        run: |
+          python -m pip install --disable-pip-version-check uv==0.11.26
+          uv sync --directory evaluation_model_qwen --frozen --extra dev
+
+      - name: Run tests
+        run: >-
+          uv run --directory evaluation_model_qwen --frozen --extra dev
+          pytest -q
+
+      - name: Run Ruff
+        run: |
+          uv run --directory evaluation_model_qwen --frozen --extra dev ruff check src tests
+          uv run --directory evaluation_model_qwen --frozen --extra dev ruff format --check src tests
+
+      - name: Run Pyright
+        run: >-
+          uv run --directory evaluation_model_qwen --frozen --extra dev
+          pyright --project pyproject.toml
+
+      - name: Validate live environment contract
+        shell: bash
+        run: |
+          uv run --directory evaluation_model_qwen --frozen --extra dev python - <<'PY'
+          from evaluation_model_qwen.loaders import load_data
+
+          bundle = load_data()
+          route_count = len(bundle.routes)
+          if route_count != 90:
+              raise SystemExit(f"expected 90 routes, got {route_count}")
+          print("route_count=90")
+          print(f"generated_at={bundle.environment.generated_at.isoformat()}")
+          PY
+
+      - name: Build Docker image
+        run: docker build --file evaluation_model_qwen/Dockerfile --tag evaluation-api:ci .
+
+      - name: Smoke-test Docker health endpoint
+        shell: bash
+        run: |
+          container_id=$(docker run --detach --rm \
+            --publish 127.0.0.1:10000:10000 \
+            --env EVALUATION_MODEL_QWEN_ENVIRONMENT_URL \
+            --env EVALUATION_MODEL_QWEN_ENVIRONMENT_CACHE_SECONDS \
+            --env EVALUATION_MODEL_QWEN_OFFLINE=1 \
+            evaluation-api:ci)
+          cleanup() {
+            docker rm --force "$container_id" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+
+          for attempt in $(seq 1 30); do
+            if response=$(curl --fail --silent --show-error --max-time 5 \
+              http://127.0.0.1:10000/api/v1/health); then
+              python -c 'import json,sys; data=json.load(sys.stdin); assert data["status"] == "ok"; assert data["data"]["route_count"] == 90' <<<"$response"
+              exit 0
+            fi
+            sleep 2
+          done
+
+          docker logs "$container_id"
+          exit 1
