@@ -142,8 +142,9 @@ def _build_dashboard(
 
     pollen_records = _records(pollen_grid, "grid_scores")
     pollen_by_date = _group_by_string_field(pollen_records, "forecast_date")
-    if len(pollen_by_date) != EXPECTED_POLLEN_DAYS:
-        raise WebExportError("pollen_grid_scores 需要包含 5 个预报日")
+    pollen_day_count = len(pollen_by_date)
+    if not 1 <= pollen_day_count <= EXPECTED_POLLEN_DAYS:
+        raise WebExportError("pollen_grid_scores 预报日数量需位于 1 至 5")
 
     current_date = sorted(life_by_date)[0]
     current_records = [*current_weather, *alerts, *current_aqi, *life_by_date[current_date]]
@@ -163,6 +164,8 @@ def _build_dashboard(
     forecast_status = _records_status(
         [*weather_hourly, *aqi_hourly, *pm25_hourly, *life_indices, *pollen_records]
     )
+    if pollen_day_count < EXPECTED_POLLEN_DAYS:
+        forecast_status = "partial"
     grids_status = _records_status(grid_records)
     routes_status = _records_status(route_records)
     overall_status = (

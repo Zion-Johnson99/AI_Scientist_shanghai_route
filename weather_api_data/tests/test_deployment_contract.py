@@ -81,6 +81,9 @@ def test_workflow_routes_schedule_to_tier_and_persists_runtime() -> None:
     assert "uses: actions/cache/save@" in workflow
     assert "weather_api_data/runtime" in workflow
     assert "Bootstrap complete environment runtime" in workflow
+    assert workflow.count("environment-runtime-v2-${{ github.run_id }}") == 2
+    assert "environment-runtime-v2-" in workflow
+    assert "if: ${{ success() && hashFiles('weather_api_data/runtime/**') != '' }}" in workflow
 
 
 def test_cloudflare_primary_schedule_uses_quarter_hours_and_watchdog() -> None:
@@ -147,9 +150,7 @@ def test_workflow_only_builds_pages_artifact_for_explicit_page_deploys() -> None
     assert '"10,25,40,55 * * * *") tier="weather"; deploy_pages="false"' in workflow
     assert '"5 * * * *") tier="hourly"; deploy_pages="false"' in workflow
     assert '"7 22 * * *") tier="daily"; deploy_pages="true"' in workflow
-    assert workflow.count(
-        "if: ${{ steps.refresh-tier.outputs.deploy_pages == 'true' }}"
-    ) == 3
+    assert workflow.count("if: ${{ steps.refresh-tier.outputs.deploy_pages == 'true' }}") == 3
     assert "deploy_pages: ${{ steps.refresh-tier.outputs.deploy_pages }}" in workflow
     assert "if: ${{ needs['refresh-and-build'].outputs.deploy_pages == 'true' }}" in workflow
 

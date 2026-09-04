@@ -304,6 +304,44 @@ def test_publish_web_dashboard_builds_valid_sanitized_contract(tmp_path: Path) -
     assert json.loads(serialized) == dashboard
 
 
+def test_publish_web_dashboard_accepts_four_pollen_days_as_partial(tmp_path: Path) -> None:
+    root, route_geojson, output = _source_tree(tmp_path)
+    pollen_path = root / "runtime" / "exports" / "pollen_grid_scores.json"
+    pollen = json.loads(pollen_path.read_text(encoding="utf-8"))
+    pollen["grid_scores"] = [
+        {**record, "status": "ok"}
+        for record in pollen["grid_scores"]
+        if record["forecast_date"] != "2026-08-31"
+    ]
+    _write_json(pollen_path, pollen)
+
+    dashboard = publish_web_dashboard(
+        root=root,
+        route_geojson_path=route_geojson,
+        output_path=output,
+    )
+
+    assert len(dashboard["forecast"]["pollen_grid_daily"]) == 4
+    assert dashboard["forecast"]["status"] == "partial"
+
+
+def test_publish_web_dashboard_rejects_empty_pollen_forecast(tmp_path: Path) -> None:
+    root, route_geojson, output = _source_tree(tmp_path)
+    pollen_path = root / "runtime" / "exports" / "pollen_grid_scores.json"
+    pollen = json.loads(pollen_path.read_text(encoding="utf-8"))
+    pollen["grid_scores"] = []
+    _write_json(pollen_path, pollen)
+
+    with pytest.raises(WebExportError, match="预报日数量需位于 1 至 5"):
+        publish_web_dashboard(
+            root=root,
+            route_geojson_path=route_geojson,
+            output_path=output,
+        )
+
+    assert not output.exists()
+
+
 def test_publish_web_dashboard_limits_long_provider_forecast_to_24_hours(
     tmp_path: Path,
 ) -> None:

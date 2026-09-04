@@ -87,9 +87,9 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: weather_api_data/runtime
-          key: environment-runtime-${{ github.run_id }}
+          key: environment-runtime-v2-${{ github.run_id }}
           restore-keys: |
-            environment-runtime-
+            environment-runtime-v2-
 
       - name: Resolve refresh tier
         id: refresh-tier
@@ -149,11 +149,11 @@ jobs:
             "$ENVIRONMENT_DASHBOARD_URL"
 
       - name: Save environment runtime
-        if: ${{ always() && hashFiles('weather_api_data/runtime/**') != '' }}
+        if: ${{ success() && hashFiles('weather_api_data/runtime/**') != '' }}
         uses: actions/cache/save@v4
         with:
           path: weather_api_data/runtime
-          key: environment-runtime-${{ github.run_id }}
+          key: environment-runtime-v2-${{ github.run_id }}
 
       - name: Generate browser map configuration
         if: ${{ steps.refresh-tier.outputs.deploy_pages == 'true' }}
