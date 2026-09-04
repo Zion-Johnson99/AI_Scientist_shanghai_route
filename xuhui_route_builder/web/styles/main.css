@@ -2719,8 +2719,9 @@ select:disabled {
 }
 
 .brand-logo {
-  width: 32px;
+  width: 48px;
   height: 32px;
+  object-fit: contain;
   filter: drop-shadow(0 5px 10px rgba(79, 104, 20, 0.14));
 }
 
@@ -4126,8 +4127,8 @@ span.environment-toggle__icon {
 }
 
 @media (max-width: 520px) {
-  .brand-logo { width: 28px; height: 28px; }
-  .brand-lockup { flex-basis: 28px; }
+  .brand-logo { width: 42px; height: 28px; }
+  .brand-lockup { flex-basis: 42px; }
   .route-search-shell { min-width: 330px; }
   .product-toolbar .sport-mode-tabs { flex-basis: 104px; width: 104px; }
   .sport-mode-trigger { padding-inline: 9px; }
