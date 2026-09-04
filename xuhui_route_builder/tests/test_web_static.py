@@ -471,11 +471,12 @@ def test_frontend_assets_share_a_cache_busting_release_version() -> None:
     data_loader_js = (WEB_ROOT / "src" / "data-loader.js").read_text(encoding="utf-8")
 
     release = "v=20260831-ui-35"
+    logo_release = "v=20260904-logo-svg"
     brand_release = "v=20260904-logo-refine"
     runtime_release = "v=20260901-environment-2"
     route_animation_release = "v=20260901-ui-36"
-    assert html.count(f"./xh-logo.svg?{brand_release}") == 1
-    assert html.count(f"./xh-logo-full.png?{brand_release}") == 1
+    assert html.count(f"./xh-logo.svg?{logo_release}") == 2
+    assert "./xh-logo-full.png?" not in html
     assert f"./styles/main.css?{brand_release}" in html
     assert f"./styles/recommendation.css?{release}" in html
     assert f"./src/main.js?{route_animation_release}" in html
